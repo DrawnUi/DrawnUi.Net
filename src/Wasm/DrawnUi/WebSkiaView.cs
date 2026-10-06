@@ -73,7 +73,7 @@ public class WebSkiaView : ISkiaDrawable, IDisposable
     /// </summary>
     public bool InitGL()
     {
-        _glInfo = SkiaHtmlCanvasInterop.InitGL(_elementId, _renderFrameCallback);
+        _glInfo = SkiaHtmlCanvasInterop.InitGL(_elementId, _renderFrameCallback, OnContextRestored);
         if (_glInfo == null)
         {
             Console.WriteLine("WebSkiaView: GL init failed, falling back to raster");
@@ -207,6 +207,24 @@ public class WebSkiaView : ISkiaDrawable, IDisposable
 
         _canvas?.Flush();
         _context.Flush();
+    }
+
+    /// <summary>
+    /// The browser gave a lost WebGL context back and drawnui-web.js made a new GL handle current: the lost
+    /// Skia context is abandoned without GL calls, the next frame makes a new one and a new surface.
+    /// </summary>
+    private void OnContextRestored()
+    {
+        _context?.AbandonContext(false);
+        _surface?.Dispose();
+        _surface = null;
+        _canvas = null;
+        _renderTarget?.Dispose();
+        _renderTarget = null;
+        _context?.Dispose();
+        _context = null;
+        _glInterface?.Dispose();
+        _glInterface = null;
     }
 
     private void RenderFrameRaster()

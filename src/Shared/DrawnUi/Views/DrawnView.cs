@@ -73,6 +73,20 @@ namespace DrawnUi.Views
 #endif
         }
 
+        /// <summary>
+        /// Asks for one more frame, also from inside a draw. There <see cref="Update"/> is skipped on the desktop heads
+        /// (WPF, OpenTK, Wasm: honouring every update a control raises while painting would redraw continuously), so the
+        /// request is kept the way animators keep theirs: the frame ends dirty and the next one is scheduled. For controls
+        /// that wait on something only a later frame brings (a ScrollToIndex held until its target is measured).
+        /// </summary>
+        public void RequestNextFrame()
+        {
+            if (IsRendering)
+                IsDirty = true;
+            else
+                Update();
+        }
+
         public bool IsUsingHardwareAcceleration
         {
             get
@@ -252,8 +266,8 @@ namespace DrawnUi.Views
                 AnimatingControls.TryAdd(animator.Uid, animator);
             }
 
-
-            Update();
+            // also when started from inside a draw (a ScrollTo issued by a held ScrollToIndex): its first tick needs a frame
+            RequestNextFrame();
         }
 
         public void RemoveAnimator(Guid uid)
@@ -492,6 +506,56 @@ namespace DrawnUi.Views
             }
         }
 
+        /// <summary>
+        /// Keyboard navigation for a head with no accessibility layer of its own (MAUI Mac Catalyst), with the rules of
+        /// the MAUI Windows and WPF layers: Tab / Shift+Tab walk the Tab stops (<see cref="SkiaAccessibilityManager.NextTabStop"/>)
+        /// from the node in focus (the keyboard's, else the last one tapped), Enter / Space activate it, Escape leaves the
+        /// drawn nodes, arrows / Home / End / PageUp / PageDown go to the node, else to its group. True when the key was used.
+        /// </summary>
+        public bool HandleKeyboardNavigation(InputKey key, bool shift)
+        {
+            var current = KeyboardFocusNode ?? AccessibilityManager.FocusedNode;
+
+            if (key == InputKey.Tab)
+            {
+                AccessibilityManager.RefreshIfStale(RenderingScale);
+                var next = AccessibilityManager.NextTabStop(current, !shift);
+                if (!ReferenceEquals(current, next))
+                {
+                    current?.OnAccessibilityFocused(false);
+                    next?.OnAccessibilityFocused(true);
+                }
+                if (next is SkiaControl control)
+                    SkiaScroll.EnsureVisible(control);
+                KeyboardFocusNode = next;
+                AccessibilityManager.NotifyFocused(next);
+                return true;
+            }
+
+            if (current == null)
+                return false; // no drawn node in focus: the key is not ours (the app still gets it from KeyboardManager)
+
+            switch (key)
+            {
+                case InputKey.Enter:
+                case InputKey.Space:
+                    SkiaAccessibilityManager.Activate(current);
+                    return true;
+
+                case InputKey.Escape:
+                    current.OnAccessibilityFocused(false);
+                    KeyboardFocusNode = null;
+                    AccessibilityManager.NotifyFocused(null);
+                    return true;
+            }
+
+            if (!SkiaAccessibilityManager.Key(current, key))
+                return false;
+
+            KeyboardFocusNode ??= current; // the keyboard is in use: the ring shows
+            return true;
+        }
+
         private static void SetKeyboardFocusInScrolls(ISkiaAccessibilityNode node, bool inside)
         {
             var parent = (node as SkiaControl)?.Parent;
@@ -509,12 +573,15 @@ namespace DrawnUi.Views
         /// <summary>
         /// The <c>Wheel.Delta</c> one mouse-wheel notch produces on this head. A scroll moves by the event's share of a
         /// notch, so a precision touchpad or a free-spinning wheel, which send many small events, scroll as far as the
-        /// fingers moved. Set by the head: MAUI Windows 0.3, the WPF / OpenTK desktop path 120, the browser heads 100
-        /// (CSS pixels). 0 when the units are not known: every event then scrolls one line.
+        /// fingers moved. Set by the head: MAUI Windows 0.3, MAUI Mac Catalyst 1 (trackpad scrolls are converted to
+        /// notches of 100 points), the WPF / OpenTK desktop path 120, the browser heads 100 (CSS pixels). 0 when the
+        /// units are not known: every event then scrolls one line.
         /// </summary>
         public float WheelDeltaPerNotch { get; set; } =
 #if WINDOWS
             120f / 400f; // MAUI Windows: the gestures layer divides MouseWheelDelta (120 a notch) by 400
+#elif MACCATALYST
+            1f; // Canvas.OnGestureEvent turns trackpad scrolls into notches
 #else
             0f;
 #endif
@@ -930,6 +997,14 @@ namespace DrawnUi.Views
 
         public event EventHandler ViewDisposing;
 
+        private int _offscreenBakesInFlight;
+
+        /// <summary>An offscreen (double-buffered) bake of one of this canvas's controls started painting.</summary>
+        internal void OffscreenBakeStarted() => Interlocked.Increment(ref _offscreenBakesInFlight);
+
+        /// <summary>An offscreen bake of one of this canvas's controls finished painting.</summary>
+        internal void OffscreenBakeEnded() => Interlocked.Decrement(ref _offscreenBakesInFlight);
+
         protected virtual void WillDispose()
         {
             IsDisposing = true;
@@ -956,6 +1031,13 @@ namespace DrawnUi.Views
                     IsDisposed = true;
 
                     GestureListeners.Clear();
+
+                    // Offscreen bakes paint this canvas's controls on worker threads. Mark the tree as disposing so
+                    // no new bake starts, then let the running ones finish before the controls and their paints
+                    // are freed (freeing them under a painting bake crashed natively).
+                    foreach (var child in Views.ToList())
+                        child?.OnWillDisposeWithChildren();
+                    SpinWait.SpinUntil(() => Volatile.Read(ref _offscreenBakesInFlight) == 0, 1000);
 
                     ClearChildren();
 

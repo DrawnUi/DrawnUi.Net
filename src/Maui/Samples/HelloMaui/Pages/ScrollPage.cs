@@ -104,12 +104,12 @@ public class ScrollPage : SkiaLayer
                                 },
                             }),
 
-                        Card(Title("ScrollBarsVisibility=Vertical + ScrollBarThumbColor · default SkiaScrollBar, auto-hides 1 s after scrolling"),
+                        Card(Title("ScrollBar = new SkiaScrollBar { IsDraggable = true } · drag the thumb or press the track, auto-hides 1 s after scrolling · horizontal: ScrollBarsVisibility = Horizontal"),
                             new SkiaScroll
                             {
                                 HeightRequest = 200,
                                 BackgroundColor = Color.Parse("#212529"),
-                                ScrollBarsVisibility = ScrollBarVisibility.Vertical,
+                                ScrollBar = new SkiaScrollBar { IsDraggable = true, Thickness = 8 },
                                 ScrollBarThumbColor = Color.Parse("#6EA8FE"),
                                 ScrollBarTrackColor = Color.Parse("#22FFFFFF"),
                                 IgnoreWrongDirection = true,
@@ -150,7 +150,13 @@ public class ScrollPage : SkiaLayer
                                         new SkiaShape
                                         {
                                             Type = ShapeType.Rectangle, CornerRadius = 20, BackgroundColor = Color.Parse("#0D6EFD"), HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center, WidthRequest = 160, HeightRequest = 36,
-                                            Children = { new SkiaLabel("refresh") { FontSize = 14, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center } },
+                                            Children =
+                                            {
+                                                new SkiaLabel("↻ refresh")
+                                                {
+                                                    FontFamilyFallback = "FontSymbols,FontSymbols2", FontSize = 14, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center,
+                                                },
+                                            },
                                         },
                                     },
                                 },

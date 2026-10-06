@@ -1,18 +1,18 @@
-# DrawnUi.Wasm (Pure WebAssembly)
+# DrawnUi.Web (Pure WebAssembly)
 
-`DrawnUi.Wasm` runs DrawnUI directly in the browser as a **pure .NET WebAssembly app — no Blazor**.
+`DrawnUi.Web` runs DrawnUI directly in the browser as a **pure .NET WebAssembly app — no Blazor**.
 
 It uses only `[JSImport]`/`[JSExport]` interop (no `IJSRuntime`, no `ElementReference`, no Razor) and is built on the same platform-agnostic base as OpenTK (the `DRAWNUI_NET` path). DrawnUI owns an HTML `<canvas>` element and renders to it through SkiaSharp.
 
 ## Install
 
 ```bash
-dotnet add package DrawnUi.Wasm
+dotnet add package DrawnUi.Web
 ```
 
 ## When to use it
 
-Choose `DrawnUi.Wasm` over `DrawnUi.Blazor.Wasm` when:
+Choose `DrawnUi.Web` over `DrawnUi.Blazor.Wasm` when:
 
 - you want a **standalone, fully drawn web app** (game, tool, canvas surface) without the Blazor component model
 - you do not need Razor pages, routing, or mixing native HTML widgets with DrawnUI
@@ -20,14 +20,17 @@ Choose `DrawnUi.Wasm` over `DrawnUi.Blazor.Wasm` when:
 
 Choose [`DrawnUi.Blazor.Wasm`](../blazor/index.md) instead when DrawnUI should live as a `Canvas` component inside a Blazor app alongside Razor UI.
 
-## DrawnUi.Wasm vs Blazor
+## DrawnUi.Web vs Blazor
 
-| | `DrawnUi.Wasm` | `DrawnUi.Blazor.Wasm` |
+| | `DrawnUi.Web` | `DrawnUi.Blazor.Wasm` |
 | --- | --- | --- |
 | Host model | Pure WASM `Main()` via `[JSExport]` | Blazor component (`<Canvas>` in Razor) |
 | Interop | `[JSImport]`/`[JSExport]` only | `IJSRuntime`, `ElementReference` |
 | App shape | One full-canvas app per page | Many canvases mixed with Razor UI |
 | Base | `DRAWNUI_NET` (shared with OpenTK) | Blazor `DrawnUi.Blazor.Core` |
+| Accessibility | ARIA overlay + Tab navigation, built in | ARIA overlay + Tab navigation |
+
+Both keep one invisible ARIA element per accessibility node over the canvas (roles, labels, checked / pressed state, range values, disabled, live regions), so browser screen readers read the drawn UI and Tab walks it. On `DrawnUi.Web` the overlay never takes the pointer and the canvas draws the focus ring; nothing to wire in `main.js`. See [Accessibility](../advanced/accessibility.md).
 
 ## Rendering modes
 
@@ -67,13 +70,12 @@ public static Task Main() =>
 
 ## Samples
 
-- `src/Web/DrawnUi.Wasm.Sample` — minimal "Hello DrawnUI on Web" with a button.
-- `src/Web/Samples/PongWeb` — full game (GPU, fonts, gestures, OG/SEO). Live demo: <a href="https://pong.appomobi.com/" target="_blank" rel="noopener noreferrer">pong.appomobi.com</a>.
+- `src/Wasm/Samples/PongWeb` — full game (GPU, fonts, gestures, OG/SEO). Live demo: <a href="https://pong.appomobi.com/" target="_blank" rel="noopener noreferrer">pong.appomobi.com</a>.
 - **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
 
 ## Start here
 
-- [Getting Started (DrawnUi.Wasm)](getting-started.md)
+- [Getting Started (DrawnUi.Web)](getting-started.md)
 - [Platforms and Packages](../platforms.md)
 - [Handling Gestures](../gestures.md)
 - [Blazor](../blazor/index.md)

@@ -1,7 +1,12 @@
+using System.Reflection;
 using System.Windows;
 using DrawnUi.Draw;
+using DrawnUi.Wpf;
 using HelloWpf.Pages;
+using SkiaSharp;
+using DrawnUi.Views;
 using Color = DrawnUi.Color;
+using Thickness = DrawnUi.Views.Thickness;
 
 namespace HelloWpf;
 
@@ -30,7 +35,7 @@ public partial class MainWindow : Window
                 ["cells"] = _ => new CellsPage(),
                 ["uneven"] = _ => new UnevenCellsPage(),
                 ["images"] = _ => new ImagesPage(),
-                ["shapes"] = _ => new ShapesPage(),
+                ["shapes"] = _ => new ShapesPage(shell),
                 ["svg"] = _ => new SvgPage(),
                 ["text"] = _ => new TextPage(),
                 ["layouts"] = _ => new LayoutsPage(),
@@ -45,6 +50,7 @@ public partial class MainWindow : Window
                 ["sprites"] = _ => new SpritesPage(),
                 ["transforms"] = _ => new TransformsPage(),
                 ["reorder"] = _ => new ReorderPage(),
+                ["pong"] = _ => new PongPage(),
                 ["a11y"] = _ => new AccessibilityPage(),
             };
         shell.Titles = Catalog.Samples.ToDictionary(s => s.Route, s => s.Title);
@@ -56,11 +62,51 @@ public partial class MainWindow : Window
 
         // dev: HELLOWPF_ROOT=<route> hosts that page directly, without the shell
         var rootRoute = Environment.GetEnvironmentVariable("HELLOWPF_ROOT");
-        Drawn.Content = !string.IsNullOrEmpty(rootRoute) && shell.Routes.TryGetValue(rootRoute, out var build)
+        var main = !string.IsNullOrEmpty(rootRoute) && shell.Routes.TryGetValue(rootRoute, out var build)
             ? build(new ShellArguments())
             : shell;
 
+        Drawn.Content = new SkiaLayer
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Children = new List<SkiaControl>
+            {
+                main,
+#if DEBUG
+                // debug builds only, like the React demo's dev-server counter
+                new SkiaLabelFps
+                {
+                    Margin = new Thickness(0, 0, 4, 24),
+                    VerticalOptions = LayoutOptions.End,
+                    HorizontalOptions = LayoutOptions.End,
+                    Rotation = -45,
+                    BackgroundColor = Color.Parse("#8B0000"),
+                    TextColor = Colors.White,
+                    ZIndex = 110,
+                },
+#endif
+            },
+        }
+        // a right click (long press, Menu key) that no control took shows the library versions
+        .OnContextMenu((me, e) =>
+        {
+            shell.ShowToast($"DrawnUi.Wpf {VersionOf(typeof(DrawnUiElement))} · SkiaSharp {VersionOf(typeof(SKCanvas))}", 3000);
+            return true;
+        });
+
+        // The Images page photo (also the Shell backdrop and the Scroll header), warmed once the first
+        // screen is up so the first visit to Images shows it at once instead of black tiles.
+        ContentRendered += (_, _) => _ = Task.Run(() => SkiaImageManager.Instance.PreloadImages(new List<string> { "images/baboon.jpg" }));
+
         DevSnapshot.NavigateIfRequested(shell);
         DevSnapshot.ArmIfRequested(Drawn);
+    }
+
+    private static string VersionOf(Type type)
+    {
+        var version = type.Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
+                      ?? type.Assembly.GetName().Version?.ToString() ?? "?";
+        var plus = version.IndexOf('+');
+        return plus > 0 ? version[..plus] : version;
     }
 }

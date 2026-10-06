@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <RootNamespace>HelloOpenTk</RootNamespace>
+        <AssemblyName>HelloOpenTk</AssemblyName>
+        <Title>DrawnUI for OpenTK</Title>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
+        <RuntimeIdentifiers>win-x64;linux-x64;linux-arm64</RuntimeIdentifiers>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- title-bar icon, loaded at startup (ApplicationIcon covers Explorer and the taskbar) -->
+        <EmbeddedResource Include="icon.ico" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Addons\DrawnUi.OpenTk.Game\DrawnUi.OpenTk.Game.csproj" />
+        <!-- native Skia for the Linux build -->
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.148.0" />
+    </ItemGroup>
+
+    <!-- The Pong page hosts the shared game, the same code as every Pong sample. -->
+    <Import Project="..\..\..\Shared\Samples\Pong.Shared\Pong.Shared.projitems" Label="Shared" />
+
+    <!--
+        The Hello app's assets, the same files and relative paths as every head (drawnui-hello-app skill), linked
+        from HelloWpf. They resolve relative to the output folder on this head, so CopyToOutputDirectory is mandatory.
+    -->
+    <PropertyGroup>
+        <HelloAssets>..\..\..\Wpf\Samples\HelloWpf\</HelloAssets>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="$(HelloAssets)fonts\**\*.*" Link="fonts\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="$(HelloAssets)images\**\*.*" Link="images\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="$(HelloAssets)shaders\**\*.*" Link="shaders\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="$(HelloAssets)anims\**\*.*" Link="anims\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="$(HelloAssets)lottie\**\*.*" Link="lottie\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <!-- no pdb files in a published build -->
+    <Target Name="ExcludePdbsFromPublish" AfterTargets="ComputeFilesToPublish">
+        <ItemGroup>
+            <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.pdb'" />
+        </ItemGroup>
+    </Target>
+
+</Project>

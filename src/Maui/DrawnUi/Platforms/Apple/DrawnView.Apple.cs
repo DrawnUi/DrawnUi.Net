@@ -229,6 +229,7 @@ public partial class DrawnView
     protected virtual void DisposePlatform()
     {
         Super.OnFrame -= OnFrame;
+        ReleaseAccessibility();
     }
 
     protected virtual void InitFrameworkPlatform(bool subscribe)

@@ -1,7 +1,7 @@
-﻿# DrawnUI for .NET
+# DrawnUI for .NET
 ![NuGet DrawnUi.Net](https://img.shields.io/nuget/v/DrawnUi.Net.svg)
-![License](https://img.shields.io/github/license/taublast/DrawnUi.svg)
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat)](https://github.com/taublast/drawnui/blob/master/CONTRIBUTING.md)
+![License](https://img.shields.io/github/license/DrawnUi/DrawnUi.Net.svg)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat)](https://github.com/DrawnUi/DrawnUi.Net/blob/main/CONTRIBUTING.md)
 
 👉 [Official Site](https://drawnui.net)   
 
@@ -14,7 +14,7 @@ Supported hosts:
 * `DrawnUi.Maui` - Android, iOS, MacCatalyst, and Windows.
 * `DrawnUi.Blazor.Wasm` - browser WebAssembly rendering.
 * `DrawnUi.Blazor.Server` - server-backed DrawnUI surfaces served by Blazor Server.
-* `DrawnUi.Wasm` - pure browser WebAssembly, no Blazor required.
+* `DrawnUi.Web` - pure browser WebAssembly, no Blazor required.
 * `DrawnUi.OpenTk` - Windows and Linux desktops.
 * `DrawnUi.Wpf` - drawn controls inside WPF windows.
 * `DrawnUi.Net` - platform-agnostic console/server rendering scenarios.
@@ -23,6 +23,10 @@ Supported hosts:
 
 DrawnUI for React just appeared as a standalone DrawnUI engine in TypeScript, running on [CanvasKit](https://skia.org/docs/user/modules/canvaskit/) (Skia compiled to WebAssembly) in the browser. It tends to use same API as the .NET version. 
 Under active development, more info [on our site](https://drawnui.net/articles/react).
+
+## How About Rust?
+
+DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS, Linux, iOS, Android and in the browser. Same controls and rules as the .NET version, one crate to add (`drawnui` on crates.io), in preview. Try the demo at [hellorust.drawnui.net](https://hellorust.drawnui.net), more info [on our site](https://drawnui.net/articles/rust).
 
 ## Features 
 
@@ -37,16 +41,17 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 * __Optimized for performance__, rendering only visible elements, recycling templates etc
 * __Gestures__ support for anything, panning, scrolling, zooming etc
 * __Keyboard support__, track any key
+* __Accessibility__: screen readers (Narrator, TalkBack, VoiceOver, Orca, browser readers) and keyboard navigation on every platform
 * __Navigate__ on the canvas with shell-like techniques 
 
 😎 [Blazor sample in browser](https://drawnui.net/sandbox/) 👈
 
 ## Addons
 
-* Create games: `DrawnUi.Maui.Game`, `DrawnUi.Blazor.Game`, `DrawnUi.Wasm.Game`, `DrawnUi.OpenTk.Game`, `DrawnUi.Wpf.Game`.
+* Create games: `DrawnUi.Maui.Game`, `DrawnUi.Blazor.Game`, `DrawnUi.Web.Game`, `DrawnUi.OpenTk.Game`, `DrawnUi.Wpf.Game`.
 * .NET MAUI only: `DrawnUi.MauiGraphics`
-* .NET MAUI only: `DrawnUi.DrawnUi.MapsUi`
-* .NET MAUI only: `DrawnUi.DrawnUi.Camera` - [Separate repo](https://github.com/taublast/DrawnUi.Maui.Camera).
+* .NET MAUI only: `DrawnUi.Maui.MapsUi`
+* .NET MAUI only: `DrawnUi.Maui.Camera` - [Separate repo](https://github.com/taublast/DrawnUi.Maui.Camera).
 
 ---
 
@@ -57,7 +62,98 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.6.21
+## What's New 1.10.6.22
+
+  * **Rendering**
+    * Android: hardware-accelerated canvases (`RenderingMode = Accelerated`) draw with Vulkan. On a phone with a Mali-G57 GPU this takes about 11% less CPU per frame than OpenGL, at the same frame rate. Devices without Vulkan 1.1 (or older than Android 7) keep OpenGL, and so do Android emulators and devices whose system draws its own UI with OpenGL (the emulator's Vulkan cannot draw Skia: images crashed the app or the emulator). When Vulkan fails to start on a device, DrawnUI switches the canvas to OpenGL by itself. To always use OpenGL, set `UseVulkan = false` in the settings you pass to `UseDrawnUi`.
+
+      Measured on a Blackview BV8800 (Mali-G57 GPU, 90 Hz screen), Release build, flinging a list of 100 000 recycled cells, two runs per API:
+
+      | Per frame | Vulkan | OpenGL ES | Vulkan better by |
+      |---|---|---|---|
+      | App CPU | 16.6 ms | 18.7 ms | 11% less CPU |
+      | Render thread CPU | 9.7 ms | 11.1 ms | 13% less CPU |
+      | Frame rate | 70.5 FPS | 69 FPS | the same: both keep up with the screen |
+    * Android Release builds with LLVM (`EnableLLVM`): controls inside a `SkiaRow` are drawn again. On arm64, .NET 10's LLVM build passed one of the Row's measuring rectangles wrongly, so some Row children got no width and disappeared (a title, icons on cards, wheel pickers). Libraries built against an older DrawnUI that call `ContractPixelsRect`, `ContractPixelsRectForContent` or `ExpandPixelsRect` need a rebuild.
+  * **Text**
+    * Japanese and Chinese text wraps properly. Lines break between characters, and closing punctuation and small kana never start a line. A very long word, like a URL, also breaks when it is wider than the line.
+    * Symbols and emoji inside normal text show up. A `SkiaLabel` draws each character its font is missing with the first `FontFamilyFallback` font that has it, and the rest of the text keeps its own font. `FontFamilyFallback` can list several fonts, for example `"FontSymbols, FontEmoji"`.
+    * `SkiaRichLabel` markdown supports `~~strikethrough~~`.
+    * `AutoSize = FitHorizontal` works: the font gets smaller until the text fits the width on one line, and grows back to `FontSize` when the text gets shorter or the label wider. Before, it stayed at the smallest size it ever reached, and with `LineBreakMode = NoWrap` the text still ran past the edge. `FitVertical` grows back too now.
+    * A label with `AutoSize = FitFillVertical` and `MaxLines = 1` no longer freezes the app. Before, it never finished measuring, and every other label stopped drawing with it.
+    * People can select and copy text: turn it on with `AccessibilityTextSelectable` on a `SkiaLabel`. With a mouse, drag or double-click, then press Ctrl+C (Cmd+C on Mac). With a finger, long press, then tap Copy.
+    * MAUI Mac Catalyst: mouse clicks reach controls as mouse clicks, so a drag over selectable text selects it instead of scrolling, and Cmd+C / Cmd+A reach the app (the Edit menu used to keep them). Add `UIApplicationSupportsIndirectInputEvents` = `true` to `Platforms/MacCatalyst/Info.plist`: without it macOS hands clicks over as finger touches. Uses AppoMobi gestures 3.11.5.
+    * **Changed:** Android with `UseDesktopKeyboard`: text fields get their keys. Before, DrawnUI kept every key from the focused field, so Backspace did nothing (with keyboard suggestions it kept deleting them instead of the text) and Back did not go back. `KeyboardManager` still sees every key; Backspace now arrives as `Backspace` (it came as `Delete`), and the Back button is no longer reported as Backspace.
+    * A text field outside DrawnUI keeps its keys on every platform. In the browser, a page `<input>` next to the canvas types spaces and moves its caret on WebAssembly, and on Blazor typing into it no longer also types into a focused drawn `SkiaEditor`. Ctrl+C in a text field no longer copies a drawn label's selection. `KeyboardManager` still reports every key; `KeyboardManager.IsKeyForOtherElement` tells handlers when the key belongs to such a field, so they can ignore it.
+  * **Images and animations**
+    * Image preloading has priorities: `PreloadImages(urls, LoadPriority.Low)` waits until the images on screen are loaded. Network images load a few at a time (`MaxParallelLoads`), and `RunningCount` / `QueuedCount` show how many are loading and waiting. `RemoveFromCache` removes one image.
+    * `SkiaLottie` and `SkiaSprite` raise `Success` when their file is loaded and `Error` when it fails, like `SkiaGif`.
+    * `SkiaCarousel.ScrollTo(index, animate)` goes to a slide; with `animate: false` it jumps there at once.
+    * `SkiaImage` options that used to do nothing now work. `Aspect = Tile` repeats the image at its natural size, starting from the copy placed by the alignment. `SpriteWidth`, `SpriteHeight` and `SpriteIndex` show one cell of a sprite sheet. `UseGradient` with `StartColor` and `EndColor` paints a top-to-bottom gradient through the image. The `Grayscale` effect turns the image gray, and `UseAssembly` loads the `Source` from that assembly's embedded resources.
+    * `SkiaSvg`: `Aspect = Tile` repeats the picture, and `IconFilePath` loads its file the same way `Source` does.
+    * An image that loads in the background no longer reports an error right after it loaded. Before, `Error` came after `Success` and `HasError` stayed true.
+    * **Changed:** `SpeedRatio` on `SkiaSprite`, `SkiaGif` and `SkiaLottie` means what it says: 0.5 plays at half speed, 2 at double speed. Before, slow values played too fast (0.5 ran at about two thirds of the speed). `FrameSequence` shows each of its frames once, `DefaultFrame` is a frame number (-1 is the last frame) and `CurrentFrame` shows the frame you set.
+  * **Controls**
+    * **Changed:** `LockChildrenGestures` works on layouts. Before, layouts ignored it, so taps reached their children whatever the value. Now `Enabled` and `PassNone` keep every gesture from the children, `PassTap` lets only taps through, and `PassTapAndLongPress` taps and long presses. The layout itself still gets its own `Tapped`, so "lock the children, handle the tap on the card" works. `Enabled` also keeps gestures from controls stacked under the layout, as its description says.
+    * `SkiaWheelPicker` and `SkiaSpinner` raise `SelectedIndexChanged` when the user turns the wheel. Before, it fired only when code set the index. A spinner set from code shows the right item (it showed the one on the opposite side), and a wheel picker raises the event once when its first item gets selected.
+    * `SkiaPicker` has a Material 3 look (`ControlStyle = Material3`): an outlined field whose placeholder moves up into the outline as a label once something is picked.
+    * Changing `ControlStyle` while the app runs restyles the control fully. Before, a `SkiaButton` lost its caption (it showed "Test", or nothing in Material), `SkiaSwitch` and `SkiaCheckbox` kept the colors of the first style, and a `SkiaProgress` showed an empty track in Material and Material3.
+  * **Layout**
+    * **Changed:** in a `SkiaWrap`, a child with `HorizontalOptions = Fill` and no `WidthRequest` gets a whole line, as in DrawnUI for React and Rust. After other children it moves to a new line, and the next children start below it. Before, it was squeezed into the space left on the current line. To keep it next to the others, give it a width or use a `SkiaRow`.
+    * In a `SkiaWrap`, a box with a fixed size stays on its line even when its content sticks out of it on purpose (an unclipped child with a negative margin). Before, each such box went to a line of its own, with an empty line above the first one.
+    * In a `SkiaWrap`, children whose widths add up to exactly the width of the line share it at every screen scale, for example two cards that are each half the line minus the spacing. Before, the second one usually went to a new line, so a two-column list showed one column on most screens.
+    * A `SkiaWrap` with recycled cells from `ItemsSource` (the default) draws its items. Before, it left their space empty.
+    * In a `SkiaStack` or `SkiaRow`, a child pulled over the one before it with a negative margin (for example `AddMarginTop` equal to minus its height) is drawn. Before, it was not drawn at all.
+    * **Changed:** `SkiaStack` and `SkiaRow` honor `ZIndex`, like `SkiaLayout` with `Type = Absolute`: a child with a higher `ZIndex` is drawn on top of the others, and a tap where children overlap goes to the one on top. Children with the same `ZIndex` keep their order. Before, stacks ignored `ZIndex` and drew in list order.
+    * Changing `Children` while the app runs is drawn as the collection says: `Insert` puts the child at its place (it used to be drawn last), replacing a child (`Children[i] = x`) and `Move` work, and `Clear()` empties a collection the app assigned itself, like an `ObservableCollection`. Before, only adding at the end and removing worked.
+    * WPF, OpenTK and WebAssembly: `ScrollToIndex` to an item far away in a big recycled list lands on that item. Before, it could stop at the first rows around it (a jump to the middle of 100 000 items showed item 49 937 instead of 50 001), until the next touch or mouse move.
+  * **Scrolling with a touchpad or a mouse wheel**
+    * Touchpad scrolling follows your fingers on MAUI Windows, WPF and OpenTK. Small touchpad steps move the content at once, and only a mouse-wheel notch glides. Before, every small step started a slow glide, so the content was late and bounced past the end of a swipe.
+    * A fast swipe scrolls smoothly. Before, the content could stand still and then jump when wheel events came quickly.
+    * A swipe's fling speed is measured with a steady clock, so a change of the computer's time during a swipe cannot change the fling, and lifting the finger no longer allocates memory.
+    * WPF and OpenTK: a drag released on Linux (WSLg, X11) flings as far as on Windows. Mouse moves can arrive there in pairs a hundredth of a millisecond apart, which made every fling start at the speed limit, about twice as far. A move's speed is now measured over the last 16 ms.
+    * Sideways scrolling works: on MAUI Windows, WPF and OpenTK, a sideways swipe or a tilted wheel scrolls a horizontal `SkiaScroll`, and a vertical list ignores it. Before, a diagonal swipe made a vertical list jump up and down.
+    * This needs AppoMobi gestures 3.11.4 or later (`WheelEventArgs.IsHorizontal`); this version references 3.11.5.
+  * **Drawing and caching**
+    * WPF, OpenTK, WebAssembly and Blazor: changing `Rotation` at runtime redraws the control. Before, it waited for something else to redraw.
+    * A `.WhenPainted` overlay keeps drawing after its control is hidden and shown again. Before, hiding removed it for good, so a page pushed in a MAUI `SkiaShell` lost its overlays.
+    * `LastCompositeRecord` shows what an `ImageComposite` cache redrew last time: only the changed children, or everything.
+    * `ImageDoubleBuffered` is more reliable. A control that changes all the time still updates on screen, even when its background render takes longer than a frame; before, it kept its old look until the changes stopped. A cell shows its placeholder until its first image is ready, and never over an image it already has; before, the placeholder showed for one frame and then left a hole. Images that were replaced before they were shown go back to the pool at once, and a render that fails is not repeated forever. A GPU-cached control inside an `ImageDoubleBuffered` parent draws directly, because the GPU cannot be used from the background thread.
+    * `UseCache = SkiaCacheType.Auto` works like `Image`.
+    * Shader files load on every platform. `ShaderSource`, `ShaderTemplate`, a `SkiaShaderCarousel`'s `TransitionShader` and the textures of a two-texture effect are read from the app's folder on OpenTK and WPF and from the site in the browser, as MAUI reads them from the app package. Before, OpenTK and pure WebAssembly could not open them at all, and WPF read every shader file next to the app at startup, used or not.
+    * With `Super.Multithreaded` on, an `Operations` or `OperationsFull` cache is no longer redrawn on every frame. Before, it was thrown away and drawn again each time.
+    * WPF, OpenTK and WebAssembly: an animation started while a frame is being drawn starts at once. Before, it waited for the next touch or mouse move. `DrawnView.RequestNextFrame()` asks for one more frame from anywhere, also from inside a draw.
+  * **Keyboard and accessibility**
+    * MAUI Android: TalkBack reads drawn controls. Each control with an accessibility role is its own item: touch it to hear it, swipe right or left to move between items in reading order, double tap to press it. Before, TalkBack saw the whole canvas as one empty view. TalkBack reads the same labels, roles and hints as Narrator on MAUI Windows, and nothing runs while no screen reader is on.
+    * MAUI Mac Catalyst: Tab and Shift+Tab move between the drawn controls with a focus ring, and the arrow keys move inside a group (a list, a toolbar, a grid), as on MAUI Windows and WPF.
+    * MAUI iOS and Mac Catalyst: VoiceOver reads drawn controls. Double tap presses, swiping up or down moves a slider, a three-finger swipe scrolls.
+    * OpenTK on Linux: Orca reads drawn controls. It works without any app code once a screen reader is running.
+    * OpenTK: Tab and Shift+Tab move between the drawn controls with a focus ring, Enter and Space press, the arrow keys move a slider or inside a group, Escape leaves, as on WPF. Tab moves on from a text field instead of typing four spaces.
+    * WebAssembly (`DrawnUi.Web`): screen readers read drawn controls and Tab moves between them, as on Blazor. Before, a pure WebAssembly app was silent for screen readers.
+    * Sliders and progress bars: screen readers say the name and the value separately ("Volume, 65", "Download, 65%", "Price range, 20 – 80") and can move a slider or set its value. Before, the value was read as the name. Give each one a name with `AccessibilityLabel`.
+    * Screen readers scroll a control into view when they move to it, and TalkBack and VoiceOver can scroll a page with their own gestures.
+    * When a page closes under a screen reader, it moves to the next control instead of going silent.
+    * A card whose title repeats its name is read once, not twice. A button, switch or slider that cannot be used right now reads as unavailable on every platform.
+    * Blazor: switches, checkboxes and radio buttons read their real state. Before, browsers read them as unchecked.
+    * MAUI Windows and OpenTK: Narrator presses drawn buttons with its default action. Before, the press failed and Narrator could only read them.
+    * WPF `SkiaShell`: the page under an opened page is hidden, as on the other heads. Before, Tab and screen readers reached its controls under the new page.
+    * WPF and MAUI Windows: screen readers and Tab see the page that is on screen as soon as it settles. Before, they could keep the previous page until something on the canvas moved.
+    * MAUI Windows: a right click, Shift+F10 or the Menu key reaches `SkiaControl.ContextMenu`, as on WPF and in the browser.
+  * **OpenTK and Linux**
+    * Smooth frames where the graphics driver ignores vsync, like Linux under WSL: a `Constant` window notices it in its first second and spaces frames one screen refresh apart, and a `Dynamic` window always does. Before, a game ran at hundreds of frames a second there and movement stuttered.
+    * On Windows, frames follow the screen's exact refresh rate. A 59.95 Hz screen used to get 59 frames a second, a little behind the display.
+    * `SkiaShell` and C# Hot Reload work on OpenTK too. They were in the WPF package only.
+    * OpenTK: a right click, the Menu key or Shift+F10 reaches `SkiaControl.ContextMenu`, as on WPF and MAUI Windows.
+    * New sample `HelloOpenTk`: the DrawnUI Hello app, all 20 screens, on OpenTK for Windows and Linux. `dev/hello-opentk-linux.ps1` builds it for Linux on Windows and runs it in WSL.
+  * **Stability**
+    * Closing a canvas while one of its controls is still being rendered in the background no longer crashes: the canvas waits for that render to finish first.
+    * WPF and OpenTK: registering a font while the canvas draws is safe. Before, a label could be drawn with the default font for a moment, or the app could stop with an error.
+    * Headless tests (`DrawnUi.Testing`): a `GestureRobot` swipe gives the same fling however busy the machine is. Before, a slow test run could see no fling at all.
+    * Blazor and WebAssembly: a GPU canvas recovers by itself when the browser loses its WebGL context (a GPU reset, a driver update, too many canvases open). Before, it stayed blank until the page was reloaded.
+    * WebAssembly (`DrawnUi.Web`): an app published under a sub-path of a site (like `/myapp/`) starts. Before, it looked for its script at the root of the site.
+    * Blazor Server: frames are drawn at their real size. Before, the drawing came out 2% too large and lost its right and bottom edges. Headless tests (`HeadlessCanvasHost`) had the same 2% and are exact now.
+
+ ### Previously
 
   * **Your app works without a mouse.** On MAUI Windows, WPF and Blazor, people can now use a drawn app from the keyboard the way they use native apps:
     * Tab and Shift+Tab move from control to control in reading order, and a focus ring shows where you are. It appears only once you press a key, never after a click, and it stays on the control while it scrolls. Escape leaves the drawn controls.
@@ -71,9 +167,6 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
   * Blazor: the mouse wheel scrolls the drawn scroll under the mouse. It used to scroll the one you clicked last, and nothing before your first click.
   * An open `SkiaDrawer` with `AutoClose` no longer closes when the mouse only moves over the area outside its panel; a click there still closes it.
   * Auto-hiding scroll bars will now appear while the mouse is over the scroll or the keyboard is inside it (`ShowScrollBarsOnHover`, on by default; `KeepScrollBarsVisible` keeps them up). New `IsPointerOver` is true for every control under the mouse, not just the one holding hover.
-
- ### Previously
-
   * **Potentially breaking:** templated layouts default to `MeasureItemsStrategy="MeasureAll"`, correct for rows of any height. Lists whose rows are really all the same height set `MeasureFirst` explicitly, which now measures only the first row as documented.
   * Fluent `.Initialize(me => ...)` runs once when the control gets its parent, so it also runs for controls created invisible or outside the viewport.
   * Changing `ControlStyle` at runtime rebuilds the control's default look, so platform styles can be switched live.

@@ -30,7 +30,7 @@ The `DrawnGame` base class (game loop with a frame-time interpolator, keyboard s
 | .NET MAUI | `DrawnUi.Maui.Game` | [MauiPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/MauiPong) |
 | OpenTK | `DrawnUi.OpenTk.Game` | [OpenTkPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/OpenTk/Samples/OpenTkPong) |
 | Blazor | `DrawnUi.Blazor.Game` | [Pong page](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Blazor/Samples/BlazorSandbox) |
-| Pure WebAssembly | `DrawnUi.Wasm.Game` | [PongWeb](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/Samples/PongWeb) |
+| Pure WebAssembly | `DrawnUi.Web.Game` | [PongWeb](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/Samples/PongWeb) |
 | WPF | `DrawnUi.Wpf.Game` | [WpfPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/WpfPong) |
 
 The Pong samples share one game project, `src/Shared/Samples/Pong.Shared`; each host adds a window, fonts and a `RescalingCanvas` that keeps the game's aspect ratio. A bigger MAUI game with sound and levels: [Breakout](https://github.com/DrawnUi/DrawnUi.Net.Breakout).
@@ -48,6 +48,7 @@ public class GamePage : SkiaLayout
     private Timer _timer;
     private int _playerX = 100;
     private int _playerY = 100;
+    private readonly SKPaint _paint = new() { Color = SKColors.Blue };
 
     public GamePage()
     {
@@ -62,17 +63,17 @@ public class GamePage : SkiaLayout
         // Update game state
         _playerX += 1;
         // Redraw
-        Invalidate();
+        Update();
     }
 
-    protected override void OnDraw(SKCanvas canvas, SKRect destination, float scale)
+    protected override void Paint(DrawingContext ctx)
     {
-        base.OnDraw(canvas, destination, scale);
+        base.Paint(ctx);
         // Draw player as a circle
-        canvas.DrawCircle(_playerX, _playerY, 20, new SKPaint { Color = SKColors.Blue });
+        ctx.Context.Canvas.DrawCircle(_playerX, _playerY, 20, _paint);
     }
 
-    protected override void OnDisposing()
+    public override void OnDisposing()
     {
         _running = false;
         _timer?.Dispose();
@@ -109,18 +110,16 @@ PlayerSprite.CurrentFrame = 0; // Set frame
 
 ## Handling Input: Tap, Drag, and Gestures
 
-DrawnUi.Maui supports rich gesture handling for interactive games:
+Every DrawnUi control has a `Tapped` event, so interactive game elements need no wrapper:
 
 ```xml
-<DrawUi:SkiaHotspot Tapped="OnPlayerTapped">
-    <DrawUi:SkiaSprite ... />
-</DrawUi:SkiaHotspot>
+<DrawUi:SkiaSprite Tapped="OnPlayerTapped" ... />
 ```
 
 In code-behind:
 
 ```csharp
-private void OnPlayerTapped(object sender, EventArgs e)
+private void OnPlayerTapped(object sender, ControlTappedEventArgs e)
 {
     // Respond to tap (e.g., jump, attack)
 }
@@ -136,7 +135,7 @@ You can mix game elements with standard DrawnUi controls:
 <draw:SkiaLayout Type="Column">
     <draw:SkiaLabel Text="Score: 123" FontSize="24" />
     <draw:SkiaSprite ... />
-    <draw:SkiaButton Text="Pause" Clicked="OnPause" />
+    <draw:SkiaButton Text="Pause" Tapped="OnPause" />
 </draw:SkiaLayout>
 ```
 
@@ -180,16 +179,14 @@ This pattern is the right default for browser-playable samples such as Pong, Par
 
 ```xml
 <draw:SkiaLayout>
-    <draw:SkiaHotspot Tapped="OnTap">
-        <draw:SkiaShape Type="Circle" WidthRequest="100" HeightRequest="100" BackgroundColor="Red" />
-    </draw:SkiaHotspot>
+    <draw:SkiaShape Type="Circle" WidthRequest="100" HeightRequest="100" BackgroundColor="Red" Tapped="OnTap" />
     <draw:SkiaLabel x:Name="ScoreLabel" Text="Score: 0" FontSize="24" />
 </draw:SkiaLayout>
 ```
 
 ```csharp
 private int _score = 0;
-private void OnTap(object sender, SkiaGesturesParameters e)
+private void OnTap(object sender, ControlTappedEventArgs e)
 {
     _score++;
     ScoreLabel.Text = $"Score: {_score}";
@@ -197,8 +194,8 @@ private void OnTap(object sender, SkiaGesturesParameters e)
 ```
 
 ## Tips for Game UI Performance
-- Use `Cache="Operations"` or `Cache="Image"` for static backgrounds or UI elements
-- Minimize redraws: only call `Invalidate()` when needed
+- Use `UseCache="Operations"` or `UseCache="Image"` for static backgrounds or UI elements
+- Minimize redraws: only call `Update()` when needed
 - Use SkiaLabelFps to monitor frame rate
 - For complex games, manage game state and rendering in a dedicated class
 
@@ -208,4 +205,4 @@ private void OnTap(object sender, SkiaGesturesParameters e)
 - Add maps or location-based features with DrawnUi.Maui.MapsUi
 
 ## Summary
-DrawnUi.Maui enables you to build interactive, animated, and performant game UIs on any platform. Combine sprites, custom drawing, and flexible input to create unique experiences—whether for games, dashboards, or playful business apps.
+DrawnUi enables you to build interactive, animated, and performant game UIs on any platform. Combine sprites, custom drawing, and flexible input to create unique experiences—whether for games, dashboards, or playful business apps.

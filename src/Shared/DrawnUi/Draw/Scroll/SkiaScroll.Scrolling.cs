@@ -1177,6 +1177,16 @@ public partial class SkiaScroll
         return false;
     }
 
+    /// <summary>
+    /// Repaints and makes sure the next frame comes even when called from inside a draw (a held ScrollToIndex order
+    /// retries every frame until it resolves; a Repaint alone is dropped mid-frame on the desktop heads).
+    /// </summary>
+    void RepaintNextFrame()
+    {
+        Repaint();
+        Superview?.RequestNextFrame();
+    }
+
     public bool ExecuteScrollToIndexOrder()
     {
         if (OrderedScrollToIndex.IsSet)
@@ -1204,7 +1214,7 @@ public partial class SkiaScroll
                     {
                         if (layout.IsBackgroundMeasuring || layout.KickBackgroundMeasurement())
                         {
-                            Repaint();
+                            RepaintNextFrame();
                             return false;
                         }
                     }
@@ -1214,7 +1224,7 @@ public partial class SkiaScroll
                         // content is unmeasured for a frame or two — resolving now clamps the target into
                         // "already there" and self-clears without moving (jump lands short). The next
                         // measure pass restores the frontier; just hold the order until then.
-                        Repaint();
+                        RepaintNextFrame();
                         return false;
                     }
                 }
@@ -1284,7 +1294,7 @@ public partial class SkiaScroll
                         _orderedWatchdogOffset = new SKPoint(currentX, currentY);
                     }
 
-                    Repaint(); // keep retry frames coming until arrival
+                    RepaintNextFrame(); // keep retry frames coming until arrival
                     return false;
                 }
 
@@ -1298,7 +1308,7 @@ public partial class SkiaScroll
                 _orderedStalledFrames = 0;
                 _orderedWatchdogOffset = new SKPoint((float)InternalViewportOffset.Units.X,
                     (float)InternalViewportOffset.Units.Y);
-                Repaint();
+                RepaintNextFrame();
                 return false;
             }
         }
@@ -1338,6 +1348,31 @@ public partial class SkiaScroll
         {
             this.UpdateVisibleIndex();
         }
+    }
+
+    /// <summary>
+    /// A screen reader pages the content (TalkBack scroll forward / back, VoiceOver's three-finger swipe): by the viewport
+    /// less a tenth, animated. <paramref name="forward"/> moves toward the end (down, right). False when the content cannot
+    /// move that way along that axis, so the reader gives its own "no more pages" feedback; <paramref name="probe"/> only
+    /// answers that.
+    /// </summary>
+    public bool AccessibilityPage(bool vertical, bool forward, bool probe = false)
+    {
+        if (vertical ? Orientation == ScrollOrientation.Horizontal : Orientation == ScrollOrientation.Vertical)
+            return false;
+
+        var offset = InternalViewportOffset.Units;
+        var current = vertical ? offset.Y : offset.X;
+        var page = (vertical ? Viewport.Units.Height : Viewport.Units.Width) * 0.9f;
+        var target = current + (forward ? -page : page);
+        var clamped = ClampOffsetHard(vertical ? offset.X : target, vertical ? target : offset.Y);
+        var moved = vertical ? clamped.Y : clamped.X;
+        if (page <= 0 || Math.Abs(moved - current) < 1)
+            return false;
+
+        if (!probe)
+            ScrollTo(vertical ? offset.X : moved, vertical ? moved : offset.Y, 0.25f, true);
+        return true;
     }
 
     /// <summary>

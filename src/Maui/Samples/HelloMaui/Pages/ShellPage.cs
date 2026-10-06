@@ -398,7 +398,7 @@ public class ShellPage : SkiaLayer
                     new SkiaWrap
                     {
                         Spacing = 8,
-                        HorizontalOptions = LayoutOptions.Fill,
+                        HorizontalOptions = LayoutOptions.Center,
                         Children = new List<SkiaControl>
                         {
                             new SkiaButton("Push detail") { BackgroundColor = Color.Parse("#212529"), FontSize = 13 }

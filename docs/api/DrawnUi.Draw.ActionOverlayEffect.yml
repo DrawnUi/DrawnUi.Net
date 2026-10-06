@@ -7,6 +7,7 @@ items:
   children:
   - DrawnUi.Draw.ActionOverlayEffect.#ctor(DrawnUi.Draw.IDrawnBase,System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
   - DrawnUi.Draw.ActionOverlayEffect.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
+  - DrawnUi.Draw.ActionOverlayEffect.Stop
   langs:
   - csharp
   - vb
@@ -58,7 +59,6 @@ items:
   - DrawnUi.Draw.ISkiaAnimator
   - System.IDisposable
   inheritedMembers:
-  - DrawnUi.Draw.RenderingAnimator.Stop
   - DrawnUi.Draw.RenderingAnimator.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
   - DrawnUi.Draw.RenderingAnimator.GetSelfDrawingLocation(DrawnUi.Draw.IDrawnBase)
   - DrawnUi.Draw.RenderingAnimator.DrawWithClipping(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,SkiaSharp.SKPoint,System.Action)
@@ -160,6 +160,40 @@ items:
   nameWithType.vb: ActionOverlayEffect.New(IDrawnBase, Func(Of DrawingContext, IDrawnBase, Boolean))
   fullName.vb: DrawnUi.Draw.ActionOverlayEffect.New(DrawnUi.Draw.IDrawnBase, System.Func(Of DrawnUi.Draw.DrawingContext, DrawnUi.Draw.IDrawnBase, Boolean))
   name.vb: New(IDrawnBase, Func(Of DrawingContext, IDrawnBase, Boolean))
+- uid: DrawnUi.Draw.ActionOverlayEffect.Stop
+  commentId: M:DrawnUi.Draw.ActionOverlayEffect.Stop
+  id: Stop
+  parent: DrawnUi.Draw.ActionOverlayEffect
+  langs:
+  - csharp
+  - vb
+  name: Stop()
+  nameWithType: ActionOverlayEffect.Stop()
+  fullName: DrawnUi.Draw.ActionOverlayEffect.Stop()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Animations/HoverEffects/ActionOverlayEffect.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Stop
+    path: ../src/Shared/DrawnUi/Features/Animations/HoverEffects/ActionOverlayEffect.cs
+    startLine: 34
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The overlay is attached, not running: hiding its control or a parent stops the running post-effects,
+
+    and that must not detach it, or it would never draw again once shown. Remove it from
+
+    <xref href="DrawnUi.Draw.SkiaControl.PostAnimators" data-throw-if-not-resolved="false"></xref> to detach it.
+  example: []
+  syntax:
+    content: public override void Stop()
+    content.vb: Public Overrides Sub [Stop]()
+  overridden: DrawnUi.Draw.RenderingAnimator.Stop
+  overload: DrawnUi.Draw.ActionOverlayEffect.Stop*
 - uid: DrawnUi.Draw.ActionOverlayEffect.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
   commentId: M:DrawnUi.Draw.ActionOverlayEffect.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
   id: OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
@@ -178,7 +212,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnRendering
     path: ../src/Shared/DrawnUi/Features/Animations/HoverEffects/ActionOverlayEffect.cs
-    startLine: 29
+    startLine: 39
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -283,25 +317,6 @@ references:
   name: IDisposable
   nameWithType: IDisposable
   fullName: System.IDisposable
-- uid: DrawnUi.Draw.RenderingAnimator.Stop
-  commentId: M:DrawnUi.Draw.RenderingAnimator.Stop
-  parent: DrawnUi.Draw.RenderingAnimator
-  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Stop
-  name: Stop()
-  nameWithType: RenderingAnimator.Stop()
-  fullName: DrawnUi.Draw.RenderingAnimator.Stop()
-  spec.csharp:
-  - uid: DrawnUi.Draw.RenderingAnimator.Stop
-    name: Stop
-    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Stop
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.RenderingAnimator.Stop
-    name: Stop
-    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Stop
-  - name: (
-  - name: )
 - uid: DrawnUi.Draw.RenderingAnimator.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
   commentId: M:DrawnUi.Draw.RenderingAnimator.Render(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
   parent: DrawnUi.Draw.RenderingAnimator
@@ -1611,6 +1626,31 @@ references:
   - name: " "
   - name: TResult
   - name: )
+- uid: DrawnUi.Draw.RenderingAnimator.Stop
+  commentId: M:DrawnUi.Draw.RenderingAnimator.Stop
+  parent: DrawnUi.Draw.RenderingAnimator
+  href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Stop
+  name: Stop()
+  nameWithType: RenderingAnimator.Stop()
+  fullName: DrawnUi.Draw.RenderingAnimator.Stop()
+  spec.csharp:
+  - uid: DrawnUi.Draw.RenderingAnimator.Stop
+    name: Stop
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Stop
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.RenderingAnimator.Stop
+    name: Stop
+    href: DrawnUi.Draw.RenderingAnimator.html#DrawnUi_Draw_RenderingAnimator_Stop
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.ActionOverlayEffect.Stop*
+  commentId: Overload:DrawnUi.Draw.ActionOverlayEffect.Stop
+  href: DrawnUi.Draw.ActionOverlayEffect.html#DrawnUi_Draw_ActionOverlayEffect_Stop
+  name: Stop
+  nameWithType: ActionOverlayEffect.Stop
+  fullName: DrawnUi.Draw.ActionOverlayEffect.Stop
 - uid: DrawnUi.Draw.RenderingAnimator.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
   commentId: M:DrawnUi.Draw.RenderingAnimator.OnRendering(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase)
   parent: DrawnUi.Draw.RenderingAnimator

@@ -1,0 +1,683 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.SkiaControl.CompositeRecord
+  commentId: T:DrawnUi.Draw.SkiaControl.CompositeRecord
+  id: SkiaControl.CompositeRecord
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.SkiaControl.CompositeRecord.#ctor(System.Boolean,System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.SkiaControl})
+  - DrawnUi.Draw.SkiaControl.CompositeRecord.Partial
+  - DrawnUi.Draw.SkiaControl.CompositeRecord.Redrawn
+  langs:
+  - csharp
+  - vb
+  name: SkiaControl.CompositeRecord
+  nameWithType: SkiaControl.CompositeRecord
+  fullName: DrawnUi.Draw.SkiaControl.CompositeRecord
+  type: Struct
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CompositeRecord
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+    startLine: 81
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: What an <xref href="DrawnUi.Draw.SkiaCacheType.ImageComposite" data-throw-if-not-resolved="false"></xref> cache redrew the last time it was recorded.
+  example: []
+  syntax:
+    content: 'public readonly record struct SkiaControl.CompositeRecord : IEquatable<SkiaControl.CompositeRecord>'
+    content.vb: Public Structure SkiaControl.CompositeRecord Implements IEquatable(Of SkiaControl.CompositeRecord)
+  implements:
+  - System.IEquatable{DrawnUi.Draw.SkiaControl.CompositeRecord}
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.SkiaControl.CompositeRecord.#ctor(System.Boolean,System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.SkiaControl})
+  commentId: M:DrawnUi.Draw.SkiaControl.CompositeRecord.#ctor(System.Boolean,System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.SkiaControl})
+  id: '#ctor(System.Boolean,System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.SkiaControl})'
+  parent: DrawnUi.Draw.SkiaControl.CompositeRecord
+  langs:
+  - csharp
+  - vb
+  name: CompositeRecord(bool, IReadOnlyList<SkiaControl>)
+  nameWithType: SkiaControl.CompositeRecord.CompositeRecord(bool, IReadOnlyList<SkiaControl>)
+  fullName: DrawnUi.Draw.SkiaControl.CompositeRecord.CompositeRecord(bool, System.Collections.Generic.IReadOnlyList<DrawnUi.Draw.SkiaControl>)
+  type: Constructor
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: .ctor
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+    startLine: 81
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: What an <xref href="DrawnUi.Draw.SkiaCacheType.ImageComposite" data-throw-if-not-resolved="false"></xref> cache redrew the last time it was recorded.
+  example: []
+  syntax:
+    content: public CompositeRecord(bool Partial, IReadOnlyList<SkiaControl> Redrawn)
+    parameters:
+    - id: Partial
+      type: System.Boolean
+      description: >-
+        True when only the changed children, and the ones they overlap, were redrawn over the
+            previous image; false for a full redraw (first record, size change, cache invalidated).
+    - id: Redrawn
+      type: System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.SkiaControl}
+      description: The children painted by that record.
+    content.vb: Public Sub New([Partial] As Boolean, Redrawn As IReadOnlyList(Of SkiaControl))
+  overload: DrawnUi.Draw.SkiaControl.CompositeRecord.#ctor*
+  nameWithType.vb: SkiaControl.CompositeRecord.New(Boolean, IReadOnlyList(Of SkiaControl))
+  fullName.vb: DrawnUi.Draw.SkiaControl.CompositeRecord.New(Boolean, System.Collections.Generic.IReadOnlyList(Of DrawnUi.Draw.SkiaControl))
+  name.vb: New(Boolean, IReadOnlyList(Of SkiaControl))
+- uid: DrawnUi.Draw.SkiaControl.CompositeRecord.Partial
+  commentId: P:DrawnUi.Draw.SkiaControl.CompositeRecord.Partial
+  id: Partial
+  parent: DrawnUi.Draw.SkiaControl.CompositeRecord
+  langs:
+  - csharp
+  - vb
+  name: Partial
+  nameWithType: SkiaControl.CompositeRecord.Partial
+  fullName: DrawnUi.Draw.SkiaControl.CompositeRecord.Partial
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Partial
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+    startLine: 81
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    True when only the changed children, and the ones they overlap, were redrawn over the
+        previous image; false for a full redraw (first record, size change, cache invalidated).
+  example: []
+  syntax:
+    content: public bool Partial { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property [Partial] As Boolean
+  overload: DrawnUi.Draw.SkiaControl.CompositeRecord.Partial*
+- uid: DrawnUi.Draw.SkiaControl.CompositeRecord.Redrawn
+  commentId: P:DrawnUi.Draw.SkiaControl.CompositeRecord.Redrawn
+  id: Redrawn
+  parent: DrawnUi.Draw.SkiaControl.CompositeRecord
+  langs:
+  - csharp
+  - vb
+  name: Redrawn
+  nameWithType: SkiaControl.CompositeRecord.Redrawn
+  fullName: DrawnUi.Draw.SkiaControl.CompositeRecord.Redrawn
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Redrawn
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+    startLine: 81
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: The children painted by that record.
+  example: []
+  syntax:
+    content: public IReadOnlyList<SkiaControl> Redrawn { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.SkiaControl}
+    content.vb: Public Property Redrawn As IReadOnlyList(Of SkiaControl)
+  overload: DrawnUi.Draw.SkiaControl.CompositeRecord.Redrawn*
+references:
+- uid: DrawnUi.Draw.SkiaCacheType.ImageComposite
+  commentId: F:DrawnUi.Draw.SkiaCacheType.ImageComposite
+  href: DrawnUi.Draw.SkiaCacheType.html#DrawnUi_Draw_SkiaCacheType_ImageComposite
+  name: ImageComposite
+  nameWithType: SkiaCacheType.ImageComposite
+  fullName: DrawnUi.Draw.SkiaCacheType.ImageComposite
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.IEquatable{DrawnUi.Draw.SkiaControl.CompositeRecord}
+  commentId: T:System.IEquatable{DrawnUi.Draw.SkiaControl.CompositeRecord}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<SkiaControl.CompositeRecord>
+  nameWithType: IEquatable<SkiaControl.CompositeRecord>
+  fullName: System.IEquatable<DrawnUi.Draw.SkiaControl.CompositeRecord>
+  nameWithType.vb: IEquatable(Of SkiaControl.CompositeRecord)
+  fullName.vb: System.IEquatable(Of DrawnUi.Draw.SkiaControl.CompositeRecord)
+  name.vb: IEquatable(Of SkiaControl.CompositeRecord)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaControl.CompositeRecord
+    name: CompositeRecord
+    href: DrawnUi.Draw.SkiaControl.CompositeRecord.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaControl.CompositeRecord
+    name: CompositeRecord
+    href: DrawnUi.Draw.SkiaControl.CompositeRecord.html
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.SkiaControl.CompositeRecord.#ctor*
+  commentId: Overload:DrawnUi.Draw.SkiaControl.CompositeRecord.#ctor
+  href: DrawnUi.Draw.SkiaControl.CompositeRecord.html#DrawnUi_Draw_SkiaControl_CompositeRecord__ctor_System_Boolean_System_Collections_Generic_IReadOnlyList_DrawnUi_Draw_SkiaControl__
+  name: CompositeRecord
+  nameWithType: SkiaControl.CompositeRecord.CompositeRecord
+  fullName: DrawnUi.Draw.SkiaControl.CompositeRecord.CompositeRecord
+  nameWithType.vb: SkiaControl.CompositeRecord.New
+  fullName.vb: DrawnUi.Draw.SkiaControl.CompositeRecord.New
+  name.vb: New
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.SkiaControl}
+  commentId: T:System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.SkiaControl}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<SkiaControl>
+  nameWithType: IReadOnlyList<SkiaControl>
+  fullName: System.Collections.Generic.IReadOnlyList<DrawnUi.Draw.SkiaControl>
+  nameWithType.vb: IReadOnlyList(Of SkiaControl)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of DrawnUi.Draw.SkiaControl)
+  name.vb: IReadOnlyList(Of SkiaControl)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: DrawnUi.Draw.SkiaControl.CompositeRecord.Partial*
+  commentId: Overload:DrawnUi.Draw.SkiaControl.CompositeRecord.Partial
+  href: DrawnUi.Draw.SkiaControl.CompositeRecord.html#DrawnUi_Draw_SkiaControl_CompositeRecord_Partial
+  name: Partial
+  nameWithType: SkiaControl.CompositeRecord.Partial
+  fullName: DrawnUi.Draw.SkiaControl.CompositeRecord.Partial
+- uid: DrawnUi.Draw.SkiaControl.CompositeRecord.Redrawn*
+  commentId: Overload:DrawnUi.Draw.SkiaControl.CompositeRecord.Redrawn
+  href: DrawnUi.Draw.SkiaControl.CompositeRecord.html#DrawnUi_Draw_SkiaControl_CompositeRecord_Redrawn
+  name: Redrawn
+  nameWithType: SkiaControl.CompositeRecord.Redrawn
+  fullName: DrawnUi.Draw.SkiaControl.CompositeRecord.Redrawn

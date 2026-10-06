@@ -820,7 +820,7 @@ public class Canvas : DrawnView, IGestureListener
     /// <param name="type"></param>
     /// <param name="args1"></param>
     /// <param name="touchAction"></param>
-    public virtual void OnGestureEvent(TouchActionType type, TouchActionEventArgs args1, TouchActionResult touchAction)
+    public override void OnGestureEvent(TouchActionType type, TouchActionEventArgs args1, TouchActionResult touchAction)
     {
         //Debug.WriteLine($"[Canvas] {touchAction} {args1.Location}");
 
@@ -833,6 +833,27 @@ public class Canvas : DrawnView, IGestureListener
             Repaint();
             return;
         }
+
+#if MACCATALYST
+        // A two-finger trackpad scroll arrives as a Pointer event with IsScrolling and the move in Distance.Delta
+        // (pixels, positive when the content is dragged down / right, i.e. toward its start). It goes on as a wheel
+        // event in notches of 100 points, as browsers and the other engines count them, dominant axis only.
+        if (touchAction == TouchActionResult.Pointer && args1.Pointer?.IsScrolling == true)
+        {
+            var move = args1.Distance.Delta;
+            var notch = 100f * (float)RenderingScale;
+            var horizontal = Math.Abs(move.X) > Math.Abs(move.Y);
+            args1.Wheel = new WheelEventArgs
+            {
+                Delta = (horizontal ? move.X : move.Y) / notch,
+                Scale = 1f,
+                Center = args1.Location,
+                IsHorizontal = horizontal,
+            };
+            type = TouchActionType.Wheel;
+            touchAction = TouchActionResult.Wheel;
+        }
+#endif
 
         if (touchAction == TouchActionResult.Tapped)
         {

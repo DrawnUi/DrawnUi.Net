@@ -522,12 +522,15 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
 
     public override void RebuildDefaultContent()
     {
-        // the cached children are disposed by the rebuild, FindViews only looks up null refs
+        base.RebuildDefaultContent();
+
+        // Dropped after the rebuild, not before: removing the old children one by one runs FindViews
+        // (OnChildrenChanged), which picked up the parts still attached, so the new content never got the text.
+        // Content the app supplied stays and is found again.
         MainWrapper = null;
         MainLabel = null;
         MainFrame = null;
-
-        base.RebuildDefaultContent();
+        FindViews();
     }
 
     public virtual void FindViews()
@@ -774,7 +777,6 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
 
     public virtual bool OnTapped(SkiaGesturesParameters args, SKPoint childOffset)
     {
-        System.Diagnostics.Debug.WriteLine($"[A11y-ACT] SkiaButton.OnTapped Text='{Text}' IsDisabled={IsDisabled}");
         var ret = false;
 
         if (!IsDisabled)

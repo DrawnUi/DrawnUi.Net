@@ -97,7 +97,8 @@ public class AccessibilitySnapshotTests
         Assert.True(Assert.Single(manager.Snapshot, n => n.Role == Aria.RoleSwitch).IsPressed, "snapshot not rebuilt after toggle");
 
         var sl = Assert.Single(manager.Snapshot, n => n.Role == Aria.RoleSlider);
-        Assert.Equal("25", sl.Label);
+        Assert.Null(sl.Label); // the value is never the name (drawnui-cross 6c, range values)
+        Assert.Equal(new AccessibilityValue(25, 0, 100, 1), sl.Value);
 
         button.IsDisabled = true;
         button.AccessibilityLabel = "Custom";

@@ -14,31 +14,54 @@ public partial class SkiaPicker : SkiaLayout
     private const double BaseFontSize = 15.0;
     private const double BasePlaceholderFontSize = 14.0;
 
-    private SkiaShape? _frame;
+    /// <summary>
+    /// Height of the floating label line (Material 3 body small); the outline starts at half of it.
+    /// </summary>
+    private const double FloatingLabelHeight = 16.0;
+
+    private OutlineFrame? _frame;
     private SkiaLabel? _displayLabel;
     private SkiaShape? _chevron;
     private SkiaLayout? _contentRow;
+    private SkiaLabel? _floatingLabel;
     private bool _isSynchronizingSelection;
+    private bool _isOpen;
 
     public SkiaPicker()
     {
-        HeightRequest = 48;
         HorizontalOptions = LayoutOptions.Fill;
         VerticalOptions = LayoutOptions.Start;
     }
 
     protected override void CreateDefaultContent()
     {
+        var style = GetStyleMetrics();
+
+        SetStyleDefault(HeightRequestProperty, style.Height);
+
         if (Views.Count == 0)
         {
-            BuildDefaultContent();
+            BuildDefaultContent(style);
         }
 
         ApplyVisualState();
         UpdateDisplayText();
     }
 
-    private void BuildDefaultContent()
+    /// <summary>
+    /// Forgets the children built for the previous <see cref="SkiaControl.ControlStyle"/>, the next measure builds them again.
+    /// </summary>
+    public override void RebuildDefaultContent()
+    {
+        _frame = null;
+        _displayLabel = null;
+        _chevron = null;
+        _contentRow = null;
+        _floatingLabel = null;
+        base.RebuildDefaultContent();
+    }
+
+    private void BuildDefaultContent(PickerStyleMetrics style)
     {
         var contentRow = new SkiaLayout()
         {
@@ -76,7 +99,7 @@ public partial class SkiaPicker : SkiaLayout
             }
         }.Assign(out _contentRow);
 
-        var frame = new SkiaShape()
+        var frame = new OutlineFrame()
         {
             Tag = "PickerFrame",
             UseCache = SkiaCacheType.Operations,
@@ -115,6 +138,28 @@ public partial class SkiaPicker : SkiaLayout
         });
 
         AddSubView(frame);
+
+        if (style.LabelFontSize > 0)
+        {
+            // outlined field: the placeholder floats onto the outline once a value is shown or the list is open
+            frame.Margin = new Thickness(0, FloatingLabelHeight / 2, 0, 0);
+            frame.NotchLabel = new SkiaLabel()
+            {
+                Tag = "PickerLabel",
+                UseCache = SkiaCacheType.Operations,
+                IsVisible = false,
+                Margin = new Thickness(12, 0, 12, 0),
+                Padding = new Thickness(4, 0),
+                HeightRequest = FloatingLabelHeight,
+                HorizontalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.Start,
+                VerticalTextAlignment = TextAlignment.Center,
+                MaxLines = 1,
+                LineBreakMode = LineBreakMode.TailTruncation,
+            }.Assign(out _floatingLabel);
+
+            AddSubView(_floatingLabel);
+        }
     }
 
     public event EventHandler<int>? SelectedIndexChanged;
@@ -134,7 +179,17 @@ public partial class SkiaPicker : SkiaLayout
             title = "Select an item";
         }
 
-        var result = await ShowSelectionAsyncPlatform(title, CancelText, options, SelectedIndex);
+        int? result;
+        SetOpenState(true);
+        try
+        {
+            result = await ShowSelectionAsyncPlatform(title, CancelText, options, SelectedIndex);
+        }
+        finally
+        {
+            SetOpenState(false);
+        }
+
         if (result is >= 0 && result < options.Count)
         {
             SelectedIndex = result.Value;
@@ -152,6 +207,22 @@ public partial class SkiaPicker : SkiaLayout
 #else
     private partial Task<int?> ShowSelectionAsyncPlatform(string title, string cancelText, IReadOnlyList<string> options, int selectedIndex);
 #endif
+
+    private void SetOpenState(bool open)
+    {
+        if (_isOpen != open)
+        {
+            _isOpen = open;
+            UpdateDisplayText();
+        }
+    }
+
+    /// <summary>
+    /// The placeholder sits on the outline instead of inside the field (looks with a floating label only).
+    /// </summary>
+    private bool IsLabelFloating => _floatingLabel != null
+                                    && !string.IsNullOrEmpty(Placeholder)
+                                    && (SelectedItem != null || _isOpen);
 
     private void SetPressedState(bool pressed)
     {
@@ -186,10 +257,16 @@ public partial class SkiaPicker : SkiaLayout
 
         var style = GetStyleMetrics();
 
+        // only looks that define a focused state react to the open list
+        var focused = _isOpen && style.FocusedStrokeColor != null;
+
         _frame.Padding = style.Padding;
         _frame.BackgroundColor = ResolveColor(FillColor, BaseFillColor, style.FillColor);
-        _frame.StrokeColor = ResolveColor(StrokeColor, BaseStrokeColor, style.StrokeColor);
-        _frame.StrokeWidth = ResolveFloat(StrokeWidth, BaseStrokeWidth, style.StrokeWidth);
+        _frame.StrokeColor = focused
+            ? style.FocusedStrokeColor!
+            : ResolveColor(StrokeColor, BaseStrokeColor, style.StrokeColor);
+        _frame.StrokeWidth = ResolveFloat(StrokeWidth, BaseStrokeWidth,
+            focused ? style.FocusedStrokeWidth : style.StrokeWidth);
         _frame.CornerRadius = ResolveFloat(CornerRadius, BaseCornerRadius, style.CornerRadius);
         _frame.Shadows = style.Shadows;
 
@@ -205,6 +282,27 @@ public partial class SkiaPicker : SkiaLayout
         _chevron.WidthRequest = style.ChevronWidth;
         _chevron.HeightRequest = style.ChevronHeight;
         _chevron.BackgroundColor = ResolveColor(ChevronColor, BaseChevronColor, style.ChevronColor);
+        _chevron.Rotation = focused ? 180 : 0; // arrow up while the list is open
+
+        if (_floatingLabel != null)
+        {
+            _floatingLabel.FontSize = style.LabelFontSize;
+            _floatingLabel.TextColor = focused && style.FocusedLabelColor != null
+                ? style.FocusedLabelColor!
+                : ResolveColor(PlaceholderColor, BasePlaceholderColor, style.PlaceholderColor);
+
+            var floating = IsLabelFloating;
+            if (_floatingLabel.IsVisible != floating || _floatingLabel.Text != Placeholder)
+            {
+                _floatingLabel.Text = Placeholder;
+                _floatingLabel.IsVisible = floating;
+
+                // the outline is cached with the gap for the label: measure the label again before the
+                // outline records, then record the outline again
+                _frame.Update();
+                Invalidate();
+            }
+        }
     }
 
     private void UpdateDisplayText()
@@ -215,7 +313,7 @@ public partial class SkiaPicker : SkiaLayout
         }
 
         _displayLabel.Text = SelectedItem == null
-            ? Placeholder
+            ? (IsLabelFloating ? string.Empty : Placeholder)
             : GetItemText(SelectedItem);
 
         ApplyVisualState();
@@ -255,6 +353,31 @@ public partial class SkiaPicker : SkiaLayout
                 6,
                 12,
                 null),
+            // Material 3 outlined exposed dropdown, baseline light scheme (the palette of the other Material3 looks):
+            // 56 tall plus room for the floating label, corner 4, outline 1 #79747E, 2 primary #6750A4 while open,
+            // text body large 16 #1D1B20, label body small 12 #49454F, arrow_drop_down 10x5 in a 24 slot 12 from the end
+            PrebuiltControlStyle.Material3 => new PickerStyleMetrics(
+                new Thickness(16, 8, 19, 8),
+                4f,
+                1f,
+                Colors.Transparent,
+                Color.FromArgb("#79747E"),
+                Color.FromArgb("#1D1B20"),
+                Color.FromArgb("#49454F"),
+                Color.FromArgb("#49454F"),
+                16,
+                16,
+                10,
+                7,
+                16,
+                null)
+            {
+                Height = FloatingLabelHeight / 2 + 56,
+                FocusedStrokeColor = Color.FromArgb("#6750A4"),
+                FocusedStrokeWidth = 2f,
+                LabelFontSize = 12,
+                FocusedLabelColor = Color.FromArgb("#6750A4"),
+            },
             PrebuiltControlStyle.Windows => new PickerStyleMetrics(
                 new Thickness(12, 8),
                 4f,
@@ -317,7 +440,71 @@ public partial class SkiaPicker : SkiaLayout
         double ChevronWidth,
         double ChevronHeight,
         double ContentSpacing,
-        List<SkiaShadow>? Shadows);
+        List<SkiaShadow>? Shadows)
+    {
+        /// <summary>
+        /// Height of the picker when the user set none.
+        /// </summary>
+        public double Height { get; init; } = 48;
+
+        /// <summary>
+        /// Outline color while the selection list is open; null when the look has no focused state.
+        /// </summary>
+        public Color? FocusedStrokeColor { get; init; }
+
+        /// <summary>
+        /// Outline width while the selection list is open.
+        /// </summary>
+        public float FocusedStrokeWidth { get; init; }
+
+        /// <summary>
+        /// Font size of the placeholder floating on the outline; 0 when the look has no floating label.
+        /// </summary>
+        public double LabelFontSize { get; init; }
+
+        /// <summary>
+        /// Floating label color while the selection list is open.
+        /// </summary>
+        public Color? FocusedLabelColor { get; init; }
+    }
+
+    /// <summary>
+    /// The field frame. With a <see cref="NotchLabel"/> shown it leaves a gap in its top outline where the
+    /// label sits (Material 3 outlined field), so the label reads over whatever is behind the picker.
+    /// </summary>
+    private sealed class OutlineFrame : SkiaShape
+    {
+        /// <summary>
+        /// Floating label laid over the top outline: a sibling placed at the frame's left edge plus its margin.
+        /// </summary>
+        public SkiaLabel? NotchLabel { get; set; }
+
+        /// <summary>
+        /// Clips the label's span out of the top outline, then paints the shape as usual.
+        /// </summary>
+        protected override void Paint(DrawingContext ctx)
+        {
+            var label = NotchLabel;
+            if (label == null || !label.IsVisible || label.MeasuredSize.Pixels.Width <= 0)
+            {
+                base.Paint(ctx);
+                return;
+            }
+
+            var scale = ctx.Scale;
+            var inset = (float)(label.Margins.Left * scale);
+            var width = label.MeasuredSize.Pixels.Width - (float)(label.Margins.HorizontalThickness * scale); // measured includes margins
+            var left = (float)Math.Round(DrawingRect.Left + inset);
+            var right = (float)Math.Round(Math.Min(left + width, DrawingRect.Right - inset));
+            var bottom = MeasuredStrokeAwareSize.Top + GetStrokePixels(scale) + 1;
+
+            var canvas = ctx.Context.Canvas;
+            var saved = canvas.Save();
+            canvas.ClipRect(new SKRect(left, DrawingRect.Top - 1, right, bottom), SKClipOperation.Difference);
+            base.Paint(ctx);
+            canvas.RestoreToCount(saved);
+        }
+    }
 
     private void SynchronizeSelectionFromIndex(bool raiseEvents)
     {

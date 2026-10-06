@@ -11,9 +11,9 @@ Create or extend a **pure-WebAssembly DrawnUI app** (`DrawnUi.Web` package — N
 
 Load the **`drawnui`** skill for control/layout/caching rules and **`drawnui-fluent`** for code-behind composition. This skill covers ONLY the project plumbing.
 
-> Repo layout note: the library project file is named `DrawnUi.Wasm.csproj` and lives under `src/Wasm/`, but its `PackageId` / NuGet package is still **`DrawnUi.Web`**. So all JS-facing names stay `DrawnUi.Web`: `PackageReference Include="DrawnUi.Web"`, `_content/DrawnUi.Web/drawnui-web.js`, `getAssemblyExports('DrawnUi.Web')`. Only the in-repo folder/csproj names changed (`src/Web` → `src/Wasm`).
+> Naming note: the library project is `src/Wasm/DrawnUi/DrawnUi.Wasm.csproj`. Its `PackageId` is **`DrawnUi.Web`** (also the static-asset base path), its assembly name is **`DrawnUi.Wasm`** (no `AssemblyName` override). So: `PackageReference Include="DrawnUi.Web"`, `_content/DrawnUi.Web/drawnui-web.js`, but `getAssemblyExports('DrawnUi.Wasm')`. Game addon: package `DrawnUi.Web.Game` (`src/Wasm/Addons/DrawnUi.Wasm.Game`).
 
-Canonical reference in the DrawnUi repo: shared-source `src/Shared/Samples/Pong.Shared` (`Pong.Shared.shproj` + `.projitems`) consumed by the web head `src/Wasm/Samples/PongWeb`. Minimal starter: `src/Wasm/Samples/WasmSample` (`DrawnUi.Wasm.Sample.csproj`). Docs: `docs/articles/web/index.md` + `getting-started.md`.
+Canonical reference in the DrawnUi repo: shared-source `src/Shared/Samples/Pong.Shared` (`Pong.Shared.shproj` + `.projitems`) consumed by the web head `src/Wasm/Samples/PongWeb` (the only pure-web sample; the same shared code also runs in `MauiPong`, `OpenTkPong`, `WpfPong`). Docs: `docs/articles/web/index.md` + `getting-started.md`.
 
 ---
 
@@ -38,7 +38,7 @@ Put in shared: scenes, controls, game logic, view models, the `Canvas`/scene fac
 
 ### A1. csproj
 
-`Microsoft.NET.Sdk.BlazorWebAssembly` SDK (for static-asset/host plumbing) but NO Blazor code. `WasmBuildNative=true` is required so SkiaSharp links its WebGL js-library.
+`Microsoft.NET.Sdk.BlazorWebAssembly` SDK (for static-asset/host plumbing) but NO Blazor code. `WasmBuildNative=true` is required so emcc relinks with the GPU js-library (`SkiaSharpInterop.js`) that `DrawnUi.Web` flows in through `buildTransitive` (without it a NuGet consumer fails to link: `undefined symbol: InterceptBrowserObjects`).
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
@@ -53,12 +53,16 @@ Put in shared: scenes, controls, game logic, view models, the `Canvas`/scene fac
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DrawnUi.Web" Version="*" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.*" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.*" PrivateAssets="all" />
-    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="*" />
-    <PackageReference Include="HarfBuzzSharp.NativeAssets.WebAssembly" Version="*" />
+    <PackageReference Include="DrawnUi.Web" Version="1.10.6.22" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
+    <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.148.0" />
+    <PackageReference Include="HarfBuzzSharp.NativeAssets.WebAssembly" Version="14.2.0" />
   </ItemGroup>
+
+  <!-- Only with a ProjectReference to the DrawnUi source instead of the package: NuGet imports
+       buildTransitive automatically, a ProjectReference does not. -->
+  <!-- <Import Project="..\..\DrawnUi\buildTransitive\DrawnUi.Wasm.props" /> -->
 
   <ItemGroup>
     <WasmExtraConfig Include="emcc_flags">
@@ -72,7 +76,7 @@ Put in shared: scenes, controls, game logic, view models, the `Canvas`/scene fac
 </Project>
 ```
 
-Match the SkiaSharp/HarfBuzz preview versions to whatever `DrawnUi.Web` itself references (check `src/Wasm/DrawnUi/DrawnUi.Wasm.csproj`) to avoid native-mismatch.
+Match the SkiaSharp/HarfBuzz native-asset versions to what `DrawnUi.Web` itself references (check `src/Wasm/DrawnUi/DrawnUi.Wasm.csproj`: SkiaSharp `4.148.0`, HarfBuzzSharp `14.2.0` at 1.10.6.22) to avoid native mismatch; a lower direct HarfBuzz pin than the package's is a NuGet downgrade.
 
 ### A2. wwwroot/index.html
 
@@ -99,7 +103,7 @@ One `<canvas id>` + the loader module. Set `touch-action:none` on the canvas as 
 
 ### A3. wwwroot/main.js
 
-Boots the runtime and calls the app's `[JSExport] Main`, wiring DrawnUI input/frame/resize. Copy the full reference from `src/Wasm/Samples/WasmSample/wwwroot/main.js` (spinner, recursive `Main` lookup, error UI). Essential glue:
+Boots the runtime and calls the app's `[JSExport] Main`, wiring DrawnUI input/frame/resize. Copy the full reference from `src/Wasm/Samples/PongWeb/wwwroot/main.js` (`showLoader` / `hideLoader` / `showError` from `drawnui-web.js`, recursive `Main` lookup). Essential glue:
 
 ```js
 import { dotnet } from './_framework/dotnet.js';
@@ -109,7 +113,7 @@ globalThis.dotnet = dotnet;
 const { getAssemblyExports, getConfig } = await dotnet
   .withApplicationArgumentsFromQuery().create();
 
-const lib = await getAssemblyExports('DrawnUi.Web');
+const lib = await getAssemblyExports('DrawnUi.Wasm'); // assembly name, not the package id
 const Input = lib.DrawnUi.Draw.WebInput;
 const Super = lib.DrawnUi.Draw.Super;
 const Host  = lib.DrawnUi.Draw.BrowserHost;
@@ -234,10 +238,12 @@ Audit moved code for MAUI-only APIs (`MainThread`, native handlers, `FileSystem.
 
 ## Web-specific gotchas (carry from the `drawnui` skill)
 
-- **Fonts**: `WasmFilesToBundle` is a NO-OP in the .NET WASM SDK — fonts must be STATIC WEB ASSETS under `wwwroot/fonts/`, registered with a relative path; `DrawnUi.Web` fetches them over HTTP at startup (`SkiaFontManager.InitializeWebAsync`). Do not use `WasmFilesToBundle`.
+- **Fonts**: `WasmFilesToBundle` is a NO-OP in the .NET WASM SDK — fonts must be STATIC WEB ASSETS under `wwwroot/fonts/`, registered with a relative path; `DrawnUi.Web` fetches them over HTTP at startup (`SkiaFontManager.InitializeWebAsync`). Do not use `WasmFilesToBundle`. Built-in subset fonts: `fonts.AddSymbols()`, `fonts.AddEmojis()` (downloaded at startup, they count toward the payload).
+- **Images / SVG**: `RunAsync` sets `SkiaImageManager.HttpBaseAddress` to the page base URL, so a relative `Source` (`"images/logo.svg"`) loads from `wwwroot`.
 - **Styles**: `ConfigureStyles(...)` works; explicit per-control property setters WIN over styles (a hardcoded `FontFamily="X"` overrides the style's font).
 - **Gestures**: `GesturesMode.Lock` auto-applies the iOS swipe-away CSS/JS guard (lib-level). `Enabled` = route input and share page scrolling: touch pans along the axes the page can scroll (vertical always inside an iframe) and wheels no control used go to the page.
 - **RenderingMode** must be final BEFORE the canvas attaches — `RunAsync` handles it; don't flip it afterward (disposes the view, kills the loop).
+- **Accessibility and keyboard (since 1.10.6.22)**: `RunAsync` adds an invisible ARIA overlay right after your `<canvas>` (`drawnui-web.js`, nothing to wire in `main.js` or `index.html`). It holds one element per accessibility node in reading order (role, label, value, checked / pressed, disabled, live), the same contract as the Blazor overlay. Tab walks the interactive nodes (one Tab stop per arrow-key group), Enter / Space activate, the arrows go to the node then its group, a focused node scrolls into view. The elements never take the pointer (`pointer-events: none`), so every gesture and hover stays with the canvas; the canvas draws the focus ring. Keys aimed at an overlay element count as DrawnUI keys (the page does not scroll on Space / arrows). Controls without an `AccessibilityRole` are not in it: give buttons and labels a role (`SkiaButton.DefaultAccessibilityRole = Aria.RoleButton` at startup) and name sliders / toggles by purpose.
 - GPU traps + headless CDP validation: read `src/Wasm/DrawnUi/CLAUDE.md`.
 
 ---

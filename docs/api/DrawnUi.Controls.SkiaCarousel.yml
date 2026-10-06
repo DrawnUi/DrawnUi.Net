@@ -74,6 +74,7 @@ items:
   - DrawnUi.Controls.SkiaCarousel.SafeIndex
   - DrawnUi.Controls.SkiaCarousel.ScrollAmount
   - DrawnUi.Controls.SkiaCarousel.ScrollProgress
+  - DrawnUi.Controls.SkiaCarousel.ScrollTo(System.Int32,System.Boolean)
   - DrawnUi.Controls.SkiaCarousel.ScrollToNearestAnchor(System.Numerics.Vector2,System.Numerics.Vector2)
   - DrawnUi.Controls.SkiaCarousel.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
   - DrawnUi.Controls.SkiaCarousel.SelectNextAnchor(System.Numerics.Vector2,System.Numerics.Vector2)
@@ -216,6 +217,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaLayout.ReportHotreloadChildAdded(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaLayout.GetVisualChildren
+  - DrawnUi.Draw.SkiaLayout.ChildrenUseZIndex
   - DrawnUi.Draw.SkiaLayout.GetSpacingForIndex(System.Int32,System.Single)
   - DrawnUi.Draw.SkiaLayout.GetSizeKey(SkiaSharp.SKSize)
   - DrawnUi.Draw.SkiaLayout.MeasureStackLegacy(SkiaSharp.SKRect,System.Single)
@@ -463,6 +465,7 @@ items:
   - DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
   - DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
   - DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+  - DrawnUi.Draw.SkiaControl.LastCompositeRecord
   - DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.CacheSharingProperty
   - DrawnUi.Draw.SkiaControl.CacheSharing
@@ -484,6 +487,7 @@ items:
   - DrawnUi.Draw.SkiaControl.CreateRenderedObject(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean)
   - DrawnUi.Draw.SkiaControl.RasterizeToCache(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.CheckCachedObjectValid(DrawnUi.Draw.CachedObject,SkiaSharp.SKRect,DrawnUi.Draw.SkiaDrawingContext)
+  - DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
   - DrawnUi.Draw.SkiaControl.IsCacheGPU
   - DrawnUi.Draw.SkiaControl.UsingCacheType
   - DrawnUi.Draw.SkiaControl.IsCacheComposite
@@ -866,6 +870,8 @@ items:
   - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
   - DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  - DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+  - DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
   - DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   - DrawnUi.Draw.SkiaControl.AcceptsInput
   - DrawnUi.Draw.SkiaControl.NotifyAccessibility
@@ -901,9 +907,9 @@ items:
   - DrawnUi.Draw.SkiaControl.GetMeasuringRectForChildren(System.Single,System.Single,System.Double)
   - DrawnUi.Draw.SkiaControl.MeasureAbsoluteBase(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single)
-  - DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  - DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  - DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  - DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  - DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   - DrawnUi.Draw.SkiaControl.GetDrawingRectForChildren(SkiaSharp.SKRect,System.Double)
   - DrawnUi.Draw.SkiaControl.GetDrawingRectWithMargins(SkiaSharp.SKRect,System.Double)
   - DrawnUi.Draw.SkiaControl.lockMeasured
@@ -3420,6 +3426,47 @@ items:
     content: public void GoNext()
     content.vb: Public Sub GoNext()
   overload: DrawnUi.Controls.SkiaCarousel.GoNext*
+- uid: DrawnUi.Controls.SkiaCarousel.ScrollTo(System.Int32,System.Boolean)
+  commentId: M:DrawnUi.Controls.SkiaCarousel.ScrollTo(System.Int32,System.Boolean)
+  id: ScrollTo(System.Int32,System.Boolean)
+  parent: DrawnUi.Controls.SkiaCarousel
+  langs:
+  - csharp
+  - vb
+  name: ScrollTo(int, bool)
+  nameWithType: SkiaCarousel.ScrollTo(int, bool)
+  fullName: DrawnUi.Controls.SkiaCarousel.ScrollTo(int, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ScrollTo
+    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    startLine: 1650
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  summary: >-
+    Moves to the slide at <code class="paramref">index</code>, clamped to the existing slides. Animated it does what setting
+
+    <xref href="DrawnUi.Controls.SkiaCarousel.SelectedIndex" data-throw-if-not-resolved="false"></xref> does; with <code class="paramref">animate</code> false it jumps there at once.
+
+    For the slide already selected it snaps back to it, without raising <xref href="DrawnUi.Controls.SkiaCarousel.SelectedIndexChanged" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public void ScrollTo(int index, bool animate = true)
+    parameters:
+    - id: index
+      type: System.Int32
+    - id: animate
+      type: System.Boolean
+    content.vb: Public Sub ScrollTo(index As Integer, animate As Boolean = True)
+  overload: DrawnUi.Controls.SkiaCarousel.ScrollTo*
+  nameWithType.vb: SkiaCarousel.ScrollTo(Integer, Boolean)
+  fullName.vb: DrawnUi.Controls.SkiaCarousel.ScrollTo(Integer, Boolean)
+  name.vb: ScrollTo(Integer, Boolean)
 - uid: DrawnUi.Controls.SkiaCarousel.GoPrev
   commentId: M:DrawnUi.Controls.SkiaCarousel.GoPrev
   id: GoPrev
@@ -3438,7 +3485,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoPrev
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1645
+    startLine: 1674
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3464,7 +3511,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAtStart
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1659
+    startLine: 1688
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3493,7 +3540,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAtEnd
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1664
+    startLine: 1693
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3522,7 +3569,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSelectedIndexChanged
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1669
+    startLine: 1698
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3554,7 +3601,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinearSpeedMsProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1703
+    startLine: 1732
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3581,7 +3628,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinearSpeedMs
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1714
+    startLine: 1743
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3617,7 +3664,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1722
+    startLine: 1751
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3646,7 +3693,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1736
+    startLine: 1765
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3673,7 +3720,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1754
+    startLine: 1783
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3704,7 +3751,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenTotal
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1764
+    startLine: 1793
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3735,7 +3782,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenTotalProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1770
+    startLine: 1799
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3762,7 +3809,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsRightToLeftProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1777
+    startLine: 1806
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3789,7 +3836,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsRightToLeft
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1786
+    startLine: 1815
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3820,7 +3867,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SidesOffsetProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1792
+    startLine: 1821
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3847,7 +3894,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SidesOffset
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1801
+    startLine: 1830
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3878,7 +3925,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUserFocused
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1820
+    startLine: 1849
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3907,7 +3954,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUserPanning
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1821
+    startLine: 1850
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3936,7 +3983,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _panningOffset
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1827
+    startLine: 1856
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3963,7 +4010,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _panningStartOffset
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1828
+    startLine: 1857
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3990,7 +4037,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VelocityAccumulator
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1831
+    startLine: 1860
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4019,7 +4066,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1833
+    startLine: 1862
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -5298,6 +5345,25 @@ references:
   - uid: DrawnUi.Draw.SkiaLayout.GetVisualChildren
     name: GetVisualChildren
     href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_GetVisualChildren
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.ChildrenUseZIndex
+  commentId: M:DrawnUi.Draw.SkiaLayout.ChildrenUseZIndex
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ChildrenUseZIndex
+  name: ChildrenUseZIndex()
+  nameWithType: SkiaLayout.ChildrenUseZIndex()
+  fullName: DrawnUi.Draw.SkiaLayout.ChildrenUseZIndex()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.ChildrenUseZIndex
+    name: ChildrenUseZIndex
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ChildrenUseZIndex
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.ChildrenUseZIndex
+    name: ChildrenUseZIndex
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_ChildrenUseZIndex
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.GetSpacingForIndex(System.Int32,System.Single)
@@ -10547,6 +10613,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CancelOffscreenRendering
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.LastCompositeRecord
+  commentId: P:DrawnUi.Draw.SkiaControl.LastCompositeRecord
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LastCompositeRecord
+  name: LastCompositeRecord
+  nameWithType: SkiaControl.LastCompositeRecord
+  fullName: DrawnUi.Draw.SkiaControl.LastCompositeRecord
 - uid: DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaControl
@@ -11009,6 +11082,13 @@ references:
     name: SkiaDrawingContext
     href: DrawnUi.Draw.SkiaDrawingContext.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
+  commentId: P:DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_PaintsLiveInOffscreenBake
+  name: PaintsLiveInOffscreenBake
+  nameWithType: SkiaControl.PaintsLiveInOffscreenBake
+  fullName: DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
 - uid: DrawnUi.Draw.SkiaControl.IsCacheGPU
   commentId: P:DrawnUi.Draw.SkiaControl.IsCacheGPU
   parent: DrawnUi.Draw.SkiaControl
@@ -18599,6 +18679,56 @@ references:
     name: InputKey
     href: DrawnUi.Draw.InputKey.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+  commentId: M:DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityValue
+  name: GetAccessibilityValue()
+  nameWithType: SkiaControl.GetAccessibilityValue()
+  fullName: DrawnUi.Draw.SkiaControl.GetAccessibilityValue()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+    name: GetAccessibilityValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityValue
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+    name: GetAccessibilityValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityValue
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilitySetValue_System_Double_
+  name: OnAccessibilitySetValue(double)
+  nameWithType: SkiaControl.OnAccessibilitySetValue(double)
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(double)
+  nameWithType.vb: SkiaControl.OnAccessibilitySetValue(Double)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(Double)
+  name.vb: OnAccessibilitySetValue(Double)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+    name: OnAccessibilitySetValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilitySetValue_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+    name: OnAccessibilitySetValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilitySetValue_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   commentId: M:DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Draw.SkiaControl
@@ -19894,21 +20024,21 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
-  name: ContractPixelsRect(SKRect, float, Thickness)
-  nameWithType: SkiaControl.ContractPixelsRect(SKRect, float, Thickness)
-  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect, float, Microsoft.Maui.Thickness)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
+  name: ContractPixelsRect(SKRect, float, in Thickness)
+  nameWithType: SkiaControl.ContractPixelsRect(SKRect, float, in Thickness)
+  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect, float, in Microsoft.Maui.Thickness)
   nameWithType.vb: SkiaControl.ContractPixelsRect(SKRect, Single, Thickness)
   fullName.vb: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect, Single, Microsoft.Maui.Thickness)
   name.vb: ContractPixelsRect(SKRect, Single, Thickness)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -19922,15 +20052,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: ','
   - name: " "
+  - name: in
+  - name: " "
   - uid: Microsoft.Maui.Thickness
     name: Thickness
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -19949,21 +20081,21 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
-  name: ContractPixelsRectForContent(SKRect, float, Thickness)
-  nameWithType: SkiaControl.ContractPixelsRectForContent(SKRect, float, Thickness)
-  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect, float, Microsoft.Maui.Thickness)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
+  name: ContractPixelsRectForContent(SKRect, float, in Thickness)
+  nameWithType: SkiaControl.ContractPixelsRectForContent(SKRect, float, in Thickness)
+  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect, float, in Microsoft.Maui.Thickness)
   nameWithType.vb: SkiaControl.ContractPixelsRectForContent(SKRect, Single, Thickness)
   fullName.vb: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect, Single, Microsoft.Maui.Thickness)
   name.vb: ContractPixelsRectForContent(SKRect, Single, Thickness)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRectForContent
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -19977,15 +20109,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: ','
   - name: " "
+  - name: in
+  - name: " "
   - uid: Microsoft.Maui.Thickness
     name: Thickness
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRectForContent
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -20004,21 +20138,21 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  commentId: M:DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+- uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  commentId: M:DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
-  name: ExpandPixelsRect(SKRect, float, Thickness)
-  nameWithType: SkiaControl.ExpandPixelsRect(SKRect, float, Thickness)
-  fullName: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect, float, Microsoft.Maui.Thickness)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
+  name: ExpandPixelsRect(SKRect, float, in Thickness)
+  nameWithType: SkiaControl.ExpandPixelsRect(SKRect, float, in Thickness)
+  fullName: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect, float, in Microsoft.Maui.Thickness)
   nameWithType.vb: SkiaControl.ExpandPixelsRect(SKRect, Single, Thickness)
   fullName.vb: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect, Single, Microsoft.Maui.Thickness)
   name.vb: ExpandPixelsRect(SKRect, Single, Thickness)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ExpandPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -20032,15 +20166,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: ','
   - name: " "
+  - name: in
+  - name: " "
   - uid: Microsoft.Maui.Thickness
     name: Thickness
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ExpandPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -44863,6 +44999,33 @@ references:
   name: GoNext
   nameWithType: SkiaCarousel.GoNext
   fullName: DrawnUi.Controls.SkiaCarousel.GoNext
+- uid: DrawnUi.Controls.SkiaCarousel.SelectedIndex
+  commentId: P:DrawnUi.Controls.SkiaCarousel.SelectedIndex
+  parent: DrawnUi.Controls.SkiaCarousel
+  href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_SelectedIndex
+  name: SelectedIndex
+  nameWithType: SkiaCarousel.SelectedIndex
+  fullName: DrawnUi.Controls.SkiaCarousel.SelectedIndex
+- uid: DrawnUi.Controls.SkiaCarousel.SelectedIndexChanged
+  commentId: E:DrawnUi.Controls.SkiaCarousel.SelectedIndexChanged
+  parent: DrawnUi.Controls.SkiaCarousel
+  href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_SelectedIndexChanged
+  name: SelectedIndexChanged
+  nameWithType: SkiaCarousel.SelectedIndexChanged
+  fullName: DrawnUi.Controls.SkiaCarousel.SelectedIndexChanged
+- uid: DrawnUi.Controls.SkiaCarousel.ScrollTo*
+  commentId: Overload:DrawnUi.Controls.SkiaCarousel.ScrollTo
+  href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_ScrollTo_System_Int32_System_Boolean_
+  name: ScrollTo
+  nameWithType: SkiaCarousel.ScrollTo
+  fullName: DrawnUi.Controls.SkiaCarousel.ScrollTo
+- uid: DrawnUi.Controls.SkiaCarousel
+  commentId: T:DrawnUi.Controls.SkiaCarousel
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.SkiaCarousel.html
+  name: SkiaCarousel
+  nameWithType: SkiaCarousel
+  fullName: DrawnUi.Controls.SkiaCarousel
 - uid: DrawnUi.Controls.SkiaCarousel.GoPrev*
   commentId: Overload:DrawnUi.Controls.SkiaCarousel.GoPrev
   href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_GoPrev

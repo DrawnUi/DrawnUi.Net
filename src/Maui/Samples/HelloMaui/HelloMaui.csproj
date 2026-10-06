@@ -35,9 +35,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#212529" />
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#FEFEFE" />
         <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#212529" BaseSize="128,128" />
         <MauiFont Include="Resources\Fonts\*" />
+        <!-- Registered on Windows only (MauiProgram.cs) -->
+        <MauiFont Remove="Resources\Fonts\NotoColorEmoji-Subset-COLRv0.ttf" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'windows'" />
         <!-- Same asset layout as HelloWpf: pages ask for "images/x.jpg", "shaders/x.sksl", "anims/...", "lottie/..." -->
         <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
     </ItemGroup>
@@ -48,6 +50,10 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\DrawnUi\DrawnUi.Maui.csproj" />
+        <ProjectReference Include="..\..\Addons\DrawnUi.Maui.Game\DrawnUi.Maui.Game.csproj" />
     </ItemGroup>
+
+    <!-- The Pong page hosts the shared game, the same code as every Pong sample. -->
+    <Import Project="..\..\..\Shared\Samples\Pong.Shared\Pong.Shared.projitems" Label="Shared" />
 
 </Project>

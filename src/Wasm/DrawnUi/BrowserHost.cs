@@ -22,8 +22,10 @@ public static partial class BrowserHost
 
     internal static async Task RunAsync(DrawnUiBuilder builder, string elementId, Func<Canvas> content)
     {
-        // Register the JS module for C# [JSImport] bindings, then init core + fonts/assets.
-        await JSHost.ImportAsync("drawnui-web", "/_content/DrawnUi.Web/drawnui-web.js");
+        // Register the JS module for C# [JSImport] bindings, then init core + fonts/assets. The address is resolved
+        // against the page's base (<base href>), the same module main.js imports, so a site hosted under a
+        // sub-path (GitHub Pages, /app/) finds it too.
+        await JSHost.ImportAsync("drawnui-web", ModuleUrl("_content/DrawnUi.Web/drawnui-web.js"));
         Super.Init();
         await builder.BuildAsync();
 
@@ -34,6 +36,9 @@ public static partial class BrowserHost
         // Images and SVGs with relative sources ("drawnui.svg") come from the same site.
         if (Uri.TryCreate(JsInterop.GetBaseUrl(), UriKind.Absolute, out var baseUri))
             SkiaImageManager.HttpBaseAddress = baseUri;
+
+        // Copy of a selected SkiaLabel text goes to the browser clipboard.
+        Super.SetClipboardText ??= text => _ = JsInterop.WriteClipboardText(text);
 
         // Wire DOM input listeners + read the element's CSS size / device pixel ratio.
         JsInterop.InitCanvas(0, 0);
@@ -107,9 +112,22 @@ public static partial class BrowserHost
 
         _view.OnDraw = (surface, rect) => canvas.RenderExternalSurface(surface, rect, Nanos());
         canvas.AttachCanvasView(_view);
+
+        // screen readers and Tab: the ARIA overlay of the Blazor head
+        WebAccessibility.Attach(canvas, _elementId!);
     }
 
     private static long Nanos() => _frameTimer.ElapsedTicks * (1_000_000_000L / Stopwatch.Frequency);
+
+    // a path relative to the page's base address (document.baseURI), read before any module of ours is loaded
+    private static string ModuleUrl(string relativePath)
+    {
+        using var document = JSHost.GlobalThis.GetPropertyAsJSObject("document");
+        var baseUri = document?.GetPropertyAsString("baseURI");
+        return Uri.TryCreate(baseUri, UriKind.Absolute, out var page)
+            ? new Uri(page, relativePath).ToString()
+            : "/" + relativePath;
+    }
 
     private static void OnRenderFrame()
     {

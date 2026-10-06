@@ -130,7 +130,7 @@
 
         <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.70" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-        <!--<PackageReference Include="DrawnUi.Maui" Version="1.6.2.5" />-->
+        <!--<PackageReference Include="DrawnUi.Maui" Version="1.10.6.22" />-->
 	</ItemGroup>
 
     <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">

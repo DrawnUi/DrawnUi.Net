@@ -1,6 +1,7 @@
 ﻿using Android.Content;
 using Android.Opengl;
 using DrawnUi;
+using DrawnUi.Vulkan;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using Microsoft.Maui.Handlers;
@@ -11,50 +12,79 @@ using SKPaintGLSurfaceEventArgs = SkiaSharp.Views.Android.SKPaintGLSurfaceEventA
 
 namespace DrawnUi.Views;
 
-public partial class SKGLViewHandlerRetained : ViewHandler<ISKGLView, SkiaGLTexture>
+/// <summary>
+/// The accelerated canvas on Android: Vulkan where the device supports it (<see cref="SkiaVulkanTextureView"/>),
+/// otherwise, or when Vulkan fails on it, OpenGL ES (<see cref="SkiaGLTexture"/>).
+/// </summary>
+public partial class SKGLViewHandlerRetained : ViewHandler<ISKGLView, Android.Views.View>
 {
 
     private SKSizeI lastCanvasSize;
     private GRContext? lastGRContext;
-    private SkiaSharp.Views.Maui.SKPaintGLSurfaceEventArgs _cachedVirtualViewArgs;
-    
-    protected override SkiaGLTexture CreatePlatformView()
+    // one per surface drawn on: the OpenGL canvas has one, the Vulkan canvas one per swapchain image
+    private readonly SkiaSharp.Views.Maui.SKPaintGLSurfaceEventArgs[] _cachedVirtualViewArgs = new SkiaSharp.Views.Maui.SKPaintGLSurfaceEventArgs[4];
+    private int _nextCachedArgs;
+
+    protected override Android.Views.View CreatePlatformView()
     {
+        var superview = (VirtualView as SkiaViewAccelerated)?.Superview;
+        if (DrawnExtensions.StartupSettings?.UseVulkan != false && VulkanGpu.IsAvailable)
+        {
+            var vulkan = new SkiaVulkanTextureView(Context)
+            {
+                Retained = superview?.RenderingMode == RenderingModeType.AcceleratedRetained
+            };
+            vulkan.SetOpaque(false);
+            return vulkan;
+        }
+
         var view = new MauiSKGLTextureView(Context);
         view.SetOpaque(false);
         return view;
     }
 
-    protected override void ConnectHandler(SkiaGLTexture platformView)
+    protected override void ConnectHandler(Android.Views.View platformView)
     {
-        platformView.PaintSurface += OnPaintSurface;
+        if (platformView is IGpuTextureView gpu)
+            gpu.PaintSurface += OnPaintSurface;
+        if (platformView is SkiaVulkanTextureView vulkan)
+            vulkan.VulkanFailed += OnVulkanFailed;
 
         base.ConnectHandler(platformView);
     }
 
-    protected override void DisconnectHandler(SkiaGLTexture platformView)
+    protected override void DisconnectHandler(Android.Views.View platformView)
     {
-        platformView.PaintSurface -= OnPaintSurface;
+        if (platformView is IGpuTextureView gpu)
+            gpu.PaintSurface -= OnPaintSurface;
+        if (platformView is SkiaVulkanTextureView vulkan)
+            vulkan.VulkanFailed -= OnVulkanFailed;
 
         base.DisconnectHandler(platformView);
 
         platformView?.Dispose();  //MAUI is not disposing PlatformView in base, avoid the leak
     }
 
+    /// <summary>Vulkan failed on this device (now disabled for the process): the canvas is recreated, with OpenGL.</summary>
+    private void OnVulkanFailed(object? sender, string why)
+    {
+        (VirtualView as SkiaViewAccelerated)?.Superview?.RecreateCanvasView();
+    }
+
     // Mapper actions / properties
 
     public static void OnInvalidateSurface(SKGLViewHandlerRetained handler, ISKGLView view, object? args)
     {
-        if (handler?.PlatformView == null)
+        if (handler?.PlatformView is not IGpuTextureView pv)
             return;
 
-        if (handler.PlatformView.RenderMode == Rendermode.WhenDirty)
-            handler.PlatformView.RequestRender();
+        if (pv.RenderMode == Rendermode.WhenDirty)
+            pv.RequestRender();
     }
 
     public static void MapIgnorePixelScaling(SKGLViewHandlerRetained handler, ISKGLView view)
     {
-        if (handler?.PlatformView is not MauiSKGLTextureView pv)
+        if (handler?.PlatformView is not IGpuTextureView pv)
             return;
 
         pv.IgnorePixelScaling = view.IgnorePixelScaling;
@@ -63,10 +93,10 @@ public partial class SKGLViewHandlerRetained : ViewHandler<ISKGLView, SkiaGLText
 
     public static void MapHasRenderLoop(SKGLViewHandlerRetained handler, ISKGLView view)
     {
-        if (handler?.PlatformView == null)
+        if (handler?.PlatformView is not IGpuTextureView pv)
             return;
 
-        handler.PlatformView.RenderMode = view.HasRenderLoop
+        pv.RenderMode = view.HasRenderLoop
             ? Rendermode.Continuously
             : Rendermode.WhenDirty;
     }
@@ -88,23 +118,38 @@ public partial class SKGLViewHandlerRetained : ViewHandler<ISKGLView, SkiaGLText
         if (lastCanvasSize != newCanvasSize)
         {
             lastCanvasSize = newCanvasSize;
-            _cachedVirtualViewArgs = null;
+            Array.Clear(_cachedVirtualViewArgs);
             VirtualView?.OnCanvasSizeChanged(newCanvasSize);
         }
 
-        if (sender is SkiaGLTexture platformView)
+        if (sender is IGpuTextureView platformView)
         {
             var newGRContext = platformView.GRContext;
             if (lastGRContext != newGRContext)
             {
                 lastGRContext = newGRContext;
-                _cachedVirtualViewArgs = null;
+                Array.Clear(_cachedVirtualViewArgs);
                 VirtualView?.OnGRContextChanged(newGRContext);
             }
         }
 
-        _cachedVirtualViewArgs ??= new SkiaSharp.Views.Maui.SKPaintGLSurfaceEventArgs(e.Surface, e.BackendRenderTarget, e.Origin, e.Info, e.RawInfo);
-        VirtualView?.OnPaintSurface(_cachedVirtualViewArgs);
+        SkiaSharp.Views.Maui.SKPaintGLSurfaceEventArgs args = null;
+        foreach (var cached in _cachedVirtualViewArgs)
+        {
+            if (cached != null && cached.Surface == e.Surface && cached.Info == e.Info)
+            {
+                args = cached;
+                break;
+            }
+        }
+
+        if (args == null)
+        {
+            args = new SkiaSharp.Views.Maui.SKPaintGLSurfaceEventArgs(e.Surface, e.BackendRenderTarget, e.Origin, e.Info, e.RawInfo);
+            _cachedVirtualViewArgs[_nextCachedArgs++ % _cachedVirtualViewArgs.Length] = args;
+        }
+
+        VirtualView?.OnPaintSurface(args);
     }
 
     private SKPoint OnGetScaledCoord(double x, double y)
@@ -118,7 +163,7 @@ public partial class SKGLViewHandlerRetained : ViewHandler<ISKGLView, SkiaGLText
         return new SKPoint((float)x, (float)y);
     }
 
-    private class MauiSKGLTextureView : SkiaGLTexture
+    private class MauiSKGLTextureView : SkiaGLTexture, IGpuTextureView
     {
         private float density;
 

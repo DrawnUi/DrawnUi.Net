@@ -1,4 +1,6 @@
+using AppoMobi.Gestures;
 using DrawnUi.Draw;
+using DrawnUi.Models;
 using DrawnUi.Views;
 
 namespace HelloMaui.Pages;
@@ -64,6 +66,8 @@ public class RootPage : SkiaLayer
                 LockRatio = 1,
                 HorizontalOptions = LayoutOptions.Center,
                 Margin = new Thickness(0, 16, 0, 0),
+                AccessibilityRole = Aria.RoleImg,
+                AccessibilityLabel = "DrawnUI logo",
             },
             new SkiaLabel("DrawnUI for MAUI")
             {
@@ -71,6 +75,8 @@ public class RootPage : SkiaLayer
                 FontFamily = "FontTextBold",
                 TextColor = Colors.White,
                 HorizontalOptions = LayoutOptions.Center,
+                HorizontalTextAlignment = DrawTextAlignment.Center,
+                AccessibilityRole = Aria.RoleHeading,
             },
             new SkiaLabel("A UI rendering engine on top of SkiaSharp: layouts, controls, gestures, effects and animations")
             {
@@ -104,6 +110,10 @@ public class RootPage : SkiaLayer
             StrokeColor = Color.Parse("#373B3E"),
             StrokeWidth = 1,
             AnimationTapped = SkiaTouchAnimation.Ripple,
+            // the card is one button node; its labels are presentation only
+            AccessibilityRole = Aria.RoleButton,
+            AccessibilityLabel = sample.Title,
+            AccessibilityHint = sample.Text,
             Children = new List<SkiaControl>
             {
                 new SkiaStack
@@ -124,11 +134,13 @@ public class RootPage : SkiaLayer
                                 EndXRatio = 1, EndYRatio = 0,
                                 Colors = new List<Color> { Color.Parse(gradient[0]), Color.Parse(gradient[1]) },
                             },
+                            AccessibilityRole = Aria.RolePresentation,
                         },
                         new SkiaLabel(sample.Text)
                         {
                             FontSize = 13,
                             TextColor = Color.Parse("#ADB5BD"),
+                            AccessibilityRole = Aria.RolePresentation,
                         },
                     },
                 },
@@ -139,10 +151,16 @@ public class RootPage : SkiaLayer
                     HorizontalOptions = LayoutOptions.End,
                     VerticalOptions = LayoutOptions.Center,
                     Margin = new Thickness(0, 0, 20, 0),
+                    AccessibilityRole = Aria.RolePresentation,
                 },
             },
         }
-        .OnTapped(me => SampleSelected?.Invoke(sample))
+        // left button only: a right click opens the version toast, not the page
+        .OnTapped((me, e) =>
+        {
+            if ((e.Parameters?.Event?.Pointer?.Button ?? MouseButton.Left) == MouseButton.Left)
+                SampleSelected?.Invoke(sample);
+        })
         .Adapt(me => _cards.Add(me));
     }
 

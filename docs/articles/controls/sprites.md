@@ -27,15 +27,15 @@ SkiaSprite is a high-performance control for displaying and animating sprite she
 | `Source` | string | Path or URL of the sprite sheet image |
 | `Columns` | int | Number of columns in the sprite sheet grid |
 | `Rows` | int | Number of rows in the sprite sheet grid |
-| `FramesPerSecond` | int | Animation speed in frames per second (default: 24) |
+| `FramesPerSecond` | double | Animation speed in frames per second (default: 24) |
 | `MaxFrames` | int | Maximum number of frames to use (0 means use all) |
-| `CurrentFrame` | int | Current frame being displayed (0-based index) |
-| `FrameSequence` | int[] | Custom sequence of frames to play |
+| `CurrentFrame` | int | Frame being displayed (0-based index). Set it to show that frame, -1 shows the last one |
+| `FrameSequence` | int[] | Custom sequence of frames to play. Frame indexes (`CurrentFrame`, `DefaultFrame`) then count positions in the sequence |
 | `AnimationName` | string | Name of a predefined animation sequence |
 | `AutoPlay` | bool | Whether animation starts automatically when loaded |
 | `Repeat` | int | Number of times to repeat (-1 for infinite) |
-| `SpeedRatio` | double | Adjusts animation speed (1.0 is normal speed) |
-| `DefaultFrame` | int | Frame to display when not playing |
+| `SpeedRatio` | double | Playback speed: 1 is normal, 0.5 is half speed (twice as long), 2 is double speed |
+| `DefaultFrame` | int | Frame index shown when not playing: 0 is the first frame, -1 the last one |
 
 ### Animation Control
 
@@ -48,12 +48,14 @@ mySprite.Start();
 // Stop animation
 mySprite.Stop();
 
-// Jump to a specific frame
-mySprite.CurrentFrame = 5;
-
-// Seek to a time position
+// Seek to a time position, in milliseconds
 mySprite.Seek(timeInMs);
+
+// Show a specific frame
+mySprite.CurrentFrame = 5;
 ```
+
+`Seek(5 * mySprite.FrameDurationMs)` also lands on frame 5: the start time of a frame shows that frame. While the sprite plays, the next animation frame replaces what you set.
 
 ### Animation Events
 
@@ -166,8 +168,10 @@ Use the `DefaultFrame` property to control which frame is shown when the animati
     Source="door_open.png"
     Columns="8"
     Rows="1"
-    DefaultFrame="7" />
+    DefaultFrame="-1" />
 ```
+
+`DefaultFrame` is a frame index: `DefaultFrame="7"` shows the eighth frame, `-1` the last one whatever the frame count. It applies when the sheet loads and whenever you change it while the sprite is not playing.
 
 ### Advanced: Frame Sequences and Reusing Spritesheets
 
@@ -190,6 +194,8 @@ In code-behind:
 // Define a specific frame sequence
 mySprite.FrameSequence = new[] { 3, 4, 5, 4, 3 }; // Play frames in this exact order
 ```
+
+With a sequence, the animation has as many frames as the sequence, each shown for 1/`FramesPerSecond` of a second, and frame indexes count positions in it: for the sequence above `CurrentFrame = 1` shows sheet frame 4. You can change the sequence, `FramesPerSecond` or `MaxFrames` after the sheet has loaded, even while playing.
 
 #### Creating Reusable Named Animations
 
@@ -262,6 +268,8 @@ The control automatically handles:
 mySprite.SpeedRatio = 0.5; // half speed
 mySprite.SpeedRatio = 2.0; // double speed
 ```
+
+One pass takes the frame count divided by `FramesPerSecond`, divided by `SpeedRatio`: 8 frames at 10 fps take 0.8 s, 1.6 s at `SpeedRatio` 0.5. Before 1.10.6.22, a `SpeedRatio` below 1 played faster than asked (0.5 played at about two thirds of the speed).
 
 ## SkiaSpriteSet
 
@@ -438,34 +446,35 @@ Adjust animation speed using `SpeedRatio`:
     WidthRequest="200"
     HeightRequest="60">
     
-    <draw:SkiaHotspot Tapped="OnButtonTapped">
-        <draw:SkiaLayout
-            HorizontalOptions="Fill"
-            VerticalOptions="Fill">
+    <draw:SkiaLayout
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
+        
+        <!-- Button text -->
+        <draw:SkiaLabel
+            Text="Click Me"
+            TextColor="White"
+            FontSize="18"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
             
-            <!-- Button text -->
-            <draw:SkiaLabel
-                Text="Click Me"
-                TextColor="White"
-                FontSize="18"
-                HorizontalOptions="Center"
-                VerticalOptions="Center" />
-                
-            <!-- Button animation that plays on tap -->
-            <draw:SkiaSprite
-                x:Name="ButtonAnimation"
-                Source="button_press.png"
-                Columns="5"
-                Rows="1"
-                FramesPerSecond="30"
-                AutoPlay="False"
-                Repeat="0"
-                HorizontalOptions="Fill"
-                VerticalOptions="Fill"
-                Opacity="0.5" />
-                
-        </draw:SkiaLayout>
-    </draw:SkiaHotspot>
+        <!-- Button animation that plays on tap -->
+        <draw:SkiaSprite
+            x:Name="ButtonAnimation"
+            Source="button_press.png"
+            Columns="5"
+            Rows="1"
+            FramesPerSecond="30"
+            AutoPlay="False"
+            Repeat="0"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill"
+            Opacity="0.5" />
+            
+    </draw:SkiaLayout>
+
+    <!-- Tap area on top; a hotspot draws no children of its own -->
+    <draw:SkiaHotspot Tapped="OnButtonTapped" />
     
 </draw:SkiaShape>
 ```
@@ -475,7 +484,6 @@ In code-behind:
 private void OnButtonTapped(object sender, EventArgs e)
 {
     ButtonAnimation.Stop();
-    ButtonAnimation.CurrentFrame = 0;
     ButtonAnimation.Start();
 }
 ```
@@ -516,8 +524,8 @@ The `SkiaSprite` control derives from `AnimatedFramesRenderer`, which provides t
 
 1. Loads a spritesheet image into an `SKBitmap`
 2. Calculates frame dimensions based on `Columns` and `Rows`
-3. Extracts individual frames on demand by creating a new bitmap for each frame
-4. Uses a `SkiaImage` control to display the current frame
+3. Draws the current frame straight from the sheet as a source rectangle, without copying it to a new bitmap
+4. Uses a `SkiaImage`-based display control to show the current frame
 5. Manages animation timing through the inherited animator functionality
 
 This architecture aligns with other animation controls in DrawnUi like `SkiaGif` and `SkiaLottie`.

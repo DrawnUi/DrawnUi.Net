@@ -34,23 +34,25 @@ public partial class KeyboardManager
             .ContinueWith(static _ => { }, TaskContinuationOptions.OnlyOnFaulted);
     }
 
+    /// <param name="code">DOM <c>KeyboardEvent.code</c>.</param>
+    /// <param name="forOtherElement">A page element outside the canvas has the key, see <see cref="KeyboardManager.IsKeyForOtherElement"/>.</param>
     [JSInvokable]
-    public static void HandleGlobalKeyDown(string? code)
+    public static void HandleGlobalKeyDown(string? code, bool forOtherElement)
     {
-        KeyboardPressed(MapToMaui(code));
+        KeyboardPressed(MapToMaui(code), forOtherElement);
     }
 
     [JSInvokable]
-    public static void HandleGlobalKeyUp(string? code)
+    public static void HandleGlobalKeyUp(string? code, bool forOtherElement)
     {
-        KeyboardReleased(MapToMaui(code));
+        KeyboardReleased(MapToMaui(code), forOtherElement);
     }
 
     [JSInvokable]
-    public static void HandleGlobalKeyChar(string? ch)
+    public static void HandleGlobalKeyChar(string? ch, bool forOtherElement)
     {
         if (!string.IsNullOrEmpty(ch))
-            KeyboardChar(ch);
+            KeyboardChar(ch, forOtherElement);
     }
 
     public static InputKey MapToMaui(string? code)

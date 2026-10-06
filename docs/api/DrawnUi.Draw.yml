@@ -4,6 +4,7 @@ items:
   commentId: N:DrawnUi.Draw
   id: DrawnUi.Draw
   children:
+  - DrawnUi.Draw.AccessibilityValue
   - DrawnUi.Draw.ActionOnTickAnimator
   - DrawnUi.Draw.ActionOverlayEffect
   - DrawnUi.Draw.AddGestures
@@ -128,10 +129,15 @@ items:
   - DrawnUi.Draw.IThemeProvider
   - DrawnUi.Draw.ITimingParameters
   - DrawnUi.Draw.ITimingVectorParameters
+  - DrawnUi.Draw.IUiaRangeValueProvider
+  - DrawnUi.Draw.IUiaScrollItemProvider
+  - DrawnUi.Draw.IUiaToggleProvider
+  - DrawnUi.Draw.IUiaValueProvider
   - DrawnUi.Draw.IVisibilityAware
   - DrawnUi.Draw.IWindowDataSource`1
   - DrawnUi.Draw.IWindowHost
   - DrawnUi.Draw.IWithContent
+  - DrawnUi.Draw.ImageLoadQueue
   - DrawnUi.Draw.InfiniteLayout
   - DrawnUi.Draw.InputKey
   - DrawnUi.Draw.ItemsSourceWindow
@@ -220,6 +226,7 @@ items:
   - DrawnUi.Draw.SkiaCheckbox
   - DrawnUi.Draw.SkiaControl
   - DrawnUi.Draw.SkiaControl.CacheValidityType
+  - DrawnUi.Draw.SkiaControl.CompositeRecord
   - DrawnUi.Draw.SkiaControl.DisposableAction
   - DrawnUi.Draw.SkiaControl.ParentMeasureRequest
   - DrawnUi.Draw.SkiaControlWithRect
@@ -368,6 +375,29 @@ references:
   name: SkiaControl
   nameWithType: SkiaControl
   fullName: DrawnUi.Draw.SkiaControl
+- uid: DrawnUi.Draw.SkiaControl.CompositeRecord
+  commentId: T:DrawnUi.Draw.SkiaControl.CompositeRecord
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaControl.html
+  name: SkiaControl.CompositeRecord
+  nameWithType: SkiaControl.CompositeRecord
+  fullName: DrawnUi.Draw.SkiaControl.CompositeRecord
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaControl.CompositeRecord
+    name: CompositeRecord
+    href: DrawnUi.Draw.SkiaControl.CompositeRecord.html
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaControl.CompositeRecord
+    name: CompositeRecord
+    href: DrawnUi.Draw.SkiaControl.CompositeRecord.html
 - uid: DrawnUi.Draw.SkiaControl.CacheValidityType
   commentId: T:DrawnUi.Draw.SkiaControl.CacheValidityType
   parent: DrawnUi.Draw
@@ -1157,6 +1187,30 @@ references:
   name: UiaRect
   nameWithType: UiaRect
   fullName: DrawnUi.Draw.UiaRect
+- uid: DrawnUi.Draw.IUiaRangeValueProvider
+  commentId: T:DrawnUi.Draw.IUiaRangeValueProvider
+  href: DrawnUi.Draw.IUiaRangeValueProvider.html
+  name: IUiaRangeValueProvider
+  nameWithType: IUiaRangeValueProvider
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider
+- uid: DrawnUi.Draw.IUiaValueProvider
+  commentId: T:DrawnUi.Draw.IUiaValueProvider
+  href: DrawnUi.Draw.IUiaValueProvider.html
+  name: IUiaValueProvider
+  nameWithType: IUiaValueProvider
+  fullName: DrawnUi.Draw.IUiaValueProvider
+- uid: DrawnUi.Draw.IUiaScrollItemProvider
+  commentId: T:DrawnUi.Draw.IUiaScrollItemProvider
+  href: DrawnUi.Draw.IUiaScrollItemProvider.html
+  name: IUiaScrollItemProvider
+  nameWithType: IUiaScrollItemProvider
+  fullName: DrawnUi.Draw.IUiaScrollItemProvider
+- uid: DrawnUi.Draw.IUiaToggleProvider
+  commentId: T:DrawnUi.Draw.IUiaToggleProvider
+  href: DrawnUi.Draw.IUiaToggleProvider.html
+  name: IUiaToggleProvider
+  nameWithType: IUiaToggleProvider
+  fullName: DrawnUi.Draw.IUiaToggleProvider
 - uid: DrawnUi.Draw.SkiaButton
   commentId: T:DrawnUi.Draw.SkiaButton
   parent: DrawnUi.Draw
@@ -2324,6 +2378,12 @@ references:
   name: ISkiaAccessibilityNode
   nameWithType: ISkiaAccessibilityNode
   fullName: DrawnUi.Draw.ISkiaAccessibilityNode
+- uid: DrawnUi.Draw.AccessibilityValue
+  commentId: T:DrawnUi.Draw.AccessibilityValue
+  href: DrawnUi.Draw.AccessibilityValue.html
+  name: AccessibilityValue
+  nameWithType: AccessibilityValue
+  fullName: DrawnUi.Draw.AccessibilityValue
 - uid: DrawnUi.Draw.ISkiaGestureListener
   commentId: T:DrawnUi.Draw.ISkiaGestureListener
   parent: DrawnUi.Draw
@@ -3238,6 +3298,12 @@ references:
   name: LoadedImageSource
   nameWithType: LoadedImageSource
   fullName: DrawnUi.Draw.LoadedImageSource
+- uid: DrawnUi.Draw.ImageLoadQueue
+  commentId: T:DrawnUi.Draw.ImageLoadQueue
+  href: DrawnUi.Draw.ImageLoadQueue.html
+  name: ImageLoadQueue
+  nameWithType: ImageLoadQueue
+  fullName: DrawnUi.Draw.ImageLoadQueue
 - uid: DrawnUi.Draw.SkiaControlsObservable
   commentId: T:DrawnUi.Draw.SkiaControlsObservable
   href: DrawnUi.Draw.SkiaControlsObservable.html

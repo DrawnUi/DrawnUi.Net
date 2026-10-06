@@ -12,7 +12,7 @@ The .NET MAUI getting started guide moved to [MAUI Installation and Setup](maui/
 
 ### Prerequisites
 
-Target .NET 9.
+Target .NET 9 or .NET 10.
 
 To make everything compile from first attempt You might also need at least the following MAUI setup inside your csproj:
 
@@ -26,8 +26,9 @@ To make everything compile from first attempt You might also need at least the f
 	</PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.70" />
-        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.70" />
+        <!-- .NET 9; on .NET 10 use 10.0.80 -->
+        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.120" />
+        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.120" />
     </ItemGroup>
 
 ```
@@ -133,7 +134,7 @@ Now you can add DrawnUi controls to your page. You have two main options:
                 TextColor="White"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
-                Clicked="OnButtonClicked" />
+                Tapped="OnButtonClicked" />
 
         </draw:SkiaLayout>
     </draw:Canvas>
@@ -168,7 +169,7 @@ Now you can add DrawnUi controls to your page. You have two main options:
                 TextColor="White"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
-                Clicked="OnButtonClicked" />
+                Tapped="OnButtonClicked" />
         </draw:SkiaLayout>
     </draw:Canvas>
 </draw:DrawnUiBasePage>
@@ -176,22 +177,22 @@ Now you can add DrawnUi controls to your page. You have two main options:
 
 ### Setup Canvas
 
-If you indend to process gestures inside your canvas setup the `Gestures` property accordingly
-If you would have animated content or use shaders set `RenderingMode` to `Accelerated`. Otherwise leave it as it is to use the default lightweight `Software` mode, it is still perfect for rendering static content.
+If you intend to process gestures inside your canvas setup the `Gestures` property accordingly
+If you would have animated content or use shaders set `RenderingMode` to `Accelerated`: neither needs the GPU to work — SkSL compiles and runs on the CPU too — but both pay per pixel every frame, which is what the GPU is for. Otherwise leave it as it is to use the lightweight `Default` mode (software rendering), it is still perfect for rendering static content.
 
 ### Handling Events
 
 Handle control events in your code-behind:
 
 ```csharp
-private void OnButtonClicked(SkiaButton sender, SkiaGesturesParameters e)
+private void OnButtonClicked(object sender, ControlTappedEventArgs e)
 {
     // Handle button click
     DisplayAlert("DrawnUi", "Button clicked!", "OK");
 }
 ```
 
-> **Important**: DrawnUi button events use `Action<SkiaButton, SkiaGesturesParameters>` instead of the standard EventHandler pattern. The first parameter is the specific control type (SkiaButton), and the second contains gesture information.
+> **Important**: In XAML, handle taps with the `Tapped` event that every drawn control has (`EventHandler<ControlTappedEventArgs>`). `SkiaButton.Clicked` is an `Action<SkiaButton, SkiaGesturesParameters>` delegate, not an event, so it can be set from code only.
 
 ## Using Styles
 
@@ -279,12 +280,15 @@ Canvas = new Canvas()
                 HeightRequest = 150,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
-                Content = new SkiaLabel()
+                Children =
                 {
-                    TextColor = Colors.White,
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center,
-                    Text = "Hello DrawnUI!"
+                    new SkiaLabel()
+                    {
+                        TextColor = Colors.White,
+                        HorizontalOptions = LayoutOptions.Center,
+                        VerticalOptions = LayoutOptions.Center,
+                        Text = "Hello DrawnUI!"
+                    }
                 }
             }
         }
@@ -297,5 +301,5 @@ Canvas = new Canvas()
 - Create [Your First DrawnUI App](first-app.md)
 - Explore the [Controls documentation](controls/index.md) to learn about available controls
 - See [Platform-Specific Styling](advanced/platform-styling.md) for more styling options
-- Check out the [Sample Applications](tutorials.md) for complete examples
+- Check out the [Sample Applications](sample-apps.md) for complete examples
 - Review [Startup Settings](startup-settings.md) for technical configuration and best practices

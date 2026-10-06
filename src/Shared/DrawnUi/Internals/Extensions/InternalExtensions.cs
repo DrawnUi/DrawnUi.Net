@@ -14,8 +14,9 @@ public static partial class InternalExtensions
         return radians * 180f / (float)Math.PI;
     }
 
+    // in: the SKPoint comes after v0-v7 on arm64, see SkiaControl.ContractPixelsRect
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IntersectsWith(this SKRect rect, SKRect with, SKPoint offset)
+    public static bool IntersectsWith(this SKRect rect, SKRect with, in SKPoint offset)
     {
         with.Offset(offset);
         return rect.IntersectsWith(with);

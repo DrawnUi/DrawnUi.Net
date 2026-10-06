@@ -9,7 +9,7 @@ public enum SkiaCacheType
     None,
 
     /// <summary>
-    /// Default cache type, will use the most appropriate strategy based on the control logic
+    /// Leaves the choice to the library. Currently the same as <see cref="Image"/>.
     /// </summary>
     Auto,
 
@@ -60,8 +60,9 @@ public enum SkiaCacheType
 
     /// <summary>
     /// The cached surface will use the same graphic context as your hardware-accelerated canvas.
-    /// This kind of cache will not apply Opacity as not all platforms support transparency for hardware accelerated layer.
     /// Will fallback to simple Image cache type if hardware acceleration is not available.
+    /// Inside an ImageDoubleBuffered parent the control paints live: the parent is recorded on a background thread,
+    /// where the GPU context cannot be used.
     /// </summary>
     GPU,
 

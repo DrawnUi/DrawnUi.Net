@@ -58,13 +58,14 @@ public static partial class SkiaHtmlCanvasInterop
     /// <summary>
     /// Initialize a GPU (WebGL) canvas view. Returns GL info or null on failure.
     /// Mirrors SKHtmlCanvas.initGL. The callback is a C# [JSExport] function
-    /// that JS calls each frame via requestAnimationFrame.
+    /// that JS calls each frame via requestAnimationFrame; <paramref name="restored"/> runs when the browser
+    /// gives back a lost WebGL context, before the next frame.
     /// </summary>
-    public static GLInfo? InitGL(string elementId, Action callback)
+    public static GLInfo? InitGL(string elementId, Action callback, Action restored)
     {
         EnsureBrowserObjectsIntercepted();
 
-        var obj = InitGLJs(elementId, callback);
+        var obj = InitGLJs(elementId, callback, restored);
         if (obj == null)
             return null;
 
@@ -76,7 +77,8 @@ public static partial class SkiaHtmlCanvasInterop
     }
 
     [JSImport("initGL", ModuleName)]
-    private static partial JSObject? InitGLJs(string elementId, [JSMarshalAs<JSType.Function>] Action callback);
+    private static partial JSObject? InitGLJs(string elementId, [JSMarshalAs<JSType.Function>] Action callback,
+        [JSMarshalAs<JSType.Function>] Action restored);
 
     // --- Raster (CPU) path ---
 

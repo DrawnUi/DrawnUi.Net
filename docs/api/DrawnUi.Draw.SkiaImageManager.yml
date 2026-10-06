@@ -27,14 +27,20 @@ items:
   - DrawnUi.Draw.SkiaImageManager.LoadImageOnPlatformAsync(Microsoft.Maui.Controls.ImageSource,System.Threading.CancellationToken)
   - DrawnUi.Draw.SkiaImageManager.LoadLocalAsync
   - DrawnUi.Draw.SkiaImageManager.LogEnabled
+  - DrawnUi.Draw.SkiaImageManager.MaxParallelLoads
   - DrawnUi.Draw.SkiaImageManager.NativeFilePrefix
   - DrawnUi.Draw.SkiaImageManager.OpenStreamAsync(System.String,System.Threading.CancellationToken)
   - DrawnUi.Draw.SkiaImageManager.Preload(Microsoft.Maui.Controls.ImageSource,System.Threading.CancellationTokenSource)
+  - DrawnUi.Draw.SkiaImageManager.Preload(Microsoft.Maui.Controls.ImageSource,System.Threading.CancellationTokenSource,DrawnUi.Draw.LoadPriority)
   - DrawnUi.Draw.SkiaImageManager.PreloadBanners``1(System.Collections.Generic.IList{``0},System.Threading.CancellationTokenSource)
   - DrawnUi.Draw.SkiaImageManager.PreloadImage(Microsoft.Maui.Controls.ImageSource,System.Threading.CancellationTokenSource)
   - DrawnUi.Draw.SkiaImageManager.PreloadImage(System.String,System.Threading.CancellationTokenSource)
+  - DrawnUi.Draw.SkiaImageManager.PreloadImages(System.Collections.Generic.IList{System.String},DrawnUi.Draw.LoadPriority,System.Threading.CancellationTokenSource)
   - DrawnUi.Draw.SkiaImageManager.PreloadImages(System.Collections.Generic.IList{System.String},System.Threading.CancellationTokenSource)
+  - DrawnUi.Draw.SkiaImageManager.QueuedCount
+  - DrawnUi.Draw.SkiaImageManager.RemoveFromCache(System.String)
   - DrawnUi.Draw.SkiaImageManager.ReuseBitmaps
+  - DrawnUi.Draw.SkiaImageManager.RunningCount
   - DrawnUi.Draw.SkiaImageManager.TraceLog(System.String)
   - DrawnUi.Draw.SkiaImageManager.UpdateInCache(System.String,SkiaSharp.SKBitmap,System.Int32)
   - DrawnUi.Draw.SkiaImageManager.UseCache
@@ -163,10 +169,12 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreloadImages
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 68
+    startLine: 71
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: Loads the images into the cache at <xref href="DrawnUi.Draw.LoadPriority.Low" data-throw-if-not-resolved="false"></xref>, all queued at once.
+  example: []
   syntax:
     content: public virtual Task PreloadImages(IList<string> list, CancellationTokenSource cancel = null)
     parameters:
@@ -181,6 +189,49 @@ items:
   nameWithType.vb: SkiaImageManager.PreloadImages(IList(Of String), CancellationTokenSource)
   fullName.vb: DrawnUi.Draw.SkiaImageManager.PreloadImages(System.Collections.Generic.IList(Of String), System.Threading.CancellationTokenSource)
   name.vb: PreloadImages(IList(Of String), CancellationTokenSource)
+- uid: DrawnUi.Draw.SkiaImageManager.PreloadImages(System.Collections.Generic.IList{System.String},DrawnUi.Draw.LoadPriority,System.Threading.CancellationTokenSource)
+  commentId: M:DrawnUi.Draw.SkiaImageManager.PreloadImages(System.Collections.Generic.IList{System.String},DrawnUi.Draw.LoadPriority,System.Threading.CancellationTokenSource)
+  id: PreloadImages(System.Collections.Generic.IList{System.String},DrawnUi.Draw.LoadPriority,System.Threading.CancellationTokenSource)
+  parent: DrawnUi.Draw.SkiaImageManager
+  langs:
+  - csharp
+  - vb
+  name: PreloadImages(IList<string>, LoadPriority, CancellationTokenSource)
+  nameWithType: SkiaImageManager.PreloadImages(IList<string>, LoadPriority, CancellationTokenSource)
+  fullName: DrawnUi.Draw.SkiaImageManager.PreloadImages(System.Collections.Generic.IList<string>, DrawnUi.Draw.LoadPriority, System.Threading.CancellationTokenSource)
+  type: Method
+  source:
+    remote:
+      path: src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: PreloadImages
+    path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+    startLine: 78
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Loads the images into the cache at the given priority, all queued at once: network loads run
+
+    <xref href="DrawnUi.Draw.SkiaImageManager.MaxParallelLoads" data-throw-if-not-resolved="false"></xref> at a time. Completes when every image is loaded or failed.
+  example: []
+  syntax:
+    content: public virtual Task PreloadImages(IList<string> list, LoadPriority priority, CancellationTokenSource cancel = null)
+    parameters:
+    - id: list
+      type: System.Collections.Generic.IList{System.String}
+    - id: priority
+      type: DrawnUi.Draw.LoadPriority
+    - id: cancel
+      type: System.Threading.CancellationTokenSource
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Overridable Function PreloadImages(list As IList(Of String), priority As LoadPriority, cancel As CancellationTokenSource = Nothing) As Task
+  overload: DrawnUi.Draw.SkiaImageManager.PreloadImages*
+  nameWithType.vb: SkiaImageManager.PreloadImages(IList(Of String), LoadPriority, CancellationTokenSource)
+  fullName.vb: DrawnUi.Draw.SkiaImageManager.PreloadImages(System.Collections.Generic.IList(Of String), DrawnUi.Draw.LoadPriority, System.Threading.CancellationTokenSource)
+  name.vb: PreloadImages(IList(Of String), LoadPriority, CancellationTokenSource)
 - uid: DrawnUi.Draw.SkiaImageManager.PreloadBanners``1(System.Collections.Generic.IList{``0},System.Threading.CancellationTokenSource)
   commentId: M:DrawnUi.Draw.SkiaImageManager.PreloadBanners``1(System.Collections.Generic.IList{``0},System.Threading.CancellationTokenSource)
   id: PreloadBanners``1(System.Collections.Generic.IList{``0},System.Threading.CancellationTokenSource)
@@ -199,7 +250,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreloadBanners
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 118
+    startLine: 128
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -237,7 +288,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadLocalAsync
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 174
+    startLine: 184
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -266,7 +317,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReuseBitmaps
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 179
+    startLine: 189
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -295,7 +346,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CacheLongevitySecs
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 184
+    startLine: 194
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -324,7 +375,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NativeFilePrefix
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 189
+    startLine: 199
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -353,7 +404,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanReload
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 191
+    startLine: 201
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -380,7 +431,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LogEnabled
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 195
+    startLine: 205
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -407,7 +458,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TraceLog
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 197
+    startLine: 207
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -439,7 +490,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Instance
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 214
+    startLine: 224
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -468,7 +519,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseCache
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 225
+    startLine: 235
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -497,7 +548,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 227
+    startLine: 237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -508,6 +559,102 @@ items:
   nameWithType.vb: SkiaImageManager.New()
   fullName.vb: DrawnUi.Draw.SkiaImageManager.New()
   name.vb: New()
+- uid: DrawnUi.Draw.SkiaImageManager.MaxParallelLoads
+  commentId: P:DrawnUi.Draw.SkiaImageManager.MaxParallelLoads
+  id: MaxParallelLoads
+  parent: DrawnUi.Draw.SkiaImageManager
+  langs:
+  - csharp
+  - vb
+  name: MaxParallelLoads
+  nameWithType: SkiaImageManager.MaxParallelLoads
+  fullName: DrawnUi.Draw.SkiaImageManager.MaxParallelLoads
+  type: Property
+  source:
+    remote:
+      path: src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: MaxParallelLoads
+    path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+    startLine: 262
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    How many network image loads run at once; the others wait in line by <xref href="DrawnUi.Draw.LoadPriority" data-throw-if-not-resolved="false"></xref>.
+
+    Local files are not limited. Applies from the next load.
+  example: []
+  syntax:
+    content: public static int MaxParallelLoads { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared Property MaxParallelLoads As Integer
+  overload: DrawnUi.Draw.SkiaImageManager.MaxParallelLoads*
+- uid: DrawnUi.Draw.SkiaImageManager.RunningCount
+  commentId: P:DrawnUi.Draw.SkiaImageManager.RunningCount
+  id: RunningCount
+  parent: DrawnUi.Draw.SkiaImageManager
+  langs:
+  - csharp
+  - vb
+  name: RunningCount
+  nameWithType: SkiaImageManager.RunningCount
+  fullName: DrawnUi.Draw.SkiaImageManager.RunningCount
+  type: Property
+  source:
+    remote:
+      path: src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: RunningCount
+    path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+    startLine: 287
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Network image loads running now, at most <xref href="DrawnUi.Draw.SkiaImageManager.MaxParallelLoads" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public int RunningCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property RunningCount As Integer
+  overload: DrawnUi.Draw.SkiaImageManager.RunningCount*
+- uid: DrawnUi.Draw.SkiaImageManager.QueuedCount
+  commentId: P:DrawnUi.Draw.SkiaImageManager.QueuedCount
+  id: QueuedCount
+  parent: DrawnUi.Draw.SkiaImageManager
+  langs:
+  - csharp
+  - vb
+  name: QueuedCount
+  nameWithType: SkiaImageManager.QueuedCount
+  fullName: DrawnUi.Draw.SkiaImageManager.QueuedCount
+  type: Property
+  source:
+    remote:
+      path: src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: QueuedCount
+    path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+    startLine: 292
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: 'Image loads not started yet: waiting in the queue or for a free network slot.'
+  example: []
+  syntax:
+    content: public int QueuedCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property QueuedCount As Integer
+  overload: DrawnUi.Draw.SkiaImageManager.QueuedCount*
 - uid: DrawnUi.Draw.SkiaImageManager.IsLoadingLocked
   commentId: P:DrawnUi.Draw.SkiaImageManager.IsLoadingLocked
   id: IsLoadingLocked
@@ -526,7 +673,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsLoadingLocked
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 271
+    startLine: 304
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -555,7 +702,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CancelAll
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 284
+    startLine: 317
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -581,7 +728,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadImageAsync
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 348
+    startLine: 387
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -619,7 +766,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadImageManagedAsync
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 359
+    startLine: 398
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -659,7 +806,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadImageOnPlatformAsync
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 468
+    startLine: 507
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -692,7 +839,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisposed
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 690
+    startLine: 729
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -721,7 +868,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateInCache
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 787
+    startLine: 827
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -757,7 +904,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddToCache
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 802
+    startLine: 842
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -782,6 +929,42 @@ items:
   nameWithType.vb: SkiaImageManager.AddToCache(String, SKBitmap, Integer)
   fullName.vb: DrawnUi.Draw.SkiaImageManager.AddToCache(String, SkiaSharp.SKBitmap, Integer)
   name.vb: AddToCache(String, SKBitmap, Integer)
+- uid: DrawnUi.Draw.SkiaImageManager.RemoveFromCache(System.String)
+  commentId: M:DrawnUi.Draw.SkiaImageManager.RemoveFromCache(System.String)
+  id: RemoveFromCache(System.String)
+  parent: DrawnUi.Draw.SkiaImageManager
+  langs:
+  - csharp
+  - vb
+  name: RemoveFromCache(string)
+  nameWithType: SkiaImageManager.RemoveFromCache(string)
+  fullName: DrawnUi.Draw.SkiaImageManager.RemoveFromCache(string)
+  type: Method
+  source:
+    remote:
+      path: src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: RemoveFromCache
+    path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+    startLine: 855
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Drops the image from the cache, so the next load reads it again. Returns false when it was not cached.
+  example: []
+  syntax:
+    content: public bool RemoveFromCache(string uri)
+    parameters:
+    - id: uri
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function RemoveFromCache(uri As String) As Boolean
+  overload: DrawnUi.Draw.SkiaImageManager.RemoveFromCache*
+  nameWithType.vb: SkiaImageManager.RemoveFromCache(String)
+  fullName.vb: DrawnUi.Draw.SkiaImageManager.RemoveFromCache(String)
+  name.vb: RemoveFromCache(String)
 - uid: DrawnUi.Draw.SkiaImageManager.GetFromCache(System.String)
   commentId: M:DrawnUi.Draw.SkiaImageManager.GetFromCache(System.String)
   id: GetFromCache(System.String)
@@ -800,7 +983,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetFromCache
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 817
+    startLine: 873
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -838,7 +1021,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetFromCacheInternal
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 830
+    startLine: 886
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -876,10 +1059,12 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Preload
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 840
+    startLine: 899
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: Loads the image into the cache at <xref href="DrawnUi.Draw.LoadPriority.Low" data-throw-if-not-resolved="false"></xref>.
+  example: []
   syntax:
     content: public Task Preload(ImageSource source, CancellationTokenSource cts)
     parameters:
@@ -890,6 +1075,43 @@ items:
     return:
       type: System.Threading.Tasks.Task
     content.vb: Public Function Preload(source As ImageSource, cts As CancellationTokenSource) As Task
+  overload: DrawnUi.Draw.SkiaImageManager.Preload*
+- uid: DrawnUi.Draw.SkiaImageManager.Preload(Microsoft.Maui.Controls.ImageSource,System.Threading.CancellationTokenSource,DrawnUi.Draw.LoadPriority)
+  commentId: M:DrawnUi.Draw.SkiaImageManager.Preload(Microsoft.Maui.Controls.ImageSource,System.Threading.CancellationTokenSource,DrawnUi.Draw.LoadPriority)
+  id: Preload(Microsoft.Maui.Controls.ImageSource,System.Threading.CancellationTokenSource,DrawnUi.Draw.LoadPriority)
+  parent: DrawnUi.Draw.SkiaImageManager
+  langs:
+  - csharp
+  - vb
+  name: Preload(ImageSource, CancellationTokenSource, LoadPriority)
+  nameWithType: SkiaImageManager.Preload(ImageSource, CancellationTokenSource, LoadPriority)
+  fullName: DrawnUi.Draw.SkiaImageManager.Preload(Microsoft.Maui.Controls.ImageSource, System.Threading.CancellationTokenSource, DrawnUi.Draw.LoadPriority)
+  type: Method
+  source:
+    remote:
+      path: src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Preload
+    path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+    startLine: 904
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Loads the image into the cache at the given priority.
+  example: []
+  syntax:
+    content: public Task Preload(ImageSource source, CancellationTokenSource cts, LoadPriority priority)
+    parameters:
+    - id: source
+      type: Microsoft.Maui.Controls.ImageSource
+    - id: cts
+      type: System.Threading.CancellationTokenSource
+    - id: priority
+      type: DrawnUi.Draw.LoadPriority
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function Preload(source As ImageSource, cts As CancellationTokenSource, priority As LoadPriority) As Task
   overload: DrawnUi.Draw.SkiaImageManager.Preload*
 - uid: DrawnUi.Draw.SkiaImageManager.GetUriFromImageSource(Microsoft.Maui.Controls.ImageSource)
   commentId: M:DrawnUi.Draw.SkiaImageManager.GetUriFromImageSource(Microsoft.Maui.Controls.ImageSource)
@@ -909,7 +1131,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetUriFromImageSource
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 880
+    startLine: 947
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -940,7 +1162,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 901
+    startLine: 968
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -970,7 +1192,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsOffline
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 910
+    startLine: 975
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -999,7 +1221,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadFromFile
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 924
+    startLine: 989
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1035,7 +1257,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OpenStreamAsync
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 994
+    startLine: 1061
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1078,7 +1300,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnableHttpRetry
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 1019
+    startLine: 1086
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1112,7 +1334,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HttpRetryMaxAttempts
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 1026
+    startLine: 1093
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1144,7 +1366,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadImageFromInternetAsync
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 1028
+    startLine: 1095
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1659,6 +1881,12 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
+- uid: DrawnUi.Draw.LoadPriority.Low
+  commentId: F:DrawnUi.Draw.LoadPriority.Low
+  href: DrawnUi.Draw.LoadPriority.html#DrawnUi_Draw_LoadPriority_Low
+  name: Low
+  nameWithType: LoadPriority.Low
+  fullName: DrawnUi.Draw.LoadPriority.Low
 - uid: DrawnUi.Draw.SkiaImageManager.PreloadImages*
   commentId: Overload:DrawnUi.Draw.SkiaImageManager.PreloadImages
   href: DrawnUi.Draw.SkiaImageManager.html#DrawnUi_Draw_SkiaImageManager_PreloadImages_System_Collections_Generic_IList_System_String__System_Threading_CancellationTokenSource_
@@ -1765,6 +1993,19 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: DrawnUi.Draw.SkiaImageManager.MaxParallelLoads
+  commentId: P:DrawnUi.Draw.SkiaImageManager.MaxParallelLoads
+  href: DrawnUi.Draw.SkiaImageManager.html#DrawnUi_Draw_SkiaImageManager_MaxParallelLoads
+  name: MaxParallelLoads
+  nameWithType: SkiaImageManager.MaxParallelLoads
+  fullName: DrawnUi.Draw.SkiaImageManager.MaxParallelLoads
+- uid: DrawnUi.Draw.LoadPriority
+  commentId: T:DrawnUi.Draw.LoadPriority
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.LoadPriority.html
+  name: LoadPriority
+  nameWithType: LoadPriority
+  fullName: DrawnUi.Draw.LoadPriority
 - uid: DrawnUi.Draw.SkiaImageManager.PreloadBanners*
   commentId: Overload:DrawnUi.Draw.SkiaImageManager.PreloadBanners
   href: DrawnUi.Draw.SkiaImageManager.html#DrawnUi_Draw_SkiaImageManager_PreloadBanners__1_System_Collections_Generic_IList___0__System_Threading_CancellationTokenSource_
@@ -1864,6 +2105,24 @@ references:
   nameWithType.vb: SkiaImageManager.New
   fullName.vb: DrawnUi.Draw.SkiaImageManager.New
   name.vb: New
+- uid: DrawnUi.Draw.SkiaImageManager.MaxParallelLoads*
+  commentId: Overload:DrawnUi.Draw.SkiaImageManager.MaxParallelLoads
+  href: DrawnUi.Draw.SkiaImageManager.html#DrawnUi_Draw_SkiaImageManager_MaxParallelLoads
+  name: MaxParallelLoads
+  nameWithType: SkiaImageManager.MaxParallelLoads
+  fullName: DrawnUi.Draw.SkiaImageManager.MaxParallelLoads
+- uid: DrawnUi.Draw.SkiaImageManager.RunningCount*
+  commentId: Overload:DrawnUi.Draw.SkiaImageManager.RunningCount
+  href: DrawnUi.Draw.SkiaImageManager.html#DrawnUi_Draw_SkiaImageManager_RunningCount
+  name: RunningCount
+  nameWithType: SkiaImageManager.RunningCount
+  fullName: DrawnUi.Draw.SkiaImageManager.RunningCount
+- uid: DrawnUi.Draw.SkiaImageManager.QueuedCount*
+  commentId: Overload:DrawnUi.Draw.SkiaImageManager.QueuedCount
+  href: DrawnUi.Draw.SkiaImageManager.html#DrawnUi_Draw_SkiaImageManager_QueuedCount
+  name: QueuedCount
+  nameWithType: SkiaImageManager.QueuedCount
+  fullName: DrawnUi.Draw.SkiaImageManager.QueuedCount
 - uid: DrawnUi.Draw.SkiaImageManager.IsLoadingLocked*
   commentId: Overload:DrawnUi.Draw.SkiaImageManager.IsLoadingLocked
   href: DrawnUi.Draw.SkiaImageManager.html#DrawnUi_Draw_SkiaImageManager_IsLoadingLocked
@@ -1959,13 +2218,6 @@ references:
   name: LoadImageManagedAsync
   nameWithType: SkiaImageManager.LoadImageManagedAsync
   fullName: DrawnUi.Draw.SkiaImageManager.LoadImageManagedAsync
-- uid: DrawnUi.Draw.LoadPriority
-  commentId: T:DrawnUi.Draw.LoadPriority
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.LoadPriority.html
-  name: LoadPriority
-  nameWithType: LoadPriority
-  fullName: DrawnUi.Draw.LoadPriority
 - uid: DrawnUi.Draw.SkiaImageManager.LoadImageOnPlatformAsync*
   commentId: Overload:DrawnUi.Draw.SkiaImageManager.LoadImageOnPlatformAsync
   href: DrawnUi.Draw.SkiaImageManager.html#DrawnUi_Draw_SkiaImageManager_LoadImageOnPlatformAsync_Microsoft_Maui_Controls_ImageSource_System_Threading_CancellationToken_
@@ -2005,6 +2257,12 @@ references:
   name: AddToCache
   nameWithType: SkiaImageManager.AddToCache
   fullName: DrawnUi.Draw.SkiaImageManager.AddToCache
+- uid: DrawnUi.Draw.SkiaImageManager.RemoveFromCache*
+  commentId: Overload:DrawnUi.Draw.SkiaImageManager.RemoveFromCache
+  href: DrawnUi.Draw.SkiaImageManager.html#DrawnUi_Draw_SkiaImageManager_RemoveFromCache_System_String_
+  name: RemoveFromCache
+  nameWithType: SkiaImageManager.RemoveFromCache
+  fullName: DrawnUi.Draw.SkiaImageManager.RemoveFromCache
 - uid: DrawnUi.Draw.SkiaImageManager.GetFromCache*
   commentId: Overload:DrawnUi.Draw.SkiaImageManager.GetFromCache
   href: DrawnUi.Draw.SkiaImageManager.html#DrawnUi_Draw_SkiaImageManager_GetFromCache_System_String_

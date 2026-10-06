@@ -71,7 +71,7 @@ namespace DrawnUi.Views
 
         public virtual bool Focus() => true;
 
-        public void OnGestureEvent(TouchActionType type, TouchActionEventArgs args, TouchActionResult action)
+        public override void OnGestureEvent(TouchActionType type, TouchActionEventArgs args, TouchActionResult action)
             => HandleNetGestureEvent(type, args, action);
 
         public bool InputTransparent => false;

@@ -88,7 +88,11 @@ namespace DrawnUi.Views
             host.A11yGetOrigin = getOrigin;
             host.A11yGetScale  = () => (float)RenderingScale;
             AccessibilityManager.Changed          += OnA11ySnapshotChanged;
+            AccessibilityManager.RebuildSkipped   -= OnA11yRebuildSkipped;
+            AccessibilityManager.RebuildSkipped   += OnA11yRebuildSkipped;
             AccessibilityManager.FocusChanged     += OnA11yFocusChanged;
+            AccessibilityManager.ReaderRefocusRequested -= OnA11yReaderRefocus;
+            AccessibilityManager.ReaderRefocusRequested += OnA11yReaderRefocus;
             AccessibilityManager.LiveRegionUpdated += OnA11yLiveRegionUpdated;
 
             // Eagerly create the automation peer so A11yPeer is set before any AT client
@@ -125,6 +129,19 @@ namespace DrawnUi.Views
                 _outerElem.GotFocus  += OnOuterGotFocus;
                 _outerElem.LostFocus -= OnOuterLostFocus;
                 _outerElem.LostFocus += OnOuterLostFocus;
+            }
+
+            // Context requests on the OUTER element: the gestures layer captures the pointer on it at press, so a right
+            // click's request starts there and bubbles up, never down to the canvas element; a keyboard request (Menu
+            // key, Shift+F10) starts at the focused canvas element and bubbles up to it too. One handler sees both.
+            var contextElem = _outerElem ?? canvasElem;
+            if (contextElem != null)
+            {
+                contextElem.ContextRequested -= OnCanvasContextRequested;
+                contextElem.ContextRequested += OnCanvasContextRequested;
+                _pointerKindHandler ??= OnCanvasPointerPressedKind;
+                contextElem.RemoveHandler(UIElement.PointerPressedEvent, _pointerKindHandler);
+                contextElem.AddHandler(UIElement.PointerPressedEvent, _pointerKindHandler, true); // also when the gestures layer handled it
             }
 
             // Snapshot may already have elements — force a rebuild on next frame
@@ -197,6 +214,64 @@ namespace DrawnUi.Views
                 current = VisualTreeHelper.GetParent(current);
             }
             return false;
+        }
+
+        private Microsoft.UI.Xaml.Input.PointerEventHandler _pointerKindHandler;
+        private AppoMobi.Gestures.PointerDeviceType _lastPointerDevice = AppoMobi.Gestures.PointerDeviceType.Mouse;
+
+        private void OnCanvasPointerPressedKind(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            _lastPointerDevice = e.Pointer.PointerDeviceType switch
+            {
+                Microsoft.UI.Input.PointerDeviceType.Touch => AppoMobi.Gestures.PointerDeviceType.Touch,
+                Microsoft.UI.Input.PointerDeviceType.Pen => AppoMobi.Gestures.PointerDeviceType.Pen,
+                _ => AppoMobi.Gestures.PointerDeviceType.Mouse,
+            };
+        }
+
+        /// <summary>
+        /// Right click, Shift+F10, the Menu key, touch or pen press-and-hold: routed to <c>SkiaControl.ContextMenu</c>
+        /// like a tap (deepest child first), as on WPF and the web heads. A right click still does what it did before;
+        /// the request is marked handled when a control took it. The keyboard aims at the node in keyboard focus.
+        /// </summary>
+        private void OnCanvasContextRequested(UIElement sender, Microsoft.UI.Xaml.Input.ContextRequestedEventArgs e)
+        {
+            var scale = RenderingScale;
+            AppoMobi.Gestures.PointerDeviceType? device = null;
+            System.Drawing.PointF location;
+            // positions in the canvas element's own space (the request may arrive on the outer wrapper)
+            if (e.TryGetPosition(GetCanvasPlatformElement() ?? sender, out var point))
+            {
+                location = new System.Drawing.PointF((float)point.X * scale, (float)point.Y * scale);
+                device = _lastPointerDevice;
+            }
+            else
+            {
+                var rect = (KeyboardFocusNode ?? AccessibilityManager.FocusedNode)?.GetAccessibilityPixelRect() ?? SKRect.Empty;
+                if (rect.IsEmpty)
+                    return; // keyboard request with no drawn node in focus: nothing to aim at
+                location = new System.Drawing.PointF(rect.MidX, rect.MidY);
+            }
+
+            var args = new AppoMobi.Gestures.TouchActionEventArgs(0, AppoMobi.Gestures.TouchActionType.ContextMenu, location, null, scale)
+            {
+                IsInsideView = true,
+                StartingLocation = location,
+            };
+            if (device.HasValue) // no pointer = keyboard: that is how SkiaControl derives ContextMenuSource
+            {
+                args.Pointer = new AppoMobi.Gestures.PointerData
+                {
+                    Button = AppoMobi.Gestures.MouseButton.Right,
+                    ButtonNumber = 2,
+                    State = AppoMobi.Gestures.MouseButtonState.Released,
+                    DeviceType = device.Value,
+                };
+            }
+
+            OnGestureEvent(AppoMobi.Gestures.TouchActionType.ContextMenu, args, AppoMobi.Gestures.TouchActionResult.ContextMenu);
+            if (args.Handled)
+                e.Handled = true;
         }
 
         private void OnCanvasKeyDown(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
@@ -363,8 +438,18 @@ namespace DrawnUi.Views
         private Microsoft.UI.Xaml.FrameworkElement? GetCanvasPlatformElement()
             => (CanvasView as View)?.Handler?.PlatformView as Microsoft.UI.Xaml.FrameworkElement;
 
+        // Narrator follows UI Automation focus: the node in focus is the reader's node; when a rebuild drops it (its page
+        // closed), focus moves to the first node that says something instead of staying on an empty spot
+        private void OnA11yReaderRefocus(AccessibilityNode next)
+        {
+            var source = next.Source;
+            if (source != null)
+                MainThread.BeginInvokeOnMainThread(() => AccessibilityManager.NotifyFocused(source));
+        }
+
         private void OnA11yFocusChanged(DrawnUi.Draw.ISkiaAccessibilityNode? focused)
         {
+            AccessibilityManager.NotifyReaderFocused(focused);
             var host = _a11yHost;
             if (host == null) return;
             MainThread.BeginInvokeOnMainThread(() =>
@@ -392,6 +477,22 @@ namespace DrawnUi.Views
 
                 peer?.NotifyFocusChanged(focused);
             });
+        }
+
+        private System.Threading.Timer _a11yRefresh;
+
+        /// <summary>
+        /// The snapshot went stale inside its rebuild interval: rebuild it once the interval is over, even when no frame
+        /// comes (the canvas went idle after a page opened), so Narrator and Tab never keep the previous page's nodes.
+        /// A one-shot timer and the rebuild itself, never a frame; the rebuild is serialized with the render thread's.
+        /// </summary>
+        private void OnA11yRebuildSkipped(long remainingMs)
+        {
+            var due = Math.Max(1, remainingMs) + 16;
+            if (_a11yRefresh == null)
+                _a11yRefresh = new System.Threading.Timer(_ => AccessibilityManager.RefreshIfStale(RenderingScale), null, due, System.Threading.Timeout.Infinite);
+            else
+                _a11yRefresh.Change(due, System.Threading.Timeout.Infinite);
         }
 
         private void OnA11ySnapshotChanged()
@@ -450,7 +551,11 @@ namespace DrawnUi.Views
         private void TeardownWindowsAccessibility()
         {
             AccessibilityManager.Changed          -= OnA11ySnapshotChanged;
+            AccessibilityManager.RebuildSkipped   -= OnA11yRebuildSkipped;
+            _a11yRefresh?.Dispose();
+            _a11yRefresh = null;
             AccessibilityManager.FocusChanged     -= OnA11yFocusChanged;
+            AccessibilityManager.ReaderRefocusRequested -= OnA11yReaderRefocus;
             AccessibilityManager.LiveRegionUpdated -= OnA11yLiveRegionUpdated;
             var canvasElem = GetCanvasPlatformElement();
             if (canvasElem != null)

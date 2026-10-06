@@ -150,7 +150,7 @@ Touch is handled natively, one pointer per finger, so pinch and rotate reach the
 
 ## Accessibility
 
-Every node of the engine's accessibility snapshot is exposed as a UI Automation peer under the canvas pane, with role, name, help text, Invoke and Toggle patterns and live regions. Tab and Shift+Tab walk the interactive nodes with a focus ring drawn on the canvas, and the focused control scrolls into view. Enter or Space activates, the arrow keys step sliders and move inside list groups, Escape leaves. Moving the mouse out of the element ends hover. See [Accessibility](../advanced/accessibility.md).
+Every node of the engine's accessibility snapshot is exposed as a UI Automation peer under the canvas pane, with role, name, help text, orientation, the Invoke, Toggle, RangeValue, Value and ScrollItem patterns, and live regions. A control that takes no input reads as disabled. Tab and Shift+Tab walk the interactive nodes with a focus ring drawn on the canvas, and the focused control scrolls into view. Enter or Space activates, the arrow keys step sliders and move inside list groups, Escape leaves. Moving the mouse out of the element ends hover. See [Accessibility](../advanced/accessibility.md).
 
 ---
 
@@ -166,7 +166,7 @@ C# Hot Reload works under Visual Studio, Rider and `dotnet watch`: after an edit
 dotnet add package DrawnUi.Wpf.Game
 ```
 
-`DrawnUi.Wpf.Game` is the game addon for this head, the same `DrawnGame` base class as `DrawnUi.Maui.Game`, `DrawnUi.OpenTk.Game`, `DrawnUi.Blazor.Game` and `DrawnUi.Wasm.Game`: a fixed-step game loop with a frame-time interpolator, keyboard state through `KeyboardManager`, pause and resume. A game written against it is shared source between the heads.
+`DrawnUi.Wpf.Game` is the game addon for this head, the same `DrawnGame` base class as `DrawnUi.Maui.Game`, `DrawnUi.OpenTk.Game`, `DrawnUi.Blazor.Game` and `DrawnUi.Web.Game`: a fixed-step game loop with a frame-time interpolator, keyboard state through `KeyboardManager`, pause and resume. A game written against it is shared source between the heads.
 
 A game usually wants a fixed logical viewport that scales with the window and keeps its aspect ratio. That is a `Canvas` subclass (`RescalingCanvas` in the Pong sample), and the element hosts one through its factory constructor:
 

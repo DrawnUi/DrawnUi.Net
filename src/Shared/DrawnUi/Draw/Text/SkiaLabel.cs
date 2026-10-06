@@ -99,6 +99,12 @@ namespace DrawnUi.Draw
                 }
             }
 
+            DisposeFallbackRuns();
+
+            AttachSelectionKeys(false);
+            _selectionPaint?.Dispose();
+            _selectionPaint = null;
+
             CleanAllocations();
 
             base.OnDisposing();
@@ -245,7 +251,7 @@ namespace DrawnUi.Draw
         /// &lt;draw:SkiaLabel&gt;
         ///     &lt;draw:SkiaLabel.Spans&gt;
         ///         &lt;draw:TextSpan Text="This is " /&gt;
-        ///         &lt;draw:TextSpan Text="bold" FontAttributes="Bold" TextColor="Red" /&gt;
+        ///         &lt;draw:TextSpan Text="bold" IsBold="True" TextColor="Red" /&gt;
         ///         &lt;draw:TextSpan Text=" text" /&gt;
         ///     &lt;/draw:SkiaLabel.Spans&gt;
         /// &lt;/draw:SkiaLabel&gt;
@@ -350,7 +356,16 @@ namespace DrawnUi.Draw
                 }
 
                 if (Lines != null)
+                {
                     DrawLines(ctx.WithDestination(rectForChildren), PaintDefault, FontDefault, SKPoint.Empty, Lines);
+
+                    if (AccessibilityTextSelectable)
+                    {
+                        _linesOrigin = new SKPoint(ctx.Destination.Left, ctx.Destination.Top);
+                        if (_selectionLength > 0)
+                            DrawTextSelection(ctx);
+                    }
+                }
             }
         }
 
@@ -1121,25 +1136,32 @@ namespace DrawnUi.Draw
 
                     UpdateFontMetrics(PaintDefault, FontDefault);
 
-                    if (Spans.Count == 0)
+                    if (Spans.Count == 0
+                        && (GliphsInvalidated || _fallbackRuns != null && _fallbackRunsCharacter != FallbackCharacter))
+                    {
+                        if (GliphsInvalidated)
+                            Glyphs = GetGlyphs(TextInternal, FontDefault.Typeface);
+                        BuildFallbackRuns();
+                    }
+
+                    var layoutSpans = Spans.Count > 0 ? (IList<TextSpan>)Spans : _fallbackRuns;
+
+                    if (layoutSpans == null)
                     {
                         bool needsShaping = false;
                         string text = null;
-
-                        if (GliphsInvalidated)
-                        {
-                            Glyphs = GetGlyphs(TextInternal, FontDefault.Typeface);
-                        }
 
                         if (AutoFont && Glyphs != null && Glyphs.Count > 0)
                         {
                             var first = Glyphs[0].Symbol;
                             SKTypeface matchedFace = null;
-                            if (TypeFaceFallback != null)
+                            foreach (var fallback in TypeFaceFallbacks)
                             {
-                                var fallbackGlyph = GetGlyphs(char.ConvertFromUtf32(first), TypeFaceFallback).First();
-                                if (fallbackGlyph.IsAvailable)
-                                    matchedFace = TypeFaceFallback;
+                                if (GetGlyphs(char.ConvertFromUtf32(first), fallback).First().IsAvailable)
+                                {
+                                    matchedFace = fallback;
+                                    break;
+                                }
                             }
                             matchedFace ??= SkiaFontManager.MatchCharacter(first);
                             if (matchedFace != null)
@@ -1197,9 +1219,9 @@ namespace DrawnUi.Draw
                         TextLine previousSpanLastLine = null;
 
                         // Instead of Spans.ToList(), iterate directly:
-                        for (int i = 0; i < Spans.Count; i++)
+                        for (int i = 0; i < layoutSpans.Count; i++)
                         {
-                            var span = Spans[i];
+                            var span = layoutSpans[i];
                             if (string.IsNullOrEmpty(span.Text))
                                 continue;
 
@@ -1257,7 +1279,7 @@ namespace DrawnUi.Draw
 
                         // Last sanity pass if we don't keep spaces on line breaks
                         int totalLines = mergedLines.Count;
-                        if (!KeepSpacesOnLineBreaks && Spans.Count > 0 && totalLines > 1)
+                        if (!KeepSpacesOnLineBreaks && totalLines > 1)
                         {
                             // Avoid LINQ .Count(), use Count property
                             for (int i = 0; i < totalLines - 1; i++) // do not process last line
@@ -1391,7 +1413,7 @@ namespace DrawnUi.Draw
         private Dictionary<WordKey, float>? _wordCache;
 
         private bool IsComplexMeasuring =>
-            Spans.Count > 0 ||
+            Spans.Count > 0 || _fallbackRuns != null ||
             CharacterSpacing != 1f ||
             HorizontalTextAlignment == DrawTextAlignment.FillWordsFull ||
             HorizontalTextAlignment == DrawTextAlignment.FillCharactersFull ||
@@ -1549,7 +1571,7 @@ namespace DrawnUi.Draw
             // Check if we need character spacing or alignment adjustments
             bool requiresComplexMeasuring =
                 NeedsGlyphPositions ||
-                Spans.Count > 0 ||
+                Spans.Count > 0 || _fallbackRuns != null ||
                 CharacterSpacing != 1f ||
                 HorizontalTextAlignment == DrawTextAlignment.FillWordsFull ||
                 HorizontalTextAlignment == DrawTextAlignment.FillCharactersFull ||
@@ -1840,6 +1862,36 @@ namespace DrawnUi.Draw
                     width = 0;
                 }
 
+                // largest index after 'from' where text may break (CJK) and text[..index] still fits, -1 when none fits
+                int FitAtBreak(string text, int from, float limit)
+                {
+                    var breaks = new List<int>();
+                    for (var i = from + 1; i < text.Length; i++)
+                    {
+                        if (CanBreakInsideWord(text, i))
+                            breaks.Add(i);
+                    }
+
+                    var best = -1;
+                    int lo = 0, hi = breaks.Count - 1;
+                    while (lo <= hi)
+                    {
+                        var mid = (lo + hi) / 2;
+                        var fitsWidth = MeasureLineGlyphsProbe(paint, font, text.Substring(0, breaks[mid]), needsShaping, scale).Width;
+                        if (fitsWidth - limit > 1)
+                        {
+                            hi = mid - 1;
+                        }
+                        else
+                        {
+                            best = breaks[mid];
+                            lo = mid + 1;
+                        }
+                    }
+
+                    return best;
+                }
+
                 void AddEmptyLineInternal()
                 {
                     totalHeight = AddEmptyLine(result, span, totalHeight, MeasuredLineHeight,
@@ -1905,6 +1957,21 @@ namespace DrawnUi.Draw
                         //need break word,
                         if (severalWords && LineBreakMode != LineBreakMode.NoWrap)
                         {
+                            // Chinese / Japanese have no spaces: the word fills the rest of the line up to its last
+                            // break opportunity that fits, the remainder goes to the next line
+                            var joined = textLine.Length - word.Length;
+                            var fitsJoined = HasCjk(word) ? FitAtBreak(textLine, joined, limitWidth) : -1;
+                            if (fitsJoined > joined)
+                            {
+                                if (!AddLine(textLine.Substring(0, fitsJoined), textLine))
+                                {
+                                    break; //was last allowed line
+                                }
+
+                                PostponeToNextLine(textLine.Substring(fitsJoined));
+                                continue;
+                            }
+
                             //cannot add this word
                             if (!AddLine(lineResult, textLine))
                             {
@@ -1915,10 +1982,25 @@ namespace DrawnUi.Draw
                             continue;
                         }
 
-                        if (LineBreakMode == LineBreakMode.WordWrap || LineBreakMode == LineBreakMode.NoWrap)
+                        if (LineBreakMode == LineBreakMode.NoWrap)
                         {
                             //silly add
                             AddLine(textLine);
+                            continue;
+                        }
+
+                        // a word wider than the line: Chinese / Japanese break at the last opportunity that fits;
+                        // other words (a long URL) fall through to the break by characters below, WordWrap
+                        // included (CSS overflow-wrap: break-word)
+                        var fitsAlone = HasCjk(textLine) ? FitAtBreak(textLine, 0, limitWidth) : -1;
+                        if (fitsAlone > 0)
+                        {
+                            if (!AddLine(textLine.Substring(0, fitsAlone), textLine))
+                            {
+                                break; //was last allowed line
+                            }
+
+                            PostponeToNextLine(textLine.Substring(fitsAlone));
                             continue;
                         }
 
@@ -2066,6 +2148,64 @@ namespace DrawnUi.Draw
             return ret;
         }
 
+        // a line never starts with these (closing punctuation, small kana, the long vowel mark): JIS X 4051 kinsoku
+        const string NoBreakBefore = "、。，．・：；？！゛゜ヽヾゝゞ々〻ー」』）〕］｝〉》】〗〙〟｠»’”‐゠–〜～ぁぃぅぇぉっゃゅょゎゕゖァィゥェォッャュョヮヵヶㇰㇱㇲㇳㇴㇵㇶㇷㇸㇹㇺㇻㇼㇽㇾㇿ｡｣､･ｰｧｨｩｪｫｬｭｮｯ)]},.!?:;%";
+
+        // a line never ends with these (opening brackets and quotes)
+        const string NoBreakAfter = "「『（〔［｛〈《【〖〘〝｟«‘“｢([{";
+
+        /// <summary>
+        /// Whether a line may break between <paramref name="text"/>[index - 1] and [index] inside a space-free run:
+        /// next to a Chinese or Japanese character (ideographs, kana, CJK punctuation, full-width forms), never before
+        /// closing punctuation, small kana or the long vowel mark, never after an opening bracket, never inside a
+        /// surrogate pair. Korean keeps breaking at spaces only.
+        /// </summary>
+        public static bool CanBreakInsideWord(string text, int index)
+        {
+            if (index <= 0 || index >= text.Length)
+                return false;
+
+            var before = text[index - 1];
+            var after = text[index];
+            if (char.IsHighSurrogate(before) || char.IsLowSurrogate(after))
+                return false;
+
+            if (!IsCjkAt(text, index - 1) && !IsCjkAt(text, index))
+                return false;
+
+            return NoBreakBefore.IndexOf(after) < 0 && NoBreakAfter.IndexOf(before) < 0;
+        }
+
+        /// <summary>True when the text holds a Chinese or Japanese character, so it has break opportunities without spaces.</summary>
+        public static bool HasCjk(string text)
+        {
+            for (var i = 0; i < text.Length; i++)
+            {
+                if (IsCjkAt(text, i))
+                    return true;
+            }
+
+            return false;
+        }
+
+        static bool IsCjkAt(string text, int i)
+        {
+            var c = text[i];
+            int cp = c;
+            if (char.IsHighSurrogate(c) && i + 1 < text.Length && char.IsLowSurrogate(text[i + 1]))
+                cp = char.ConvertToUtf32(c, text[i + 1]);
+            else if (char.IsLowSurrogate(c) && i > 0 && char.IsHighSurrogate(text[i - 1]))
+                cp = char.ConvertToUtf32(text[i - 1], c);
+
+            return cp >= 0x3000 && cp <= 0x312F     // CJK punctuation, hiragana, katakana, bopomofo
+                   || cp >= 0x3190 && cp <= 0x33FF  // kanbun, strokes, katakana extension, enclosed and compatibility
+                   || cp >= 0x3400 && cp <= 0x4DBF  // ideographs extension A
+                   || cp >= 0x4E00 && cp <= 0x9FFF  // ideographs
+                   || cp >= 0xF900 && cp <= 0xFAFF  // compatibility ideographs
+                   || cp >= 0xFF00 && cp <= 0xFFEF  // full-width and half-width forms
+                   || cp >= 0x20000 && cp <= 0x3FFFF; // ideographs extensions B and later
+        }
+
         List<string> SplitLineToWords(string line, char space)
         {
             if (line == space.ToString())
@@ -2126,6 +2266,7 @@ namespace DrawnUi.Draw
             DecomposedText decomposedText = null;
             var autosize = this.AutoSize;
             var autoSizeFontStep = 0.1f;
+            bool grew = false, shrankAfterGrowing = false;
 
             if (UsingFontSize > 0 &&
                 (AutoSize == AutoSizeType.FitFillHorizontal || AutoSize == AutoSizeType.FitFillVertical))
@@ -2150,8 +2291,12 @@ namespace DrawnUi.Draw
 
                 if (autosize != AutoSizeType.None && maxWidth > 0 && maxHeight > 0)
                 {
+                    // fit the width: every paragraph on one line, nothing cut, and no line wider than the box
+                    // (NoWrap keeps an overflowing line whole, so the line count alone never saw it).
+                    // 1px tolerance, same as the word wrap.
                     if ((AutoSize == AutoSizeType.FitHorizontal || AutoSize == AutoSizeType.FitFillHorizontal)
-                        && (decomposedText.CountParagraphs != decomposedText.Lines.Length || decomposedText.WasCut))
+                        && (decomposedText.CountParagraphs != decomposedText.Lines.Length || decomposedText.WasCut
+                            || decomposedText.HasMoreHorizontalSpace < -1))
                     {
                         autosize = AutoSizeType.FitHorizontal;
                     }
@@ -2175,8 +2320,17 @@ namespace DrawnUi.Draw
                         autosize = AutoSizeType.None;
                     }
 
+                    // FitFill modes: once the font had to shrink back after growing, the size that fits is final.
+                    // Growing again alternated forever when growing made the text wrap past MaxLines (cut, shrink,
+                    // room again, grow...), holding the label lock that every label shares.
+                    if (shrankAfterGrowing && (autosize == AutoSizeType.FillVertical || autosize == AutoSizeType.FillHorizontal))
+                    {
+                        autosize = AutoSizeType.None;
+                    }
+
                     if (autosize == AutoSizeType.FitVertical || autosize == AutoSizeType.FitHorizontal)
                     {
+                        shrankAfterGrowing |= grew;
                         if (font.Size == 0)
                         {
                             //wtf just happened
@@ -2193,6 +2347,7 @@ namespace DrawnUi.Draw
                     }
                     else if (autosize == AutoSizeType.FillVertical || autosize == AutoSizeType.FillHorizontal)
                     {
+                        grew = true;
                         font.Size += autoSizeFontStep;
                         UpdateFontMetrics(PaintDefault, FontDefault);
                     }
@@ -2228,6 +2383,15 @@ namespace DrawnUi.Draw
 
             IsCut = decomposedText.WasCut;
             UsingFontSize = font.Size;
+
+            if (ReferenceEquals(font, FontDefault))
+            {
+                // AutoSize resizes FontDefault behind the SetupDefaultPaint guard: record the real size so the
+                // next measure resets it to FontSize. Without this the Fit and Fill modes started from their last
+                // size, so FitHorizontal never grew back for a shorter text or a wider box (FitFill modes restart
+                // from UsingFontSize on purpose and are not affected).
+                _fontDefaultSize = (float)UsingFontSize;
+            }
 
             return decomposedText.Lines;
         }
@@ -2919,18 +3083,159 @@ namespace DrawnUi.Draw
 
         protected string _fontFamily;
         protected string _fontFamilyFallback;
+
+        /// <summary>
+        /// The first font of <see cref="FontFamilyFallback"/>, null when none is set.
+        /// </summary>
         protected SKTypeface TypeFaceFallback;
+
+        /// <summary>
+        /// The fonts of <see cref="FontFamilyFallback"/>, in the order they are tried.
+        /// </summary>
+        protected SKTypeface[] TypeFaceFallbacks = Array.Empty<SKTypeface>();
 
         public static readonly BindableProperty FontFamilyFallbackProperty = BindableProperty.Create(nameof(FontFamilyFallback),
             typeof(string), typeof(SkiaLabel), string.Empty, propertyChanged: NeedUpdateFont);
 
         /// <summary>
-        /// When a glyph is not found in the current font will try this first before asking system to match a compatible font.
+        /// Fonts for the glyphs the label's own font does not have: one alias, or several separated by commas,
+        /// tried in order ("FontSymbols, FontEmoji"). A plain label draws each missing glyph with the first of them
+        /// that has it, the rest of the text keeps its font; SkiaRichLabel tries them before asking the system.
+        /// With <see cref="AutoFont"/> the whole label switches to the font of its first glyph instead.
         /// </summary>
         public string FontFamilyFallback
         {
             get { return (string)GetValue(FontFamilyFallbackProperty); }
             set { SetValue(FontFamilyFallbackProperty, value); }
+        }
+
+        /// <summary>
+        /// Font runs of a plain label (no <see cref="Spans"/>) whose text has glyphs missing from its font that a
+        /// <see cref="FontFamilyFallback"/> font has: the label is laid out and drawn as these spans, each in the font
+        /// that has its glyphs. Null when every glyph is in the label's font or no fallback is set.
+        /// </summary>
+        List<TextSpan> _fallbackRuns;
+
+        char _fallbackRunsCharacter;
+
+        void DisposeFallbackRuns()
+        {
+            if (_fallbackRuns == null)
+                return;
+
+            foreach (var span in _fallbackRuns)
+                DisposeObject(span);
+            _fallbackRuns = null;
+        }
+
+        /// <summary>
+        /// Emoji sequence parts that must stay in the font of the glyph before them: joiner, variation selectors,
+        /// skin tones, keycap, tags.
+        /// </summary>
+        static bool JoinsPreviousGlyph(int symbol) =>
+            symbol == 0x200D || symbol == 0x20E3
+            || symbol >= 0xFE00 && symbol <= 0xFE0F
+            || symbol >= 0x1F3FB && symbol <= 0x1F3FF
+            || symbol >= 0xE0020 && symbol <= 0xE007F;
+
+        void BuildFallbackRuns()
+        {
+            DisposeFallbackRuns();
+
+            if (AutoFont || TypeFaceFallbacks.Length == 0 || Glyphs == null)
+                return;
+
+            var missing = false;
+            foreach (var glyph in Glyphs)
+            {
+                if (!glyph.IsAvailable)
+                {
+                    missing = true;
+                    break;
+                }
+            }
+
+            if (!missing)
+                return;
+
+            var text = TextInternal;
+            var mainFace = FontDefault.Typeface;
+            var fallbackGlyphs = new List<UsedGlyph>[TypeFaceFallbacks.Length];
+            for (var k = 0; k < fallbackGlyphs.Length; k++)
+                fallbackGlyphs[k] = GetGlyphs(text, TypeFaceFallbacks[k]);
+
+            var italic = (FontAttributes & FontAttributes.Italic) != 0;
+            var bold = (FontAttributes & FontAttributes.Bold) != 0;
+            var runs = new List<TextSpan>();
+            var sb = new StringBuilder();
+            SKTypeface runFace = null;
+            var runShape = false;
+
+            void Flush()
+            {
+                if (sb.Length == 0)
+                    return;
+
+                var span = new TextSpan
+                {
+                    Text = sb.ToString(),
+                    TypeFace = runFace,
+                    NeedShape = runShape,
+                    IsBold = bold,
+                    IsItalic = italic,
+                };
+                span.Parent = this; // last: the span reads FallbackCharacter from it
+                runs.Add(span);
+                sb.Clear();
+                runShape = false;
+            }
+
+            for (var i = 0; i < Glyphs.Count; i++)
+            {
+                var glyph = Glyphs[i];
+                var face = mainFace;
+                var replace = false;
+
+                if (runFace != null && runFace != mainFace && JoinsPreviousGlyph(glyph.Symbol))
+                {
+                    face = runFace;
+                }
+                else if (!glyph.IsAvailable)
+                {
+                    face = null;
+                    for (var k = 0; k < fallbackGlyphs.Length; k++)
+                    {
+                        if (i < fallbackGlyphs[k].Count && fallbackGlyphs[k][i].IsAvailable)
+                        {
+                            face = TypeFaceFallbacks[k];
+                            break;
+                        }
+                    }
+
+                    if (face == null)
+                    {
+                        face = mainFace;
+                        replace = true;
+                    }
+                }
+
+                if (face != runFace)
+                    Flush();
+                runFace = face;
+
+                if (replace)
+                    sb.Append(FallbackCharacter);
+                else
+                    sb.Append(glyph.GetGlyphText());
+
+                if (face != mainFace && UnicodeNeedsShaping(glyph.Symbol))
+                    runShape = true;
+            }
+
+            Flush();
+
+            _fallbackRuns = runs;
+            _fallbackRunsCharacter = FallbackCharacter;
         }
 
         protected virtual void UpdateFont()
@@ -2950,14 +3255,14 @@ namespace DrawnUi.Draw
                     _fontFamilyFallback = FontFamilyFallback;
                     _fontWeight = FontWeight;
 
-                    if (!string.IsNullOrEmpty(FontFamilyFallback))
-                    {
-                        TypeFaceFallback = SkiaFontManager.Instance.GetFont(FontFamilyFallback);
-                    }
-                    else
-                    {
-                        TypeFaceFallback = null;
-                    }
+                    TypeFaceFallbacks = string.IsNullOrEmpty(FontFamilyFallback)
+                        ? Array.Empty<SKTypeface>()
+                        : FontFamilyFallback
+                            .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+                            .Select(alias => SkiaFontManager.Instance.GetFont(alias))
+                            .Where(face => face != null)
+                            .ToArray();
+                    TypeFaceFallback = TypeFaceFallbacks.Length > 0 ? TypeFaceFallbacks[0] : null;
 
                     var replaceFont = SkiaFontManager.Instance.GetFont(_fontFamily, _fontWeight);
 
@@ -3410,27 +3715,24 @@ namespace DrawnUi.Draw
             propertyChanged: NeedInvalidateMeasure);
 
         /// <summary>
-        /// Gets or sets how the label automatically adjusts font size to fit available space.
+        /// Gets or sets how the label changes its font size to fit or fill its box.
         /// </summary>
         /// <remarks>
-        /// Available auto-sizing options:
-        /// 
-        /// - None (default): No auto-sizing, text uses the exact FontSize specified
-        /// - TextToWidth: Adjusts font size to fit the width of the label
-        /// - TextToHeight: Adjusts font size to fit the height of the label
-        /// - TextToView: Adjusts font size to fit both width and height of the label
-        /// 
-        /// When auto-sizing is enabled, the label will automatically reduce the font size
-        /// when necessary to make the text fit within the available space. The minimum
-        /// font size is determined by the AutoSizeText property.
-        /// 
-        /// This is useful for:
-        /// - Responsive layouts where available space may vary
-        /// - Dynamic text where length may change at runtime
-        /// - Ensuring text is fully visible within fixed space constraints
-        /// 
-        /// Note that auto-sizing can impact performance, especially with frequently 
-        /// changing text or container sizes.
+        /// - None (default): the font size is FontSize.
+        /// - FitHorizontal: shrinks the font until every paragraph fits the width on one line and nothing is cut;
+        ///   never above FontSize, and back to FontSize when the text gets shorter or the label wider.
+        /// - FitVertical: shrinks the font until the wrapped text is not cut by the height or MaxLines; never above FontSize.
+        /// - FillHorizontal: grows the font from FontSize while the widest line has room in the width.
+        /// - FillVertical: grows the font from FontSize while there is room for another line below the text.
+        /// - FitFillHorizontal / FitFillVertical: shrink and grow on that axis, starting from the size used last
+        ///   time; faster for text that changes often, and the size can go above FontSize.
+        ///
+        /// The label needs a size on that axis (a request or a constraint from its parent).
+        /// Set AutoSizeText to compute the size from a sample text (for example the longest value expected)
+        /// instead of the current Text, so the size does not change with every new value.
+        ///
+        /// The size is searched in 0.1px steps and each step lays out the text again, so a big change of size
+        /// costs many layouts when the text or the box changes; nothing is spent while they stay the same.
         /// </remarks>
         public AutoSizeType AutoSize
         {
@@ -3587,6 +3889,8 @@ namespace DrawnUi.Draw
 
         protected virtual void OnTextChanged()
         {
+            if (_selectionLength > 0)
+                ClearSelection();
             InvalidateText();
         }
 
@@ -4013,14 +4317,31 @@ namespace DrawnUi.Draw
             return this;
         }
 
-        public new virtual bool SetFrameworkFocus(bool focus)
+        /// <summary>
+        /// A selectable label (<see cref="AccessibilityTextSelectable"/>) takes the canvas focus while text is selected and
+        /// drops the selection when the focus moves elsewhere; other labels keep the base behavior.
+        /// </summary>
+        public override bool SetFrameworkFocus(bool focus)
         {
-            return false;
+            if (!AccessibilityTextSelectable)
+                return base.SetFrameworkFocus(focus);
+
+            if (!focus)
+                ClearSelection();
+            AttachSelectionKeys(focus);
+            return true;
         }
 
         public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args,
             GestureEventProcessingInfo apply)
         {
+            if (AccessibilityTextSelectable)
+            {
+                var consumed = ProcessTextSelection(args, apply);
+                if (consumed != null)
+                    return consumed;
+            }
+
             if (args.Type == TouchActionResult.Tapped)
             {
                 //apply transfroms
@@ -4051,6 +4372,515 @@ namespace DrawnUi.Draw
             }
 
             return base.ProcessGestures(args, apply);
+        }
+
+        #endregion
+
+        #region TEXT SELECTION
+
+        public static readonly BindableProperty AccessibilityTextSelectableProperty = BindableProperty.Create(
+            nameof(AccessibilityTextSelectable),
+            typeof(bool),
+            typeof(SkiaLabel),
+            false,
+            propertyChanged: (b, o, n) =>
+            {
+                if (b is not SkiaLabel label)
+                    return;
+                if ((bool)n)
+                {
+                    label.NeedsGlyphPositions = true; // caret-precise hit testing and highlight
+                    label.InvalidateText();
+                }
+                else
+                {
+                    label.ClearSelection();
+                }
+            });
+
+        /// <summary>
+        /// The text can be selected and copied, as DrawnUi.React's property of the same name. Mouse: drag, double click
+        /// for a word. Touch: long press picks a word, keep the finger down and drag to extend, a Copy button appears.
+        /// Ctrl+C (Cmd+C) copies and Ctrl+A selects all while the label holds the selection; a click elsewhere drops it.
+        /// The label takes the pointer for this, so a mouse press on it no longer reaches controls under it.
+        /// Off by default and free when off. Copying goes through <see cref="Super.SetClipboardText"/>.
+        /// </summary>
+        public bool AccessibilityTextSelectable
+        {
+            get => (bool)GetValue(AccessibilityTextSelectableProperty);
+            set => SetValue(AccessibilityTextSelectableProperty, value);
+        }
+
+        /// <summary>
+        /// Highlight drawn over selected text.
+        /// </summary>
+        public static SKColor TextSelectionColor = new(13, 110, 253, 90);
+
+        /// <summary>
+        /// Caption of the Copy button shown over a touch selection.
+        /// </summary>
+        public static string CopyButtonText = "Copy";
+
+        int _selectionStart;
+        int _selectionLength;
+        int _anchorStart;
+        int _anchorEnd;
+        bool _selecting;
+        bool _touchSelection;
+        bool _copyPressed;
+        bool _selectionKeysAttached;
+        long _lastClickMs;
+        SKPoint _lastClickPoint;
+        SKRect _copyButton;
+        SKPoint _linesOrigin;
+        TextLine[] _mappedLines;
+        string _selectionSource = string.Empty;
+        int[] _lineStarts = Array.Empty<int>();
+        SKPaint _selectionPaint;
+
+        /// <summary>
+        /// Start of the selection in <see cref="SelectedText"/>'s source: the label's text when the lines are taken
+        /// from it verbatim, else the drawn lines (markdown, spans) joined.
+        /// </summary>
+        public int SelectionStart => _selectionStart;
+
+        /// <summary>
+        /// Length of the selection, 0 when nothing is selected.
+        /// </summary>
+        public int SelectionLength => _selectionLength;
+
+        /// <summary>
+        /// The selected text, empty when nothing is selected.
+        /// </summary>
+        public string SelectedText
+        {
+            get
+            {
+                if (_selectionLength <= 0)
+                    return string.Empty;
+                EnsureSelectionMap();
+                var start = Math.Clamp(_selectionStart, 0, _selectionSource.Length);
+                var length = Math.Clamp(_selectionLength, 0, _selectionSource.Length - start);
+                return _selectionSource.Substring(start, length);
+            }
+        }
+
+        /// <summary>
+        /// Selects a range of the text (see <see cref="SelectionStart"/> for what the indexes count).
+        /// </summary>
+        public void Select(int start, int length)
+        {
+            EnsureSelectionMap();
+            start = Math.Clamp(start, 0, _selectionSource.Length);
+            length = Math.Clamp(length, 0, _selectionSource.Length - start);
+            if (start == _selectionStart && length == _selectionLength)
+                return;
+            _selectionStart = start;
+            _selectionLength = length;
+            Update();
+        }
+
+        /// <summary>
+        /// Selects all of the text.
+        /// </summary>
+        public void SelectAll()
+        {
+            EnsureSelectionMap();
+            Select(0, _selectionSource.Length);
+        }
+
+        /// <summary>
+        /// Drops the selection.
+        /// </summary>
+        public void ClearSelection()
+        {
+            _selecting = false;
+            _copyPressed = false;
+            if (_selectionLength == 0 && !_touchSelection)
+                return;
+            _selectionLength = 0;
+            _touchSelection = false;
+            Update();
+        }
+
+        /// <summary>
+        /// Puts the selected text on the clipboard through <see cref="Super.SetClipboardText"/>. False when nothing is selected.
+        /// </summary>
+        public bool CopySelection()
+        {
+            var text = SelectedText;
+            if (string.IsNullOrEmpty(text))
+                return false;
+            Super.SetClipboardText?.Invoke(text);
+            return true;
+        }
+
+        void AttachSelectionKeys(bool attach)
+        {
+            if (attach == _selectionKeysAttached)
+                return;
+            _selectionKeysAttached = attach;
+            if (attach)
+                KeyboardManager.KeyDown += OnSelectionKeyDown;
+            else
+                KeyboardManager.KeyDown -= OnSelectionKeyDown;
+        }
+
+        void OnSelectionKeyDown(object sender, InputKey key)
+        {
+            // Ctrl+C in a page input or a native text field is that field's copy, not this selection's
+            if (KeyboardManager.IsKeyForOtherElement)
+                return;
+            if (!KeyboardManager.IsControlPressed && !KeyboardManager.IsMetaPressed)
+                return;
+            if (key == InputKey.KeyC)
+                CopySelection();
+            else if (key == InputKey.KeyA)
+                SelectAll();
+        }
+
+        void ClaimSelectionFocus()
+        {
+            Superview?.ReportFocus(this, this);
+            AttachSelectionKeys(true);
+        }
+
+        /// <summary>
+        /// Maps the drawn lines onto a source string: the label's text when every line is found in it in order (spaces
+        /// dropped at wraps are then copied too), else the lines joined, a new line between paragraphs.
+        /// </summary>
+        void EnsureSelectionMap()
+        {
+            var lines = Lines;
+            if (ReferenceEquals(lines, _mappedLines) && lines != null)
+                return;
+            _mappedLines = lines;
+            if (lines == null || lines.Length == 0)
+            {
+                _lineStarts = Array.Empty<int>();
+                _selectionSource = string.Empty;
+                return;
+            }
+
+            var starts = new int[lines.Length];
+            var source = TextInternal ?? string.Empty;
+            var position = 0;
+            var verbatim = true;
+            for (var i = 0; i < lines.Length; i++)
+            {
+                var value = lines[i].Value ?? string.Empty;
+                var at = source.IndexOf(value, position, StringComparison.Ordinal);
+                if (at < 0)
+                {
+                    verbatim = false;
+                    break;
+                }
+                starts[i] = at;
+                position = at + value.Length;
+            }
+
+            if (!verbatim)
+            {
+                var sb = new StringBuilder();
+                for (var i = 0; i < lines.Length; i++)
+                {
+                    if (i > 0)
+                        sb.Append(lines[i].IsNewParagraph ? "\n" : "");
+                    starts[i] = sb.Length;
+                    sb.Append(lines[i].Value);
+                }
+                source = sb.ToString();
+            }
+
+            _lineStarts = starts;
+            _selectionSource = source;
+        }
+
+        /// <summary>
+        /// X of the caret slot <paramref name="slot"/> in a line, relative to the line's left edge.
+        /// </summary>
+        static float SlotX(TextLine line, LineGlyph[] glyphs, int slot)
+            => slot < glyphs.Length ? glyphs[slot].Position : line.Width;
+
+        /// <summary>
+        /// Text index under a point given in the space the lines were drawn in.
+        /// </summary>
+        int IndexAt(SKPoint point)
+        {
+            EnsureSelectionMap();
+            var lines = Lines;
+            if (lines == null || lines.Length == 0)
+                return 0;
+
+            var lineIndex = lines.Length - 1;
+            for (var i = 0; i < lines.Length; i++)
+            {
+                if (point.Y <= lines[i].Bounds.Bottom)
+                {
+                    lineIndex = i;
+                    break;
+                }
+            }
+
+            var line = lines[lineIndex];
+            var glyphs = GetLineGlyphs(line);
+            var x = point.X - line.Bounds.Left;
+            var slots = Math.Min(glyphs.Length, (line.Value ?? string.Empty).Length);
+            var best = 0;
+            var bestDistance = float.MaxValue;
+            for (var slot = 0; slot <= slots; slot++)
+            {
+                var distance = Math.Abs(SlotX(line, glyphs, slot) - x);
+                if (distance < bestDistance)
+                {
+                    bestDistance = distance;
+                    best = slot;
+                }
+            }
+
+            return _lineStarts[lineIndex] + best;
+        }
+
+        (int Start, int End) WordAt(int index)
+        {
+            EnsureSelectionMap();
+            var text = _selectionSource;
+            if (text.Length == 0)
+                return (0, 0);
+            index = Math.Clamp(index, 0, text.Length - 1);
+            bool IsWord(char c) => char.IsLetterOrDigit(c) || c == '_' || c == '\'';
+            if (!IsWord(text[index]) && index > 0 && IsWord(text[index - 1]))
+                index--;
+            if (!IsWord(text[index]))
+                return (index, index + 1);
+            var start = index;
+            while (start > 0 && IsWord(text[start - 1]))
+                start--;
+            var end = index + 1;
+            while (end < text.Length && IsWord(text[end]))
+                end++;
+            return (start, end);
+        }
+
+        /// <summary>
+        /// The gesture point in the space the lines were drawn in.
+        /// </summary>
+        SKPoint SelectionPoint(GestureEventProcessingInfo apply)
+        {
+            var offset = TranslateInputCoords(apply.ChildOffset, true);
+            return new SKPoint(apply.MappedLocation.X + offset.X - DrawingRect.Left + _linesOrigin.X,
+                apply.MappedLocation.Y + offset.Y - DrawingRect.Top + _linesOrigin.Y);
+        }
+
+        void SelectBetween(int index)
+        {
+            var start = Math.Min(_anchorStart, index);
+            var end = Math.Max(_anchorEnd, index);
+            Select(start, end - start);
+        }
+
+        /// <summary>
+        /// Pointer handling of <see cref="AccessibilityTextSelectable"/>; null lets the gesture go on as usual.
+        /// </summary>
+        protected virtual ISkiaGestureListener ProcessTextSelection(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
+        {
+            var point = SelectionPoint(apply);
+            var mouse = args.Event?.Pointer?.DeviceType == PointerDeviceType.Mouse;
+
+            switch (args.Type)
+            {
+                case TouchActionResult.Down:
+                    if (_touchSelection && _selectionLength > 0 && _copyButton.Contains(point))
+                    {
+                        _copyPressed = true;
+                        return this;
+                    }
+
+                    if (!mouse)
+                        return null; // touch: a long press selects, a drag keeps scrolling
+
+                    var index = IndexAt(point);
+                    var now = Environment.TickCount64;
+                    var second = now - _lastClickMs < 450
+                                 && SKPoint.Distance(point, _lastClickPoint) < 8 * RenderingScale;
+                    _lastClickMs = second ? 0 : now;
+                    _lastClickPoint = point;
+                    (_anchorStart, _anchorEnd) = second ? WordAt(index) : (index, index);
+                    _touchSelection = false;
+                    _selecting = true;
+                    Select(_anchorStart, _anchorEnd - _anchorStart);
+                    ClaimSelectionFocus();
+                    return this;
+
+                case TouchActionResult.LongPressing:
+                    if (mouse)
+                        return _selecting ? this : null;
+                    (_anchorStart, _anchorEnd) = WordAt(IndexAt(point));
+                    _touchSelection = true;
+                    _selecting = true;
+                    Select(_anchorStart, _anchorEnd - _anchorStart);
+                    ClaimSelectionFocus();
+                    return this;
+
+                case TouchActionResult.Panning:
+                    if (!_selecting)
+                        return null;
+                    SelectBetween(IndexAt(point));
+                    return this;
+
+                case TouchActionResult.Up:
+                    if (_copyPressed)
+                    {
+                        _copyPressed = false;
+                        if (_copyButton.Contains(point))
+                        {
+                            CopySelection();
+                            ClearSelection();
+                        }
+                        return this;
+                    }
+
+                    if (_selecting)
+                    {
+                        _selecting = false;
+                        return this;
+                    }
+                    return null;
+
+                case TouchActionResult.Tapped:
+                    if (_selectionLength <= 0)
+                        return null; // nothing selected: span links still get their tap
+                    if (!mouse)
+                        ClearSelection(); // a tap drops a touch selection
+                    // a click that selected (double click) is ours: unconsumed, the canvas would read it as a tap on
+                    // empty space and take the focus, and with it the selection
+                    return this;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Draws the selection over the lines just drawn, and the Copy button of a touch selection.
+        /// </summary>
+        protected virtual void DrawTextSelection(DrawingContext ctx)
+        {
+            EnsureSelectionMap();
+            var lines = Lines;
+            if (lines == null || _lineStarts.Length != lines.Length)
+                return;
+
+            _selectionPaint ??= new SKPaint { IsAntialias = true, Style = SKPaintStyle.Fill };
+            _selectionPaint.Color = TextSelectionColor;
+
+            var canvas = ctx.Context.Canvas;
+            var start = _selectionStart;
+            var end = _selectionStart + _selectionLength;
+            var first = SKRect.Empty;
+            var last = SKRect.Empty;
+
+            for (var i = 0; i < lines.Length; i++)
+            {
+                var line = lines[i];
+                var lineStart = _lineStarts[i];
+                var lineEnd = lineStart + (line.Value ?? string.Empty).Length;
+                var a = Math.Max(start, lineStart);
+                var b = Math.Min(end, lineEnd);
+                var continues = end > lineEnd && i < lines.Length - 1;
+                if (a > b || a == b && !continues)
+                    continue;
+
+                var glyphs = GetLineGlyphs(line);
+                var x0 = SlotX(line, glyphs, a - lineStart);
+                var x1 = continues && b == lineEnd ? line.Width : SlotX(line, glyphs, b - lineStart);
+                var rect = new SKRect(line.Bounds.Left + x0, line.Bounds.Top, line.Bounds.Left + Math.Max(x1, x0 + ctx.Scale),
+                    line.Bounds.Bottom);
+                canvas.DrawRect(rect, _selectionPaint);
+
+                if (first.IsEmpty)
+                    first = rect;
+                last = rect;
+            }
+
+            _copyButton = SKRect.Empty;
+            if (!_touchSelection || first.IsEmpty)
+                return;
+
+            // Copy button inside the label (its cache clips and its hit box is the label): above the selection, else below
+            // it, else beside it on the same line, overlapping only when none fits
+            var font = FontDefault;
+            var fontSize = font.Size;
+            font.Size = 14 * ctx.Scale;
+            var textWidth = font.MeasureText(CopyButtonText);
+            var height = 32 * ctx.Scale;
+            var width = textWidth + 28 * ctx.Scale;
+            var gap = 6 * ctx.Scale;
+            var bounds = ctx.Destination;
+            var centered = Math.Clamp(first.MidX - width / 2, bounds.Left, Math.Max(bounds.Left, bounds.Right - width));
+            var middle = Math.Clamp(first.MidY - height / 2, bounds.Top, Math.Max(bounds.Top, bounds.Bottom - height));
+            if (first.Top - gap - height >= bounds.Top)
+                _copyButton = SKRect.Create(centered, first.Top - gap - height, width, height);
+            else if (last.Bottom + gap + height <= bounds.Bottom)
+                _copyButton = SKRect.Create(centered, last.Bottom + gap, width, height);
+            else if (first.Right + gap + width <= bounds.Right)
+                _copyButton = SKRect.Create(first.Right + gap, middle, width, height);
+            else if (first.Left - gap - width >= bounds.Left)
+                _copyButton = SKRect.Create(first.Left - gap - width, middle, width, height);
+            else
+                _copyButton = SKRect.Create(centered, Math.Max(bounds.Top, bounds.Bottom - height), width, height);
+
+            _selectionPaint.Color = new SKColor(33, 37, 41, 235);
+            canvas.DrawRoundRect(_copyButton, height / 2, height / 2, _selectionPaint);
+            _selectionPaint.Color = SKColors.White;
+            canvas.DrawText(CopyButtonText, _copyButton.MidX - textWidth / 2,
+                _copyButton.MidY - (font.Metrics.Ascent + font.Metrics.Descent) / 2, SKTextAlign.Left, font, _selectionPaint);
+            font.Size = fontSize;
+        }
+
+        /// <summary>
+        /// The glyphs of a drawn line with line-relative X, one slot per UTF-16 code unit, so a slot index is a text index
+        /// within the line. A single span of one-unit glyphs is returned as is.
+        /// </summary>
+        public static LineGlyph[] GetLineGlyphs(TextLine line)
+        {
+            if (line?.Spans == null || line.Spans.Count == 0)
+                return Array.Empty<LineGlyph>();
+
+            if (line.Spans.Count == 1)
+            {
+                var only = line.Spans[0].Glyphs ?? Array.Empty<LineGlyph>();
+                var simple = true;
+                for (var i = 0; i < only.Length; i++)
+                {
+                    if (only[i].Length > 1)
+                    {
+                        simple = false;
+                        break;
+                    }
+                }
+                if (simple)
+                    return only;
+            }
+
+            var result = new List<LineGlyph>();
+            var spanOffsetX = 0f;
+            foreach (var span in line.Spans)
+            {
+                var glyphs = span.Glyphs;
+                if (glyphs != null)
+                {
+                    foreach (var g in glyphs)
+                    {
+                        var abs = LineGlyph.Move(g, spanOffsetX + g.Position);
+                        var units = Math.Max(1, g.Length);
+                        for (var u = 0; u < units; u++)
+                            result.Add(abs);
+                    }
+                }
+                spanOffsetX += span.Size.Width;
+            }
+
+            return result.ToArray();
         }
 
         #endregion

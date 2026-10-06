@@ -247,7 +247,7 @@ public partial class Canvas : IGestureListener
         return true;
     }
 
-    public virtual void OnGestureEvent(TouchActionType type, TouchActionEventArgs args1, TouchActionResult touchAction)
+    public override void OnGestureEvent(TouchActionType type, TouchActionEventArgs args1, TouchActionResult touchAction)
     {
         if (!CanDraw)
         {

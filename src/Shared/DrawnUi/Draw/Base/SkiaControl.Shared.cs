@@ -2500,8 +2500,6 @@ namespace DrawnUi.Draw
                 Super.Log($"[BASE] {this.Tag} Got {args.Type}.. {Uid}");
             }
 
-            var consumedDefault = BlockGesturesBelow ? this as ISkiaGestureListener : null;
-
             // Save the parent-space MappedLocation before any HasTransform inversion.
             // Used for two things: (1) hit-testing against HitRects which are in parent drawing space,
             // and (2) as the base for dispatchML = parentSpaceML + (thisOffset - dispatchOffset),
@@ -2555,6 +2553,10 @@ namespace DrawnUi.Draw
                 }
             }
 
+            // Same rule on both dispatch paths below: a gesture this control keeps from its children skips them,
+            // the control itself still gets its Tapped / LongPressing / ContextMenu.
+            var childrenLocked = CheckChildrenGesturesLocked(args.Type);
+
             if (UsesRenderingTree && RenderTree != null)
             {
                 var hadInputConsumed = consumed;
@@ -2575,7 +2577,7 @@ namespace DrawnUi.Draw
                 //apply = RenderTree.OffsetGestures(apply);
 
                 //if previously having input didn't keep it
-                if (consumed == null || args.Type == TouchActionResult.Up)
+                if (!childrenLocked && (consumed == null || args.Type == TouchActionResult.Up))
                 {
                     var asSpan = RenderTree.AsSpans();
 
@@ -2719,9 +2721,6 @@ namespace DrawnUi.Draw
                 {
                     try
                     {
-                        if (CheckChildrenGesturesLocked(args.Type))
-                            return consumedDefault;
-
                         // No RenderTree to descend (a cached control blits without repainting its subtree,
                         // so nested layouts never build their tree). Fall back to iterating live children —
                         // but map the point the SAME way the tree path does: transformed MappedLocation plus
@@ -2734,8 +2733,8 @@ namespace DrawnUi.Draw
 
                         ISkiaGestureListener breakForChild = null;
 
-                        if (consumed == null ||
-                            args.Type == TouchActionResult.Up) // !GestureListeners.Contains(consumed))
+                        if (!childrenLocked && (consumed == null ||
+                            args.Type == TouchActionResult.Up)) // !GestureListeners.Contains(consumed))
                             foreach (var listener in GestureListeners.GetListeners())
                             {
                                 if (listener == null || !listener.CanDraw || listener.InputTransparent ||
@@ -2841,7 +2840,9 @@ namespace DrawnUi.Draw
                 }
             }
 
-            if (BlockGesturesBelow && consumed == null && args.Type != TouchActionResult.Up)
+            // LockTouch.Enabled also marks the gestures it keeps from children as consumed by this control
+            if ((BlockGesturesBelow || childrenLocked && LockChildrenGestures == LockTouch.Enabled)
+                && consumed == null && args.Type != TouchActionResult.Up)
             {
                 consumed = this as ISkiaGestureListener;
             }
@@ -5124,7 +5125,7 @@ namespace DrawnUi.Draw
         /// <summary>Class-level default role, unset for plain controls. Subclasses expose a static so an app can opt in per class.</summary>
         protected virtual string? GetDefaultAccessibilityRole() => null;
 
-        /// <summary>Label used when <see cref="AccessibilityLabel"/> is not set (a label's text, a button's text, a slider's value).</summary>
+        /// <summary>Label used when <see cref="AccessibilityLabel"/> is not set (a label's text, a button's text). A range control's value is not its name, see <see cref="GetAccessibilityValue"/>.</summary>
         protected virtual string? DefaultAccessibilityLabel() => null;
 
         /// <summary>Interaction default when <see cref="AccessibilityCanInteract"/> is not set: has a Tapped handler.</summary>
@@ -5283,7 +5284,6 @@ namespace DrawnUi.Draw
         /// </summary>
         public virtual void OnAccessibilityActivated()
         {
-            System.Diagnostics.Debug.WriteLine($"[A11y-ACT] OnAccessibilityActivated on {GetType().Name} Tag={Tag} CanDraw={CanDraw} Superview={(Superview == null ? "NULL" : "ok")}");
             var scale = Superview?.RenderingScale ?? 1f;
             var hitbox = VisualLayer?.HitBoxWithTransforms.Pixels ?? DrawingRect;
             var center = new PointF(hitbox.MidX, hitbox.MidY);
@@ -5297,8 +5297,7 @@ namespace DrawnUi.Draw
             };
 
             var gestureParams = SkiaGesturesParameters.Create(TouchActionResult.Tapped, args, scale);
-            var result = OnSkiaGestureEvent(gestureParams, GestureEventProcessingInfo.Empty);
-            System.Diagnostics.Debug.WriteLine($"[A11y-ACT] OnSkiaGestureEvent returned {(result == null ? "NULL (not consumed)" : result.GetType().Name)}");
+            OnSkiaGestureEvent(gestureParams, GestureEventProcessingInfo.Empty);
         }
 
         public virtual void OnAccessibilityFocused(bool focused) { }
@@ -5308,6 +5307,12 @@ namespace DrawnUi.Draw
         /// (arrows, Home, End, PageUp, PageDown). Return true when the key was used; the default uses none.
         /// </summary>
         public virtual bool OnAccessibilityKey(InputKey key) => false;
+
+        /// <inheritdoc cref="ISkiaAccessibilityNode.GetAccessibilityValue"/>
+        public virtual AccessibilityValue? GetAccessibilityValue() => null;
+
+        /// <inheritdoc cref="ISkiaAccessibilityNode.OnAccessibilitySetValue"/>
+        public virtual bool OnAccessibilitySetValue(double value) => false;
 
         /// <summary>
         /// Whether a pointer gesture of this kind would reach this control, by the same rules the gesture dispatch
@@ -6489,7 +6494,9 @@ namespace DrawnUi.Draw
             );
         }
 
-        public static SKRect ContractPixelsRect(SKRect rect, float scale, Thickness amount)
+        // in: passed by reference. On arm64, .NET 10's Mono LLVM AOT reads a float struct argument that no longer fits
+        // the FP registers v0-v7 at the wrong stack offset (garbage pointer bits as widths in Release builds with LLVM)
+        public static SKRect ContractPixelsRect(SKRect rect, float scale, in Thickness amount)
         {
             return new SKRect(
                 rect.Left + (float)((float)amount.Left * scale),
@@ -6507,7 +6514,7 @@ namespace DrawnUi.Draw
         /// for — a button label then clipped its last glyph. Taking the smaller of the two can only give
         /// content more room than before, never less, so existing layouts cannot shrink.
         /// </summary>
-        public static SKRect ContractPixelsRectForContent(SKRect rect, float scale, Thickness amount)
+        public static SKRect ContractPixelsRectForContent(SKRect rect, float scale, in Thickness amount)
         {
             static float Reserve(double inset, float scale)
             {
@@ -6523,7 +6530,7 @@ namespace DrawnUi.Draw
             );
         }
 
-        public static SKRect ExpandPixelsRect(SKRect rect, float scale, Thickness amount)
+        public static SKRect ExpandPixelsRect(SKRect rect, float scale, in Thickness amount)
         {
             return new SKRect(
                 rect.Left - (float)((float)amount.Left * scale),
@@ -7281,9 +7288,12 @@ namespace DrawnUi.Draw
                 //UpdateSizeRequest();
             }
             else if (UsesCacheDoubleBuffering
-                     && RenderObject != null)
+                     && RenderObject is { Picture: null })
             {
-                //todo make this account for new API which extends renderobject bounds to match visualeffects
+                // Image caches only: their Bounds is the control's rect plus effect margins, like DirtyRegion.
+                // A picture cache (Operations / OperationsFull, double-buffered under Super.Multithreaded) keeps
+                // its record destination, the canvas clip for OperationsFull: the sizes never matched, and every
+                // draw destroyed the cache and baked it again.
                 if (!CompareRectsSize(DirtyRegion, RenderObject.Bounds, 0.5f))
                 {
                     InvalidateMeasure();
@@ -9207,6 +9217,11 @@ namespace DrawnUi.Draw
         /// </summary>
         public List<SkiaControl> Views { get; } = new();
 
+        /// <summary>
+        /// Added through its parent's <c>Children</c> collection, not as an internal subview of the parent.
+        /// </summary>
+        internal bool IsChildrenItem;
+
         public virtual void DisposeChildren()
         {
             foreach (var child in Views.ToList())
@@ -9561,6 +9576,8 @@ namespace DrawnUi.Draw
             {
                 if (subView != null)
                 {
+                    subView.IsChildrenItem = add;
+
                     if (add)
                     {
                         AddSubView(subView);
@@ -9650,24 +9667,11 @@ namespace DrawnUi.Draw
             if (HasItemTemplate)
                 return;
 
-            switch (e.Action)
+            if (ChildrenCollectionSync.Apply(Views, sender as IList<SkiaControl> ?? Children, e,
+                    child => AddOrRemoveView(child, true), child => AddOrRemoveView(child, false)))
             {
-                case NotifyCollectionChangedAction.Add:
-                    foreach (SkiaControl newChildren in e.NewItems)
-                    {
-                        AddOrRemoveView(newChildren, true);
-                    }
-
-                    break;
-
-                case NotifyCollectionChangedAction.Reset:
-                case NotifyCollectionChangedAction.Remove:
-                    foreach (SkiaControl oldChildren in e.OldItems ?? Array.Empty<SkiaControl>())
-                    {
-                        AddOrRemoveView(oldChildren, false);
-                    }
-
-                    break;
+                InvalidateViewsList();
+                Invalidate();
             }
 
             Update();
@@ -9689,6 +9693,7 @@ namespace DrawnUi.Draw
             switch (stretch)
             {
                 case TransformAspect.None:
+                case TransformAspect.Tile: // natural size, the control repeats it
                     break;
 
                 case TransformAspect.Fit:

@@ -424,16 +424,12 @@ public class ShaderDoubleTexturesEffect : SkiaShaderEffect
 
         protected virtual async Task<SKBitmap> DecodePackageBitmapAsync(string fileName)
         {
-    #if BROWSER || DRAWNUI_NET
-        var httpClient = Super.Services?.GetService(typeof(HttpClient)) as HttpClient ?? new HttpClient();
-        var bytes = await httpClient.GetByteArrayAsync(fileName);
-        using var skStream = new SKMemoryStream(bytes);
-        using var data = skStream.GetData();
-        return data != null ? SKBitmap.Decode(data) : SKBitmap.Decode(skStream);
-    #else
-        using var stream = await FileSystem.OpenAppPackageFileAsync(fileName);
-        return SKBitmap.Decode(stream);
-    #endif
+            // the app package on MAUI, the output folder on the desktop heads, the site in the browser
+            await using var stream = await SkSl.OpenPackageFileAsync(fileName);
+            using var memory = new MemoryStream();
+            await stream.CopyToAsync(memory);
+            memory.Position = 0;
+            return SKBitmap.Decode(memory);
         }
 
     #endregion

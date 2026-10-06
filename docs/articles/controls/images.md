@@ -1,10 +1,10 @@
 # Image Controls
 
-DrawnUi.Maui provides powerful image controls for high-performance image rendering with advanced features like effects, transformations, and sophisticated caching. This article covers the image components available in the framework.
+DrawnUI provides powerful image controls for high-performance image rendering with advanced features like effects, transformations, and sophisticated caching. This article covers the image components available in the framework.
 
 ## SkiaImage
 
-SkiaImage is the core image control in DrawnUi.Maui, providing efficient image loading, rendering, and manipulation capabilities with direct SkiaSharp rendering. It supports multiple image sources, advanced rescaling algorithms, built-in effects, and comprehensive caching strategies.
+SkiaImage is the core image control in DrawnUI, providing efficient image loading, rendering, and manipulation capabilities with direct SkiaSharp rendering. It supports multiple image sources, advanced rescaling algorithms, built-in effects, and comprehensive caching strategies.
 
 ### Basic Usage
 
@@ -29,15 +29,14 @@ SkiaImage is the core image control in DrawnUi.Maui, providing efficient image l
 | `Aspect` | TransformAspect | AspectCover | How the image scales to fit (AspectFit, AspectFill, etc.) |
 | `HorizontalAlignment` | DrawImageAlignment | Center | Horizontal positioning of the image |
 | `VerticalAlignment` | DrawImageAlignment | Center | Vertical positioning of the image |
-| `UseAssembly` | object | null | Assembly to load embedded resources from |
+| `UseAssembly` | object | null | An `Assembly` or an assembly name. A plain file path in `Source` then loads as an embedded resource of that assembly, see [Loading from Different Sources](#loading-from-different-sources) |
 
 #### Loading & Performance
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `LoadSourceOnFirstDraw` | bool | false | Whether to defer loading until first render |
-| `PreviewBase64` | string | null | Base64 encoded preview image to show while loading |
-| `RescalingQuality` | SKFilterQuality | None | Quality of image rescaling (None, Low, Medium, High) |
-| `RescalingType` | RescalingType | Default | Rescaling algorithm (Default, MultiPass, GammaCorrection, EdgePreserving) |
+| `PreviewBase64` | string | empty | Base64 encoded preview image to show while loading (plain base64, no `data:` prefix) |
+| `RescalingQuality` | FilterQuality | Low | Quality of image rescaling (None, Low, Medium, High, Ultra) |
 | `EraseChangedContent` | bool | false | Erase existing image when new source is set but not loaded yet |
 | `DrawWhenEmpty` | bool | true | Whether to draw when no source is set |
 
@@ -52,8 +51,10 @@ SkiaImage is the core image control in DrawnUi.Maui, providing efficient image l
 | `Saturation` | double | 0.0 | Adjusts image saturation (≥0) |
 | `Blur` | double | 0.0 | Applies blur effect |
 | `Gamma` | double | 1.0 | Adjusts gamma (≥0) |
-| `Darken` | double | 0.0 | Darkens the image |
-| `Lighten` | double | 0.0 | Lightens the image |
+| `Darken` | double | 5.0 | Darkens the image |
+| `Lighten` | double | 5.0 | Lightens the image |
+
+`Brightness`, `Contrast`, `Saturation`, `Gamma`, `Darken` and `Lighten` are read only by the matching `AddEffect` value. `Blur` works on its own.
 
 #### Transformations
 | Property | Type | Default | Description |
@@ -64,15 +65,15 @@ SkiaImage is the core image control in DrawnUi.Maui, providing efficient image l
 #### Sprite Sheets
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `SpriteWidth`/`SpriteHeight` | double | 0.0 | Sprite sheet cell size |
-| `SpriteIndex` | int | -1 | Index of sprite to display |
+| `SpriteWidth`/`SpriteHeight` | double | 0.0 | Size of one cell of a sprite sheet, in source pixels. When both are above 0 the image shows one cell |
+| `SpriteIndex` | int | -1 | Cell to show, counted from 0 left to right, then top to bottom. Outside the sheet (the default -1 too) nothing is drawn |
 
 #### Gradient Overlay
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `UseGradient` | bool | false | Whether to apply gradient overlay |
-| `StartColor` | Color | DarkGray | Start color for gradient |
-| `EndColor` | Color | Gray | End color for gradient |
+| `UseGradient` | bool | false | Colors the image with a top to bottom gradient, keeping its transparency |
+| `StartColor` | Color | DarkGray | Gradient color at the top |
+| `EndColor` | Color | Gray | Gradient color at the bottom |
 
 #### State Properties (Read-only)
 | Property | Type | Description |
@@ -81,7 +82,7 @@ SkiaImage is the core image control in DrawnUi.Maui, providing efficient image l
 | `IsLoading` | bool | Whether image is currently loading |
 | `HasError` | bool | Whether last load attempt failed |
 
-> **Note:** Caching is handled by the SkiaControl base class. You can set `Cache` on SkiaImage for caching strategies (e.g., `Cache="Image"`).
+> **Note:** Caching is handled by the SkiaControl base class. You can set `UseCache` on SkiaImage for caching strategies (e.g., `UseCache="Image"`).
 
 > **Note:** The `VisualEffects` property is inherited from SkiaControl. You can use `<draw:SkiaControl.VisualEffects>` in XAML to apply effects like drop shadow or color presets.
 
@@ -96,26 +97,27 @@ The `Aspect` property controls how the image is sized and positioned within its 
 | `None` | No scaling or positioning | Image displayed at original size |
 | `Fill` | Enlarges to fill the viewport without maintaining aspect ratio if smaller, but does not scale down if larger | May distort proportions |
 | `Fit` | Fit without maintaining aspect ratio and without enlarging if smaller | May distort proportions |
-| `AspectFit` | Fit inside viewport respecting aspect without enlarging if smaller | May leave empty space around |
+| `AspectFit` | Fit inside viewport respecting aspect, scaling up or down as needed | May leave empty space around |
 | `AspectFill` | Covers viewport respecting aspect without scaling down if bigger | May crop portions of the image |
 | `FitFill` | Enlarges to fill the viewport if smaller and reduces size if larger, all without respecting aspect ratio | May distort proportions |
 | `AspectFitFill` | Enlarges to fit the viewport if smaller and reduces size if larger, all while respecting aspect ratio | Maintains proportions |
-| `Cover` | Enlarges to cover the viewport if smaller and reduces size if larger, all without respecting aspect ratio. Same as AspectFitFill but will crop the image to fill entire viewport | May crop image |
+| `Cover` | Stretches to the exact viewport size, scaling up or down, without respecting aspect ratio | May distort proportions |
 | `AspectCover` | **Default.** Covers viewport respecting aspect, scales both up and down as needed | May crop portions, maintains aspect |
-| `Tile` | Tiles the image to fill the viewport | Repeats image pattern |
+| `Tile` | Repeats the image at its natural size across the whole control | Pattern starts from one copy placed by the alignment |
 
-#### Rescaling Types
+#### Rescaling Quality
 
-The `RescalingType` property determines the algorithm used for image rescaling:
+The `RescalingQuality` property (`FilterQuality`, default `Low`) sets the sampling used when the image is drawn at another size:
 
-| Rescaling Type | Description | Best For |
-|----------------|-------------|----------|
-| `Default` | Standard SkiaSharp rescaling: "I just need it to work fast" | Minor size adjustments, performance-focused |
-| `MultiPass` | Multi-pass progressive rescaling for superior quality on significant size changes: "I want good quality" | Icons, logos, transparent graphics with sharp edges, large size reductions (2x smaller) |
-| `GammaCorrection` | Gamma-corrected rescaling that processes in linear color space for photographic quality: "I'm working with photos professionally" | Professional photography and color-critical work, color accuracy, gradients and smooth color transitions |
-| `EdgePreserving` | Edge-preserving rescaling optimized for sharp graphics and pixel-perfect content: "I'm working with pixel art/UI graphics" | Pixel art, very small icons (16x16, 32x32), screenshots, text graphics |
+| Quality | Sampling |
+|---------|----------|
+| `None` | Nearest neighbor. Fastest, right for 1:1 drawing and pixel art |
+| `Low` | Linear filtering. **Default** |
+| `Medium` | Linear filtering with nearest mipmaps |
+| `High` | Linear filtering with linear mipmaps, smooth when scaling down a lot |
+| `Ultra` | Cubic (Mitchell) when scaling up, same as `High` when scaling down |
 
-> **Note:** `GammaCorrection` is slower than other methods but provides the best quality for photographic content.
+With any quality above `None`, `CacheRescaledSource` (default `true`) keeps a rescaled copy of the source instead of resampling on every draw. Set it to `false` for sources that change every frame, like a camera feed.
 
 #### Examples and Visual Guide
 
@@ -138,20 +140,25 @@ This fills the entire control with the image, possibly cropping parts that don't
 This stretches the image to fill the control exactly, potentially distorting the image proportions.
 
 ```xml
-<!-- Tile the image -->
+<!-- Tile the image at its natural size -->
 <draw:SkiaImage Source="pattern.png" Aspect="Tile" />
 ```
-This repeats the image to fill the entire control. Perfect for background patterns.
+This repeats the image to fill the entire control. Perfect for background patterns. Like `None`, the natural size is one source pixel per screen pixel: a 64 px image repeats every 32 points at a rendering scale of 2. The pattern starts from one copy placed by `HorizontalAlignment` and `VerticalAlignment` (centered by default) and runs out from it in every direction. `ZoomX`/`ZoomY` and the offsets move and scale that copy, and with it the whole pattern.
+
+```xml
+<!-- Tiles of a size you choose, each tile drawn with its own aspect -->
+<draw:SkiaImageTiles Source="pattern.png" TileWidth="64" TileHeight="64" />
+```
+`SkiaImageTiles` sets the tile size in points and draws the image into each tile with `TileAspect`.
 
 ```xml
 <!-- High-quality rescaling for photos -->
 <draw:SkiaImage
     Source="photo.jpg"
     Aspect="AspectCover"
-    RescalingType="GammaCorrection"
-    RescalingQuality="Medium" />
+    RescalingQuality="High" />
 ```
-This provides the best quality for photographic content with gamma-corrected rescaling.
+This uses mipmaps, so a large photo stays smooth when it is drawn much smaller.
 
 #### Combining Aspect and Alignment
 
@@ -172,16 +179,9 @@ This would fit the image within bounds while aligning it to the bottom-left corn
 - **For user photos or content images**: `AspectFit` ensures the entire image is visible
 - **For backgrounds or covers**: `AspectCover` (default) ensures no empty space is visible
 - **For thumbnails and cards**: `AspectCover` provides consistent sizing
-- **For patterns and textures**: `Tile` repeats the image seamlessly
+- **For patterns and textures**: `Tile` repeats the image at its natural size; `SkiaImageTiles` repeats it at a tile size you choose
 - **For icons that need exact sizing**: `Fill` stretches to exact dimensions
 - **For pixel-perfect graphics**: `None` maintains original size and quality
-
-#### Choosing the Right Rescaling Type
-
-- **For general use**: `Default` provides good performance
-- **For icons and logos**: `MultiPass` provides superior quality for significant size changes
-- **For professional photography**: `GammaCorrection` provides color-accurate results
-- **For pixel art and UI graphics**: `EdgePreserving` maintains sharp edges
 
 ### Image Alignment
 
@@ -206,7 +206,8 @@ SkiaImage supports various built-in effects through the `AddEffect` property. Ef
 | Effect | Description | Additional Properties |
 |--------|-------------|----------------------|
 | `None` | No effect applied | - |
-| `BlackAndWhite` | Converts to grayscale | - |
+| `BlackAndWhite` | Converts to grayscale (NTSC weights 0.2989, 0.587, 0.114) | - |
+| `Grayscale` | Converts to grayscale (weights 0.21, 0.72, 0.07) | - |
 | `Pastel` | Applies pastel color effect | - |
 | `Tint` | Applies color tint | `ColorTint`, `EffectBlendMode` |
 | `Darken` | Darkens the image | `Darken` (amount) |
@@ -218,7 +219,7 @@ SkiaImage supports various built-in effects through the `AddEffect` property. Ef
 | `Brightness` | Adjusts brightness | `Brightness` (≥1.0) |
 | `Gamma` | Adjusts gamma correction | `Gamma` (≥0) |
 | `TSL` | Tint with Saturation and Lightness | `BackgroundColor`, `Saturation`, `Brightness`, `EffectBlendMode` |
-| `HSL` | Hue, Saturation, Lightness adjustment | `Gamma` (hue), `Saturation`, `Brightness`, `EffectBlendMode` |
+| `HSL` | Hue, Saturation, Lightness adjustment | `Gamma` (hue), `Saturation`, `Brightness`, `EffectBlendMode`; applies only when `BackgroundColor` is set |
 | `Custom` | Use custom effects via VisualEffects | - |
 
 #### Basic Effects Examples
@@ -249,16 +250,14 @@ SkiaImage supports various built-in effects through the `AddEffect` property. Ef
 
 ### Image Adjustments
 
-Fine-tune image appearance with various adjustment properties. These work independently of the `AddEffect` property:
+Fine-tune image appearance with adjustment properties. `Blur` works on its own; `Brightness`, `Contrast`, `Saturation` and `Gamma` take effect only with the matching `AddEffect` value, one at a time:
 
 ```xml
 <draw:SkiaImage
     Source="image.png"
+    AddEffect="Brightness"
     Brightness="1.2"
-    Contrast="1.1"
-    Saturation="0.8"
-    Blur="2"
-    Gamma="1.1" />
+    Blur="2" />
 ```
 
 #### Advanced Effect Combinations
@@ -268,6 +267,7 @@ Fine-tune image appearance with various adjustment properties. These work indepe
 <draw:SkiaImage
     Source="image.png"
     AddEffect="HSL"
+    BackgroundColor="Blue"
     Gamma="0.8"
     Saturation="1.2"
     Brightness="1.1"
@@ -300,44 +300,36 @@ For more complex effects, use the VisualEffects collection:
 </draw:SkiaImage>
 ```
 
-### Gradient Overlays
+### Gradient Tint
 
-Apply gradient overlays to images for enhanced visual effects:
+With `UseGradient="True"` the image is painted with a vertical gradient from `StartColor` at the top to `EndColor` at the bottom. The image keeps only its transparency, so this is made for icons and shapes on a transparent background:
 
 ```xml
 <draw:SkiaImage
-    Source="image.png"
+    Source="icon.png"
+    Aspect="AspectFit"
     UseGradient="True"
-    StartColor="#80000000"
-    EndColor="#00000000" />
+    StartColor="Orange"
+    EndColor="Red" />
 ```
 
-This applies a gradient from semi-transparent black to fully transparent, creating a fade effect.
+The gradient runs over the visible part of the image: the icon itself with `AspectFit`, the control with a cropping aspect, the whole control with `Tile`. `AddEffect` filters still apply on top of it. To fade a photo instead, put a layer with a `FillGradient` over it (see [Gradients](../advanced/gradients.md)).
 
 ### Sprite Sheets
 
-SkiaImage supports sprite sheets for displaying a single sprite from a larger image:
+To show one cell of a sprite sheet, give the cell size in source pixels and the cell index:
 
 ```xml
+<!-- 64x64 cells, the 6th one -->
 <draw:SkiaImage
-    Source="sprite-sheet.png"
+    Source="sheet.png"
     SpriteWidth="64"
     SpriteHeight="64"
-    SpriteIndex="2" />
+    SpriteIndex="5"
+    Aspect="AspectFit" />
 ```
 
-This shows the third sprite (index 2) from the sprite sheet, assuming each sprite is 64x64 pixels.
-
-#### Animated Sprites
-
-```xml
-<!-- Animate through sprites -->
-<draw:SkiaImage
-    Source="character-walk.png"
-    SpriteWidth="32"
-    SpriteHeight="32"
-    SpriteIndex="{Binding CurrentFrame}" />
-```
+Cells are numbered from 0, left to right, then top to bottom. Partial cells at the right and bottom edges do not count. The cell is laid out as if it were the whole image: `Aspect`, alignment, zoom and auto-size all use the cell size, and `Aspect="Tile"` repeats the cell. An index outside the sheet, the default -1 included, draws nothing. Neighbor cells never bleed in at the cell edges, whatever `RescalingQuality` is. To animate the frames of a sheet use `SkiaSprite`, see [Sprite Controls](sprites.md).
 
 ### Preview Images
 
@@ -346,7 +338,7 @@ Show a low-resolution placeholder while loading the main image:
 ```xml
 <DrawUi:SkiaImage
     Source="https://example.com/large-image.jpg"
-    PreviewBase64="data:image/png;base64,iVBORw0KGgoAA..."
+    PreviewBase64="iVBORw0KGgoAA..."
     Aspect="AspectFit" />
 ```
 
@@ -380,10 +372,11 @@ Control how and when images are loaded:
 <!-- From file -->
 <draw:SkiaImage Source="Images/local-image.png" />
 
-<!-- From embedded resource -->
-<draw:SkiaImage
-    Source="MyApp.Images.embedded-image.png"
-    UseAssembly="{x:Static local:App.CurrentAssembly}" />
+<!-- From embedded resource: resource://<path inside the assembly>?assembly=<assembly name> -->
+<draw:SkiaImage Source="resource://Images.embedded-image.png?assembly=MyApp" />
+
+<!-- Same embedded resource with a plain path: UseAssembly takes an assembly name or an Assembly -->
+<draw:SkiaImage UseAssembly="MyApp" Source="Images/embedded-image.png" />
 
 <!-- From stream (in code-behind) -->
 ```
@@ -396,6 +389,8 @@ myImage.SetSource(async (cancellationToken) =>
     return stream;
 });
 ```
+
+With `UseAssembly`, the folders of the plain path become dots, so `Images/embedded-image.png` in `MyApp` loads the resource `MyApp.Images.embedded-image.png` (the default name of a file marked `EmbeddedResource`, as long as the root namespace is the assembly name). Urls and `resource://` sources are not affected. Set `UseAssembly` before `Source`, or the image loads a second time. In code you can pass the assembly itself: `UseAssembly = typeof(App).Assembly`.
 
 ### Caching Strategies
 
@@ -434,15 +429,15 @@ public MainPage()
 
     MyImage.Success += (sender, e) => {
         // Image loaded successfully
-        Console.WriteLine($"Loaded: {e.Source}");
+        Console.WriteLine($"Loaded: {e.Content}");
     };
 
     MyImage.Error += (sender, e) => {
         // Image failed to load
-        Console.WriteLine($"Failed to load: {e.Source}");
+        Console.WriteLine($"Failed to load: {e.Content}");
     };
 
-    MyImage.OnCleared += (sender, e) => {
+    MyImage.Cleared += (sender, e) => {
         // Image was cleared/unloaded
     };
 }
@@ -450,12 +445,7 @@ public MainPage()
 
 #### Monitoring Load State
 
-```xml
-<draw:SkiaImage
-    Source="{Binding ImageUrl}"
-    IsLoading="{Binding IsImageLoading, Mode=OneWayToSource}"
-    HasError="{Binding HasImageError, Mode=OneWayToSource}" />
-```
+`IsLoading` and `HasError` are plain properties, not bindable ones, so XAML cannot bind to them. They raise `PropertyChanged`, so read or observe them from code (see [Working with Image Sources](#working-with-image-sources)).
 
 #### Manual Loading Control
 
@@ -474,7 +464,7 @@ myImage.ClearBitmap();
 
 ### SkiaImageManager
 
-DrawnUi.Maui includes a powerful image management system through the `SkiaImageManager` class. This provides centralized image loading, caching, and resource management.
+DrawnUI includes a powerful image management system through the `SkiaImageManager` class. This provides centralized image loading, caching, and resource management.
 
 #### Preloading Images
 
@@ -491,7 +481,12 @@ await SkiaImageManager.Instance.PreloadImages(new List<string>
     "Images/image2.jpg",
     "Images/image3.jpg"
 });
+
+// Same, with a priority: Low waits behind the images on screen (Normal), High goes first
+await SkiaImageManager.Instance.PreloadImages(urls, LoadPriority.Low);
 ```
+
+Network images load `SkiaImageManager.MaxParallelLoads` at a time and the others wait in line by priority; files on disk or in the app package load at once. `RunningCount` and `QueuedCount` tell how many network loads run and wait right now, and `RemoveFromCache(url)` drops one image so the next load reads it again.
 
 #### Managing Memory Usage
 
@@ -507,11 +502,8 @@ SkiaImageManager.CacheLongevitySecs = 1800; // 30 minutes
 // Enable async loading for local images
 SkiaImageManager.LoadLocalAsync = true;
 
-// Clear unused cached images
-SkiaImageManager.Instance.ClearUnusedImages();
-
-// Clear all cached images
-SkiaImageManager.Instance.ClearAll();
+// Drop one image from the cache
+SkiaImageManager.Instance.RemoveFromCache("https://example.com/image.jpg");
 
 // Add image to cache manually
 SkiaImageManager.Instance.AddToCache("my-key", bitmap, 3600); // 1 hour
@@ -527,7 +519,7 @@ var cachedBitmap = SkiaImageManager.Instance.GetFromCache("my-key");
 Load images directly from base64 strings:
 
 ```csharp
-var base64String = "data:image/png;base64,iVBORw0KGgoAA...";
+var base64String = "iVBORw0KGgoAA..."; // plain base64, no "data:" prefix
 myImage.SetFromBase64(base64String);
 ```
 
@@ -554,8 +546,7 @@ var image = new SkiaImage
     Source = "Images/my-image.jpg",
     LoadSourceOnFirstDraw = false,
     Aspect = TransformAspect.AspectCover,
-    RescalingQuality = SKFilterQuality.Medium,
-    RescalingType = RescalingType.MultiPass,
+    RescalingQuality = FilterQuality.Medium,
     AddEffect = SkiaImageEffect.Sepia,
     ColorTint = Colors.Brown,
     EffectBlendMode = SKBlendMode.Multiply,
@@ -571,39 +562,29 @@ var image = new SkiaImage
 image.Success += (s, e) => Console.WriteLine("Image loaded");
 image.Error += (s, e) => Console.WriteLine("Image failed to load");
 
-myLayout.Children.Add(image);
+myLayout.AddSubView(image); // the layout is already on screen
 ```
 
 #### Advanced Programmatic Usage
 
 ```csharp
-// Create image with gradient overlay
+// Large hero photo, smooth when drawn much smaller
 var heroImage = new SkiaImage
 {
     Source = "hero-background.jpg",
     Aspect = TransformAspect.AspectCover,
-    UseGradient = true,
-    StartColor = Color.FromArgb("#80000000"),
-    EndColor = Color.FromArgb("#00000000"),
-    RescalingType = RescalingType.GammaCorrection
+    RescalingQuality = FilterQuality.High
 };
 
-// Create sprite animation
-var spriteImage = new SkiaImage
+// Sprite sheet animation: 8 frames in one row, see Sprite Controls
+var sprite = new SkiaSprite
 {
     Source = "character-sprites.png",
-    SpriteWidth = 32,
-    SpriteHeight = 32,
-    SpriteIndex = 0
+    Columns = 8,
+    Rows = 1,
+    FramesPerSecond = 10,
+    Repeat = -1
 };
-
-// Animate sprites
-var timer = new Timer(100);
-timer.Elapsed += (s, e) =>
-{
-    spriteImage.SpriteIndex = (spriteImage.SpriteIndex + 1) % 8;
-};
-timer.Start();
 ```
 
 ## Performance Considerations
@@ -620,8 +601,7 @@ timer.Start();
    - Use `UseCache="ImageDoubleBuffered"` for images that change occasionally
    - Use `UseCache="Operations"` for images with effects but static content
    - Use `UseCache="None"` only for frequently changing images
-   - **PROHIBITED:** Never use `Operations` or `GPU` cache for images with GPU-surface shader effects — use `Image`, `ImageDoubleBuffered`, or `ImageComposite` instead
-   - **PROHIBITED:** Never nest children that use GPU-backed cache types (`GPU`, `ImageCompositeGPU`) inside a parent cached with `Operations`
+   - An image carrying a shader effect that samples `iImage1` needs an image-backed cache — `Image`, `ImageDoubleBuffered`, `GPU` or `ImageComposite`. With `Operations` the cache is a picture and holds no image, so the effect snapshots the canvas instead of reading the image
 
 3. **Loading Strategy**
    - Use `LoadSourceOnFirstDraw="True"` for off-screen images
@@ -630,20 +610,16 @@ timer.Start();
 
 4. **Rendering Quality**
    - Set appropriate `RescalingQuality` based on your needs:
-     - `None`: Fastest but lowest quality (default)
-     - `Low`: Good balance for scrolling content
-     - `Medium`: Good for static content
-     - `High`: Best quality but slowest (use sparingly)
-   - Choose the right `RescalingType`:
-     - `Default`: Standard performance
-     - `MultiPass`: Better quality for significant size changes
-     - `GammaCorrection`: Best for photos (slower)
-     - `EdgePreserving`: Best for pixel art and UI graphics
+     - `None`: Fastest, nearest neighbor; right for pixel art and 1:1 drawing
+     - `Low`: Linear filtering, good for scrolling content (default)
+     - `Medium`: Linear with nearest mipmaps
+     - `High`: Linear with mipmaps, smooth when scaling down a lot
+     - `Ultra`: Cubic when scaling up, slowest (use sparingly)
 
 5. **Memory Management**
    - Enable bitmap reuse with `SkiaImageManager.ReuseBitmaps = true`
    - Set reasonable cache longevity with `SkiaImageManager.CacheLongevitySecs`
-   - Call `ClearUnusedImages()` when appropriate
+   - Call `SkiaImageManager.Instance.RemoveFromCache(url)` for images you no longer need
    - Use `EraseChangedContent="True"` for dynamic image sources
 
 ### Examples of Optimized Image Loading
@@ -654,9 +630,8 @@ timer.Start();
 <draw:SkiaImage
     Source="{Binding ImageUrl}"
     LoadSourceOnFirstDraw="True"
-    Cache="ImageDoubleBuffered"
+    UseCache="ImageDoubleBuffered"
     RescalingQuality="Low"
-    RescalingType="Default"
     Aspect="AspectCover" />
 ```
 
@@ -667,9 +642,8 @@ timer.Start();
     Source="{Binding CoverImage}"
     PreviewBase64="{Binding CoverImagePreview}"
     LoadSourceOnFirstDraw="False"
-    Cache="Image"
+    UseCache="Image"
     RescalingQuality="Medium"
-    RescalingType="GammaCorrection"
     Aspect="AspectCover" />
 ```
 
@@ -678,10 +652,9 @@ timer.Start();
 ```xml
 <draw:SkiaImage
     Source="{Binding HighResPhoto}"
-    RescalingType="GammaCorrection"
     RescalingQuality="High"
     Aspect="AspectFit"
-    Cache="Image" />
+    UseCache="Image" />
 ```
 
 #### For Icons and UI Graphics
@@ -689,23 +662,21 @@ timer.Start();
 ```xml
 <draw:SkiaImage
     Source="icon.png"
-    RescalingType="EdgePreserving"
     RescalingQuality="None"
     Aspect="None"
-    Cache="Operations" />
+    UseCache="Operations" />
 ```
 
 #### For Image Galleries
 
 ```xml
 <draw:SkiaScroll Orientation="Horizontal">
-    <draw:SkiaLayout LayoutType="Row" Spacing="10">
+    <draw:SkiaLayout Type="Row" Spacing="10">
         <!-- Images that are initially visible -->
         <draw:SkiaImage
             Source="{Binding Images[0]}"
             LoadSourceOnFirstDraw="False"
-            Cache="Image"
-            RescalingType="MultiPass"
+            UseCache="Image"
             Aspect="AspectCover"
             WidthRequest="300"
             HeightRequest="200" />
@@ -714,8 +685,7 @@ timer.Start();
         <draw:SkiaImage
             Source="{Binding Images[1]}"
             LoadSourceOnFirstDraw="True"
-            Cache="Image"
-            RescalingType="MultiPass"
+            UseCache="Image"
             Aspect="AspectCover"
             WidthRequest="300"
             HeightRequest="200" />
@@ -783,20 +753,20 @@ if (loadedSource != null)
 ### 1. Choose the Right Aspect Mode
 - Use `AspectCover` (default) for most scenarios
 - Use `AspectFit` when you need to see the entire image
-- Use `Tile` for patterns and backgrounds
+- Use `SkiaImageTiles` for patterns and backgrounds
 - Use `None` for pixel-perfect icons
 
 ### 2. Optimize Rescaling
-- Use `Default` rescaling for general performance
-- Use `MultiPass` for icons and graphics with significant size changes
-- Use `GammaCorrection` for professional photography
-- Use `EdgePreserving` for pixel art and small UI elements
+- Keep the default `RescalingQuality="Low"` for general performance
+- Use `High` for photos drawn much smaller than their source
+- Use `None` for pixel art and 1:1 graphics
+- Set `CacheRescaledSource="False"` for sources that change every frame
 
 ### 3. Manage Memory Efficiently
 - Enable `SkiaImageManager.ReuseBitmaps = true` for shared images
 - Set appropriate cache longevity with `CacheLongevitySecs`
 - Use `EraseChangedContent="True"` for dynamic content
-- Clear unused images periodically
+- Remove images you no longer need with `RemoveFromCache`
 
 ### 4. Handle Loading States
 - Use `LoadSourceOnFirstDraw="True"` for off-screen images
@@ -810,7 +780,7 @@ if (loadedSource != null)
 - Use `Custom` effect type with VisualEffects for complex scenarios
 - Consider performance impact of multiple effects
 
-This comprehensive guide covers all aspects of using SkiaImage in DrawnUi.Maui, from basic usage to advanced optimization techniques. The control provides powerful image handling capabilities while maintaining excellent performance through intelligent caching and rendering strategies.
+This comprehensive guide covers all aspects of using SkiaImage in DrawnUI, from basic usage to advanced optimization techniques. The control provides powerful image handling capabilities while maintaining excellent performance through intelligent caching and rendering strategies.
 
 
 ## SkiaGif
@@ -822,8 +792,8 @@ SkiaGif is a dedicated control for displaying animated GIF files with playback c
 ```xml
 <draw:SkiaGif
     Source="animation.gif"
-    IsPlaying="True"
-    RepeatCount="0"
+    AutoPlay="True"
+    Repeat="-1"
     WidthRequest="200"
     HeightRequest="200" />
 ```
@@ -832,62 +802,55 @@ SkiaGif is a dedicated control for displaying animated GIF files with playback c
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `IsPlaying` | bool | true | Whether the animation is playing |
-| `RepeatCount` | int | 0 | Number of times to repeat (0 = infinite) |
-| `Speed` | double | 1.0 | Playback speed multiplier |
-| `CurrentFrame` | int | 0 | Current frame index |
-| `FrameCount` | int | 0 | Total number of frames (read-only) |
+| `Source` | string | empty | Path or URL of the GIF |
+| `AutoPlay` | bool | true | Whether the animation starts when loaded |
+| `Repeat` | int | 0 | Extra cycles after the first one, -1 loops forever |
+| `SpeedRatio` | double | 1.0 | Playback speed: 0.5 is half speed (twice as long), 2 is double speed |
+| `DefaultFrame` | int | 0 | Frame index shown when not playing, -1 is the last frame |
+| `Aspect` | TransformAspect | AspectFitFill | How the frames scale to fit |
+| `IsPlaying` | bool | - | Whether the animation is playing (read-only) |
+
+Use `Start()` and `Stop()` to control playback from code. `Seek(ms)` jumps to a time position in milliseconds; to show a given frame while stopped, set `DefaultFrame`.
 
 ### Examples
 
 ```xml
-<!-- Auto-playing GIF -->
+<!-- Auto-playing GIF, looping -->
 <draw:SkiaGif
     Source="loading.gif"
-    IsPlaying="True"
-    RepeatCount="0" />
+    AutoPlay="True"
+    Repeat="-1" />
 
-<!-- Controlled GIF playback -->
+<!-- Started from code with Start(), plays 4 times -->
 <draw:SkiaGif
     Source="animation.gif"
-    IsPlaying="{Binding IsAnimating}"
-    Speed="0.5"
-    RepeatCount="3" />
+    AutoPlay="False"
+    SpeedRatio="0.5"
+    Repeat="3" />
 ```
 
 ## SkiaMediaImage
 
-SkiaMediaImage is a versatile control that can display various types of media including static images, animated GIFs, and other supported formats. It automatically detects the media type and uses the appropriate rendering method.
+SkiaMediaImage (MAUI only) is a `SkiaImage` that also plays animations. When the source path contains `.gif` or `.webp`, it loads the frames and plays them in a loop. Any other source loads as a normal image. Its default cache is `ImageDoubleBuffered`.
 
 ### Basic Usage
 
 ```xml
 <draw:SkiaMediaImage
     Source="{Binding MediaUrl}"
-    AutoPlay="True"
     WidthRequest="300"
     HeightRequest="200" />
 ```
 
 ### Key Properties
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `AutoPlay` | bool | true | Whether to auto-play animated content |
-| `MediaType` | MediaType | Auto | Force specific media type handling |
+SkiaMediaImage adds no properties of its own: use the `SkiaImage` ones, such as `Source` and `Aspect`.
 
 ### Examples
 
 ```xml
-<!-- Auto-detecting media type -->
+<!-- Static image or looping animation, depending on the source -->
 <draw:SkiaMediaImage
     Source="{Binding MediaSource}"
-    AutoPlay="True"
     Aspect="AspectCover" />
-
-<!-- Force GIF handling -->
-<draw:SkiaMediaImage
-    Source="image.gif"
-    MediaType="Gif"
-    AutoPlay="False" />
 ```

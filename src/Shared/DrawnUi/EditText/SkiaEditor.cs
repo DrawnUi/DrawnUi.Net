@@ -61,7 +61,7 @@ namespace DrawnUi.Draw
         #region EVENTS
 
         /// <summary>
-        /// Raised when the caret moves to a new position.
+        /// Raised when the text changes, with the new text.
         /// </summary>
         public event EventHandler<string> TextChanged;
 
@@ -682,45 +682,7 @@ namespace DrawnUi.Draw
         /// A single-span line whose glyphs are all one code unit (the common ASCII/plain case)
         /// takes a zero-allocation fast path and returns the span's array unchanged.
         /// </summary>
-        protected virtual LineGlyph[] GetLineGlyphs(TextLine line)
-        {
-            if (line?.Spans == null || line.Spans.Count == 0)
-                return Array.Empty<LineGlyph>();
-
-            // Fast path: one span, no multi-code-unit glyph → already per-code-unit, line-relative.
-            if (line.Spans.Count == 1)
-            {
-                var only = line.Spans[0].Glyphs ?? Array.Empty<LineGlyph>();
-                bool simple = true;
-                for (int i = 0; i < only.Length; i++)
-                {
-                    if (only[i].Length > 1) { simple = false; break; }
-                }
-                if (simple)
-                    return only;
-            }
-
-            var result = new List<LineGlyph>();
-            float spanOffsetX = 0f;
-            foreach (var span in line.Spans)
-            {
-                var glyphs = span.Glyphs;
-                if (glyphs != null)
-                {
-                    foreach (var g in glyphs)
-                    {
-                        // make X line-absolute (render adds the span's cumulative offset, not the glyph)
-                        var abs = LineGlyph.Move(g, spanOffsetX + g.Position);
-                        int units = Math.Max(1, g.Length);
-                        for (int u = 0; u < units; u++)
-                            result.Add(abs); // one slot per code unit so array index == code-unit offset
-                    }
-                }
-                spanOffsetX += span.Size.Width;
-            }
-
-            return result.ToArray();
-        }
+        protected virtual LineGlyph[] GetLineGlyphs(TextLine line) => SkiaLabel.GetLineGlyphs(line);
 
         /// <summary>
         /// Input in pixels

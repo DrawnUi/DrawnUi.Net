@@ -61,10 +61,25 @@ in **all** the heads you ship:
 |---|---|
 | **OpenTK** | `Content Include … CopyToOutputDirectory` → copied next to the exe |
 | **.NET MAUI** | `Resources/Raw/**` (MauiAsset; bundled automatically) |
-| **Web (Blazor / DrawnUi.Wasm)** | `wwwroot/**` (served as a static web asset) |
+| **Web (Blazor / DrawnUi.Web)** | `wwwroot/**` (served as a static web asset) |
 
 A source path like `"Images/banana.gif"` should resolve to the same relative location under each head's
 asset root, so the shared code stays head-agnostic.
+
+## `.sksl` shader files
+
+Copy them out with the same `Content Include` rule (HelloOpenTk does it for `shaders\**`). `ShaderSource`,
+`ShaderTemplate`, `TransitionShader` and `SkiaShader.FromResource` then load them by that relative path from the
+executable's folder, as MAUI reads `Resources/Raw`:
+
+```csharp
+new SkiaShaderEffect { ShaderSource = "shaders/blit.sksl" }
+carousel.TransitionShader = "shaders/transitions/cube.sksl";
+```
+
+The same goes for files an effect loads as textures (`ShaderDoubleTexturesEffect.PrimarySource` /
+`SecondarySource`). Builds before 2026-10-06 could not read these files on OpenTK (`NotSupportedException`) and
+needed `ShaderCode` / `TransitionShaderCode` with the file's text.
 
 ## See also
 

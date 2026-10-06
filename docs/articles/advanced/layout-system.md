@@ -1,10 +1,10 @@
 # Layout System Architecture
 
-This article covers the internal architecture of DrawnUi.Maui's layout system, designed for developers who want to understand how layouts work under the hood or extend the system with custom layout types.
+This article covers the internal architecture of DrawnUi's layout system, designed for developers who want to understand how layouts work under the hood or extend the system with custom layout types.
 
 ## Layout System Overview
 
-DrawnUi.Maui's layout system is built on a core principle: direct rendering to canvas with optimizations for mobile and desktop platforms. Unlike traditional MAUI layouts that create native UI elements, DrawnUi.Maui renders everything using SkiaSharp, enabling consistent cross-platform visuals and better performance for complex UIs.
+DrawnUi's layout system is built on a core principle: direct rendering to canvas with optimizations for mobile and desktop platforms. Unlike traditional MAUI layouts that create native UI elements, DrawnUi renders everything using SkiaSharp, enabling consistent cross-platform visuals and better performance for complex UIs.
 
 ## Core Components
 
@@ -20,22 +20,22 @@ DrawnUi.Maui's layout system is built on a core principle: direct rendering to c
 - Visibility management
 
 Its key methods include:
-- `OnMeasure`: Determines the size requirements of the control
-- `OnArrange`: Positions the control within its parent
-- `OnDraw`: Renders the control using a SkiaSharp canvas
+- `Measure` / `OnMeasuring`: Determines the size requirements of the control
+- `Arrange`: Positions the control within its parent
+- `Draw` / `Paint`: Renders the control using a SkiaSharp canvas
 - `InvalidateInternal`: Manages rendering invalidation
 
 ### SkiaLayout
 
 `SkiaLayout` extends `SkiaControl` to provide layout functionality. It's implemented as a partial class with functionality split across files by layout type:
 
-- **SkiaLayout.cs**: Core layout mechanisms
+- **SkiaLayout.Shared.cs**: Core layout mechanisms
 - **SkiaLayout.Grid.cs**: Grid layout implementation 
 - **SkiaLayout.ColumnRow.cs**: Stack-like layouts
 - **SkiaLayout.BuildWrapLayout.cs**: Wrap layout implementation
 - **SkiaLayout.ListView.cs**: Virtualized list rendering
 - **SkiaLayout.IList.cs**: List-specific optimization
-- **SkiaLayout.ViewsAdapter.cs**: Template management
+- **ViewsAdapter.cs**: Template management
 
 This approach allows specialized handling for each layout type while sharing common infrastructure.
 
@@ -44,7 +44,7 @@ This approach allows specialized handling for each layout type while sharing com
 The system uses specialized structures to efficiently track and manage layout calculations:
 
 - **LayoutStructure**: Tracks arranged controls in stack layouts
-- **GridStructure**: Manages grid-specific layout information
+- **SkiaGridStructure**: Manages grid-specific layout information
 - **ControlInStack**: Contains information about a control's position 
 
 ## Advanced Concepts
@@ -53,20 +53,19 @@ The system uses specialized structures to efficiently track and manage layout ca
 
 Virtualization is a key performance optimization that only renders items currently visible in the viewport. This enables efficient rendering of large collections.
 
-The `VirtualizationMode` enum defines several strategies:
-- **None**: All items are rendered
-- **Enabled**: Only visible items are rendered and measured
-- **Smart**: Renders visible items plus a buffer
-- **Managed**: Uses a managed renderer for advanced cases
+The `VirtualisationType` enum (`Virtualisation` property, default `Enabled`) defines several strategies:
+- **Disabled**: All children are rendered, visible or not
+- **Enabled**: Children outside the visible parent bounds are not rendered
+- **Smart**: Outside the visible parent bounds only the creation of a cached object is allowed
+- **Managed**: The parent provides the visible viewport (`GetVisibleViewport`), the control's own rect is not checked
 
 Virtualization works alongside template recycling to minimize both CPU and memory usage.
 
 ### Template Recycling
 
 The `RecyclingTemplate` property determines how templates are reused across items:
-- **None**: New instance created for each item
-- **Enabled**: Templates are reused as items scroll out of view
-- **Smart**: Reuses templates with additional optimizations
+- **Disabled**: New instance created for each item
+- **Enabled** (default): Templates are reused as items scroll out of view
 
 The `ViewsAdapter` class manages template instantiation, recycling, and state management.
 
@@ -87,8 +86,8 @@ These strategies let you balance between layout accuracy and performance.
 To create a custom layout type, you'll typically:
 
 1. Create a new class inheriting from `SkiaLayout`
-2. Override the `OnMeasure` and `OnArrange` methods
-3. Implement custom measurement and arrangement logic
+2. Override `MeasureAbsolute` (or `OnMeasuring` for full control over measuring)
+3. Implement custom measurement and placement logic
 4. Optionally create custom properties for layout configuration
 
 Here's a simplified example of a circular layout implementation:
@@ -98,7 +97,7 @@ public class CircularLayout : SkiaLayout
 {
     public static readonly BindableProperty RadiusProperty = 
         BindableProperty.Create(nameof(Radius), typeof(float), typeof(CircularLayout), 100f,
-        propertyChanged: (b, o, n) => ((CircularLayout)b).InvalidateMeasure());
+        propertyChanged: (b, o, n) => ((CircularLayout)b).Invalidate());
         
     public float Radius
     {
@@ -106,37 +105,20 @@ public class CircularLayout : SkiaLayout
         set => SetValue(RadiusProperty, value);
     }
     
-    protected override SKSize OnMeasure(float widthConstraint, float heightConstraint)
+    // Type stays Absolute: each child is measured and drawn inside the layout rect,
+    // placed by its own options (use Center for both axes here), margins and translation.
+    public override ScaledSize MeasureAbsolute(SKRect rectForChildrenPixels, float scale)
     {
-        // Need enough space for a circle with our radius
-        return new SKSize(Radius * 2, Radius * 2);
-    }
-    
-    protected override void OnArrange(SKRect destination)
-    {
-        base.OnArrange(destination);
-        
-        // Skip if no children
-        if (Children.Count == 0) return;
-        
-        // Calculate center point
-        SKPoint center = new SKPoint(destination.MidX, destination.MidY);
-        float angleStep = 360f / Children.Count;
-        
-        // Position each child around the circle
-        for (int i = 0; i < Children.Count; i++)
+        var children = Views;
+        for (int i = 0; i < children.Count; i++)
         {
-            var child = Children[i];
-            if (!child.IsVisible) continue;
-            
-            // Calculate position on circle
-            float angle = i * angleStep * (float)Math.PI / 180f;
-            float x = center.X + Radius * (float)Math.Cos(angle) - child.MeasuredSize.Width / 2;
-            float y = center.Y + Radius * (float)Math.Sin(angle) - child.MeasuredSize.Height / 2;
-            
-            // Arrange child at calculated position
-            child.Arrange(new SKRect(x, y, x + child.MeasuredSize.Width, y + child.MeasuredSize.Height));
+            // Offset each child from the center onto the circle, in points
+            var angle = 2 * Math.PI * i / children.Count;
+            children[i].TranslationX = Radius * Math.Cos(angle);
+            children[i].TranslationY = Radius * Math.Sin(angle);
         }
+
+        return base.MeasureAbsolute(rectForChildrenPixels, scale);
     }
 }
 ```
@@ -151,7 +133,7 @@ public class CircularLayout : SkiaLayout
 
 4. **Optimize Arrangement Logic**: Keep arrangement logic simple and efficient, especially for layouts that update frequently.
 
-5. **Respect Constraints**: Always respect the width and height constraints passed to OnMeasure.
+5. **Respect Constraints**: Always respect the width and height constraints passed to `OnMeasuring`.
 
 6. **Cache Layout Calculations**: For complex layouts, consider caching calculations that don't need to be redone every frame.
 
@@ -164,10 +146,10 @@ public class CircularLayout : SkiaLayout
 The layout process follows these steps:
 
 1. **Parent Invalidates Layout**: When a change requires remeasurement
-2. **OnMeasure Called**: Layout determines its size requirements
+2. **Measure Called**: Layout determines its size requirements
 3. **Parent Determines Size**: Parent decides actual size allocation
-4. **OnArrange Called**: Layout positions itself and its children
-5. **OnDraw Called**: Layout renders itself and its children
+4. **Arrange Called**: Layout positions itself and its children
+5. **Draw Called**: Layout renders itself (`Paint`) and its children
 
 ### Coordinate Spaces
 
@@ -187,7 +169,7 @@ Layout controls have unique bindable properties that affect their behavior:
 - **ColumnDefinitions/RowDefinitions**: Define grid structure
 - **Spacing**: Controls space between items
 - **Padding**: Controls space inside the layout edges
-- **LayoutType**: Determines layout strategy
+- **Type** (`LayoutType`): Determines layout strategy
 - **ItemsSource/ItemTemplate**: For data-driven layouts
 
 ## Performance Considerations
@@ -212,10 +194,8 @@ The rendering system is optimized using several techniques:
 
 For debugging layout issues, use these built-in features:
 
-- Set `IsDebugRenderBounds` to `true` to visualize layout boundaries
 - Use `SkiaLabelFps` to monitor rendering performance
-- Add the `DebugRenderGraph` control to visualize the rendering tree
 
 ## Summary
 
-DrawnUi.Maui's layout system provides a foundation for creating high-performance, visually consistent UIs across platforms. By understanding its architecture, you can leverage its capabilities to create custom layouts and optimize your application's performance.
+DrawnUi's layout system provides a foundation for creating high-performance, visually consistent UIs across platforms. By understanding its architecture, you can leverage its capabilities to create custom layouts and optimize your application's performance.

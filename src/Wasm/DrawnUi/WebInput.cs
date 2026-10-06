@@ -29,11 +29,12 @@ public static partial class WebInput
     /// Called by JS when pointer goes down
     /// </summary>
     [JSExport]
-    public static void OnPointerDown(int pointerId, double x, double y, int button, int buttons)
+    public static void OnPointerDown(int pointerId, double x, double y, int button, int buttons, string pointerType)
     {
         var scale = Math.Max(0.1f, RenderingScale);
         var location = new PointF((float)x * scale, (float)y * scale);
         var args = MakeTouchArgs(pointerId, TouchActionType.Pressed, location);
+        args.Pointer = PointerOf(pointerType, button);
 
         ActiveTouchIds.Add(pointerId);
         args.NumberOfTouches = ActiveTouchIds.Count;
@@ -52,13 +53,14 @@ public static partial class WebInput
     /// Called by JS when pointer moves
     /// </summary>
     [JSExport]
-    public static void OnPointerMove(int pointerId, double x, double y, int buttons)
+    public static void OnPointerMove(int pointerId, double x, double y, int buttons, string pointerType)
     {
         var scale = Math.Max(0.1f, RenderingScale);
         var location = new PointF((float)x * scale, (float)y * scale);
         var isDragging = buttons != 0;
         var actionType = isDragging ? TouchActionType.Moved : TouchActionType.Pointer;
         var args = MakeTouchArgs(pointerId, actionType, location);
+        args.Pointer = PointerOf(pointerType, (buttons & 4) != 0 ? 1 : (buttons & 2) != 0 ? 2 : 0);
 
         args.NumberOfTouches = ActiveTouchIds.Count;
 
@@ -95,11 +97,12 @@ public static partial class WebInput
     /// Called by JS when pointer goes up
     /// </summary>
     [JSExport]
-    public static void OnPointerUp(int pointerId, double x, double y, int button, int buttons)
+    public static void OnPointerUp(int pointerId, double x, double y, int button, int buttons, string pointerType)
     {
         var scale = Math.Max(0.1f, RenderingScale);
         var location = new PointF((float)x * scale, (float)y * scale);
         var args = MakeTouchArgs(pointerId, TouchActionType.Released, location);
+        args.Pointer = PointerOf(pointerType, button);
 
         ActiveTouchIds.Remove(pointerId);
         args.NumberOfTouches = ActiveTouchIds.Count;
@@ -127,6 +130,16 @@ public static partial class WebInput
         _pointerDownArgs = null;
         _previousArgs = null;
     }
+
+    /// <summary>
+    /// Device and button of a DOM pointer event (e.pointerType, e.button), as the other heads report them.
+    /// </summary>
+    static PointerData PointerOf(string pointerType, int button) => new()
+    {
+        DeviceType = pointerType switch { "touch" => PointerDeviceType.Touch, "pen" => PointerDeviceType.Pen, _ => PointerDeviceType.Mouse },
+        Button = button switch { 1 => MouseButton.Middle, 2 => MouseButton.Right, _ => MouseButton.Left },
+        ButtonNumber = Math.Max(0, button),
+    };
 
     /// <summary>
     /// Called by JS on the browser contextmenu event (right click, long press on touch, keyboard Menu key).
@@ -219,21 +232,22 @@ public static partial class WebInput
 
     /// <summary>
     /// Called by JS on keydown. <paramref name="code"/> is the DOM <c>KeyboardEvent.code</c>
-    /// (e.g. "ArrowLeft", "Space", "Enter"), parsed into <see cref="InputKey"/>.
+    /// (e.g. "ArrowLeft", "Space", "Enter"), parsed into <see cref="InputKey"/>. <paramref name="forOtherElement"/>:
+    /// a page element outside the canvas has the key, see <see cref="KeyboardManager.IsKeyForOtherElement"/>.
     /// </summary>
     [JSExport]
-    public static void OnKeyDown(string code)
+    public static void OnKeyDown(string code, bool forOtherElement)
     {
-        KeyboardManager.KeyboardPressed(MapCode(code));
+        KeyboardManager.KeyboardPressed(MapCode(code), forOtherElement);
     }
 
     /// <summary>
     /// Called by JS on keyup. See <see cref="OnKeyDown"/> for the code contract.
     /// </summary>
     [JSExport]
-    public static void OnKeyUp(string code)
+    public static void OnKeyUp(string code, bool forOtherElement)
     {
-        KeyboardManager.KeyboardReleased(MapCode(code));
+        KeyboardManager.KeyboardReleased(MapCode(code), forOtherElement);
     }
 
     private static InputKey MapCode(string? code)

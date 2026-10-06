@@ -26,6 +26,9 @@ public class ColorPresetEffect : BaseColorFilterEffect
                     SkiaImageEffect.BlackAndWhite
                         => SkiaImageEffects.Grayscale(),
 
+                    SkiaImageEffect.Grayscale
+                        => SkiaImageEffects.Grayscale2(),
+
                     SkiaImageEffect.Pastel
                         => SkiaImageEffects.Pastel(),
 

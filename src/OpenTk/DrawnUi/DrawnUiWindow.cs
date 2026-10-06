@@ -22,7 +22,7 @@ public class DrawnUiWindow : GameWindow
     private GRBackendRenderTarget? _renderTarget;
     private SKSurface? _surface;
     private GpuDrawable? _drawable;
-    private long _lastRenderTicks;
+    private FramePacing? _pacing;
 
     private bool _firstFrameDone;
 
@@ -32,6 +32,7 @@ public class DrawnUiWindow : GameWindow
     private nint _oldWndProc;
     private nint _hwnd;
     private WindowsUiaProvider? _uiaProvider;
+    private LinuxAtSpiProvider? _atSpiProvider;
 
     // Constant: render every VSync frame (games).
     // Dynamic:  render only when dirty, sleep via GLFW between frames (apps).
@@ -56,6 +57,9 @@ public class DrawnUiWindow : GameWindow
 
         Super.Init();
 
+        // Copy of a selected SkiaLabel text goes to the system clipboard (GLFW, window thread).
+        Super.SetClipboardText ??= text => MainThread.BeginInvokeOnMainThread(() => ClipboardString = text);
+
         _windowThreadId = Environment.CurrentManagedThreadId;
         MainThread.Configure(
             action => _mainThreadActions.Enqueue(action),
@@ -69,17 +73,24 @@ public class DrawnUiWindow : GameWindow
         _drawable = new GpuDrawable();
         _canvas.ConnectDesktopDrawable(_drawable);
 
-        Super.MaxFps = GetPrimaryMonitorRefreshRate();
+        // GLFW gives whole hertz, 59 for a 59.95 Hz panel: frames paced 16.95 ms apart would fall behind the display,
+        // so on Windows the compositor's exact rate is used
+        double refreshRate = GetPrimaryMonitorRefreshRate();
+        if (OperatingSystem.IsWindows() && WindowChrome.TryGetRefreshRate(out var exact))
+            refreshRate = exact;
+        Super.MaxFps = (int)Math.Round(refreshRate);
 
         if (UpdateMode == UpdateModeType.Constant)
         {
-            // Hardware VSync is the sole pacemaker — no software timer needed.
+            // VSync paces the frames; where the driver ignores it (WSLg's software GL) the window paces them itself.
             VSync = VSyncMode.On;
+            _pacing = new FramePacing(refreshRate, alwaysOn: false);
         }
         else
         {
-            // Event-driven: wake the GLFW loop from the DrawnUI software timer.
+            // Event-driven: wake the GLFW loop from the DrawnUI software timer, frames one refresh apart.
             VSync = VSyncMode.Off;
+            _pacing = new FramePacing(refreshRate, alwaysOn: true);
             Super.EnsureFrameLoopStarted();
             Super.OnFrame += OnSuperFrame;
         }
@@ -105,6 +116,35 @@ public class DrawnUiWindow : GameWindow
                 }
             }
         }
+
+        if (OperatingSystem.IsLinux())
+        {
+            // Orca: the snapshot on the AT-SPI bus, once assistive technology turns it on
+            _atSpiProvider = new LinuxAtSpiProvider(_canvas.AccessibilityManager, () => (float)_canvas.RenderingScale, () => Title);
+            UpdateAtSpiWindow();
+            _atSpiProvider.SetActive(IsFocused);
+            _atSpiProvider.Start();
+        }
+    }
+
+    // the client area on screen, for the extents a screen reader asks for
+    private void UpdateAtSpiWindow()
+    {
+        if (OperatingSystem.IsLinux())
+            _atSpiProvider?.UpdateWindow(ClientLocation.X, ClientLocation.Y, ClientSize.X, ClientSize.Y);
+    }
+
+    protected override void OnMove(WindowPositionEventArgs e)
+    {
+        base.OnMove(e);
+        UpdateAtSpiWindow();
+    }
+
+    protected override void OnFocusedChanged(FocusedChangedEventArgs e)
+    {
+        base.OnFocusedChanged(e);
+        if (OperatingSystem.IsLinux())
+            _atSpiProvider?.SetActive(e.IsFocused);
     }
 
     /// <summary>
@@ -148,6 +188,7 @@ public class DrawnUiWindow : GameWindow
         base.OnResize(e);
         GL.Viewport(0, 0, e.Width, e.Height);
         RecreateSurface(e.Width, e.Height);
+        UpdateAtSpiWindow();
 
         // Linux (X11/Wayland) has no modal size loop: the render loop keeps running during a resize
         // and picks up the Repaint from RecreateSurface, so an extra (vsync-blocking) frame here would only add lag.
@@ -185,37 +226,29 @@ public class DrawnUiWindow : GameWindow
         if (_grContext == null || _surface == null || _drawable == null || ClientSize.X <= 0 || ClientSize.Y <= 0)
             return;
 
-        if (UpdateMode == UpdateModeType.Constant)
+        if (UpdateMode != UpdateModeType.Constant && _canvas.WasRendered && !_canvas.IsDirty)
         {
-            // Render unconditionally — VSync already caps the rate.
-            RenderDrawnUi();
+            // nothing to draw: sleep until an event or the DrawnUI timer wakes the loop
+            GLFW.WaitEventsTimeout(1.0 / Super.MaxFps);
+            return;
         }
-        else
+
+        // Constant: every frame, VSync keeps the pace unless the driver ignores it. Dynamic: frames one refresh
+        // apart. Either way a paced frame waits for its slot on the refresh grid.
+        if (_pacing?.Hold(Stopwatch.GetTimestamp()) is { } due)
         {
-            var frameInterval = 1.0 / Super.MaxFps;
-
-            if (_canvas.WasRendered && !_canvas.IsDirty)
-            {
-                GLFW.WaitEventsTimeout(frameInterval);
-                return;
-            }
-
-            var now = Stopwatch.GetTimestamp();
-            var elapsed = (now - _lastRenderTicks) / (double)Stopwatch.Frequency;
-            if (elapsed < frameInterval)
-            {
-                GLFW.WaitEventsTimeout(frameInterval - elapsed);
-                return;
-            }
-            _lastRenderTicks = Stopwatch.GetTimestamp();
-
-            RenderDrawnUi();
+            GLFW.WaitEventsTimeout(Math.Max(0, due - Stopwatch.GetTimestamp()) / (double)Stopwatch.Frequency);
+            return;
         }
+
+        RenderDrawnUi();
     }
 
     protected virtual void RenderDrawnUi()
     {
-        var frameTime = GetFrameTimestampNanos();
+        // a paced frame: animations step with its slot on the refresh grid, not with the moment the wake-up came
+        var slot = _pacing?.Frame(Stopwatch.GetTimestamp());
+        var frameTime = slot is { } ticks ? (long)(1_000_000_000.0 * ticks / Stopwatch.Frequency) : GetFrameTimestampNanos();
         _drawable!.CanvasSize = new SKSize(ClientSize.X, ClientSize.Y);
         _drawable.SignalFrame(frameTime);
 
@@ -307,9 +340,31 @@ public class DrawnUiWindow : GameWindow
         var alt = KeyboardState.IsKeyDown(Keys.LeftAlt) || KeyboardState.IsKeyDown(Keys.RightAlt);
         switch (e.Key)
         {
-            case Keys.F11: ToggleFullscreen(); break;
+            case Keys.F11: ToggleFullscreen(); return;
             case Keys.Escape when WindowState == WindowState.Fullscreen:
-                WindowState = WindowState.Normal; break;
+                WindowState = WindowState.Normal; return;
+            case Keys.Menu:
+            case Keys.F10 when shift:
+                _gestures.OnContextMenuKey(ClientSize); return;
+        }
+
+        // Keyboard navigation, the rules of the other desktop heads (DrawnView.HandleKeyboardNavigation): Tab / Shift+Tab
+        // walk the Tab stops, also out of a drawn editor (no tab characters). Enter / Space / Escape / arrows / Home / End /
+        // PageUp / PageDown go to the node in keyboard focus while the keyboard is in use, so a game's keys stay its own.
+        if (e.Key == Keys.Tab)
+        {
+            if (_canvas.FocusedChild is SkiaEditor editor)
+                _canvas.AccessibilityManager.NotifyFocused(editor); // continue from the field, also when a click focused it
+            _canvas.HandleKeyboardNavigation(InputKey.Tab, shift);
+            return;
+        }
+
+        if (_canvas.FocusedChild is not SkiaEditor && _canvas.KeyboardFocusNode != null
+            && OpenTkKeyMapper.Map(e.Key) is { } key && _canvas.HandleKeyboardNavigation(key, shift))
+            return;
+
+        switch (e.Key)
+        {
             case Keys.Backspace: _canvas.DesktopEditorBackspace(); break;
             case Keys.Delete: _canvas.DesktopEditorDelete(); break;
             case Keys.Enter: _canvas.DesktopEditorEnter(alt, shift); break;
@@ -317,8 +372,12 @@ public class DrawnUiWindow : GameWindow
             case Keys.Right: _canvas.DesktopEditorMoveCursor(1, shift); break;
             case Keys.Home: _canvas.DesktopEditorMoveToStart(shift); break;
             case Keys.End: _canvas.DesktopEditorMoveToEnd(shift); break;
+            // this window feeds no KeyboardManager, so a selectable label gets its copy keys here
+            case Keys.A when ctrl && _canvas.FocusedChild is SkiaLabel { AccessibilityTextSelectable: true } label:
+                label.SelectAll(); break;
+            case Keys.C when ctrl && _canvas.FocusedChild is SkiaLabel { AccessibilityTextSelectable: true } label:
+                label.CopySelection(); break;
             case Keys.A when ctrl: _canvas.DesktopEditorSelectAll(); break;
-            case Keys.Tab: _canvas.HandleDesktopTextInput("    "); break;
         }
     }
 
@@ -339,6 +398,12 @@ public class DrawnUiWindow : GameWindow
             WindowChrome.SetWindowLongPtr(_hwnd, -4, _oldWndProc);
             _uiaProvider?.Dispose();
             _uiaProvider = null;
+        }
+
+        if (OperatingSystem.IsLinux())
+        {
+            _atSpiProvider?.Dispose();
+            _atSpiProvider = null;
         }
 
         MainThread.Reset();

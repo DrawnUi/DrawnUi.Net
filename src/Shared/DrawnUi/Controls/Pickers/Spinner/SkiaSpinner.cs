@@ -320,6 +320,11 @@ public class SkiaSpinner : SkiaLayout
 
     #region EVENTS
 
+    /// <summary>
+    /// Raised once each time <see cref="SelectedIndex"/> takes a new value. While the wheel turns (drag, fling, snap
+    /// or an animated spin) <see cref="SelectedIndex"/> follows the item at the selection side, the event waits and
+    /// is raised once the wheel comes to rest on an item other than the last reported one.
+    /// </summary>
     public event EventHandler<int> SelectedIndexChanged;
 
     #endregion
@@ -328,6 +333,7 @@ public class SkiaSpinner : SkiaLayout
 
     //readonly List<object> _itemsList = new();
     bool _isUpdatingFromRotation;
+    int _reportedIndex = -1;
     bool _hasInitializedWheelState;
     PendingInitialWheelState _pendingInitialWheelState;
 
@@ -353,12 +359,41 @@ public class SkiaSpinner : SkiaLayout
 
             if (control._isUpdatingFromRotation)
             {
+                // the wheel turned: report now if it is at rest, else once it stops
+                control.ReportSelectedIndexIfAtRest();
                 return;
             }
 
             control.UpdateWheelRotationFromIndex();
-            control.SelectedIndexChanged?.Invoke(control, (int)newValue);
+            control.ReportSelectedIndex();
         }
+    }
+
+    /// <summary>
+    /// True while the wheel is held, dragged, flinging or animating towards an item.
+    /// </summary>
+    bool IsTurning => HadDown || IsUserPanning
+                      || _flingAnimator is { IsRunning: true }
+                      || _rangeAnimator is { IsRunning: true };
+
+    void ReportSelectedIndexIfAtRest()
+    {
+        if (!IsTurning)
+        {
+            ReportSelectedIndex();
+        }
+    }
+
+    void ReportSelectedIndex()
+    {
+        var index = SelectedIndex;
+        if (index == _reportedIndex)
+        {
+            return;
+        }
+
+        _reportedIndex = index;
+        SelectedIndexChanged?.Invoke(this, index);
     }
 
     static void NeedApplyRotation(BindableObject bindable, object oldValue, object newValue)
@@ -430,16 +465,7 @@ public class SkiaSpinner : SkiaLayout
     {
         if (ItemsCount == 0) return;
 
-        var anglePerItem = 360.0 / ItemsCount;
-        var positionOffset = GetSelectionPositionOffset();
-
-        var targetRotation = -(SelectedIndex * anglePerItem + positionOffset);
-
-        // When visual rotation is inverted, flip the rotation calculation
-        if (InverseVisualRotation)
-        {
-            targetRotation = -targetRotation - positionOffset * 2;
-        }
+        var targetRotation = CalculateRotationForIndex(SelectedIndex);
 
         if (Math.Abs(WheelRotation - targetRotation) > 0.1)
         {
@@ -560,19 +586,22 @@ public class SkiaSpinner : SkiaLayout
         if (ItemsCount == 0 || index < 0 || index >= ItemsCount)
             return WheelRotation;
 
+        return CalculateRotationForIndex(index);
+    }
+
+    /// <summary>
+    /// Inverse of <see cref="UpdateSelectedIndexFromRotation"/>: the rotation that puts item <paramref name="index"/>
+    /// at the selection side. Item i is drawn at i * anglePerItem from the top, clockwise (counter-clockwise when
+    /// inverted), and the wheel rotation adds to it.
+    /// </summary>
+    double CalculateRotationForIndex(int index)
+    {
         var anglePerItem = 360.0 / ItemsCount;
         var positionOffset = GetSelectionPositionOffset();
 
-        // Calculate target rotation using the same logic as UpdateWheelRotationFromIndex
-        var targetRotation = -(index * anglePerItem + positionOffset);
-
-        // When visual rotation is inverted, flip the rotation calculation
-        if (InverseVisualRotation)
-        {
-            targetRotation = -targetRotation - positionOffset * 2;
-        }
-
-        return targetRotation;
+        return InverseVisualRotation
+            ? index * anglePerItem - positionOffset
+            : positionOffset - index * anglePerItem;
     }
 
     /// <summary>
@@ -600,7 +629,11 @@ public class SkiaSpinner : SkiaLayout
     {
         if (_rangeAnimator == null)
         {
-            _rangeAnimator = new RangeAnimator(this);
+            _rangeAnimator = new RangeAnimator(this)
+            {
+                // ran to the end (not stopped by a new spin or a touch): the wheel is at rest
+                Finished = ReportSelectedIndexIfAtRest
+            };
         }
         else if (_rangeAnimator.IsRunning)
         {
@@ -662,17 +695,18 @@ public class SkiaSpinner : SkiaLayout
 
     void SnapToNearestItem()
     {
-        if (Children.Count == 0 || !Snap)
+        if (Children.Count > 0 && Snap)
         {
-            return;
+            var targetRotation = GetRotationForIndex(SelectedIndex);
+            if (!CompareDoubles(targetRotation, WheelRotation, 0.1))
+            {
+                Debug.WriteLine($"Snapping from {WheelRotation} to {targetRotation} at {SelectedIndex}");
+                SpinToIndexShortest(SelectedIndex); // reports when the snap animation finishes
+                return;
+            }
         }
 
-        var targetRotation = GetRotationForIndex(SelectedIndex);
-        if (!CompareDoubles(targetRotation, WheelRotation, 0.1))
-        {
-            Debug.WriteLine($"Snapping from {WheelRotation} to {targetRotation} at {SelectedIndex}");
-            SpinToIndexShortest(SelectedIndex);
-        }
+        ReportSelectedIndexIfAtRest();
     }
 
     #endregion
@@ -759,9 +793,18 @@ public class SkiaSpinner : SkiaLayout
 
         if (args.Type == TouchActionResult.Up)
         {
+            var wasDown = HadDown;
             HadDown = false;
             InContact = false;
-            if (IsUserPanning)
+            if (!IsUserPanning)
+            {
+                if (wasDown)
+                {
+                    // released without dragging, maybe after stopping a spin: settle on an item
+                    SnapToNearestItem();
+                }
+            }
+            else
             {
                 IsUserPanning = false;
 
@@ -788,7 +831,8 @@ public class SkiaSpinner : SkiaLayout
             return consumedDefault;
         }
 
-        if (!HadDown)
+        // a release is never the first contact: it must not leave the wheel marked as held
+        if (!HadDown && args.Type != TouchActionResult.Up)
         {
             HadDown = true;
             ResetPan();

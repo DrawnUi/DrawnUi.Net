@@ -27,6 +27,16 @@ public class ActionOverlayEffect : RenderingAnimator
         _render = render;
     }
 
+    /// <summary>
+    /// The overlay is attached, not running: hiding its control or a parent stops the running post-effects,
+    /// and that must not detach it, or it would never draw again once shown. Remove it from
+    /// <see cref="SkiaControl.PostAnimators"/> to detach it.
+    /// </summary>
+    public override void Stop()
+    {
+        Parent?.Repaint();
+    }
+
     protected override bool OnRendering(DrawingContext context, IDrawnBase control)
     {
         if (control == null || control.IsDisposed || control.IsDisposing)

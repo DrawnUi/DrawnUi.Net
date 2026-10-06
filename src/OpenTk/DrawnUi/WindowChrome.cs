@@ -72,6 +72,43 @@ public static class WindowChrome
     internal const uint WM_SYSCOMMAND         = 0x0112;
     internal const nint ID_TOGGLE_FULLSCREEN  = 0x0100;
 
+    // DWM_TIMING_INFO (dwmapi.h, packed 1): only the leading fields are read, the rest is reserved space.
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    private struct DwmTimingInfo
+    {
+        public uint cbSize;
+        public uint RefreshNumerator;
+        public uint RefreshDenominator;
+        public ulong QpcRefreshPeriod;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 272)]
+        public byte[] Rest;
+    }
+
+    [DllImport("dwmapi.dll")]
+    private static extern int DwmGetCompositionTimingInfo(nint hwnd, ref DwmTimingInfo info);
+
+    /// <summary>
+    /// The compositor's exact refresh rate, Hz (59.95 where GLFW and the display settings report 59). False when DWM
+    /// does not tell.
+    /// </summary>
+    internal static bool TryGetRefreshRate(out double hz)
+    {
+        hz = 0;
+        try
+        {
+            var info = new DwmTimingInfo { Rest = new byte[272] };
+            info.cbSize = (uint)Marshal.SizeOf<DwmTimingInfo>();
+            if (DwmGetCompositionTimingInfo(0, ref info) != 0 || info.RefreshDenominator == 0)
+                return false;
+            hz = info.RefreshNumerator / (double)info.RefreshDenominator;
+            return hz >= 20;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     public static void AddFullscreenMenuItem(nint hwnd, string label = "Fullscreen\tF11")
     {
         var hMenu = GetSystemMenu(hwnd, false);

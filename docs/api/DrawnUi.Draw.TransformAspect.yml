@@ -309,11 +309,16 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tile
     path: ../src/Shared/DrawnUi/Internals/Enums/TransformAspect.cs
-    startLine: 51
+    startLine: 53
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: TODO very soon!
+  summary: >-
+    Repeats the image at its natural size (one source pixel per device pixel, like None) across the whole
+
+    viewport, starting from the aligned position of one copy. Drawn by SkiaImage and its subclasses;
+
+    other controls lay it out like None.
   example: []
   syntax:
     content: Tile = 9

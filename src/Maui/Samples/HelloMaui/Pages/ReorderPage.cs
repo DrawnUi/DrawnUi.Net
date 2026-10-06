@@ -43,12 +43,14 @@ public class ReorderPage : SkiaLayer, IDragHost
         ("Kiswahili (Kenya)", "sw-KE"), ("Afrikaans (Suid-Afrika)", "af-ZA"),
     };
 
-    private const float RowSpacing = 6;
+    private const float RowGap = 6;
     private const float StatusHeight = 58;
     /// <summary>How long the released ghost takes to glide into its slot.</summary>
     private const float DropSeconds = 0.14f;
 
-    private ObservableCollection<ReorderItem> _items;
+    /// <summary>The starting order, kept so Reset can move the same items back instead of replacing the collection.</summary>
+    private readonly ReorderItem[] _initial;
+    private readonly ObservableCollection<ReorderItem> _items;
     private SkiaLabel _status;
     private SkiaScroll _scroll;
     private SkiaLayout _rows;
@@ -70,7 +72,8 @@ public class ReorderPage : SkiaLayer, IDragHost
     {
         HorizontalOptions = LayoutOptions.Fill;
         VerticalOptions = LayoutOptions.Fill;
-        _items = Initial();
+        _initial = Languages.Select((l, i) => new ReorderItem { Id = i + 1, Title = l.Title, Tag = l.Tag, Color = Palette[i % Palette.Length] }).ToArray();
+        _items = new ObservableCollection<ReorderItem>(_initial);
 
         Children = new List<SkiaControl>
         {
@@ -98,7 +101,7 @@ public class ReorderPage : SkiaLayer, IDragHost
                     ItemTemplate = new DataTemplate(() => new ReorderCell(this)),
                     RecyclingTemplate = RecyclingTemplate.Enabled,
                     MeasureItemsStrategy = MeasuringStrategy.MeasureFirst,
-                    Spacing = RowSpacing,
+                    Spacing = RowGap,
                     Padding = new Thickness(12, 8),
                     HorizontalOptions = LayoutOptions.Fill,
                 }.Assign(out _rows),
@@ -143,20 +146,33 @@ public class ReorderPage : SkiaLayer, IDragHost
                 Children = new List<SkiaControl>
                 {
                     new SkiaButton("1st below 10th") { FontSize = 13, BackgroundColor = Color.Parse("#495057") }.OnTapped(me => { Move(0, 9); Report("moved 1st below 10th"); }),
-                    new SkiaButton("Reverse") { FontSize = 13, BackgroundColor = Color.Parse("#495057") }.OnTapped(me => { Replace(new ObservableCollection<ReorderItem>(_items.Reverse())); Report("reversed"); }),
-                    new SkiaButton("Reset") { FontSize = 13, BackgroundColor = Color.Parse("#495057") }.OnTapped(me => { Replace(Initial()); Report("reset"); }),
+                    new SkiaButton("Reverse") { FontSize = 13, BackgroundColor = Color.Parse("#495057") }.OnTapped(me => { Reverse(); Report("reversed"); }),
+                    new SkiaButton("Reset") { FontSize = 13, BackgroundColor = Color.Parse("#495057") }.OnTapped(me => { Reset(); Report("reset"); }),
                 },
             },
         };
     }
 
-    private static ObservableCollection<ReorderItem> Initial() =>
-        new(Languages.Select((l, i) => new ReorderItem { Id = i + 1, Title = l.Title, Tag = l.Tag, Color = Palette[i % Palette.Length] }));
+    // Bulk reorders are a run of Move calls on the same collection: the layout keeps its cells, their measured
+    // heights and the scroll offset (as React does for a permuted array). A new ItemsSource would rebuild the list.
 
-    private void Replace(ObservableCollection<ReorderItem> items)
+    /// <summary>Reverses the list in place: the last item is moved into each slot from the top.</summary>
+    private void Reverse()
     {
-        _items = items;
-        _rows.ItemsSource = items;
+        var last = _items.Count - 1;
+        for (var i = 0; i < last; i++)
+            _items.Move(last, i);
+    }
+
+    /// <summary>Puts the starting order back by moving each original item into its slot.</summary>
+    private void Reset()
+    {
+        for (var i = 0; i < _initial.Length; i++)
+        {
+            var from = _items.IndexOf(_initial[i]);
+            if (from != i)
+                _items.Move(from, i);
+        }
     }
 
     private void Report(string what)
@@ -176,10 +192,10 @@ public class ReorderPage : SkiaLayer, IDragHost
     }
 
     /// <summary>The ghost is hidden between drags, so it is the overlay that always carries the current scale.</summary>
-    private float Scale() => _overlay.RenderingScale > 0 ? _overlay.RenderingScale : 1;
+    private float PixelScale() => _overlay.RenderingScale > 0 ? _overlay.RenderingScale : 1;
 
     /// <summary>Point coordinates inside the overlay, which is where the ghost is laid out.</summary>
-    private float ToGhostSpace(float pixels, bool top) => (pixels - (top ? _overlay.DrawingRect.Top : _overlay.DrawingRect.Left)) / Scale();
+    private float ToGhostSpace(float pixels, bool top) => (pixels - (top ? _overlay.DrawingRect.Top : _overlay.DrawingRect.Left)) / PixelScale();
 
     /// <summary>Rebinds nothing, just re-applies each row's look: used when the list did not change but a row's state did.</summary>
     private void RefreshRows()
@@ -242,7 +258,7 @@ public class ReorderPage : SkiaLayer, IDragHost
     public ReorderItem Dragging => _dragging;
 
     /// <inheritdoc/>
-    public float Spacing => RowSpacing;
+    float IDragHost.Spacing => RowGap;
 
     /// <inheritdoc/>
     public void Lift(ReorderItem item, int index, float pointerY)
@@ -253,13 +269,13 @@ public class ReorderPage : SkiaLayer, IDragHost
 
         _drop?.Stop();
         _drop = null;
-        _grabOffset = (pointerY - rect.Value.Top) / Scale();
+        _grabOffset = (pointerY - rect.Value.Top) / PixelScale();
         _dragging = item;
         _ghostTitle.Text = item.Title;
         _ghostBadge.Text = item.Tag;
         _ghost.StrokeColor = Color.Parse(item.Color);
-        _ghost.WidthRequest = rect.Value.Width / Scale();
-        _ghost.HeightRequest = rect.Value.Height / Scale();
+        _ghost.WidthRequest = rect.Value.Width / PixelScale();
+        _ghost.HeightRequest = rect.Value.Height / PixelScale();
         _ghost.Left = ToGhostSpace(rect.Value.Left, false);
         _ghost.Top = ToGhostSpace(rect.Value.Top, true);
         _ghost.IsVisible = true;
@@ -279,7 +295,7 @@ public class ReorderPage : SkiaLayer, IDragHost
     }
 
     /// <inheritdoc/>
-    public void Drop(int index)
+    void IDragHost.Drop(int index)
     {
         if (_dragging == null)
         {

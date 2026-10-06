@@ -10,7 +10,7 @@ See also [MAUI Tutorials](tutorials.md).
 
 ### Prerequisites
 
-Target .NET 9.
+Target .NET 9 or .NET 10.
 
 To make everything compile from first attempt You might also need at least the following MAUI setup inside your csproj:
 
@@ -23,9 +23,10 @@ To make everything compile from first attempt You might also need at least the f
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</TargetPlatformMinVersion>
 	</PropertyGroup>
 
+    <!-- .NET 10: 10.0.80 or later, .NET 9: 9.0.120 or later -->
     <ItemGroup>
-        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.70" />
-        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.70" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.80" />
+        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.80" />
     </ItemGroup>
 
 ```
@@ -131,7 +132,7 @@ Now you can add DrawnUi controls to your page. You have two main options:
                 TextColor="White"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
-                Clicked="OnButtonClicked" />
+                Tapped="OnButtonTapped" />
 
         </draw:SkiaLayout>
     </draw:Canvas>
@@ -166,7 +167,7 @@ Now you can add DrawnUi controls to your page. You have two main options:
                 TextColor="White"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
-                Clicked="OnButtonClicked" />
+                Tapped="OnButtonTapped" />
         </draw:SkiaLayout>
     </draw:Canvas>
 </draw:DrawnUiBasePage>
@@ -175,7 +176,7 @@ Now you can add DrawnUi controls to your page. You have two main options:
 ### Setup Canvas
 
 If you indend to process gestures inside your canvas setup the `Gestures` property accordingly.
-If you would have animated content or use shaders set `RenderingMode` to `Accelerated`. Otherwise leave it as it is to use the default lightweight `Software` mode, it is still perfect for rendering static content.
+If you would have animated content or use shaders set `RenderingMode` to `Accelerated`: neither needs the GPU to work — SkSL compiles and runs on the CPU too — but both pay per pixel every frame, which is what the GPU is for. Otherwise leave it as it is to use the default lightweight `Default` mode, it is still perfect for rendering static content.
 
 See [Handling Gestures](../gestures.md) for the canvas-level setup before you wire control handlers.
 
@@ -184,14 +185,14 @@ See [Handling Gestures](../gestures.md) for the canvas-level setup before you wi
 Handle control events in your code-behind:
 
 ```csharp
-private void OnButtonClicked(SkiaButton sender, SkiaGesturesParameters e)
+private void OnButtonTapped(object sender, ControlTappedEventArgs e)
 {
-    // Handle button click
+    // Handle button tap
     DisplayAlert("DrawnUi", "Button clicked!", "OK");
 }
 ```
 
-> **Important**: DrawnUi button events use `Action<SkiaButton, SkiaGesturesParameters>` instead of the standard EventHandler pattern. The first parameter is the specific control type (SkiaButton), and the second contains gesture information.
+> **Important**: `Tapped` is an `EventHandler<ControlTappedEventArgs>` on every drawn control. `SkiaButton` also has `Clicked`, an `Action<SkiaButton, SkiaGesturesParameters>` field you assign in code (`button.Clicked = (b, e) => ...`). It is not an event, so XAML cannot wire it.
 
 ## Using Styles
 

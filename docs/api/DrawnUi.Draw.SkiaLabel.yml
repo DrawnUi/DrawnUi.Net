@@ -7,6 +7,8 @@ items:
   children:
   - DrawnUi.Draw.SkiaLabel.#ctor
   - DrawnUi.Draw.SkiaLabel.#ctor(System.String)
+  - DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable
+  - DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectableProperty
   - DrawnUi.Draw.SkiaLabel.ApplyBindingContext
   - DrawnUi.Draw.SkiaLabel.AreAllGlyphsAvailable(System.String,SkiaSharp.SKTypeface)
   - DrawnUi.Draw.SkiaLabel.AutoFont
@@ -17,10 +19,14 @@ items:
   - DrawnUi.Draw.SkiaLabel.AutoSizeTextProperty
   - DrawnUi.Draw.SkiaLabel.BuildGlyphsFromShaping(SkiaSharp.HarfBuzz.SKShaper.Result,System.String)
   - DrawnUi.Draw.SkiaLabel.CalculateMargins
+  - DrawnUi.Draw.SkiaLabel.CanBreakInsideWord(System.String,System.Int32)
   - DrawnUi.Draw.SkiaLabel.CanDraw
   - DrawnUi.Draw.SkiaLabel.CharacterSpacing
   - DrawnUi.Draw.SkiaLabel.CharacterSpacingProperty
+  - DrawnUi.Draw.SkiaLabel.ClearSelection
   - DrawnUi.Draw.SkiaLabel.ComputeEffectsMargin(System.Single)
+  - DrawnUi.Draw.SkiaLabel.CopyButtonText
+  - DrawnUi.Draw.SkiaLabel.CopySelection
   - DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.String,System.Single)
   - DrawnUi.Draw.SkiaLabel.DebugColor
   - DrawnUi.Draw.SkiaLabel.DebugSpans
@@ -32,6 +38,7 @@ items:
   - DrawnUi.Draw.SkiaLabel.DrawSpanDecorations(SkiaSharp.SKCanvas,DrawnUi.Draw.TextSpan,System.Single,System.Single,System.Single)
   - DrawnUi.Draw.SkiaLabel.DrawText(SkiaSharp.SKCanvas,System.Single,System.Single,System.ReadOnlySpan{System.Char},SkiaSharp.SKPaint,SkiaSharp.SKFont,SkiaSharp.SKPaint,SkiaSharp.SKFont,SkiaSharp.SKPaint,SkiaSharp.SKFont,System.Single)
   - DrawnUi.Draw.SkiaLabel.DrawText(SkiaSharp.SKCanvas,System.Single,System.Single,System.String,SkiaSharp.SKPaint,SkiaSharp.SKFont,SkiaSharp.SKPaint,SkiaSharp.SKFont,SkiaSharp.SKPaint,SkiaSharp.SKFont,System.Single)
+  - DrawnUi.Draw.SkiaLabel.DrawTextSelection(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaLabel.DrawWhenEmpty
   - DrawnUi.Draw.SkiaLabel.DrawWhenEmptyProperty
   - DrawnUi.Draw.SkiaLabel.DropShadowColor
@@ -66,12 +73,14 @@ items:
   - DrawnUi.Draw.SkiaLabel.FormattedTextProperty
   - DrawnUi.Draw.SkiaLabel.GetDefaultAccessibilityRole
   - DrawnUi.Draw.SkiaLabel.GetGlyphs(System.String,SkiaSharp.SKTypeface)
+  - DrawnUi.Draw.SkiaLabel.GetLineGlyphs(DrawnUi.Draw.TextLine)
   - DrawnUi.Draw.SkiaLabel.GetResultSize(SkiaSharp.HarfBuzz.SKShaper.Result)
   - DrawnUi.Draw.SkiaLabel.GetShapedText(SkiaSharp.HarfBuzz.SKShaper,System.String,System.Single,System.Single,SkiaSharp.SKPaint,SkiaSharp.SKFont)
   - DrawnUi.Draw.SkiaLabel.GetSpaceBetweenLines(System.Single)
   - DrawnUi.Draw.SkiaLabel.GliphsInvalidated
   - DrawnUi.Draw.SkiaLabel.GradientByLines
   - DrawnUi.Draw.SkiaLabel.GradientByLinesProperty
+  - DrawnUi.Draw.SkiaLabel.HasCjk(System.String)
   - DrawnUi.Draw.SkiaLabel.HorizontalTextAlignment
   - DrawnUi.Draw.SkiaLabel.HorizontalTextAlignmentProperty
   - DrawnUi.Draw.SkiaLabel.Invalidate
@@ -122,10 +131,16 @@ items:
   - DrawnUi.Draw.SkiaLabel.ParagraphSpacing
   - DrawnUi.Draw.SkiaLabel.ParagraphSpacingProperty
   - DrawnUi.Draw.SkiaLabel.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  - DrawnUi.Draw.SkiaLabel.ProcessTextSelection(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.SkiaLabel.RenderLimit
   - DrawnUi.Draw.SkiaLabel.ReplaceFont
   - DrawnUi.Draw.SkiaLabel.ReplaceSpans(System.Collections.Generic.IEnumerable{DrawnUi.Draw.TextSpan})
   - DrawnUi.Draw.SkiaLabel.ResetTextCalculations
+  - DrawnUi.Draw.SkiaLabel.Select(System.Int32,System.Int32)
+  - DrawnUi.Draw.SkiaLabel.SelectAll
+  - DrawnUi.Draw.SkiaLabel.SelectedText
+  - DrawnUi.Draw.SkiaLabel.SelectionLength
+  - DrawnUi.Draw.SkiaLabel.SelectionStart
   - DrawnUi.Draw.SkiaLabel.SensorRotation
   - DrawnUi.Draw.SkiaLabel.SensorRotationProperty
   - DrawnUi.Draw.SkiaLabel.SetFrameworkFocus(System.Boolean)
@@ -150,6 +165,7 @@ items:
   - DrawnUi.Draw.SkiaLabel.TextColorProperty
   - DrawnUi.Draw.SkiaLabel.TextInternal
   - DrawnUi.Draw.SkiaLabel.TextProperty
+  - DrawnUi.Draw.SkiaLabel.TextSelectionColor
   - DrawnUi.Draw.SkiaLabel.TextTransform
   - DrawnUi.Draw.SkiaLabel.TextTransformProperty
   - DrawnUi.Draw.SkiaLabel.TextWasChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
@@ -157,6 +173,7 @@ items:
   - DrawnUi.Draw.SkiaLabel.Trail
   - DrawnUi.Draw.SkiaLabel.TypeFace
   - DrawnUi.Draw.SkiaLabel.TypeFaceFallback
+  - DrawnUi.Draw.SkiaLabel.TypeFaceFallbacks
   - DrawnUi.Draw.SkiaLabel.TypeFaceProperty
   - DrawnUi.Draw.SkiaLabel.UnicodeNeedsShaping(System.Int32)
   - DrawnUi.Draw.SkiaLabel.UpdateFont
@@ -289,6 +306,7 @@ items:
   - DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
   - DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
   - DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+  - DrawnUi.Draw.SkiaControl.LastCompositeRecord
   - DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.CacheSharingProperty
   - DrawnUi.Draw.SkiaControl.CacheSharing
@@ -310,6 +328,7 @@ items:
   - DrawnUi.Draw.SkiaControl.CreateRenderedObject(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean)
   - DrawnUi.Draw.SkiaControl.RasterizeToCache(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.CheckCachedObjectValid(DrawnUi.Draw.CachedObject,SkiaSharp.SKRect,DrawnUi.Draw.SkiaDrawingContext)
+  - DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
   - DrawnUi.Draw.SkiaControl.IsCacheGPU
   - DrawnUi.Draw.SkiaControl.UsingCacheType
   - DrawnUi.Draw.SkiaControl.IsCacheComposite
@@ -696,6 +715,8 @@ items:
   - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
   - DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  - DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+  - DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
   - DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   - DrawnUi.Draw.SkiaControl.AcceptsInput
   - DrawnUi.Draw.SkiaControl.NotifyAccessibility
@@ -732,9 +753,9 @@ items:
   - DrawnUi.Draw.SkiaControl.MeasureAbsolute(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaControl.MeasureAbsoluteBase(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single)
-  - DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  - DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  - DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  - DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  - DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   - DrawnUi.Draw.SkiaControl.GetDrawingRectForChildren(SkiaSharp.SKRect,System.Double)
   - DrawnUi.Draw.SkiaControl.GetDrawingRectWithMargins(SkiaSharp.SKRect,System.Double)
   - DrawnUi.Draw.SkiaControl.lockMeasured
@@ -1390,7 +1411,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Font
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 109
+    startLine: 115
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1423,7 +1444,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DebugColor
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 111
+    startLine: 117
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1450,7 +1471,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DebugSpans
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 114
+    startLine: 120
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1477,7 +1498,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 125
+    startLine: 131
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1506,7 +1527,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 130
+    startLine: 136
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1538,7 +1559,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Invalidate
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 137
+    startLine: 143
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1567,7 +1588,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateMargins
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 146
+    startLine: 152
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1596,7 +1617,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutReady
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 154
+    startLine: 160
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1625,7 +1646,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnScaleChanged
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 162
+    startLine: 168
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1653,7 +1674,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanDraw
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 167
+    startLine: 173
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1686,7 +1707,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyBindingContext
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 180
+    startLine: 186
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1715,7 +1736,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 191
+    startLine: 197
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1751,7 +1772,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToString
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 201
+    startLine: 207
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1783,7 +1804,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Spans
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 256
+    startLine: 262
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1815,7 +1836,7 @@ items:
     <pre><code class="lang-csharp">&lt;draw:SkiaLabel&gt;
         &lt;draw:SkiaLabel.Spans&gt;
             &lt;draw:TextSpan Text="This is " /&gt;
-            &lt;draw:TextSpan Text="bold" FontAttributes="Bold" TextColor="Red" /&gt;
+            &lt;draw:TextSpan Text="bold" IsBold="True" TextColor="Red" /&gt;
             &lt;draw:TextSpan Text=" text" /&gt;
         &lt;/draw:SkiaLabel.Spans&gt;
     &lt;/draw:SkiaLabel&gt;</code></pre>
@@ -1850,7 +1871,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _spans
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 303
+    startLine: 309
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1877,7 +1898,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpansCollectionChanged
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 305
+    startLine: 311
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1904,7 +1925,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWillDisposeWithChildren
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 326
+    startLine: 332
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1936,7 +1957,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Paint
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 335
+    startLine: 341
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1974,7 +1995,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupDefaultPaint
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 356
+    startLine: 371
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2006,7 +2027,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawCharacter
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 428
+    startLine: 443
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2080,7 +2101,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawLines
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 441
+    startLine: 456
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2120,7 +2141,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawText
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 877
+    startLine: 892
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2181,7 +2202,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawText
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 899
+    startLine: 914
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2233,7 +2254,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpanPostDraw
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 911
+    startLine: 926
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2271,7 +2292,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawSpanDecorations
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 935
+    startLine: 950
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2311,7 +2332,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupBackgroundPaint
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 1033
+    startLine: 1048
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2350,7 +2371,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMeasuring
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 1083
+    startLine: 1098
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2395,7 +2416,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastNonSpaceIndexOptimized
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 1382
+    startLine: 1404
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2431,7 +2452,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureLineGlyphsProbe
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 1402
+    startLine: 1424
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2473,7 +2494,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureLineGlyphs
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 1457
+    startLine: 1479
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2515,7 +2536,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DecomposeText
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 1610
+    startLine: 1632
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2549,6 +2570,87 @@ items:
   nameWithType.vb: SkiaLabel.DecomposeText(String, SKPaint, SKFont, SKPoint, Single, Single, Integer, Boolean, TextSpan, Single)
   fullName.vb: DrawnUi.Draw.SkiaLabel.DecomposeText(String, SkiaSharp.SKPaint, SkiaSharp.SKFont, SkiaSharp.SKPoint, Single, Single, Integer, Boolean, DrawnUi.Draw.TextSpan, Single)
   name.vb: DecomposeText(String, SKPaint, SKFont, SKPoint, Single, Single, Integer, Boolean, TextSpan, Single)
+- uid: DrawnUi.Draw.SkiaLabel.CanBreakInsideWord(System.String,System.Int32)
+  commentId: M:DrawnUi.Draw.SkiaLabel.CanBreakInsideWord(System.String,System.Int32)
+  id: CanBreakInsideWord(System.String,System.Int32)
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: CanBreakInsideWord(string, int)
+  nameWithType: SkiaLabel.CanBreakInsideWord(string, int)
+  fullName: DrawnUi.Draw.SkiaLabel.CanBreakInsideWord(string, int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CanBreakInsideWord
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 2162
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Whether a line may break between <code class="paramref">text</code>[index - 1] and [index] inside a space-free run:
+
+    next to a Chinese or Japanese character (ideographs, kana, CJK punctuation, full-width forms), never before
+
+    closing punctuation, small kana or the long vowel mark, never after an opening bracket, never inside a
+
+    surrogate pair. Korean keeps breaking at spaces only.
+  example: []
+  syntax:
+    content: public static bool CanBreakInsideWord(string text, int index)
+    parameters:
+    - id: text
+      type: System.String
+    - id: index
+      type: System.Int32
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function CanBreakInsideWord(text As String, index As Integer) As Boolean
+  overload: DrawnUi.Draw.SkiaLabel.CanBreakInsideWord*
+  nameWithType.vb: SkiaLabel.CanBreakInsideWord(String, Integer)
+  fullName.vb: DrawnUi.Draw.SkiaLabel.CanBreakInsideWord(String, Integer)
+  name.vb: CanBreakInsideWord(String, Integer)
+- uid: DrawnUi.Draw.SkiaLabel.HasCjk(System.String)
+  commentId: M:DrawnUi.Draw.SkiaLabel.HasCjk(System.String)
+  id: HasCjk(System.String)
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: HasCjk(string)
+  nameWithType: SkiaLabel.HasCjk(string)
+  fullName: DrawnUi.Draw.SkiaLabel.HasCjk(string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: HasCjk
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 2179
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: True when the text holds a Chinese or Japanese character, so it has break opportunities without spaces.
+  example: []
+  syntax:
+    content: public static bool HasCjk(string text)
+    parameters:
+    - id: text
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function HasCjk(text As String) As Boolean
+  overload: DrawnUi.Draw.SkiaLabel.HasCjk*
+  nameWithType.vb: SkiaLabel.HasCjk(String)
+  fullName.vb: DrawnUi.Draw.SkiaLabel.HasCjk(String)
+  name.vb: HasCjk(String)
 - uid: DrawnUi.Draw.SkiaLabel.SplitLines(System.String,SkiaSharp.SKPaint,SkiaSharp.SKFont,SkiaSharp.SKPoint,System.Single,System.Single,System.Int32,System.Boolean,DrawnUi.Draw.TextSpan,System.Single)
   commentId: M:DrawnUi.Draw.SkiaLabel.SplitLines(System.String,SkiaSharp.SKPaint,SkiaSharp.SKFont,SkiaSharp.SKPoint,System.Single,System.Single,System.Int32,System.Boolean,DrawnUi.Draw.TextSpan,System.Single)
   id: SplitLines(System.String,SkiaSharp.SKPaint,SkiaSharp.SKFont,SkiaSharp.SKPoint,System.Single,System.Single,System.Int32,System.Boolean,DrawnUi.Draw.TextSpan,System.Single)
@@ -2567,7 +2669,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SplitLines
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2104
+    startLine: 2244
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2619,7 +2721,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MergeSpansForLines
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2235
+    startLine: 2399
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2652,7 +2754,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CutLineToFit
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2299
+    startLine: 2463
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2692,7 +2794,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureTextWidthWithAdvance
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2334
+    startLine: 2498
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2730,7 +2832,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureTextWidthWithAdvance
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2341
+    startLine: 2505
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2768,7 +2870,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureText
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2356
+    startLine: 2520
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2812,7 +2914,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastNonSpaceIndex
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2392
+    startLine: 2556
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2846,7 +2948,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AreAllGlyphsAvailable
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2407
+    startLine: 2571
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2882,7 +2984,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BuildGlyphsFromShaping
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2440
+    startLine: 2604
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2929,7 +3031,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetResultSize
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2519
+    startLine: 2683
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2960,7 +3062,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetShapedText
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2540
+    startLine: 2704
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3004,7 +3106,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetGlyphs
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2559
+    startLine: 2723
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3040,7 +3142,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsGlyphAlwaysAvailable
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2621
+    startLine: 2785
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3074,7 +3176,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnicodeNeedsShaping
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2629
+    startLine: 2793
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3108,7 +3210,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedsRTL
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2707
+    startLine: 2871
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3142,7 +3244,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpaceBetweenParagraphs
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2780
+    startLine: 2944
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3176,7 +3278,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSpaceBetweenLines
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2785
+    startLine: 2949
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3210,7 +3312,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResetTextCalculations
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2800
+    startLine: 2964
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3236,7 +3338,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnFontUpdated
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2909
+    startLine: 3073
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3264,7 +3366,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GliphsInvalidated
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2915
+    startLine: 3079
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3291,7 +3393,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockSetup
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2917
+    startLine: 3081
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3318,7 +3420,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _fontFamily
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2919
+    startLine: 3083
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3345,7 +3447,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _fontFamilyFallback
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2920
+    startLine: 3084
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3372,15 +3474,46 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TypeFaceFallback
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2921
+    startLine: 3089
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: The first font of <xref href="DrawnUi.Draw.SkiaLabel.FontFamilyFallback" data-throw-if-not-resolved="false"></xref>, null when none is set.
+  example: []
   syntax:
     content: protected SKTypeface TypeFaceFallback
     return:
       type: SkiaSharp.SKTypeface
     content.vb: Protected TypeFaceFallback As SKTypeface
+- uid: DrawnUi.Draw.SkiaLabel.TypeFaceFallbacks
+  commentId: F:DrawnUi.Draw.SkiaLabel.TypeFaceFallbacks
+  id: TypeFaceFallbacks
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: TypeFaceFallbacks
+  nameWithType: SkiaLabel.TypeFaceFallbacks
+  fullName: DrawnUi.Draw.SkiaLabel.TypeFaceFallbacks
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: TypeFaceFallbacks
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 3094
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: The fonts of <xref href="DrawnUi.Draw.SkiaLabel.FontFamilyFallback" data-throw-if-not-resolved="false"></xref>, in the order they are tried.
+  example: []
+  syntax:
+    content: protected SKTypeface[] TypeFaceFallbacks
+    return:
+      type: SkiaSharp.SKTypeface[]
+    content.vb: Protected TypeFaceFallbacks As SKTypeface()
 - uid: DrawnUi.Draw.SkiaLabel.FontFamilyFallbackProperty
   commentId: F:DrawnUi.Draw.SkiaLabel.FontFamilyFallbackProperty
   id: FontFamilyFallbackProperty
@@ -3399,7 +3532,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyFallbackProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2923
+    startLine: 3096
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3426,11 +3559,18 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyFallback
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2929
+    startLine: 3105
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: When a glyph is not found in the current font will try this first before asking system to match a compatible font.
+  summary: >-
+    Fonts for the glyphs the label's own font does not have: one alias, or several separated by commas,
+
+    tried in order ("FontSymbols, FontEmoji"). A plain label draws each missing glyph with the first of them
+
+    that has it, the rest of the text keeps its font; SkiaRichLabel tries them before asking the system.
+
+    With <xref href="DrawnUi.Draw.SkiaLabel.AutoFont" data-throw-if-not-resolved="false"></xref> the whole label switches to the font of its first glyph instead.
   example: []
   syntax:
     content: public string FontFamilyFallback { get; set; }
@@ -3457,7 +3597,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateFont
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2935
+    startLine: 3240
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3483,7 +3623,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReplaceFont
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 2979
+    startLine: 3284
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3509,7 +3649,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedUpdateFont
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3005
+    startLine: 3310
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3545,7 +3685,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontDefault
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3046
+    startLine: 3351
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3572,7 +3712,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintDefault
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3047
+    startLine: 3352
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3599,7 +3739,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintStroke
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3056
+    startLine: 3361
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3626,7 +3766,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontStroke
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3057
+    startLine: 3362
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3653,7 +3793,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintShadow
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3062
+    startLine: 3367
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3680,7 +3820,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontShadow
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3063
+    startLine: 3368
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3707,7 +3847,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintDeco
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3068
+    startLine: 3373
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3734,7 +3874,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupShaper
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3070
+    startLine: 3375
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3763,7 +3903,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Shaper
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3080
+    startLine: 3385
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3790,7 +3930,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: charMonoWidthPixels
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3106
+    startLine: 3411
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3817,7 +3957,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderLimit
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3107
+    startLine: 3412
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3844,7 +3984,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: fontUnderline
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3108
+    startLine: 3413
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3871,7 +4011,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Trail
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3116
+    startLine: 3421
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3898,7 +4038,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontAttributesProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3121
+    startLine: 3426
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3925,7 +4065,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontAttributes
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3127
+    startLine: 3432
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3966,7 +4106,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawWhenEmptyProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3134
+    startLine: 3439
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3993,7 +4133,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawWhenEmpty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3139
+    startLine: 3444
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4022,7 +4162,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedsGlyphPositions
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3149
+    startLine: 3454
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4056,7 +4196,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeepSpacesOnLineBreaksProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3151
+    startLine: 3456
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4083,7 +4223,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeepSpacesOnLineBreaks
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3162
+    startLine: 3467
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4117,7 +4257,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeightProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3169
+    startLine: 3474
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4144,7 +4284,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeight
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3203
+    startLine: 3508
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4217,7 +4357,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoFontProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3209
+    startLine: 3514
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4244,7 +4384,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoFont
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3218
+    startLine: 3523
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4275,7 +4415,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TypeFaceProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3224
+    startLine: 3529
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4302,7 +4442,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TypeFace
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3231
+    startLine: 3536
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4331,7 +4471,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalTextAlignmentProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3237
+    startLine: 3542
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4358,7 +4498,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalTextAlignment
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3260
+    startLine: 3565
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4410,7 +4550,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ViewportConstraintWidth
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3272
+    startLine: 3577
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4448,7 +4588,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalTextAlignmentProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3274
+    startLine: 3579
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4475,7 +4615,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalTextAlignment
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3294
+    startLine: 3599
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4521,7 +4661,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeightProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3301
+    startLine: 3606
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4548,7 +4688,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeight
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3312
+    startLine: 3617
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4582,7 +4722,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SensorRotationProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3318
+    startLine: 3623
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4609,7 +4749,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SensorRotation
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3325
+    startLine: 3630
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4638,7 +4778,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3331
+    startLine: 3636
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4665,7 +4805,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamily
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3359
+    startLine: 3664
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4720,7 +4860,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLinesProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3365
+    startLine: 3670
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4747,7 +4887,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLines
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3387
+    startLine: 3692
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4801,7 +4941,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoSizeProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3406
+    startLine: 3711
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4828,43 +4968,35 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoSize
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3434
+    startLine: 3736
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Gets or sets how the label automatically adjusts font size to fit available space.
+  summary: Gets or sets how the label changes its font size to fit or fill its box.
   remarks: >-
-    Available auto-sizing options:
+    - None (default): the font size is FontSize.
+
+    - FitHorizontal: shrinks the font until every paragraph fits the width on one line and nothing is cut;
+      never above FontSize, and back to FontSize when the text gets shorter or the label wider.
+    - FitVertical: shrinks the font until the wrapped text is not cut by the height or MaxLines; never above FontSize.
+
+    - FillHorizontal: grows the font from FontSize while the widest line has room in the width.
+
+    - FillVertical: grows the font from FontSize while there is room for another line below the text.
+
+    - FitFillHorizontal / FitFillVertical: shrink and grow on that axis, starting from the size used last
+      time; faster for text that changes often, and the size can go above FontSize.
+
+    The label needs a size on that axis (a request or a constraint from its parent).
+
+    Set AutoSizeText to compute the size from a sample text (for example the longest value expected)
+
+    instead of the current Text, so the size does not change with every new value.
 
 
-    - None (default): No auto-sizing, text uses the exact FontSize specified
+    The size is searched in 0.1px steps and each step lays out the text again, so a big change of size
 
-    - TextToWidth: Adjusts font size to fit the width of the label
-
-    - TextToHeight: Adjusts font size to fit the height of the label
-
-    - TextToView: Adjusts font size to fit both width and height of the label
-
-
-    When auto-sizing is enabled, the label will automatically reduce the font size
-
-    when necessary to make the text fit within the available space. The minimum
-
-    font size is determined by the AutoSizeText property.
-
-
-    This is useful for:
-
-    - Responsive layouts where available space may vary
-
-    - Dynamic text where length may change at runtime
-
-    - Ensuring text is fully visible within fixed space constraints
-
-
-    Note that auto-sizing can impact performance, especially with frequently 
-
-    changing text or container sizes.
+    costs many layouts when the text or the box changes; nothing is spent while they stay the same.
   example: []
   syntax:
     content: public AutoSizeType AutoSize { get; set; }
@@ -4891,7 +5023,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoSizeTextProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3440
+    startLine: 3742
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4918,7 +5050,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoSizeText
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3450
+    startLine: 3752
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4949,7 +5081,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineSpacingProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3456
+    startLine: 3758
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4976,7 +5108,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineSpacing
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3463
+    startLine: 3765
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5007,7 +5139,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParagraphSpacingProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3469
+    startLine: 3771
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5034,7 +5166,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParagraphSpacing
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3477
+    startLine: 3779
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5065,7 +5197,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CharacterSpacingProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3483
+    startLine: 3785
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5092,7 +5224,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CharacterSpacing
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3491
+    startLine: 3793
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5125,7 +5257,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineBreakModeProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3497
+    startLine: 3799
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5152,7 +5284,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineBreakMode
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3522
+    startLine: 3824
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5207,7 +5339,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FormatProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3529
+    startLine: 3831
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5234,7 +5366,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Format
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3534
+    startLine: 3836
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5263,7 +5395,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextWasChanged
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3540
+    startLine: 3842
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5299,7 +5431,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Text
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3563
+    startLine: 3865
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5350,7 +5482,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3569
+    startLine: 3871
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5377,7 +5509,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextTransformProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3575
+    startLine: 3877
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5404,7 +5536,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextTransform
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3581
+    startLine: 3883
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5433,7 +5565,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTextChanged
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3587
+    startLine: 3889
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5459,7 +5591,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateText
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3592
+    startLine: 3896
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5485,7 +5617,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedSetText
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3603
+    startLine: 3907
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5514,7 +5646,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetTextInternal
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3612
+    startLine: 3916
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5542,7 +5674,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextInternal
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3659
+    startLine: 3963
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5571,7 +5703,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTextInternalChanged
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3672
+    startLine: 3976
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5597,7 +5729,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityRole
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3681
+    startLine: 3985
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5629,7 +5761,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetDefaultAccessibilityRole
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3683
+    startLine: 3987
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5660,11 +5792,11 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityLabel
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3685
+    startLine: 3989
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Label used when <xref href="DrawnUi.Draw.SkiaControl.AccessibilityLabel" data-throw-if-not-resolved="false"></xref> is not set (a label's text, a button's text, a slider's value).
+  summary: Label used when <xref href="DrawnUi.Draw.SkiaControl.AccessibilityLabel" data-throw-if-not-resolved="false"></xref> is not set (a label's text, a button's text). A range control's value is not its name, see <xref href="DrawnUi.Draw.SkiaControl.GetAccessibilityValue" data-throw-if-not-resolved="false"></xref>.
   example: []
   syntax:
     content: protected override string? DefaultAccessibilityLabel()
@@ -5691,7 +5823,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FallbackCharacterProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3687
+    startLine: 3991
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5718,7 +5850,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FallbackCharacter
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3696
+    startLine: 4000
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5749,7 +5881,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MonoForDigitsProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3702
+    startLine: 4006
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5776,7 +5908,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MonoForDigits
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3709
+    startLine: 4013
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5807,7 +5939,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeightUniformProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3715
+    startLine: 4019
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5834,7 +5966,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeightUniform
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3722
+    startLine: 4026
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5865,7 +5997,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColorProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3728
+    startLine: 4032
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5892,7 +6024,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColor
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3746
+    startLine: 4050
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5939,7 +6071,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeColorProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3752
+    startLine: 4056
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5966,7 +6098,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeColor
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3773
+    startLine: 4077
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6013,7 +6145,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeWidthProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3779
+    startLine: 4083
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6040,7 +6172,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeWidth
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3786
+    startLine: 4090
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6069,7 +6201,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ComputeEffectsMargin
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3816
+    startLine: 4120
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6117,7 +6249,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowColorProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3844
+    startLine: 4148
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6144,7 +6276,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowColor
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3851
+    startLine: 4155
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6173,7 +6305,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowSizeProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3857
+    startLine: 4161
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6200,7 +6332,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowSize
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3864
+    startLine: 4168
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6229,7 +6361,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowOffsetYProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3870
+    startLine: 4174
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6256,7 +6388,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowOffsetY
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3878
+    startLine: 4182
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6285,7 +6417,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowOffsetXProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3884
+    startLine: 4188
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6312,7 +6444,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowOffsetX
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3894
+    startLine: 4198
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6343,7 +6475,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSizeProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3902
+    startLine: 4206
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6370,7 +6502,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSize
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3926
+    startLine: 4230
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6433,7 +6565,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GradientByLinesProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3950
+    startLine: 4254
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6460,7 +6592,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GradientByLines
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3957
+    startLine: 4261
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6489,7 +6621,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeGradientProperty
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3964
+    startLine: 4268
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6516,7 +6648,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeGradient
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 3971
+    startLine: 4275
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6545,7 +6677,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSpanTapped
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 4009
+    startLine: 4313
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6580,25 +6712,24 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFrameworkFocus
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 4015
+    startLine: 4323
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   summary: >-
-    This will be called only for views registered at Superview.FocusedChild.
+    A selectable label (<xref href="DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable" data-throw-if-not-resolved="false"></xref>) takes the canvas focus while text is selected and
 
-    The view must return true of false to indicate if it accepts focus.
+    drops the selection when the focus moves elsewhere; other labels keep the base behavior.
   example: []
   syntax:
-    content: public virtual bool SetFrameworkFocus(bool focus)
+    content: public override bool SetFrameworkFocus(bool focus)
     parameters:
     - id: focus
       type: System.Boolean
-      description: ''
     return:
       type: System.Boolean
-      description: ''
-    content.vb: Public Overridable Function SetFrameworkFocus(focus As Boolean) As Boolean
+    content.vb: Public Overrides Function SetFrameworkFocus(focus As Boolean) As Boolean
+  overridden: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
   overload: DrawnUi.Draw.SkiaLabel.SetFrameworkFocus*
   implements:
   - DrawnUi.Draw.ISkiaGestureListener.SetFrameworkFocus(System.Boolean)
@@ -6623,7 +6754,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-    startLine: 4020
+    startLine: 4334
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6640,6 +6771,451 @@ items:
     content.vb: Public Overrides Function ProcessGestures(args As SkiaGesturesParameters, apply As GestureEventProcessingInfo) As ISkiaGestureListener
   overridden: DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   overload: DrawnUi.Draw.SkiaLabel.ProcessGestures*
+- uid: DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectableProperty
+  commentId: F:DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectableProperty
+  id: AccessibilityTextSelectableProperty
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityTextSelectableProperty
+  nameWithType: SkiaLabel.AccessibilityTextSelectableProperty
+  fullName: DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectableProperty
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AccessibilityTextSelectableProperty
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4380
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static readonly BindableProperty AccessibilityTextSelectableProperty
+    return:
+      type: Microsoft.Maui.Controls.BindableProperty
+    content.vb: Public Shared ReadOnly AccessibilityTextSelectableProperty As BindableProperty
+- uid: DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable
+  commentId: P:DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable
+  id: AccessibilityTextSelectable
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: AccessibilityTextSelectable
+  nameWithType: SkiaLabel.AccessibilityTextSelectable
+  fullName: DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AccessibilityTextSelectable
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4407
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The text can be selected and copied, as DrawnUi.React's property of the same name. Mouse: drag, double click
+
+    for a word. Touch: long press picks a word, keep the finger down and drag to extend, a Copy button appears.
+
+    Ctrl+C (Cmd+C) copies and Ctrl+A selects all while the label holds the selection; a click elsewhere drops it.
+
+    The label takes the pointer for this, so a mouse press on it no longer reaches controls under it.
+
+    Off by default and free when off. Copying goes through <xref href="DrawnUi.Draw.Super.SetClipboardText" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public bool AccessibilityTextSelectable { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property AccessibilityTextSelectable As Boolean
+  overload: DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable*
+- uid: DrawnUi.Draw.SkiaLabel.TextSelectionColor
+  commentId: F:DrawnUi.Draw.SkiaLabel.TextSelectionColor
+  id: TextSelectionColor
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: TextSelectionColor
+  nameWithType: SkiaLabel.TextSelectionColor
+  fullName: DrawnUi.Draw.SkiaLabel.TextSelectionColor
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: TextSelectionColor
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4416
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Highlight drawn over selected text.
+  example: []
+  syntax:
+    content: public static SKColor TextSelectionColor
+    return:
+      type: SkiaSharp.SKColor
+    content.vb: Public Shared TextSelectionColor As SKColor
+- uid: DrawnUi.Draw.SkiaLabel.CopyButtonText
+  commentId: F:DrawnUi.Draw.SkiaLabel.CopyButtonText
+  id: CopyButtonText
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: CopyButtonText
+  nameWithType: SkiaLabel.CopyButtonText
+  fullName: DrawnUi.Draw.SkiaLabel.CopyButtonText
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CopyButtonText
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4421
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Caption of the Copy button shown over a touch selection.
+  example: []
+  syntax:
+    content: public static string CopyButtonText
+    return:
+      type: System.String
+    content.vb: Public Shared CopyButtonText As String
+- uid: DrawnUi.Draw.SkiaLabel.SelectionStart
+  commentId: P:DrawnUi.Draw.SkiaLabel.SelectionStart
+  id: SelectionStart
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: SelectionStart
+  nameWithType: SkiaLabel.SelectionStart
+  fullName: DrawnUi.Draw.SkiaLabel.SelectionStart
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SelectionStart
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4444
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Start of the selection in <xref href="DrawnUi.Draw.SkiaLabel.SelectedText" data-throw-if-not-resolved="false"></xref>'s source: the label's text when the lines are taken
+
+    from it verbatim, else the drawn lines (markdown, spans) joined.
+  example: []
+  syntax:
+    content: public int SelectionStart { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property SelectionStart As Integer
+  overload: DrawnUi.Draw.SkiaLabel.SelectionStart*
+- uid: DrawnUi.Draw.SkiaLabel.SelectionLength
+  commentId: P:DrawnUi.Draw.SkiaLabel.SelectionLength
+  id: SelectionLength
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: SelectionLength
+  nameWithType: SkiaLabel.SelectionLength
+  fullName: DrawnUi.Draw.SkiaLabel.SelectionLength
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SelectionLength
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4449
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Length of the selection, 0 when nothing is selected.
+  example: []
+  syntax:
+    content: public int SelectionLength { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property SelectionLength As Integer
+  overload: DrawnUi.Draw.SkiaLabel.SelectionLength*
+- uid: DrawnUi.Draw.SkiaLabel.SelectedText
+  commentId: P:DrawnUi.Draw.SkiaLabel.SelectedText
+  id: SelectedText
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: SelectedText
+  nameWithType: SkiaLabel.SelectedText
+  fullName: DrawnUi.Draw.SkiaLabel.SelectedText
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SelectedText
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4454
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: The selected text, empty when nothing is selected.
+  example: []
+  syntax:
+    content: public string SelectedText { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property SelectedText As String
+  overload: DrawnUi.Draw.SkiaLabel.SelectedText*
+- uid: DrawnUi.Draw.SkiaLabel.Select(System.Int32,System.Int32)
+  commentId: M:DrawnUi.Draw.SkiaLabel.Select(System.Int32,System.Int32)
+  id: Select(System.Int32,System.Int32)
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: Select(int, int)
+  nameWithType: SkiaLabel.Select(int, int)
+  fullName: DrawnUi.Draw.SkiaLabel.Select(int, int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Select
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4470
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Selects a range of the text (see <xref href="DrawnUi.Draw.SkiaLabel.SelectionStart" data-throw-if-not-resolved="false"></xref> for what the indexes count).
+  example: []
+  syntax:
+    content: public void Select(int start, int length)
+    parameters:
+    - id: start
+      type: System.Int32
+    - id: length
+      type: System.Int32
+    content.vb: Public Sub [Select](start As Integer, length As Integer)
+  overload: DrawnUi.Draw.SkiaLabel.Select*
+  nameWithType.vb: SkiaLabel.Select(Integer, Integer)
+  fullName.vb: DrawnUi.Draw.SkiaLabel.Select(Integer, Integer)
+  name.vb: Select(Integer, Integer)
+- uid: DrawnUi.Draw.SkiaLabel.SelectAll
+  commentId: M:DrawnUi.Draw.SkiaLabel.SelectAll
+  id: SelectAll
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: SelectAll()
+  nameWithType: SkiaLabel.SelectAll()
+  fullName: DrawnUi.Draw.SkiaLabel.SelectAll()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SelectAll
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4485
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Selects all of the text.
+  example: []
+  syntax:
+    content: public void SelectAll()
+    content.vb: Public Sub SelectAll()
+  overload: DrawnUi.Draw.SkiaLabel.SelectAll*
+- uid: DrawnUi.Draw.SkiaLabel.ClearSelection
+  commentId: M:DrawnUi.Draw.SkiaLabel.ClearSelection
+  id: ClearSelection
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: ClearSelection()
+  nameWithType: SkiaLabel.ClearSelection()
+  fullName: DrawnUi.Draw.SkiaLabel.ClearSelection()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ClearSelection
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4494
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Drops the selection.
+  example: []
+  syntax:
+    content: public void ClearSelection()
+    content.vb: Public Sub ClearSelection()
+  overload: DrawnUi.Draw.SkiaLabel.ClearSelection*
+- uid: DrawnUi.Draw.SkiaLabel.CopySelection
+  commentId: M:DrawnUi.Draw.SkiaLabel.CopySelection
+  id: CopySelection
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: CopySelection()
+  nameWithType: SkiaLabel.CopySelection()
+  fullName: DrawnUi.Draw.SkiaLabel.CopySelection()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CopySelection
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4508
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Puts the selected text on the clipboard through <xref href="DrawnUi.Draw.Super.SetClipboardText" data-throw-if-not-resolved="false"></xref>. False when nothing is selected.
+  example: []
+  syntax:
+    content: public bool CopySelection()
+    return:
+      type: System.Boolean
+    content.vb: Public Function CopySelection() As Boolean
+  overload: DrawnUi.Draw.SkiaLabel.CopySelection*
+- uid: DrawnUi.Draw.SkiaLabel.ProcessTextSelection(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  commentId: M:DrawnUi.Draw.SkiaLabel.ProcessTextSelection(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  id: ProcessTextSelection(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: ProcessTextSelection(SkiaGesturesParameters, GestureEventProcessingInfo)
+  nameWithType: SkiaLabel.ProcessTextSelection(SkiaGesturesParameters, GestureEventProcessingInfo)
+  fullName: DrawnUi.Draw.SkiaLabel.ProcessTextSelection(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ProcessTextSelection
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4684
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Pointer handling of <xref href="DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable" data-throw-if-not-resolved="false"></xref>; null lets the gesture go on as usual.
+  example: []
+  syntax:
+    content: protected virtual ISkiaGestureListener ProcessTextSelection(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
+    parameters:
+    - id: args
+      type: DrawnUi.Draw.SkiaGesturesParameters
+    - id: apply
+      type: DrawnUi.Draw.GestureEventProcessingInfo
+    return:
+      type: DrawnUi.Draw.ISkiaGestureListener
+    content.vb: Protected Overridable Function ProcessTextSelection(args As SkiaGesturesParameters, apply As GestureEventProcessingInfo) As ISkiaGestureListener
+  overload: DrawnUi.Draw.SkiaLabel.ProcessTextSelection*
+- uid: DrawnUi.Draw.SkiaLabel.DrawTextSelection(DrawnUi.Draw.DrawingContext)
+  commentId: M:DrawnUi.Draw.SkiaLabel.DrawTextSelection(DrawnUi.Draw.DrawingContext)
+  id: DrawTextSelection(DrawnUi.Draw.DrawingContext)
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: DrawTextSelection(DrawingContext)
+  nameWithType: SkiaLabel.DrawTextSelection(DrawingContext)
+  fullName: DrawnUi.Draw.SkiaLabel.DrawTextSelection(DrawnUi.Draw.DrawingContext)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: DrawTextSelection
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4765
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Draws the selection over the lines just drawn, and the Copy button of a touch selection.
+  example: []
+  syntax:
+    content: protected virtual void DrawTextSelection(DrawingContext ctx)
+    parameters:
+    - id: ctx
+      type: DrawnUi.Draw.DrawingContext
+    content.vb: Protected Overridable Sub DrawTextSelection(ctx As DrawingContext)
+  overload: DrawnUi.Draw.SkiaLabel.DrawTextSelection*
+- uid: DrawnUi.Draw.SkiaLabel.GetLineGlyphs(DrawnUi.Draw.TextLine)
+  commentId: M:DrawnUi.Draw.SkiaLabel.GetLineGlyphs(DrawnUi.Draw.TextLine)
+  id: GetLineGlyphs(DrawnUi.Draw.TextLine)
+  parent: DrawnUi.Draw.SkiaLabel
+  langs:
+  - csharp
+  - vb
+  name: GetLineGlyphs(TextLine)
+  nameWithType: SkiaLabel.GetLineGlyphs(TextLine)
+  fullName: DrawnUi.Draw.SkiaLabel.GetLineGlyphs(DrawnUi.Draw.TextLine)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GetLineGlyphs
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    startLine: 4843
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The glyphs of a drawn line with line-relative X, one slot per UTF-16 code unit, so a slot index is a text index
+
+    within the line. A single span of one-unit glyphs is returned as is.
+  example: []
+  syntax:
+    content: public static LineGlyph[] GetLineGlyphs(TextLine line)
+    parameters:
+    - id: line
+      type: DrawnUi.Draw.TextLine
+    return:
+      type: DrawnUi.Draw.LineGlyph[]
+    content.vb: Public Shared Function GetLineGlyphs(line As TextLine) As LineGlyph()
+  overload: DrawnUi.Draw.SkiaLabel.GetLineGlyphs*
 - uid: DrawnUi.Draw.SkiaLabel.FontMetrics
   commentId: P:DrawnUi.Draw.SkiaLabel.FontMetrics
   id: FontMetrics
@@ -7559,6 +8135,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CancelOffscreenRendering
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.LastCompositeRecord
+  commentId: P:DrawnUi.Draw.SkiaControl.LastCompositeRecord
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LastCompositeRecord
+  name: LastCompositeRecord
+  nameWithType: SkiaControl.LastCompositeRecord
+  fullName: DrawnUi.Draw.SkiaControl.LastCompositeRecord
 - uid: DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaControl
@@ -8021,6 +8604,13 @@ references:
     name: SkiaDrawingContext
     href: DrawnUi.Draw.SkiaDrawingContext.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
+  commentId: P:DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_PaintsLiveInOffscreenBake
+  name: PaintsLiveInOffscreenBake
+  nameWithType: SkiaControl.PaintsLiveInOffscreenBake
+  fullName: DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
 - uid: DrawnUi.Draw.SkiaControl.IsCacheGPU
   commentId: P:DrawnUi.Draw.SkiaControl.IsCacheGPU
   parent: DrawnUi.Draw.SkiaControl
@@ -15694,6 +16284,56 @@ references:
     name: InputKey
     href: DrawnUi.Draw.InputKey.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+  commentId: M:DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityValue
+  name: GetAccessibilityValue()
+  nameWithType: SkiaControl.GetAccessibilityValue()
+  fullName: DrawnUi.Draw.SkiaControl.GetAccessibilityValue()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+    name: GetAccessibilityValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityValue
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+    name: GetAccessibilityValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityValue
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilitySetValue_System_Double_
+  name: OnAccessibilitySetValue(double)
+  nameWithType: SkiaControl.OnAccessibilitySetValue(double)
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(double)
+  nameWithType.vb: SkiaControl.OnAccessibilitySetValue(Double)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(Double)
+  name.vb: OnAccessibilitySetValue(Double)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+    name: OnAccessibilitySetValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilitySetValue_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+    name: OnAccessibilitySetValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilitySetValue_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   commentId: M:DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Draw.SkiaControl
@@ -17032,21 +17672,21 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
-  name: ContractPixelsRect(SKRect, float, Thickness)
-  nameWithType: SkiaControl.ContractPixelsRect(SKRect, float, Thickness)
-  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect, float, Microsoft.Maui.Thickness)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
+  name: ContractPixelsRect(SKRect, float, in Thickness)
+  nameWithType: SkiaControl.ContractPixelsRect(SKRect, float, in Thickness)
+  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect, float, in Microsoft.Maui.Thickness)
   nameWithType.vb: SkiaControl.ContractPixelsRect(SKRect, Single, Thickness)
   fullName.vb: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect, Single, Microsoft.Maui.Thickness)
   name.vb: ContractPixelsRect(SKRect, Single, Thickness)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -17060,15 +17700,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: ','
   - name: " "
+  - name: in
+  - name: " "
   - uid: Microsoft.Maui.Thickness
     name: Thickness
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -17087,21 +17729,21 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
-  name: ContractPixelsRectForContent(SKRect, float, Thickness)
-  nameWithType: SkiaControl.ContractPixelsRectForContent(SKRect, float, Thickness)
-  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect, float, Microsoft.Maui.Thickness)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
+  name: ContractPixelsRectForContent(SKRect, float, in Thickness)
+  nameWithType: SkiaControl.ContractPixelsRectForContent(SKRect, float, in Thickness)
+  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect, float, in Microsoft.Maui.Thickness)
   nameWithType.vb: SkiaControl.ContractPixelsRectForContent(SKRect, Single, Thickness)
   fullName.vb: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect, Single, Microsoft.Maui.Thickness)
   name.vb: ContractPixelsRectForContent(SKRect, Single, Thickness)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRectForContent
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -17115,15 +17757,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: ','
   - name: " "
+  - name: in
+  - name: " "
   - uid: Microsoft.Maui.Thickness
     name: Thickness
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRectForContent
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -17142,21 +17786,21 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  commentId: M:DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+- uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  commentId: M:DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
-  name: ExpandPixelsRect(SKRect, float, Thickness)
-  nameWithType: SkiaControl.ExpandPixelsRect(SKRect, float, Thickness)
-  fullName: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect, float, Microsoft.Maui.Thickness)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
+  name: ExpandPixelsRect(SKRect, float, in Thickness)
+  nameWithType: SkiaControl.ExpandPixelsRect(SKRect, float, in Thickness)
+  fullName: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect, float, in Microsoft.Maui.Thickness)
   nameWithType.vb: SkiaControl.ExpandPixelsRect(SKRect, Single, Thickness)
   fullName.vb: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect, Single, Microsoft.Maui.Thickness)
   name.vb: ExpandPixelsRect(SKRect, Single, Thickness)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ExpandPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -17170,15 +17814,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: ','
   - name: " "
+  - name: in
+  - name: " "
   - uid: Microsoft.Maui.Thickness
     name: Thickness
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ExpandPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -41739,6 +42385,18 @@ references:
   - uid: DrawnUi.Draw.SkiaLabel.DecomposedText
     name: DecomposedText
     href: DrawnUi.Draw.SkiaLabel.DecomposedText.html
+- uid: DrawnUi.Draw.SkiaLabel.CanBreakInsideWord*
+  commentId: Overload:DrawnUi.Draw.SkiaLabel.CanBreakInsideWord
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_CanBreakInsideWord_System_String_System_Int32_
+  name: CanBreakInsideWord
+  nameWithType: SkiaLabel.CanBreakInsideWord
+  fullName: DrawnUi.Draw.SkiaLabel.CanBreakInsideWord
+- uid: DrawnUi.Draw.SkiaLabel.HasCjk*
+  commentId: Overload:DrawnUi.Draw.SkiaLabel.HasCjk
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_HasCjk_System_String_
+  name: HasCjk
+  nameWithType: SkiaLabel.HasCjk
+  fullName: DrawnUi.Draw.SkiaLabel.HasCjk
 - uid: DrawnUi.Draw.SkiaLabel.SplitLines*
   commentId: Overload:DrawnUi.Draw.SkiaLabel.SplitLines
   href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_SplitLines_System_String_SkiaSharp_SKPaint_SkiaSharp_SKFont_SkiaSharp_SKPoint_System_Single_System_Single_System_Int32_System_Boolean_DrawnUi_Draw_TextSpan_System_Single_
@@ -42146,6 +42804,50 @@ references:
   name: OnFontUpdated
   nameWithType: SkiaLabel.OnFontUpdated
   fullName: DrawnUi.Draw.SkiaLabel.OnFontUpdated
+- uid: DrawnUi.Draw.SkiaLabel.FontFamilyFallback
+  commentId: P:DrawnUi.Draw.SkiaLabel.FontFamilyFallback
+  parent: DrawnUi.Draw.SkiaLabel
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_FontFamilyFallback
+  name: FontFamilyFallback
+  nameWithType: SkiaLabel.FontFamilyFallback
+  fullName: DrawnUi.Draw.SkiaLabel.FontFamilyFallback
+- uid: DrawnUi.Draw.SkiaLabel
+  commentId: T:DrawnUi.Draw.SkiaLabel
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaLabel.html
+  name: SkiaLabel
+  nameWithType: SkiaLabel
+  fullName: DrawnUi.Draw.SkiaLabel
+- uid: SkiaSharp.SKTypeface[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.sktypeface
+  name: SKTypeface[]
+  nameWithType: SKTypeface[]
+  fullName: SkiaSharp.SKTypeface[]
+  nameWithType.vb: SKTypeface()
+  fullName.vb: SkiaSharp.SKTypeface()
+  name.vb: SKTypeface()
+  spec.csharp:
+  - uid: SkiaSharp.SKTypeface
+    name: SKTypeface
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sktypeface
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: SkiaSharp.SKTypeface
+    name: SKTypeface
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sktypeface
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaLabel.AutoFont
+  commentId: P:DrawnUi.Draw.SkiaLabel.AutoFont
+  parent: DrawnUi.Draw.SkiaLabel
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_AutoFont
+  name: AutoFont
+  nameWithType: SkiaLabel.AutoFont
+  fullName: DrawnUi.Draw.SkiaLabel.AutoFont
 - uid: DrawnUi.Draw.SkiaLabel.FontFamilyFallback*
   commentId: Overload:DrawnUi.Draw.SkiaLabel.FontFamilyFallback
   href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_FontFamilyFallback
@@ -42628,6 +43330,44 @@ references:
   name: OnSpanTapped
   nameWithType: SkiaLabel.OnSpanTapped
   fullName: DrawnUi.Draw.SkiaLabel.OnSpanTapped
+- uid: DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable
+  commentId: P:DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable
+  parent: DrawnUi.Draw.SkiaLabel
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_AccessibilityTextSelectable
+  name: AccessibilityTextSelectable
+  nameWithType: SkiaLabel.AccessibilityTextSelectable
+  fullName: DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable
+- uid: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
+  commentId: M:DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetFrameworkFocus_System_Boolean_
+  name: SetFrameworkFocus(bool)
+  nameWithType: SkiaControl.SetFrameworkFocus(bool)
+  fullName: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(bool)
+  nameWithType.vb: SkiaControl.SetFrameworkFocus(Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(Boolean)
+  name.vb: SetFrameworkFocus(Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
+    name: SetFrameworkFocus
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetFrameworkFocus_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
+    name: SetFrameworkFocus
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetFrameworkFocus_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Draw.SkiaLabel.SetFrameworkFocus*
   commentId: Overload:DrawnUi.Draw.SkiaLabel.SetFrameworkFocus
   href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_SetFrameworkFocus_System_Boolean_
@@ -42720,6 +43460,100 @@ references:
   name: GestureEventProcessingInfo
   nameWithType: GestureEventProcessingInfo
   fullName: DrawnUi.Draw.GestureEventProcessingInfo
+- uid: DrawnUi.Draw.Super.SetClipboardText
+  commentId: P:DrawnUi.Draw.Super.SetClipboardText
+  href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_SetClipboardText
+  name: SetClipboardText
+  nameWithType: Super.SetClipboardText
+  fullName: DrawnUi.Draw.Super.SetClipboardText
+- uid: DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable*
+  commentId: Overload:DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_AccessibilityTextSelectable
+  name: AccessibilityTextSelectable
+  nameWithType: SkiaLabel.AccessibilityTextSelectable
+  fullName: DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable
+- uid: SkiaSharp.SKColor
+  commentId: T:SkiaSharp.SKColor
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skcolor
+  name: SKColor
+  nameWithType: SKColor
+  fullName: SkiaSharp.SKColor
+- uid: DrawnUi.Draw.SkiaLabel.SelectedText
+  commentId: P:DrawnUi.Draw.SkiaLabel.SelectedText
+  parent: DrawnUi.Draw.SkiaLabel
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_SelectedText
+  name: SelectedText
+  nameWithType: SkiaLabel.SelectedText
+  fullName: DrawnUi.Draw.SkiaLabel.SelectedText
+- uid: DrawnUi.Draw.SkiaLabel.SelectionStart*
+  commentId: Overload:DrawnUi.Draw.SkiaLabel.SelectionStart
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_SelectionStart
+  name: SelectionStart
+  nameWithType: SkiaLabel.SelectionStart
+  fullName: DrawnUi.Draw.SkiaLabel.SelectionStart
+- uid: DrawnUi.Draw.SkiaLabel.SelectionLength*
+  commentId: Overload:DrawnUi.Draw.SkiaLabel.SelectionLength
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_SelectionLength
+  name: SelectionLength
+  nameWithType: SkiaLabel.SelectionLength
+  fullName: DrawnUi.Draw.SkiaLabel.SelectionLength
+- uid: DrawnUi.Draw.SkiaLabel.SelectedText*
+  commentId: Overload:DrawnUi.Draw.SkiaLabel.SelectedText
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_SelectedText
+  name: SelectedText
+  nameWithType: SkiaLabel.SelectedText
+  fullName: DrawnUi.Draw.SkiaLabel.SelectedText
+- uid: DrawnUi.Draw.SkiaLabel.SelectionStart
+  commentId: P:DrawnUi.Draw.SkiaLabel.SelectionStart
+  parent: DrawnUi.Draw.SkiaLabel
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_SelectionStart
+  name: SelectionStart
+  nameWithType: SkiaLabel.SelectionStart
+  fullName: DrawnUi.Draw.SkiaLabel.SelectionStart
+- uid: DrawnUi.Draw.SkiaLabel.Select*
+  commentId: Overload:DrawnUi.Draw.SkiaLabel.Select
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_Select_System_Int32_System_Int32_
+  name: Select
+  nameWithType: SkiaLabel.Select
+  fullName: DrawnUi.Draw.SkiaLabel.Select
+- uid: DrawnUi.Draw.SkiaLabel.SelectAll*
+  commentId: Overload:DrawnUi.Draw.SkiaLabel.SelectAll
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_SelectAll
+  name: SelectAll
+  nameWithType: SkiaLabel.SelectAll
+  fullName: DrawnUi.Draw.SkiaLabel.SelectAll
+- uid: DrawnUi.Draw.SkiaLabel.ClearSelection*
+  commentId: Overload:DrawnUi.Draw.SkiaLabel.ClearSelection
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_ClearSelection
+  name: ClearSelection
+  nameWithType: SkiaLabel.ClearSelection
+  fullName: DrawnUi.Draw.SkiaLabel.ClearSelection
+- uid: DrawnUi.Draw.SkiaLabel.CopySelection*
+  commentId: Overload:DrawnUi.Draw.SkiaLabel.CopySelection
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_CopySelection
+  name: CopySelection
+  nameWithType: SkiaLabel.CopySelection
+  fullName: DrawnUi.Draw.SkiaLabel.CopySelection
+- uid: DrawnUi.Draw.SkiaLabel.ProcessTextSelection*
+  commentId: Overload:DrawnUi.Draw.SkiaLabel.ProcessTextSelection
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_ProcessTextSelection_DrawnUi_Draw_SkiaGesturesParameters_DrawnUi_Draw_GestureEventProcessingInfo_
+  name: ProcessTextSelection
+  nameWithType: SkiaLabel.ProcessTextSelection
+  fullName: DrawnUi.Draw.SkiaLabel.ProcessTextSelection
+- uid: DrawnUi.Draw.SkiaLabel.DrawTextSelection*
+  commentId: Overload:DrawnUi.Draw.SkiaLabel.DrawTextSelection
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_DrawTextSelection_DrawnUi_Draw_DrawingContext_
+  name: DrawTextSelection
+  nameWithType: SkiaLabel.DrawTextSelection
+  fullName: DrawnUi.Draw.SkiaLabel.DrawTextSelection
+- uid: DrawnUi.Draw.SkiaLabel.GetLineGlyphs*
+  commentId: Overload:DrawnUi.Draw.SkiaLabel.GetLineGlyphs
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_GetLineGlyphs_DrawnUi_Draw_TextLine_
+  name: GetLineGlyphs
+  nameWithType: SkiaLabel.GetLineGlyphs
+  fullName: DrawnUi.Draw.SkiaLabel.GetLineGlyphs
 - uid: DrawnUi.Draw.SkiaLabel.FontMetrics*
   commentId: Overload:DrawnUi.Draw.SkiaLabel.FontMetrics
   href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_FontMetrics

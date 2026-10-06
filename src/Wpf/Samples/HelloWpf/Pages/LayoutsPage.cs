@@ -1,7 +1,9 @@
+using System.Windows.Threading;
 using DrawnUi.Draw;
 using DrawnUi.Views;
 using DrawnUi.Wpf;
 using DrawnUi.Controls;
+using SkiaSharp;
 using Color = DrawnUi.Color;
 
 namespace HelloWpf.Pages;
@@ -110,9 +112,20 @@ public class LayoutsPage : SkiaLayer
     private int _split = 3;
     private bool _dynamic;
     private SkiaWrap _chips;
+    private SkiaRow _chipsRow;
+    private SkiaGrid _chipsGrid;
     private SkiaLabel _chipsTitle;
     private readonly List<SkiaButton> _splitButtons = new();
     private SkiaButton _dynamicButton;
+
+    private SkiaLayer _composite;
+    private SkiaShape _spinner;
+    private SkiaLabel _compositeTitle;
+    private DispatcherTimer _spinTimer;
+    private readonly SKPaint _outlinePaint = new() { Style = SKPaintStyle.Stroke, Color = SKColors.White, IsAntialias = true };
+    private IReadOnlyList<SkiaControl> _outlined;
+    private (SKRect Rect, float Radius)[] _outlines = Array.Empty<(SKRect, float)>();
+    private volatile string _compositeInfo;
 
     /// <summary>Builds the page.</summary>
     public LayoutsPage()
@@ -172,7 +185,7 @@ public class LayoutsPage : SkiaLayer
                             }),
 
                         Card("IsClippedToBounds — a child larger than its parent",
-                            new SkiaRow
+                            new SkiaWrap
                             {
                                 Spacing = 24,
                                 Children = new List<SkiaControl>
@@ -263,12 +276,12 @@ public class LayoutsPage : SkiaLayer
                                 ColumnDefinitions = Cols("*, 2*, Auto"), RowDefinitions = Rows("Auto, 60"), ColumnSpacing = 8, RowSpacing = 8,
                                 Children = new List<SkiaControl>
                                 {
-                                    Cell("*", "#0D6EFD", 0, 0),
-                                    Cell("2*", "#6610F2", 1, 0),
-                                    Cell("Auto (this label)", "#D63384", 2, 0),
-                                    Cell("Row 1 = 60pt", "#20C997", 0, 1),
-                                    Cell("Column 1", "#FD7E14", 1, 1),
-                                    Cell("Auto", "#DC3545", 2, 1),
+                                    GridCell("*", "#0D6EFD", 0, 0),
+                                    GridCell("2*", "#6610F2", 1, 0),
+                                    GridCell("Auto (this label)", "#D63384", 2, 0),
+                                    GridCell("Row 1 = 60pt", "#20C997", 0, 1),
+                                    GridCell("Column 1", "#FD7E14", 1, 1),
+                                    GridCell("Auto", "#DC3545", 2, 1),
                                 },
                             }),
                         Card("ColumnSpan / RowSpan",
@@ -277,11 +290,11 @@ public class LayoutsPage : SkiaLayer
                                 ColumnDefinitions = Cols("*, *, *"), RowDefinitions = Rows("48, 48, 48"), ColumnSpacing = 6, RowSpacing = 6,
                                 Children = new List<SkiaControl>
                                 {
-                                    Cell("ColumnSpan=2", "#0D6EFD", 0, 0, columnSpan: 2),
-                                    Cell("RowSpan=2", "#6610F2", 2, 0, rowSpan: 2),
-                                    Cell("0,1", "#20C997", 0, 1),
-                                    Cell("1,1", "#FD7E14", 1, 1),
-                                    Cell("ColumnSpan=3", "#D63384", 0, 2, columnSpan: 3),
+                                    GridCell("ColumnSpan=2", "#0D6EFD", 0, 0, columnSpan: 2),
+                                    GridCell("RowSpan=2", "#6610F2", 2, 0, rowSpan: 2),
+                                    GridCell("0,1", "#20C997", 0, 1),
+                                    GridCell("1,1", "#FD7E14", 1, 1),
+                                    GridCell("ColumnSpan=3", "#D63384", 0, 2, columnSpan: 3),
                                 },
                             }),
                         Card("Implicit tracks: no definitions, children reference Column/Row (DefaultColumnDefinition = Auto)",
@@ -326,7 +339,8 @@ public class LayoutsPage : SkiaLayer
                             }),
 
                         Heading("Caching · UseCache=ImageComposite", 20),
-                        Card("SkiaLayer UseCache=\"ImageComposite\" · 24 cached shapes + 1 rotating · only the dirty child (and what it overlaps) is re-recorded each frame",
+                        Card(null,
+                            new SkiaLabel(CompositeTitle("…")) { FontSize = 12, TextColor = Color.Parse("#6EA8FE"), FontAttributes = FontAttributes.Bold, TextTransform = TextTransform.Uppercase }.Assign(out _compositeTitle),
                             new SkiaLayer
                             {
                                 UseCache = SkiaCacheType.ImageComposite, HeightRequest = 150, HorizontalOptions = LayoutOptions.Fill, BackgroundColor = Color.Parse("#212529"),
@@ -340,10 +354,17 @@ public class LayoutsPage : SkiaLayer
                                     {
                                         Type = ShapeType.Rectangle, CornerRadius = 4, WidthRequest = 44, HeightRequest = 44, BackgroundColor = Color.Parse("#FFC107"),
                                         Margin = new Thickness(12 + 5 * 52 + 46 - 22, 12 + 40 + 15 - 22, 0, 0), UseCache = SkiaCacheType.Operations, ZIndex = 5,
-                                    }.AnimateRotation(0, 360, seconds: 2.4, repeat: -1))
+                                    }.Assign(out _spinner))
                                     .ToList(),
-                            },
-                            new SkiaLabel("The spinning child invalidates itself every frame; the composite parent re-records it plus the siblings its old and new bounds overlap, and blits the rest from its cache surface. (The React page also outlines the repainted children from LastCompositeRecord — that diagnostic is not exposed on the C# engine.)")
+                            }
+                            .Assign(out _composite)
+                            // post-effects pass: drawn over the layer after it blitted its cache, never recorded into it
+                            .WhenPainted((ctx, _) =>
+                            {
+                                DrawRedrawnOutlines(ctx);
+                                return false;
+                            }),
+                            new SkiaLabel("White outlines = the children the last record repainted (the rotating one + every sibling its old and new bounds overlap); the others are kept in the cache surface untouched. Setting Rotation (any transform) or calling Repaint() on the spinning child marks it dirty in the composite parent (C# DirtyChildrenTracker); own content / measure changes record fully.")
                             {
                                 FontSize = 12, TextColor = Muted, HorizontalOptions = LayoutOptions.Fill,
                             }),
@@ -370,7 +391,7 @@ public class LayoutsPage : SkiaLayer
                                     .ToList(),
                             }),
                         Card("SkiaRow ItemsSource (same cells, laid out horizontally, every item realized)",
-                            new SkiaRow { Spacing = 8, ItemsSource = MakeChips(5), ItemTemplate = new DataTemplate(() => new ChipCell()) }),
+                            new SkiaRow { Spacing = 8, ItemsSource = MakeChips(Math.Min(5, _count)), ItemTemplate = new DataTemplate(() => new ChipCell()) }.Assign(out _chipsRow)),
                         Card("SkiaDecoratedGrid ItemsSource · Split=4 · ColumnSpacing / RowSpacing 1 · gradient lines in the spacing",
                             new SkiaDecoratedGrid
                             {
@@ -380,15 +401,69 @@ public class LayoutsPage : SkiaLayer
                         Card("SkiaGrid ItemsSource · Split=3 · Invert (column-major)",
                             new SkiaGrid
                             {
-                                ItemsSource = MakeChips(10), ItemTemplate = new DataTemplate(() => new ChipCell()), Split = 3, Invert = true,
+                                ItemsSource = MakeChips(_count), ItemTemplate = new DataTemplate(() => new ChipCell()), Split = 3, Invert = true,
                                 ColumnDefinitions = Cols("*,*,*"), ColumnSpacing = 8, RowSpacing = 8,
-                            }),
+                            }.Assign(out _chipsGrid)),
                     },
                 },
             }.Fill(),
         };
 
         RefreshChipsChrome();
+
+        // the React page's 40 ms interval: 6° per tick, then the title shows what the last record redrew
+        _spinTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(40) };
+        _spinTimer.Tick += (_, _) =>
+        {
+            _spinner.Rotation = (_spinner.Rotation + 6) % 360;
+            if (_compositeInfo != null)
+                _compositeTitle.Text = CompositeTitle(_compositeInfo);
+        };
+        _spinTimer.Start();
+    }
+
+    /// <inheritdoc/>
+    public override void OnDisposing()
+    {
+        _spinTimer?.Stop();
+        _spinTimer = null;
+        DisposeObject(_outlinePaint);
+        base.OnDisposing();
+    }
+
+    private static string CompositeTitle(string info) => $"SkiaLayer UseCache=\"ImageComposite\" · 24 shapes + 1 rotating · {info}";
+
+    /// <summary>
+    /// Overlay of the composite layer, on the rendering thread right after the layer drew: outlines the children
+    /// its last record repainted. <see cref="SkiaControl.LastCompositeRecord"/> is read only here, on the thread
+    /// that sets it; the UI timer gets an immutable string.
+    /// </summary>
+    private void DrawRedrawnOutlines(DrawingContext ctx)
+    {
+        var layer = _composite.DrawingRect;
+        var record = _composite.LastCompositeRecord;
+        if (!ReferenceEquals(record.Redrawn, _outlined))
+        {
+            // a new record: its children were arranged with the layer this frame, so keep their rects relative to it
+            // (blit-only frames, e.g. while scrolling, move the layer but not the children)
+            _outlined = record.Redrawn;
+            _outlines = record.Redrawn.Select(c =>
+            {
+                var rect = c.DrawingRect;
+                rect.Offset(-layer.Left, -layer.Top);
+                return (rect, c == _spinner ? 4f : 6f);
+            }).ToArray();
+            _compositeInfo = $"last record: {(record.Partial ? "partial" : "full")} · {record.Redrawn.Count} of {_composite.Views.Count} children redrawn";
+        }
+
+        _outlinePaint.StrokeWidth = 2 * ctx.Scale;
+        foreach (var (rect, radius) in _outlines)
+        {
+            var r = rect;
+            r.Offset(layer.Left, layer.Top);
+            r.Inflate(-ctx.Scale, -ctx.Scale); // stroke inside the child's box, like a SkiaShape stroke
+            ctx.Context.Canvas.DrawRoundRect(r, radius * ctx.Scale, radius * ctx.Scale, _outlinePaint);
+        }
     }
 
     private static List<Chip> MakeChips(int count) =>
@@ -411,13 +486,17 @@ public class LayoutsPage : SkiaLayer
     private void SetCount(int count)
     {
         _count = count;
-        _chips.ItemsSource = MakeChips(count);
+        // One list drives the Wrap, the Grid and the Row (first 5), as in the React page.
+        var items = MakeChips(count);
+        _chips.ItemsSource = items;
+        _chipsGrid.ItemsSource = items;
+        _chipsRow.ItemsSource = items.Take(5).ToList();
         RefreshChipsChrome();
     }
 
     private void RefreshChipsChrome()
     {
-        _chipsTitle.Text = $"SkiaWrap ItemsSource ({_count} recycled ChipCell) · Split={_split} · DynamicColumns={_dynamic}";
+        _chipsTitle.Text = $"SkiaWrap ItemsSource ({_count} recycled ChipCell) · Split={_split} · DynamicColumns={(_dynamic ? "true" : "false")}";
         var values = new[] { 0, 2, 3, 4 };
         for (var i = 0; i < _splitButtons.Count; i++)
             _splitButtons[i].BackgroundColor = Color.Parse(values[i] == _split ? "#533483" : "#495057");
@@ -464,7 +543,7 @@ public class LayoutsPage : SkiaLayer
     };
 
     /// <summary>A coloured cell with a centred caption, placed in a grid cell.</summary>
-    private static SkiaControl Cell(string text, string color, int column, int row, int columnSpan = 1, int rowSpan = 1) => At(new SkiaShape
+    private static SkiaControl GridCell(string text, string color, int column, int row, int columnSpan = 1, int rowSpan = 1) => At(new SkiaShape
     {
         Type = ShapeType.Rectangle, CornerRadius = 6, BackgroundColor = Color.Parse(color),
         HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,

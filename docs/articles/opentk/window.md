@@ -6,7 +6,7 @@ Two integration patterns depending on whether you own the render loop.
 
 ## 1. Fully Drawn App (`DrawnUiWindow`)
 
-Subclass `DrawnUiWindow` and pass a configured `Canvas`. The window handles the Skia GPU surface, mouse/keyboard routing, VSync, and event-driven sleep automatically.
+Subclass `DrawnUiWindow` and pass a configured `Canvas`. The window handles the Skia GPU surface, mouse/keyboard routing, VSync, event-driven sleep, keyboard navigation and screen readers (UI Automation on Windows, AT-SPI2 for Orca on Linux) automatically.
 
 ```csharp
 var gameSettings = new GameWindowSettings { };
@@ -67,6 +67,8 @@ class MyWindow(GameWindowSettings gs, NativeWindowSettings ns, Canvas canvas)
 ## 2. Use DrawnUI UIs In Your Existing App (`CanvasHost`)
 
 Use when your own `GameWindow` subclass owns the render loop and DrawnUI is composited on top as a transparent overlay, to create rich UIs with ease, dialogs, etc.
+
+A `CanvasHost` overlay gets no keyboard navigation and no screen reader support (those come with `DrawnUiWindow`); Tab types four spaces into a focused editor.
 
 **Render order per frame:**
 
@@ -148,19 +150,25 @@ class MyExistingAppWindow : GameWindow
     protected override void OnMouseDown(MouseButtonEventArgs e)
     {
         base.OnMouseDown(e);
-        _host?.Gestures.OnMouseDown(e, MousePosition, ClientSize);
+        _host?.Gestures.OnMouseDown(e, MousePosition, ClientSize, MouseState);
     }
 
     protected override void OnMouseMove(MouseMoveEventArgs e)
     {
         base.OnMouseMove(e);
-        _host?.Gestures.OnMouseMove(e, MousePosition, MouseState.IsButtonDown(MouseButton.Left), ClientSize);
+        _host?.Gestures.OnMouseMove(e, MousePosition, MouseState.IsAnyButtonDown, ClientSize, MouseState);
     }
 
     protected override void OnMouseUp(MouseButtonEventArgs e)
     {
         base.OnMouseUp(e);
-        _host?.Gestures.OnMouseUp(e, MousePosition, ClientSize);
+        _host?.Gestures.OnMouseUp(e, MousePosition, ClientSize, MouseState);
+    }
+
+    protected override void OnMouseWheel(MouseWheelEventArgs e)
+    {
+        base.OnMouseWheel(e);
+        _host?.Gestures.OnMouseWheel(e, MousePosition, ClientSize);
     }
 
     protected override void OnTextInput(TextInputEventArgs e)

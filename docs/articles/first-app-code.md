@@ -28,7 +28,9 @@ await host.RunAsync();
         Content="@RootControl" />
 
 @code {
-    private readonly SkiaControl RootControl = CreateMainLayout();
+    private SkiaControl RootControl;
+
+    protected override void OnInitialized() => RootControl = CreateMainLayout();
 }
 ```
 
@@ -36,10 +38,9 @@ The current Blazor sandbox reference route for this tutorial concept is `tutoria
 
 ## 🚀 Live Demo in Tutorials Project
 
-Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials) for:
+Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/Tutorials) for:
 - **First App (Code)** - This tutorial in action
 - **First App (XAML)** - Same UI built with XAML
-- **Interactive Cards (Code)** - Advanced fluent C# patterns
 - **Custom Controls** - Game-style interactive buttons
 - **News Feed Tutorial** - Advanced scrolling lists
 
@@ -54,7 +55,7 @@ A simple interactive app featuring:
 - 🔄 **Hot reload support** for rapid development
 - 👀 **Property observation** for reactive UI updates
 
-<img src="../images/firstcode.jpg" alt="News Feed Tutorial" width="350" style="margin-top: 16px;" />
+<img src="../images/firstcode.jpg" alt="First App Tutorial (Code)" width="350" style="margin-top: 16px;" />
 
 ## 🛠️ Step-by-Step Implementation
 

@@ -14,6 +14,7 @@ fast, deterministic, scriptable. **Prefer this over OpenTk for measurement/scrol
 
 - Infra: `src/Net/DrawnUi/Testing/` — `HeadlessCanvasHost.cs`, `GestureRobot.cs`, `VirtualizationProbe.cs`, `VirtualizationScene.cs`.
 - Runnable harness sample: `src/Net/Samples/VirtualizationHarnessDemo/` — `Program.cs` (top-level entry), `ChatLikeScene.cs` (inverted+windowed chat repro), `BlankJumpRepro.cs`.
+- Also on this host: `src/Net/Samples/GestureHarnessDemo/` and the xUnit project `src/Net/Tests/DrawnUi.Net.Tests/` (assert-style regression tests). `src/Net/Samples/SkiaEditorHarness/` carries its own private copy of the host.
 - Namespaces: `DrawnUi.Testing`, `DrawnUi.Draw`. Project targets `net9.0`, refs `DrawnUi.Net` by project → editing engine `src/Shared/**` recompiles into the harness directly.
 
 ## Core API
@@ -52,8 +53,9 @@ A harness only proves something if it mimics the target's DEFINING conditions. F
 that means: **inverted** (`SkiaScroll.Rotation=180, ReverseGestures=true, TrackIndexPosition=Start`),
 **windowed ItemsSource** (`ObservableRangeCollection`, slice newest-first `Items[i]==All[End-1-i]`,
 cap resident count), **bidirectional LoadMore** (`LoadMoreCommand`=older/append-tail, `LoadMoreTopCommand`=newer/head-insert),
-**variable heights**, **MeasureVisible** strategy, **jump buttons** (ReplaceRange rebase + ordered
-`scroll.ScrollToIndex(local, animate, align, ordered:true)`). `ChatLikeScene.cs` is the reference; copy it.
+**variable heights**, **MeasureVisible** strategy, **jump buttons** (`WindowedSource.ScrollToIndex(global, align, animate)`:
+ReplaceRange rebase + `scroll.ScrollToIndex(local, animate, align, clamp:true)`; every `ScrollToIndex` is an ordered
+scroll, held until it arrives). `ChatLikeScene.cs` is the reference; copy it.
 
 Windowing is now a LIBRARY primitive — no subclass needed: `DrawnUi.Draw.WindowedSource<T>` (sliding window
 over a big backing list) + `SkiaScrollWindowHost` (built-in `IWindowHost` adapter) over a plain `SkiaLayout`.
@@ -87,4 +89,6 @@ keep instrumentation out of committed engine code.
 - Transient mid-settle collapse (incomplete frontier) is benign and self-heals; a STICKY collapse is the bug. Settle fully before asserting.
 - `VirtualizationProbe.SettleBackground` returns on frontier-STABLE, which a *stalled-but-incomplete* frontier also satisfies → false-blank snapshots / flaky runs. For jump assertions settle until `Frontier >= ItemsCount-1 && LastVisible >= 0` (background measurement re-triggers each rendered frame). Killed the blank-jump flakiness.
 - Background measurement runs on real threadpool threads (`Task.Run`) with `Thread.Sleep` pacing in settle → naive single-run assertions are flaky. Run the scenario N times and assert 0 failures.
-- This harness is undocumented in other DrawnUi skills; reach for it first for measurement/scroll/windowing work.
+- Reach for this harness first for measurement/scroll/windowing work.
+- `AdvanceFrames` draws EVERY frame, a real host draws only when a frame was asked for. A bug that waits for a frame nobody requests passes headless and fails in the app (2026-10-02: a ScrollToIndex into a rebased window stalled on WPF while every headless test passed). For anything that holds, retries or animates, also run it the way an app does: `for (...; host.NeedsFrame; ...) host.RenderFrame(16);` On WPF / OpenTK / Wasm, `Update()` raised while a frame is being drawn is dropped; ask with `DrawnView.RequestNextFrame()` instead.
+- Proving a fix in the real WPF app without the mouse: UI Automation. The canvas exposes its accessibility snapshot as UIA children (buttons `Invoke`, labels, rects), so a PowerShell UIA script can press drawn buttons by name (`-ceq`: PowerShell `-eq` is case-insensitive, "HOME" matched the navbar "Home") and read which cells are on screen. Launch your OWN instance; a Release window's GPU surface comes out blank with PrintWindow, a Debug one captures.

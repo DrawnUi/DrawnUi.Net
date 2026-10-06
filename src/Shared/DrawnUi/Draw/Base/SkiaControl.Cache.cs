@@ -10,6 +10,14 @@ public partial class SkiaControl
     // control is being torn down bails before touching freed surfaces/children.
     private CancellationTokenSource _offscreenRenderCts;
     private long _offscreenRenderGeneration;
+    private long _offscreenPublishedGeneration; // newest bake shown as RenderObject
+    private long _offscreenCancelledGeneration; // bakes up to this one never publish
+
+    /// <summary>
+    /// Set on a thread while it records an offscreen (double-buffered) bake: a GPU cache made or drawn there
+    /// would use the canvas GRContext off the thread that owns it, so GPU-cached controls paint live instead.
+    /// </summary>
+    [ThreadStatic] private static bool _recordingOffscreenBake;
 
     /// <summary>Token of the currently scheduled offscreen render (see <see cref="RenewOffscreenRenderToken"/>).</summary>
     public CancellationToken OffscreenRenderToken => _offscreenRenderCts?.Token ?? CancellationToken.None;
@@ -42,13 +50,19 @@ public partial class SkiaControl
         return fresh.Token;
     }
 
-    /// <summary>True once a newer offscreen render was scheduled after the one identified by <paramref name="generation"/>.</summary>
+    /// <summary>
+    /// True once a newer offscreen render was scheduled after the one identified by <paramref name="generation"/>,
+    /// or <see cref="CancelOffscreenRendering"/> was called after it was scheduled.
+    /// </summary>
     public bool IsOffscreenRenderSuperseded(long generation) =>
-        Interlocked.Read(ref _offscreenRenderGeneration) != generation;
+        Interlocked.Read(ref _offscreenRenderGeneration) != generation
+        || generation <= Interlocked.Read(ref _offscreenCancelledGeneration);
 
     /// <summary>Cancels any scheduled/in-flight offscreen render for this control without scheduling a new one.</summary>
     public void CancelOffscreenRendering()
     {
+        // bakes scheduled so far, in flight or queued, no longer publish; each still clears its busy mark
+        Interlocked.Exchange(ref _offscreenCancelledGeneration, Interlocked.Read(ref _offscreenRenderGeneration));
         try
         {
             _offscreenRenderCts?.Cancel();
@@ -58,6 +72,20 @@ public partial class SkiaControl
             /* nop */
         }
     }
+
+    /// <summary>
+    /// What an <see cref="SkiaCacheType.ImageComposite"/> cache redrew the last time it was recorded.
+    /// </summary>
+    /// <param name="Partial">True when only the changed children, and the ones they overlap, were redrawn over the
+    /// previous image; false for a full redraw (first record, size change, cache invalidated).</param>
+    /// <param name="Redrawn">The children painted by that record.</param>
+    public readonly record struct CompositeRecord(bool Partial, IReadOnlyList<SkiaControl> Redrawn);
+
+    /// <summary>
+    /// The last record of this control's <see cref="SkiaCacheType.ImageComposite"/> cache: full or partial, and which
+    /// children it redrew. For diagnostics and demos; set on the rendering thread when the cache is recorded.
+    /// </summary>
+    public CompositeRecord LastCompositeRecord { get; protected set; } = new(false, Array.Empty<SkiaControl>());
 
     /// <summary>
     /// Find intersections between changed children and DrawingRect,
@@ -153,11 +181,14 @@ public partial class SkiaControl
 
                     count++;
                 }
+
+                LastCompositeRecord = new(true, DirtyChildrenInternal.ToArray());
             }
             else
             {
                 //Debug.WriteLine("[ImageComposite] was rebuild");
                 IsRenderingWithComposition = false;
+                LastCompositeRecord = new(false, Views.ToArray());
             }
         }
         else
@@ -175,9 +206,9 @@ public partial class SkiaControl
 
     /// <summary>
     /// When Shared, all instances of this control type on the same Canvas share one CachedObject
-    /// instead of each allocating their own. Effective only for Image and GPU cache types.
+    /// instead of each allocating their own. Effective for the Operations, Image and GPU cache types.
     /// Individual control disposal does not release the shared cache;
-    /// use SuperView.Cache.Free&lt;T&gt;() or let the Canvas dispose it.
+    /// use Superview.SharedCache.Free&lt;T&gt;() or let the Canvas dispose it.
     /// </summary>
     public CacheSharingType CacheSharing
     {
@@ -186,7 +217,7 @@ public partial class SkiaControl
     }
 
     /// <summary>
-    /// Cache sharing is only supported for Image and GPU cache types.
+    /// Cache sharing is supported for the Operations, Image and GPU cache types.
     /// </summary>
     private bool IsSharedCacheEligible => UsingCacheType == SkiaCacheType.Operations ||
                                           UsingCacheType == SkiaCacheType.Image || UsingCacheType == SkiaCacheType.GPU;
@@ -507,7 +538,7 @@ public partial class SkiaControl
     {
         // In shared mode the per-instance RenderObjectNeedsUpdate flag is irrelevant — the shared
         // cache's existence and size are the only validity signals. Individual controls should call
-        // SuperView.Cache.Free<T>() to evict the shared entry and force a full re-render.
+        // Superview.SharedCache.Free<T>() to evict the shared entry and force a full re-render.
         bool isSharedMode = CacheSharing == CacheSharingType.Shared && IsSharedCacheEligible;
 
         if (cache != null && (!RenderObjectNeedsUpdate || isSharedMode))
@@ -530,7 +561,7 @@ public partial class SkiaControl
             {
                 //hardware context might change if we returned from background..
                 if (hardware.GRContext == null || cache.Surface.Context == null
-                                               || (int)hardware.GRContext.Handle != (int)cache.Surface.Context.Handle)
+                                               || hardware.GRContext.Handle != cache.Surface.Context.Handle)
                 {
                     CacheValidity = CacheValidityType.GraphicContextMismatch;
                     return false;
@@ -547,6 +578,12 @@ public partial class SkiaControl
         CacheValidity = CacheValidityType.Missing;
         return false;
     }
+
+    /// <summary>
+    /// A GPU-cached control drawn inside an offscreen bake: its GPU cache would use the canvas GRContext off the
+    /// thread that owns it, so it paints live there.
+    /// </summary>
+    protected bool PaintsLiveInOffscreenBake => _recordingOffscreenBake && IsCacheGPU;
 
     public bool IsCacheGPU
     {
@@ -584,6 +621,9 @@ public partial class SkiaControl
             //    return SkiaCacheType.Image;
 
             if (UseCache == SkiaCacheType.ImageDoubleBuffered && !CanUseCacheDoubleBuffering)
+                return SkiaCacheType.Image;
+
+            if (UseCache == SkiaCacheType.Auto)
                 return SkiaCacheType.Image;
 
             if (UseCache == SkiaCacheType.GPU && !Super.GpuCacheEnabled)
@@ -806,9 +846,49 @@ public partial class SkiaControl
         }
     }
 
-// True while an offscreen bake for THIS control is pending or painting (double-buffered path). Guards the
-// sync resize-rebuild below from painting the same control concurrently with the background bake.
-    private volatile bool _offscreenBakeBusy;
+    // Generation of the latest offscreen bake scheduled for THIS control while it is pending or painting, 0 when
+    // none (double-buffered path). Only that bake clears it: an older bake finishing while a newer one is queued
+    // leaves the control busy (it used to clear a plain flag, so the sync resize-rebuild below could paint the
+    // control on the render thread while the newer bake painted it on a worker).
+    private long _offscreenBakeBusyGeneration;
+
+    bool OffscreenBakeBusy => Interlocked.Read(ref _offscreenBakeBusyGeneration) != 0;
+
+    /// <summary>Marks a new offscreen bake as scheduled and returns its generation.</summary>
+    long BeginOffscreenBake()
+    {
+        var generation = Interlocked.Increment(ref _offscreenRenderGeneration);
+        Interlocked.Exchange(ref _offscreenBakeBusyGeneration, generation);
+        return generation;
+    }
+
+    /// <summary>The bake of <paramref name="generation"/> ended: the control is idle unless a newer one is scheduled.</summary>
+    void EndOffscreenBake(long generation)
+        => Interlocked.CompareExchange(ref _offscreenBakeBusyGeneration, 0, generation);
+
+    /// <summary>
+    /// Records an offscreen bake of this control (on a worker, or inline in the browser). GPU-cached controls painted
+    /// inside it paint live (<see cref="_recordingOffscreenBake"/>). It paints at <paramref name="paintDestination"/>,
+    /// the control's rect when the bake was scheduled, as the in-frame path does: an OperationsFull record area is the
+    /// canvas clip, and painting there filled the whole clip.
+    /// </summary>
+    CachedObject RecordOffscreenBake(DrawingContext clone, SKRect recordArea, SKRect paintDestination)
+    {
+        var was = _recordingOffscreenBake;
+        _recordingOffscreenBake = true;
+        var canvas = Superview;
+        canvas?.OffscreenBakeStarted();
+        try
+        {
+            return CreateRenderingObject(clone, recordArea, RenderObjectPreparing, UsingCacheType,
+                (ctx) => { PaintWithEffects(ctx.WithDestination(paintDestination)); });
+        }
+        finally
+        {
+            canvas?.OffscreenBakeEnded();
+            _recordingOffscreenBake = was;
+        }
+    }
 
     /// <summary>
     /// Double-buffered cache is NOT current: a rebake is flagged or an offscreen bake is in flight, so
@@ -817,7 +897,7 @@ public partial class SkiaControl
     /// life (streaming-text cell: older/shorter text than already presented).
     /// </summary>
     public bool DoubleBufferedCacheIsStale
-        => UsesCacheDoubleBuffering && (_needUpdateFrontCache || _offscreenBakeBusy);
+        => UsesCacheDoubleBuffering && (_needUpdateFrontCache || OffscreenBakeBusy);
 
     /// <summary>
     /// The control RESIZED while holding a cache: the cached pixels are valid but at a stale size, and the
@@ -828,7 +908,7 @@ public partial class SkiaControl
     /// </summary>
     bool TrySyncRebuildStaleSize(DrawingContext context, SKRect recordArea)
     {
-        if (_offscreenBakeBusy)
+        if (OffscreenBakeBusy)
             return false; // background bake owns painting this control right now — do not race it
 
         CreateRenderingObjectAndPaint(context, recordArea,
@@ -881,7 +961,7 @@ public partial class SkiaControl
             // what plain SkiaCacheType.Image already does via CheckCachedObjectValid's SizeMismatch path.
             // GATED to genuine resizes: a RECYCLE rebind marks PixelsForeign=true and keeps the async path — a
             // sync rebuild there is the ~150ms fling stall the fast path exists to avoid.
-            if (cache != null && UsesCacheDoubleBuffering && !PixelsForeign && !_offscreenBakeBusy
+            if (cache != null && UsesCacheDoubleBuffering && !PixelsForeign && !OffscreenBakeBusy
                 && !CompareSize(cache.RecordingArea.Size, recordArea.Size, 1)
                 && TrySyncRebuildStaleSize(context, recordArea))
             {
@@ -928,20 +1008,23 @@ public partial class SkiaControl
                         // adopts the new size — never a sync render-thread re-record during scroll.
                         DrawRenderObjectInternal(context, cacheOffscreen);
                     }
-                    else
+                    else if (cache == null)
                     {
-                        if (!ExistingCacheWasRendered)
-                        {
-                            DrawPlaceholder(context);
+                        // Nothing to show yet: the placeholder, every frame until the first bitmap lands (it used
+                        // to show for one frame, then left a hole). A drawn cache never gets one painted over it
+                        // (after a BindingContext change it did, for one frame). At the control's rect: an
+                        // OperationsFull destination is the canvas clip.
+                        DrawPlaceholder(context.WithDestination(DrawingRect));
 
-                            // INVARIANT: painting a placeholder with NO cache and NO bake in flight
-                            // means the rebuild signal was LOST (e.g. a recycle cancelled the offscreen
-                            // bake after NeedUpdate was already consumed — cell frozen as a silhouette
-                            // forever at idle, nothing left to trigger a redraw). Re-arm the build here:
-                            // a placeholder frame must always have a bake scheduled behind it.
-                            if (!_offscreenBakeBusy)
-                                needBuild = true;
-                        }
+                        // INVARIANT: painting a placeholder with NO cache and NO bake in flight
+                        // means the rebuild signal was LOST (e.g. a recycle cancelled the offscreen
+                        // bake after NeedUpdate was already consumed — cell frozen as a silhouette
+                        // forever at idle, nothing left to trigger a redraw). Re-arm the build here:
+                        // a placeholder frame must always have a bake scheduled behind it. Once per
+                        // content (ExistingCacheWasRendered): a bake that comes back empty must not
+                        // be retried every frame.
+                        if (!ExistingCacheWasRendered && !OffscreenBakeBusy)
+                            needBuild = true;
                     }
 
                     Monitor.PulseAll(LockDraw);
@@ -957,40 +1040,25 @@ public partial class SkiaControl
                 if (needBuild)
                 {
                     var clone = AddPaintArguments(context);
-                    _offscreenBakeBusy = true;
-                    // Each bake SUPERSEDES older in-flight ones. A rapidly self-invalidating cell (a streaming
-                    // AI bubble growing word by word) queues several bakes as the text grows; without ordering,
-                    // an OLDER bake completing AFTER a newer one overwrites RenderObject with STALE content —
-                    // the cell's text visibly REVERTS (2 lines -> 1 line -> 2 again). Stamp each bake and let
-                    // only the latest publish. Direct increment (no CancellationTokenSource alloc) keeps the
-                    // 180ms streaming path cheap.
-                    long bakeGeneration = Interlocked.Increment(ref _offscreenRenderGeneration);
+                    var paintDestination = DrawingRect;
+                    // Each bake is stamped. A rapidly self-invalidating cell (a streaming AI bubble growing
+                    // word by word) queues several bakes as the text grows; without ordering, an OLDER bake
+                    // completing AFTER a newer one overwrites RenderObject with STALE content — the cell's text
+                    // visibly REVERTS (2 lines -> 1 line -> 2 again). Only a bake newer than the one shown
+                    // publishes. Direct increment (no CancellationTokenSource alloc) keeps the 180ms streaming
+                    // path cheap.
+                    long bakeGeneration = BeginOffscreenBake();
                     PushToOffscreenRendering(() =>
                     {
                         try
                         {
                             //will be executed on background thread in parallel
-                            var prepared = CreateRenderingObject(clone, recordArea, RenderObjectPreparing,
-                                UsingCacheType,
-                                (ctx) => { PaintWithEffects(ctx); });
-
-                            // Publish ONLY if a newer bake hasn't been scheduled since this one started.
-                            // Superseded => a fresher RenderObject is (or will be) set by the newer bake;
-                            // overwriting it here is the stale-text revert. Skip the swap (the double-buffer's
-                            // back surface is reused by the next bake — no leak, no dispose-of-shared hazard).
-                            if (!IsOffscreenRenderSuperseded(bakeGeneration))
-                            {
-                                RenderObjectPreparing = prepared;
-                                if (prepared != null)
-                                {
-                                    RenderObject = prepared;
-                                    _renderObjectPreparing = null;
-                                }
-                            }
+                            var prepared = RecordOffscreenBake(clone, recordArea, paintDestination);
+                            PublishOffscreenBake(prepared, bakeGeneration);
                         }
                         finally
                         {
-                            _offscreenBakeBusy = false;
+                            EndOffscreenBake(bakeGeneration);
                         }
 
                         // UNCONDITIONAL wakeup: gating this on Parent.UpdateLocks lost the present
@@ -1007,6 +1075,38 @@ public partial class SkiaControl
 
             return false;
         }
+    }
+
+    /// <summary>
+    /// Swaps a finished offscreen bake in as <see cref="RenderObject"/> when it is newer than the one shown: a control
+    /// that keeps changing still shows every bake that finishes (only the newest scheduled one used to publish, so a
+    /// control whose bakes took longer than a frame showed none while it kept changing). A bake older than the one
+    /// shown, or cancelled (<see cref="CancelOffscreenRendering"/>, a recycled cell rebound to another item), is never
+    /// drawn: its surface goes back to the pool and the object is disposed now instead of waiting for the GC.
+    /// </summary>
+    void PublishOffscreenBake(CachedObject prepared, long generation)
+    {
+        if (generation > Interlocked.Read(ref _offscreenPublishedGeneration)
+            && generation > Interlocked.Read(ref _offscreenCancelledGeneration))
+        {
+            Interlocked.Exchange(ref _offscreenPublishedGeneration, generation);
+            RenderObjectPreparing = prepared;
+            if (prepared != null)
+            {
+                RenderObject = prepared;
+                _renderObjectPreparing = null;
+            }
+
+            return;
+        }
+
+        if (prepared == null || ReferenceEquals(prepared, RenderObjectPreparing))
+            return;
+
+        if (prepared.Surface != null && !ReferenceEquals(prepared.Surface, RenderObjectPreparing?.Surface))
+            ReturnSurface(prepared.Surface);
+        prepared.Surface = null;
+        DisposeObject(prepared);
     }
 
     /// <summary>
@@ -1200,16 +1300,13 @@ public partial class SkiaControl
                 try
                 {
                     action.Invoke();
-
-                    if (_offscreenCacheRenderingQueue.Count > 0)
-                        action = _offscreenCacheRenderingQueue.Pop();
-                    else
-                        break;
                 }
                 catch (Exception e)
                 {
                     Super.Log(e);
                 }
+
+                action = _offscreenCacheRenderingQueue.Pop(); // a throwing action is not run again
             }
         }
         finally
@@ -1357,7 +1454,7 @@ public partial class SkiaControl
         bool willDraw = !CheckIsGhost();
         if (willDraw)
         {
-            if (UsingCacheType != SkiaCacheType.None)
+            if (UsingCacheType != SkiaCacheType.None && !PaintsLiveInOffscreenBake)
             {
                 var destination = DrawingRect;
                 var recordArea = destination;
@@ -1391,26 +1488,19 @@ public partial class SkiaControl
     public void PrepareOffscreenCache(DrawingContext clone, SKRect recordArea)
     {
         //use cloned struct in another thread
-        _offscreenBakeBusy = true;
+        var paintDestination = DrawingRect;
+        long bakeGeneration = BeginOffscreenBake();
         PushToOffscreenRendering(() =>
         {
             try
             {
                 //will be executed on background thread in parallel
-                var prepared = CreateRenderingObject(clone, recordArea, RenderObjectPreparing,
-                    UsingCacheType,
-                    (ctx) => { PaintWithEffects(ctx); });
-
-                RenderObjectPreparing = prepared;
-                if (prepared != null)
-                {
-                    RenderObject = prepared;
-                    _renderObjectPreparing = null;
-                }
+                var prepared = RecordOffscreenBake(clone, recordArea, paintDestination);
+                PublishOffscreenBake(prepared, bakeGeneration);
             }
             finally
             {
-                _offscreenBakeBusy = false;
+                EndOffscreenBake(bakeGeneration);
             }
 
             // The offscreen bake changed this control's PIXELS without going through Update():
@@ -1437,9 +1527,7 @@ public partial class SkiaControl
             //record to cache and paint
             if (UsesCacheDoubleBuffering)
             {
-                if (!ExistingCacheWasRendered)
-                    DrawPlaceholder(ctx);
-
+                // UseRenderingObject already drew the cache, the previous one or the placeholder
                 PrepareOffscreenCache(ctx, recordArea);
             }
             else

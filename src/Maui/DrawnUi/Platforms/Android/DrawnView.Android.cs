@@ -8,6 +8,12 @@ namespace DrawnUi.Views
 {
     public partial class DrawnView
     {
+        /// <summary>Vulkan failed on this canvas: a new accelerated canvas view, which now gets OpenGL.</summary>
+        internal void RecreateCanvasView()
+        {
+            if (Handler != null && IsUsingHardwareAcceleration)
+                CreateSkiaView();
+        }
 
         private bool IsElementVisibleInParentChain(View element)
         {
@@ -282,6 +288,7 @@ namespace DrawnUi.Views
         protected virtual void DisposePlatform()
         {
             Super.OnFrame -= OnFrame;
+            ReleaseAccessibility();
         }
 
         public virtual void SetupRenderingLoop()
@@ -300,6 +307,7 @@ namespace DrawnUi.Views
         protected virtual void DisposePlatform()
         {
             Looper?.Dispose();
+            ReleaseAccessibility();
         }
 
         public virtual void SetupRenderingLoop()

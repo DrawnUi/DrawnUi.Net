@@ -86,17 +86,18 @@ internal static class WpfStartup
         {
             // A focused DrawnUiElement feeds the manager itself; everything else in the window
             // goes through here. Events are not marked handled, WPF controls keep their keys.
+            // A key whose source is another control (a TextBox...) is that control's: reported, not for drawn controls.
             window.PreviewKeyDown += (_, e) =>
             {
                 if (e.OriginalSource is DrawnUiElement || e.IsRepeat)
                     return;
-                KeyboardManager.KeyboardPressed(KeyboardManager.MapKey(e.Key == Key.System ? e.SystemKey : e.Key));
+                KeyboardManager.KeyboardPressed(KeyboardManager.MapKey(e.Key == Key.System ? e.SystemKey : e.Key), e.OriginalSource is not Window);
             };
             window.PreviewKeyUp += (_, e) =>
             {
                 if (e.OriginalSource is DrawnUiElement)
                     return;
-                KeyboardManager.KeyboardReleased(KeyboardManager.MapKey(e.Key == Key.System ? e.SystemKey : e.Key));
+                KeyboardManager.KeyboardReleased(KeyboardManager.MapKey(e.Key == Key.System ? e.SystemKey : e.Key), e.OriginalSource is not Window);
             };
             window.PreviewTextInput += (_, e) =>
             {
@@ -107,7 +108,7 @@ internal static class WpfStartup
                     return;
                 if (text.Length == 1 && char.IsControl(text[0]))
                     return;
-                KeyboardManager.KeyboardChar(text);
+                KeyboardManager.KeyboardChar(text, e.OriginalSource is not Window);
             };
         }
     }

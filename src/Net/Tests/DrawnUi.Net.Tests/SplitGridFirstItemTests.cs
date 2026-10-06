@@ -150,6 +150,11 @@ public class SplitGridFirstItemTests
             UpdateCellHeight();
         }
         host.AdvanceFrames(10);
+        // the tiles bake on background threads: under load they land after the frames above
+        var until = DateTime.UtcNow.AddSeconds(5);
+        while (cells.ToArray().Any(c => !c.IsDisposed && c.Parent != null && (c.RenderObject == null || c.DoubleBufferedCacheIsStale)) && DateTime.UtcNow < until)
+            Thread.Sleep(5);
+        host.RenderFrame();
 
         // what is actually painted: one tile is column x cellHeight of non-background pixels
         var painted = host.NonBackgroundFraction(Colors.Black);

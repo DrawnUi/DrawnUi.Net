@@ -1,6 +1,6 @@
-# Advanced Scrolling with SkiaScroll in DrawnUi.Maui
+# Advanced Scrolling with SkiaScroll in DrawnUi
 
-DrawnUi.Maui’s SkiaScroll control provides high-performance, flexible scrolling for custom UIs, games, dashboards, and data-heavy apps. This article covers advanced usage, virtualization, customization, and best practices for SkiaScroll and related controls.
+DrawnUi's SkiaScroll control provides high-performance, flexible scrolling for custom UIs, games, dashboards, and data-heavy apps. This article covers advanced usage, virtualization, customization, and best practices for SkiaScroll and related controls.
 
 ## Why SkiaScroll?
 - **Smooth, pixel-perfect scrolling** on all platforms
@@ -51,7 +51,7 @@ Virtualization is on by default (`Virtualisation="Enabled"` is the default of ev
 ```
 
 - `Virtualisation` on SkiaScroll controls viewport-based rendering.
-- `Virtualisation` on SkiaLayout controls the strategy (Enabled, Disabled).
+- `Virtualisation` on SkiaLayout controls the strategy (`Disabled`, `Enabled`, `Smart`, `Managed`).
 - `RecyclingTemplate="Enabled"` (default) re-binds a small pool of cells as items scroll in and out; `Disabled` keeps one view per item.
 - `MeasureItemsStrategy` decides how rows get measured: `MeasureAll` (default) for rows of any height, `MeasureFirst` when every row has the same height, `MeasureVisible` for thousands of uneven rows. See [Scrolling Lists](../controls/lists.md).
 - Use `VirtualisationInflated` to control how much content outside the viewport is still rendered.
@@ -79,7 +79,7 @@ Virtualization is on by default (`Virtualisation="Enabled"` is the default of ev
 ## Pull-to-Refresh
 
 ```xml
-<draw:SkiaScroll x:Name="MyScrollView" Refreshing="OnRefreshing">
+<draw:SkiaScroll x:Name="MyScrollView" RefreshEnabled="True">
     <draw:SkiaScroll.RefreshIndicator>
         <draw:RefreshIndicator />
     </draw:SkiaScroll.RefreshIndicator>
@@ -91,12 +91,12 @@ Virtualization is on by default (`Virtualisation="Enabled"` is the default of ev
 
 In code-behind:
 ```csharp
-private async void OnRefreshing(object sender, EventArgs e)
+// Runs when the user pulls past RefreshDistanceLimit, or when IsRefreshing is set to true
+MyScrollView.RefreshCommand = new Command(async () =>
 {
-    // Perform refresh operation
     await LoadDataAsync();
-    ((SkiaScroll)sender).EndRefresh();
-}
+    MyScrollView.IsRefreshing = false; // hides the indicator
+});
 ```
 
 ## Scroll Bar Indicator
@@ -134,11 +134,14 @@ Use SkiaScrollLooped for banners, carousels, or infinite galleries:
 ## Programmatic Scrolling and Position Tracking
 
 ```csharp
-// Scroll to a specific position
-myScroll.ScrollToPosition(0, 500, true); // Animated scroll to Y=500
+// Scroll to an offset in points (down is negative); a time above 0 animates it
+myScroll.ScrollTo(0, -500, 0.3f, true);
 
-// Scroll to a child element
-myScroll.ScrollToView(targetElement, true);
+// Scroll to an item of the content layout by its index
+myScroll.ScrollToIndex(10, true);
+
+// Scroll every parent SkiaScroll so a child is visible
+SkiaScroll.EnsureVisible(targetElement);
 
 // Track scroll position
 float y = myScroll.ViewportOffsetY;
@@ -146,10 +149,10 @@ float y = myScroll.ViewportOffsetY;
 
 ## Performance Tips
 - Keep virtualization on for large lists (it is the default) and pick `MeasureItemsStrategy` from your rows
-- Use `Cache="Operations"` for static or rarely-changing content
+- Use `UseCache="Operations"` for static or rarely-changing content
 - Avoid nesting too many scrolls; prefer flat layouts
 - Use SkiaLabelFps to monitor performance
-- For custom drawing, override OnDraw in your content controls
+- For custom drawing, override `Paint` in your content controls
 
 ## Advanced: Custom Scroll Effects and Gestures
 - Implement parallax, sticky headers, or custom scroll physics by extending SkiaScroll
@@ -157,4 +160,4 @@ float y = myScroll.ViewportOffsetY;
 - Combine with SkiaDrawer for overlay panels
 
 ## Summary
-SkiaScroll and related controls provide a robust, high-performance foundation for any scrolling UI in DrawnUi.Maui. With support for virtualization, zoom, custom overlays, and advanced gestures, you can build everything from chat apps to dashboards and games with smooth, responsive scrolling.
+SkiaScroll and related controls provide a robust, high-performance foundation for any scrolling UI in DrawnUi. With support for virtualization, zoom, custom overlays, and advanced gestures, you can build everything from chat apps to dashboards and games with smooth, responsive scrolling.

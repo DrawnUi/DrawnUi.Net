@@ -96,9 +96,10 @@ public class SkiaCheckbox : SkiaToggle
             }
         });
 
-        ColorFrameOff = frameOff;
-        ColorFrameOn = frameOn;
-        ColorCheckOn = checkOn;
+        // style defaults, not plain sets: a plain set counts as the app's own, and a later ControlStyle kept the crimson
+        SetStyleDefault(ColorFrameOffProperty, frameOff);
+        SetStyleDefault(ColorFrameOnProperty, frameOn);
+        SetStyleDefault(ColorCheckOnProperty, checkOn);
     }
     
     protected virtual void CreateCupertinoStyleContent()

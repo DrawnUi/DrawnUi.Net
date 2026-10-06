@@ -1,13 +1,23 @@
 ---
 name: drawnui-game
-description: Use when creating or modifying games built on DrawnUi.Gaming.DrawnGame for MAUI and Blazor WASM targets. Covers game loop, sprites, physics, canvas rendering, input, and cross-platform game patterns.
+description: Use when creating or modifying games built on DrawnUi.Gaming.DrawnGame for MAUI, Blazor WASM, pure WebAssembly (DrawnUi.Web), OpenTK and WPF targets. Covers game loop, sprites, physics, canvas rendering, input, and cross-platform game patterns.
 version: 1.2.0
 tags: [drawnui, game, maui, skia, dotnet]
 ---
 
 # DrawnUI Game Development Skill
 
-Use this skill when creating or modifying games built on `DrawnUi.Gaming.DrawnGame` for MAUI and/or Blazor WASM targets.
+Use this skill when creating or modifying games built on `DrawnUi.Gaming.DrawnGame` for MAUI and/or Blazor WASM targets (the same base class ships for pure WebAssembly, OpenTK and WPF).
+
+| Head | Game package | Pong sample (shared `src/Shared/Samples/Pong.Shared`) |
+|---|---|---|
+| MAUI | `DrawnUi.Maui.Game` | `src/Maui/Samples/MauiPong` |
+| Blazor WASM | `DrawnUi.Blazor.Game` | `src/Blazor/Samples/BlazorSandbox` (`Pages/PongPage.razor`) |
+| Pure WebAssembly | `DrawnUi.Web.Game` | `src/Wasm/Samples/PongWeb` (see `drawnui-web-app` skill) |
+| OpenTK | `DrawnUi.OpenTk.Game` | `src/OpenTk/Samples/OpenTkPong` |
+| WPF | `DrawnUi.Wpf.Game` | `src/Wpf/Samples/WpfPong` |
+
+Every addon compiles the same `src/SharedGame` sources (`DrawnGame.cs`, `Game.Input.cs`, `IGame.cs`).
 
 > **IMPORTANT:** This skill must always be updated when new findings are discovered during game development - patterns, pitfalls, API quirks, project structure details, platform differences. Update this file before closing any game-related task that produced reusable knowledge.
 
@@ -63,7 +73,8 @@ MyGame/
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DrawnUi.Maui.Game" Version="*" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.80" />
+    <PackageReference Include="DrawnUi.Maui.Game" Version="1.10.6.22" />
   </ItemGroup>
 </Project>
 ```
@@ -100,8 +111,9 @@ MyGame/
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.*" />
-    <PackageReference Include="DrawnUi.Blazor.Game" Version="*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
+    <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.6.22" />
   </ItemGroup>
 
   <ItemGroup>
@@ -208,7 +220,7 @@ src/
 <!-- In MyGame.Mobile.csproj -->
 <Import Project="../Shared/MyGame.Shared.projitems" Label="Shared" />
 <ItemGroup>
-  <PackageReference Include="DrawnUi.Maui.Game" Version="*" />
+  <PackageReference Include="DrawnUi.Maui.Game" Version="1.10.6.22" />
 </ItemGroup>
 ```
 
@@ -219,7 +231,7 @@ src/
 <!-- ... -->
 <Import Project="../../Shared/MyGame.Shared.projitems" Label="Shared" />
 <ItemGroup>
-  <PackageReference Include="DrawnUi.Blazor.Game" Version="*" />
+  <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.6.22" />
 </ItemGroup>
 ```
 
@@ -277,10 +289,10 @@ public class MyGame : DrawnUi.Gaming.DrawnGame   // alias: MauiGame = DrawnUi.Ga
 | `StartLoop(int delayMs=0)` | Begin game tick |
 | `StopLoop()` | Stop game tick |
 | `GameLoop(float deltaSeconds)` | Override - called every frame |
-| `Pause()` / `Resume()` | App lifecycle hooks |
+| `Pause()` / `Resume()` | App lifecycle hooks; set `IsPaused`, `Resume()` also resets `LastFrameTimeNanos` |
 | `OnPaused()` / `OnResumed()` | Override for pause/resume logic |
 | `LastFrameTimeNanos` | Protected - last frame timestamp (nanos) |
-| `FrameInterpolatorDisabled` | Static - set `true` on Android to prefer frame-skip |
+| `FrameInterpolatorDisabled` | Static - `true` = raw frame delta (frame-skip), `false` = delta smoothed by `FrameTimeInterpolator`. Default `true` on Android, OpenTK and browser builds (Blazor, pure Web), `false` elsewhere |
 | `OnKeyDown(InputKey)` / `OnKeyUp(InputKey)` | Override - keyboard wired by base |
 | `ProcessGestures(...)` | Override - touch/gesture input |
 | `IgnoreChildrenInvalidations` | Set `true` after init - **critical for perf** |
@@ -316,6 +328,7 @@ public class MyGame : DrawnUi.Gaming.DrawnGame   // alias: MauiGame = DrawnUi.Ga
 
 ```razor
 @page "/my-game"
+@using DrawnUi
 @using DrawnUi.Draw
 @using DrawnUi.Views
 @implements IAsyncDisposable
@@ -325,7 +338,8 @@ public class MyGame : DrawnUi.Gaming.DrawnGame   // alias: MauiGame = DrawnUi.Ga
     AspectWidth="@ViewportWidth"
     AspectHeight="@ViewportHeight"
     BackgroundColor="#020816"
-    IsFullscreen="@_isFullscreen">
+    IsFullscreen="@_isFullscreen"
+    FitVisibleHeight="true">
 
     <AspectLockedCanvas
         @ref="_canvas"
@@ -334,7 +348,8 @@ public class MyGame : DrawnUi.Gaming.DrawnGame   // alias: MauiGame = DrawnUi.Ga
         LogicalHeight="@ViewportHeight"
         HorizontalOptions="LayoutOptions.Fill"
         VerticalOptions="LayoutOptions.Fill"
-        BackgroundColor="#020816"
+        BackgroundColor="@Color.Parse("#020816")"
+        UpdateMode="@UpdateModeType.Constant"
         RenderingMode="@RenderingModeType.Accelerated"
         Gestures="@GesturesMode.Enabled"
         IsFullscreen="@_isFullscreen"
@@ -378,19 +393,22 @@ public class MyGame : DrawnUi.Gaming.DrawnGame   // alias: MauiGame = DrawnUi.Ga
         };
     }
 
-    private async Task OnFullscreenChanged(bool isFullscreen)
+    private Task OnFullscreenChanged(bool isFullscreen)
     {
         _isFullscreen = isFullscreen;
         _canvas?.InvalidateChildren();
+        return Task.CompletedTask;
     }
 
     public async ValueTask DisposeAsync() { /* dispose JS modules */ }
 }
 ```
 
-### Parallax / platformer (rescaling canvas)
+Host (`AspectLockedViewportHost.razor`, HTML space provider) and canvas (`AspectLockedCanvas`, letterboxing in C#) live in `src/Blazor/DrawnUi/Views`; design notes in `AspectLockedCanvas.md` there. `AspectLockedViewportHost.BackgroundColor` is a CSS string, `Canvas.BackgroundColor` is a `Color`. Other heads (MAUI, pure Web, OpenTK, WPF): Pong uses the shared-source `RescalingCanvas` (`Pong.Shared/Views/RescalingCanvas.cs`, a `Canvas` with `LogicalWidth`/`LogicalHeight`) for the same fixed-viewport fit.
 
-Use `ParallaxRescalingCanvas` instead of `AspectLockedCanvas`. Wrap game in a clipping `SkiaLayer`:
+### Parallax / platformer
+
+Same `AspectLockedViewportHost` + `AspectLockedCanvas` as above (the parallax sample uses them too). Wrap the game in a clipping `SkiaLayer`:
 
 ```csharp
 _canvasContent = new SkiaLayer()
@@ -432,8 +450,7 @@ public class MyGame : DrawnUi.Gaming.DrawnGame
         // Build UI tree here (before layout is ready)
         // Do NOT start loop here
 
-        // Android: prefer frame-skip over interpolation for fast games
-        // Game.FrameInterpolatorDisabled = true;  // uncomment for Android
+        // Frame-skip vs interpolation: DrawnGame.FrameInterpolatorDisabled (already true on Android/OpenTK/browser)
 
         // Platform lifecycle
         Super.OnNativeAppResumed += (s, e) => Resume();
@@ -615,12 +632,12 @@ var hit = RaycastCollision.CastRay(
 if (hit.Collided) { /* hit.Target, hit.Face, hit.Distance */ }
 ```
 
-### IWithHitBox interface
+### IWithHitBox interface (sample-level, define it in your game)
 ```csharp
 public interface IWithHitBox
 {
-    SKRect HitBox { get; set; }
-    void UpdateState(long frameTimeNanos, bool force = false);
+    void UpdateState(long time, bool forceRecalculate = false); // recompute HitBox for this frame
+    SKRect HitBox { get; }                                       // precalculated
 }
 ```
 
@@ -630,9 +647,11 @@ public interface IWithHitBox
 var pos = sprite.GetPositionOnCanvasInPoints();
 var hitBox = new SKRect(pos.X, pos.Y, pos.X + sprite.Width, pos.Y + sprite.Height);
 
-// For Left/Top based sprites (Arkanoid):
-var hitBox = sprite.GetHitBox();  // returns SKRect in canvas coords
+// For Left/Top based sprites (Pong `GameExtensions.GetHitBox`, sample helper):
+var hitBox = sprite.GetHitBox();  // Left/Top + Width/Height = field-space (logical game coords)
 ```
+
+Keep collisions in field-space when the game is drawn through a rescaling canvas: canvas-space positions stop matching game coords once the field is scaled or letterboxed.
 
 ---
 
@@ -759,7 +778,7 @@ _tileset.OffsetX = -_worldPosition;
 _foreground.OffsetX = -_worldPosition * 1.25f;
 ```
 
-Each layer must call `Update()` when `OffsetX` changes (no binding - call it directly).
+No binding: the strip's `OffsetX` setter calls `Update()` itself and skips unchanged values (`ParallaxGame.RepeatingStripControl.cs`).
 
 `RepeatingStripControl` extends `SkiaImage`, overrides `DrawSource`, tiles image using GPU texture + offscreen repeat-band cache. Use `UseCache = SkiaCacheType.None` on scrolling layers.
 
@@ -874,12 +893,7 @@ void UpdateScore()
 
 ## Android-specific
 
-```csharp
-// In game constructor or MAUI host:
-#if ANDROID
-    Game.FrameInterpolatorDisabled = true;  // prefer skip over interpolation
-#endif
-```
+Frame-skip is already the default on Android (`DrawnGame.FrameInterpolatorDisabled` is `true` under `ANDROID`, also `OPENTK` and `BROWSER`). Set it only to opt into interpolation (`false`), or to force frame-skip on iOS/Windows/WPF (`true`).
 
 ---
 
@@ -922,15 +936,15 @@ Do this in GameLoop, NOT in the sprite itself.
 ### Ball angle formula for paddle bounce (clean Pong formula)
 Standard Pong bounce - center hit = straight, edge hit = angled:
 ```csharp
-const float MAX_DEV = MathF.PI * 0.20f; // ±36° from vertical, min 54° from horizontal
+const float MAX_DEV = MathF.PI * 0.27f; // about ±49° from vertical
 
 // Bottom paddle (player) - ball goes UP (sin < 0):
 var hitPos = (ballHit.MidX - paddleHit.Left) / paddleHit.Width; // 0..1
-Ball.Angle = ClampAngleFromHorizontal(-MathF.PI / 2f + (hitPos - 0.5f) * MAX_DEV * 2f);
+Ball.Angle = BallSprite.ClampAngleFromHorizontal(-MathF.PI / 2f + (hitPos - 0.5f) * MAX_DEV * 2f);
 if (MathF.Sin(Ball.Angle) > 0) Ball.Angle = -Ball.Angle; // ensure upward
 
 // Top paddle (AI) - ball goes DOWN (sin > 0):
-Ball.Angle = ClampAngleFromHorizontal(MathF.PI / 2f + (hitPos - 0.5f) * MAX_DEV * 2f);
+Ball.Angle = BallSprite.ClampAngleFromHorizontal(MathF.PI / 2f + (hitPos - 0.5f) * MAX_DEV * 2f);
 if (MathF.Sin(Ball.Angle) < 0) Ball.Angle = -Ball.Angle; // ensure downward
 ```
 
@@ -962,28 +976,20 @@ if (_aiServes)
     Ball.Left = AiPaddle.Left + (PADDLE_WIDTH - 14) / 2.0; // ball follows
 
     _autoServeTimer -= deltaSeconds;
-    if (_autoServeTimer <= 0) Serve();
+    if (_autoServeTimer <= 0) Serve(triggeredByAi: true); // a tap cannot serve while _aiServes
 }
 ```
 
-### AI pre-positioning during player's serve
-AI should track ball X while player has it (ball is at player paddle):
-```csharp
-// In WaitingToStart, !_aiServes block:
-var targetLeft = (float)(Ball.Left - (PADDLE_WIDTH - 14) / 2.0);
-targetLeft = MathF.Max(0, MathF.Min(targetLeft, WIDTH - PADDLE_WIDTH));
-var dist = targetLeft - (float)AiPaddle.Left;
-if (MathF.Abs(dist) > PADDLE_WIDTH * 0.1f)
-    MovePaddle(AiPaddle, dist > 0 ? 1f : -1f, deltaSeconds);
-```
+### AI while the player holds the serve
+In `WaitingToStart` with `!_aiServes`, the AI paddle stays put until the player has moved (`_playerHasMoved`), then wanders at 30% speed (`MovePaddle(AiPaddle, _aiWanderDir * 0.3f, deltaSeconds)`, new random direction every 0.5–1.2 s, bounced off the walls).
 
 ### AI reaction time tuning (Medium difficulty)
-Reaction time 0.25–0.7s is too slow - AI misses trivial balls right after serve. Working Medium params:
+Reaction time 0.25–0.7s is too slow - AI misses trivial balls right after serve. Medium params in `PongAI`:
 ```csharp
-_reactionTimeMin = 0.05f; _reactionTimeMax = 0.2f;
-_accuracy = 0.88f; _mistakeProbability = 0.08f;
-_mistakeDurationMin = 0.25f; _mistakeDurationMax = 0.55f;
-_movementSmoothingTime = 0.1f;
+_reactionTimeMin = 0.06f; _reactionTimeMax = 0.22f;
+_accuracy = 0.84f; _mistakeProbability = 0.10f;
+_mistakeDurationMin = 0.25f; _mistakeDurationMax = 0.5f;
+_decisionChangeInterval = 1.8f; _movementSmoothingTime = 0.10f;
 ```
 
 ### AI wall-bounce prediction
@@ -1062,7 +1068,7 @@ Audio (OpenAL/libopenal1) works automatically via WSLg PulseAudio — no extra c
 | `EGL: Failed to create context: Arguments are inconsistent` | Bundled libglfw uses EGL; Mesa EGL can't create desktop GL Core context | Replace libglfw.so.3 with system GLX build |
 | `GLX: Failed to create context: GLXBadFBConfig` | GL 4.6 not available on Mesa D3D12 | Use GL 3.3 on Linux |
 | `D3D12: Removing Device` + segfault | WSLg fullscreen→windowed mode switch resets D3D12 device | Set `WindowState = WindowState.Normal` |
-| 400+ FPS in Constant mode | Mesa/WSLg ignores VSync swap interval | `DrawnUiWindow` auto-caps via `UpdateFrequency` on Linux; custom `GameWindow` must set it manually |
+| 400+ FPS in Constant mode | Mesa/WSLg ignores VSync swap interval | `DrawnUiWindow` detects it (first 60 frames) and paces frames on the refresh grid itself (`FramePacing`); a custom `GameWindow` must cap frames itself |
 
 ---
 
@@ -1087,10 +1093,11 @@ Audio preloading batches (Breakout pattern — `BreakoutGame.StartupAssets.cs`):
 
 Validation: Network tab filtered to `fonts/` — boot fetches only subsets, full fonts after app start; visual check hanzi + hangul (fallback trap above); loading progress moves; measure payload before/after (real case: 61 MB → 1.2 MB for en).
 
-## References (DrawnUI repo, https://github.com/taublast/DrawnUi)
+## References (DrawnUI repo, https://github.com/DrawnUi/DrawnUi.Net)
 
 - `src/SharedGame/DrawnGame.cs` - base class (+ `Game.Input.cs`, `IGame.cs`)
 - `src/Blazor/Samples/BlazorSandbox/Games/SpaceShooter/` - full shooter example (pooling, deferred add/remove)
 - `src/Blazor/Samples/BlazorSandbox/Games/Parallax/` - parallax/platformer (strip controls, tileset, input)
-- `src/Shared/Samples/Pong.Shared/Game/` - Pong: `PongGame.cs`, `PongGame.Loop.cs` (loop + AI integration), `Ai/PongAI.cs`
-- https://github.com/taublast/DrawnUi.Breakout - MAUI+Blazor shared game (Arkanoid pattern: shproj/projitems, IAudioService per head, raycast collision)
+- `src/Shared/Samples/Pong.Shared/` - Pong: `Game/PongGame.cs`, `Game/PongGame.Loop.cs` (loop + AI integration), `Game/Ai/PongAI.cs`, `Views/RescalingCanvas.cs`; heads listed in the table at the top
+- `src/Maui/Samples/GameTemplate/` - MAUI game starter (pooled sprites, `IReusableSprite`, `IWithHitBox`)
+- https://github.com/DrawnUi/DrawnUi.Net.Breakout - MAUI+Blazor shared game (Arkanoid pattern: shproj/projitems, IAudioService per head, raycast collision)

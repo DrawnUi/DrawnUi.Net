@@ -35,7 +35,7 @@ public partial class SkiaRichLabel : SkiaLabel
 
                 if (!string.IsNullOrEmpty(TextInternal))
                 {
-                    var markdownDocument = CommonMarkConverter.Parse(TextInternal);
+                    var markdownDocument = CommonMarkConverter.Parse(TextInternal, MarkdownSettings);
 
                     Spans.Clear();
 
@@ -67,6 +67,18 @@ public partial class SkiaRichLabel : SkiaLabel
             {
             }
         }
+    }
+
+    /// <summary>
+    /// CommonMark parser settings: the defaults plus ~~strikethrough~~.
+    /// </summary>
+    static readonly CommonMarkSettings MarkdownSettings = CreateMarkdownSettings();
+
+    static CommonMarkSettings CreateMarkdownSettings()
+    {
+        var settings = CommonMarkSettings.Default.Clone();
+        settings.AdditionalFeatures |= CommonMarkAdditionalFeatures.StrikethroughTilde;
+        return settings;
     }
 
     /// <summary>

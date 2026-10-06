@@ -90,11 +90,30 @@ public class SkiaGif : AnimatedFramesRenderer
     {
         if (Animation != null)
         {
-            var frame = Animation.GetFrameNumber(time);
-            Animation.SeekFrame(frame);
-            Display.SetBitmapInternal(Animation.Frame, true);
+            ShowFrame(Animation.GetFrameNumber(time));
         }
         base.OnAnimatorSeeking(time);
+    }
+
+    /// <summary>
+    /// Shows a frame by index, negative = last frame
+    /// </summary>
+    protected void ShowFrame(int frame)
+    {
+        Animation.SeekFrame(frame);
+        Display.SetBitmapInternal(Animation.Frame, true);
+    }
+
+    /// <summary>
+    /// Shows DefaultFrame (a frame index, -1 = last) when not playing
+    /// </summary>
+    protected override void ApplyDefaultFrame()
+    {
+        if (!IsPlaying && Animation != null)
+        {
+            ShowFrame(DefaultFrame);
+            Update();
+        }
     }
 
     protected override void OnAnimatorInitializing()
@@ -115,12 +134,7 @@ public class SkiaGif : AnimatedFramesRenderer
         if (Animation == null)
             return;
 
-        var speed = 1.0;
-        if (SpeedRatio < 1)
-            speed = Animation.DurationMs * (1 + SpeedRatio);
-        else
-            speed = Animation.DurationMs / SpeedRatio;
-        Animator.Speed = speed;
+        Animator.Speed = GetPlaybackDurationMs(Animation.DurationMs);
     }
 
     public GifAnimation _animation;
@@ -161,7 +175,7 @@ public class SkiaGif : AnimatedFramesRenderer
 
             InitializeAnimator();
 
-            OnAnimatorSeeking(DefaultFrame);
+            ShowFrame(DefaultFrame);
 
             if (wasPlaying && !IsPlaying)
                 Start();

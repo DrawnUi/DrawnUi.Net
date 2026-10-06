@@ -10,6 +10,9 @@ A: DrawnUI is an umbrella for multiple .NET targets. It doesn't tend to replace 
 - `DrawnUi.Maui` for .NET MAUI
 - `DrawnUi.Blazor.Wasm` for browser-side Blazor rendering
 - `DrawnUi.Blazor.Server` for server-backed Blazor rendering
+- `DrawnUi.Web` for pure WebAssembly apps without Blazor
+- `DrawnUi.Wpf` for WPF apps
+- `DrawnUi.OpenTk` for OpenTK desktop windows on Windows and Linux
 - `DrawnUi.Net` for console/server and headless .NET scenarios
 
 If you are choosing a host first, start with [Platforms and Packages](platforms.md).
@@ -20,19 +23,22 @@ A: Choose by host:
 - install `DrawnUi.Maui` for native MAUI apps
 - install `DrawnUi.Blazor.Wasm` when DrawnUI should render locally in the browser
 - install `DrawnUi.Blazor.Server` for Blazor Server and `InteractiveServer`
+- install `DrawnUi.Web` for a standalone WebAssembly app without Blazor
+- install `DrawnUi.Wpf` for WPF apps
+- install `DrawnUi.OpenTk` for OpenTK desktop apps and games
 - install `DrawnUi.Net` for platform-agnostic, headless, or harness-style .NET usage
 
 See also [Platforms and Packages](platforms.md), [Blazor FAQ](blazor/faq.md), and [DrawnUi.Net](net/index.md).
 
 **Q: Why choose drawn over native UI?**  
 A: Rather a freedom choice to draw what you want and how you see it.  
-It also can bemore performant to draw a complex UI on just one canvas instead of composing it with many native views.
+It also can be more performant to draw a complex UI on just one canvas instead of composing it with many native views.
 
 **Q: Do I need to know how to draw on a canvas??**  
 A: No, you can start by using prebuilt drawn controls and customize them. All controls are initially designed to be subclassed, customized, and almost every method is virtual. 
 
 **Q: Can I still use XAML?**  
-A: Yes, in the **MAUI** host. DrawnUI on MAUI supports both XAML and code-behind. In **Blazor**, the host surface is Razor with a `Canvas` component instead of XAML. In `DrawnUi.Net`, there is no XAML host at all.
+A: Yes, in the **MAUI** and **WPF** hosts. DrawnUI on MAUI supports both XAML and code-behind; on WPF, drawn controls are declared in WPF XAML. In **Blazor**, the host surface is Razor with a `Canvas` component instead of XAML. In `DrawnUi.Net`, there is no XAML host at all.
 
 **Q: Can I avoid using XAML at all costs?**  
 A: Yes. You can build DrawnUI entirely in C#.
@@ -51,7 +57,7 @@ A: Yes, on the **MAUI** host. Use `SkiaMauiElement` to embed native MAUI control
 A: Yes. Use `DrawnUi.Blazor.Wasm` when the DrawnUI surface should stay local in the browser, and `DrawnUi.Blazor.Server` when the surface should be server-owned. See [Blazor FAQ](blazor/faq.md).
 
 **Q: Can I use DrawnUI without MAUI or Blazor?**  
-A: Yes. Use `DrawnUi.Net` for platform-agnostic .NET scenarios such as headless rendering, image/PDF generation, control harnesses, and shared-layout debugging. See [DrawnUi.Net](net/index.md).
+A: Yes. Use `DrawnUi.Wpf`, `DrawnUi.OpenTk` or `DrawnUi.Web` for apps with a window or a browser page, and `DrawnUi.Net` for platform-agnostic .NET scenarios such as headless rendering, image/PDF generation, control harnesses, and shared-layout debugging. See [DrawnUi.Net](net/index.md).
 
 **Q: Possible to create a game with DrawnUI?**  
 A: Well, since you draw, why not just draw a game instead of a business app. DrawnUI comes with gaming helpers and custom accelerated platform views to assure a smooth display-synched rendering.
@@ -60,7 +66,7 @@ A: Well, since you draw, why not just draw a game instead of a business app. Dra
 A: Initially this library was created to allow one to create custom drawn controls with ease, and it is a toolbox for crafters. Please consider making a  PR with your drawn control or open a discussion about a drawn control to be included along with DrawnUI.
 
 
-## Thechnical Questions
+## Technical Questions
 
 **Q: How do I create custom controls with DrawnUI?**  
 A: Subclass `SkiaControl` for custom, `SkiaLayout` for container etc, . Override the `Paint` method to draw with SkiaSharp on the canvas provided inside drawing context.
@@ -74,8 +80,8 @@ A: Sorry, no, drawn resources lives inside `Resources/Raw` and subfolders. Note 
 **Q: How do I change SkiaSvg source not from file/url?**  
 A: set `SvgString` property to svg text string.
 
-**Q: Why my scroll is resetting at all time while Iproperly use ObservableCollection for LoadMore?**  
-A: Check that your custom ObservableRangeCollection is sending Reset event when adding range of items.
+**Q: Why my scroll is resetting at all time while I properly use ObservableCollection for LoadMore?**  
+A: Check that your custom ObservableRangeCollection sends one `Add` event when adding a range of items, not `Reset`. A `Reset` rebuilds the list and scrolls it back to the start.
 
 **Q: How do I change SkiaImage source not from file/url?**  
 A: set directly: `mySkiaImage.SetImageInternal(skiaImage)`.
@@ -136,8 +142,7 @@ A: Might be Apple Metal specifics, cap FPS:
    * `UseCache = SkiaCacheType.ImageComposite` for complex layouts where a region changes while others remain static, like a stack with different user-handled controls.
    * `UseCache = SkiaCacheType.ImageDoubleBuffered` for equally sized recycled cells. Will show old cache while preparing new one in background.
    * `UseCache = SkiaCacheType.GPU` for small static overlays like headers, navbars.
-   * **PROHIBITED:** Never use `Operations` or `GPU` cache for controls with GPU-surface shaders — use `Image`, `ImageDoubleBuffered`, or `ImageComposite` instead.
-   * **PROHIBITED:** Never nest children that use GPU-backed cache types (`GPU`, `ImageCompositeGPU`) inside a parent cached with `Operations`.
+   * A control with a shader effect reading `iImage1` needs an image-backed cache — `Image`, `ImageDoubleBuffered`, `GPU` or `ImageComposite`. `Operations` stores a picture and no image, so the effect gets no texture of the control (`SkiaControl.Shared.cs:417`, `CachedObject.cs:209-215`).
 2. Check that you do not have some logging running for every rendering frame.
 
 **Q: Why isn't my UI updating when ViewModel properties change:**  
@@ -155,6 +160,6 @@ A: Might be Apple Metal specifics, cap FPS:
 * Please start with [Platforms and Packages](platforms.md) to pick the correct host and sample lane.
 * For MAUI-oriented walkthroughs, check out [MAUI Tutorials and Host Notes](maui/tutorials.md).
 * For browser-hosted questions, check out [Blazor FAQ](blazor/faq.md).
-* [Ask in GitHub Discussions](https://github.com/DrawnUi/DrawnUi.Net/discussions)** - The community is here to help!
+* [Ask in GitHub Discussions](https://github.com/DrawnUi/DrawnUi.Net/discussions) - The community is here to help!
 
 

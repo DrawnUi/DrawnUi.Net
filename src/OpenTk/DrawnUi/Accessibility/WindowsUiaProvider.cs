@@ -130,7 +130,8 @@ internal sealed class WindowRootProvider
 [SupportedOSPlatform("windows")]
 [ComVisible(true)]
 internal sealed class VirtualElementProvider
-    : IRawElementProviderSimple, IRawElementProviderFragment, IInvokeProvider
+    : IRawElementProviderSimple, IRawElementProviderFragment, IInvokeProvider,
+      IUiaToggleProvider, IUiaRangeValueProvider, IUiaValueProvider, IUiaScrollItemProvider
 {
     private readonly AccessibilityNode _node;
     private readonly int _index;
@@ -159,8 +160,44 @@ internal sealed class VirtualElementProvider
     public object? GetPatternProvider(int patternId) => patternId switch
     {
         UiaPatternId.Invoke when _node.CanInteract => this,
+        UiaPatternId.Toggle when _node.CanInteract && (_node.Source?.AccessibilityIsPressed ?? _node.IsPressed).HasValue => this,
+        UiaPatternId.RangeValue when _node.Value.HasValue => this, // also a read-only progress bar
+        UiaPatternId.Value when !string.IsNullOrEmpty(_node.Value?.Text) => this,
+        UiaPatternId.ScrollItem => this,
         _ => null
     };
+
+    // Toggle: a switch / checkbox's state, pressing it activates the node as Invoke does
+    void IUiaToggleProvider.Toggle() => Invoke();
+    int IUiaToggleProvider.ToggleState => (_node.Source?.AccessibilityIsPressed ?? _node.IsPressed) switch { true => 1, false => 0, _ => 2 };
+
+    // RangeValue: a slider / progress bar's value; read only for a progress bar and a slider that takes no input
+    private AccessibilityValue RangeValue => _node.Source?.GetAccessibilityValue() ?? _node.Value ?? default;
+    double IUiaRangeValueProvider.Value => RangeValue.Now;
+    bool IUiaRangeValueProvider.IsReadOnly => RangeValue.Step <= 0 || !_node.CanInteract;
+    double IUiaRangeValueProvider.Maximum => RangeValue.Max;
+    double IUiaRangeValueProvider.Minimum => RangeValue.Min;
+    double IUiaRangeValueProvider.LargeChange => Math.Max(RangeValue.Step, (RangeValue.Max - RangeValue.Min) / 10);
+    double IUiaRangeValueProvider.SmallChange => RangeValue.Step;
+    void IUiaRangeValueProvider.SetValue(double val)
+    {
+        var source = _node.Source;
+        if (source != null)
+            MainThread.BeginInvokeOnMainThread(() => SkiaAccessibilityManager.SetValue(source, val));
+    }
+
+    // Value: the spoken text where the number alone is not it ("65%", "20 – 80")
+    string IUiaValueProvider.Value => RangeValue.Text ?? string.Empty;
+    bool IUiaValueProvider.IsReadOnly => true;
+    void IUiaValueProvider.SetValue(string val) { }
+
+    // ScrollItem: the scrolls above the node bring it into view, as keyboard focus does
+    void IUiaScrollItemProvider.ScrollIntoView()
+    {
+        var source = _node.Source;
+        if (source != null)
+            MainThread.BeginInvokeOnMainThread(() => SkiaAccessibilityManager.ScrollIntoView(source));
+    }
 
     public void Invoke()
     {
@@ -171,7 +208,8 @@ internal sealed class VirtualElementProvider
 
     public object? GetPropertyValue(int propertyId) => propertyId switch
     {
-        UiaPropertyId.Name                 => _node.Label,
+        UiaPropertyId.Name                 => _node.NamedByChild ? null : _node.Label, // a title text inside says it
+        UiaPropertyId.Orientation          => _node.Value is { } value ? (value.Vertical ? 2 : 1) : 0,
         UiaPropertyId.HelpText             => _node.Hint,
         UiaPropertyId.ControlType          => AriaToControlType(_node.Role),
         UiaPropertyId.LocalizedControlType => _node.Role ?? "custom",
@@ -310,6 +348,32 @@ internal sealed class WindowsUiaProvider : IDisposable
         _manager = manager;
         _root    = new WindowRootProvider(hwnd, manager, getScale);
         _manager.Changed += OnSnapshotChanged;
+        _manager.ReaderRefocusRequested += OnReaderRefocus;
+        _manager.RebuildSkipped += OnRebuildSkipped;
+        _getScale = getScale;
+    }
+
+    private readonly Func<float> _getScale;
+    private System.Threading.Timer? _refresh;
+
+    // a page that just opened may draw no more frames once its slide ends (Dynamic mode stops rendering at rest): rebuild
+    // the skipped snapshot once the rate limit allows, so a screen reader never keeps the previous page's nodes
+    private void OnRebuildSkipped(long remainingMs)
+    {
+        var due = Math.Max(1, remainingMs) + 16;
+        if (_refresh == null)
+            _refresh = new System.Threading.Timer(_ => _manager.RefreshIfStale(Math.Max(_getScale(), 1f)), null, due, System.Threading.Timeout.Infinite);
+        else
+            _refresh.Change(due, System.Threading.Timeout.Infinite);
+    }
+
+    // the screen reader follows UI Automation focus: when a rebuild drops the node in focus (its page closed), focus
+    // moves to the first node that says something instead of staying on an empty spot
+    private void OnReaderRefocus(AccessibilityNode next)
+    {
+        var source = next.Source;
+        if (source != null)
+            MainThread.BeginInvokeOnMainThread(() => _manager.NotifyFocused(source));
     }
 
     internal nint HandleMessage(uint msg, nint wParam, nint lParam)
@@ -335,6 +399,7 @@ internal sealed class WindowsUiaProvider : IDisposable
 
     internal void NotifyFocusChanged(ISkiaAccessibilityNode? focused)
     {
+        _manager.NotifyReaderFocused(focused);
         if (focused == null) return;
         if (focused is SkiaControl focusedControl)
             SkiaScroll.EnsureVisible(focusedControl);
@@ -347,6 +412,10 @@ internal sealed class WindowsUiaProvider : IDisposable
     public void Dispose()
     {
         _manager.Changed -= OnSnapshotChanged;
+        _manager.ReaderRefocusRequested -= OnReaderRefocus;
+        _manager.RebuildSkipped -= OnRebuildSkipped;
+        _refresh?.Dispose();
+        _refresh = null;
     }
 
     [DllImport("UIAutomationCore.dll", SetLastError = false)]

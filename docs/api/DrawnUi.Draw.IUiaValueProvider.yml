@@ -1,0 +1,313 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.IUiaValueProvider
+  commentId: T:DrawnUi.Draw.IUiaValueProvider
+  id: IUiaValueProvider
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.IUiaValueProvider.IsReadOnly
+  - DrawnUi.Draw.IUiaValueProvider.SetValue(System.String)
+  - DrawnUi.Draw.IUiaValueProvider.Value
+  langs:
+  - csharp
+  - vb
+  name: IUiaValueProvider
+  nameWithType: IUiaValueProvider
+  fullName: DrawnUi.Draw.IUiaValueProvider
+  type: Interface
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IUiaValueProvider
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 105
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: >-
+      [ComVisible(true)]
+
+      [Guid("c7935180-6fb3-4201-b174-7df73adbf64a")]
+
+      [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+
+      public interface IUiaValueProvider
+    content.vb: >-
+      <ComVisible(True)>
+
+      <Guid("c7935180-6fb3-4201-b174-7df73adbf64a")>
+
+      <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
+
+      Public Interface IUiaValueProvider
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  attributes:
+  - type: System.Runtime.InteropServices.ComVisibleAttribute
+    ctor: System.Runtime.InteropServices.ComVisibleAttribute.#ctor(System.Boolean)
+    arguments:
+    - type: System.Boolean
+      value: true
+  - type: System.Runtime.InteropServices.GuidAttribute
+    ctor: System.Runtime.InteropServices.GuidAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: c7935180-6fb3-4201-b174-7df73adbf64a
+  - type: System.Runtime.InteropServices.InterfaceTypeAttribute
+    ctor: System.Runtime.InteropServices.InterfaceTypeAttribute.#ctor(System.Runtime.InteropServices.ComInterfaceType)
+    arguments:
+    - type: System.Runtime.InteropServices.ComInterfaceType
+      value: 1
+- uid: DrawnUi.Draw.IUiaValueProvider.SetValue(System.String)
+  commentId: M:DrawnUi.Draw.IUiaValueProvider.SetValue(System.String)
+  id: SetValue(System.String)
+  parent: DrawnUi.Draw.IUiaValueProvider
+  langs:
+  - csharp
+  - vb
+  name: SetValue(string)
+  nameWithType: IUiaValueProvider.SetValue(string)
+  fullName: DrawnUi.Draw.IUiaValueProvider.SetValue(string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SetValue
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 110
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: void SetValue(string val)
+    parameters:
+    - id: val
+      type: System.String
+    content.vb: Sub SetValue(val As String)
+  overload: DrawnUi.Draw.IUiaValueProvider.SetValue*
+  nameWithType.vb: IUiaValueProvider.SetValue(String)
+  fullName.vb: DrawnUi.Draw.IUiaValueProvider.SetValue(String)
+  name.vb: SetValue(String)
+- uid: DrawnUi.Draw.IUiaValueProvider.Value
+  commentId: P:DrawnUi.Draw.IUiaValueProvider.Value
+  id: Value
+  parent: DrawnUi.Draw.IUiaValueProvider
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: IUiaValueProvider.Value
+  fullName: DrawnUi.Draw.IUiaValueProvider.Value
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Value
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 111
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: string Value { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property Value As String
+  overload: DrawnUi.Draw.IUiaValueProvider.Value*
+- uid: DrawnUi.Draw.IUiaValueProvider.IsReadOnly
+  commentId: P:DrawnUi.Draw.IUiaValueProvider.IsReadOnly
+  id: IsReadOnly
+  parent: DrawnUi.Draw.IUiaValueProvider
+  langs:
+  - csharp
+  - vb
+  name: IsReadOnly
+  nameWithType: IUiaValueProvider.IsReadOnly
+  fullName: DrawnUi.Draw.IUiaValueProvider.IsReadOnly
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsReadOnly
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 112
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: bool IsReadOnly { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property IsReadOnly As Boolean
+  overload: DrawnUi.Draw.IUiaValueProvider.IsReadOnly*
+references:
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.IUiaValueProvider.SetValue*
+  commentId: Overload:DrawnUi.Draw.IUiaValueProvider.SetValue
+  href: DrawnUi.Draw.IUiaValueProvider.html#DrawnUi_Draw_IUiaValueProvider_SetValue_System_String_
+  name: SetValue
+  nameWithType: IUiaValueProvider.SetValue
+  fullName: DrawnUi.Draw.IUiaValueProvider.SetValue
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Draw.IUiaValueProvider.Value*
+  commentId: Overload:DrawnUi.Draw.IUiaValueProvider.Value
+  href: DrawnUi.Draw.IUiaValueProvider.html#DrawnUi_Draw_IUiaValueProvider_Value
+  name: Value
+  nameWithType: IUiaValueProvider.Value
+  fullName: DrawnUi.Draw.IUiaValueProvider.Value
+- uid: DrawnUi.Draw.IUiaValueProvider.IsReadOnly*
+  commentId: Overload:DrawnUi.Draw.IUiaValueProvider.IsReadOnly
+  href: DrawnUi.Draw.IUiaValueProvider.html#DrawnUi_Draw_IUiaValueProvider_IsReadOnly
+  name: IsReadOnly
+  nameWithType: IUiaValueProvider.IsReadOnly
+  fullName: DrawnUi.Draw.IUiaValueProvider.IsReadOnly
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

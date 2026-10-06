@@ -19,13 +19,13 @@ public class MultiRippleWithTouchEffect : ShaderDoubleTexturesEffect, IStateEffe
     }
 
     /// <summary>True once the host has laid out.</summary>
-    protected bool Initialized { get; set; }
+    protected bool LayoutReady { get; set; }
 
     /// <inheritdoc/>
     public virtual void UpdateState()
     {
-        if (Parent != null && !Initialized && Parent.IsLayoutReady)
-            Initialized = true;
+        if (Parent != null && !LayoutReady && Parent.IsLayoutReady)
+            LayoutReady = true;
     }
 
     /// <inheritdoc/>
@@ -76,7 +76,7 @@ public class MultiRippleWithTouchEffect : ShaderDoubleTexturesEffect, IStateEffe
     /// <inheritdoc/>
     public ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     {
-        if (args.Type != TouchActionResult.Down || !Initialized)
+        if (args.Type != TouchActionResult.Down || !LayoutReady)
             return null;
 
         var ripple = new Ripple { Uid = Guid.NewGuid(), Origin = args.Event.Location, Time = Super.GetCurrentTimeNanos() };

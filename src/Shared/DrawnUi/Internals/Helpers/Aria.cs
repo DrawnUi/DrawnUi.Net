@@ -133,6 +133,18 @@ namespace DrawnUi.Models
             or "slider" or "spinbutton" or "textbox" or "searchbox" or "combobox" or "listbox" or "option" or "tab"
             or "menuitem" or "menuitemcheckbox" or "menuitemradio" or "scrollbar";
 
+        /// <summary>
+        /// The ARIA attribute that carries a node's pressed state (<c>AccessibilityIsPressed</c>) for its role: aria-checked
+        /// for check boxes, switches and radios, aria-selected for options and tabs, aria-pressed for the rest (a toggle
+        /// button). Browsers read a switch's state only from aria-checked: with aria-pressed it reads as off.
+        /// </summary>
+        public static string PressedStateAttribute(string? role) => role switch
+        {
+            "checkbox" or "switch" or "radio" or "menuitemcheckbox" or "menuitemradio" => "aria-checked",
+            "option" or "tab" => "aria-selected",
+            _ => "aria-pressed",
+        };
+
         /// <summary>A grid of items navigated in two dimensions (rows and columns of cells).</summary>
         public static readonly string RoleGrid = "grid";
 

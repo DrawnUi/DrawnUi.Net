@@ -142,7 +142,15 @@
                          role="@node.Role"
                          aria-label="@node.Label"
                          title="@node.Hint"
-                         aria-pressed="@(node.IsPressed?.ToString().ToLower())"
+                         aria-checked="@PressedState(node, "aria-checked")"
+                         aria-selected="@PressedState(node, "aria-selected")"
+                         aria-pressed="@PressedState(node, "aria-pressed")"
+                         aria-live="@node.Live"
+                         aria-valuenow="@ValueNow(node)"
+                         aria-valuemin="@ValueMin(node)"
+                         aria-valuemax="@ValueMax(node)"
+                         aria-valuetext="@node.Value?.Text"
+                         aria-orientation="@ValueOrientation(node)"
                          tabindex="@(AccessibilityManager.IsTabStop(node.Source) ? 0 : -1)"
                          class="xaml-a11y-element xaml-a11y-interactive"
                          style="@A11yNodeStyle(node)"
@@ -155,10 +163,24 @@
                 }
                 else
                 {
+                    @* tabindex -1: not a Tab stop, but the reader can be moved here when its node left (refocus);
+                       a control role that takes no input reads as unavailable (aria-disabled, drawnui-cross 6c rule 2) *@
                     <div @key="node.Id"
+                         @ref="_a11yElements[node.Id]"
                          role="@node.Role"
                          aria-label="@node.Label"
                          title="@node.Hint"
+                         aria-disabled="@(DrawnUi.Models.Aria.IsInteractiveRole(node.Role) ? "true" : null)"
+                         aria-checked="@PressedState(node, "aria-checked")"
+                         aria-selected="@PressedState(node, "aria-selected")"
+                         aria-pressed="@PressedState(node, "aria-pressed")"
+                         aria-live="@node.Live"
+                         aria-valuenow="@ValueNow(node)"
+                         aria-valuemin="@ValueMin(node)"
+                         aria-valuemax="@ValueMax(node)"
+                         aria-valuetext="@node.Value?.Text"
+                         aria-orientation="@ValueOrientation(node)"
+                         tabindex="-1"
                          class="xaml-a11y-element"
                          style="@A11yNodeStyle(node)">
                         @node.Label
@@ -282,6 +304,7 @@
             _reportedAutoCanvasHeight = AutoCanvasHeight;
             AccessibilityManager.Changed += OnA11yChanged;
             AccessibilityManager.KeyboardFocusRequested += OnA11yKeyboardFocusRequested;
+            AccessibilityManager.ReaderRefocusRequested += OnA11yReaderRefocus;
         }
 
         if (_pendingA11yFocusId is { } focusId && _a11yElements.TryGetValue(focusId, out var element))
@@ -392,6 +415,17 @@
             return;
 
         await InvokeAsync(StateHasChanged);
+    }
+
+    /// <summary>
+    /// Called by drawnui-canvas-resize.js once the browser gave back a lost WebGL context: the GPU view
+    /// drops its lost Skia context, and the next frame draws everything on a new one.
+    /// </summary>
+    [JSInvokable]
+    public void OnWebGLContextRestored()
+    {
+        (CanvasView as SkiaViewAccelerated)?.ResetGLContext();
+        Update();
     }
 
     [JSInvokable]
@@ -1015,6 +1049,7 @@
 
         AccessibilityManager.Changed -= OnA11yChanged;
         AccessibilityManager.KeyboardFocusRequested -= OnA11yKeyboardFocusRequested;
+        AccessibilityManager.ReaderRefocusRequested -= OnA11yReaderRefocus;
 
         OnDisposing();
     }
@@ -1042,16 +1077,39 @@
         _ = InvokeAsync(StateHasChanged);
     }
 
+    // the element a screen reader is on (DOM focus) left with its page: focus the first node that says something, so the
+    // reader's cursor does not stay on an empty spot (raised after the rebuild, before the overlay drops the element)
+    private void OnA11yReaderRefocus(AccessibilityNode next)
+    {
+        _pendingA11yFocusId = next.Id;
+        _accessibilityNodes = AccessibilityManager.Snapshot;
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    // a range control's value for aria-value*: invariant numbers, none for other nodes
+    private static string? ValueNow(AccessibilityNode node) => node.Value?.Now.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    private static string? ValueMin(AccessibilityNode node) => node.Value?.Min.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    private static string? ValueMax(AccessibilityNode node) => node.Value?.Max.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    private static string? ValueOrientation(AccessibilityNode node) => node.Value is { } value ? value.Vertical ? "vertical" : "horizontal" : null;
+
+    // a pressed state goes on the attribute its role is read from: aria-checked for a switch, aria-pressed for a button
+    private static string? PressedState(AccessibilityNode node, string attribute) =>
+        node.IsPressed is { } pressed && DrawnUi.Models.Aria.PressedStateAttribute(node.Role) == attribute ? pressed ? "true" : "false" : null;
+
     // the focused overlay element is the canvas keyboard focus: scroll bars around it stay visible
     private void OnA11yFocus(AccessibilityNode node)
     {
+        AccessibilityManager.NotifyReaderFocused(node.Source);
         KeyboardFocusNode = node.Source;
         node.Source?.OnAccessibilityFocused(true); // a text field takes the caret, same as the Windows heads
+        SkiaAccessibilityManager.ScrollIntoView(node.Source); // a node off screen comes into view
         _ = InvokeAsync(StateHasChanged); // the Tab stop of its group moves with it (tabindex)
     }
 
     private void OnA11yBlur(AccessibilityNode node)
     {
+        if (ReferenceEquals(AccessibilityManager.ReaderNode, node.Source))
+            AccessibilityManager.NotifyReaderFocused(null); // focus left the canvas: never pull it back later
         node.Source?.OnAccessibilityFocused(false); // Tab left the element: a text field releases the caret
         if (ReferenceEquals(KeyboardFocusNode, node.Source))
             KeyboardFocusNode = null;

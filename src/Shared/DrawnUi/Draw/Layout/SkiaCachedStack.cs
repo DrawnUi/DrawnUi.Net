@@ -25,15 +25,15 @@ public class SkiaCachedStack : SkiaStack
     /// heads this requires <see cref="SkiaLayout.UsePreparedViews"/> (the bake must be a pure cache-blit
     /// pass: no binds, no measures); without it the control silently behaves as single-plane there.
     ///
-    /// DEFAULT FALSE because for an Operations/SKPicture plane the SYNC record is cheap (recording draw ops,
+    /// DEFAULT TRUE (since 2026-07-21). The single plane can still win: for an Operations/SKPicture plane the SYNC record is cheap (recording draw ops,
     /// no raster), so on a capable device the async machinery — FreezeStructure deep-copy under LockMeasure,
     /// worker handoff, plane swap/generation checks, and the render-thread <c>_bakeDone.Wait(16)</c> stall
     /// when a bake is outrun — costs MORE than it saves and fragments pacing (measurably smoother single-plane
     /// on device). It also can publish a plane holding STALE CELL CONTENT: the generation guard versions
     /// structure only, not a cell's own content, so a rapidly self-invalidating cell (a streaming AI bubble
-    /// growing word by word) reverts its text as an old bake lands after a new one. Turn TRUE only where a
-    /// sync record genuinely can't hit frame budget — weak hardware or GPU-surface planes.
-    /// </summary
+    /// growing word by word) reverts its text as an old bake lands after a new one. A subclass sets it FALSE where
+    /// the sync record fits the frame budget or cells change their own content often.
+    /// </summary>
     protected bool UseDoubleBuffering = true;
 
     /// <summary>

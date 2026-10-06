@@ -50,8 +50,9 @@ public class SkiaSwitch : SkiaToggle
         // Height 28 sits between Windows (22) and Cupertino (31).
         SetDefaultContentSize(46, 28);
 
-        if (!IsSet(ColorFrameOnProperty)) ColorFrameOn = DefaultAccentColor;
-        if (!IsSet(ColorFrameOffProperty)) ColorFrameOff = DefaultTrackColor;
+        // style defaults, not plain sets: a plain set counts as the app's own, and a later ControlStyle kept the crimson
+        SetStyleDefault(ColorFrameOnProperty, DefaultAccentColor);
+        SetStyleDefault(ColorFrameOffProperty, DefaultTrackColor);
 
         var shape = new SkiaShape
         {

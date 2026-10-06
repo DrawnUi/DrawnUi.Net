@@ -68,7 +68,7 @@ private void OnSwitchToggled(object sender, bool isToggled)
 | `ColorThumbOff` | Color | The color of the thumb when toggled off |
 | `ControlStyle` | PrebuiltControlStyle | The platform-specific style, can be changed at runtime |
 | `IsAnimated` | bool | Whether state changes are animated |
-| `AnimationSpeed` | uint | Animation duration in milliseconds (default: 200) |
+| `AnimationSpeed` | static uint | Animation duration in milliseconds for every switch, `SkiaSwitch.AnimationSpeed` (default: 200) |
 | `RespondsToGestures` | bool | Default true. False: a tap does not toggle it, only `IsToggled` from code does |
 
 ### Events
@@ -90,8 +90,7 @@ private void OnSwitchToggled(object sender, bool isToggled)
     HeightRequest="24"
     ColorFrameOff="Gray"
     ColorFrameOn="Blue"
-    ColorThumbOff="Transparent"
-    ColorThumbOn="White"
+    ColorCheckOn="White"
     Toggled="OnCheckboxToggled" />
 ```
 
@@ -101,7 +100,7 @@ Like SkiaSwitch, SkiaCheckbox supports platform-specific styling through the `Co
 
 ### Properties
 
-SkiaCheckbox shares most properties with SkiaSwitch, both inheriting from SkiaToggle.
+SkiaCheckbox shares most properties with SkiaSwitch, both inheriting from SkiaToggle. The check mark color is `ColorCheckOn`; the checkbox does not use `ColorThumbOn` / `ColorThumbOff`.
 
 ## SkiaToggle
 

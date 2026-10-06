@@ -172,8 +172,14 @@ public partial class SkiaScroll
     /// </summary>
     /// <param name="value">In point how much to scroll</param>
     /// <param name="position">Reserved</param>
-    void ApplyWheelScroll(float value, SKPoint position)
+    /// <param name="horizontal">The event is along the X axis (a tilting wheel, the sideways part of a two-finger
+    /// touchpad swipe): a vertical scroll leaves it, a horizontal one takes both axes.</param>
+    /// <returns>True when this scroll used the event.</returns>
+    bool ApplyWheelScroll(float value, SKPoint position, bool horizontal)
     {
+        if (horizontal && Orientation == ScrollOrientation.Vertical)
+            return false;
+
         var offsetY = ViewportOffsetY;
         var offsetX = ViewportOffsetX;
 
@@ -198,7 +204,27 @@ public partial class SkiaScroll
 
         var clamped = ClampOffsetHard(offsetX, offsetY);
 
-        ScrollTo(clamped.X, clamped.Y, AutoScrollingSpeedMs, false);
+        // An event under half a notch (a precision touchpad, a free-spinning or high-resolution wheel) moves at
+        // once: easing each of a stream of small events kept the content behind the fingers, and SpringOut
+        // overshot the end of a swipe. Only a notch glides (same rule as the React and Rust engines).
+        var instant = perNotch > 0 && Math.Abs(value) < perNotch / 2;
+
+        // A restarted glide starts at its first frame, drawn at progress 0: events arriving before every frame (a
+        // fast trackpad swipe, a free-spinning wheel) restarted it each time, and the content stood still, then
+        // jumped. Count a restarted glide from the last frame the previous one drew, so the next frame already
+        // shows a frame of progress (same rule as DrawnUi.Rust dfe36fe).
+        var scroller = Orientation == ScrollOrientation.Horizontal ? _scrollerX : _scrollerY;
+        var lastTick = scroller != null && scroller.IsRunning ? scroller.LastFrameTimeNanos : 0;
+
+        ScrollTo(clamped.X, clamped.Y, instant ? 0 : AutoScrollingSpeedMs, false);
+
+        if (!instant && lastTick > 0 && scroller.IsRunning)
+        {
+            scroller.StartFrameTimeNanos = lastTick;
+            scroller.LastFrameTimeNanos = lastTick;
+        }
+
+        return true;
     }
 
     /// <summary>
@@ -371,7 +397,7 @@ public partial class SkiaScroll
         var hadNumberOfTouches = lastNumberOfTouches;
         lastNumberOfTouches = args.Event.NumberOfTouches;
 
-        if (args.Type == TouchActionResult.Wheel && !ZoomLocked)
+        if (args.Type == TouchActionResult.Wheel && !ZoomLocked && args.Event.Wheel?.IsHorizontal != true)
         {
             IsUserFocused = true;
             //Debug.WriteLine($"Wheel: {args.Event.Wheel.Scale}");
@@ -703,8 +729,10 @@ public partial class SkiaScroll
                     var position = new SKPoint((point.X - DrawingRect.Left) / RenderingScale,
                         (point.Y - DrawingRect.Top) / RenderingScale);
 
-                    ApplyWheelScroll(args.Event.Wheel.Delta, position);
-                    consumed = this;
+                    if (ApplyWheelScroll(args.Event.Wheel.Delta, position, args.Event.Wheel.IsHorizontal))
+                    {
+                        consumed = this;
+                    }
                     break;
             }
         }

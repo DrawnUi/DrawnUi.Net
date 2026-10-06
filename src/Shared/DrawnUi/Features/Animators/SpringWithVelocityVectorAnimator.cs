@@ -7,7 +7,8 @@ public class SpringWithVelocityVectorAnimator : SkiaVectorAnimator
 
     Vector2 Origin { get; set; }
 
-    public void Initialize(Vector2 restOffset, Vector2 position, Vector2 velocity, Spring spring, float thresholdStop = 0.5f)
+    // in: see SkiaControl.ContractPixelsRect, a Spring here starts past the FP argument registers on arm64
+    public void Initialize(Vector2 restOffset, Vector2 position, Vector2 velocity, in Spring spring, float thresholdStop = 0.5f)
     {
         Origin = restOffset;
 

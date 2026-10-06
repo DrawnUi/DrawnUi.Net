@@ -20,7 +20,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IInvokeProvider
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-    startLine: 62
+    startLine: 64
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -28,7 +28,7 @@ items:
     content: >-
       [ComVisible(true)]
 
-      [Guid("54FCB24B-E18E-47a2-B4AF-9BC1184F912F")]
+      [Guid("54fcb24b-e18e-47a2-b4d3-eccbe77599a2")]
 
       [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 
@@ -36,7 +36,7 @@ items:
     content.vb: >-
       <ComVisible(True)>
 
-      <Guid("54FCB24B-E18E-47a2-B4AF-9BC1184F912F")>
+      <Guid("54fcb24b-e18e-47a2-b4d3-eccbe77599a2")>
 
       <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
 
@@ -53,7 +53,7 @@ items:
     ctor: System.Runtime.InteropServices.GuidAttribute.#ctor(System.String)
     arguments:
     - type: System.String
-      value: 54FCB24B-E18E-47a2-B4AF-9BC1184F912F
+      value: 54fcb24b-e18e-47a2-b4d3-eccbe77599a2
   - type: System.Runtime.InteropServices.InterfaceTypeAttribute
     ctor: System.Runtime.InteropServices.InterfaceTypeAttribute.#ctor(System.Runtime.InteropServices.ComInterfaceType)
     arguments:
@@ -77,7 +77,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Invoke
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-    startLine: 67
+    startLine: 69
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

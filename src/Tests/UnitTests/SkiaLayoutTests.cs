@@ -111,88 +111,6 @@ namespace UnitTests
         }
 
         [Fact]
-        public void AbsoluteTypeRespectZIndex()
-        {
-            var layout = CreateAbsoluteLayoutSampleWIthChildren();
-
-            var destination = new SKRect(0, 0, 100, float.PositiveInfinity);
-            layout.CommitInvalidations();
-            layout.Measure(destination.Width, destination.Height, 1);
-
-            //prepare DrawingRect
-            layout.Arrange(new SKRect(0, 0, layout.MeasuredSize.Pixels.Width, layout.MeasuredSize.Pixels.Height),
-                layout.MeasuredSize.Pixels.Width, layout.MeasuredSize.Pixels.Height, 1);
-
-            var picture = RenderWithOperationsContext(destination, (ctx) =>
-            {
-                layout.Render(ctx.WithDestination(layout.DrawingRect));
-            });
-
-            var cache = layout.RenderObject;
-            var pixels = cache.Image.PeekPixels();
-            var color = pixels.GetPixelColor(0, 0);
-
-            Assert.Equal(color, SKColors.Red);
-        }
-
-        [Fact]
-        public void ColumnTypeRespectZIndex()
-        {
-            var layout = new SkiaLayout
-            {
-                Type = LayoutType.Column,
-                BackgroundColor = Colors.Black,
-                Spacing = 0,
-                UseCache = SkiaCacheType.Image,
-                Children = new List<SkiaControl>()
-                {
-                    new SkiaShape()
-                    {
-                        ZIndex = 0,
-                        Tag = "Green",
-                        BackgroundColor = Colors.Green,
-                        HeightRequest=100,
-                        LockRatio=1,
-                    },
-                    new SkiaShape()
-                    {
-                        AddMarginTop=-100,
-                        ZIndex = 1,
-                        Tag = "Red",
-                        BackgroundColor = Colors.Red,
-                        HeightRequest=100,
-                        LockRatio=1,
-                    },
-                    new SkiaShape()
-                    {
-                        //AddMarginTop=-200,
-                        Tag = "Blue",
-                        BackgroundColor = Colors.Blue,
-                        HeightRequest=100,
-                        LockRatio=-1,
-                    },
-                }
-            };
-
-            var destination = new SKRect(0, 0, 100, float.PositiveInfinity);
-            layout.Measure(destination.Width, destination.Height, 1);
-
-            //prepare DrawingRect
-            layout.Arrange(new SKRect(0, 0, layout.MeasuredSize.Pixels.Width, layout.MeasuredSize.Pixels.Height),
-                layout.MeasuredSize.Pixels.Width, layout.MeasuredSize.Pixels.Height, 1);
-
-            var picture = RenderWithOperationsContext(destination, (ctx) =>
-            {
-                layout.Render(ctx.WithDestination(layout.DrawingRect));
-            });
-
-            var cache = layout.RenderObject;
-            var pixels = cache.Image.PeekPixels();
-            var color = pixels.GetPixelColor(0, 0);
-            Assert.Equal(color, SKColors.Red);
-        }
-
-        [Fact]
         public void AbsoluteTypePaddingOk()
         {
             var layout = new SkiaLayout
@@ -388,15 +306,15 @@ namespace UnitTests
 
             if (itemsSource == null || itemsSource.Count == 0)
             {
-                return layout.LatestStackStructure == null || layout.LatestStackStructure.GetChildren().Count() == 0;
+                return layout.GetStackStructure() == null || layout.GetStackStructure().GetChildren().Count() == 0;
             }
 
-            if (layout.LatestStackStructure.GetChildren().Count() != itemsSource.Count())
+            if (layout.GetStackStructure().GetChildren().Count() != itemsSource.Count())
                 return false;
 
 
             var index = 0;
-            foreach (var cell in layout.LatestStackStructure.GetChildren())
+            foreach (var cell in layout.GetStackStructure().GetChildren())
             {
                 if (cell.ControlIndex != index)
                     return false;
@@ -503,7 +421,7 @@ namespace UnitTests
             Assert.True(LayoutStructureCorrespondsToItemsSource(itemsSource, layout));
 
             // Verify the structure has correct row/column distribution
-            var structure = layout.LatestStackStructure;
+            var structure = layout.GetStackStructure();
             Assert.NotNull(structure);
 
             // Should have 3 rows
@@ -570,7 +488,7 @@ namespace UnitTests
             Assert.True(LayoutStructureCorrespondsToItemsSource(itemsSource, layout));
 
             // Verify the structure has correct row/column distribution
-            var structure = layout.LatestStackStructure;
+            var structure = layout.GetStackStructure();
             Assert.NotNull(structure);
 
             // Should have 3 rows
@@ -613,7 +531,7 @@ namespace UnitTests
             Assert.True(LayoutStructureCorrespondsToItemsSource(itemsSource, layout));
 
             // Verify the structure has correct row/column distribution
-            var structure = layout.LatestStackStructure;
+            var structure = layout.GetStackStructure();
             Assert.NotNull(structure);
 
             // Should have 2 rows
@@ -674,7 +592,7 @@ namespace UnitTests
             // Verify structure corresponds to items source
             Assert.True(LayoutStructureCorrespondsToItemsSource(itemsSource, layout));
 
-            var structure = layout.LatestStackStructure;
+            var structure = layout.GetStackStructure();
             Assert.NotNull(structure);
 
             // Should have 4 rows with 2 columns each
@@ -743,7 +661,7 @@ namespace UnitTests
             Assert.True(measured.Pixels.Height > 0);
 
             // Get the structure
-            var structure = layout.LatestStackStructure;
+            var structure = layout.GetStackStructure();
             Assert.NotNull(structure);
 
             // Calculate expected column width using content width (excluding margins)

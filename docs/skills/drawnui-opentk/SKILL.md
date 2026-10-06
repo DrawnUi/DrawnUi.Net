@@ -7,7 +7,7 @@ tags: [drawnui, opentk, desktop, opengl, dotnet]
 
 # DrawnUI OpenTK (desktop head)
 
-Package `DrawnUi.OpenTk` (+ addon `DrawnUi.OpenTk.Game` for games: `DrawnGame`, `KeyboardManager`, `AspectLayer`). Framework rules in `drawnui` skill, C# composition in `drawnui-fluent`, GL-state-restore contract detail in the `drawnui` skill's "OpenTK / Mixed GL+DrawnUI" section.
+Package `DrawnUi.OpenTk` (+ addon `DrawnUi.OpenTk.Game` for games: `DrawnGame` from the shared `SharedGame` sources; `KeyboardManager` is in the core package). Framework rules in `drawnui` skill, C# composition in `drawnui-fluent`, GL-state-restore contract detail in the `drawnui` skill's "OpenTK / Mixed GL+DrawnUI" section.
 
 ## App csproj shape
 
@@ -48,7 +48,7 @@ window.Run();
 
 `DrawnUiWindow` owns the Skia GPU surface, VSync, mouse/keyboard routing, centering, chrome, fullscreen (F11 toggle / ESC exit built in), and the no-white-flash reveal (window hidden until first `SwapBuffers`). `Super.Init()` runs automatically in its `OnLoad`; `Super.MaxFps` = primary monitor refresh rate. Overridables: `PositionWindow()`, `ConfigureWindowChrome(hwnd)` (Windows-only, called only there), `RenderScene()` (raw GL behind the canvas — base restores GL state before and `ResetContext()` after; end yours with `GL.Finish()`).
 
-Fixed-proportion scaling on resize: `RescalingCanvas { LogicalWidth = W, LogicalHeight = H }` (Pong) or the Game addon's `AspectLayer`.
+Fixed-proportion scaling on resize: `RescalingCanvas { LogicalWidth = W, LogicalHeight = H }` (Pong, `src/Shared/Samples/Pong.Shared/Views/RescalingCanvas.cs`) or a `RescalingLayout` inside the canvas (HelloOpenTk `Pages/RescalingLayout.cs`). Both are sample classes, not package API.
 
 ## Entry pattern B — `CanvasHost` (overlay over your own GL loop)
 
@@ -64,19 +64,22 @@ Your `GameWindow` subclass owns rendering; DrawnUI composites as a transparent o
 ## Update modes (power profile)
 
 - Rule: `Constant` ONLY for dynamic games (something moves every frame anyway); every other app/tool gets `Dynamic` + `UpdateFrequency = 0` — animations still run at full rate while active, an idle window stops rendering.
-- `UpdateMode.Constant` — VSync on, renders every frame. Dynamic games.
-- `UpdateMode.Dynamic` — VSync off, renders only when dirty, sleeps via `GLFW.WaitEventsTimeout(1/MaxFps)`. Pair with `GameWindowSettings { UpdateFrequency = 0 }` for low-power tools/editors/launchers.
+- `UpdateMode.Constant` — VSync on, renders every frame. Dynamic games. Where the driver accepts VSync but does not wait for it (WSLg software GL), the window notices it on the first 60 frames (median under half the refresh period) and paces frames itself on a refresh grid.
+- `UpdateMode.Dynamic` — VSync off, renders only when dirty, frames on a refresh grid (next slot = last slot + period, animations step with the slot), sleeps via `GLFW.WaitEventsTimeout`. Pair with `GameWindowSettings { UpdateFrequency = 0 }` for low-power tools/editors/launchers.
+- Refresh period: GLFW reports whole hertz (59 for a 59.95 Hz panel, pacing 16.95 ms behind the display); on Windows `DrawnUiWindow` takes DWM's exact composition rate. `Super.MaxFps` = the rounded rate.
 
 ## Input
 
-- `DrawnUiWindow` auto-routes mouse (all buttons + wheel + leaving the window, which ends hover; a `CanvasHost` app calls `host.Gestures.OnMouseLeave()` itself) + text input to the canvas (`HandleDesktopPointerDown/Move/Up`, `HandleDesktopTextInput`); editor keys (backspace/delete/enter/arrows/home/end/Ctrl+A/Tab→4 spaces) built in. Adding game keys: override `OnKeyDown`, call `base.OnKeyDown(e)` FIRST, then `OpenTkKeyMapper.Map(e.Key)` → `KeyboardManager.KeyboardPressed(...)` (release in `OnKeyUp`).
+- `DrawnUiWindow` auto-routes mouse (all buttons + wheel + leaving the window, which ends hover; a `CanvasHost` app calls `host.Gestures.OnMouseLeave()` itself) + text input to the canvas (`HandleDesktopPointerDown/Move/Up`, `HandleDesktopTextInput`); editor keys (Backspace / Delete / Enter / Left / Right / Home / End, Shift selects, Ctrl+A) built in, Tab walks the Tab stops (see Keyboard navigation). A `CanvasHost` app's `host.Input.OnKeyDown` has the same editor keys but types Tab as 4 spaces. Adding game keys: override `OnKeyDown`, call `base.OnKeyDown(e)` FIRST, then `OpenTkKeyMapper.Map(e.Key)` → `KeyboardManager.KeyboardPressed(...)` (release in `OnKeyUp`).
 - Custom controls layered behind a `SkiaEditor`: return `null` from `ProcessGestures` on Up when you didn't capture on Down, or you steal the editor's focus.
 
 ## Window niceties
 
 - **Title-bar icon**: embed `icon.ico` as `EmbeddedResource`, at startup decode with `SKBitmap.Decode`, resize to 32×32, swap BGRA→RGBA (`(p[i], p[i+2]) = (p[i+2], p[i])` per pixel), wrap in `OpenTK.Windowing.Common.Input.Image` → `WindowIcon` → `NativeWindowSettings.Icon`. (`ApplicationIcon` csproj property covers only Explorer/taskbar.)
 - **DWM chrome** (override `ConfigureWindowChrome(hwnd)`, helper `WindowChrome`): `SetCaptionColor(hwnd,r,g,b)` / `SetBorderColor` (Win11+, caption text auto black/white by luminance), `SetDarkMode` (Win10 20H1+), `SetRoundedCorners` (Win11+).
-- System menu gets a "Fullscreen" item + Windows UIA accessibility automatically (`DrawnUiWindow`).
+- System menu gets a "Fullscreen" item (Windows), and screen readers work with no app code: UI Automation on Windows (Narrator, NVDA), AT-SPI2 on Linux (Orca, through the `Tmds.DBus.Protocol` package; it connects only once assistive technology turns the accessibility bus on). `CanvasHost` apps get neither.
+- Keyboard navigation (`DrawnUiWindow`): Tab / Shift+Tab walk the Tab stops, also out of a drawn editor (no tab characters); Enter / Space / Escape / arrows / Home / End / PageUp / PageDown go to the focused node only while it has keyboard focus and no editor has the caret, so a game's own keys reach its `OnKeyDown` override untouched; the canvas draws the focus ring. F11 / Escape-out-of-fullscreen first.
+- Checking Orca in WSL (WSLg): inside `dbus-run-session`, start `/usr/libexec/at-spi-bus-launcher --launch-immediately`, the app, then `orca --replace --debug-file=<file>` and read its `SPEECH OUTPUT:` lines; `pyatspi` reads the tree and can grab focus, do actions and set values. Afterwards stop a leftover `speech-dispatcher` and remove `$XDG_RUNTIME_DIR/speech-dispatcher`.
 
 ## Assets
 
@@ -88,7 +91,7 @@ Source strings (`"Images/x.gif"`, `"Lottie/x.json"`) resolve relative to the out
 - EGL "Arguments are inconsistent" → bundled `libglfw.so.3` is an EGL build; symlink system GLX `libglfw3` over it.
 - `GLXBadFBConfig` → request OpenGL 3.3 on Linux (Mesa D3D12 lacks 4.6).
 - D3D12 "Removing Device" + segfault on WSLg → keep `WindowState = WindowState.Normal`.
-- Uncapped FPS (Mesa ignores swap interval) → `DrawnUiWindow` soft-caps automatically; a custom `GameWindow` must set `UpdateFrequency` itself.
+- Uncapped FPS (Mesa / WSLg ignores the swap interval) → `DrawnUiWindow` paces both update modes on a refresh grid (Constant: after it measures that vsync is ignored; Dynamic: always). A custom `GameWindow` / `CanvasHost` app must pace itself (`UpdateFrequency` or its own timer).
 - **Run the Linux build from Windows (no .NET SDK in WSL needed)**, verified 2026-09-25: reference `SkiaSharp.NativeAssets.Linux`, `dotnet publish -c Release -r linux-x64 --self-contained -o out\linux` on Windows, copy into the WSL file system + `chmod +x` (the bundled GLFW 3.4 ran fine on WSLg/Ubuntu 22.04, trimmed single-file included; symlink the system `libglfw.so.3` only if the EGL error appears), then `wsl -e bash -c "cd ~/myapp && DISPLAY=:0 ./MyApp"`. Traps: `nohup ./MyApp &` inside `wsl -e bash -c` is killed when the command returns, so run the whole `wsl` command as a background job with the app in its foreground; the window appears as a Windows window titled `MyApp (Ubuntu-...)` (a `[WARN:COPY MODE]` prefix = WSLg copy presentation, still runs); Windows-simulated mouse/wheel input reaches it; default NAT networking hides Windows `localhost` services; `LocalApplicationData` = `~/.local/share`. The WSLg window rect includes a ~35 px shadow, so scripted edge drags must target the visible border. Docs: `docs/articles/opentk/faq.md`.
 - **Resize / wheel semantics per OS** (DrawnUiWindow, 2026-09-25): Windows/macOS block the render loop in the OS modal size loop, so `DrawnUiWindow` renders from `OnResize` there (live redraw while dragging an edge); Linux keeps looping during resize, so it only repaints via the normal loop. `OnRefresh` (expose/uncover) renders on every OS. The mouse wheel goes `OnMouseWheel` → `DesktopGestureHandler.OnMouseWheel` (GLFW notch × 120) → `Canvas.HandleDesktopWheel`; `CanvasHost` apps forward `OnMouseWheel` themselves.
 
@@ -134,10 +137,12 @@ The fastest way to run shared DrawnUI code on desktop: a tiny OpenTK head over y
 - Structure: shared `.projitems` with your scenes/controls + a throwaway OpenTK head project importing it (see `drawnui-web-app` skill for the shared-source pattern — identical here).
 - Keep temp diagnostics in the harness head (a partial of your test page), never in shared/library code; delete before finishing.
 - Pair with the `drawnui-net-harness` skill (headless, deterministic clock, pixel/structure asserts) — OpenTK head for eyeballing + interactive repro, headless harness for scripted assertions.
-- `SkiaLabelFps` overlay + `Super.EnableRenderingStats` for quick perf reads.
+- `SkiaLabelFps` overlay (or the canvas `FPS` / `FrameTime`) for quick perf reads.
 
 ## Samples (in-repo)
 
+- `src/OpenTk/Samples/HelloOpenTk` — the DrawnUI Hello app (20 screens, `drawnui-hello-app` skill): `DrawnUiWindow` + `Dynamic`, `SkiaShell`, pages shared in spirit with HelloWpf (copied, WPF timers ported to a window-thread `UiTimer`), assets linked from HelloWpf, a window subclass feeding `KeyboardManager`. Linux: `pwsh dev\hello-opentk-linux.ps1` (publish linux-x64 on Windows, copy into WSL, start on X11; `-NoBuild` to restart). `SkiaShell` and `Super.HotReload` are shared by the .NET desktop heads (WPF, OpenTK).
+- Not wired in `DrawnUiWindow` yet: Up / Down in a multiline editor, Ctrl+C / X / V for editors.
 - `src/OpenTk/Samples/OpenTkPong` — fully-drawn game: `DrawnUiWindow` + `Constant`, `RescalingCanvas`, DWM chrome, key mapper, single-file publish. Shares game code with MAUI/Web heads via `Pong.Shared.projitems`.
 - `src/OpenTk/Samples/OpenTkGpuHost` — event-driven low-power UI: `Dynamic` + `UpdateFrequency=0`.
 - `src/OpenTk/Samples/OpenTkOverlay` — mixed host: custom `GameWindow` + `CanvasHost`, raw GL cube + transparent overlay with `SkiaBackdrop` glass + `SkiaEditor`.

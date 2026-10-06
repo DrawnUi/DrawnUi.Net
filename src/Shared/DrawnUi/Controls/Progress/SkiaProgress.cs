@@ -11,11 +11,12 @@ public class SkiaProgress : SkiaRangeBase
 
     protected override string? GetDefaultAccessibilityRole() => DefaultAccessibilityRole;
 
-    protected override string? DefaultAccessibilityLabel()
+    /// <summary>The progress for screen readers, read as a percent; read only (no step). Its name is the app's AccessibilityLabel.</summary>
+    public override AccessibilityValue? GetAccessibilityValue()
     {
         var range = Max - Min;
         var ratio = range > 0 ? Math.Clamp((Value - Min) / range, 0.0, 1.0) : 0.0;
-        return $"{Math.Round(ratio * 100)}%";
+        return new(Value, Min, Max, 0, $"{Math.Round(ratio * 100)}%");
     }
 
     #region DEFAULT CONTENT
@@ -407,6 +408,13 @@ public class SkiaProgress : SkiaRangeBase
     /// </summary>
     protected const double MaterialProgressGap = 4.0;
 
+    private void OnTrackLayoutReady(object sender, EventArgs e)
+    {
+        if (sender is SkiaControl track)
+            track.LayoutIsReady -= OnTrackLayoutReady;
+        UpdateVisualState();
+    }
+
     protected override void UpdateVisualState()
     {
         double progressWidth = -1;
@@ -415,7 +423,14 @@ public class SkiaProgress : SkiaRangeBase
         {
             // Calculate progress width based on current value
             var totalWidth = Track.Width;
-            if (totalWidth > 0)
+            if (totalWidth <= 0)
+            {
+                // a track just built (first build, or a ControlStyle change that kept this control's size, so no
+                // OnLayoutChanged follows): apply once it is laid out
+                Track.LayoutIsReady -= OnTrackLayoutReady;
+                Track.LayoutIsReady += OnTrackLayoutReady;
+            }
+            else
             {
                 var progressRatio = Math.Clamp((Value - Min) / (Max - Min), 0.0, 1.0);
                 progressWidth = totalWidth * progressRatio;

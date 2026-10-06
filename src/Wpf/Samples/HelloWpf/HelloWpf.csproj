@@ -13,7 +13,11 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Drawnui.Wpf\DrawnUi.Wpf.csproj" />
+        <ProjectReference Include="..\..\Addons\DrawnUi.Wpf.Game\DrawnUi.Wpf.Game.csproj" />
     </ItemGroup>
+
+    <!-- The Pong page hosts the shared game, the same code as every Pong sample. -->
+    <Import Project="..\..\..\Shared\Samples\Pong.Shared\Pong.Shared.projitems" Label="Shared" />
 
     <!--
         Assets are resolved relative to the output directory on this head — SkiaFontManager does

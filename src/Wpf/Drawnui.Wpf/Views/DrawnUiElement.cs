@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using AppoMobi.Gestures;
 using System.Windows.Markup;
 using System.Windows.Media;
@@ -164,6 +165,9 @@ public class DrawnUiElement : FrameworkElement, IDisposable
 
         EnsureSuperInitialized();
 
+        // Copy of a selected SkiaLabel text goes to the Windows clipboard, on the UI thread.
+        Super.SetClipboardText ??= text => Dispatcher.Invoke(() => Clipboard.SetText(text));
+
         Canvas = createCanvas() ?? throw new InvalidOperationException("The canvas factory returned null");
         Canvas.Gestures = Gestures;
 
@@ -177,6 +181,8 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         Canvas.AccessibilityManager.Changed += OnAccessibilityChanged;
         Canvas.AccessibilityManager.FocusChanged += OnAccessibilityFocusChanged;
         Canvas.AccessibilityManager.LiveRegionUpdated += OnAccessibilityLiveRegion;
+        Canvas.AccessibilityManager.RebuildSkipped += OnAccessibilityRebuildSkipped;
+        Canvas.AccessibilityManager.ReaderRefocusRequested += OnAccessibilityReaderRefocus;
 
         Super.HotReload += OnHotReload;
 
@@ -198,7 +204,6 @@ public class DrawnUiElement : FrameworkElement, IDisposable
 
         AppPackageServices.EnsureInstalled(); // relative "package" paths resolve to files next to the exe
         Super.Init();
-        ShaderFiles.PreloadAll(); // .sksl files next to the exe become ShaderSource resources
         WpfStartup.RunStartup(); // DrawnUiStartupSettings.Startup, once
     }
 
@@ -210,6 +215,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             return;
 
         _running = true;
+        AttachWindowMessages(true);
 
         Super.Screen.Density = (float)DpiScale;
 
@@ -281,6 +287,30 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     private DrawnUiElementAutomationPeer EnsurePeer() =>
         _peer ?? System.Windows.Automation.Peers.UIElementAutomationPeer.CreatePeerForElement(this) as DrawnUiElementAutomationPeer;
 
+    private System.Windows.Threading.DispatcherTimer _a11yRefresh;
+
+    /// <summary>
+    /// The snapshot went stale inside its rebuild interval: rebuild it once the interval is over, even when no frame
+    /// comes (the canvas went idle after a page opened). A one-shot timer and the rebuild itself, never a frame;
+    /// rendering runs on this thread, so the rebuild reads the tree safely.
+    /// </summary>
+    private void OnAccessibilityRebuildSkipped(long remainingMs) => Dispatcher.BeginInvoke(() =>
+    {
+        if (_a11yRefresh == null)
+        {
+            _a11yRefresh = new System.Windows.Threading.DispatcherTimer(System.Windows.Threading.DispatcherPriority.Background, Dispatcher);
+            _a11yRefresh.Tick += (_, _) =>
+            {
+                _a11yRefresh.Stop();
+                Canvas?.AccessibilityManager.RefreshIfStale(Canvas.RenderingScale); // raises Changed when it differs
+            };
+        }
+
+        _a11yRefresh.Stop();
+        _a11yRefresh.Interval = TimeSpan.FromMilliseconds(Math.Max(1, remainingMs) + 16);
+        _a11yRefresh.Start();
+    });
+
     private void OnAccessibilityChanged() => Dispatcher.BeginInvoke(() =>
     {
         if (_peer == null)
@@ -290,8 +320,18 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         InvalidateFocusRing();
     });
 
+    // Narrator follows UI Automation focus: the node in focus is the reader's node; when a rebuild drops it (its page
+    // closed), focus moves to the first node that says something instead of staying on an empty spot
+    private void OnAccessibilityReaderRefocus(AccessibilityNode next)
+    {
+        var source = next.Source;
+        if (source != null)
+            Dispatcher.BeginInvoke(() => Canvas.AccessibilityManager.NotifyFocused(source));
+    }
+
     private void OnAccessibilityFocusChanged(ISkiaAccessibilityNode node) => Dispatcher.BeginInvoke(() =>
     {
+        Canvas.AccessibilityManager.NotifyReaderFocused(node);
         _peer?.NotifyFocusChanged(node);
         InvalidateFocusRing();
     });
@@ -376,6 +416,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             return;
 
         _running = false;
+        AttachWindowMessages(false);
         CompositionTarget.Rendering -= OnCompositionRendering;
         ReleaseSurface();
     }
@@ -396,6 +437,9 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         _running = false;
         Super.HotReload -= OnHotReload;
         CompositionTarget.Rendering -= OnCompositionRendering;
+        _a11yRefresh?.Stop();
+        Canvas.AccessibilityManager.RebuildSkipped -= OnAccessibilityRebuildSkipped;
+        Canvas.AccessibilityManager.ReaderRefocusRequested -= OnAccessibilityReaderRefocus;
 
         if (_window != null)
         {
@@ -778,6 +822,38 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         var point = ToCanvasPixels(e.GetPosition(this));
         Canvas.HandleDesktopWheel(point.X, point.Y, e.Delta, ClientPixelWidth, ClientPixelHeight);
         e.Handled = KeepInput; // an unused wheel goes on to a hosting ScrollViewer unless locked
+    }
+
+    private const int WM_MOUSEHWHEEL = 0x020E;
+    private HwndSource _hwndSource;
+
+    /// <summary>
+    /// WPF raises no event for the horizontal wheel (a tilting wheel, the sideways part of a two-finger touchpad
+    /// swipe): it is read from the window's messages and passed on as a horizontal wheel event.
+    /// </summary>
+    private IntPtr OnWindowMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        if (msg != WM_MOUSEHWHEEL || InputDisabled || !IsVisible)
+            return IntPtr.Zero;
+
+        var screen = new WpfPoint((short)(lParam.ToInt64() & 0xFFFF), (short)((lParam.ToInt64() >> 16) & 0xFFFF));
+        var local = PointFromScreen(screen);
+        if (local.X < 0 || local.Y < 0 || local.X > ActualWidth || local.Y > ActualHeight)
+            return IntPtr.Zero;
+
+        // Windows reports it positive to the right; the wheel delta is positive toward the start (left)
+        var delta = (short)((wParam.ToInt64() >> 16) & 0xFFFF);
+        var point = ToCanvasPixels(local);
+        Canvas.HandleDesktopWheel(point.X, point.Y, -delta, ClientPixelWidth, ClientPixelHeight, true);
+        handled = KeepInput;
+        return IntPtr.Zero;
+    }
+
+    private void AttachWindowMessages(bool attach)
+    {
+        _hwndSource?.RemoveHook(OnWindowMessage);
+        _hwndSource = attach ? PresentationSource.FromVisual(this) as HwndSource : null;
+        _hwndSource?.AddHook(OnWindowMessage);
     }
 
     /// <summary>

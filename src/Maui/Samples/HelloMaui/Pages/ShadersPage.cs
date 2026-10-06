@@ -49,6 +49,7 @@ half4 main(float2 fragCoord) {
     private static readonly string[] Transitions = { "cube", "fade", "swirl", "doorway", "bounce", "waterdrop", "pixelize", "windowslice", "crosszoom", "pagecurl", "morph", "heart", "kaleidoscope", "wind" };
     private static readonly string[] Photos = { "images/hugrobot2.jpg", "images/8.jpg", "images/dungeon.jpg", "images/nebula.jpg" };
     private static readonly Color Muted = Color.Parse("#ADB5BD");
+    private const string Symbols = "FontSymbols,FontSymbols2";
 
     private SkiaLabel _error;
     private SkiaLabel _carouselTitle;
@@ -104,7 +105,7 @@ half4 main(float2 fragCoord) {
                         new SkiaLabel("Shaders") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center },
                         new SkiaLabel("") { FontSize = 12, TextColor = Color.Parse("#FF6B6B"), HorizontalOptions = LayoutOptions.Fill, IsVisible = false }.Assign(out _error),
 
-                        Card(Title(CarouselTitle()).Assign(out _carouselTitle),
+                        Card(Title(CarouselTitle()).Assign(out _carouselTitle).Adapt(me => me.FontFamilyFallback = Symbols),
                             new SkiaShaderCarousel
                             {
                                 HeightRequest = 280,
@@ -118,7 +119,7 @@ half4 main(float2 fragCoord) {
                             .Assign(out _carousel)
                             .Adapt(me => me.FromToChanged += (_, _) =>
                             {
-                                _fromTo = $"· {me.TransitionFromIndex} to {me.TransitionToIndex}";
+                                _fromTo = $" · {me.TransitionFromIndex} → {me.TransitionToIndex}";
                                 _carouselTitle.Text = CarouselTitle();
                             }),
                             new SkiaWrap
@@ -126,8 +127,8 @@ half4 main(float2 fragCoord) {
                                 Spacing = 6,
                                 Children = new List<SkiaControl>
                                 {
-                                    new SkiaButton("Prev") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.GoPrev()),
-                                    new SkiaButton("Next") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.GoNext()),
+                                    new SkiaButton("‹ Prev") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.GoPrev()),
+                                    new SkiaButton("Next ›") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.GoNext()),
                                 }
                                 .Concat(Transitions.Select(t => (SkiaControl)new SkiaButton(t) { FontSize = 12 }
                                     .Adapt(b => _transitionButtons.Add(b))
@@ -141,9 +142,9 @@ half4 main(float2 fragCoord) {
 
                         Card(Title("SkiaShaderEffect on a SkiaImage — ShaderSource=\"shaders/ripples.sksl\" (Sandbox MultiRippleWithTouchEffect) · tap to ripple"),
                             new SkiaImage { Source = "images/hugrobot2.jpg", Aspect = TransformAspect.AspectCover, HorizontalOptions = LayoutOptions.Fill, HeightRequest = 260, UseCache = SkiaCacheType.Image, VisualEffects = { ripple } },
-                            new SkiaLabel("The effect is an ISkiaGestureProcessor: every Down starts a ripple at the touch point, animated 0 to 1 over 4.5 s through Parent.AnimateRangeAsync and passed as the origins[10] / progresses[10] array uniforms; iImage1 is the image's own cache, iImage2 (SecondarySource) the reflection texture.")
+                            new SkiaLabel("The effect is an ISkiaGestureProcessor: every Down starts a ripple at the touch point, animated 0→1 over 4.5 s through Parent.AnimateRangeAsync and passed as the origins[10] / progresses[10] array uniforms; iImage1 is the image's own cache, iImage2 (SecondarySource) the reflection texture.")
                             {
-                                FontSize = 12, TextColor = Muted, HorizontalOptions = LayoutOptions.Fill,
+                                FontFamilyFallback = Symbols, FontSize = 12, TextColor = Muted, HorizontalOptions = LayoutOptions.Fill,
                             }),
 
                         Card(Title(WaveTitle()).Assign(out _waveTitle),
@@ -190,7 +191,7 @@ half4 main(float2 fragCoord) {
         _error.IsVisible = true;
     }
 
-    private string CarouselTitle() => $"SkiaShaderCarousel — TransitionShader=\"shaders/transitions/{_transition}.sksl\" · IsLooped · LinearSpeedMs=750 {_fromTo}";
+    private string CarouselTitle() => $"SkiaShaderCarousel — TransitionShader=\"shaders/transitions/{_transition}.sksl\" · IsLooped · LinearSpeedMs=750{_fromTo}";
 
     private string WaveTitle() => $"Inline ShaderCode + SetUniform(\"strength\", {_strength}) + iTime · {(_running ? "animating" : "paused")}";
 

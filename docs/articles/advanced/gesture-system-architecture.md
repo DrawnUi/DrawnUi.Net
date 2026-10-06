@@ -9,7 +9,7 @@
 DrawnUI doesn't use native controls - everything is drawn on a Skia canvas. 
 When you tap the screen, the platform says "someone touched at (150, 300)" but has no idea what's there. It's just pixels. 
 We need to figure out which control should receive that tap.
-For .NET MAUI we use `AppoMobi.Maui.Gestures` package to get gestures for all platforms.
+For .NET MAUI we use `AppoMobi.Maui.Gestures` package to get gestures for all platforms. Blazor uses `AppoMobi.Blazor.Gestures`, the other heads (WPF, OpenTK, pure WebAssembly, .NET) use `AppoMobi.Gestures`.
 
 ## The Basic Flow
 
@@ -28,11 +28,12 @@ Every time we draw, we record where each control ended up:
 
 ```csharp
 tree.Add(new SkiaControlWithRect(
-    control,             // the control
-    destinationRect,     // where it was drawn
-    control.DrawingRect, // its actual bounds
-    index                // z-order (front to back)
-));
+    control,                  // the control
+    destinationRect,          // where it was drawn
+    control.CreateHitRect(),  // hit rect, DrawingRect by default
+    index,                    // z-order (front to back)
+    -1,                       // freeze index
+    control.BindingContext)); // binding context at draw time
 ```
 
 This list is our map for gesture processing. We walk through it (top to bottom, front to back) looking for the control that contains the touch point.
@@ -97,8 +98,11 @@ Controls that want gestures implement `ISkiaGestureListener`:
 ```csharp
 public interface ISkiaGestureListener
 {
-    ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply);
+    ISkiaGestureListener OnSkiaGestureEvent(SkiaGesturesParameters args, GestureEventProcessingInfo apply);
     bool HitIsInside(float x, float y);
+    bool InputTransparent { get; }
+    bool BlockGesturesBelow { get; }
+    // ...
 }
 ```
 
@@ -127,15 +131,15 @@ Touch comes in at Y=320. We need to translate that to Y=520 to match the cache's
 ### LastDestination
 
 Each `CachedObject` tracks:
-- `Bounds` - where it was when cache was created
+- `Bounds` / `LogicalBounds` - where it was when cache was created
 - `LastDestination` - where it was actually drawn last time
 
 ```csharp
 public SKPoint TranslateInputCoords(SKRect drawingRect)
 {
     var current = LastDestination.IsEmpty ? drawingRect : LastDestination;
-    var offsetX = current.Left - Bounds.Left;
-    var offsetY = current.Top - Bounds.Top;
+    var offsetX = current.Left - LogicalBounds.Left;
+    var offsetY = current.Top - LogicalBounds.Top;
     return new SKPoint(-offsetX, -offsetY);
 }
 ```
@@ -144,13 +148,13 @@ public SKPoint TranslateInputCoords(SKRect drawingRect)
 
 When caches are nested (cached scroll → cached layout → button), each level needs its own coordinate translation. ProcessGestures walks down the tree, translating at each cached level.
 
-## Parent RenderTree Parameter
+## RenderTree Offset
 
 ```csharp
-ProcessGestures(args, apply, IReadOnlyList<SkiaControlWithRect> parentRenderTree = null)
+var thisOffset = TranslateInputCoords(RenderTree.AdjustOffset(apply.ChildOffset), true);
 ```
 
-Why? A cached control that didn't redraw has stale/empty RenderTree. But the parent knows where it drew the cached child. Parent's RenderTree fills the gap.
+Why? A cached control that is blitted at a new position keeps the RenderTree it recorded at the old one. `RenderTree.AdjustOffset` removes that blit offset, then `TranslateInputCoords` applies the cache correction, so the touch point lands where the children's hit rects were recorded.
 
 ## ImageComposite Special Case
 
@@ -180,4 +184,4 @@ Used in ImageComposite composition mode for non-dirty children.
 - `Canvas.cs` - receives platform touches, dispatches to controls
 - `SkiaControl.Shared.cs` - `ProcessGestures`, `HitIsInside`, `ArrangeCache`
 - `SkiaLayout.*.cs` - builds RenderTree during drawing
-- `SkiaRenderObject.cs` - `CachedObject` with `LastDestination`, `TranslateInputCoords`
+- `CachedObject.cs` - `CachedObject` with `LastDestination`, `TranslateInputCoords`

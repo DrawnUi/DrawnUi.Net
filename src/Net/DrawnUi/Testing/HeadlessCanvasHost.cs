@@ -258,7 +258,7 @@ public sealed class HeadlessCanvasHost : IDisposable
         public HeadlessDrawable(SKSurface surface)
         {
             Surface = surface;
-            CanvasSize = new SKSize(surface.Canvas.LocalClipBounds.Width, surface.Canvas.LocalClipBounds.Height);
+            CanvasSize = new SKSize(surface.Canvas.DeviceClipBounds.Width, surface.Canvas.DeviceClipBounds.Height); // LocalClipBounds is outset by 1 px for antialiasing
             OnDraw = static (_, _) => false;
         }
 

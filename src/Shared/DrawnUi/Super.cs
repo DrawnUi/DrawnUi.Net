@@ -34,6 +34,25 @@ public partial class Super
     public static bool PreloadRegisteredFonts = false;
 
     /// <summary>
+    /// Puts text on the system clipboard, used to copy a selected <see cref="SkiaLabel"/> text. MAUI and Blazor set it
+    /// themselves; the WPF, OpenTK and WebAssembly hosts set it when they start. Null (headless) = copying does nothing.
+    /// Replace it to route copies elsewhere.
+    /// </summary>
+    public static Action<string> SetClipboardText { get; set; } = DefaultClipboardWriter();
+
+    static Action<string> DefaultClipboardWriter()
+    {
+#if !BROWSER && !DRAWNUI_NET
+        return text => MainThread.BeginInvokeOnMainThread(() =>
+            _ = Microsoft.Maui.ApplicationModel.DataTransfer.Clipboard.Default.SetTextAsync(text));
+#elif BROWSER && !DRAWNUI_NET
+        return BlazorClipboardWriter();
+#else
+        return null;
+#endif
+    }
+
+    /// <summary>
     /// If set to True will process all ofscreen rendering in one background thread at canvas level, otherwise every control will launch its own background processing thread.
     /// Default is False
     /// </summary>

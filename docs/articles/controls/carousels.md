@@ -1,6 +1,6 @@
 # Carousel Controls
 
-DrawnUi.Maui provides powerful carousel controls for creating interactive, swipeable displays of content. This article covers the carousel components available in the framework.
+DrawnUI provides powerful carousel controls for creating interactive, swipeable displays of content. This article covers the carousel components available in the framework.
 
 ## SkiaCarousel
 
@@ -50,11 +50,11 @@ SkiaCarousel is a specialized scroll control designed specifically for creating 
 |----------|------|-------------|
 | `SelectedIndex` | int | Current selected item index |
 | `InTransition` | bool | Indicates if carousel is currently transitioning |
-| `Spacing` | float | Space between carousel items |
-| `SidesOffset` | float | Side padding to create a peek effect |
+| `Spacing` | double | Space between carousel items |
+| `SidesOffset` | double | Side padding to create a peek effect |
 | `Bounces` | bool | Enables bouncing effect at edges |
 | `RespondsToGestures` | bool | Default true. False: no swiping, slides change only through `SelectedIndex` from code |
-| `ItemsSource` | IEnumerable | Data source for dynamically generating items |
+| `ItemsSource` | IList | Data source for dynamically generating items |
 | `ItemTemplate` | DataTemplate | Template for items when using ItemsSource |
 
 ### Peek Next/Previous Items
@@ -73,7 +73,7 @@ You can create a peek effect to show portions of adjacent slides:
 </DrawUi:SkiaCarousel>
 ```
 
-With `SidesOffset="40"`, 40 pixels on each side will be reserved to show portions of the previous and next items.
+With `SidesOffset="40"`, 40 points on each side will be reserved to show portions of the previous and next items.
 
 ### Data Binding
 
@@ -132,11 +132,11 @@ The `InTransition` property is particularly useful for disabling user interactio
 You can control the carousel programmatically:
 
 ```csharp
-// Jump to a specific index
+// Go to a specific index (animated, same as ScrollTo(2, true))
 myCarousel.SelectedIndex = 2;
 
-// Animate to a specific index
-myCarousel.ScrollTo(2, true);
+// Jump to a specific index without animation (the index is clamped to existing slides)
+myCarousel.ScrollTo(2, false);
 
 // Track selection changes
 myCarousel.PropertyChanged += (sender, e) => {
@@ -178,8 +178,8 @@ the shader contract and customization.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `TransitionShader` | string | Path to a transition `.sksl` inside Resources/Raw |
-| `TransitionShaderCode` | string | Raw SkSL string alternative (OpenTK, dynamic shaders) |
+| `TransitionShader` | string | Path to a transition `.sksl` in the app package. MAUI reads Resources/Raw; OpenTK and WPF read the file copied next to the exe; web heads fetch it from the site |
+| `TransitionShaderCode` | string | Raw SkSL string alternative (dynamic shaders) |
 | `TransitionTemplate` | string | Custom wrapper template replacing the built-in gl-transitions adapter |
 | `InterruptedTransitionMs` | double | Wrap-up time for a transition interrupted by a new swipe (default 50) |
 | `TransitionEffect` | ShaderTransitionEffect | The effect instance; override `CreateTransitionEffect()` to customize |
@@ -312,8 +312,8 @@ A comprehensive carousel demonstration with spacing and offset effects:
 ```
 
 **Configuration Highlights:**
-- `SidesOffset="40"` - Shows 40px of adjacent slides
-- `Spacing="20"` - 20px gap between slides
+- `SidesOffset="40"` - Shows 40 points of adjacent slides
+- `Spacing="20"` - 20 points gap between slides
 - `Bounces="True"` - Elastic bounce at edges
 - `InTransition` binding - Track transition state
 
@@ -405,10 +405,14 @@ var galleryCarousel = new SkiaCarousel()
                 // Image with loading placeholder
                 new SkiaImage()
                 {
-                    Aspect = ImageAspect.AspectFit,
+                    Aspect = TransformAspect.AspectFit,
                     HorizontalOptions = LayoutOptions.Fill,
                     VerticalOptions = LayoutOptions.Fill
-                }.Bind(SkiaImage.SourceProperty, ".")
+                }.ObserveSelf((me, prop) =>
+                {
+                    if (prop == nameof(SkiaImage.BindingContext))
+                        me.Source = me.BindingContext as string;
+                })
             }
         };
         return cell;
@@ -418,7 +422,7 @@ var galleryCarousel = new SkiaCarousel()
 
 ## Performance Considerations
 
-- For optimal performance, use `Cache="Operations"` or `Cache="Image"` on complex carousel items
+- For optimal performance, use `UseCache="Operations"` or `UseCache="Image"` on complex carousel items
 - Avoid placing too many items directly in the carousel; use virtualization through `ItemsSource` for large collections
 - Consider using lightweight content for peek items if they'll be partially visible most of the time
 - Monitor the performance using `SkiaLabelFps` during development to ensure smooth scrolling

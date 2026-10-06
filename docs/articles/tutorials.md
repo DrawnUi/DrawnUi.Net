@@ -4,11 +4,11 @@ If you are choosing a host first, start with [Platforms and Packages](platforms.
 
 ## Available today
 
-Use [MAUI Tutorials](maui/tutorials.md) are available today and include the step-by-step walkthroughs for the current full tutorial path. 
+[MAUI Tutorials](maui/tutorials.md) are available today and include the step-by-step walkthroughs for the current full tutorial path. 
 
 ## Other hosts
 
-Blazor, OpenTK, and `DrawnUi.Net` use the same core DrawnUI concepts and control tree patterns, but the host setup is different.
+Blazor, OpenTK, WPF, and `DrawnUi.Net` use the same core DrawnUI concepts and control tree patterns, but the host setup is different.
 
 For now, use the MAUI tutorials for the control and layout concepts, then switch to samples for your target host:
 

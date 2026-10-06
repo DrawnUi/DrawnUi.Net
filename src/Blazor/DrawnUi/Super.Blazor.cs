@@ -48,6 +48,15 @@ namespace DrawnUi.Draw
 
         public static object App { get; set; }
 
+        /// <summary>
+        /// Blazor's clipboard: navigator.clipboard.writeText through the app's IJSRuntime.
+        /// </summary>
+        static Action<string> BlazorClipboardWriter() => text =>
+        {
+            if (Services?.GetService(typeof(IJSRuntime)) is IJSRuntime js)
+                _ = js.InvokeVoidAsync("navigator.clipboard.writeText", text).AsTask();
+        };
+
         public static event EventHandler OnFrame;
 
         private const int DEFAULT_TARGET_FPS = 120;

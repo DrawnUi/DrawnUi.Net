@@ -119,8 +119,9 @@ public class SkiaImage : SkiaControl
     {
         if (LoadedSource != null)
         {
-            var width = LoadedSource.Width;
-            var height = LoadedSource.Height;
+            var size = GetDrawnSize(LoadedSource);
+            var width = size.Width;
+            var height = size.Height;
 
             using var surface = SKSurface.Create(new SKImageInfo(width, height));
 
@@ -179,8 +180,21 @@ public class SkiaImage : SkiaControl
         nameof(UseAssembly),
         typeof(object),
         typeof(SkiaImage),
-        null);
+        null,
+        propertyChanged: (bindable, oldvalue, newvalue) =>
+        {
+            if (bindable is SkiaImage control && control.Source is FileImageSource)
+            {
+                control.SetImageSource(control.Source);
+            }
+        });
 
+    /// <summary>
+    /// An <see cref="System.Reflection.Assembly"/> or an assembly name. When set, a plain file path in
+    /// <see cref="Source"/> ("Images/logo.png") loads as an embedded resource of that assembly
+    /// ("AssemblyName.Images.logo.png"), the same way as "resource://Images.logo.png?assembly=AssemblyName".
+    /// Urls and resource:// sources are not affected. Set it before Source, else the image loads again.
+    /// </summary>
     public object UseAssembly
     {
         get { return GetValue(UseAssemblyProperty); }
@@ -539,6 +553,20 @@ public class SkiaImage : SkiaControl
         if (IsDisposing || IsDisposed)
             return;
 
+        if (source is FileImageSource plainFile && UseAssembly is { } useAssembly)
+        {
+            try
+            {
+                source = FrameworkImageSourceConverter.FromAssembly(plainFile.File, useAssembly);
+            }
+            catch (Exception e)
+            {
+                Super.Log(e);
+                OnError(plainFile.File);
+                return;
+            }
+        }
+
         StopLoading();
 
         if (source == null)
@@ -659,10 +687,11 @@ public class SkiaImage : SkiaControl
                                 return;
                             }
 
-                            async Task LoadAction()
+                            // true = loaded, false = failed, null = canceled / disposed (no event: a newer load owns the state)
+                            async Task<bool?> LoadAction()
                             {
                                 if (LifecycleState == ControlLifecycleState.Destroyed)
-                                    return;
+                                    return null;
 
                                 try
                                 {
@@ -674,7 +703,7 @@ public class SkiaImage : SkiaControl
                                         cancel?.Cancel();
                                         IsLoading = false;
                                         TraceLog($"[SkiaImage] Canceled disposed image {source}");
-                                        return;
+                                        return null;
                                     }
 
                                     if (cancel.Token.IsCancellationRequested)
@@ -688,7 +717,7 @@ public class SkiaImage : SkiaControl
                                             DisposeObject(bitmap);
                                         }
 
-                                        return;
+                                        return null;
                                     }
 
                                     if (bitmap != null)
@@ -701,19 +730,22 @@ public class SkiaImage : SkiaControl
 
                                         //TraceLog($"[SkiaImage] Loaded {source}");
                                         OnSuccess(uri);
-                                        return;
+                                        return true;
                                     }
 
                                     TraceLog($"[SkiaImage] Error loading {url} as {source} for tag {Tag} ");
+                                    return false;
 
                                     //ClearBitmap(); //erase old image anyway even if EraseChangedContent is false
                                 }
                                 catch (TaskCanceledException)
                                 {
+                                    return null;
                                 }
                                 catch (Exception e)
                                 {
                                     Super.Log(e);
+                                    return false;
                                 }
                                 finally
                                 {
@@ -722,10 +754,10 @@ public class SkiaImage : SkiaControl
                             }
 
 
-                            await LoadAction();
+                            // a load that succeeded already raised Success: Error only for a real failure
+                            if (await LoadAction() == false)
+                                OnError(url);
                         }
-
-                        OnError(url);
                     }
                     catch (Exception e)
                     {
@@ -947,8 +979,21 @@ public class SkiaImage : SkiaControl
         typeof(bool),
         typeof(SkiaImage),
         false,
-        propertyChanged: NeedDraw);
+        propertyChanged: (bindable, oldvalue, newvalue) =>
+        {
+            if (bindable is SkiaImage control)
+            {
+                control._useGradient = (bool)newvalue;
+                NeedDraw(bindable, oldvalue, newvalue);
+            }
+        });
 
+    private bool _useGradient;
+
+    /// <summary>
+    /// Colors the image with a vertical gradient from <see cref="StartColor"/> (top) to <see cref="EndColor"/> (bottom),
+    /// keeping the image alpha as the mask: the icon tint case. The gradient spans the visible part of the image.
+    /// </summary>
     public bool UseGradient
     {
         get { return (bool)GetValue(UseGradientProperty); }
@@ -979,6 +1024,9 @@ public class SkiaImage : SkiaControl
         Colors.DarkGray,
         propertyChanged: NeedDraw);
 
+    /// <summary>
+    /// Top color of the <see cref="UseGradient"/> gradient.
+    /// </summary>
     public Color StartColor
     {
         get { return (Color)GetValue(StartColorProperty); }
@@ -992,6 +1040,9 @@ public class SkiaImage : SkiaControl
         Colors.Gray,
         propertyChanged: NeedDraw);
 
+    /// <summary>
+    /// Bottom color of the <see cref="UseGradient"/> gradient.
+    /// </summary>
     public Color EndColor
     {
         get { return (Color)GetValue(EndColorProperty); }
@@ -1048,12 +1099,33 @@ public class SkiaImage : SkiaControl
         set { SetValue(DrawWhenEmptyProperty, value); }
     }
 
+    private static void OnSpriteSizeChanged(BindableObject bindable, object oldvalue, object newvalue)
+    {
+        if (bindable is SkiaImage control)
+        {
+            var w = (int)control.SpriteWidth;
+            var h = (int)control.SpriteHeight;
+            control._spriteCell = w > 0 && h > 0 ? new SKSizeI(w, h) : SKSizeI.Empty;
+            NeedInvalidateMeasure(bindable, oldvalue, newvalue);
+        }
+    }
+
+    /// <summary>
+    /// Sprite cell size in source pixels, empty when the source is drawn whole.
+    /// </summary>
+    private SKSizeI _spriteCell;
+
     public static readonly BindableProperty SpriteHeightProperty = BindableProperty.Create(
         nameof(SpriteHeight),
         typeof(double),
         typeof(SkiaImage),
-        0.0);
+        0.0,
+        propertyChanged: OnSpriteSizeChanged);
 
+    /// <summary>
+    /// Height of one sprite sheet cell in source pixels. With <see cref="SpriteWidth"/> above 0 the image shows
+    /// only the cell picked by <see cref="SpriteIndex"/>, laid out by Aspect and alignment as if it were the whole image.
+    /// </summary>
     public double SpriteHeight
     {
         get { return (double)GetValue(SpriteHeightProperty); }
@@ -1064,8 +1136,12 @@ public class SkiaImage : SkiaControl
         nameof(SpriteWidth),
         typeof(double),
         typeof(SkiaImage),
-        0.0);
+        0.0,
+        propertyChanged: OnSpriteSizeChanged);
 
+    /// <summary>
+    /// Width of one sprite sheet cell in source pixels, see <see cref="SpriteHeight"/>.
+    /// </summary>
     public double SpriteWidth
     {
         get { return (double)GetValue(SpriteWidthProperty); }
@@ -1076,8 +1152,14 @@ public class SkiaImage : SkiaControl
         nameof(SpriteIndex),
         typeof(int),
         typeof(SkiaImage),
-        -1);
+        -1,
+        propertyChanged: NeedDraw);
 
+    /// <summary>
+    /// Sprite sheet cell to draw when <see cref="SpriteWidth"/> and <see cref="SpriteHeight"/> are set. Cells are
+    /// numbered from 0, left to right then top to bottom; partial cells at the right and bottom edges do not count.
+    /// An index outside the sheet (the default -1 included) draws nothing.
+    /// </summary>
     public int SpriteIndex
     {
         get { return (int)GetValue(SpriteIndexProperty); }
@@ -1239,6 +1321,9 @@ public class SkiaImage : SkiaControl
                     SkiaImageEffect.BlackAndWhite
                         => SkiaImageEffects.Grayscale(),
 
+                    SkiaImageEffect.Grayscale
+                        => SkiaImageEffects.Grayscale2(),
+
                     SkiaImageEffect.Pastel
                         => SkiaImageEffects.Pastel(),
 
@@ -1367,7 +1452,8 @@ public class SkiaImage : SkiaControl
                     else
                     {
                         //fast insert new image into presized rect
-                        SetAspectScale(source.Width, source.Height, DrawingRect, this.Aspect, scale);
+                        var size = GetDrawnSize(source);
+                        SetAspectScale(size.Width, size.Height, DrawingRect, this.Aspect, scale);
                     }
                 }
             }
@@ -1396,7 +1482,8 @@ public class SkiaImage : SkiaControl
 
         if (DrawingRect != SKRect.Empty && LoadSource != null)
         {
-            SetAspectScale(LoadedSource.Width, LoadedSource.Height, DrawingRect, this.Aspect, RenderingScale);
+            var size = GetDrawnSize(LoadedSource);
+            SetAspectScale(size.Width, size.Height, DrawingRect, this.Aspect, RenderingScale);
         }
     }
 
@@ -1416,6 +1503,8 @@ public class SkiaImage : SkiaControl
         LoadedSource = null;
         ScaledSource?.Dispose();
         ScaledSource = null;
+        _fillShader?.Dispose();
+        _fillShader = null;
 
         base.OnDisposing();
     }
@@ -1507,8 +1596,10 @@ public class SkiaImage : SkiaControl
             var aspectScaleX = AspectScale.X * (float)(ZoomX);
             var aspectScaleY = AspectScale.Y * (float)(ZoomY);
 
+            var drawn = GetDrawnSize(source);
+
             SKRect display = CalculateDisplayRect(dest,
-                aspectScaleX * source.Width, aspectScaleY * source.Height,
+                aspectScaleX * drawn.Width, aspectScaleY * drawn.Height,
                 horizontal, vertical);
 
             display.Inflate(new SKSize((float)InflateAmount, (float)InflateAmount));
@@ -1517,6 +1608,14 @@ public class SkiaImage : SkiaControl
             DisplayRect = display;
 
             TextureScale = new(dest.Width / display.Width, dest.Height / display.Height);
+
+            if (_spriteCell.Width > 0 || stretch == TransformAspect.Tile || _useGradient)
+            {
+                DrawSourceRegion(ctx, source, display, stretch == TransformAspect.Tile, paint);
+                return;
+            }
+
+            ReleaseFillShader();
 
             void DrawAsIs()
             {
@@ -1601,6 +1700,175 @@ public class SkiaImage : SkiaControl
         catch (Exception e)
         {
             Trace.WriteLine(e);
+        }
+    }
+
+    /// <summary>
+    /// Pixel size of what is drawn: the sprite cell when <see cref="SpriteWidth"/> and <see cref="SpriteHeight"/>
+    /// are set, else the whole source. Aspect, alignment and auto-size all work from this size.
+    /// </summary>
+    protected SKSizeI GetDrawnSize(LoadedImageSource source)
+    {
+        return _spriteCell.Width > 0 ? _spriteCell : new SKSizeI(source.Width, source.Height);
+    }
+
+    /// <summary>
+    /// Draws a sprite cell, the Tile aspect and the UseGradient tint. Runs only when one of them is set.
+    /// Draws through an image shader of the drawn cell (no bleeding from neighbor cells when filtered),
+    /// cached and rebuilt only when its inputs change.
+    /// </summary>
+    void DrawSourceRegion(DrawingContext ctx, LoadedImageSource source, SKRect display, bool tile, SKPaint paint)
+    {
+        var cell = new SKRectI(0, 0, source.Width, source.Height);
+        if (_spriteCell.Width > 0)
+        {
+            var columns = source.Width / _spriteCell.Width;
+            var count = columns * (source.Height / _spriteCell.Height);
+            var index = SpriteIndex;
+            if (index < 0 || index >= count)
+            {
+                return; // outside the sheet: nothing drawn
+            }
+
+            cell = SKRectI.Create(index % columns * _spriteCell.Width, index / columns * _spriteCell.Height,
+                _spriteCell.Width, _spriteCell.Height);
+        }
+
+        // a rescaled copy of the whole source would be served as CachedImage to effects
+        if (ScaledSource != null)
+        {
+            var kill = ScaledSource;
+            ScaledSource = null;
+            DisposeObject(kill);
+        }
+
+        var dest = ctx.Destination;
+        var area = tile ? dest : display;
+        if (area.IsEmpty)
+        {
+            return;
+        }
+
+        float gradientTop = 0, gradientBottom = 0;
+        if (_useGradient)
+        {
+            // the gradient spans the visible part of the image
+            var visible = tile ? dest : SKRect.Intersect(display, dest);
+            if (visible.IsEmpty)
+            {
+                return;
+            }
+
+            gradientTop = visible.Top - display.Top;
+            gradientBottom = visible.Bottom - display.Top;
+        }
+
+        // shader space starts at the display rect: moving the control alone keeps the shader
+        var key = new FillShaderKey(source.Id, cell, tile, RescalingQuality,
+            display.Width / cell.Width, display.Height / cell.Height,
+            _useGradient, gradientTop, gradientBottom,
+            _useGradient ? StartColor.ToSKColor() : SKColor.Empty,
+            _useGradient ? EndColor.ToSKColor() : SKColor.Empty);
+
+        if (_fillShader == null || key != _fillShaderKey)
+        {
+            ReleaseFillShader();
+            _fillShader = CreateFillShader(source, key);
+            _fillShaderKey = key;
+        }
+
+        if (_fillShader == null)
+        {
+            return;
+        }
+
+        paint ??= ImagePaint ??= new SKPaint { IsAntialias = true };
+        paint.Shader = _fillShader;
+
+        var canvas = ctx.Context.Canvas;
+        var restore = canvas.Save();
+        canvas.Translate(display.Left, display.Top);
+        area.Offset(-display.Left, -display.Top);
+        canvas.DrawRect(area, paint);
+        canvas.RestoreToCount(restore);
+
+        paint.Shader = null;
+    }
+
+    private readonly record struct FillShaderKey(Guid Source, SKRectI Cell, bool Tile, FilterQuality Quality,
+        float ScaleX, float ScaleY, bool Gradient, float GradientTop, float GradientBottom, SKColor Start, SKColor End);
+
+    private FillShaderKey _fillShaderKey;
+    private SKShader _fillShader;
+
+    static SKShader CreateFillShader(LoadedImageSource source, in FillShaderKey key)
+    {
+        var cell = key.Cell;
+        var whole = cell.Left == 0 && cell.Top == 0 && cell.Width == source.Width && cell.Height == source.Height;
+
+        SKImage drawn = source.Image;
+        SKImage owned = null;
+        if (drawn != null)
+        {
+            if (!whole)
+            {
+                drawn = owned = drawn.Subset(cell);
+            }
+        }
+        else if (source.Bitmap != null)
+        {
+            if (whole)
+            {
+                drawn = owned = SKImage.FromBitmap(source.Bitmap);
+            }
+            else
+            {
+                // copies the cell only, not the whole sheet
+                using var part = new SKBitmap();
+                if (source.Bitmap.ExtractSubset(part, cell))
+                {
+                    drawn = owned = SKImage.FromBitmap(part);
+                }
+            }
+        }
+
+        using (owned)
+        {
+            if (drawn == null)
+            {
+                return null;
+            }
+
+            return CreateFillShader(drawn, key);
+        }
+    }
+
+    static SKShader CreateFillShader(SKImage drawn, in FillShaderKey key)
+    {
+        var mode = key.Tile ? SKShaderTileMode.Repeat : SKShaderTileMode.Clamp;
+        var shader = drawn.ToShader(mode, mode, SkiaSamplingOptions.GetSamplingOptions(key.Quality),
+            SKMatrix.CreateScale(key.ScaleX, key.ScaleY));
+
+        if (!key.Gradient)
+        {
+            return shader;
+        }
+
+        using (shader)
+        using (var gradient = SKShader.CreateLinearGradient(new SKPoint(0, key.GradientTop), new SKPoint(0, key.GradientBottom),
+                   new[] { key.Start, key.End }, SKShaderTileMode.Clamp))
+        {
+            // SrcIn: gradient colors, image alpha
+            return SKShader.CreateBlend(SKBlendMode.SrcIn, shader, gradient);
+        }
+    }
+
+    void ReleaseFillShader()
+    {
+        if (_fillShader != null)
+        {
+            DisposeObject(_fillShader);
+            _fillShader = null;
         }
     }
 
@@ -1691,9 +1959,11 @@ public class SkiaImage : SkiaControl
         var widthConstraint = request.WidthRequest;
         var heightConstraint = request.HeightRequest;
 
+        var drawnSize = LoadedSource != null ? GetDrawnSize(LoadedSource) : SKSizeI.Empty;
+
         if ((float.IsInfinity(widthConstraint) || float.IsInfinity(heightConstraint)) && LoadedSource != null)
         {
-            var aspect = LoadedSource.Width / (double)LoadedSource.Height;
+            var aspect = drawnSize.Width / (double)drawnSize.Height;
             if (widthConstraint > 0)
             {
                 heightConstraint = (float)(widthConstraint / aspect);
@@ -1710,7 +1980,7 @@ public class SkiaImage : SkiaControl
             //this is the case of one dimension being Fill or explicit and the other being Auto (-1)
             if (LoadedSource != null && (widthConstraint > 0 || heightConstraint > 0))
             {
-                var aspect = LoadedSource.Width / (double)LoadedSource.Height;
+                var aspect = drawnSize.Width / (double)drawnSize.Height;
                 if (widthConstraint > 0)
                 {
                     heightConstraint = (float)(widthConstraint / aspect);
@@ -1754,7 +2024,7 @@ public class SkiaImage : SkiaControl
         {
             try
             {
-                SetAspectScale(LoadedSource.Width, LoadedSource.Height, constraints.Content, this.Aspect,
+                SetAspectScale(drawnSize.Width, drawnSize.Height, constraints.Content, this.Aspect,
                     request.Scale);
 
                 if (NeedAutoHeight)

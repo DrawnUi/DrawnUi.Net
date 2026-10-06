@@ -458,7 +458,7 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
             }
 
             _hasNewShader = false;
-            _compileFailed = !engine.IsCompiled;
+            _compileFailed = !engine.IsCompiled && _loadingFile == null; // a file still loading is not a failure
         }
 
         if (!engine.IsCompiled)
@@ -615,8 +615,45 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
     /// </summary>
     protected virtual void CompileShader()
     {
-        string shaderCode = SkSl.LoadFromResources(ShaderSource);
+        if (!SkSl.TryLoadFromResources(ShaderSource, out var shaderCode))
+        {
+            LoadPackageFileThenCompile(ShaderSource);
+            return;
+        }
+
         CompileShader(shaderCode, true, SendError);
+    }
+
+    // a file the head can only read asynchronously (the browser): compile on the frame after it arrived
+    private string _loadingFile;
+
+    private async void LoadPackageFileThenCompile(string fileName)
+    {
+        if (_loadingFile == fileName)
+            return;
+
+        _loadingFile = fileName;
+        try
+        {
+            await SkSl.LoadFromResourcesAsync(fileName);
+        }
+        catch (Exception e)
+        {
+            Super.Log($"[SkiaShaderEffect] Failed to load {fileName}: {e.Message}");
+            if (_loadingFile == fileName)
+            {
+                _loadingFile = null;
+                _compileFailed = true;
+            }
+            return;
+        }
+
+        if (_loadingFile != fileName)
+            return;
+
+        _loadingFile = null;
+        _hasNewShader = true;
+        Update();
     }
 
     public event EventHandler<string> OnCompilationError;
@@ -640,8 +677,11 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
         // Template handling
         if (!string.IsNullOrEmpty(ShaderTemplate))
         {
-            if (string.IsNullOrEmpty(_template))
-                _template = SkSl.LoadFromResources(ShaderTemplate);
+            if (string.IsNullOrEmpty(_template) && !SkSl.TryLoadFromResources(ShaderTemplate, out _template))
+            {
+                LoadPackageFileThenCompile(ShaderTemplate);
+                return;
+            }
         }
 
         if (!string.IsNullOrEmpty(_template))

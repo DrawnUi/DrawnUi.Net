@@ -15,7 +15,7 @@ public enum CacheSharingType
     /// All instances of the same control type on the same Canvas share a single CachedObject.
     /// The first instance to render creates the cache; others reuse it directly.
     /// Disposing an individual control does not release the shared cache.
-    /// Use SuperView.Cache.Free&lt;T&gt;() to release explicitly, or let the Canvas dispose it.
+    /// Use Superview.SharedCache.Free&lt;T&gt;() to release explicitly, or let the Canvas dispose it.
     /// </summary>
     Shared
 }

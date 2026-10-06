@@ -94,7 +94,7 @@ public class TransformsPage : SkiaLayer
                                 Children = new List<SkiaControl>
                                 {
                                     new SkiaButton("Fade") { BackgroundColor = Color.Parse("#0D6EFD") }.OnTapped(me => _ = Fade()),
-                                    new SkiaButton("Scale") { BackgroundColor = Color.Parse("#0D6EFD") }.OnTapped(me => _ = Scale()),
+                                    new SkiaButton("Scale") { BackgroundColor = Color.Parse("#0D6EFD") }.OnTapped(me => _ = ScaleDemo()),
                                     new SkiaButton("Translate") { BackgroundColor = Color.Parse("#0D6EFD") }.OnTapped(me => _ = Translate()),
                                     new SkiaButton("Rotate") { BackgroundColor = Color.Parse("#0D6EFD") }.OnTapped(me => { _logo.Rotation = 0; _ = _logo.RotateToAsync(360, 600, Easing.CubicInOut); }),
                                     new SkiaButton("Spin") { BackgroundColor = Color.Parse("#20C997") }.Assign(out _spinButton).OnTapped(me => _ = ToggleSpin()),
@@ -116,7 +116,7 @@ public class TransformsPage : SkiaLayer
         await _logo.FadeToAsync(1, 300);
     }
 
-    private async Task Scale()
+    private async Task ScaleDemo()
     {
         await _logo.ScaleToAsync(1.6, 1.6, 250, Easing.CubicOut);
         await _logo.ScaleToAsync(1, 1, 250, Easing.CubicIn);

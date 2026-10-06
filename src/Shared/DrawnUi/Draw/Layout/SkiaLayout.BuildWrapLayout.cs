@@ -27,6 +27,9 @@ public partial class SkiaLayout
             float maxHeight = 0.0f;
             float currentLineWidth = 0.0f;
             float currentLineRealWidth = 0.0f;
+            // the line's width before pixel rounding (children and spacing are rounded one by one, so the rounded sum
+            // can pass the line by a pixel or two when the children fit it exactly)
+            float currentLineExactWidth = 0.0f;
 
             // for autosize
             float maxWidth = 0.0f;
@@ -37,7 +40,6 @@ public partial class SkiaLayout
             var cellsToLayoutLater = new List<ControlInStack>();
 
             var available = rectForChildrenPixels;
-            available.Inflate(-1, -1); //fix pixels roundings
 
             var maxAvailableSpace = available.Width;
             float sizePerChunk = maxAvailableSpace;
@@ -72,6 +74,7 @@ public partial class SkiaLayout
                 maxHeight = 0.0f;
                 currentLineWidth = 0f;
                 currentLineRealWidth = 0f;
+                currentLineExactWidth = 0f;
 
                 rectForChild.Left = isRtl ? rectForChildrenPixels.Right : 0;  //reset to start
 
@@ -169,6 +172,8 @@ public partial class SkiaLayout
 
                 currentLineWidth += add;
                 currentLineRealWidth += add;
+                if (column > 0)
+                    currentLineExactWidth += (float)(_layout.Spacing * scale);
 
                 if (useFixedSplitSize)
                 {
@@ -295,13 +300,10 @@ public partial class SkiaLayout
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
                 ScaledSize MeasureCellInternal()
                 {
-                    // A Fill-X child fills the REST of the row (flex-fill, 1.9.7.4 semantic): measured with the
-                    // remaining width, not the full row width — that made it never fit and always break to
-                    // its own row.
-                    if (!useFixedSplitSize && child.NeedFillX)
-                    {
-                        rectFitChild.Right = rectForChild.Right;
-                    }
+                    // A Fill-X child is measured with the whole line width (StartColumn), like any other child: after
+                    // siblings it does not fit, takes a line of its own, and the next child starts a new line (React
+                    // MeasureWrap; Nick 2026-10-02). It used to get the rest of its line (1.9.7.4 flex-fill), which
+                    // squeezed a panel into the strip left beside wide siblings.
 
                     if (_layout.IsTemplated)
                     {
@@ -338,8 +340,23 @@ public partial class SkiaLayout
                     return MeasureCell(rectFitChild, cell, child, scale);
                 }
 
-                //we know we will not fit in advance
-                if (child.WidthRequestWithMargins * scale > rectFitChild.Width)
+                // The child's width before pixel rounding: a fixed-width child is its request (when the measure only
+                // rounded it), any other child its measured pixels.
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                float ExactWidth()
+                {
+                    var width = cell.Measured.Pixels.Width;
+                    if (child.WidthRequest >= 0)
+                    {
+                        var requested = (float)(child.WidthRequestWithMargins * scale);
+                        if (Math.Abs(requested - width) <= 0.5f)
+                            return requested;
+                    }
+                    return width;
+                }
+
+                //we know we will not fit in advance (an empty line is never broken: a new one is no wider)
+                if (child.WidthRequestWithMargins * scale > rectFitChild.Width && column > 0)
                 {
                     BreakRow();
                     remainingSize = rectForChild.Width;
@@ -355,10 +372,19 @@ public partial class SkiaLayout
                 {
                     //add logic for col row
 
-                    //check we are within bounds
-                    var fitsH = cell.Measured.Pixels.Width <= remainingSize && !cell.Measured.WidthCut;
+                    // WidthCut says the content is wider than the measured box. For a content-sized child that means
+                    // the line squeezed it, so it moves to a new line; a child of fixed or Fill width keeps its box,
+                    // whose content may overflow it on purpose (an unclipped child pushed out by a negative margin
+                    // used to send every such box to a line of its own). An empty line is never broken: a new one is
+                    // no wider, it only left a blank line above.
+                    // The fit is decided on sizes before pixel rounding, as React does: two cards of (line - spacing) / 2
+                    // fit their line at any scale, though each one rounded up could pass it by a pixel (the arrange clamps
+                    // that pixel at the line end).
+                    var exactRemaining = remainingSize + currentLineWidth - currentLineExactWidth;
+                    var fitsH = ExactWidth() <= exactRemaining + 0.01f
+                                && !(child.NeedAutoWidth && cell.Measured.WidthCut);
 
-                    if (!fitsH && !useFixedSplitSize)
+                    if (!fitsH && !useFixedSplitSize && column > 0)
                     {
                         BreakRow();
                         measured = MeasureCellInternal();
@@ -370,6 +396,7 @@ public partial class SkiaLayout
                     }
 
                     structure.Add(cell, column, row);
+                    currentLineExactWidth += ExactWidth();
                     FinalizeColumn(cell.Measured.Pixels.Width, cell.Measured.Pixels.Height);
 
                     cellsToLayoutLater.Add(cell);

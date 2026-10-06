@@ -1,25 +1,27 @@
 # Animation Controls
 
-DrawnUi.Maui provides powerful controls for displaying animations directly on the canvas with high performance. This article covers the animation controls available in the framework.
+DrawnUI provides powerful controls for displaying animations directly on the canvas with high performance. This article covers the animation controls available in the framework.
 
 ## Animation Basics
 
-All animation controls in DrawnUi.Maui share common functionality through the `AnimatedFramesRenderer` base class. This provides consistent playback control and event handling across different animation types.
+All animation controls in DrawnUI share common functionality through the `AnimatedFramesRenderer` base class. This provides consistent playback control and event handling across different animation types.
 
 Common properties and methods include:
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `AutoPlay` | bool | Automatically start animation when loaded |
+| `AutoPlay` | bool | Automatically start animation when loaded (default true) |
 | `IsPlaying` | bool | Indicates if animation is currently playing |
-| `Repeat` | int | Number of times to repeat (-1 for infinite looping) |
-| `SpeedRatio` | double | Animation playback speed multiplier |
-| `DefaultFrame` | int | Frame to display when not playing |
+| `Repeat` | int | Number of times to repeat (-1 for infinite looping, default 0 = play once) |
+| `SpeedRatio` | double | Playback speed: 1 is normal, 0.5 is half speed (twice as long), 2 is double speed. Values of 0 or below play at normal speed |
+| `DefaultFrame` | int | Frame index shown when not playing: 0 is the first frame, -1 the last one |
 
 Common methods:
 - `Start()` - Begin or resume the animation
 - `Stop()` - Pause the animation
-- `Seek(frame)` - Jump to a specific frame
+- `Seek(position)` - Jump to a position: a time in milliseconds for `SkiaSprite` and `SkiaGif`, a frame number for `SkiaLottie`
+
+Before 1.10.6.22, a `SpeedRatio` below 1 played faster than asked: 0.5 played at about two thirds of the speed instead of half.
 
 Common events:
 - `Started` - Fires when animation begins
@@ -52,8 +54,8 @@ SkiaGif is a control for displaying animated GIF images with precise frame timin
 SkiaGif can load animations from various sources:
 
 ```csharp
-// From app resources
-myGif.Source = "embedded_resource.gif";
+// From app resources (Resources/Raw on .NET MAUI)
+myGif.Source = "animation.gif";
 
 // From file system
 myGif.Source = "file:///path/to/animation.gif";
@@ -71,8 +73,11 @@ myGif.Start();
 // Stop at current frame
 myGif.Stop();
 
-// Jump to specific frame
-myGif.Seek(5);
+// Jump to a time position, in milliseconds
+myGif.Seek(500);
+
+// Show frame 5 while not playing
+myGif.DefaultFrame = 5;
 
 // Get total frames
 int total = myGif.Animation?.TotalFrames ?? 0;
@@ -184,18 +189,17 @@ For more granular control, you can replace multiple specific colors:
 
 #### Programmatic Color Changes
 ```csharp
-// Replace specific colors in the animation
+// Replace specific colors in the animation,
+// every change of the collection reloads the animation
 myLottie.Colors.Add(Colors.Blue);
 myLottie.Colors.Add(Colors.Green);
-
-// Apply changes
-myLottie.ReloadSource();
 ```
 
 **Color Replacement Logic:**
 - Colors are replaced in the order they appear in the original animation
-- First color in `Colors` collection replaces the first unique color found
-- `ColorTint` applies a global tint over the entire animation
+- First color in `Colors` collection replaces the first unique color found; unique colors past the end of the list get the last color of the list
+- `ColorTint` replaces every color of the animation with that one color (each keeps its own alpha)
+- When `Colors` is not empty, `ColorTint` is ignored
 - Use `Colors` for precise color replacement, `ColorTint` for theme integration
 
 ## SkiaSprite
@@ -223,10 +227,10 @@ SkiaSprite is a high-performance control for displaying and animating sprite she
 | `Source` | string | Path or URL of the sprite sheet image |
 | `Columns` | int | Number of columns in the sprite sheet grid |
 | `Rows` | int | Number of rows in the sprite sheet grid |
-| `FramesPerSecond` | int | Animation speed in frames per second (default: 24) |
+| `FramesPerSecond` | double | Animation speed in frames per second (default: 24) |
 | `MaxFrames` | int | Maximum number of frames to use (0 means use all) |
-| `CurrentFrame` | int | Current frame being displayed (0-based index) |
-| `FrameSequence` | int[] | Custom sequence of frames to play |
+| `CurrentFrame` | int | Frame being displayed (0-based index). Set it to show that frame, -1 shows the last one |
+| `FrameSequence` | int[] | Custom sequence of frames to play. Frame indexes (`CurrentFrame`, `DefaultFrame`) then count positions in the sequence |
 | `AnimationName` | string | Name of a predefined animation sequence |
 
 ### Sprite Sheet Structure
@@ -373,6 +377,7 @@ public partial class AnimationPage : ContentPage
 
 ```xml
 <DrawUi:SkiaButton
+    x:Name="MyButton"
     WidthRequest="200"
     HeightRequest="60"
     BackgroundColor="Transparent">

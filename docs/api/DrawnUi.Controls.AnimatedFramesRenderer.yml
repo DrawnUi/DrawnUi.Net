@@ -18,6 +18,7 @@ items:
   - DrawnUi.Controls.AnimatedFramesRenderer.Finished
   - DrawnUi.Controls.AnimatedFramesRenderer.GetAnimatorParent
   - DrawnUi.Controls.AnimatedFramesRenderer.GetFrameAt(System.Single)
+  - DrawnUi.Controls.AnimatedFramesRenderer.GetPlaybackDurationMs(System.Double)
   - DrawnUi.Controls.AnimatedFramesRenderer.GetSourceType(System.String)
   - DrawnUi.Controls.AnimatedFramesRenderer.InitializeAnimator
   - DrawnUi.Controls.AnimatedFramesRenderer.IsPlaying
@@ -134,6 +135,7 @@ items:
   - DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
   - DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
   - DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+  - DrawnUi.Draw.SkiaControl.LastCompositeRecord
   - DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.CacheSharingProperty
   - DrawnUi.Draw.SkiaControl.CacheSharing
@@ -155,6 +157,7 @@ items:
   - DrawnUi.Draw.SkiaControl.CreateRenderedObject(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean)
   - DrawnUi.Draw.SkiaControl.RasterizeToCache(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.CheckCachedObjectValid(DrawnUi.Draw.CachedObject,SkiaSharp.SKRect,DrawnUi.Draw.SkiaDrawingContext)
+  - DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
   - DrawnUi.Draw.SkiaControl.IsCacheGPU
   - DrawnUi.Draw.SkiaControl.UsingCacheType
   - DrawnUi.Draw.SkiaControl.IsCacheComposite
@@ -548,6 +551,8 @@ items:
   - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
   - DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  - DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+  - DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
   - DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   - DrawnUi.Draw.SkiaControl.AcceptsInput
   - DrawnUi.Draw.SkiaControl.NotifyAccessibility
@@ -586,9 +591,9 @@ items:
   - DrawnUi.Draw.SkiaControl.MeasureAbsolute(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaControl.MeasureAbsoluteBase(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single)
-  - DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  - DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  - DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  - DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  - DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   - DrawnUi.Draw.SkiaControl.GetDrawingRectForChildren(SkiaSharp.SKRect,System.Double)
   - DrawnUi.Draw.SkiaControl.GetDrawingRectWithMargins(SkiaSharp.SKRect,System.Double)
   - DrawnUi.Draw.SkiaControl.lockMeasured
@@ -1729,10 +1734,12 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Seek
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 229
+    startLine: 232
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
+  summary: 'Jumps to a position: a time in milliseconds for SkiaSprite and SkiaGif, a frame number for SkiaLottie.'
+  example: []
   syntax:
     content: public void Seek(double frame)
     parameters:
@@ -1761,7 +1768,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Start
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 234
+    startLine: 237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1793,7 +1800,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Stop
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 261
+    startLine: 264
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1819,7 +1826,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetFrameAt
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 281
+    startLine: 284
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1856,7 +1863,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnFinished
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 286
+    startLine: 289
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1882,7 +1889,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnStarted
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 291
+    startLine: 294
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1908,7 +1915,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 296
+    startLine: 299
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1937,7 +1944,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplySpeed
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 308
+    startLine: 311
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1945,6 +1952,47 @@ items:
     content: protected virtual void ApplySpeed()
     content.vb: Protected Overridable Sub ApplySpeed()
   overload: DrawnUi.Controls.AnimatedFramesRenderer.ApplySpeed*
+- uid: DrawnUi.Controls.AnimatedFramesRenderer.GetPlaybackDurationMs(System.Double)
+  commentId: M:DrawnUi.Controls.AnimatedFramesRenderer.GetPlaybackDurationMs(System.Double)
+  id: GetPlaybackDurationMs(System.Double)
+  parent: DrawnUi.Controls.AnimatedFramesRenderer
+  langs:
+  - csharp
+  - vb
+  name: GetPlaybackDurationMs(double)
+  nameWithType: AnimatedFramesRenderer.GetPlaybackDurationMs(double)
+  fullName: DrawnUi.Controls.AnimatedFramesRenderer.GetPlaybackDurationMs(double)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GetPlaybackDurationMs
+    path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
+    startLine: 320
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  summary: >-
+    Play time of one pass for content that lasts <code class="paramref">durationMs</code> at normal speed:
+
+    playback speed is <xref href="DrawnUi.Controls.AnimatedFramesRenderer.SpeedRatio" data-throw-if-not-resolved="false"></xref>, so 2 plays in half the time and 0.5 in twice the time.
+
+    A SpeedRatio of 0 or below plays at normal speed.
+  example: []
+  syntax:
+    content: protected double GetPlaybackDurationMs(double durationMs)
+    parameters:
+    - id: durationMs
+      type: System.Double
+    return:
+      type: System.Double
+    content.vb: Protected Function GetPlaybackDurationMs(durationMs As Double) As Double
+  overload: DrawnUi.Controls.AnimatedFramesRenderer.GetPlaybackDurationMs*
+  nameWithType.vb: AnimatedFramesRenderer.GetPlaybackDurationMs(Double)
+  fullName.vb: DrawnUi.Controls.AnimatedFramesRenderer.GetPlaybackDurationMs(Double)
+  name.vb: GetPlaybackDurationMs(Double)
 - uid: DrawnUi.Controls.AnimatedFramesRenderer.ApplyDefaultFrame
   commentId: M:DrawnUi.Controls.AnimatedFramesRenderer.ApplyDefaultFrame
   id: ApplyDefaultFrame
@@ -1963,7 +2011,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyDefaultFrame
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 312
+    startLine: 325
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1989,7 +2037,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWillDisposeWithChildren
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 323
+    startLine: 336
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2021,7 +2069,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Finished
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 336
+    startLine: 349
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2050,7 +2098,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Started
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 338
+    startLine: 351
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2077,7 +2125,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultFrameProperty
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 344
+    startLine: 357
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2104,11 +2152,11 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultFrame
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 358
+    startLine: 371
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  summary: Default is 0. If you set to -1 that would mean "last frame".
+  summary: Frame index shown when not playing. Default is 0, -1 means "last frame".
   example: []
   syntax:
     content: public int DefaultFrame { get; set; }
@@ -2135,7 +2183,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpeedRatioProperty
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 364
+    startLine: 377
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2162,10 +2210,12 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpeedRatio
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 375
+    startLine: 391
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
+  summary: 'Playback speed: 1 is normal, 0.5 is half speed (twice the duration), 2 is double speed. Default is 1.'
+  example: []
   syntax:
     content: public double SpeedRatio { get; set; }
     parameters: []
@@ -2191,7 +2241,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RepeatProperty
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 381
+    startLine: 397
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2218,7 +2268,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Repeat
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 401
+    startLine: 417
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2249,7 +2299,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoPlayProperty
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 407
+    startLine: 423
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2276,7 +2326,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoPlay
     path: ../src/Shared/DrawnUi/Controls/PlayFrames/AnimatedFramesRenderer.cs
-    startLine: 412
+    startLine: 428
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3192,6 +3242,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CancelOffscreenRendering
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.LastCompositeRecord
+  commentId: P:DrawnUi.Draw.SkiaControl.LastCompositeRecord
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LastCompositeRecord
+  name: LastCompositeRecord
+  nameWithType: SkiaControl.LastCompositeRecord
+  fullName: DrawnUi.Draw.SkiaControl.LastCompositeRecord
 - uid: DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaControl
@@ -3654,6 +3711,13 @@ references:
     name: SkiaDrawingContext
     href: DrawnUi.Draw.SkiaDrawingContext.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
+  commentId: P:DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_PaintsLiveInOffscreenBake
+  name: PaintsLiveInOffscreenBake
+  nameWithType: SkiaControl.PaintsLiveInOffscreenBake
+  fullName: DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
 - uid: DrawnUi.Draw.SkiaControl.IsCacheGPU
   commentId: P:DrawnUi.Draw.SkiaControl.IsCacheGPU
   parent: DrawnUi.Draw.SkiaControl
@@ -11476,6 +11540,56 @@ references:
     name: InputKey
     href: DrawnUi.Draw.InputKey.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+  commentId: M:DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityValue
+  name: GetAccessibilityValue()
+  nameWithType: SkiaControl.GetAccessibilityValue()
+  fullName: DrawnUi.Draw.SkiaControl.GetAccessibilityValue()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+    name: GetAccessibilityValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityValue
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+    name: GetAccessibilityValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityValue
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilitySetValue_System_Double_
+  name: OnAccessibilitySetValue(double)
+  nameWithType: SkiaControl.OnAccessibilitySetValue(double)
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(double)
+  nameWithType.vb: SkiaControl.OnAccessibilitySetValue(Double)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(Double)
+  name.vb: OnAccessibilitySetValue(Double)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+    name: OnAccessibilitySetValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilitySetValue_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+    name: OnAccessibilitySetValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilitySetValue_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   commentId: M:DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Draw.SkiaControl
@@ -12888,21 +13002,21 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
-  name: ContractPixelsRect(SKRect, float, Thickness)
-  nameWithType: SkiaControl.ContractPixelsRect(SKRect, float, Thickness)
-  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect, float, Microsoft.Maui.Thickness)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
+  name: ContractPixelsRect(SKRect, float, in Thickness)
+  nameWithType: SkiaControl.ContractPixelsRect(SKRect, float, in Thickness)
+  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect, float, in Microsoft.Maui.Thickness)
   nameWithType.vb: SkiaControl.ContractPixelsRect(SKRect, Single, Thickness)
   fullName.vb: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect, Single, Microsoft.Maui.Thickness)
   name.vb: ContractPixelsRect(SKRect, Single, Thickness)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -12916,15 +13030,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: ','
   - name: " "
+  - name: in
+  - name: " "
   - uid: Microsoft.Maui.Thickness
     name: Thickness
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -12943,21 +13059,21 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
-  name: ContractPixelsRectForContent(SKRect, float, Thickness)
-  nameWithType: SkiaControl.ContractPixelsRectForContent(SKRect, float, Thickness)
-  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect, float, Microsoft.Maui.Thickness)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
+  name: ContractPixelsRectForContent(SKRect, float, in Thickness)
+  nameWithType: SkiaControl.ContractPixelsRectForContent(SKRect, float, in Thickness)
+  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect, float, in Microsoft.Maui.Thickness)
   nameWithType.vb: SkiaControl.ContractPixelsRectForContent(SKRect, Single, Thickness)
   fullName.vb: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect, Single, Microsoft.Maui.Thickness)
   name.vb: ContractPixelsRectForContent(SKRect, Single, Thickness)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRectForContent
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -12971,15 +13087,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: ','
   - name: " "
+  - name: in
+  - name: " "
   - uid: Microsoft.Maui.Thickness
     name: Thickness
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRectForContent
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -12998,21 +13116,21 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  commentId: M:DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+- uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  commentId: M:DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
-  name: ExpandPixelsRect(SKRect, float, Thickness)
-  nameWithType: SkiaControl.ExpandPixelsRect(SKRect, float, Thickness)
-  fullName: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect, float, Microsoft.Maui.Thickness)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
+  name: ExpandPixelsRect(SKRect, float, in Thickness)
+  nameWithType: SkiaControl.ExpandPixelsRect(SKRect, float, in Thickness)
+  fullName: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect, float, in Microsoft.Maui.Thickness)
   nameWithType.vb: SkiaControl.ExpandPixelsRect(SKRect, Single, Thickness)
   fullName.vb: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect, Single, Microsoft.Maui.Thickness)
   name.vb: ExpandPixelsRect(SKRect, Single, Thickness)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ExpandPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -13026,15 +13144,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: ','
   - name: " "
+  - name: in
+  - name: " "
   - uid: Microsoft.Maui.Thickness
     name: Thickness
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ExpandPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -36061,6 +36181,26 @@ references:
   name: ApplySpeed
   nameWithType: AnimatedFramesRenderer.ApplySpeed
   fullName: DrawnUi.Controls.AnimatedFramesRenderer.ApplySpeed
+- uid: DrawnUi.Controls.AnimatedFramesRenderer.SpeedRatio
+  commentId: P:DrawnUi.Controls.AnimatedFramesRenderer.SpeedRatio
+  parent: DrawnUi.Controls.AnimatedFramesRenderer
+  href: DrawnUi.Controls.AnimatedFramesRenderer.html#DrawnUi_Controls_AnimatedFramesRenderer_SpeedRatio
+  name: SpeedRatio
+  nameWithType: AnimatedFramesRenderer.SpeedRatio
+  fullName: DrawnUi.Controls.AnimatedFramesRenderer.SpeedRatio
+- uid: DrawnUi.Controls.AnimatedFramesRenderer.GetPlaybackDurationMs*
+  commentId: Overload:DrawnUi.Controls.AnimatedFramesRenderer.GetPlaybackDurationMs
+  href: DrawnUi.Controls.AnimatedFramesRenderer.html#DrawnUi_Controls_AnimatedFramesRenderer_GetPlaybackDurationMs_System_Double_
+  name: GetPlaybackDurationMs
+  nameWithType: AnimatedFramesRenderer.GetPlaybackDurationMs
+  fullName: DrawnUi.Controls.AnimatedFramesRenderer.GetPlaybackDurationMs
+- uid: DrawnUi.Controls.AnimatedFramesRenderer
+  commentId: T:DrawnUi.Controls.AnimatedFramesRenderer
+  parent: DrawnUi.Controls
+  href: DrawnUi.Controls.AnimatedFramesRenderer.html
+  name: AnimatedFramesRenderer
+  nameWithType: AnimatedFramesRenderer
+  fullName: DrawnUi.Controls.AnimatedFramesRenderer
 - uid: DrawnUi.Controls.AnimatedFramesRenderer.ApplyDefaultFrame*
   commentId: Overload:DrawnUi.Controls.AnimatedFramesRenderer.ApplyDefaultFrame
   href: DrawnUi.Controls.AnimatedFramesRenderer.html#DrawnUi_Controls_AnimatedFramesRenderer_ApplyDefaultFrame

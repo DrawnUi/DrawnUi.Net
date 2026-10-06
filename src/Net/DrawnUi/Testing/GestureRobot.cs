@@ -24,6 +24,11 @@ public sealed class GestureRobot
         _scale = host.Scale <= 0 ? 1f : host.Scale;
     }
 
+    /// <summary>
+    /// Device the events report (mouse, touch, pen); null sends no pointer data, as before.
+    /// </summary>
+    public PointerDeviceType? Device { get; set; }
+
     /// <summary>Single tap at the given point (no movement): Down → Tapped → Up.</summary>
     public void Tap(double x, double y, double frameMs = 16.0)
     {
@@ -88,16 +93,59 @@ public sealed class GestureRobot
             prev = move;
         }
 
-        Advance(dt + holdMs);
-        if (holdMs > 0)
-        {
-            // VelocityAccumulator ages samples by REAL time: sleep so the release sees a stale window -> ~zero velocity
-            System.Threading.Thread.Sleep((int)holdMs);
-        }
+        Advance(dt + holdMs); // the virtual clock ages the samples: the release sees a stale window -> ~zero velocity
         var up = MakeArgs(id, TouchActionType.Released, toPx, fromPx);
         up.IsInContact = false;
         TouchActionEventArgs.FillDistanceInfo(up, prev);
         Send(TouchActionType.Released, up, TouchActionResult.Up, dt);
+    }
+
+    /// <summary>
+    /// Drives the desktop pointer path, <see cref="DrawnUi.Views.Canvas.HandleDesktopPointerDown"/> / Move / Up, as the
+    /// OpenTK and WPF windows call it, on this robot's clock: every event at its own time, in ms after the press, so
+    /// recorded input is replayed exactly, bursts included. The first point is the press, the last a move; the release
+    /// follows <paramref name="releaseAfterMs"/> later at the last point. Points in points; a frame is rendered after
+    /// each event.
+    /// </summary>
+    public void DesktopDrag(IReadOnlyList<(double Ms, double X, double Y)> path, double releaseAfterMs = 0, double frameMs = 16.0)
+    {
+        if (path.Count < 2)
+            throw new ArgumentException("A press and at least one move", nameof(path));
+
+        var canvas = _host.Canvas;
+        var width = (float)(canvas.WidthRequest * _scale);
+        var height = (float)(canvas.HeightRequest * _scale);
+        var pointer = Device != null
+            ? new PointerData { DeviceType = Device.Value, Button = AppoMobi.Gestures.MouseButton.Left }
+            : null;
+        var start = _clock;
+
+        void At(double ms, Action send)
+        {
+            _clock = start.AddMilliseconds(ms);
+            var previous = VelocityAccumulator.ClockOverrideNanos;
+            VelocityAccumulator.ClockOverrideNanos = _clockNanos ??= () => _clock.Ticks * 100;
+            try
+            {
+                send();
+                _host.RenderFrame(frameMs);
+            }
+            finally
+            {
+                VelocityAccumulator.ClockOverrideNanos = previous;
+            }
+        }
+
+        var first = ToPixels(path[0].X, path[0].Y);
+        At(path[0].Ms, () => canvas.HandleDesktopPointerDown(first.X, first.Y, width, height, pointer));
+        for (var i = 1; i < path.Count; i++)
+        {
+            var px = ToPixels(path[i].X, path[i].Y);
+            At(path[i].Ms, () => canvas.HandleDesktopPointerMove(px.X, px.Y, true, width, height, pointer));
+        }
+
+        var last = ToPixels(path[^1].X, path[^1].Y);
+        At(path[^1].Ms + releaseAfterMs, () => canvas.HandleDesktopPointerUp(last.X, last.Y, width, height, pointer));
     }
 
     /// <summary>Convenience overload taking raw coordinates.</summary>
@@ -245,15 +293,30 @@ public sealed class GestureRobot
             StartingLocation = startingPixel,
             IsInsideView = true
         };
+        if (Device != null)
+            args.Pointer = new PointerData { DeviceType = Device.Value, Button = AppoMobi.Gestures.MouseButton.Left };
         return args;
     }
 
     private void Send(TouchActionType type, TouchActionEventArgs args, TouchActionResult result, double frameMs)
     {
-        _host.Canvas.OnGestureEvent(type, args, result);
-        // Gesture delivery is queued in ExecuteBeforeDraw and flushed on the next frame.
-        _host.RenderFrame(frameMs);
+        // velocity samples are timed by this robot's clock, not the wall clock: a flick is the same however long
+        // the machine took to render it (the engine judges a sample's age against the clock it was taken with)
+        var previous = VelocityAccumulator.ClockOverrideNanos;
+        VelocityAccumulator.ClockOverrideNanos = _clockNanos ??= () => _clock.Ticks * 100;
+        try
+        {
+            _host.Canvas.OnGestureEvent(type, args, result);
+            // Gesture delivery is queued in ExecuteBeforeDraw and flushed on the next frame.
+            _host.RenderFrame(frameMs);
+        }
+        finally
+        {
+            VelocityAccumulator.ClockOverrideNanos = previous;
+        }
     }
+
+    private Func<long> _clockNanos;
 
     private void Advance(double ms) => _clock = _clock.AddMilliseconds(ms);
 

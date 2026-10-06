@@ -1,31 +1,39 @@
-# Using Gradients in DrawnUi.Maui
+# Using Gradients in DrawnUi
 
-DrawnUi.Maui provides powerful gradient support for shapes, text, and images, enabling visually rich and modern UI designs. This article covers the types of gradients available, how to apply them, and practical examples for common scenarios.
+DrawnUi provides gradient support for shapes, text, and SVG icons, enabling visually rich and modern UI designs. This article covers the types of gradients available, how to apply them, and practical examples for common scenarios.
 
 ## Gradient Types
 
-DrawnUi.Maui supports several gradient types:
+`SkiaGradient.Type` (`GradientType`) supports several gradient types:
 
-- **Linear Gradient**: Colors transition along a straight line.
-- **Radial Gradient**: Colors radiate outward from a center point.
-- **Sweep Gradient**: Colors sweep around a center point in a circular fashion.
+- **Linear** (default): Colors transition along a straight line, from (`StartXRatio`, `StartYRatio`) to (`EndXRatio`, `EndYRatio`), as ratios of the control size.
+- **Circular**: Colors radiate outward from (`StartXRatio`, `StartYRatio`) as a circle.
+- **Oval**: Like `Circular`, stretched to the control's aspect ratio.
+- **Sweep**: Colors sweep around the control's center. The start angle is the control's `Value1`, the sweep angle is its `Value2`.
+
+`Conical` is in the enum but currently draws as `Linear`. Colors go in `Colors`; optional stop offsets (0 to 1) go in `ColorPositions`, one per color.
 
 ## Applying Gradients to Shapes
 
-You can apply gradients to the background or stroke of any `SkiaShape` using the `BackgroundGradient` and `StrokeGradient` properties.
+You can apply gradients to the fill or stroke of any `SkiaShape` using the `FillGradient` and `StrokeGradient` properties.
 
 ### Linear Gradient Example
 
 ```xml
 <DrawUi:SkiaShape Type="Rectangle" CornerRadius="16" WidthRequest="200" HeightRequest="100">
-    <DrawUi:SkiaShape.BackgroundGradient>
-        <DrawUi:SkiaGradient 
-            Type="Linear" 
-            StartColor="#FF6A00" 
-            EndColor="#FFD800" 
-            StartPoint="0,0" 
-            EndPoint="1,1" />
-    </DrawUi:SkiaShape.BackgroundGradient>
+    <DrawUi:SkiaShape.FillGradient>
+        <DrawUi:SkiaGradient
+            Type="Linear"
+            StartXRatio="0"
+            StartYRatio="0"
+            EndXRatio="1"
+            EndYRatio="1">
+            <DrawUi:SkiaGradient.Colors>
+                <Color>#FF6A00</Color>
+                <Color>#FFD800</Color>
+            </DrawUi:SkiaGradient.Colors>
+        </DrawUi:SkiaGradient>
+    </DrawUi:SkiaShape.FillGradient>
 </DrawUi:SkiaShape>
 ```
 
@@ -67,28 +75,32 @@ Maybe you have colors defined in a static class?
 
 ```xml
 <DrawUi:SkiaShape Type="Circle" WidthRequest="120" HeightRequest="120">
-    <DrawUi:SkiaShape.BackgroundGradient>
-        <DrawUi:SkiaGradient 
-            Type="Radial" 
-            StartColor="#00C3FF" 
-            EndColor="#FFFF1C" 
-            Center="0.5,0.5" 
-            Radius="0.5" />
-    </DrawUi:SkiaShape.BackgroundGradient>
+    <DrawUi:SkiaShape.FillGradient>
+        <DrawUi:SkiaGradient
+            Type="Circular"
+            StartXRatio="0.5"
+            StartYRatio="0.5">
+            <DrawUi:SkiaGradient.Colors>
+                <Color>#00C3FF</Color>
+                <Color>#FFFF1C</Color>
+            </DrawUi:SkiaGradient.Colors>
+        </DrawUi:SkiaGradient>
+    </DrawUi:SkiaShape.FillGradient>
 </DrawUi:SkiaShape>
 ```
 
 ### Sweep Gradient Example
 
 ```xml
-<DrawUi:SkiaShape Type="Ellipse" WidthRequest="180" HeightRequest="100">
-    <DrawUi:SkiaShape.BackgroundGradient>
-        <DrawUi:SkiaGradient 
-            Type="Sweep" 
-            StartColor="#FF0080" 
-            EndColor="#7928CA" 
-            Center="0.5,0.5" />
-    </DrawUi:SkiaShape.BackgroundGradient>
+<DrawUi:SkiaShape Type="Ellipse" WidthRequest="180" HeightRequest="100" Value1="0" Value2="360">
+    <DrawUi:SkiaShape.FillGradient>
+        <DrawUi:SkiaGradient Type="Sweep">
+            <DrawUi:SkiaGradient.Colors>
+                <Color>#FF0080</Color>
+                <Color>#7928CA</Color>
+            </DrawUi:SkiaGradient.Colors>
+        </DrawUi:SkiaGradient>
+    </DrawUi:SkiaShape.FillGradient>
 </DrawUi:SkiaShape>
 ```
 
@@ -98,21 +110,26 @@ You can define gradients with multiple color stops:
 
 ```xml
 <DrawUi:SkiaShape Type="Rectangle" WidthRequest="220" HeightRequest="60">
-    <DrawUi:SkiaShape.BackgroundGradient>
-        <DrawUi:SkiaGradient Type="Linear" StartPoint="0,0" EndPoint="1,0">
-            <DrawUi:SkiaGradient.Stops>
-                <DrawUi:GradientStop Color="#FF6A00" Offset="0.0" />
-                <DrawUi:GradientStop Color="#FFD800" Offset="0.5" />
-                <DrawUi:GradientStop Color="#00FFB4" Offset="1.0" />
-            </DrawUi:SkiaGradient.Stops>
+    <DrawUi:SkiaShape.FillGradient>
+        <DrawUi:SkiaGradient Type="Linear" StartXRatio="0" StartYRatio="0" EndXRatio="1" EndYRatio="0">
+            <DrawUi:SkiaGradient.Colors>
+                <Color>#FF6A00</Color>
+                <Color>#FFD800</Color>
+                <Color>#00FFB4</Color>
+            </DrawUi:SkiaGradient.Colors>
+            <DrawUi:SkiaGradient.ColorPositions>
+                <x:Double>0.0</x:Double>
+                <x:Double>0.5</x:Double>
+                <x:Double>1.0</x:Double>
+            </DrawUi:SkiaGradient.ColorPositions>
         </DrawUi:SkiaGradient>
-    </DrawUi:SkiaShape.BackgroundGradient>
+    </DrawUi:SkiaShape.FillGradient>
 </DrawUi:SkiaShape>
 ```
 
 ## Applying Gradients to Text
 
-You can apply gradients to text using the `FillGradient` property on `SkiaLabel`:
+You can apply gradients to text using the `FillGradient` property on `SkiaLabel` (`GradientByLines`, default true, applies it per line; `StrokeGradient` paints the text stroke):
 
 ```xml
 <DrawUi:SkiaLabel 
@@ -126,14 +143,19 @@ Or define inline:
 ```xml
 <DrawUi:SkiaLabel Text="Sunset" FontSize="40">
     <DrawUi:SkiaLabel.FillGradient>
-        <DrawUi:SkiaGradient Type="Linear" StartColor="#FF6A00" EndColor="#FFD800" StartPoint="0,0" EndPoint="1,0" />
+        <DrawUi:SkiaGradient Type="Linear" StartXRatio="0" StartYRatio="0" EndXRatio="1" EndYRatio="0">
+            <DrawUi:SkiaGradient.Colors>
+                <Color>#FF6A00</Color>
+                <Color>#FFD800</Color>
+            </DrawUi:SkiaGradient.Colors>
+        </DrawUi:SkiaGradient>
     </DrawUi:SkiaLabel.FillGradient>
 </DrawUi:SkiaLabel>
 ```
 
 ## Applying Gradients to SVG, code behind
 
-You can overlay gradients on images using the `UseGradient`, `StartColor`, and `EndColor` properties on `SkiaImage`:
+You can paint SVG icons with a gradient using the `FillGradient` property on `SkiaSvg` (`GradientBlendMode` sets how it blends with the icon):
 
 ```csharp
 new SkiaSvg()
@@ -156,7 +178,7 @@ new SkiaSvg()
 }
 ```
 
-This creates a fade effect from transparent to black over the image.
+This paints the icon with a diagonal two-color gradient.
 
 ## Defining Gradients as Resources
 
@@ -164,7 +186,12 @@ For reuse, define gradients as resources:
 
 ```xml
 <ContentPage.Resources>
-    <DrawUi:SkiaGradient x:Key="MyGradient" Type="Linear" StartColor="#FF6A00" EndColor="#FFD800" StartPoint="0,0" EndPoint="1,1" />
+    <DrawUi:SkiaGradient x:Key="MyGradient" Type="Linear" StartXRatio="0" StartYRatio="0" EndXRatio="1" EndYRatio="1">
+        <DrawUi:SkiaGradient.Colors>
+            <Color>#FF6A00</Color>
+            <Color>#FFD800</Color>
+        </DrawUi:SkiaGradient.Colors>
+    </DrawUi:SkiaGradient>
 </ContentPage.Resources>
 ```
 
@@ -179,11 +206,12 @@ Then reference with:
 ```csharp
 var gradient = new SkiaGradient
 {
-    Type = SkiaGradientType.Linear,
-    StartColor = Colors.Red,
-    EndColor = Colors.Yellow,
-    StartPoint = new Point(0, 0),
-    EndPoint = new Point(1, 1)
+    Type = GradientType.Linear,
+    Colors = new List<Color> { Colors.Red, Colors.Yellow },
+    StartXRatio = 0,
+    StartYRatio = 0,
+    EndXRatio = 1,
+    EndYRatio = 1
 };
 
 control.FillGradient = gradient;

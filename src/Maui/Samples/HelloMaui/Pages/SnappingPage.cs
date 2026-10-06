@@ -140,8 +140,8 @@ public class SnappingPage : SkiaLayer
                                 {
                                     new SkiaButton("← Prev") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.GoPrev()),
                                     new SkiaButton("Next →") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.GoNext()),
-                                    new SkiaButton("SelectedIndex = 2") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.SelectedIndex = 2),
-                                    new SkiaButton("Index 0, no anim") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => { _carousel.SelectedIndex = 0; _carousel.ApplyIndex(true); }),
+                                    new SkiaButton("ScrollTo(2)") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.ScrollTo(2)),
+                                    new SkiaButton("ScrollTo(0, no anim)") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.ScrollTo(0, false)),
                                     new SkiaButton("Set index 3") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _carousel.SelectedIndex = 3),
                                 },
                             },
@@ -186,7 +186,7 @@ public class SnappingPage : SkiaLayer
                                 }.Adapt(d => _dots.Add(d))).ToList(),
                             },
                             new SkiaLabel { FontSize = 13, TextColor = Muted, HorizontalOptions = LayoutOptions.Fill }.Assign(out _status),
-                            new SkiaRow
+                            new SkiaWrap
                             {
                                 Spacing = 8,
                                 VerticalOptions = LayoutOptions.Center,
@@ -223,16 +223,17 @@ public class SnappingPage : SkiaLayer
                             }
                             .Assign(out _loop)
                             .Adapt(me => me.SelectedIndexChanged += (_, i) => _loopTitle.Text = $"IsLooped + ItemsSource/ItemTemplate (12 recycled cells) · SelectedIndex={i}"),
-                            new SkiaRow
+                            new SkiaWrap
                             {
                                 Spacing = 8,
                                 Children = new List<SkiaControl>
                                 {
                                     new SkiaButton("Prev") { BackgroundColor = Color.Parse("#0D6EFD") }.OnTapped(me => _loop.GoPrev()),
                                     new SkiaButton("Next") { BackgroundColor = Color.Parse("#0D6EFD") }.OnTapped(me => _loop.GoNext()),
-                                    new SkiaLabel("Wraps last to first both ways (virtual anchors); LinearSpeedMs=350 = one slide per 350 ms without Bounces; cells are recycled through ItemTemplate.")
+                                    new SkiaLabel("Wraps last → first both ways (virtual anchors); LinearSpeedMs=350 = one slide per 350 ms without Bounces; cells are recycled through ItemTemplate.")
                                     {
                                         FontSize = 12, TextColor = Muted, VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Fill,
+                                        FontFamilyFallback = "FontSymbols,FontSymbols2",
                                     },
                                 },
                             }),
@@ -256,7 +257,7 @@ public class SnappingPage : SkiaLayer
                                 Children = new List<SkiaControl>
                                 {
                                     new SkiaButton("Open drawer") { BackgroundColor = Color.Parse("#6610F2") }.Assign(out _openButton).OnTapped(me => _drawer.IsOpen = !_drawer.IsOpen),
-                                    new SkiaLabel("IsOpen: False") { FontSize = 14, TextColor = Color.Parse("#DEE2E6"), VerticalOptions = LayoutOptions.Center }.Assign(out _openLabel),
+                                    new SkiaLabel("IsOpen: false") { FontSize = 14, TextColor = Color.Parse("#DEE2E6"), VerticalOptions = LayoutOptions.Center }.Assign(out _openLabel),
                                 },
                             },
                             new SkiaLabel("Direction=FromBottom HeaderSize=56, sits in a SkiaLayer with VerticalOptions=End; snaps by velocity, Bounces enabled.")
@@ -332,7 +333,7 @@ public class SnappingPage : SkiaLayer
                     .Assign(out _drawer)
                     .Adapt(me => me.IsOpenChanged += (_, open) =>
                     {
-                        _openLabel.Text = $"IsOpen: {open}";
+                        _openLabel.Text = $"IsOpen: {(open ? "true" : "false")}";
                         _openButton.Text = open ? "Close drawer" : "Open drawer";
                     }),
                 },
@@ -349,7 +350,7 @@ public class SnappingPage : SkiaLayer
         for (var i = 0; i < _dots.Count; i++)
             _dots[i].WidthRequest = i == index ? 24 : 8;
 
-        _status.Text = $"Selected Index: {index}   ·   InTransition: {_inTransition}   ·   {(_carousel.IsLooped ? "Looping enabled - infinite scroll" : "Looping disabled - bounded scroll")}   ·   {_appeared}";
+        _status.Text = $"Selected Index: {index}   ·   InTransition: {(_inTransition ? "true" : "false")}   ·   {(_carousel.IsLooped ? "Looping enabled - infinite scroll" : "Looping disabled - bounded scroll")}   ·   {_appeared}";
     }
 
     private void SetSpeed(double speed)

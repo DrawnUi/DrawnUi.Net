@@ -50,18 +50,19 @@ public class SpritesPage : SkiaLayer
                         new SkiaLabel("Sprites") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center },
 
                         Card(Title(SpriteTitle()).Assign(out _spriteTitle),
-                            new SkiaRow
+                            new SkiaWrap
                             {
                                 Spacing = 16,
                                 HorizontalOptions = LayoutOptions.Fill,
                                 Children = new List<SkiaControl>
                                 {
-                                    new SkiaSprite { Source = "anims/BlueWarrior/Warrior_Idle.png", Columns = 8, Rows = 1, FramesPerSecond = 15, Repeat = -1, WidthRequest = 160, HeightRequest = 160, BackgroundColor = Color.Parse("#212529"), UseCache = SkiaCacheType.Image }
+                                    new SkiaSprite { Columns = 8, Rows = 1, FramesPerSecond = 15, Repeat = -1, WidthRequest = 160, HeightRequest = 160, BackgroundColor = Color.Parse("#212529"), UseCache = SkiaCacheType.Image }
                                         .Assign(out _sprite)
                                         .Adapt(me =>
                                         {
-                                            // no Success / Error events on SkiaSprite: Started fires once the sheet is cut into frames
-                                            me.Started += (_, _) => { _info = $"{me.TotalFrames} frames · {me.FrameWidth}×{me.FrameHeight} px · {Math.Round(me.DurationMs)} ms"; _spriteTitle.Text = SpriteTitle(); };
+                                            me.Success += (_, _) => SpriteInfo($"{me.TotalFrames} frames · {me.FrameWidth}×{me.FrameHeight} px · {Math.Round(me.DurationMs)} ms");
+                                            me.Error += (_, e) => SpriteInfo($"error: {e.Message}");
+                                            me.Source = "anims/BlueWarrior/Warrior_Idle.png"; // after subscribing
                                         }),
                                     new SkiaSprite { Source = "anims/RedWarrior/Warrior_Attack1.png", Columns = 4, Rows = 1, FramesPerSecond = 8, Repeat = -1, WidthRequest = 160, HeightRequest = 160, BackgroundColor = Color.Parse("#212529"), UseCache = SkiaCacheType.Image },
                                     new SkiaSprite { Source = "anims/Trees/Tree1.png", Columns = 8, Rows = 1, FramesPerSecond = 6, Repeat = -1, WidthRequest = 160, HeightRequest = 160, BackgroundColor = Color.Parse("#212529"), UseCache = SkiaCacheType.Image },
@@ -129,10 +130,10 @@ public class SpritesPage : SkiaLayer
                                 HorizontalOptions = LayoutOptions.Center,
                                 Children = new List<SkiaControl>
                                 {
-                                    new SkiaButton("Left") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(-1, 0)),
-                                    new SkiaButton("Up") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(0, -1)),
-                                    new SkiaButton("Down") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(0, 1)),
-                                    new SkiaButton("Right") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(1, 0)),
+                                    new SkiaButton("← Left") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(-1, 0)),
+                                    new SkiaButton("↑ Up") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(0, -1)),
+                                    new SkiaButton("↓ Down") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(0, 1)),
+                                    new SkiaButton("Right →") { BackgroundColor = Color.Parse("#0F3460"), FontSize = 13 }.OnTapped(me => _ = Move(1, 0)),
                                     new SkiaButton("Attack (Space)") { BackgroundColor = Color.Parse("#D63384"), FontSize = 13 }.OnTapped(me => Attack()),
                                 },
                             },
@@ -169,6 +170,12 @@ public class SpritesPage : SkiaLayer
     }
 
     private string SpriteTitle() => $"SkiaSprite — Source=\"anims/BlueWarrior/Warrior_Idle.png\" Columns=8 Rows=1 · {_info}";
+
+    private void SpriteInfo(string info)
+    {
+        _info = info;
+        _spriteTitle.Text = SpriteTitle();
+    }
 
     private string BoardTitle() => $"SkiaSpriteSet warrior on a tile board — arrows / WASD move, Space attacks · tile {_pos.Col},{_pos.Row} · {_player?.WState}";
 

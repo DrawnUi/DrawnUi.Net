@@ -28,7 +28,7 @@ Minimal MAUI example:
     VerticalOptions="Fill">
     <draw:SkiaLayout Type="Column" Padding="24" Spacing="12">
         <draw:SkiaLabel Text="Canvas gestures enabled" FontSize="22" />
-        <draw:SkiaButton Text="Tap me" Clicked="OnButtonClicked" />
+        <draw:SkiaButton Text="Tap me" Tapped="OnButtonTapped" />
     </draw:SkiaLayout>
 </draw:Canvas>
 ```
@@ -45,25 +45,29 @@ Minimal Blazor example:
 @using DrawnUi.Draw
 @using DrawnUi.Views
 
-<Canvas RootControl="@RootControl"
+<Canvas Content="@RootControl"
         WidthRequest="400"
         HeightRequest="220"
         Gestures="@GesturesMode.Enabled" />
 
 @code {
-    private readonly SkiaControl RootControl = new SkiaLayout()
-    {
-        Margin = new Thickness(16),
-        Type = LayoutType.Column,
-        Spacing = 12,
-        Children =
-        {
-            new SkiaLabel { Text = "Blazor canvas gestures enabled", FontSize = 22 },
-            new SkiaButton("Increment").OnTapped(_ => clickCount++)
-        }
-    };
-
+    private SkiaControl RootControl;
     private int clickCount;
+
+    protected override void OnInitialized()
+    {
+        RootControl = new SkiaLayout()
+        {
+            Margin = new Thickness(16),
+            Type = LayoutType.Column,
+            Spacing = 12,
+            Children =
+            {
+                new SkiaLabel { Text = "Blazor canvas gestures enabled", FontSize = 22 },
+                new SkiaButton("Increment").OnTapped(_ => clickCount++)
+            }
+        };
+    }
 }
 ```
 
@@ -74,7 +78,7 @@ In the browser the page is the scroll view around your canvas, and the two modes
 - `Enabled` shares input with the page. A finger pan along an axis the page can scroll scrolls the page, while taps and the other axis stay on the canvas; a page that cannot scroll, such as a full-page app, keeps every touch. The mouse wheel scrolls the page unless a control used it, for example a `SkiaScroll` under the pointer. A canvas embedded in a longer page never traps page scrolling. Inside an iframe the canvas cannot see the page that embeds it, so `Enabled` assumes that page scrolls vertically: vertical finger pans go to it, horizontal drags and taps stay on the canvas.
 - `Lock` keeps all input on the canvas. Use it for a full-page app or game, or for a widget whose own vertical drags (an inner list, a drawer, drag to reorder) must win inside a scrolling page.
 
-The same rules apply to the pure web head (`DrawnUi.Wasm`) and to DrawnUI for React.
+The same rules apply to the pure web head (`DrawnUi.Web`) and to DrawnUI for React.
 
 ### Blazor Server `Canvas`
 
@@ -174,8 +178,8 @@ private void OnCardGestures(object sender, SkiaGesturesInfo e)
             e.Consumed = true;
             Task.Run(async () =>
             {
-                await control.ScaleTo(1.05, 80);
-                await control.ScaleTo(1.0, 80);
+                await control.ScaleToAsync(1.05, 1.05, 80);
+                await control.ScaleToAsync(1.0, 1.0, 80);
             });
             break;
 
@@ -254,7 +258,7 @@ Every mouse button goes through the gesture pipeline: a right or middle click is
 with the button in `e.Parameters.Event.Pointer` (`Button`, `ButtonNumber`, `DeviceType`, `PressedButtons`), on every
 platform, so games and custom controls keep their button data. Nothing in DrawnUI filters buttons; the app decides.
 
-On the web heads (Blazor, `DrawnUi.Wasm`) a right click does two more things a desktop app never sees: the browser
+On the web heads (Blazor, `DrawnUi.Web`) a right click does two more things a desktop app never sees: the browser
 opens its own menu over the canvas ("Save image as…", "Copy image"), and on touch a long press raises the same
 request. Two habits cover it:
 
@@ -311,8 +315,8 @@ Per head:
 - **Blazor** (`DrawnUi.Blazor.Wasm`): wired by `AppoMobi.Blazor.Gestures`. Up to 3.10.x the browser menu was always
   suppressed over the canvas; from 3.11.1 it shows unless a handler takes it. Blazor Server keeps suppressing it (the
   decision needs the synchronous JS → .NET call that WebAssembly has).
-- **`DrawnUi.Wasm`**: `RunAsync` wires it; hand-written `main.js` files pass `onContextMenu: Input.OnContextMenu` in
-  `setModuleExports`, see [DrawnUi.Wasm](web/index.md#gestures).
+- **`DrawnUi.Web`**: `RunAsync` wires it; hand-written `main.js` files pass `onContextMenu: Input.OnContextMenu` in
+  `setModuleExports`, see [DrawnUi.Web](web/index.md#gestures).
 - **Blazor sandbox**: the Gestures page (`/canvas-gestures`) shows both habits, taps print their button and the pad
   takes the context menu while the card around it leaves the browser menu alone.
 
@@ -337,6 +341,13 @@ Use `LockChildrenGestures` when a parent layout should decide which gestures rea
 </draw:SkiaLayout>
 ```
 
+Options:
+- `Disabled`: All gestures pass through (default)
+- `Enabled`: Children can't receive gestures, and the control marks them as consumed
+- `PassNone`: Children can't receive gestures
+- `PassTap`: Only tap/click events reach children
+- `PassTapAndLongPress`: Tap and long-press pass through
+
 Interactive controls that move themselves, `SkiaScroll`, `SkiaDrawer`, `SkiaCarousel`, `SkiaSlider`, `SkiaSpinner`, and the toggles `SkiaSwitch` / `SkiaCheckbox` / `SkiaRadioButton`, also expose `RespondsToGestures` (default true). Set it to false and the control ignores user input while still being driven from code: a code-only scroll, a drawer opened only by a button, a read-only toggle. It also works as a temporary hand-over: a drag handle inside a scroll sets `scroll.RespondsToGestures = false` on Down and back to true on Up, so the vertical pan is the handle's for the length of the drag (see [Drag to Reorder a List](advanced/reorder.md)).
 
 ## Practical routing
@@ -347,12 +358,6 @@ Use this rule of thumb:
 - use `SkiaButton` events or commands for button-like actions
 - use `ConsumeGestures` when you need low-level gesture state such as pan, long press, or release
 - on Blazor Server, use `Canvas` plus the same control-level handlers inside the DrawnUI tree
-
-Options:
-- `Enabled`: Children can't receive gestures
-- `Disabled`: All gestures pass through (default)
-- `PassTap`: Only tap/click events reach children
-- `PassTapAndLongPress`: Tap and long-press pass through
 
 ## Common Patterns
 
@@ -368,8 +373,8 @@ private void OnTap(object sender, SkiaGesturesInfo e)
         Task.Run(async () =>
         {
             var control = (SkiaControl)sender;
-            await control.ScaleTo(0.95, 100);
-            await control.ScaleTo(1.0, 100);
+            await control.ScaleToAsync(0.95, 0.95, 100);
+            await control.ScaleToAsync(1.0, 1.0, 100);
         });
     }
 }
@@ -431,4 +436,4 @@ private void OnLongPress(object sender, SkiaGesturesInfo e)
 6. **Use `AddGestures` for MVVM** - When you need command binding instead of code-behind
 7. **Use `LockChildrenGestures` to manage propagation** - Control which gestures reach nested controls
 
-For additional gesture utilities, see the helper methods in [Canvas.cs](https://github.com/DrawnUi/DrawnUi.Net.Maui/blob/main/src/Maui/DrawnUi/Views/Canvas.cs#L1) and [SkiaControl.Shared.cs](https://github.com/DrawnUi/DrawnUi.Net.Maui/blob/main/src/Shared/Draw/Base/SkiaControl.Shared.cs#L1) for `GetGesturePositionInsideControl()`, `GetGesturePositionInsideChild()`, and `CheckChildGestureHit()`.
+For additional gesture utilities, see the helper methods in [Canvas.cs](https://github.com/DrawnUi/DrawnUi.Net/blob/main/src/Maui/DrawnUi/Views/Canvas.cs#L1) and [SkiaControl.Shared.cs](https://github.com/DrawnUi/DrawnUi.Net/blob/main/src/Shared/DrawnUi/Draw/Base/SkiaControl.Shared.cs#L1) for `GetGesturePositionInsideControl()`, `GetGesturePositionInsideChild()`, and `CheckChildGestureHit()`.

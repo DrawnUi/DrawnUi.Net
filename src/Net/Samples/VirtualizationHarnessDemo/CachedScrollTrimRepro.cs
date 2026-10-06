@@ -70,7 +70,7 @@ public static class CachedScrollTrimRepro
         var page = new ChatPage();
         using var host = new HeadlessCanvasHost(440, 920, scale: 1f, background: ChatTheme.Bg);
         host.Canvas.Content = page.CreateCanvasContent();
-        page.ChatStack.AutoDoubleBuffering = true; // this repro targets the double-buffer path (on while scrolling)
+        CachedStackAccess.SetAutoDoubleBuffering(page.ChatStack, true); // this repro targets the double-buffer path (on while scrolling)
         page.InitializeList();
         for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }
         host.AdvanceFrames(8, 16);
@@ -96,7 +96,7 @@ public static class CachedScrollTrimRepro
             "weighing", "approaches", "before", "committing", "to", "an", "answer", "that", "makes", "sense" };
         var sb = new System.Text.StringBuilder(target.Text);
         int worstOverlap = 0, worstGap = 0, worstStep = -1;
-        var dir = @"C:\Users\taubl\AppData\Local\Temp\claude\C--Users-taubl\2c597eec-477f-4fa9-a277-76a6f3f92aa3\scratchpad";
+        var dir = CachedStackAccess.OutputDir;
 
         for (int step = 0; step < 25; step++)
         {
@@ -191,8 +191,8 @@ public static class CachedScrollTrimRepro
         var page = new ChatPage();
         using var host = new HeadlessCanvasHost(440, 920, scale: 1f, background: ChatTheme.Bg);
         host.Canvas.Content = page.CreateCanvasContent();
-        page.ChatStack.AutoDoubleBuffering = true; // this repro targets the double-buffer path (on while scrolling)
-        Console.WriteLine($"AutoDoubleBuffering={page.ChatStack.AutoDoubleBuffering}");
+        CachedStackAccess.SetAutoDoubleBuffering(page.ChatStack, true); // this repro targets the double-buffer path (on while scrolling)
+        Console.WriteLine($"AutoDoubleBuffering={CachedStackAccess.GetAutoDoubleBuffering(page.ChatStack)}");
         page.InitializeList();
 
         for (int i = 0; i < 400 && page.ChatStack.LastVisibleIndex < 0; i++) { host.RenderFrame(16); Thread.Sleep(4); }
@@ -214,7 +214,7 @@ public static class CachedScrollTrimRepro
 
             // DO NOT settle: render only a few frames so we scroll while loads/measures are still pending.
             int flickBand = 0, bandTop = -1, bandBot = -1;
-            var dir = @"C:\Users\taubl\AppData\Local\Temp\claude\C--Users-taubl\2c597eec-477f-4fa9-a277-76a6f3f92aa3\scratchpad";
+            var dir = CachedStackAccess.OutputDir;
             for (int fr = 0; fr < 4; fr++)
             {
                 int haBefore = grep.HeadApplied, hcBefore = grep.HeadCommitted, hiBefore = grep.HeadInsert, hrBefore = grep.HeadRejected, resBefore = page.ProbeResident;

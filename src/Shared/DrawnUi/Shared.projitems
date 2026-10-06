@@ -75,6 +75,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\SKPaintExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\ControlTappedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\ContextMenuEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\ChildrenCollectionSync.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\ObservableAttachedItemsCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Base\VisualLayer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\SkiaBackdrop.cs" />
@@ -377,6 +378,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ChainSaturationEffect.cs" />
     <!-- Images -->
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Images\LoadedImageSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Images\ImageLoadQueue.cs" />
     <!-- SkiaLabel partials (pure logic, no MAUI deps) -->
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\SkiaLabel.EmojiData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\SkiaLabel.ObjectPools.cs" />

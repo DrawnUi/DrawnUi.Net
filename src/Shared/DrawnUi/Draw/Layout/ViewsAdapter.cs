@@ -1591,6 +1591,7 @@ namespace DrawnUi.Draw
                                     if (ctx != null)
                                     {
                                         view.PixelsForeign = true;
+                                        view.CancelOffscreenRendering(); // a bake of the old item must not publish
                                     }
                                 }
 

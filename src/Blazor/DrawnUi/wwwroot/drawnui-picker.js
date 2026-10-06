@@ -46,6 +46,45 @@ function getPickerTheme(styleName) {
                 selectedColor: '#174ea6',
                 cancelBackground: '#eef2f7'
             };
+        case 'material3':
+            // Material 3 menu (baseline light scheme): surface container, extra-small corners,
+            // elevation level 2, 48px list items with label large text, selected item in secondary container
+            return {
+                overlayBackground: 'rgba(0, 0, 0, 0.32)',
+                cardBackground: '#f3edf7',
+                cardColor: '#1d1b20',
+                cardRadius: '4px',
+                cardBorder: 'none',
+                cardShadow: '0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15)',
+                cardPadding: '8px 0',
+                cardWidth: 'min(280px, 100%)',
+                titleFont: '500 14px Roboto, "Segoe UI", sans-serif',
+                titleColor: '#49454f',
+                titleMargin: '0',
+                titlePadding: '8px 12px',
+                showSubtitle: false,
+                subtitleFont: '400 12px Roboto, "Segoe UI", sans-serif',
+                subtitleColor: '#49454f',
+                listGap: '0',
+                markCurrent: false,
+                buttonRadius: '0',
+                buttonBorder: 'none',
+                buttonBackground: 'transparent',
+                buttonColor: '#1d1b20',
+                buttonHoverBackground: 'rgba(29, 27, 32, 0.08)',
+                buttonHoverBorder: 'transparent',
+                buttonPadding: '0 12px',
+                buttonMinHeight: '48px',
+                buttonFont: '500 14px Roboto, "Segoe UI", sans-serif',
+                selectedBackground: '#e8def8',
+                selectedBorder: 'transparent',
+                selectedColor: '#1d192b',
+                cancelBackground: 'transparent',
+                cancelColor: '#6750a4',
+                cancelRadius: '20px',
+                cancelMinHeight: '40px',
+                footerMargin: '8px 12px 0'
+            };
         case 'windows':
         default:
             return {
@@ -86,9 +125,10 @@ function createButton(label, onClick, theme, styles = {}) {
         borderRadius: theme.buttonRadius,
         background: theme.buttonBackground,
         color: theme.buttonColor,
-        padding: '12px 14px',
+        padding: theme.buttonPadding ?? '12px 14px',
+        minHeight: theme.buttonMinHeight ?? '',
         textAlign: 'left',
-        font: `500 15px ${theme.titleFont.split(' ').slice(2).join(' ')}`,
+        font: theme.buttonFont ?? `500 15px ${theme.titleFont.split(' ').slice(2).join(' ')}`,
         cursor: 'pointer',
         transition: 'background 120ms ease, border-color 120ms ease',
         boxSizing: 'border-box'
@@ -136,7 +176,7 @@ export function showPickerPrompt(title, cancelText, options, selectedIndex, styl
 
         const card = document.createElement('div');
         Object.assign(card.style, {
-            width: 'min(420px, 100%)',
+            width: theme.cardWidth ?? 'min(420px, 100%)',
             maxHeight: 'min(80vh, 560px)',
             overflow: 'auto',
             background: theme.cardBackground,
@@ -144,7 +184,7 @@ export function showPickerPrompt(title, cancelText, options, selectedIndex, styl
             borderRadius: theme.cardRadius,
             boxShadow: theme.cardShadow,
             border: theme.cardBorder,
-            padding: '18px',
+            padding: theme.cardPadding ?? '18px',
             boxSizing: 'border-box'
         });
 
@@ -152,7 +192,9 @@ export function showPickerPrompt(title, cancelText, options, selectedIndex, styl
         titleElement.textContent = header;
         Object.assign(titleElement.style, {
             font: theme.titleFont,
-            marginBottom: '6px'
+            color: theme.titleColor ?? '',
+            padding: theme.titlePadding ?? '',
+            marginBottom: theme.titleMargin ?? '6px'
         });
 
         const subtitleElement = document.createElement('div');
@@ -167,7 +209,7 @@ export function showPickerPrompt(title, cancelText, options, selectedIndex, styl
         Object.assign(list.style, {
             display: 'flex',
             flexDirection: 'column',
-            gap: '8px'
+            gap: theme.listGap ?? '8px'
         });
 
         const cleanup = result => {
@@ -185,7 +227,8 @@ export function showPickerPrompt(title, cancelText, options, selectedIndex, styl
 
         options.forEach((option, index) => {
             const isSelected = index === selectedIndex;
-            const label = isSelected ? `${option}  (current)` : option;
+            const markCurrent = theme.markCurrent ?? true;
+            const label = isSelected && markCurrent ? `${option}  (current)` : option;
             const optionButton = createButton(label, () => cleanup(index), theme, isSelected
                 ? {
                     background: theme.selectedBackground,
@@ -193,6 +236,9 @@ export function showPickerPrompt(title, cancelText, options, selectedIndex, styl
                     color: theme.selectedColor
                 }
                 : undefined);
+            if (isSelected && !markCurrent) {
+                optionButton.setAttribute('aria-current', 'true');
+            }
             list.append(optionButton);
         });
 
@@ -200,18 +246,25 @@ export function showPickerPrompt(title, cancelText, options, selectedIndex, styl
         Object.assign(footer.style, {
             display: 'flex',
             justifyContent: 'flex-end',
-            marginTop: '14px'
+            margin: theme.footerMargin ?? '14px 0 0'
         });
 
         const cancelButton = createButton(dismissLabel, () => cleanup(-1), theme, {
             width: 'auto',
             minWidth: '110px',
             textAlign: 'center',
-            background: theme.cancelBackground
+            background: theme.cancelBackground,
+            ...(theme.cancelColor ? { color: theme.cancelColor } : {}),
+            ...(theme.cancelRadius ? { borderRadius: theme.cancelRadius } : {}),
+            ...(theme.cancelMinHeight ? { minHeight: theme.cancelMinHeight } : {})
         });
 
         footer.append(cancelButton);
-        card.append(titleElement, subtitleElement, list, footer);
+        if (theme.showSubtitle ?? true) {
+            card.append(titleElement, subtitleElement, list, footer);
+        } else {
+            card.append(titleElement, list, footer);
+        }
         overlay.append(card);
 
         overlay.addEventListener('click', event => {

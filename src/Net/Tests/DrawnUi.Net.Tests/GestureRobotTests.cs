@@ -131,6 +131,38 @@ public class GestureRobotTests
         Assert.Equal(first, second, 0.001f);
     }
 
+    /// <summary>
+    /// Fling velocity ages its samples by the clock they were taken with. The robot's events are timed by its virtual
+    /// clock, so a machine that stalls just before the release of a simulated flick (here 250 ms in each of the last
+    /// frames, longer than the 150 ms velocity window) must not change the fling: before, the wall clock aged the
+    /// samples, the release saw none and the scroll stopped dead, so the result depended on how loaded the machine
+    /// was (rare Pan_IsDeterministic failures).
+    /// </summary>
+    [Fact]
+    public void Pan_SameFling_WhenTheMachineStalls()
+    {
+        float Run(bool stall)
+        {
+            var (host, scroll) = MakeScrollScene();
+            using var _ = host;
+            var frames = 0;
+            scroll.Content.WhenPaint((me, ctx) =>
+            {
+                if (stall && ++frames >= 10 && frames <= 14) // the last moves and the release
+                    System.Threading.Thread.Sleep(250);
+            });
+            var robot = new GestureRobot(host);
+            robot.Pan(200, 520, 200, 120, durationMs: 200, steps: 12);
+            robot.SettleFling(scroll);
+            return scroll.ViewportOffsetY;
+        }
+
+        var smooth = Run(false);
+        var stalled = Run(true);
+        Assert.True(smooth < -420, $"no fling: {smooth}"); // the pan alone moves 400
+        Assert.Equal(smooth, stalled, 0.001f);
+    }
+
     [Fact]
     public void WheelScroll_MovesViewport()
     {

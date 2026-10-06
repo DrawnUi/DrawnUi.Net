@@ -1,6 +1,6 @@
 # WPF Samples
 
-Three sample projects live in the repository under [src/Wpf/Samples](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples). Clone the repo and open the one you need; each is a plain `dotnet run`.
+Four sample projects live in the repository under [src/Wpf/Samples](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples). Clone the repo and open the one you need; each is a plain `dotnet run`.
 
 ## HelloWpf
 

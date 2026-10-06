@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using DrawnUi.Draw;
 using DrawnUi.Views;
 using SkiaSharp;
@@ -20,6 +21,15 @@ public class ImagesPage : SkiaLayer
         TransformAspect.FitFill, TransformAspect.Cover, TransformAspect.None,
     };
 
+    /// <summary>
+    /// Preload queue demo: 8 distinct urls of the same photo (query string = own cache entry). MaxParallelLoads
+    /// limits network loads only; these are local files, read at once, so running / queued stay 0 on this head.
+    /// </summary>
+    private static readonly List<string> PreloadSources =
+        Enumerable.Range(0, 8).Select(i => $"images/glass2.jpg?queue={i}").ToList();
+
+    private SkiaLabel _queueStatus;
+
     /// <summary>Builds the page.</summary>
     public ImagesPage()
     {
@@ -37,7 +47,7 @@ public class ImagesPage : SkiaLayer
                     Padding = new Thickness(16),
                     Children = new List<SkiaControl>
                     {
-                        Heading("SkiaImage · Aspect", 24),
+                        Heading("SkiaImage · Aspect", 24, top: 0),
                         new SkiaLabel("Same photo in a 220×120 box. Overflow is clipped to the box.")
                         {
                             FontSize = 13,
@@ -61,7 +71,7 @@ public class ImagesPage : SkiaLayer
                             Children = BuildEffects(),
                         },
 
-                        Heading("Custom filters · PaintColorFilter / PaintImageFilter", 20),
+                        Heading("Custom filters · AddEffect = Custom + PaintColorFilter / PaintImageFilter", 20),
                         new SkiaWrap
                         {
                             Spacing = 16,
@@ -105,12 +115,21 @@ public class ImagesPage : SkiaLayer
                             WidthRequest = 400,
                             HeightRequest = 160,
                             BackgroundColor = Colors.Black,
-                        }.Animate(6, (me, animator, value, dt) =>
+                        }.Animate(1, (me, animator, value, dt) =>
                         {
-                            // Same drift as the React page's interval, but on the frame clock.
-                            me.TileOffsetX = value * 480;
-                            me.TileOffsetY = value * 240;
+                            // The React page's endless drift (4 px per 50 ms, Y = X / 2) on the frame clock:
+                            // accumulated per frame and wrapped at the 64 px tile, so it never resets visibly.
+                            me.TileOffsetX = (me.TileOffsetX + 80 * dt) % 64;
+                            me.TileOffsetY = (me.TileOffsetY + 40 * dt) % 64;
                         }, repeat: -1),
+
+                        Heading("SkiaImageManager preload queue · idle", 20).Assign(out _queueStatus),
+                        new SkiaButton("PreloadImages(8 urls, Low)")
+                        {
+                            BackgroundColor = Color.Parse("#0D6EFD"),
+                            FontSize = 13,
+                            HorizontalOptions = LayoutOptions.Center,
+                        }.OnTapped(me => PreloadQueue()),
 
                         Heading("Alignment inside the box", 20),
                         new SkiaWrap
@@ -131,12 +150,48 @@ public class ImagesPage : SkiaLayer
         };
     }
 
-    private static SkiaLabel Heading(string text, double size) => new(text)
+    /// <summary>
+    /// Drops the 8 urls from the cache, preloads them at Low priority and shows the queue every ~10 ms
+    /// (running / queued / peak), then the total time.
+    /// </summary>
+    private async void PreloadQueue()
+    {
+        var manager = SkiaImageManager.Instance;
+        foreach (var source in PreloadSources)
+            manager.RemoveFromCache(source);
+
+        var peak = 0;
+        var done = false; // read and written on the UI thread only: a late tick never overwrites the result
+        var clock = Stopwatch.StartNew();
+
+        using (new System.Threading.Timer(_ =>
+               {
+                   int running = manager.RunningCount, queued = manager.QueuedCount;
+                   peak = Math.Max(peak, running);
+                   DrawnUi.MainThread.BeginInvokeOnMainThread(() =>
+                   {
+                       if (!done)
+                           _queueStatus.Text = $"SkiaImageManager preload queue · running {running} · queued {queued} · peak {peak}";
+                   });
+               }, null, 0, 10))
+        {
+            await manager.PreloadImages(PreloadSources, LoadPriority.Low);
+        }
+
+        var elapsed = clock.ElapsedMilliseconds;
+        DrawnUi.MainThread.BeginInvokeOnMainThread(() =>
+        {
+            done = true;
+            _queueStatus.Text = $"SkiaImageManager preload queue · {PreloadSources.Count} loaded in {elapsed} ms · peak in flight {peak} (MaxParallelLoads={SkiaImageManager.MaxParallelLoads})";
+        });
+    }
+
+    private static SkiaLabel Heading(string text, double size, double top = 12) => new(text)
     {
         FontSize = size,
         TextColor = Colors.White,
         HorizontalOptions = LayoutOptions.Center,
-        Margin = new Thickness(0, 12, 0, 0),
+        Margin = new Thickness(0, top, 0, 0),
     };
 
     private static SkiaControl AspectTile(TransformAspect aspect) => new SkiaStack
@@ -158,6 +213,7 @@ public class ImagesPage : SkiaLayer
         },
     };
 
+    /// <summary>Image with its caption below; captions may carry symbols (↔), drawn per glyph from the fallback faces.</summary>
     private static SkiaControl Tile(string caption, SkiaControl visual) => new SkiaStack
     {
         Spacing = 4,
@@ -165,7 +221,12 @@ public class ImagesPage : SkiaLayer
         Children = new List<SkiaControl>
         {
             visual,
-            new SkiaLabel(caption) { FontSize = 12, TextColor = Color.Parse("#94A3B8") },
+            new SkiaLabel(caption)
+            {
+                FontSize = 12,
+                TextColor = Color.Parse("#94A3B8"),
+                FontFamilyFallback = "FontSymbols,FontSymbols2",
+            },
         },
     };
 
@@ -220,7 +281,7 @@ public class ImagesPage : SkiaLayer
                 i.HorizontalOffset = -40;
                 i.Aspect = TransformAspect.AspectFit;
             }),
-            Effect("HSL Gamma=0.6 Sat=1 Bright=0.5", i =>
+            Effect("HSL Gamma=0.6 (hue) Sat=1 Bright=0.5", i =>
             {
                 i.AddEffect = SkiaImageEffect.HSL;
                 i.BackgroundColor = Colors.White;
@@ -246,7 +307,7 @@ public class FilterImage : SkiaImage
     private SKColorFilter _colorFilter;
     private SKImageFilter _imageFilter;
 
-    /// <summary>Colour filter applied to the image paint.</summary>
+    /// <summary>Color filter applied to the image paint.</summary>
     public SKColorFilter ColorFilter
     {
         get => _colorFilter;

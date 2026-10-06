@@ -92,7 +92,7 @@ items:
 
     Disposing an individual control does not release the shared cache.
 
-    Use SuperView.Cache.Free&lt;T&gt;() to release explicitly, or let the Canvas dispose it.
+    Use Superview.SharedCache.Free&lt;T&gt;() to release explicitly, or let the Canvas dispose it.
   example: []
   syntax:
     content: Shared = 1

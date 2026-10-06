@@ -12,11 +12,13 @@ items:
   - DrawnUi.Infrastructure.SkSl.LoadFromResources(System.String)
   - DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync(System.String)
   - DrawnUi.Infrastructure.SkSl.LoadedCache
+  - DrawnUi.Infrastructure.SkSl.OpenPackageFileAsync(System.String)
   - DrawnUi.Infrastructure.SkSl.Precompile(System.String[])
   - DrawnUi.Infrastructure.SkSl.Precompile(System.String[],System.Action{System.String})
   - DrawnUi.Infrastructure.SkSl.PrecompileAsync(System.String[])
   - DrawnUi.Infrastructure.SkSl.PrecompileAsync(System.String[],System.Action{System.String})
   - DrawnUi.Infrastructure.SkSl.ThrowCompilationError(System.String,System.String,System.String)
+  - DrawnUi.Infrastructure.SkSl.TryLoadFromResources(System.String,System.String@)
   langs:
   - csharp
   - vb
@@ -48,6 +50,45 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: DrawnUi.Infrastructure.SkSl.OpenPackageFileAsync(System.String)
+  commentId: M:DrawnUi.Infrastructure.SkSl.OpenPackageFileAsync(System.String)
+  id: OpenPackageFileAsync(System.String)
+  parent: DrawnUi.Infrastructure.SkSl
+  langs:
+  - csharp
+  - vb
+  name: OpenPackageFileAsync(string)
+  nameWithType: SkSl.OpenPackageFileAsync(string)
+  fullName: DrawnUi.Infrastructure.SkSl.OpenPackageFileAsync(string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OpenPackageFileAsync
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 36
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Infrastructure
+  summary: >-
+    Opens a file that ships with the app, the same way on every head: the MAUI app package, the output folder
+
+    on the desktop heads, the site (relative to its base address) in the browser.
+  example: []
+  syntax:
+    content: public static Task<Stream> OpenPackageFileAsync(string fileName)
+    parameters:
+    - id: fileName
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task{System.IO.Stream}
+    content.vb: Public Shared Function OpenPackageFileAsync(fileName As String) As Task(Of Stream)
+  overload: DrawnUi.Infrastructure.SkSl.OpenPackageFileAsync*
+  nameWithType.vb: SkSl.OpenPackageFileAsync(String)
+  fullName.vb: DrawnUi.Infrastructure.SkSl.OpenPackageFileAsync(String)
+  name.vb: OpenPackageFileAsync(String)
 - uid: DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync(System.String)
   commentId: M:DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync(System.String)
   id: LoadFromResourcesAsync(System.String)
@@ -66,7 +107,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadFromResourcesAsync
     path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
-    startLine: 18
+    startLine: 47
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -82,6 +123,49 @@ items:
   nameWithType.vb: SkSl.LoadFromResourcesAsync(String)
   fullName.vb: DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync(String)
   name.vb: LoadFromResourcesAsync(String)
+- uid: DrawnUi.Infrastructure.SkSl.TryLoadFromResources(System.String,System.String@)
+  commentId: M:DrawnUi.Infrastructure.SkSl.TryLoadFromResources(System.String,System.String@)
+  id: TryLoadFromResources(System.String,System.String@)
+  parent: DrawnUi.Infrastructure.SkSl
+  langs:
+  - csharp
+  - vb
+  name: TryLoadFromResources(string, out string)
+  nameWithType: SkSl.TryLoadFromResources(string, out string)
+  fullName: DrawnUi.Infrastructure.SkSl.TryLoadFromResources(string, out string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: TryLoadFromResources
+    path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
+    startLine: 64
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Infrastructure
+  summary: >-
+    Shader code by file, synchronously when the head can read it so: always on MAUI and the desktop heads; in the
+
+    browser only once it was loaded (<xref href="DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync(System.String)" data-throw-if-not-resolved="false"></xref>, <xref href="DrawnUi.Infrastructure.SkSl.PrecompileAsync(System.String%5b%5d)" data-throw-if-not-resolved="false"></xref>).
+
+    False means: load it asynchronously first.
+  example: []
+  syntax:
+    content: public static bool TryLoadFromResources(string fileName, out string shaderCode)
+    parameters:
+    - id: fileName
+      type: System.String
+    - id: shaderCode
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function TryLoadFromResources(fileName As String, shaderCode As String) As Boolean
+  overload: DrawnUi.Infrastructure.SkSl.TryLoadFromResources*
+  nameWithType.vb: SkSl.TryLoadFromResources(String, String)
+  fullName.vb: DrawnUi.Infrastructure.SkSl.TryLoadFromResources(String, String)
+  name.vb: TryLoadFromResources(String, String)
 - uid: DrawnUi.Infrastructure.SkSl.LoadFromResources(System.String)
   commentId: M:DrawnUi.Infrastructure.SkSl.LoadFromResources(System.String)
   id: LoadFromResources(System.String)
@@ -100,7 +184,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadFromResources
     path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
-    startLine: 30
+    startLine: 82
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -134,7 +218,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Precompile
     path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
-    startLine: 48
+    startLine: 91
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -168,7 +252,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Precompile
     path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
-    startLine: 60
+    startLine: 103
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -200,7 +284,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrecompileAsync
     path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
-    startLine: 72
+    startLine: 115
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -236,7 +320,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrecompileAsync
     path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
-    startLine: 90
+    startLine: 133
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -270,7 +354,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadedCache
     path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
-    startLine: 105
+    startLine: 148
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -299,7 +383,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompiledCache
     path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
-    startLine: 113
+    startLine: 156
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -332,7 +416,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Compile
     path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
-    startLine: 120
+    startLine: 163
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -370,7 +454,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Compile
     path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
-    startLine: 132
+    startLine: 175
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -418,7 +502,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ThrowCompilationError
     path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
-    startLine: 181
+    startLine: 224
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -454,7 +538,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateShader
     path: ../src/Shared/DrawnUi/Features/Shaders/SKSL.cs
-    startLine: 220
+    startLine: 263
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -734,12 +818,12 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync*
-  commentId: Overload:DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync
-  href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_LoadFromResourcesAsync_System_String_
-  name: LoadFromResourcesAsync
-  nameWithType: SkSl.LoadFromResourcesAsync
-  fullName: DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync
+- uid: DrawnUi.Infrastructure.SkSl.OpenPackageFileAsync*
+  commentId: Overload:DrawnUi.Infrastructure.SkSl.OpenPackageFileAsync
+  href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_OpenPackageFileAsync_System_String_
+  name: OpenPackageFileAsync
+  nameWithType: SkSl.OpenPackageFileAsync
+  fullName: DrawnUi.Infrastructure.SkSl.OpenPackageFileAsync
 - uid: System.String
   commentId: T:System.String
   parent: System
@@ -751,27 +835,27 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
-- uid: System.Threading.Tasks.Task{System.String}
-  commentId: T:System.Threading.Tasks.Task{System.String}
+- uid: System.Threading.Tasks.Task{System.IO.Stream}
+  commentId: T:System.Threading.Tasks.Task{System.IO.Stream}
   parent: System.Threading.Tasks
   definition: System.Threading.Tasks.Task`1
   href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  name: Task<string>
-  nameWithType: Task<string>
-  fullName: System.Threading.Tasks.Task<string>
-  nameWithType.vb: Task(Of String)
-  fullName.vb: System.Threading.Tasks.Task(Of String)
-  name.vb: Task(Of String)
+  name: Task<Stream>
+  nameWithType: Task<Stream>
+  fullName: System.Threading.Tasks.Task<System.IO.Stream>
+  nameWithType.vb: Task(Of Stream)
+  fullName.vb: System.Threading.Tasks.Task(Of System.IO.Stream)
+  name.vb: Task(Of Stream)
   spec.csharp:
   - uid: System.Threading.Tasks.Task`1
     name: Task
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
   - name: <
-  - uid: System.String
-    name: string
+  - uid: System.IO.Stream
+    name: Stream
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
   - name: '>'
   spec.vb:
   - uid: System.Threading.Tasks.Task`1
@@ -781,10 +865,10 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: System.String
-    name: String
+  - uid: System.IO.Stream
+    name: Stream
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
+    href: https://learn.microsoft.com/dotnet/api/system.io.stream
   - name: )
 - uid: System.Threading.Tasks.Task`1
   commentId: T:System.Threading.Tasks.Task`1
@@ -851,6 +935,132 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync*
+  commentId: Overload:DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync
+  href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_LoadFromResourcesAsync_System_String_
+  name: LoadFromResourcesAsync
+  nameWithType: SkSl.LoadFromResourcesAsync
+  fullName: DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync
+- uid: System.Threading.Tasks.Task{System.String}
+  commentId: T:System.Threading.Tasks.Task{System.String}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<string>
+  nameWithType: Task<string>
+  fullName: System.Threading.Tasks.Task<string>
+  nameWithType.vb: Task(Of String)
+  fullName.vb: System.Threading.Tasks.Task(Of String)
+  name.vb: Task(Of String)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync(System.String)
+  commentId: M:DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync(System.String)
+  isExternal: true
+  href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_LoadFromResourcesAsync_System_String_
+  name: LoadFromResourcesAsync(string)
+  nameWithType: SkSl.LoadFromResourcesAsync(string)
+  fullName: DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync(string)
+  nameWithType.vb: SkSl.LoadFromResourcesAsync(String)
+  fullName.vb: DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync(String)
+  name.vb: LoadFromResourcesAsync(String)
+  spec.csharp:
+  - uid: DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync(System.String)
+    name: LoadFromResourcesAsync
+    href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_LoadFromResourcesAsync_System_String_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Infrastructure.SkSl.LoadFromResourcesAsync(System.String)
+    name: LoadFromResourcesAsync
+    href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_LoadFromResourcesAsync_System_String_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Infrastructure.SkSl.PrecompileAsync(System.String[])
+  commentId: M:DrawnUi.Infrastructure.SkSl.PrecompileAsync(System.String[])
+  isExternal: true
+  href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_PrecompileAsync_System_String___
+  name: PrecompileAsync(params string[])
+  nameWithType: SkSl.PrecompileAsync(params string[])
+  fullName: DrawnUi.Infrastructure.SkSl.PrecompileAsync(params string[])
+  nameWithType.vb: SkSl.PrecompileAsync(ParamArray String())
+  fullName.vb: DrawnUi.Infrastructure.SkSl.PrecompileAsync(ParamArray String())
+  name.vb: PrecompileAsync(ParamArray String())
+  spec.csharp:
+  - uid: DrawnUi.Infrastructure.SkSl.PrecompileAsync(System.String[])
+    name: PrecompileAsync
+    href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_PrecompileAsync_System_String___
+  - name: (
+  - name: params
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Infrastructure.SkSl.PrecompileAsync(System.String[])
+    name: PrecompileAsync
+    href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_PrecompileAsync_System_String___
+  - name: (
+  - name: ParamArray
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+  - name: )
+- uid: DrawnUi.Infrastructure.SkSl.TryLoadFromResources*
+  commentId: Overload:DrawnUi.Infrastructure.SkSl.TryLoadFromResources
+  href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_TryLoadFromResources_System_String_System_String__
+  name: TryLoadFromResources
+  nameWithType: SkSl.TryLoadFromResources
+  fullName: DrawnUi.Infrastructure.SkSl.TryLoadFromResources
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
 - uid: DrawnUi.Infrastructure.SkSl.LoadFromResources*
   commentId: Overload:DrawnUi.Infrastructure.SkSl.LoadFromResources
   href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_LoadFromResources_System_String_
@@ -1184,17 +1394,6 @@ references:
   name: SkiaSharp
   nameWithType: SkiaSharp
   fullName: SkiaSharp
-- uid: System.Boolean
-  commentId: T:System.Boolean
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.boolean
-  name: bool
-  nameWithType: bool
-  fullName: bool
-  nameWithType.vb: Boolean
-  fullName.vb: Boolean
-  name.vb: Boolean
 - uid: DrawnUi.Infrastructure.SkSl.ThrowCompilationError*
   commentId: Overload:DrawnUi.Infrastructure.SkSl.ThrowCompilationError
   href: DrawnUi.Infrastructure.SkSl.html#DrawnUi_Infrastructure_SkSl_ThrowCompilationError_System_String_System_String_System_String_

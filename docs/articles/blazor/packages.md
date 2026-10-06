@@ -62,17 +62,17 @@ Treat that as an implementation detail of the current packaging stage, not as th
 
 ## Publishing to Linux
 
-`DrawnUi.Blazor.Server` uses SkiaSharp on the server. Publishing to Linux requires two additional steps.
+`DrawnUi.Blazor.Server` uses SkiaSharp on the server. Publishing to Linux needs the Linux native binaries and one system library.
 
-### Step 1 — Add the Linux native asset package
+### Step 1 — Check the Linux native asset package
 
-The SkiaSharp NuGet package does not include `linux-x64` native binaries by default. Add this to your server host project:
+The SkiaSharp NuGet package does not include `linux-x64` native binaries by default. `DrawnUi.Blazor.Server` already references the Linux native asset package, so your host project gets it with the package:
 
 ```xml
-<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.147.0-preview.2.1" />
+<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.148.0" />
 ```
 
-The correct version to use is the one from the [SkiaSharp EAP feed](https://aka.ms/skiasharp-eap/index.json) that matches your SkiaSharp version. After adding this, `dotnet publish` will include `runtimes/linux-x64/native/libSkiaSharp.so` in the output.
+If your host project references this package itself, use the version that matches your SkiaSharp version. `dotnet publish` then includes `runtimes/linux-x64/native/libSkiaSharp.so` in the output.
 
 To verify before deploying:
 ```bash

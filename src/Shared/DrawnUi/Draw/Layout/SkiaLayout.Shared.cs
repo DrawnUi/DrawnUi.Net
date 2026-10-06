@@ -618,6 +618,7 @@ namespace DrawnUi.Draw
         public override void InvalidateViewsList()
         {
             base.InvalidateViewsList();
+            _zIndexScanned = false; // a child changed its ZIndex, or children were added / removed
 
             ActualizeSubviews();
         }

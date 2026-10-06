@@ -13,17 +13,23 @@ DrawnUI's Blazor head (NuGet `DrawnUi.Blazor.Wasm` / `DrawnUi.Blazor.Server`): a
 
 ```csharp
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
-// register fonts, images...
-await builder.UseDrawnUiAsync(new DrawnUiStartupSettings { UseDesktopKeyboard = true });
+builder.RootComponents.Add<App>("#app");
+await Super.UseDrawnUi(builder)
+    .WithBaseUrl(builder.HostEnvironment.BaseAddress)
+    .WithOptions(o => o.UseDesktopKeyboard = true)
+    .ConfigureFonts(fonts => { fonts.AddEmojis(); fonts.AddSymbols(); fonts.AddFont("OpenSans-Regular.ttf", "FontText"); })
+    .BuildAndRunAsync();   // = builder.UseDrawnUiAsync(settings) + host.RunAsync()
 ```
 
-`UseDrawnUiAsync`: builds host → `Super.Services` → inits `SkiaFontManager` + `SkiaImageManager` (async) → `Super.Init()` → attaches `KeyboardManager` when `UseDesktopKeyboard`. Host the tree in Razor: `<Canvas Content="@RootControl" RenderingMode="@RenderingModeType.Accelerated" Gestures="@GesturesMode.Enabled" />`.
+(`tpls/Blazor/EmptyCode/Program.cs`.) `UseDrawnUiAsync(settings)` returns the built host without running it: builds host → `Super.Services` → inits `SkiaFontManager` + `SkiaImageManager` + `SkiaSvg` (async) → `Super.Init()` → app lifecycle hooks → attaches `KeyboardManager` when `UseDesktopKeyboard`. Host the tree in Razor: `<Canvas Content="@RootControl" RenderingMode="@RenderingModeType.Accelerated" Gestures="@GesturesMode.Enabled" />`.
 
 ## Accessibility overlay and keyboard
 
 - Each node of the accessibility snapshot is an invisible element over the canvas; interactive ones are focusable. Inside an arrow-key group (a container with `Aria.RoleList`, `RoleToolbar`...) only the group's current item has `tabindex=0`, the rest `-1`.
 - Enter / Space activate, the arrow keys go to the node and then to its group (the engine moves DOM focus to the next item's element); the element's CSS outline is the focus ring, the canvas draws none.
 - An element that has a role takes the pointer from the canvas: that control gets no hover.
+- What an element carries: `role`, `aria-label`, the hint as `title`, `aria-live`; a pressed state on the attribute its role is read from (`aria-checked` for switch / checkbox / radio, `aria-selected` for option / tab, `aria-pressed` for a toggle button: with `aria-pressed` Chrome reads a switch as unchecked); `aria-valuenow / min / max / valuetext / orientation` for sliders and progress bars; `aria-disabled` for a control role that takes no input. Non-interactive nodes have `tabindex=-1` so a screen reader can be moved to them (refocus after a page closes).
+- A focused element is the screen reader's node and scrolls its node into view. Verify in Chrome with CDP `Accessibility.getFullAXTree` (role, value, min, max, checked); its `valuetext` comes back empty for every element, a CDP gap, not the overlay.
 
 ## Shared-project pattern + BROWSER symbol
 
@@ -35,7 +41,7 @@ await builder.UseDrawnUiAsync(new DrawnUiStartupSettings { UseDesktopKeyboard = 
 
 Pipeline: JS gesture package → `Canvas.OnTouchAction(TouchActionEventArgs)` → `ProcessGestures(SkiaGesturesParameters)` → control tree.
 
-- `GesturesMode`: `Disabled` (no capture), `Enabled` (standard), `Lock`/`SoftLock` (panning controls). `Lock` applies `touch-action:none; user-select:none` on the canvas. `Enabled` lets AppoMobi.Blazor.Gestures (3.11.2+) set `touch-action` to the axes the page can scroll (vertical always inside an iframe, 3.11.3+), so a finger pan along a page axis scrolls the page like MAUI `Enabled` in a ScrollView, and the wheel scrolls the page unless a control used it.
+- `GesturesMode` (Canvas `Gestures` parameter): `Disabled` (default, no capture), `Enabled` (standard), `Lock`/`SoftLock` (panning controls). `Lock` applies `touch-action:none; user-select:none` on the canvas. `Enabled` lets AppoMobi.Blazor.Gestures (3.11.2+) set `touch-action` to the axes the page can scroll (vertical always inside an iframe, 3.11.3+), so a finger pan along a page axis scrolls the page like MAUI `Enabled` in a ScrollView, and the wheel scrolls the page unless a control used it.
 - Touch mapping: Pressed→Down, Moved/Pan*→Panning, Released/Cancelled/Exited→Up, Wheel→Wheel. Multi-touch tracked per pointer id.
 - **Gesture callbacks arrive far slower than frames** (measured 2026-08-30, prod Blazor WASM): pointer moves reach `WithGestures`/`Panning` at roughly **16/s** while the canvas renders a steady **60 fps** — browser pointer coalescing plus the JS→.NET hop. Anything that follows a finger (paddle, drag handle, slider thumb) must NOT be assigned the raw event value, or it visibly steps ~16 times a second. Store the pointer value as a target and chase it in the per-frame animator: `x += (target - x) * Math.Min(1, dt * 22);` — reaches the target in ~3 frames, so it reads as instant and glides between events.
 - For gesture bugs on scaled/transformed controls prefer built-in transform-aware helpers (`HitIsInside()`, `HitBoxAuto`, `IsGestureForChild(...)`, rescaled `args.Event.Location`) over hand-rolled transform math.
@@ -54,7 +60,7 @@ Pipeline: JS gesture package → `Canvas.OnTouchAction(TouchActionEventArgs)` �
 | Area | MAUI | Blazor |
 |------|------|--------|
 | `FrameTimeInterpolator` | used for physics stability | skip — raw delta |
-| `CanUseCacheDoubleBuffering` | enabled | forced `false` — no background thread exists |
+| `CanUseCacheDoubleBuffering` | enabled | forced `false` (`#if WEB \|\| BROWSER`) — no background thread exists, so `ImageDoubleBuffered` resolves to `Image` |
 | `SkiaCachedStack.AsyncPlaneAllowed` | async plane bake | forced `false` — blocking-wait on the only thread deadlocks the bake it waits for; sync SKPicture record instead. Rule: never blocking-wait on WASM main thread for work only that thread can run |
 | `CanvasSize` | after layout | unreliable until ResizeObserver fires; use `paintArgs` dimensions |
 | Keyboard | native events | JS global listeners |
@@ -62,7 +68,7 @@ Pipeline: JS gesture package → `Canvas.OnTouchAction(TouchActionEventArgs)` �
 | `GetDisplayRefreshRate()` | device rate | constant 60 |
 | Offscreen cache bakes | dedicated worker threads | drained INLINE (`DrainOffscreenQueueInline`) — queued items would otherwise starve indefinitely under continuous frame load (observed: two lotties, first-queued control never pumped = permanent empty box). Same total main-thread cost, guaranteed execution |
 
-Frame loop is `Task.Delay`-based off `Super.MaxFps` (not rAF).
+`Super.OnFrame` ticks from a `Task.Delay` loop off `Super.MaxFps` (60 when unset), not rAF; the canvas paint itself goes through SkiaSharp's `SKHtmlCanvas.requestAnimationFrame`.
 
 ## SkiaImageManager cache keys (Blazor) — slash-agnostic (2026-08-20)
 
@@ -78,6 +84,10 @@ Real browser fullscreen targets the canvas host element (`.xaml-canvas`), not th
 ```
 
 CSS under `wwwroot/css/` resolves urls relative to that folder (`../Images/...`).
+
+## WebGL context loss (GPU reset, driver update, too many canvases)
+
+Handled since 1.10.6.22 on Blazor and pure Wasm: the canvas host prevents the default on `webglcontextlost` (else the browser never gives the context back) and draws no frames while lost; on `webglcontextrestored` the same WebGL object gets a new Emscripten GL handle, the lost Skia context is abandoned without GL calls and the next frame draws everything on a new one (GPU caches fail the context check and are made again). The console shows `DrawnUI: WebGL context lost` / `restored` (pure Wasm: `DrawnUI.Web: WebGL context lost` / `restored`). Test: `canvas.getContext('webgl2').getExtension('WEBGL_lose_context')`, `loseContext()`, then `restoreContext()`. Older builds stayed blank until a reload.
 
 ## Canvas blink on first tap (auto-height Canvas) — FIXED 2026-09-07
 
@@ -118,7 +128,7 @@ body { min-height: 100vh; }
 
 Fonts are the usual bulk of a WASM bundle: full color-emoji ≈ 20–24 MB, full CJK ≈ 25–28 MB; subsetting to what the app renders cuts that to hundreds of KB. `WasmFilesToBundle` is a NO-OP — fonts are static web assets under `wwwroot/fonts/`, fetched over HTTP at startup; subsetting the served file IS the win.
 
-**Check lib-shipped subsets FIRST**: `DrawnUi.Blazor` ships ready subsets as static web assets (built by `dev/fonts/subset_fonts.py` in the repo) — `fonts.AddEmojis()` (NotoColorEmoji faces+hands, ~900 KB, alias `FontEmoji`), `fonts.AddSymbols()` (~285 KB: Noto Sans Math + Symbols 2 subsets). Note: plain arrows U+2190–21FF live in Noto Sans Math, NOT Symbols 2.
+**Check lib-shipped subsets FIRST**: the Blazor core package (`DrawnUi.Blazor.Core`, and `DrawnUi.Web` for pure Wasm) ships ready subsets as static web assets (built by `dev/fonts/subset_fonts.py` in the repo) — `fonts.AddEmojis()` (NotoColorEmoji faces+hands, ~900 KB, alias `FontEmoji`), `fonts.AddSymbols()` (~285 KB: Noto Sans Math + Symbols 2 subsets). Note: plain arrows U+2190–21FF live in Noto Sans Math, NOT Symbols 2.
 
 Strategy: startup subset under the real alias → per-language subsets (page reload on language switch) → stream full fonts only if arbitrary user content must render (else skip the stream AND the loading wait entirely).
 
@@ -127,8 +137,8 @@ Traps (learned the hard way):
 - NotoColorEmoji is COLR/SVG vector — subsetting scales well, but `drop_tables=["SVG "]` does NOT shrink it (bulk is COLR layers + glyf).
 - Set `ignore_missing_unicodes`/`ignore_missing_glyphs`; keep `name_IDs = ["*"]` so aliases stay stable.
 - Emoji are >U+FFFF: decode surrogate pairs when scanning sources; always include U+FE0F and U+200D.
-- `SkiaLabel` has NO automatic font fallback, but DOES have an opt-in single-fallback: `FontFamilyFallback` (per-codepoint, checks the fallback face when the main font misses a glyph). Without it a missing glyph is silently dropped (not tofu). Verify coverage with `TTFont(...).getBestCmap()`.
-- **Missing arrows/symbols/hearts recipe (verified 2026-08, DrawnCells)**: OpenSans (and most text fonts) ship NO U+2190–21FF arrows, U+2665 ♥ etc. On WASM there are no system fonts to save you — buttons show "B" instead of "→ B". Fix = `fonts.AddSymbols()` (registers `FontSymbols` = Noto Sans Math subset + `FontSymbols2`) + a global style setter `SkiaLabel.FontFamilyFallbackProperty = "FontSymbols"` next to the FontFamily setter in `ConfigureStyles`. One place, whole app. NEVER swap the text to an ASCII lookalike instead — that is a content dodge, not a fix.
+- A plain `SkiaLabel` falls back only to its opt-in `FontFamilyFallback` fonts, never to system fonts. Since 1.10.6.22 it takes a list (`"FontSymbols, FontSymbols2, FontEmoji"`, tried in order, per glyph); before that it was one alias. A glyph no font has becomes `FallbackCharacter`; older builds dropped it silently (not tofu). Verify coverage with `TTFont(...).getBestCmap()`.
+- **Missing arrows/symbols/hearts recipe (verified 2026-08, DrawnCells)**: OpenSans (and most text fonts) ship NO U+2190–21FF arrows, U+2665 ♥ etc. On WASM there are no system fonts to save you — buttons show "B" instead of "→ B". Fix = `fonts.AddSymbols()` (registers `FontSymbols` = Noto Sans Math subset + `FontSymbols2`) + a global style setter `SkiaLabel.FontFamilyFallbackProperty = "FontSymbols, FontSymbols2"` (one alias on builds before 1.10.6.22) next to the FontFamily setter in `ConfigureStyles`. One place, whole app. NEVER swap the text to an ASCII lookalike instead — that is a content dodge, not a fix.
 - Multi-head apps: each head has its own `wwwroot` — sync the subset file to every one.
 - Measure candidate tiers empirically with fonttools before committing (glyph→byte ratio is font-specific); state the tofu tradeoff (excluded categories) to the user.
 
@@ -161,10 +171,6 @@ Google indexes a Blazor WASM page badly (or "Oops" fails in GSC Request Indexing
 2. **robots.txt blocks payload**: `Disallow: /_framework/`, `/_content/`, `decode.js`; explicitly `Allow:` favicon paths under `_content` (longest-match wins). Bots then see splash + SEO footer instantly — deterministic, no crawl budget burn. The old "never block CSS/JS" guidance targets pages whose CONTENT needs JS; here content is deliberately static.
 3. **Favicon for Google Search**: needs >=48x48 (32x32 = generic globe icon in results). Ship 96x96 PNG (`<link rel="icon" sizes="96x96">`) + root `/favicon.ico` (ICO may be a PNG-embedded container).
 4. **Embedded-iframe case**: a post/page embedding a WASM sample iframe fails indexing the SAME way — block the sample's `_framework` in the robots.txt of the IFRAME'S ORIGIN domain root (robots.txt works only at domain root; a project-path robots.txt is ignored; for GitHub Pages project sites the override lives in the USER-site repo, which beats a Jekyll theme's generated robots.txt).
-
-## Blazor Server `Canvas` (image frames) — taps swallowed by native drag (2026-08-29)
-
-Server-side `DrawnUi.Blazor.Server` `Canvas` is an `<img>` with `@onpointerdown/@onpointerup`. Symptom: drawn buttons ignore real-mouse clicks (Playwright `click` works — zero movement). Cause: ≥~5px pointer movement between down and up starts native image drag → `dragstart` + `pointercancel`, `pointerup` never fires, tap lost; on touch the same happens via page panning. Fixed in lib: `draggable="false"` + `touch-action:none; user-select:none; -webkit-user-drag:none;` on the img (`EnsureResponsiveImageStyle`). Diagnose by listening for `dragstart`/`pointercancel` on the img.
 
 ## Blazor Server `Canvas` (image frames) — taps swallowed by native drag (2026-08-29)
 

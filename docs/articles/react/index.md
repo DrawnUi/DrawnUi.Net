@@ -43,12 +43,12 @@ What you can use today:
 - **Scrolling**: `SkiaScroll` with headers, footers, `SkiaScrollBar`, pull to refresh (`RefreshIndicator`) and snapping.
 - **Text**: `SkiaLabel` with spans, `SkiaRichLabel` with markdown, and `SkiaEditor` for drawn text input.
 - **Shapes and images**: `SkiaShape`, `SkiaImage`, `SkiaImageTiles`, `SkiaSvg`, gradients, shadows and shader effects.
-- **Controls**: `SkiaButton`, `SkiaHotspot`, `SkiaSwitch`, `SkiaCheckbox`, `SkiaRadioButton`, `SkiaSlider` and `SkiaProgress`, in the Default, Cupertino, Material and Windows looks.
+- **Controls**: `SkiaButton`, `SkiaHotspot`, `SkiaSwitch`, `SkiaCheckbox`, `SkiaRadioButton`, `SkiaSlider` and `SkiaProgress`, in the Default, Cupertino, Material, Material3 and Windows looks.
 - **Carousels and panels**: `SkiaCarousel`, `SkiaShaderCarousel` and `SkiaDrawer`.
 - **Animation**: `SkiaLottie`, `SkiaGif`, `SkiaSprite`, `SkiaSpriteSet`, animators and transforms.
 - **Apps and games**: `SkiaShell` navigation (pages, popups, modals, toasts), `DrawnGame`, `KeyboardManager` and styles (`ConfigureStyles`).
 - **Input**: taps and pans. Every mouse button taps, with the button in `e.Parameters.Event.Pointer`, and `ContextMenu` on any control (and on `<Canvas>`) takes the right-click menu request, with the same handler shape as on the .NET web heads.
-- **Accessibility**: the same overlay model as DrawnUi.Blazor.
+- **Accessibility**: an ARIA overlay like DrawnUi.Blazor's.
 
 Caching follows the .NET model: `UseCache` takes the same values. `Operations` records an `SkPicture` and replays it, `Image` snapshots an offscreen surface, `ImageDoubleBuffered` keeps the last cache while a new one is produced, and `ImageComposite` keeps its offscreen surface between records and repaints only the children that changed plus the siblings they overlap. On an accelerated (WebGL) canvas the offscreen surface lives on the GPU, so `Image` and `GPU` caches both stay on the graphics card.
 
@@ -110,7 +110,7 @@ Work continues control by control against the .NET sources. Not there yet:
 
 - **Gestures**: long press, hover and two-finger pinch.
 - **Recycling beyond one column**: lists in a single column reuse their cells, while templated rows, grids and wraps still create every item.
-- **Controls**: `SkiaViewSwitcher`, `SkiaTabsSelector`, `SkiaWheelPicker`, `SkiaSpinner`, `SkiaCachedStack` and `SkiaLabelFps`.
+- **Controls**: `SkiaViewSwitcher`, `SkiaTabsSelector`, `SkiaWheelPicker`, `SkiaSpinner` and `SkiaCachedStack`.
 
 ## Known limitations
 

@@ -9,10 +9,18 @@ function getState() {
     return window[globalStateKey];
 }
 
-function invoke(methodName, code) {
-    return DotNet.invokeMethodAsync(assemblyName, methodName, code).catch(() => {
+function invoke(methodName, code, forOtherElement) {
+    return DotNet.invokeMethodAsync(assemblyName, methodName, code, forOtherElement).catch(() => {
         // Ignore teardown races during app shutdown/reload.
     });
+}
+
+// A page element outside the canvas host (an input, a textarea, a button...) has the key: DrawnUI still sees it,
+// but drawn controls must not act on it (KeyboardManager.IsKeyForOtherElement).
+function isForOtherElement(event) {
+    const t = event.target;
+    return !!t && t.nodeType === 1 && t !== document.body && t !== document.documentElement
+        && !(t.closest && t.closest(".xaml-canvas"));
 }
 
 export function attachGlobalKeyboard() {
@@ -33,14 +41,15 @@ export function attachGlobalKeyboard() {
     }
 
     state.keyDownHandler = event => {
-        invoke("HandleGlobalKeyDown", event.code || null);
+        const other = isForOtherElement(event);
+        invoke("HandleGlobalKeyDown", event.code || null, other);
         if (event.key && event.key.length === 1 && !event.ctrlKey && !event.altKey && !event.metaKey) {
-            invoke("HandleGlobalKeyChar", event.key);
+            invoke("HandleGlobalKeyChar", event.key, other);
         }
     };
 
     state.keyUpHandler = event => {
-        invoke("HandleGlobalKeyUp", event.code || null);
+        invoke("HandleGlobalKeyUp", event.code || null, isForOtherElement(event));
     };
 
     window.addEventListener("keydown", state.keyDownHandler, true);

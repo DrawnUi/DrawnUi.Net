@@ -21,7 +21,9 @@ In Blazor, the page shell becomes a Razor component that hosts the drawn content
         Gestures="@GesturesMode.Enabled" />
 
 @code {
-    private readonly SkiaControl _canvasContent = CreateCanvasContent();
+    private SkiaControl _canvasContent;
+
+    protected override void OnInitialized() => _canvasContent = CreateCanvasContent();
 }
 ```
 
@@ -36,7 +38,7 @@ The custom control logic can stay in C# and be reused across MAUI and Blazor as 
 
 <img src="../images/custombutton.jpg" alt="Custom Button Tutorial" width="350" style="margin-top: 16px;" />
 
-Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials)
+Want to see this in action first? Check out the [**DrawnUI Tutorials Project**](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/Tutorials)
 Clone the repo and run the Tutorials project to explore all examples!
 
 ## 🎓 What You'll Learn:
@@ -128,7 +130,7 @@ For our button we would ned to create bindable properties like `Text`, `TintColo
 
 ### **Creating the view**
 
-We would create our UI in code-behind, in one file, using DrawnUI fluent extensions. Observation methods like `ObserveProperty`, `ObserveProperty` and others do not use MAUI bindings but observe `INotifyPropertyChanged` viewmodels, are thread and leaks safe (subscribtions are released when the subscribing control is disposed).
+We would create our UI in code-behind, in one file, using DrawnUI fluent extensions. Observation methods like `ObserveProperty`, `ObserveProperties` and others do not use MAUI bindings but observe `INotifyPropertyChanged` viewmodels, are thread and leaks safe (subscribtions are released when the subscribing control is disposed).
 
 ```csharp
 protected virtual SkiaShape CreateView()
@@ -210,11 +212,11 @@ protected virtual SkiaShape CreateView()
         }
         else if (args.Type == TouchActionResult.Down)
         {
-            SetButtonPressedme;
+            SetButtonPressed(me);
         }
         else if (args.Type == TouchActionResult.Up)
         {
-            SetButtonReleasedme;
+            SetButtonReleased(me);
             return null; //do not consume UP if not required, so others can receive it
         }
 
@@ -349,7 +351,7 @@ Let's look at the caching approach used in our GameButton:
 
 >* **Property-Driven Design**: Custom controls should be designed around bindable properties that affect their visual appearance. This makes them work seamlessly with MAUI XAML, data binding, and MVVM patterns.
 
-> **📁 Complete Code:** Find the full implementation in the [Tutorials project](https://github.com/DrawnUi/DrawnUi.Net.Maui/tree/main/src/Maui/Samples/Tutorials/Tutorials/CustomButton/GameButton.cs)
+> **📁 Complete Code:** Find the full implementation in the [Tutorials project](https://github.com/DrawnUi/DrawnUi.Net/blob/main/src/Maui/Samples/Tutorials/Tutorials/CustomButton/GameButton.cs)
 
 ## Conclusion
 

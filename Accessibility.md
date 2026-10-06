@@ -1,223 +1,77 @@
-# DrawnUI Accessibility
+# DrawnUI Accessibility (contributor notes)
 
-DrawnUI renders entirely via SkiaSharp — the browser and OS see a single canvas pixel surface with no native control tree. Accessibility requires a parallel virtual element layer that mirrors drawn controls to assistive technology.
+DrawnUI renders through SkiaSharp: the OS and the browser see one canvas surface, no native control tree. Every head mirrors the drawn controls into a virtual layer that assistive technology reads. Consumer documentation: [docs/articles/advanced/accessibility.md](docs/articles/advanced/accessibility.md).
 
-## Concept
+## Where each head lives
 
-Each platform exposes drawn controls differently:
+| Head | Mechanism | Code | Checked with |
+|---|---|---|---|
+| Shared | `SkiaAccessibilityManager` snapshot, actions, keyboard rules | `src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs`, `ISkiaAccessibilityNode`, `SkiaControl.Shared.cs` (accessibility region), `DrawnView.HandleKeyboardNavigation` | `src/Net/Tests/DrawnUi.Net.Tests` (Accessibility*, Keyboard* tests) |
+| MAUI Windows | WinUI automation peers on the canvas element | `src/Maui/DrawnUi/Platforms/Windows/Accessibility/MauiWindowsAutomationPeer.cs`, `DrawnView.Windows.cs` | UI Automation client |
+| WPF | WPF automation peers | `src/Wpf/Drawnui.Wpf/Views/Accessibility/DrawnUiAutomationPeers.cs`, `DrawnUiElement.cs` | UI Automation client |
+| OpenTK Windows | UIA fragment root on `WM_GETOBJECT` | `src/OpenTk/DrawnUi/Accessibility/WindowsUiaProvider.cs`, COM types in `src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs` | UI Automation client |
+| OpenTK Linux | AT-SPI2 over D-Bus (`Tmds.DBus.Protocol`) | `src/OpenTk/DrawnUi/Accessibility/LinuxAtSpiProvider.cs` | pyatspi and Orca in WSL |
+| OpenTK keyboard | Tab / Enter / Space / arrows / Escape | `src/OpenTk/DrawnUi/DrawnUiWindow.cs` (`OnKeyDown`) | posted keys on Windows |
+| MAUI Android | AndroidX `ExploreByTouchHelper` | `src/Maui/DrawnUi/Platforms/Android/DrawnView.Accessibility.Android.cs` | uiautomator on the emulator, TalkBack on a phone |
+| MAUI iOS / Mac Catalyst | `UIAccessibilityElement` container | `src/Maui/DrawnUi/Platforms/Apple/DrawnView.Accessibility.Apple.cs` | VoiceOver |
+| MAUI Mac Catalyst keyboard | `HandleKeyboardNavigation` | `src/Maui/DrawnUi/Platforms/MacCatalyst/DrawnUiBasePageHandler.cs` | |
+| Blazor | ARIA overlay | `src/Blazor/DrawnUi/Views/Canvas.razor` | Chrome DOM and accessibility tree |
+| WebAssembly (`DrawnUi.Web`) | the same ARIA overlay, built in JS | `src/Wasm/DrawnUi/WebAccessibility.cs`, `src/Wasm/DrawnUi/wwwroot/drawnui-web.js` (accessibility overlay section) | Chrome DOM and accessibility tree |
 
-| Platform | Mechanism |
-|---|---|
-| Blazor | Invisible ARIA `<div>` overlay positioned over the canvas |
-| OpenTK Windows | UIA `IRawElementProviderFragment` virtual elements attached to the native OpenTK / GLFW host window (done) |
-| OpenTK Linux | AT-SPI virtual accessibles attached to the native OpenTK / GLFW host window |
-| MAUI iOS / macCatalyst | `IUIAccessibilityContainer` virtual elements on the native view |
-| MAUI Android | `ExploreByTouchHelper` on `SKCanvasView` |
-| MAUI Windows | UIA `IRawElementProviderFragment` virtual elements attached to the WinUI 3 `DesktopChildSiteBridge` host window (done) |
+## Contract every head follows
 
-All platforms share the same C# infrastructure in the shared project. Platform layers consume the `SkiaAccessibilityManager` snapshot and translate it into the native a11y API.
+The same rules hold in DrawnUi.Rust and DrawnUi.React. When one engine changes them, the others follow.
 
----
+- **Snapshot.** Nodes in reading order (rows top to bottom, a row left to right), rects in device-independent pixels where the control is drawn now. Rebuilt at most once per `MinUpdateIntervalMs` (1000 ms) at frame end, raising `Changed` only when something differs. `RebuildSkipped` tells a head that frames were drawn inside the interval; a head whose canvas can go idle (a page that just opened) calls `RefreshIfStale` after the interval from a timer.
+- **Names said once.** A node whose text or heading child repeats its label gets no name (`NamedByChild`, `Label` null). Selectable text keeps its name.
+- **Disabled control roles.** A node with a control role (`Aria.IsInteractiveRole`) that cannot take input reads as unavailable (UIA `IsEnabled` false, `aria-disabled`, TalkBack disabled, VoiceOver not enabled, AT-SPI no enabled / sensitive).
+- **Range values.** `GetAccessibilityValue()` gives now / min / max / step / spoken text / orientation; the value is never put in the name. `OnAccessibilitySetValue(double)` sets it, snapped to the step.
+- **Actions** (static on `SkiaAccessibilityManager`, all gated on what the pointer could do):
+  - `Activate`: tap at the center;
+  - `Adjust`: one arrow-key step, through `OnAccessibilityKey`;
+  - `SetValue`;
+  - `ScrollIntoView`: `SkiaScroll.EnsureVisible`;
+  - `Page`: `SkiaScroll.AccessibilityPage`, false when nothing can move;
+  - `Key`: arrows to the node, then its group.
+- **Refresh after an action.** Activate / Adjust / SetValue (and a value control's key) rebuild the snapshot on the next frame.
+- **Refocus.** Heads report the screen reader's node (`NotifyReaderFocused`). When a rebuild drops it, `ReaderRefocusRequested` carries the first node that says something; the head moves the reader there:
+  - UIA and AT-SPI through `NotifyFocused`;
+  - TalkBack through accessibility focus;
+  - VoiceOver through LayoutChanged with the element (never ScreenChanged);
+  - web through DOM focus.
+- **Pressed state on the web.** The attribute follows the role (`Aria.PressedStateAttribute`): `aria-checked` for checkbox / switch / radio / menuitemcheckbox / menuitemradio, `aria-selected` for option / tab, `aria-pressed` otherwise.
+- **Keyboard.**
+  - One Tab stop per node; an arrow-key group (composite role) is one stop.
+  - Arrows move by item index (the row length is counted on the first row).
+  - Enter / Space activate; Escape leaves on desktop.
+  - Tab leaves a drawn editor, never types a tab.
+  - The ring shows only after keyboard use.
+  - OpenTK sends Enter / Space / arrows to the focused node only while it has keyboard focus and no editor has the caret, so an app's own keys stay its own.
 
-## Shared Infrastructure (done)
+## Head notes
 
-### `SkiaControl` — accessibility props
-
-```csharp
-control.AccessibilityRole        = Aria.RoleButton;  // makes IsAccessibilityElement true
-control.AccessibilityLabel       = "Save";
-control.AccessibilityHint        = "Saves the document";
-control.AccessibilityCanInteract = true;             // enables tab-stop, click, keyboard
-control.AccessibilityIsPressed   = false;            // aria-pressed: null=absent, true/false=toggle state
-```
-
-`IsAccessibilityElement` is a computed getter: `AccessibilityRole != null`.
-
-Setting `AccessibilityRole` back to `null` automatically unregisters the control from the manager.
-
-### Fluent extensions
-
-```csharp
-// General
-.WithAccessibility(string role, string? label = null, string? hint = null, bool canInteract = false)
-.WithAccessibility(string role, string? label = null, bool canInteract = false)
-
-// Shortcuts
-.WithAccessibilityButton(string label, string? hint = null)   // role=button, canInteract=true
-.WithAccessibilityButton(string label)                        // role=button, canInteract=true
-.WithAccessibilityButton()                                    // role=button, label from .Text (SkiaButton)
-.WithAccessibilityText(string text)                           // role=text
-.WithAccessibilityText()                                      // role=text, label from .Text (SkiaLabel)
-
-// Toggle state (aria-pressed)
-.WithAccessibilityPressed(bool? pressed)                      // set aria-pressed manually, null = absent
-.WithAccessibilityToggle(string label, string? hint = null)   // SkiaToggle: role=switch, aria-pressed auto-synced
-```
-
-`WithAccessibilityToggle` (available on any `SkiaToggle` subclass) sets the initial `AccessibilityIsPressed` from `IsToggled` and subscribes to `IsToggled` changes via `ObserveProperty` — automatically unsubscribes on control disposal through `ExecuteUponDisposal`.
-
-```csharp
-new GameSwitch()
-    .WithAccessibilityToggle(ResStrings.Sounds)
-```
-
-### `ISkiaAccessibilityNode` interface
-
-Implemented by all `SkiaControl` instances. Parallel to `ISkiaGestureListener` — platform layers work against the interface, not the concrete class.
-
-Key members:
-- `AccessibilityRole / Label / Hint / CanInteract / IsPressed` — props
-- `IsAccessibilityElement` — computed: `Role != null`
-- `GetAccessibilityPixelRect()` — returns `VisualLayer?.HitBoxWithTransforms.Pixels ?? DrawingRect`
-- `OnAccessibilityActivated()` — synthesises a `Tapped` gesture via `OnSkiaGestureEvent`
-- `NotifyAccessibility()` — register or mark dirty in the manager
-- `OnAccessibilityUnregistered()` — called by manager on removal
-
-### Registration lifecycle
-
-1. `OnLayoutReady()` — fires once on first valid layout; if `IsAccessibilityElement`, automatically calls `NotifyAccessibility()`.
-2. `NotifyAccessibility()` — registers (first call) or marks dirty (subsequent). Call manually when any a11y prop changes at runtime.
-3. `SetParent(null)` — when a control is detached from the tree, calls `UnregisterSubtree(this)` on the old superview's manager, cascade-removing the control and all registered descendants — same pattern as gesture listener cleanup.
-4. `OnDisposing()` — calls `UnregisterSubtree(this)`.
-
-### `SkiaAccessibilityManager`
-
-Lives on `DrawnView`. Maintains a `ConcurrentDictionary<ISkiaAccessibilityNode, byte>`.
-
-- Marks dirty on any `Register` / `NotifyUpdated` call.
-- `OnFrameEnd(scale)` — called at end of `OnFinalizeRendering`. Rebuilds sorted `Snapshot` at most once per `MinUpdateIntervalMs` (default 1000 ms). Safe at 144 fps.
-- Sorts controls top→left reading order.
-- Fires `Changed` event after each rebuild.
-
-Snapshot is an `AccessibilityNode[]`:
-
-```csharp
-public record AccessibilityNode(
-    string? Label, string? Hint, string? Role,
-    SKRect Rect, bool CanInteract, bool? IsPressed)
-```
-
-`Rect` is in CSS pixels (device-independent), divided by rendering scale.
-
-### `OnAccessibilityActivated()`
-
-Virtual method on `SkiaControl`. Default synthesises a `Tapped` gesture directly via `OnSkiaGestureEvent`. Override per control type for custom activation.
-
-### `Aria` constants
-
-`DrawnUi.Models.Aria` — static class with 30 role string constants and XML doc comments. Use instead of raw strings.
-
-Interactive widgets: `RoleButton`, `RoleLink`, `RoleCheckbox`, `RoleRadio`, `RoleSwitch`, `RoleSlider`, `RoleSpinbutton`, `RoleTextbox`, `RoleSearchbox`, `RoleCombobox`, `RoleListbox`, `RoleOption`, `RoleTab`, `RoleTabpanel`, `RoleTablist`, `RoleMenu`, `RoleMenuitem`, `RoleMenuitemcheckbox`, `RoleMenuitemradio`, `RoleScrollbar`
-
-Structural / landmark: `RoleText`, `RoleHeading`, `RoleImg`, `RoleList`, `RoleListitem`, `RoleSeparator`, `RoleProgressbar`, `RoleTooltip`, `RoleDialog`, `RoleAlertdialog`, `RoleStatus`, `RoleAlert`, `RoleGroup`, `RoleRegion`, `RoleNavigation`, `RoleMain`, `RolePresentation`
-
----
-
-## Blazor (done)
-
-### ARIA overlay
-
-`Canvas.razor` renders a sibling `<div class="xaml-a11y-overlay">` next to the `aria-hidden` canvas surface. For each node in the manager snapshot, one `<div>` is absolutely positioned to match the drawn control's CSS-pixel bounds.
-
-```html
-<!-- non-interactive: read-only, no tab stop -->
-<div role="text" aria-label="Hello"
-     class="xaml-a11y-element" style="left:…;top:…;width:…;height:…">
-</div>
-
-<!-- interactive: tab-navigable, click/Enter/Space activates the drawn control -->
-<div role="button" aria-label="Save" tabindex="0"
-     class="xaml-a11y-element xaml-a11y-interactive" style="…">
-</div>
-
-<!-- toggle: aria-pressed reflects current state -->
-<div role="switch" aria-label="Sounds" aria-pressed="true" tabindex="0"
-     class="xaml-a11y-element xaml-a11y-interactive" style="…">
-</div>
-```
-
-`AccessibilityCanInteract = true` enables:
-- `tabindex="0"` — keyboard tab stop
-- `cursor: pointer`
-- `:focus-visible` blue outline (3 px, rgba(0,103,244,0.85))
-- `@onclick` → `OnA11yActivated` → `control.OnAccessibilityActivated()`
-- `@onkeydown` Enter/Space → same
-
-`AccessibilityIsPressed` — when non-null, renders `aria-pressed="true"` or `aria-pressed="false"` on the overlay element. `null` omits the attribute (Blazor null-attribute behavior).
-
-`AccessibilityCanInteract = false` — element present in ARIA tree for reading only; no tab stop, ignores pointer events.
-
-### Manager subscription
-
-`Canvas.OnAfterRenderAsync` subscribes to `AccessibilityManager.Changed`. On change, `_accessibilityNodes` is updated and `StateHasChanged` is invoked asynchronously, keeping the overlay in sync after each throttled rebuild.
-
----
+- **MAUI Windows.** `DrawnUi.Draw.IInvokeProvider` exists in the shared code, so a peer must name `Microsoft.UI.Xaml.Automation.Provider.IInvokeProvider` in full (a using alias loses to the enclosing namespace). Shadowing it made Narrator's Invoke fail with E_NOINTERFACE.
+- **UIA COM interfaces** in `WindowsUiaInterfaces.cs` carry the `Uia` prefix (`IUiaRangeValueProvider`, ...) so they never shadow the WinUI / WPF interfaces of the same name. GUIDs must match UIAutomationCore exactly (the old `IInvokeProvider` GUID was wrong).
+- **UIA focus events** are not delivered for a window in the background; a refocus check needs the window in the foreground, or the headless tests.
+- **Android.** Snapshot changes invalidate the root only while touch exploration is on. Scrolling actions sit on the canvas node (the virtual views are flat) and are offered only while the scroll around TalkBack's node can move.
+- **iOS / Catalyst.** `accessibilityElements` is set through KVC on the platform view (the binding has no container interface on `UIView`); `accessibilityActivate` is an `[Export]`. Scroll directions follow AccessKit and Flutter: `Down` shows what is below. On iOS the elements exist only while VoiceOver or Switch Control runs.
+- **Blazor.** Overlay elements take the pointer, so a control with a role gets no canvas hover.
+- **WebAssembly.** Overlay elements have `pointer-events: none` and `overflow: clip` on the overlay (a focused node outside the canvas must never scroll it). The canvas draws the focus ring. C# callbacks reach the overlay through JS interop function marshaling, so apps' `main.js` needs no change.
+- **Linux.**
+  - Shaped after AccessKit's `accesskit_unix` / `accesskit_atspi_common`: same role numbers, state bits, events.
+  - Waits for `org.a11y.Status` `IsEnabled` / `ScreenReaderEnabled`, and watches for the change. Honors `AT_SPI_BUS_ADDRESS`.
+  - Test recipe (WSL with WSLg):
+    1. Run inside `dbus-run-session`.
+    2. Start `/usr/libexec/at-spi-bus-launcher --launch-immediately`.
+    3. Run `orca --replace --debug-file=<file>` and read its `SPEECH OUTPUT:` lines.
+    4. Afterwards, stop a leftover `speech-dispatcher` and remove `$XDG_RUNTIME_DIR/speech-dispatcher`.
 
 ## Remaining work
 
-### Blazor
-
-- [ ] **Mouse hover screen reader highlight** — ChromeVox and similar readers should show a highlight rectangle on mouse hover. Currently under investigation (canvas pointer-event layering may intercept mouse before the overlay `mouseover`).
-- [ ] **`aria-checked`** — for checkboxes / radio buttons (distinct from `aria-pressed`).
-- [ ] **`aria-selected`** — for tabs, list options.
-- [ ] **`aria-expanded`** — for collapsible regions, comboboxes.
-- [ ] **`aria-disabled`** — propagate disabled state.
-- [ ] **Live regions** — `aria-live="polite"` container for dynamic text announcements (status labels, counters).
-- [ ] **`aria-describedby`** — link hint text properly instead of using `title`.
-- [ ] **Focus management** — when `FocusedChild` changes in the gesture system, move DOM focus to the matching overlay element so the screen reader cursor follows.
-
-### MAUI — iOS / macCatalyst (not started)
-
-- [ ] Override `VisibilityAwarePlatformView` to implement `IUIAccessibilityContainer`.
-- [ ] Provide virtual `UIAccessibilityElement` objects from `AccessibilityManager.Snapshot`.
-- [ ] Wire `AccessibilityManager.Changed` to `UIAccessibility.PostNotification(UIAccessibilityPostNotification.LayoutChanged, ...)`.
-
-### MAUI — Android (not started)
-
-- [ ] Attach `ExploreByTouchHelper` to the `SKCanvasView` platform view.
-- [ ] Implement `GetVirtualViewAt`, `GetVisibleVirtualViews`, `OnPopulateNodeForVirtualView`, `OnPerformActionForVirtualView` using the snapshot.
-- [ ] Map `OnAccessibilityActivated` to `PerformActionForVirtualView` with `AccessibilityNodeInfoCompat.ActionClick`.
-
-### MAUI — Windows (done)
-
-UIA virtual provider implemented in `src/Maui/DrawnUi/Platforms/Windows/Accessibility/MauiWindowsUiaProvider.cs`. Hooks the WinUI 3 `DesktopChildSiteBridge` child window (the HWND that receives `WM_GETOBJECT` for content) via WndProc subclass. Responds to `WM_GETOBJECT(lParam=-25)` with `UiaReturnRawElementProvider`. Snapshot changes raise `UiaRaiseStructureChangedEvent`. Setup/teardown in `DrawnView.Windows.cs InitFrameworkPlatform`.
-
-**Key implementation note — HWND:** `GetPlatformWindow()` / `WindowNative.GetWindowHandle()` returns the top-level WinUI 3 window HWND. UIA queries go to the `DesktopChildSiteBridge` child window (class `Microsoft.UI.Content.DesktopChildSiteBridge`). Use `EnumChildWindows` to find it and hook that HWND instead.
-
-**Key implementation note — bounding rectangles:** `ClientToScreen(DesktopChildSiteBridgeHwnd, {0,0})` gives the physical-pixel origin of the entire WinUI 3 content island, but the DrawnUI canvas is positioned WITHIN that island at some offset (MAUI shell chrome, navigation bar, etc.). Use `platformView.TransformToVisual(null)` to get the canvas offset in effective pixels, then multiply by `XamlRoot.RasterizationScale` to convert to physical pixels and add to the bridge origin. This is computed as a `Func<(double x, double y)>` lambda so it's evaluated fresh each time UIA queries `BoundingRectangle`.
-
-COM interface types are shared with OpenTK via `src/Shared/Platforms/Windows/WindowsUiaInterfaces.cs` (compiled into both assemblies via `Shared.projitems`). COM QI matches by GUID — both assemblies can have separate copies with the same GUIDs.
-
-- [x] Hook WM_GETOBJECT on DesktopChildSiteBridge, return UIA fragment root
-- [x] Virtual element providers for all snapshot nodes
-- [x] Bounding rectangles in screen coordinates
-- [x] Navigate (parent/sibling/child traversal)
-- [x] StructureChanged event on snapshot rebuild
-- [x] SetFocus → OnAccessibilityActivated
-- [x] Raise `UIA_AutomationFocusChangedEventId` when keyboard focus moves
-
-### OpenTK — Windows (done)
-
-UIA virtual provider implemented in `src/OpenTk/DrawnUi/Accessibility/WindowsUiaProvider.cs`. Hooked via WndProc subclass in `DrawnUiWindow`. Responds to `WM_GETOBJECT(lParam=-25)` with `UiaReturnRawElementProvider`. Snapshot changes raise `UiaRaiseStructureChangedEvent`. Each `AccessibilityNode` is a `VirtualElementProvider` with correct bounding rect (logical px × scale + client origin), runtime id, control type, and `SetFocus` wired to `OnAccessibilityActivated`.
-
-**Key implementation note:** COM interfaces (`IRawElementProviderSimple`, `IRawElementProviderFragment`, `IRawElementProviderFragmentRoot`) must be `public` — .NET's CCW does not expose `internal` types via `QueryInterface` even with `[ComVisible(true)]`.
-
-- [x] Hook WM_GETOBJECT, return UIA fragment root
-- [x] Virtual element providers for all snapshot nodes
-- [x] Bounding rectangles in screen coordinates
-- [x] Navigate (parent/sibling/child traversal)
-- [x] StructureChanged event on snapshot rebuild
-- [x] SetFocus → OnAccessibilityActivated
-- [x] Raise `UIA_AutomationFocusChangedEventId` when keyboard focus moves
-
-### OpenTK — Linux (not started)
-
-- [ ] Hook accessibility to the native OpenTK / GLFW host window on Linux.
-- [ ] Mirror `SkiaAccessibilityManager.Snapshot` into an AT-SPI accessible tree for desktop assistive technology.
-- [ ] Route accessibility activation and focus changes back into the shared DrawnUI accessibility pipeline.
-
-### General
-
-- [ ] XAML bindable properties for all accessibility props (`AccessibilityRole`, `AccessibilityLabel`, `AccessibilityHint`, `AccessibilityCanInteract`, `AccessibilityIsPressed`).
-- [ ] `AccessibilityManager.MinUpdateIntervalMs` exposed as a `Canvas` parameter.
-- [ ] Unit tests for snapshot rebuild ordering and subtree unregistration.
+- [ ] Blazor: canvas hover on controls with a role (the overlay takes the pointer; WebAssembly avoids it with `pointer-events: none`).
+- [ ] Web overlays: `aria-expanded`, `aria-describedby` (the hint is a `title`).
+- [ ] OpenTK Windows UIA: live-region events (MAUI Windows and WPF raise them).
+- [ ] Android and iOS: hardware keyboard navigation.
+- [ ] AT-SPI: the Text interface (labels are read through their name), tree hierarchy (nodes are flat under the frame).
+- [ ] Shell bar title and the page's own heading are sibling nodes, so the page name is read twice.
+- [ ] XAML bindable properties for the accessibility props; `MinUpdateIntervalMs` as a `Canvas` parameter.

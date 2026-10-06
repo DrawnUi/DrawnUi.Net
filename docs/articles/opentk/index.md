@@ -13,7 +13,7 @@ Run DrawnUI canvases inside an OpenTK `GameWindow` on Windows and Linux.
 
 ## Install
 
-`DrawnUi.OpenTk` is currently distributed as a project reference:
+`DrawnUi.OpenTk` is a NuGet package for .NET 9 and .NET 10:
 
 ```bash
 dotnet add package DrawnUi.OpenTk

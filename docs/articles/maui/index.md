@@ -20,7 +20,7 @@ Run DrawnUI canvases inside a .NET MAUI app on Windows, Android, iOS and MacCata
 
 ## Samples
 
-Every host in the repository ships the same two samples, Hello and Pong:
+The MAUI host ships the same two samples as the WPF and OpenTK hosts, Hello and Pong:
 
 - [HelloMaui](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/HelloMaui): the full feature demo, one page per feature behind a drawn `SkiaShell` (cells, images, SVG, shapes, text, layouts, looks, carousels, Lottie, shell, editor, keyboard, scroll, shaders, sprites, transforms, drag to reorder, accessibility). Same pages as HelloWpf and the React demo.
 - [MauiPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/MauiPong): the Pong game, a thin host over the shared `src/Shared/Samples/Pong.Shared` game with the `DrawnUi.Maui.Game` addon. A `RescalingCanvas` keeps the game's logical viewport and aspect ratio in any window, `Gestures = Lock` gives the game the whole input stream, `UseDesktopKeyboard` makes the arrow keys move the paddle on Windows and Mac. See [Game UI](../advanced/game-ui.md) for the addon per host.
@@ -37,6 +37,7 @@ Choose the MAUI lane when you need:
 - full control over gesture-heavy or animation-heavy screens
 - a custom UI rendered by DrawnUI on top of MAUI app structure
 - access to MAUI platform services while keeping the visible UI fully drawn
+- drawn controls read by Narrator, TalkBack and VoiceOver, with keyboard navigation on Windows and Mac Catalyst
 
 ## Package
 

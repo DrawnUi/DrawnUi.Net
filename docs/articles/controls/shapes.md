@@ -1,6 +1,6 @@
 # SkiaShape
 
-SkiaShape is a versatile control for rendering various geometric shapes in DrawnUi.Maui. Unlike traditional shape controls, SkiaShape offers high-performance rendering through SkiaSharp while supporting advanced features like custom paths, shadows, gradients, and content hosting.
+SkiaShape is a versatile control for rendering various geometric shapes in DrawnUI. Unlike traditional shape controls, SkiaShape offers high-performance rendering through SkiaSharp while supporting advanced features like custom paths, shadows, gradients, and content hosting.
 
 ## Basic Usage
 
@@ -27,7 +27,7 @@ SkiaShape supports the following shape types:
 - **Path**: A custom shape defined by SVG path data
 - **Polygon**: A shape defined by a collection of points
 - **Line**: A series of connected line segments
-- **Arc**: A circular arc segment
+- **Arc**: A circular arc segment, set by `Value1` and `Value2`
 
 ## Common Properties
 
@@ -37,11 +37,11 @@ SkiaShape supports the following shape types:
 |----------|------|-------------|
 | `BackgroundColor` | Color | Fill color of the shape |
 | `StrokeColor` | Color | Outline color of the shape |
-| `StrokeWidth` | float | Width of the outline stroke |
-| `CornerRadius` | float | Rounded corner radius for rectangles |
-| `StrokeCap` | StrokeCap | End cap style for lines (Round, Butt, Square) |
-| `StrokePath` | string | Dash pattern for creating dashed lines |
-| `StrokeBlendMode` | BlendMode | Controls how strokes blend with underlying content |
+| `StrokeWidth` | double | Width of the outline stroke |
+| `CornerRadius` | CornerRadius | Rounded corner radius for rectangles, one value or one per corner |
+| `StrokeCap` | SKStrokeCap | End cap style for lines (Round, Butt, Square), default Round |
+| `StrokePath` | double[] | Dash pattern for creating dashed lines, `"5,5"` in XAML |
+| `StrokeBlendMode` | SKBlendMode | Controls how strokes blend with underlying content |
 | `ClipBackgroundColor` | bool | If true, creates a "hollow" shape with just shadows and strokes |
 
 ### Shape-Specific Properties
@@ -49,10 +49,10 @@ SkiaShape supports the following shape types:
 | Property | Type | Description |
 |----------|------|-------------|
 | `PathData` | string | SVG path data for Path type shapes |
-| `Points` | Collection\<SkiaPoint\> | Collection of points for Polygon or Line shapes |
+| `Points` | IList\<SkiaPoint\> | Points for Polygon or Line shapes, relative to the shape size (0.0-1.0) |
 | `SmoothPoints` | float | Level of smoothing for Polygon/Line shapes (0.0-1.0) |
-| `StartAngle` | float | Starting angle for Arc shapes |
-| `SweepAngle` | float | Sweep angle for Arc shapes |
+| `Value1` | double | Start angle in degrees for Arc shapes |
+| `Value2` | double | Sweep angle in degrees for Arc shapes |
 
 ## Advanced Features
 
@@ -68,26 +68,31 @@ SkiaShape supports multiple shadows through the `Shadows` collection property:
     <DrawUi:SkiaShape.Shadows>
         <DrawUi:SkiaShadow 
             Color="#80000000" 
-            BlurRadius="10" 
-            Offset="0,4" />
+            Blur="10" 
+            Y="4" />
     </DrawUi:SkiaShape.Shadows>
 </DrawUi:SkiaShape>
 ```
 
 ### Gradients
 
-SkiaShape supports gradient fills via the `BackgroundGradient` and `StrokeGradient` properties:
+SkiaShape supports gradient fills via the `FillGradient` property (on every `SkiaControl`) and the `StrokeGradient` property (shapes only):
 
 ```xml
 <DrawUi:SkiaShape Type="Rectangle">
-    <DrawUi:SkiaShape.BackgroundGradient>
+    <DrawUi:SkiaShape.FillGradient>
         <DrawUi:SkiaGradient 
             Type="Linear" 
-            StartColor="Red" 
-            EndColor="Blue" 
-            StartPoint="0,0" 
-            EndPoint="1,1" />
-    </DrawUi:SkiaShape.BackgroundGradient>
+            StartXRatio="0" 
+            StartYRatio="0" 
+            EndXRatio="1" 
+            EndYRatio="1">
+            <DrawUi:SkiaGradient.Colors>
+                <Color>Red</Color>
+                <Color>Blue</Color>
+            </DrawUi:SkiaGradient.Colors>
+        </DrawUi:SkiaGradient>
+    </DrawUi:SkiaShape.FillGradient>
 </DrawUi:SkiaShape>
 ```
 
@@ -138,11 +143,11 @@ SkiaShape can function as a container, clipping child elements to its shape boun
 </DrawUi:SkiaShape>
 ```
 
-The `LayoutChildren` property controls how children are arranged (Absolute, Column, Row, Grid).
+Children are placed on top of each other, like in an absolute layout: `Type` on a shape selects the shape, not the layout. To arrange children in a column or row, put a `SkiaLayout` inside the shape.
 
 ## Creating Polygons
 
-For polygon shapes, you can define points in various ways:
+For polygon shapes, you can define points in various ways. Point coordinates are always relative (0.0-1.0) to the shape's size.
 
 ### Using SkiaPoint Collection
 
@@ -152,16 +157,16 @@ For polygon shapes, you can define points in various ways:
     BackgroundColor="Purple">
     <DrawUi:SkiaShape.Points>
         <DrawUi:SkiaPoint X="0" Y="0" />
-        <DrawUi:SkiaPoint X="100" Y="0" />
-        <DrawUi:SkiaPoint X="100" Y="100" />
-        <DrawUi:SkiaPoint X="0" Y="100" />
+        <DrawUi:SkiaPoint X="1" Y="0" />
+        <DrawUi:SkiaPoint X="1" Y="1" />
+        <DrawUi:SkiaPoint X="0" Y="1" />
     </DrawUi:SkiaShape.Points>
 </DrawUi:SkiaShape>
 ```
 
 ### Using Relative Coordinates
 
-You can define points using relative coordinates (0.0-1.0) that automatically scale to the shape's dimensions:
+Relative coordinates (0.0-1.0) automatically scale to the shape's dimensions:
 
 ```xml
 <DrawUi:SkiaShape 
@@ -178,13 +183,13 @@ You can define points using relative coordinates (0.0-1.0) that automatically sc
 
 ### Using String Definition
 
-You can also use a converter for inline point definitions:
+You can also use a converter for inline point definitions. Points are separated with `;`:
 
 ```xml
 <DrawUi:SkiaShape 
     Type="Polygon" 
     BackgroundColor="Purple"
-    Points="0,0 100,0 100,100 0,100" />
+    Points="0,0; 1,0; 1,1; 0,1" />
 ```
 
 ### Predefined Shapes
@@ -207,7 +212,7 @@ For smoother, curved polygons, adjust the `SmoothPoints` property (0.0-1.0):
     Type="Polygon" 
     BackgroundColor="#220000FF" 
     SmoothPoints="0.9"
-    Points="0.0,0.8 0.0,0.7 1.0,0.2 1.0,0.3" />
+    Points="0.0,0.8; 0.0,0.7; 1.0,0.2; 1.0,0.3" />
 ```
 
 A value of 0 creates sharp corners, while a value of 1.0 creates maximally smooth curves.
@@ -221,12 +226,12 @@ Lines can be created using the same point collection approach:
     Type="Line" 
     StrokeColor="Black" 
     StrokeWidth="2"
-    Points="0,0 50,50 100,0 150,50" />
+    Points="0,0; 0.33,1; 0.66,0; 1,1" />
 ```
 
 Customize line appearance with:
 - `StrokeCap`: Controls how line ends appear
-- `StrokePath`: Define dash patterns ("5,5" creates 5px dashes with 5px gaps)
+- `StrokePath`: Define dash patterns ("5,5" creates 5-point dashes with 5-point gaps)
 
 ## Practical Examples
 
@@ -239,25 +244,26 @@ Customize line appearance with:
     CornerRadius="12" 
     Padding="16"
     WidthRequest="300" 
-    HeightRequest="150"
-    LayoutChildren="Column">
+    HeightRequest="150">
     
     <DrawUi:SkiaShape.Shadows>
         <DrawUi:SkiaShadow 
             Color="#22000000" 
-            BlurRadius="20" 
-            Offset="0,4" />
+            Blur="20" 
+            Y="4" />
     </DrawUi:SkiaShape.Shadows>
     
-    <DrawUi:SkiaLabel 
-        Text="Card Title" 
-        FontSize="18" 
-        FontWeight="Bold" />
-    
-    <DrawUi:SkiaLabel 
-        Text="This is a card with rounded corners and a shadow effect. SkiaShape makes it easy to create modern UI components." 
-        TextColor="#666666" 
-        Margin="0,10,0,0" />
+    <DrawUi:SkiaLayout Type="Column" HorizontalOptions="Fill">
+        <DrawUi:SkiaLabel 
+            Text="Card Title" 
+            FontSize="18" 
+            FontAttributes="Bold" />
+        
+        <DrawUi:SkiaLabel 
+            Text="This is a card with rounded corners and a shadow effect. SkiaShape makes it easy to create modern UI components." 
+            TextColor="#666666" 
+            Margin="0,10,0,0" />
+    </DrawUi:SkiaLayout>
 </DrawUi:SkiaShape>
 ```
 
@@ -269,8 +275,8 @@ Customize line appearance with:
     StrokeColor="#EEEEEE" 
     StrokeWidth="10" 
     BackgroundColor="Transparent"
-    StartAngle="0" 
-    SweepAngle="360" 
+    Value1="0" 
+    Value2="360" 
     WidthRequest="100" 
     HeightRequest="100">
     
@@ -279,8 +285,8 @@ Customize line appearance with:
         StrokeColor="Blue" 
         StrokeWidth="10" 
         BackgroundColor="Transparent"
-        StartAngle="0" 
-        SweepAngle="{Binding Progress}" 
+        Value1="0" 
+        Value2="{Binding Progress}" 
         WidthRequest="100" 
         HeightRequest="100" />
     
@@ -301,29 +307,28 @@ Customize line appearance with:
     WidthRequest="100" 
     HeightRequest="50">
     
-    <DrawUi:SkiaShape.GestureRecognizers>
-        <TapGestureRecognizer Command="{Binding ButtonCommand}" />
-    </DrawUi:SkiaShape.GestureRecognizers>
-    
     <DrawUi:SkiaLabel 
         Text="SUBMIT" 
         TextColor="White" 
-        FontWeight="Bold"
+        FontAttributes="Bold"
         HorizontalOptions="Center" 
         VerticalOptions="Center" />
+
+    <!-- Tap area on top of the content -->
+    <DrawUi:SkiaHotspot CommandTapped="{Binding ButtonCommand}" />
 </DrawUi:SkiaShape>
 ```
 
 ## Performance Considerations
 
-- For static shapes, set `Cache="Image"` to render once and cache as bitmap
-- For frequently animated shapes, use `Cache="Operations"` for best performance
+- For static shapes, set `UseCache="Image"` to render once and cache as bitmap
+- For frequently animated shapes, use `UseCache="Operations"` for best performance
 - Avoid excessive shadows or complex paths in performance-critical UI
 - For very complex paths, pre-process SVG data when possible rather than computing at runtime
 
 ## SkiaHoverMask
 
-`SkiaHoverMask` is a control deriving from SkiaShape that can be used to create hover effects. It will render a mask over its children when hovered, think of it as an inverted shape.
+`SkiaHoverMask` is a control deriving from SkiaShape that can be used to create hover effects. Think of it as an inverted shape: it paints its parent's whole area with its `BackgroundColor` (or `FillGradient`) and leaves a hole in its own shape. It has no hover logic of its own: show or hide it from your hover or selection handling.
 
 ### Basic Usage
 
@@ -331,34 +336,18 @@ Customize line appearance with:
 <draw:SkiaHoverMask
     Type="Rectangle"
     CornerRadius="8"
-    MaskColor="#40000000"
+    BackgroundColor="#40000000"
     WidthRequest="200"
-    HeightRequest="100">
-
-    <draw:SkiaLabel
-        Text="Hover over me"
-        HorizontalOptions="Center"
-        VerticalOptions="Center"
-        TextColor="White" />
-</draw:SkiaHoverMask>
+    HeightRequest="100" />
 ```
 
 ### Properties
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `MaskColor` | Color | Color of the hover mask overlay |
-| `IsHovered` | bool | Whether the control is currently hovered |
-| `HoverAnimationDuration` | int | Duration of hover animation in milliseconds |
-
-### Events
-
-- `HoverStarted`: Raised when hover begins
-- `HoverEnded`: Raised when hover ends
+`SkiaHoverMask` adds no properties of its own. The mask uses `BackgroundColor` or `FillGradient`, and the hole uses the shape properties (`Type`, `CornerRadius` and the rest).
 
 ## Platform Specific Notes
 
-SkiaShape renders consistently across all platforms supported by MAUI, ensuring that your UI maintains the same appearance on Android, iOS, Windows, and macOS.
+SkiaShape is drawn by the shared engine, so it looks the same on every DrawnUI head: MAUI (Android, iOS, Mac Catalyst, Windows), WPF, OpenTK, Blazor and WebAssembly.
 
 ---
 
@@ -391,32 +380,37 @@ SVG (Scalable Vector Graphics) offers several advantages for modern mobile appli
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `Source` | string | null | Path to the SVG file (local or web URL) |
+| `Source` | string | empty | Path to the SVG file (local or web URL) |
+| `IconFilePath` | string | null | Same as `Source`, kept for older XAML: loads the file with the same loader and cache. The one set last is shown |
+| `SvgString` | string | empty | SVG markup to draw, instead of a file. When set, it is shown instead of `Source` / `IconFilePath` |
 | `TintColor` | Color | Transparent | Color to tint the entire SVG |
-| `LockRatio` | bool | true | Whether to maintain original aspect ratio |
-| `Aspect` | Aspect | AspectFit | How to scale the SVG within bounds |
+| `Aspect` | TransformAspect | AspectFitFill | How to scale the SVG within bounds. `Tile` repeats it at its natural size (one SVG unit per point) from the copy placed by `HorizontalAlignment` / `VerticalAlignment` |
+| `LockRatio` | double | 0 | Inherited from SkiaControl: locks the final size to the smaller (-1) or larger (1) of the requested width and height |
 
 ### Styling Properties
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `FillColor` | Color | null | Override fill color for all SVG elements |
-| `StrokeColor` | Color | null | Override stroke color for all SVG elements |
-| `StrokeWidth` | float | -1 | Override stroke width (-1 uses original) |
-| `Opacity` | float | 1.0 | Overall opacity of the SVG |
+| `FillGradient` | SkiaGradient | null | Gradient fill for the whole SVG, blended with `GradientBlendMode` |
+| `ShadowColor` | Color | Transparent | Drop shadow color, no shadow while transparent |
+| `ShadowX`/`ShadowY` | double | 2.0 | Drop shadow offset |
+| `ShadowBlur` | double | 5.0 | Drop shadow blur |
+| `FontAwesomePrimaryColor` | Color | Black | Fill for elements with `class="fa-primary"` (Font Awesome duotone icons) |
+| `FontAwesomeSecondaryColor` | Color | Gray | Fill for elements with `class="fa-secondary"` |
+| `Opacity` | double | 1.0 | Overall opacity of the SVG |
 
 ### Loading Properties
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `CacheType` | SkiaCacheType | Operations | How to cache the rendered SVG |
-| `LoadPriority` | LoadPriority | Normal | Priority for loading the SVG file |
-| `UseHardwareAcceleration` | bool | true | Enable GPU acceleration for rendering |
+| `UseCache` | SkiaCacheType | Operations | How to cache the rendered SVG |
+
+The SVG text is cached by source, so every `SkiaSvg` with the same `Source` reuses one download.
 
 ## SVG Source Options
 
 ### Local Files
-Place SVG files in your project's `Resources/Raw` folder:
+On MAUI, place SVG files in your project's `Resources/Raw` folder. On WPF and OpenTK the file is read next to the executable, and on Blazor and WebAssembly it is fetched from the app's base address (`wwwroot`):
 ```xml
 <draw:SkiaSvg Source="icons/home.svg" />
 ```
@@ -428,9 +422,11 @@ Load SVG files from the internet:
 ```
 
 ### Embedded Resources
-Reference SVG files embedded in assemblies:
-```xml
-<draw:SkiaSvg Source="MyAssembly.Icons.star.svg" />
+`Source` does not read embedded resources. Read the file yourself and set `SvgString`:
+```csharp
+using var stream = typeof(App).Assembly.GetManifestResourceStream("MyAssembly.Icons.star.svg");
+using var reader = new StreamReader(stream);
+mySvg.SvgString = reader.ReadToEnd();
 ```
 
 ## Styling and Tinting
@@ -446,13 +442,12 @@ Apply a single color tint to the entire SVG:
 ```
 
 ### Override Fill and Stroke
-Override the original SVG colors:
+SkiaSvg has no per-element fill or stroke override. `TintColor` recolors the whole SVG, and Font Awesome duotone icons take two colors:
 ```xml
 <draw:SkiaSvg
     Source="icon.svg"
-    FillColor="Navy"
-    StrokeColor="White"
-    StrokeWidth="2" />
+    FontAwesomePrimaryColor="Navy"
+    FontAwesomeSecondaryColor="White" />
 ```
 
 ### Dynamic Color Changes
@@ -475,65 +470,55 @@ Add shadows, glows, and other effects:
             X="4" 
             Y="4" 
             Color="#40000000" />
-        <draw:GlowEffect 
+        <draw:OuterGlowEffect 
             Color="CornflowerBlue" 
-            Blur="6" 
-            X="0" 
-            Y="0" />
+            Blur="6" />
     </draw:SkiaControl.VisualEffects>
 </draw:SkiaSvg>
 ```
 
 ### Animated SVG Icon
-Create hover effects and animations:
+Animate the control from code, for example on tap:
 ```xml
 <draw:SkiaSvg 
     x:Name="AnimatedIcon"
     Source="heart.svg"
     TintColor="Gray"
     WidthRequest="48"
-    HeightRequest="48">
-    
-    <draw:SkiaSvg.Triggers>
-        <EventTrigger RoutingEvent="PointerPressed">
-            <BeginStoryboard>
-                <Storyboard>
-                    <ColorAnimation 
-                        Storyboard.TargetProperty="TintColor"
-                        To="Red"
-                        Duration="0:0:0.2" />
-                    <DoubleAnimation
-                        Storyboard.TargetProperty="Scale"
-                        To="1.2"
-                        Duration="0:0:0.1"
-                        AutoReverse="True" />
-                </Storyboard>
-            </BeginStoryboard>
-        </EventTrigger>
-    </draw:SkiaSvg.Triggers>
-</draw:SkiaSvg>
+    HeightRequest="48" />
+```
+
+```csharp
+AnimatedIcon.OnTapped(async me =>
+{
+    me.TintColor = Colors.Red;
+    await me.ScaleToAsync(1.2, 1.2, 100);
+    await me.ScaleToAsync(1, 1, 100);
+});
 ```
 
 ### SVG in Lists and Grids
 Optimize SVG rendering in collections:
 ```xml
-<CollectionView ItemsSource="{Binding MenuItems}">
-    <CollectionView.ItemTemplate>
-        <DataTemplate>
-            <draw:SkiaLayout Type="Row" Spacing="12">
-                <draw:SkiaSvg 
-                    Source="{Binding IconPath}"
-                    TintColor="{Binding IconColor}"
-                    WidthRequest="24"
-                    HeightRequest="24"
-                    CacheType="Image" />
-                <draw:SkiaLabel 
-                    Text="{Binding Title}"
-                    VerticalOptions="Center" />
-            </draw:SkiaLayout>
-        </DataTemplate>
-    </CollectionView.ItemTemplate>
-</CollectionView>
+<draw:SkiaScroll>
+    <draw:SkiaLayout Type="Column" ItemsSource="{Binding MenuItems}">
+        <draw:SkiaLayout.ItemTemplate>
+            <DataTemplate>
+                <draw:SkiaLayout Type="Row" Spacing="12">
+                    <draw:SkiaSvg 
+                        Source="{Binding IconPath}"
+                        TintColor="{Binding IconColor}"
+                        WidthRequest="24"
+                        HeightRequest="24"
+                        UseCache="Image" />
+                    <draw:SkiaLabel 
+                        Text="{Binding Title}"
+                        VerticalOptions="Center" />
+                </draw:SkiaLayout>
+            </DataTemplate>
+        </draw:SkiaLayout.ItemTemplate>
+    </draw:SkiaLayout>
+</draw:SkiaScroll>
 ```
 
 ## Performance Optimization
@@ -543,23 +528,20 @@ Choose the right caching strategy for your use case:
 
 ```xml
 <!-- For static icons (best memory efficiency) -->
-<draw:SkiaSvg CacheType="Operations" Source="static-icon.svg" />
+<draw:SkiaSvg UseCache="Operations" Source="static-icon.svg" />
 
 <!-- For frequently changing colors/effects -->
-<draw:SkiaSvg CacheType="Image" Source="dynamic-icon.svg" />
+<draw:SkiaSvg UseCache="Image" Source="dynamic-icon.svg" />
 
 <!-- For complex animations -->
-<draw:SkiaSvg CacheType="GPU" Source="animated-icon.svg" />
+<draw:SkiaSvg UseCache="GPU" Source="animated-icon.svg" />
 ```
 
 ### Loading Optimization
-Optimize loading for better user experience:
-```xml
-<draw:SkiaSvg 
-    Source="large-illustration.svg"
-    LoadPriority="High"
-    UseHardwareAcceleration="true"
-    CacheType="Image" />
+Load SVG files once at startup, before the first screen needs them. Blazor startup calls `SkiaSvg.InitializeAsync` for you; on other heads call it yourself:
+```csharp
+SkiaSvg.RegisterSource("large-illustration.svg");
+await SkiaSvg.InitializeAsync();
 ```
 
 ## SVG Compatibility
@@ -585,21 +567,22 @@ Optimize loading for better user experience:
 **SVG not displaying:**
 - Verify the file path is correct
 - Check that the SVG file is valid
-- Ensure the file is in `Resources/Raw` folder
+- On MAUI, ensure the file is in the `Resources/Raw` folder (see [Local Files](#local-files) for other heads)
+- Handle the `Error` event: it receives the load exception
 
 **Colors not working:**
 - Some SVGs have `fill="currentColor"` which requires explicit styling
 - Use `TintColor` for simple color changes
-- Use `FillColor`/`StrokeColor` for more control
+- Use `FontAwesomePrimaryColor`/`FontAwesomeSecondaryColor` for duotone icons
 
 **Performance issues:**
-- Use appropriate `CacheType` for your scenario
+- Use appropriate `UseCache` for your scenario
 - Avoid very complex SVGs with thousands of paths
 - Consider simplifying SVG artwork for mobile use
 
 **Sizing problems:**
 - Set explicit `WidthRequest`/`HeightRequest`
-- Use `LockRatio="true"` to maintain proportions
+- Use `Aspect` (default `AspectFitFill`) to keep proportions
 - Check the original SVG viewBox dimensions
 
 ## Best Practices
@@ -616,12 +599,12 @@ Optimize loading for better user experience:
 - Test with different `TintColor` values during design
 
 ### 3. Performance
-- Cache frequently used icons with `CacheType="Operations"`
-- Use `CacheType="Image"` for icons that change colors often
-- Preload critical SVGs during app startup
+- Cache frequently used icons with `UseCache="Operations"`
+- Use `UseCache="Image"` for icons that change colors often
+- Preload critical SVGs during app startup with `SkiaSvg.RegisterSource` and `SkiaSvg.InitializeAsync`
 
 ### 4. Accessibility
-- Include meaningful descriptions in SVG metadata
+- Screen readers do not read SVG metadata: give meaningful icons an `AccessibilityRole` (for example `Aria.RoleImg`) and an `AccessibilityLabel`, see [Accessibility](../advanced/accessibility.md#accessibility-props)
 - Use semantic naming for SVG files
 - Ensure sufficient color contrast when tinting
 
@@ -630,4 +613,4 @@ Optimize loading for better user experience:
 - Test icon legibility at small sizes (16x16, 24x24)
 - Use consistent visual weight across icon sets
 
-This comprehensive guide covers all aspects of using SkiaSvg in DrawnUi.Maui, from basic usage to advanced optimization techniques. The control provides powerful SVG rendering capabilities while maintaining excellent performance through intelligent caching and hardware acceleration.
+This comprehensive guide covers all aspects of using SkiaSvg in DrawnUI, from basic usage to advanced optimization techniques. The control provides powerful SVG rendering capabilities while maintaining excellent performance through intelligent caching.
