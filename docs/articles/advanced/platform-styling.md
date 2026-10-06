@@ -39,7 +39,7 @@ The following controls support platform-specific styling:
 - `SkiaRadioButton`: Radio rings and dots per platform
 - `SkiaSlider`: Change values with platform-specific track and thumb styling
 - `SkiaProgress`: Track and trail per platform (Material3 adds the gap and stop indicator)
-- `SkiaPicker`: Field look per platform
+- `SkiaPicker`: Field look per platform, including Material3 (see below)
 - `SkiaEditor`: Background, border and cursor per platform
 
 ## Changing the style at runtime
@@ -67,6 +67,12 @@ foreach (var toggle in Views.OfType<SkiaToggle>())
 - Material blue accent color (#2196F3)
 - Switches have track colors that match the thumb when active
 - Buttons often use uppercase text
+
+### Material 3 (Material You) Style
+
+- Purple primary color (#6750A4) with the Material 3 baseline neutrals: outline #79747E, text #1D1B20, secondary text #49454F
+- Switches and checkboxes are outlined when off and filled with the primary color when on; a selected radio button has a primary ring and dot
+- `SkiaPicker` is the Material 3 outlined dropdown field: 56 pt tall, 4 pt corners, a 1 pt outline, text at 16 pt. Once an item is selected, the `Placeholder` text moves up into a gap in the top outline at 12 pt and works as the field label. While the list is open the outline becomes 2 pt in the primary color, the label turns primary and the arrow points up. The control is 64 pt tall by default, because the label needs 8 pt above the field. On Blazor the list opens as a Material 3 menu: light purple surface, 4 pt corners, 48 pt rows, the current item highlighted. On .NET MAUI the list is the native action sheet, as for the other styles. On WPF, OpenTK and pure WebAssembly no list opens yet, whatever the style.
 
 ### Windows Style
 
