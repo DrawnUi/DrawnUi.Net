@@ -957,7 +957,9 @@ Each maps its property linearly by the `0..1` value, so a `0→360` rotation loo
 seamlessly. For anything custom (multiple properties, non-linear mapping, delta-time
 physics) use the general `.Animate(...)` above.
 
-### Shader compilation errors
+## Shaders
+
+### Compilation errors and uniforms
 
 `SkiaShaderEffect.OnCompilationError` fires when `ShaderCode`/`ShaderSource` fails to
 compile; without any handler the failure throws and is swallowed into a log. The fluent
@@ -972,11 +974,16 @@ new SkiaShaderEffect
 .OnShaderError((me, error) => Console.WriteLine($"[SkSL] {error}"))
 ```
 
-`SetUniform` passes custom uniforms to the shader (float / float2 / float3 / float4 overloads);
-call it again anytime — e.g. from a slider — it requests a redraw itself. Standard uniforms
-(`iTime`, `iResolution`, `iImage1`, `iImageResolution`, `iOffset`, `iMouse`) are fed by the
-engine automatically each frame. A failed compile reports once (not per frame); fixing
-`ShaderCode` recompiles automatically.
+`SetUniform` passes custom uniforms to the shader (float / float2 / float3 / float4, plus a
+`float[]` overload for arrays); call it again anytime — e.g. from a slider — it requests a redraw
+itself. A custom uniform the shader does not declare is skipped and logged, so a typo there does
+nothing; a standard uniform missing from the shader throws and kills the effect, so declare all of
+them. Standard uniforms (`iTime`, `iResolution`, `iImage1`, `iImageResolution`, `iOffset`, `iMouse`)
+are fed by the engine automatically each frame. A failed compile reports once, not per frame (a
+`_compileFailed` latch); fixing `ShaderCode` or `ShaderSource` clears it and recompiles.
+
+A shader driven by `iTime` has nothing changing a property, so nothing asks for the next frame:
+pair it with `.UpdateNonStop()`, the infinite no-op animator that keeps the surface repainting.
 
 ## Control Helpers
 
@@ -1125,8 +1132,7 @@ public class MyViewModel : INotifyPropertyChanged
    * `UseCache = SkiaCacheType.ImageComposite` for complex layouts where a region changes while others remain static, like a stack with different user-handled controls.
    * `UseCache = SkiaCacheType.ImageDoubleBuffered` for equally sized recycled cells. Will show old cache while preparing new one in background.
    * `UseCache = SkiaCacheType.GPU` for small static overlays like headers, navbars.
-   * **PROHIBITED:** Never use `Operations` or `GPU` cache for controls with GPU-surface shaders — use `Image`, `ImageDoubleBuffered`, or `ImageComposite` instead.
-   * **PROHIBITED:** Never nest children that use GPU-backed cache types (`GPU`, `ImageCompositeGPU`) inside a parent cached with `Operations`.
+   * A control with a shader effect reading `iImage1` needs an image-backed cache — `Image`, `ImageDoubleBuffered`, `GPU` or `ImageComposite`. `Operations` stores a picture and no image, so the effect gets no texture of the control (`SkiaControl.Shared.cs:417`, `CachedObject.cs:209-215`).
 2. Check that you do not have logs spamming the console on every rendering frame.
 
 

@@ -566,8 +566,7 @@ var sprite = new SkiaSprite
    - Use `UseCache="ImageDoubleBuffered"` for images that change occasionally
    - Use `UseCache="Operations"` for images with effects but static content
    - Use `UseCache="None"` only for frequently changing images
-   - **PROHIBITED:** Never use `Operations` or `GPU` cache for images with GPU-surface shader effects — use `Image`, `ImageDoubleBuffered`, or `ImageComposite` instead
-   - **PROHIBITED:** Never nest children that use GPU-backed cache types (`GPU`, `ImageCompositeGPU`) inside a parent cached with `Operations`
+   - An image carrying a shader effect that samples `iImage1` needs an image-backed cache — `Image`, `ImageDoubleBuffered`, `GPU` or `ImageComposite`. With `Operations` the cache is a picture and holds no image, so the effect snapshots the canvas instead of reading the image
 
 3. **Loading Strategy**
    - Use `LoadSourceOnFirstDraw="True"` for off-screen images

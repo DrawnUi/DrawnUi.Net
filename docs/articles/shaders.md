@@ -434,15 +434,25 @@ this yet: it builds a new `SKRuntimeEffectChildren` every frame.
 5. **Never cache** a layer that hosts a shader effect in `SkiaScroll`,
    `SkiaDrawer`, `SkiaCarousel`, or any layout that virtualizes — follow the
    standard DrawnUI caching rules for dynamic content.
-6. **PROHIBITED: Do NOT cache controls with GPU-surface shaders using
-   `Operations` or `GPU` cache types.** `Operations` records draw commands into
-   an `SKPicture` which cannot replay GPU-surface shader programs. `GPU` cache
-   creates its own GPU surface that conflicts with the shader's surface
-   requirements. Use `Image`, `ImageDoubleBuffered`, or `ImageComposite`
-   instead.
-7. **PROHIBITED: Do NOT nest children that use GPU-backed cache types (`GPU`,
-   `ImageCompositeGPU`) inside a parent cached with `Operations`** —
-   `SKPicture` recording cannot capture GPU-surface output from children.
+6. **A shader effect reads the control's cache, so give it an image cache or
+   none.** `SkiaShaderEffect` is a post renderer: its input texture comes from
+   `Parent.CachedImage` (`SkiaControl.Shared.cs:417`), which holds an image only
+   for an image-backed cache — `Image`, `ImageDoubleBuffered`, `GPU`,
+   `ImageComposite`, `ImageCompositeGPU` all snapshot their surface
+   (`CachedObject.cs:217-223`). `Operations` and `OperationsFull` store an
+   `SKPicture` and no image (`CachedObject.cs:209-215`), so the effect finds
+   nothing and, with `AutoCreateInputTexture` (default `true`), snapshots the
+   canvas instead — and since a control carrying post renderers never blits its
+   own cache (`SkiaControl.Shared.cs:8102`), that snapshot holds what is *behind*
+   the control, not the control. `GPU` is a perfectly good cache for a shader;
+   `Operations` is the one that leaves `iImage1` without the control in it.
+7. **Keep GPU textures off bake threads.** `ImageDoubleBuffered` bakes on a
+   worker; GPU child caches are painted live inside the bake, but post renderers
+   and backdrops are not guarded yet, so a shader effect under an
+   `ImageDoubleBuffered` ancestor is not safe. Nesting `GPU` or
+   `ImageCompositeGPU` under an `Operations` parent is fine: the recording
+   context carries the parent's surface (`DrawingContext.cs:119-131`) and the
+   child's snapshot records like any other image.
 
 Breaking these rules turns a 60 FPS render loop into a GC-thrashing one —
 every disposed-then-rebuilt uniforms/children pair is a native handle round

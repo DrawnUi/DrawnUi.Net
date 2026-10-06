@@ -176,7 +176,7 @@ Now you can add DrawnUi controls to your page. You have two main options:
 ### Setup Canvas
 
 If you indend to process gestures inside your canvas setup the `Gestures` property accordingly.
-If you would have animated content or use shaders set `RenderingMode` to `Accelerated`. Otherwise leave it as it is to use the default lightweight `Default` mode, it is still perfect for rendering static content.
+If you would have animated content or use shaders set `RenderingMode` to `Accelerated`: neither needs the GPU to work — SkSL compiles and runs on the CPU too — but both pay per pixel every frame, which is what the GPU is for. Otherwise leave it as it is to use the default lightweight `Default` mode, it is still perfect for rendering static content.
 
 See [Handling Gestures](../gestures.md) for the canvas-level setup before you wire control handlers.
 

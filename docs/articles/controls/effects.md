@@ -19,11 +19,16 @@ Every `SkiaControl` exposes a `VisualEffects` collection. Effects modify how a c
 | `IImageEffect` | `SKImageFilter` on a `SaveLayer` | `DropShadowEffect`, `OuterGlowEffect` |
 | `IColorEffect` | `SKColorFilter` on a `SaveLayer` | tint / color matrix effects |
 | `IRenderEffect` | Wraps/chains the control's own paint | `ChainDropShadowsEffect` |
-| `IPostRendererEffect` | Runs after the control is painted | `SkiaShaderEffect`, `AnimatedShaderEffect`, `ShaderTransitionEffect` |
+| `IPostRendererEffect` | Paints in place of the control's cached blit (see below) | `SkiaShaderEffect`, `AnimatedShaderEffect`, `ShaderTransitionEffect` |
 | `IStateEffect` | State update hook before each paint (`UpdateState()`) | `StateEffect`, `SkiaTouchShockwaveEffect` |
 | `ISkiaGestureProcessor` | Participates in gesture routing | `SkiaTouchShockwaveEffect` |
 
 A single effect can implement several of these. Only the first `IImageEffect` and the first `IColorEffect` in the collection are applied; for several shadows use `ChainDropShadowsEffect`.
+
+A post renderer does not simply run after the paint: while a control has one, its cached blit is skipped and the post
+renderers draw instead (`SkiaControl.Shared.cs:8102`). That is what lets a shader read the control as a texture and
+draw it back changed — and why a cache that holds no image (`Operations`, `OperationsFull`) leaves the shader with
+nothing of the control to sample. See [Shaders](../shaders.md).
 
 ## Built-in shadow effects
 

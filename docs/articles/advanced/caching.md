@@ -29,9 +29,14 @@ Records drawing commands as a `SKPicture`. Replays fast, zero memory per pixel.
 
 Use for: static text (`SkiaLabel`, `SkiaRichLabel`), SVG icons, simple shapes.
 
-**Prohibitions:**
-- Never on controls with GPU-surface shaders (particle systems, blur shaders, etc.) — `SKPicture` cannot replay shader programs.
-- Never as the parent of children using `GPU` or `ImageCompositeGPU` — GPU-backed surfaces cannot be nested inside a picture recording.
+**Watch out:**
+- A control carrying a shader post renderer (`SkiaShaderEffect`) gets no texture from this cache: a picture holds
+  no image (`CachedObject.cs:209-215`), so `Parent.CachedImage` is empty and the effect snapshots the canvas
+  instead — which, with the cache blit skipped (`SkiaControl.Shared.cs:8102`), is what sits *behind* the control.
+  Give such a control an image-backed cache (`Image`, `ImageDoubleBuffered`, `GPU`, `ImageComposite`) or none.
+  A picture itself records a runtime-effect paint like any other; what it cannot do is take a fresh snapshot at replay.
+- Children cached as `GPU` or `ImageCompositeGPU` nest under it without trouble: the recording context carries the
+  parent's surface (`DrawingContext.cs:119-131`) and the child blits its snapshot into the recording.
 
 ### `OperationsFull`
 Like `Operations` but ignores clipping bounds. Use only when content intentionally draws outside its layout rect.
@@ -56,7 +61,7 @@ Caches to a GPU surface created on the canvas `GRContext`. Zero CPU readback cos
 
 Use for: small, stable overlays — headers, navigation bars, toolbars.
 
-**Caution:** GPU memory is limited. Avoid large surfaces or many simultaneous GPU-cached controls. Never for controls with GPU-surface shaders.
+**Caution:** GPU memory is limited. Avoid large surfaces or many simultaneous GPU-cached controls.
 
 ---
 
@@ -73,7 +78,7 @@ Use for: small, stable overlays — headers, navigation bars, toolbars.
 | Small header/navbar overlay | `GPU` |
 | Scroll view, drawer, carousel | `None` |
 | Native embedded view (`SkiaMauiElement`) | `None` |
-| Control with GPU-surface shader | `Image` or `ImageDoubleBuffered` |
+| Control with a shader effect reading `iImage1` | `Image` or `GPU` (never `Operations`: no texture for the shader) |
 
 ---
 

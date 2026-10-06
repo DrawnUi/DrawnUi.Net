@@ -312,7 +312,10 @@ new SkiaShaderEffect
 ```
 
 - `SetUniform` is chainable and re-appliable at runtime (e.g. from a slider) — it calls `Update()` itself.
-- Standard uniforms auto-fed each frame: `iResolution`, `iImageResolution`, `iTime`, `iOffset`, `iMouse`, `iImage1` (input texture). DECLARE ALL OF THEM in the `.sksl` even if unused — the engine writes each one every frame, and writing an undeclared uniform throws, which aborts shader creation and silently kills the effect. DECLARE ALL OF THEM in the `.sksl` even if unused — the engine writes each one every frame, and writing an undeclared uniform throws, which aborts shader creation and silently kills the effect. Sample with `iImage1.eval((fragCoord - iOffset) * iImageResolution / iResolution)`.
+- Standard uniforms auto-fed each frame: `iResolution`, `iImageResolution`, `iTime`, `iOffset`, `iMouse`, `iImage1` (input texture). DECLARE ALL OF THEM in the `.sksl` even if unused — the engine writes each one every frame unconditionally (`SkiaShader.cs:309-325`), and writing an undeclared uniform throws, which aborts shader creation and silently kills the effect. Sample with `iImage1.eval((fragCoord - iOffset) * iImageResolution / iResolution)`.
+- A CUSTOM uniform behaves the opposite way: `SetUniform` values the shader does not declare are caught and logged, not thrown (`SkiaShaderEffect.cs:576-586`), so a typo there silently does nothing instead of killing the effect. A missing BUILT-IN kills it.
+- `SetUniform` also takes a `float[]` (`SkiaShaderEffect.cs:554`) for array uniforms; a one-element array is written as a scalar, since SkiaSharp rejects `float[1]` for a `float` uniform.
+- `UseBackground` defaults to `Always` (a live snapshot or the parent cache every frame). `Once` freezes the first one; reset `AquiredBackground` to re-capture.
 - The fluent for the `OnCompilationError` event is named `.OnShaderError(...)` (an instance event hides a same-named extension).
 - SkiaSharp v4 gotcha (fixed in framework): scalar uniforms must be written as `float`, not `float[1]`.
 
