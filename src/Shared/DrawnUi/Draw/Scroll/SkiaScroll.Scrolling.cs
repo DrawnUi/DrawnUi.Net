@@ -1351,10 +1351,6 @@ public partial class SkiaScroll
     }
 
     /// <summary>
-    /// Scrolls every enclosing SkiaScroll so <paramref name="control"/> is inside its viewport
-    /// (used when keyboard / screen-reader focus lands on an off-screen node). No-op when already visible.
-    /// </summary>
-    /// <summary>
     /// A screen reader pages the content (TalkBack scroll forward / back, VoiceOver's three-finger swipe): by the viewport
     /// less a tenth, animated. <paramref name="forward"/> moves toward the end (down, right). False when the content cannot
     /// move that way along that axis, so the reader gives its own "no more pages" feedback; <paramref name="probe"/> only
@@ -1379,6 +1375,10 @@ public partial class SkiaScroll
         return true;
     }
 
+    /// <summary>
+    /// Scrolls every enclosing SkiaScroll so <paramref name="control"/> is inside its viewport
+    /// (used when keyboard / screen-reader focus lands on an off-screen node). No-op when already visible.
+    /// </summary>
     public static void EnsureVisible(SkiaControl control, float maxTimeSecs = 0.25f, float paddingPts = 8f)
     {
         var parent = control?.Parent;
