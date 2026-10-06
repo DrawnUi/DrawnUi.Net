@@ -61,6 +61,17 @@ public interface ISkiaAccessibilityNode
     bool OnAccessibilityKey(InputKey key);
 
     /// <summary>
+    /// The value of a range control (slider, progress bar), what screen readers read and adjust; null for other nodes.
+    /// The value is never the node's name: that stays <see cref="AccessibilityLabel"/>.
+    /// </summary>
+    AccessibilityValue? GetAccessibilityValue() => null;
+
+    /// <summary>
+    /// A screen reader sets the value (UI Automation RangeValue.SetValue). Snap it to the step; true when used.
+    /// </summary>
+    bool OnAccessibilitySetValue(double value) => false;
+
+    /// <summary>
     /// Registers or updates this node in the superview's <c>SkiaAccessibilityManager</c>.
     /// Called automatically on first layout; call manually when label/hint/state changes at runtime.
     /// </summary>
@@ -83,3 +94,10 @@ public interface ISkiaAccessibilityNode
     /// </summary>
     void OnAccessibilityFocused(bool focused);
 }
+
+/// <summary>
+/// The value of a range control for screen readers: <paramref name="Now"/> between <paramref name="Min"/> and
+/// <paramref name="Max"/>; <paramref name="Step"/> is one Increment / Decrement (0 for a read-only progress bar);
+/// <paramref name="Text"/>, when set, is spoken instead of the number ("65%", "20 – 80").
+/// </summary>
+public readonly record struct AccessibilityValue(double Now, double Min, double Max, double Step, string? Text = null, bool Vertical = false);

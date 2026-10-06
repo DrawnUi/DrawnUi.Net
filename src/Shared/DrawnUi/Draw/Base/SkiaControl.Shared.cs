@@ -5310,6 +5310,12 @@ namespace DrawnUi.Draw
         /// </summary>
         public virtual bool OnAccessibilityKey(InputKey key) => false;
 
+        /// <inheritdoc cref="ISkiaAccessibilityNode.GetAccessibilityValue"/>
+        public virtual AccessibilityValue? GetAccessibilityValue() => null;
+
+        /// <inheritdoc cref="ISkiaAccessibilityNode.OnAccessibilitySetValue"/>
+        public virtual bool OnAccessibilitySetValue(double value) => false;
+
         /// <summary>
         /// Whether a pointer gesture of this kind would reach this control, by the same rules the gesture dispatch
         /// applies: the control and every ancestor draw, none of them is InputTransparent, no ancestor keeps this gesture

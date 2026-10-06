@@ -11,11 +11,12 @@ public class SkiaProgress : SkiaRangeBase
 
     protected override string? GetDefaultAccessibilityRole() => DefaultAccessibilityRole;
 
-    protected override string? DefaultAccessibilityLabel()
+    /// <summary>The progress for screen readers, read as a percent; read only (no step). Its name is the app's AccessibilityLabel.</summary>
+    public override AccessibilityValue? GetAccessibilityValue()
     {
         var range = Max - Min;
         var ratio = range > 0 ? Math.Clamp((Value - Min) / range, 0.0, 1.0) : 0.0;
-        return $"{Math.Round(ratio * 100)}%";
+        return new(Value, Min, Max, 0, $"{Math.Round(ratio * 100)}%");
     }
 
     #region DEFAULT CONTENT

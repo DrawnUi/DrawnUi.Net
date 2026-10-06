@@ -10,6 +10,15 @@ namespace DrawnUi.Views
         /// <summary>Stable id of the source control (see <see cref="ISkiaAccessibilityNode.AccessibilityId"/>).</summary>
         public int Id { get; init; }
 
+        /// <summary>The value of a range control (slider, progress bar), null for other nodes.</summary>
+        public AccessibilityValue? Value { get; init; }
+
+        /// <summary>
+        /// A title text inside says this node's name (a card and its title), so the node is not named again: a head reads
+        /// no name for it, also not the live <see cref="ISkiaAccessibilityNode.AccessibilityLabel"/>.
+        /// </summary>
+        public bool NamedByChild { get; init; }
+
         internal static AccessibilityNode From(ISkiaAccessibilityNode node, SKRect px, float scale)
         {
             return new AccessibilityNode(
@@ -22,7 +31,8 @@ namespace DrawnUi.Views
                 node.AccessibilityLive)
             {
                 Source = node,
-                Id = node.AccessibilityId
+                Id = node.AccessibilityId,
+                Value = node.GetAccessibilityValue()
             };
         }
     }
@@ -63,6 +73,22 @@ namespace DrawnUi.Views
         public ISkiaAccessibilityNode? FocusedNode { get; private set; }
 
         /// <summary>
+        /// The node the screen reader's cursor is on, reported by the head (<see cref="NotifyReaderFocused"/>): TalkBack's
+        /// accessibility focus, VoiceOver's focused element, UI Automation focus.
+        /// </summary>
+        public ISkiaAccessibilityNode? ReaderNode { get; private set; }
+
+        /// <summary>
+        /// Raised on the rendering thread after a rebuild dropped <see cref="ReaderNode"/> (its page closed, a popup gone),
+        /// with the first node in reading order that says something (a name, or takes input). The head moves the screen
+        /// reader there, so its cursor does not stay on an empty spot.
+        /// </summary>
+        public event Action<AccessibilityNode>? ReaderRefocusRequested;
+
+        /// <summary>The head reports where the screen reader's cursor went; null when it left the canvas.</summary>
+        public void NotifyReaderFocused(ISkiaAccessibilityNode? node) => ReaderNode = node;
+
+        /// <summary>
         /// Enter / Space from keyboard navigation or a screen reader's Invoke: activates the node only while a tap
         /// could reach it (<see cref="ISkiaAccessibilityNode.AccessibilityCanInteract"/>), the rule every head applies.
         /// </summary>
@@ -72,7 +98,59 @@ namespace DrawnUi.Views
                 return false;
 
             node.OnAccessibilityActivated();
+            RefreshAfterAction(node);
             return true;
+        }
+
+        /// <summary>
+        /// A screen reader's Increment / Decrement (VoiceOver swipe up / down, TalkBack, UI Automation): one step of a range
+        /// control, the arrow key's path (<see cref="ISkiaAccessibilityNode.OnAccessibilityKey"/> ArrowUp / ArrowDown), only
+        /// while a pan could reach it. Never moves focus in a group.
+        /// </summary>
+        public static bool Adjust(ISkiaAccessibilityNode? node, bool increment)
+        {
+            if (node?.GetAccessibilityValue() == null || !CanAdjust(node)
+                || !node.OnAccessibilityKey(increment ? InputKey.ArrowUp : InputKey.ArrowDown))
+                return false;
+
+            RefreshAfterAction(node);
+            return true;
+        }
+
+        /// <summary>A screen reader sets a range control's value (UI Automation RangeValue.SetValue), snapped to its step.</summary>
+        public static bool SetValue(ISkiaAccessibilityNode? node, double value)
+        {
+            if (node?.GetAccessibilityValue() == null || !CanAdjust(node) || !node.OnAccessibilitySetValue(value))
+                return false;
+
+            RefreshAfterAction(node);
+            return true;
+        }
+
+        /// <summary>
+        /// A screen reader asks to see the node (UI Automation ScrollItem, TalkBack show on screen, VoiceOver): the scrolls
+        /// above it bring it into view, as for keyboard focus, without moving any focus.
+        /// </summary>
+        public static void ScrollIntoView(ISkiaAccessibilityNode? node)
+        {
+            if (node is SkiaControl control)
+                SkiaScroll.EnsureVisible(control);
+        }
+
+        private static bool CanAdjust(ISkiaAccessibilityNode node) =>
+            node is not SkiaControl control || control.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult.Panning);
+
+        /// <summary>
+        /// After a screen reader's action the snapshot is rebuilt on the next frame, not after <see cref="MinUpdateIntervalMs"/>:
+        /// a reader reads the new value or state back at once, and a stale one made VoiceOver fall back to jumps.
+        /// </summary>
+        private static void RefreshAfterAction(ISkiaAccessibilityNode node)
+        {
+            if (node is SkiaControl { Superview: { } view } control)
+            {
+                view.AccessibilityManager.ForceRebuildOnNextFrame();
+                control.Update();
+            }
         }
 
         /// <summary>
@@ -331,13 +409,23 @@ namespace DrawnUi.Views
             _ => GroupAxis.Vertical,
         };
 
-        /// <summary>Items per row of a 2D group: Split when set, else the drawn items sharing the row of <paramref name="item"/>.</summary>
+        /// <summary>
+        /// Items per row of a 2D group: Split when set, else the drawn items sharing the first drawn row. Not the row of
+        /// <paramref name="item"/>: a short last row (12 tiles, 10 per row) made Up from 12 land on 10 instead of 2.
+        /// </summary>
         private static int RowLength(SkiaControl group, SkiaControl item)
         {
             if (group is SkiaLayout { Split: > 1 } split)
                 return split.Split;
 
-            var top = item.GetAccessibilityPixelRect();
+            var top = SKRect.Empty;
+            foreach (var child in group.Views)
+            {
+                top = child.GetAccessibilityPixelRect();
+                if (!top.IsEmpty)
+                    break;
+            }
+
             if (top.IsEmpty)
                 return 1;
 
@@ -639,9 +727,7 @@ namespace DrawnUi.Views
                 rowStart = i;
             }
 
-            var snapshot = new AccessibilityNode[_sortBuffer.Count];
-            for (int i = 0; i < _sortBuffer.Count; i++)
-                snapshot[i] = AccessibilityNode.From(_sortBuffer[i].Node, _sortBuffer[i].Rect, scale);
+            var snapshot = BuildSaidOnce(scale);
 
             // same nodes, same metadata, same rects: keep the old array and stay silent, so platform layers
             // do not raise StructureChanged (and AT does not re-traverse the tree) once per interval for nothing
@@ -650,7 +736,73 @@ namespace DrawnUi.Views
 
             Snapshot = snapshot;
             Changed?.Invoke();
+
+            var reader = ReaderNode;
+            if (reader != null && Array.FindIndex(snapshot, n => ReferenceEquals(n.Source, reader)) < 0)
+            {
+                var next = Array.Find(snapshot, n => n.CanInteract || !string.IsNullOrEmpty(n.Label));
+                ReaderNode = next?.Source;
+                if (next != null)
+                    ReaderRefocusRequested?.Invoke(next);
+            }
         }
+
+        /// <summary>
+        /// Every name is said once (drawnui-cross 6c rule 1, as DrawnUI for Rust and React). A text or heading whose nearest
+        /// node above is a control with the same name is left out: the control says it (a button and its caption). A node
+        /// that takes no input and holds such a text keeps its place without a name of its own: the text says it (a card and
+        /// its title). Selectable text always stays itself.
+        /// </summary>
+        private AccessibilityNode[] BuildSaidOnce(float scale)
+        {
+            var count = _sortBuffer.Count;
+            _parentBuffer.Clear();
+            for (int i = 0; i < count; i++)
+                _parentBuffer[_sortBuffer[i].Node] = null;
+            for (int i = 0; i < count; i++)
+            {
+                var node = _sortBuffer[i].Node;
+                IDrawnBase? up = (node as SkiaControl)?.Parent;
+                while (up is SkiaControl p && !_parentBuffer.ContainsKey(p))
+                    up = p.Parent;
+                _parentBuffer[node] = up as ISkiaAccessibilityNode;
+            }
+
+            var list = new List<AccessibilityNode>(count);
+            for (int i = 0; i < count; i++)
+            {
+                var node = _sortBuffer[i].Node;
+                var parent = _parentBuffer[node];
+                if (parent != null && parent.AccessibilityCanInteract && SaysName(node, parent))
+                    continue;
+
+                var built = AccessibilityNode.From(node, _sortBuffer[i].Rect, scale);
+                if (!built.CanInteract && !string.IsNullOrEmpty(built.Label))
+                {
+                    foreach (var pair in _parentBuffer)
+                    {
+                        if (ReferenceEquals(pair.Value, node) && SaysName(pair.Key, node))
+                        {
+                            built = built with { Label = null, NamedByChild = true };
+                            break;
+                        }
+                    }
+                }
+
+                list.Add(built);
+            }
+
+            return list.ToArray();
+        }
+
+        private readonly Dictionary<ISkiaAccessibilityNode, ISkiaAccessibilityNode?> _parentBuffer = new();
+
+        /// <summary>A plain (not selectable) text or heading with the same name as <paramref name="owner"/>.</summary>
+        private static bool SaysName(ISkiaAccessibilityNode text, ISkiaAccessibilityNode owner) =>
+            (text.AccessibilityRole == DrawnUi.Models.Aria.RoleText || text.AccessibilityRole == DrawnUi.Models.Aria.RoleHeading)
+            && text is not SkiaLabel { AccessibilityTextSelectable: true }
+            && !string.IsNullOrEmpty(owner.AccessibilityLabel)
+            && text.AccessibilityLabel == owner.AccessibilityLabel;
 
         private static bool Same(AccessibilityNode[] a, AccessibilityNode[] b)
         {
@@ -661,7 +813,8 @@ namespace DrawnUi.Views
                 var y = b[i];
                 if (!ReferenceEquals(x.Source, y.Source)
                     || x.Label != y.Label || x.Hint != y.Hint || x.Role != y.Role
-                    || x.CanInteract != y.CanInteract || x.IsPressed != y.IsPressed || x.Live != y.Live
+                    || x.CanInteract != y.CanInteract || x.IsPressed != y.IsPressed || x.Live != y.Live || x.Value != y.Value
+                    || x.NamedByChild != y.NamedByChild
                     || Math.Abs(x.Rect.Left - y.Rect.Left) > 0.5f || Math.Abs(x.Rect.Top - y.Rect.Top) > 0.5f
                     || Math.Abs(x.Rect.Right - y.Rect.Right) > 0.5f || Math.Abs(x.Rect.Bottom - y.Rect.Bottom) > 0.5f)
                     return false;

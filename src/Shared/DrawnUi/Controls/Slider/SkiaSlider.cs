@@ -11,7 +11,22 @@ public class SkiaSlider : SkiaLayout
 
     protected override string? GetDefaultAccessibilityRole() => DefaultAccessibilityRole;
 
-    protected override string? DefaultAccessibilityLabel() => EnableRange ? $"{Start} – {End}" : $"{End}";
+    /// <summary>
+    /// The thumb's value for screen readers: <see cref="End"/> between <see cref="Min"/> and <see cref="Max"/>, read as
+    /// "20 – 80" in range mode. The slider's name is the app's AccessibilityLabel, never its value.
+    /// </summary>
+    public override AccessibilityValue? GetAccessibilityValue() => new(End, Min, Max,
+        Step > 0 ? Step : (Max - Min) / 100.0, EnableRange ? $"{Start} – {End}" : null, Orientation == OrientationType.Vertical);
+
+    /// <summary>A screen reader sets <see cref="End"/>, snapped to <see cref="Step"/>, between Min (or Start in range mode) and Max.</summary>
+    public override bool OnAccessibilitySetValue(double value)
+    {
+        if (!RespondsToGestures)
+            return false;
+
+        End = Math.Clamp(AdjustToStepValue(value, Min, Step), EnableRange ? Start : Min, Max);
+        return true;
+    }
 
     protected override bool DefaultAccessibilityCanInteract() => RespondsToGestures;
 
