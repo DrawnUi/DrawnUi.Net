@@ -51,8 +51,7 @@ public class LabelAutoSizeTests
 
     /// <summary>
     /// Results every mode gave on a fresh label before the FitHorizontal fix (200pt wide, FontSize 40).
-    /// heightRequest -1 = the 300pt canvas height. FitFillVertical with MaxLines=1 is left out: it never
-    /// finishes measuring (shrink and grow alternate forever), a separate defect.
+    /// heightRequest -1 = the 300pt canvas height.
     /// </summary>
     [Theory]
     [InlineData(AutoSizeType.None, LongText, 50, 0, 40.0, 1)]
@@ -87,6 +86,27 @@ public class LabelAutoSizeTests
             Assert.Equal(font, label.UsingFontSize, 0.06);
             Assert.Equal(lines, label.LinesCount);
         }
+    }
+
+    /// <summary>
+    /// FitFillVertical with MaxLines=1 never finished measuring: growing made the text wrap past the one line,
+    /// cut, shrink, room again, grow... forever, under the lock every label shares. It ends at the largest size
+    /// that fits, as FitVertical does.
+    /// </summary>
+    [Fact]
+    public void FitFillVertical_MaxLinesOne_Finishes()
+    {
+        var measured = Task.Run(() =>
+        {
+            var (host, label) = Render(AutoSizeType.FitFillVertical, LongText, 50, 1);
+            using (host)
+                return (label.UsingFontSize, label.LinesCount, label.IsCut);
+        });
+
+        Assert.True(measured.Wait(TimeSpan.FromSeconds(10)), "measure never finished");
+        Assert.Equal(15.4, measured.Result.UsingFontSize, 0.06);
+        Assert.Equal(1, measured.Result.LinesCount);
+        Assert.False(measured.Result.IsCut);
     }
 
     /// <summary>

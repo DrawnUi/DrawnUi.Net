@@ -2266,6 +2266,7 @@ namespace DrawnUi.Draw
             DecomposedText decomposedText = null;
             var autosize = this.AutoSize;
             var autoSizeFontStep = 0.1f;
+            bool grew = false, shrankAfterGrowing = false;
 
             if (UsingFontSize > 0 &&
                 (AutoSize == AutoSizeType.FitFillHorizontal || AutoSize == AutoSizeType.FitFillVertical))
@@ -2319,8 +2320,17 @@ namespace DrawnUi.Draw
                         autosize = AutoSizeType.None;
                     }
 
+                    // FitFill modes: once the font had to shrink back after growing, the size that fits is final.
+                    // Growing again alternated forever when growing made the text wrap past MaxLines (cut, shrink,
+                    // room again, grow...), holding the label lock that every label shares.
+                    if (shrankAfterGrowing && (autosize == AutoSizeType.FillVertical || autosize == AutoSizeType.FillHorizontal))
+                    {
+                        autosize = AutoSizeType.None;
+                    }
+
                     if (autosize == AutoSizeType.FitVertical || autosize == AutoSizeType.FitHorizontal)
                     {
+                        shrankAfterGrowing |= grew;
                         if (font.Size == 0)
                         {
                             //wtf just happened
@@ -2337,6 +2347,7 @@ namespace DrawnUi.Draw
                     }
                     else if (autosize == AutoSizeType.FillVertical || autosize == AutoSizeType.FillHorizontal)
                     {
+                        grew = true;
                         font.Size += autoSizeFontStep;
                         UpdateFontMetrics(PaintDefault, FontDefault);
                     }
