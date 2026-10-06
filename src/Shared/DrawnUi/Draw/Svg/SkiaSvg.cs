@@ -348,6 +348,9 @@ namespace DrawnUi.Draw
             RenderingPaint?.Dispose();
             RenderingPaint = null;
 
+            _tileShader?.Dispose();
+            _tileShader = null;
+
             base.OnDisposing();
         }
 
@@ -886,6 +889,52 @@ namespace DrawnUi.Draw
             return matrix;
         }
 
+        private SKShader _tileShader;
+        private SKPicture _tilePicture;
+        private SKMatrix _tileMatrix;
+
+        /// <summary>
+        /// Aspect Tile: the picture at its natural size (one SVG unit per point) repeated over the area, starting
+        /// from the copy placed by HorizontalAlignment / VerticalAlignment, as SkiaImage does. Cached, rebuilt only
+        /// when the picture or its placement changes.
+        /// </summary>
+        SKShader GetTileShader(SKRect area, double scale)
+        {
+            var picture = Svg.Picture;
+            var cull = picture.CullRect;
+            var factor = (float)scale;
+            var copy = CalculateDisplayRect(area, cull.Width * factor, cull.Height * factor,
+                HorizontalAlignment, VerticalAlignment);
+
+            var matrix = SKMatrix.CreateScale(factor, factor).PostConcat(SKMatrix.CreateTranslation(
+                copy.Left - cull.Left * factor + (float)Math.Round(HorizontalOffset * scale),
+                copy.Top - cull.Top * factor + (float)Math.Round(VerticalOffset * scale)));
+
+            if (_tileShader == null || _tilePicture != picture || !_tileMatrix.Equals(matrix))
+            {
+                _tileShader?.Dispose();
+                _tileShader = picture.ToShader(SKShaderTileMode.Repeat, SKShaderTileMode.Repeat, SKFilterMode.Linear,
+                    matrix, cull);
+                _tilePicture = picture;
+                _tileMatrix = matrix;
+            }
+
+            return _tileShader;
+        }
+
+        void DrawSvgPicture(SKCanvas canvas, ref SKMatrix matrix, SKPaint paint, SKShader tile, SKRect area)
+        {
+            if (tile == null)
+            {
+                canvas.DrawPicture(Svg.Picture, ref matrix, paint);
+                return;
+            }
+
+            paint.Shader = tile;
+            canvas.DrawRect(area, paint);
+            paint.Shader = null; // cached here, not owned by the paint
+        }
+
         protected override void Paint(DrawingContext ctx)
         {
             if (Svg != null)
@@ -901,6 +950,7 @@ namespace DrawnUi.Draw
                 RenderingPaint.BlendMode = DefaultBlendMode;
 
                 SKMatrix matrix = CreateSvgMatrix(area, scale);
+                var tile = Aspect == TransformAspect.Tile ? GetTileShader(area, scale) : null;
 
                 SKPath clipPath = null;
 
@@ -916,7 +966,7 @@ namespace DrawnUi.Draw
                     AddShadow(RenderingPaint, scale);
                     RenderingPaint.ColorFilter = SKColorFilter.CreateBlendMode(TintColor.ToSKColor(), SKBlendMode.SrcIn);
 
-                    ctx.Context.Canvas.DrawPicture(Svg.Picture, ref matrix, RenderingPaint);
+                    DrawSvgPicture(ctx.Context.Canvas, ref matrix, RenderingPaint, tile, area);
                 }
                 else if (FillGradient != null)
                 {
@@ -937,7 +987,19 @@ namespace DrawnUi.Draw
                     var adjustedMatrix = matrix;
                     adjustedMatrix = adjustedMatrix.PostConcat(SKMatrix.CreateTranslation(-destination.Left, -destination.Top));
 
-                    intermediateCanvas.DrawPicture(Svg.Picture, ref adjustedMatrix);
+                    if (tile != null)
+                    {
+                        using var tilePaint = new SKPaint { Shader = tile };
+                        intermediateCanvas.Save();
+                        intermediateCanvas.Translate(-destination.Left, -destination.Top);
+                        intermediateCanvas.DrawRect(area, tilePaint);
+                        intermediateCanvas.Restore();
+                        tilePaint.Shader = null;
+                    }
+                    else
+                    {
+                        intermediateCanvas.DrawPicture(Svg.Picture, ref adjustedMatrix);
+                    }
 
                     var rect = new SKRect(0, 0, destination.Width, destination.Height);
                     SetupGradient(RenderingPaint, FillGradient, rect);
@@ -980,7 +1042,7 @@ namespace DrawnUi.Draw
                         var saved = ctx.Context.Canvas.Save();
                         ClipSmart(ctx.Context.Canvas, clipPath);
 
-                        ctx.Context.Canvas.DrawPicture(Svg.Picture, ref matrix, RenderingPaint);
+                        DrawSvgPicture(ctx.Context.Canvas, ref matrix, RenderingPaint, tile, area);
 
                         ctx.Context.Canvas.RestoreToCount(saved);
 
@@ -988,7 +1050,7 @@ namespace DrawnUi.Draw
                     }
                     else
                     {
-                        ctx.Context.Canvas.DrawPicture(Svg.Picture, ref matrix, RenderingPaint);
+                        DrawSvgPicture(ctx.Context.Canvas, ref matrix, RenderingPaint, tile, area);
                     }
                 }
             }

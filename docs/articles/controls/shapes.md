@@ -384,7 +384,7 @@ SVG (Scalable Vector Graphics) offers several advantages for modern mobile appli
 | `IconFilePath` | string | null | Same as `Source`, kept for older XAML: loads the file with the same loader and cache. The one set last is shown |
 | `SvgString` | string | empty | SVG markup to draw, instead of a file. When set, it is shown instead of `Source` / `IconFilePath` |
 | `TintColor` | Color | Transparent | Color to tint the entire SVG |
-| `Aspect` | TransformAspect | AspectFitFill | How to scale the SVG within bounds |
+| `Aspect` | TransformAspect | AspectFitFill | How to scale the SVG within bounds. `Tile` repeats it at its natural size (one SVG unit per point) from the copy placed by `HorizontalAlignment` / `VerticalAlignment` |
 | `LockRatio` | double | 0 | Inherited from SkiaControl: locks the final size to the smaller (-1) or larger (1) of the requested width and height |
 
 ### Styling Properties
