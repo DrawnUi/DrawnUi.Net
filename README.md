@@ -24,6 +24,10 @@ Supported hosts:
 DrawnUI for React just appeared as a standalone DrawnUI engine in TypeScript, running on [CanvasKit](https://skia.org/docs/user/modules/canvaskit/) (Skia compiled to WebAssembly) in the browser. It tends to use same API as the .NET version. 
 Under active development, more info [on our site](https://drawnui.net/articles/react).
 
+## Rust?
+
+DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS, Linux, iOS, Android and in the browser. Same controls and rules as the .NET version, one crate to add (`drawnui` on crates.io), in preview. Try the demo at [hellorust.drawnui.net](https://hellorust.drawnui.net), more info [on our site](https://drawnui.net/articles/rust).
+
 ## Features 
 
 * __Imagine your  UI__ - a toolbox for creating drawn controls
@@ -75,6 +79,8 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
     * Japanese and Chinese text wraps properly. Lines break between characters, and closing punctuation and small kana never start a line. A very long word, like a URL, also breaks when it is wider than the line.
     * Symbols and emoji inside normal text show up. A `SkiaLabel` draws each character its font is missing with the first `FontFamilyFallback` font that has it, and the rest of the text keeps its own font. `FontFamilyFallback` can list several fonts, for example `"FontSymbols, FontEmoji"`.
     * `SkiaRichLabel` markdown supports `~~strikethrough~~`.
+    * `AutoSize = FitHorizontal` works: the font gets smaller until the text fits the width on one line, and grows back to `FontSize` when the text gets shorter or the label wider. Before, it stayed at the smallest size it ever reached, and with `LineBreakMode = NoWrap` the text still ran past the edge. `FitVertical` grows back too now.
+    * A label with `AutoSize = FitFillVertical` and `MaxLines = 1` no longer freezes the app. Before, it never finished measuring, and every other label stopped drawing with it.
     * People can select and copy text: turn it on with `AccessibilityTextSelectable` on a `SkiaLabel`. With a mouse, drag or double-click, then press Ctrl+C (Cmd+C on Mac). With a finger, long press, then tap Copy.
     * MAUI Mac Catalyst: mouse clicks reach controls as mouse clicks, so a drag over selectable text selects it instead of scrolling, and Cmd+C / Cmd+A reach the app (the Edit menu used to keep them). Add `UIApplicationSupportsIndirectInputEvents` = `true` to `Platforms/MacCatalyst/Info.plist`: without it macOS hands clicks over as finger touches. Uses AppoMobi gestures 3.11.5.
     * **Changed:** Android with `UseDesktopKeyboard`: text fields get their keys. Before, DrawnUI kept every key from the focused field, so Backspace did nothing (with keyboard suggestions it kept deleting them instead of the text) and Back did not go back. `KeyboardManager` still sees every key; Backspace now arrives as `Backspace` (it came as `Delete`), and the Back button is no longer reported as Backspace.
@@ -83,8 +89,14 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
     * Image preloading has priorities: `PreloadImages(urls, LoadPriority.Low)` waits until the images on screen are loaded. Network images load a few at a time (`MaxParallelLoads`), and `RunningCount` / `QueuedCount` show how many are loading and waiting. `RemoveFromCache` removes one image.
     * `SkiaLottie` and `SkiaSprite` raise `Success` when their file is loaded and `Error` when it fails, like `SkiaGif`.
     * `SkiaCarousel.ScrollTo(index, animate)` goes to a slide; with `animate: false` it jumps there at once.
+    * `SkiaImage` options that used to do nothing now work. `Aspect = Tile` repeats the image at its natural size, starting from the copy placed by the alignment. `SpriteWidth`, `SpriteHeight` and `SpriteIndex` show one cell of a sprite sheet. `UseGradient` with `StartColor` and `EndColor` paints a top-to-bottom gradient through the image. The `Grayscale` effect turns the image gray, and `UseAssembly` loads the `Source` from that assembly's embedded resources.
+    * `SkiaSvg`: `Aspect = Tile` repeats the picture, and `IconFilePath` loads its file the same way `Source` does.
+    * An image that loads in the background no longer reports an error right after it loaded. Before, `Error` came after `Success` and `HasError` stayed true.
+    * **Changed:** `SpeedRatio` on `SkiaSprite`, `SkiaGif` and `SkiaLottie` means what it says: 0.5 plays at half speed, 2 at double speed. Before, slow values played too fast (0.5 ran at about two thirds of the speed). `FrameSequence` shows each of its frames once, `DefaultFrame` is a frame number (-1 is the last frame) and `CurrentFrame` shows the frame you set.
   * **Controls**
     * **Changed:** `LockChildrenGestures` works on layouts. Before, layouts ignored it, so taps reached their children whatever the value. Now `Enabled` and `PassNone` keep every gesture from the children, `PassTap` lets only taps through, and `PassTapAndLongPress` taps and long presses. The layout itself still gets its own `Tapped`, so "lock the children, handle the tap on the card" works. `Enabled` also keeps gestures from controls stacked under the layout, as its description says.
+    * `SkiaWheelPicker` and `SkiaSpinner` raise `SelectedIndexChanged` when the user turns the wheel. Before, it fired only when code set the index. A spinner set from code shows the right item (it showed the one on the opposite side), and a wheel picker raises the event once when its first item gets selected.
+    * `SkiaPicker` has a Material 3 look (`ControlStyle = Material3`): an outlined field whose placeholder moves up into the outline as a label once something is picked.
     * Changing `ControlStyle` while the app runs restyles the control fully. Before, a `SkiaButton` lost its caption (it showed "Test", or nothing in Material), `SkiaSwitch` and `SkiaCheckbox` kept the colors of the first style, and a `SkiaProgress` showed an empty track in Material and Material3.
   * **Layout**
     * **Changed:** in a `SkiaWrap`, a child with `HorizontalOptions = Fill` and no `WidthRequest` gets a whole line, as in DrawnUI for React and Rust. After other children it moves to a new line, and the next children start below it. Before, it was squeezed into the space left on the current line. To keep it next to the others, give it a width or use a `SkiaRow`.
@@ -108,6 +120,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
     * `LastCompositeRecord` shows what an `ImageComposite` cache redrew last time: only the changed children, or everything.
     * `ImageDoubleBuffered` is more reliable. A control that changes all the time still updates on screen, even when its background render takes longer than a frame; before, it kept its old look until the changes stopped. A cell shows its placeholder until its first image is ready, and never over an image it already has; before, the placeholder showed for one frame and then left a hole. Images that were replaced before they were shown go back to the pool at once, and a render that fails is not repeated forever. A GPU-cached control inside an `ImageDoubleBuffered` parent draws directly, because the GPU cannot be used from the background thread.
     * `UseCache = SkiaCacheType.Auto` works like `Image`.
+    * Shader files load on every platform. `ShaderSource`, `ShaderTemplate`, a `SkiaShaderCarousel`'s `TransitionShader` and the textures of a two-texture effect are read from the app's folder on OpenTK and WPF and from the site in the browser, as MAUI reads them from the app package. Before, OpenTK and pure WebAssembly could not open them at all, and WPF read every shader file next to the app at startup, used or not.
     * With `Super.Multithreaded` on, an `Operations` or `OperationsFull` cache is no longer redrawn on every frame. Before, it was thrown away and drawn again each time.
     * WPF, OpenTK and WebAssembly: an animation started while a frame is being drawn starts at once. Before, it waited for the next touch or mouse move. `DrawnView.RequestNextFrame()` asks for one more frame from anywhere, also from inside a draw.
   * **Keyboard and accessibility**
@@ -130,12 +143,15 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
     * Smooth frames where the graphics driver ignores vsync, like Linux under WSL: a `Constant` window notices it in its first second and spaces frames one screen refresh apart, and a `Dynamic` window always does. Before, a game ran at hundreds of frames a second there and movement stuttered.
     * On Windows, frames follow the screen's exact refresh rate. A 59.95 Hz screen used to get 59 frames a second, a little behind the display.
     * `SkiaShell` and C# Hot Reload work on OpenTK too. They were in the WPF package only.
+    * OpenTK: a right click, the Menu key or Shift+F10 reaches `SkiaControl.ContextMenu`, as on WPF and MAUI Windows.
     * New sample `HelloOpenTk`: the DrawnUI Hello app, all 20 screens, on OpenTK for Windows and Linux. `dev/hello-opentk-linux.ps1` builds it for Linux on Windows and runs it in WSL.
   * **Stability**
     * Closing a canvas while one of its controls is still being rendered in the background no longer crashes: the canvas waits for that render to finish first.
     * WPF and OpenTK: registering a font while the canvas draws is safe. Before, a label could be drawn with the default font for a moment, or the app could stop with an error.
     * Headless tests (`DrawnUi.Testing`): a `GestureRobot` swipe gives the same fling however busy the machine is. Before, a slow test run could see no fling at all.
     * Blazor and WebAssembly: a GPU canvas recovers by itself when the browser loses its WebGL context (a GPU reset, a driver update, too many canvases open). Before, it stayed blank until the page was reloaded.
+    * WebAssembly (`DrawnUi.Web`): an app published under a sub-path of a site (like `/myapp/`) starts. Before, it looked for its script at the root of the site.
+    * Blazor Server: frames are drawn at their real size. Before, the drawing came out 2% too large and lost its right and bottom edges. Headless tests (`HeadlessCanvasHost`) had the same 2% and are exact now.
 
  ### Previously
 
