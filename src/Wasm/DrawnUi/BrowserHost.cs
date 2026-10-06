@@ -110,6 +110,9 @@ public static partial class BrowserHost
 
         _view.OnDraw = (surface, rect) => canvas.RenderExternalSurface(surface, rect, Nanos());
         canvas.AttachCanvasView(_view);
+
+        // screen readers and Tab: the ARIA overlay of the Blazor head
+        WebAccessibility.Attach(canvas, _elementId!);
     }
 
     private static long Nanos() => _frameTimer.ElapsedTicks * (1_000_000_000L / Stopwatch.Frequency);

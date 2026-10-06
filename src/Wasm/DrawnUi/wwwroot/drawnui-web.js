@@ -423,6 +423,175 @@ export function applyGestureStyle(elementId, lock) {
 }
 
 // ============================================================================
+// Accessibility overlay — the Blazor Canvas ARIA overlay for pure WebAssembly: one invisible element per node of
+// the accessibility snapshot over the canvas, in reading order. Screen readers read and activate them, Tab walks
+// the interactive ones (one Tab stop per arrow-key group), Enter / Space activate, the arrow keys go to the node.
+// Pointer input never lands on them (pointer-events: none): the canvas keeps every gesture. The canvas draws the
+// keyboard focus ring (it follows scrolling every frame), so the elements have no outline.
+// ============================================================================
+
+let _a11y = null;
+
+function ensureA11yStyles() {
+    if (document.getElementById('drawnui-a11y-style')) return;
+    const style = document.createElement('style');
+    style.id = 'drawnui-a11y-style';
+    // overflow: clip, not hidden: focusing a node outside the canvas must never scroll the overlay away from it
+    style.textContent =
+        '.drawnui-a11y-overlay{position:absolute;pointer-events:none;overflow:clip;}' +
+        '.drawnui-a11y{position:absolute;background:transparent;color:transparent;font-size:0;' +
+        'user-select:none;outline:none;}';
+    document.head.appendChild(style);
+}
+
+/**
+ * Creates the overlay after the canvas element (the next Tab stops of the page follow it) with the C# callbacks:
+ * activate(id), key(id, key) -> used, focus(id), blur(id).
+ */
+export function a11yAttach(elementId, onActivate, onKey, onFocus, onBlur) {
+    const canvasEl = document.getElementById(elementId);
+    if (!canvasEl) return;
+    a11yDetach();
+    ensureA11yStyles();
+    const overlay = document.createElement('div');
+    overlay.className = 'drawnui-a11y-overlay';
+    canvasEl.insertAdjacentElement('afterend', overlay);
+    const place = () => {
+        overlay.style.left = canvasEl.offsetLeft + 'px';
+        overlay.style.top = canvasEl.offsetTop + 'px';
+        overlay.style.width = canvasEl.clientWidth + 'px';
+        overlay.style.height = canvasEl.clientHeight + 'px';
+    };
+    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(place) : null;
+    observer?.observe(canvasEl);
+    window.addEventListener('resize', place);
+    place();
+    _a11y = { overlay, map: new Map(), updating: false, place, observer, onActivate, onKey, onFocus, onBlur };
+}
+
+export function a11yDetach() {
+    const a = _a11y;
+    if (!a) return;
+    _a11y = null;
+    a.observer?.disconnect();
+    window.removeEventListener('resize', a.place);
+    a.overlay.remove();
+}
+
+function a11yCreate(id) {
+    const el = document.createElement('div');
+    el.className = 'drawnui-a11y';
+    // a screen reader's click (its activation) on a node that takes input
+    el.addEventListener('click', () => { if (el._interactive) _a11y?.onActivate(id); });
+    el.addEventListener('keydown', e => {
+        const a = _a11y;
+        if (!a || !el._interactive) return;
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault(); // Space would scroll the page
+            if (!e.repeat) a.onActivate(id);
+        } else if (A11Y_KEYS.has(e.key) && a.onKey(id, e.key)) {
+            e.preventDefault(); // a slider stepped, or focus moved inside the group
+        }
+    });
+    el.addEventListener('focus', () => { if (_a11y && !_a11y.updating) _a11y.onFocus(id); });
+    el.addEventListener('blur', () => { if (_a11y && !_a11y.updating) _a11y.onBlur(id); });
+    return el;
+}
+
+const A11Y_STATES = ['aria-checked', 'aria-selected', 'aria-pressed'];
+const A11Y_KEYS = new Set(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown']);
+
+function a11ySet(el, name, value) {
+    if (value === null || value === undefined || value === '') {
+        if (el.hasAttribute(name)) el.removeAttribute(name);
+    } else if (el.getAttribute(name) !== value) {
+        el.setAttribute(name, value);
+    }
+}
+
+// flags: 1 takes input, 2 Tab stop, 4 has a pressed state, 8 pressed, 16 has a range value, 32 vertical,
+// 64 a control role that takes no input (unavailable)
+function a11yApply(el, flags, nums, o, strs, s) {
+    const interactive = (flags & 1) !== 0;
+    el._interactive = interactive;
+    a11ySet(el, 'role', strs[s]);
+    const label = strs[s + 1];
+    a11ySet(el, 'aria-label', label);
+    if (el.textContent !== label) el.textContent = label; // what a live region announces
+    a11ySet(el, 'title', strs[s + 2]);
+    a11ySet(el, 'aria-live', strs[s + 3]);
+    // the pressed state on the attribute its role is read from (aria-checked for a switch, see Aria.PressedStateAttribute)
+    const state = (flags & 4) ? ((flags & 8) ? 'true' : 'false') : null;
+    for (const name of A11Y_STATES) a11ySet(el, name, name === strs[s + 5] ? state : null);
+    a11ySet(el, 'aria-disabled', (flags & 64) ? 'true' : null);
+    const value = (flags & 16) !== 0;
+    a11ySet(el, 'aria-valuenow', value ? String(nums[o + 4]) : null);
+    a11ySet(el, 'aria-valuemin', value ? String(nums[o + 5]) : null);
+    a11ySet(el, 'aria-valuemax', value ? String(nums[o + 6]) : null);
+    a11ySet(el, 'aria-valuetext', value ? strs[s + 4] : null);
+    a11ySet(el, 'aria-orientation', value ? ((flags & 32) ? 'vertical' : 'horizontal') : null);
+    // not a Tab stop: -1 still lets a screen reader's focus be moved here (refocus)
+    a11ySet(el, 'tabindex', interactive && (flags & 2) ? '0' : '-1');
+    el.style.left = nums[o] + 'px';
+    el.style.top = nums[o + 1] + 'px';
+    el.style.width = nums[o + 2] + 'px';
+    el.style.height = nums[o + 3] + 'px';
+}
+
+/**
+ * The snapshot, in reading order: ints = (id, flags) per node, nums = (left, top, width, height, now, min, max)
+ * per node in CSS pixels, strs = (role, label, hint, live, value text, pressed attribute) per node. Elements are kept by id and moved
+ * only when the order changed, so the focused one keeps its focus.
+ */
+export function a11yUpdate(ints, nums, strs) {
+    const a = _a11y;
+    if (!a) return;
+    const active = document.activeElement;
+    const focused = active && a.overlay.contains(active) ? active : null;
+    a.updating = true;
+    try {
+        const count = ints.length / 2;
+        const keep = new Set();
+        let ref = a.overlay.firstChild;
+        for (let i = 0; i < count; i++) {
+            const id = ints[i * 2];
+            let el = a.map.get(id);
+            if (!el) {
+                el = a11yCreate(id);
+                a.map.set(id, el);
+            }
+            keep.add(id);
+            a11yApply(el, ints[i * 2 + 1], nums, i * 7, strs, i * 6);
+            if (el !== ref) a.overlay.insertBefore(el, ref);
+            else ref = ref.nextSibling;
+        }
+        for (const [id, el] of a.map) {
+            if (!keep.has(id)) {
+                el.remove();
+                a.map.delete(id);
+            }
+        }
+        // a moved element lost focus: give it back without telling C# (nothing changed for it)
+        if (focused && focused.isConnected && document.activeElement !== focused) focused.focus({ preventScroll: true });
+    } finally {
+        a.updating = false;
+    }
+}
+
+/** Keyboard or screen-reader focus moves to the node (arrow keys in a group, refocus after its page closed). */
+export function a11yFocus(id) {
+    _a11y?.map.get(id)?.focus({ preventScroll: true });
+}
+
+/** A live region changed: its new text at once, the snapshot follows within a second. */
+export function a11yLive(id, text) {
+    const el = _a11y?.map.get(id);
+    if (!el) return;
+    el.setAttribute('aria-label', text);
+    el.textContent = text;
+}
+
+// ============================================================================
 // Loading spinner — self-contained, no per-app HTML/CSS needed.
 // ============================================================================
 
@@ -494,10 +663,11 @@ const PREVENT_DEFAULT_KEYS = new Set([
 
 // DrawnUI only observes keys: a page element that has focus (an input, a textarea, a button...) keeps its
 // keys, so Space types and the arrows move its caret. The page only stops scrolling when the key belongs
-// to nobody else: its target is the page itself or a canvas.
+// to nobody else: its target is the page itself, a canvas or a node of the accessibility overlay.
 function keyIsForDrawnUi(e) {
     const t = e.target;
-    return !t || t === document.body || t === document.documentElement || t === window || t.tagName === 'CANVAS';
+    return !t || t === document.body || t === document.documentElement || t === window || t.tagName === 'CANVAS'
+        || !!(t.closest && t.closest('.drawnui-a11y-overlay'));
 }
 
 let keyboardAttached = false;
