@@ -143,6 +143,12 @@
                          aria-label="@node.Label"
                          title="@node.Hint"
                          aria-pressed="@(node.IsPressed?.ToString().ToLower())"
+                         aria-live="@node.Live"
+                         aria-valuenow="@ValueNow(node)"
+                         aria-valuemin="@ValueMin(node)"
+                         aria-valuemax="@ValueMax(node)"
+                         aria-valuetext="@node.Value?.Text"
+                         aria-orientation="@Orientation(node)"
                          tabindex="@(AccessibilityManager.IsTabStop(node.Source) ? 0 : -1)"
                          class="xaml-a11y-element xaml-a11y-interactive"
                          style="@A11yNodeStyle(node)"
@@ -155,10 +161,21 @@
                 }
                 else
                 {
+                    @* tabindex -1: not a Tab stop, but the reader can be moved here when its node left (refocus);
+                       a control role that takes no input reads as unavailable (aria-disabled, drawnui-cross 6c rule 2) *@
                     <div @key="node.Id"
+                         @ref="_a11yElements[node.Id]"
                          role="@node.Role"
                          aria-label="@node.Label"
                          title="@node.Hint"
+                         aria-disabled="@(DrawnUi.Models.Aria.IsInteractiveRole(node.Role) ? "true" : null)"
+                         aria-live="@node.Live"
+                         aria-valuenow="@ValueNow(node)"
+                         aria-valuemin="@ValueMin(node)"
+                         aria-valuemax="@ValueMax(node)"
+                         aria-valuetext="@node.Value?.Text"
+                         aria-orientation="@Orientation(node)"
+                         tabindex="-1"
                          class="xaml-a11y-element"
                          style="@A11yNodeStyle(node)">
                         @node.Label
@@ -282,6 +299,7 @@
             _reportedAutoCanvasHeight = AutoCanvasHeight;
             AccessibilityManager.Changed += OnA11yChanged;
             AccessibilityManager.KeyboardFocusRequested += OnA11yKeyboardFocusRequested;
+            AccessibilityManager.ReaderRefocusRequested += OnA11yReaderRefocus;
         }
 
         if (_pendingA11yFocusId is { } focusId && _a11yElements.TryGetValue(focusId, out var element))
@@ -1026,6 +1044,7 @@
 
         AccessibilityManager.Changed -= OnA11yChanged;
         AccessibilityManager.KeyboardFocusRequested -= OnA11yKeyboardFocusRequested;
+        AccessibilityManager.ReaderRefocusRequested -= OnA11yReaderRefocus;
 
         OnDisposing();
     }
@@ -1053,9 +1072,25 @@
         _ = InvokeAsync(StateHasChanged);
     }
 
+    // the element a screen reader is on (DOM focus) left with its page: focus the first node that says something, so the
+    // reader's cursor does not stay on an empty spot (raised after the rebuild, before the overlay drops the element)
+    private void OnA11yReaderRefocus(AccessibilityNode next)
+    {
+        _pendingA11yFocusId = next.Id;
+        _accessibilityNodes = AccessibilityManager.Snapshot;
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    // a range control's value for aria-value*: invariant numbers, none for other nodes
+    private static string? ValueNow(AccessibilityNode node) => node.Value?.Now.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    private static string? ValueMin(AccessibilityNode node) => node.Value?.Min.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    private static string? ValueMax(AccessibilityNode node) => node.Value?.Max.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    private static string? Orientation(AccessibilityNode node) => node.Value is { } value ? value.Vertical ? "vertical" : "horizontal" : null;
+
     // the focused overlay element is the canvas keyboard focus: scroll bars around it stay visible
     private void OnA11yFocus(AccessibilityNode node)
     {
+        AccessibilityManager.NotifyReaderFocused(node.Source);
         KeyboardFocusNode = node.Source;
         node.Source?.OnAccessibilityFocused(true); // a text field takes the caret, same as the Windows heads
         _ = InvokeAsync(StateHasChanged); // the Tab stop of its group moves with it (tabindex)
@@ -1063,6 +1098,8 @@
 
     private void OnA11yBlur(AccessibilityNode node)
     {
+        if (ReferenceEquals(AccessibilityManager.ReaderNode, node.Source))
+            AccessibilityManager.NotifyReaderFocused(null); // focus left the canvas: never pull it back later
         node.Source?.OnAccessibilityFocused(false); // Tab left the element: a text field releases the caret
         if (ReferenceEquals(KeyboardFocusNode, node.Source))
             KeyboardFocusNode = null;
