@@ -204,7 +204,6 @@ public class DrawnUiElement : FrameworkElement, IDisposable
 
         AppPackageServices.EnsureInstalled(); // relative "package" paths resolve to files next to the exe
         Super.Init();
-        ShaderFiles.PreloadAll(); // .sksl files next to the exe become ShaderSource resources
         WpfStartup.RunStartup(); // DrawnUiStartupSettings.Startup, once
     }
 

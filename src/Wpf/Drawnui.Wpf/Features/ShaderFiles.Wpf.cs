@@ -9,6 +9,7 @@ namespace DrawnUi.Wpf;
 /// browser fetches), so every <c>.sksl</c> file copied next to the executable is read once into
 /// <see cref="SkSl.LoadedCache"/> under its relative path, with both slash styles.
 /// </summary>
+[Obsolete("Not needed: SkSl reads shader files next to the executable on demand.")]
 public static class ShaderFiles
 {
     private static bool _loaded;

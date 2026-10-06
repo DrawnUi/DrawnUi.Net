@@ -68,29 +68,18 @@ asset root, so the shared code stays head-agnostic.
 
 ## `.sksl` shader files
 
-Copying them out is the same `Content Include` rule (HelloOpenTk does it for `shaders\**`), but **loading them by
-path does not work on this head**. `ShaderSource` / `TransitionShader` go through `SkSl.LoadFromResources`, which on
-every non-MAUI .NET head (`DRAWNUI_NET`) refuses to read a file synchronously and throws unless the code is already in
-`SkSl.LoadedCache`; the async path hands the relative path to a bare `HttpClient` and fails with *"An invalid request
-URI was provided"*. WPF fills that cache at startup (`ShaderFiles.PreloadAll()`, every `.sksl` under the exe folder);
-OpenTK has no equivalent, so nothing fills it.
-
-Until the head gets one, give the shader its code instead of a path:
+Copy them out with the same `Content Include` rule (HelloOpenTk does it for `shaders\**`). `ShaderSource`,
+`ShaderTemplate`, `TransitionShader` and `SkiaShader.FromResource` then load them by that relative path from the
+executable's folder, as MAUI reads `Resources/Raw`:
 
 ```csharp
-// works on OpenTK today
-new SkiaShaderEffect { ShaderCode = File.ReadAllText("shaders/blit.sksl") }
-
-// SkiaShaderCarousel
-carousel.TransitionShaderCode = File.ReadAllText("shaders/transitions/cube.sksl");
+new SkiaShaderEffect { ShaderSource = "shaders/blit.sksl" }
+carousel.TransitionShader = "shaders/transitions/cube.sksl";
 ```
 
-Or fill the loader cache yourself once at startup, which makes `ShaderSource` work as it does on WPF:
-
-```csharp
-foreach (var file in Directory.EnumerateFiles(AppContext.BaseDirectory, "*.sksl", SearchOption.AllDirectories))
-    SkSl.LoadedCache[Path.GetRelativePath(AppContext.BaseDirectory, file).Replace('\\', '/')] = File.ReadAllText(file);
-```
+The same goes for files an effect loads as textures (`ShaderDoubleTexturesEffect.PrimarySource` /
+`SecondarySource`). Builds before 2026-10-06 could not read these files on OpenTK (`NotSupportedException`) and
+needed `ShaderCode` / `TransitionShaderCode` with the file's text.
 
 ## See also
 

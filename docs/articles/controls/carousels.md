@@ -178,8 +178,8 @@ the shader contract and customization.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `TransitionShader` | string | Path to a transition `.sksl` in the app package. MAUI reads Resources/Raw; WPF reads the files copied next to the exe (`ShaderFiles.PreloadAll()`); web heads fetch the path; OpenTK cannot resolve it at all today — use `TransitionShaderCode` there |
-| `TransitionShaderCode` | string | Raw SkSL string alternative (OpenTK, dynamic shaders) |
+| `TransitionShader` | string | Path to a transition `.sksl` in the app package. MAUI reads Resources/Raw; OpenTK and WPF read the file copied next to the exe; web heads fetch it from the site |
+| `TransitionShaderCode` | string | Raw SkSL string alternative (dynamic shaders) |
 | `TransitionTemplate` | string | Custom wrapper template replacing the built-in gl-transitions adapter |
 | `InterruptedTransitionMs` | double | Wrap-up time for a transition interrupted by a new swipe (default 50) |
 | `TransitionEffect` | ShaderTransitionEffect | The effect instance; override `CreateTransitionEffect()` to customize |

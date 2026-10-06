@@ -110,24 +110,27 @@ Shader files go in `Resources/Raw/Shaders/` (lowercase filenames — iOS is
 case-sensitive). Load with `ShaderSource="Shaders/myeffect.sksl"`. The file is
 read synchronously from the app package the first time the effect renders.
 
-### Blazor, WebAssembly, OpenTK and other DrawnUi.Net hosts
+### OpenTK, WPF and other desktop DrawnUi.Net hosts
 
-Synchronous resource loading is not available there: `ShaderSource`,
-`ShaderTemplate` and `SkiaShader.FromResource` throw `NotSupportedException`
-unless the file is already loaded. Pick one:
+Copy the files next to the executable (`Content Include` with `CopyToOutputDirectory`). `ShaderSource`,
+`ShaderTemplate`, `TransitionShader` and `SkiaShader.FromResource` read them by their relative path from there, the
+first time they are needed.
 
-- Preload at startup, before any control uses the file. This fetches the files
-  over `HttpClient` (for Blazor: from `wwwroot`):
+### Blazor and WebAssembly
 
-  ```csharp
-  await SkSl.PrecompileAsync("Shaders/ripples.sksl", "Shaders/blit.sksl");
-  // template files are only loaded, not compiled:
-  await SkSl.LoadFromResourcesAsync("Shaders/mytemplate.sksl");
-  ```
+Files are fetched from the site (for Blazor: from `wwwroot`), relative to its base address. `ShaderSource`,
+`ShaderTemplate` and `TransitionShader` load by themselves: the effect draws nothing until the file has arrived and
+compiles on the next frame. `SkiaShader.FromResource` and `SkSl.LoadFromResources` are synchronous and throw
+`NotSupportedException` for a file not loaded yet. To have such files, or any shader, ready before the first frame,
+preload them at startup:
 
-- Or pass the code itself with `ShaderCode`. On desktop hosts, where
-  `HttpClient` has no base address to fetch from, read the file yourself:
-  `ShaderCode = File.ReadAllText("Shaders/ripples.sksl")`.
+```csharp
+await SkSl.PrecompileAsync("Shaders/ripples.sksl", "Shaders/blit.sksl");
+// template files are only loaded, not compiled:
+await SkSl.LoadFromResourcesAsync("Shaders/mytemplate.sksl");
+```
+
+Or pass the code itself with `ShaderCode`.
 
 ### Compile cache
 
@@ -512,8 +515,8 @@ The shader is a gl-transitions style `transition(vec2 uv)` function using
 [gl-transitions](https://github.com/gl-transitions/gl-transitions) ported to SkSL works.
 Provide it via:
 
-- `TransitionShader` — path inside Resources/Raw
-- `TransitionShaderCode` — raw SkSL string (required on OpenTK/`DRAWNUI_NET`)
+- `TransitionShader` — path to a file in the app package (MAUI Resources/Raw, next to the exe on desktop, `wwwroot` on the web)
+- `TransitionShaderCode` — raw SkSL string (dynamic shaders)
 - `TransitionTemplate` — replace the built-in adapter template
   (`ShaderTransitionEffect.DefaultTemplate`) when you need custom uniforms or sampling.
   A custom template must declare every standard uniform, including `iTime` and `iMouse`.

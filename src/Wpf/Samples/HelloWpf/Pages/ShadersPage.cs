@@ -80,7 +80,7 @@ half4 main(float2 fragCoord) {
         HorizontalOptions = LayoutOptions.Fill;
         VerticalOptions = LayoutOptions.Fill;
 
-        // a relative "package" path: the head's AppPackageServices serves it from beside the executable
+        // a relative "package" path: read from beside the executable
         var ripple = new MultiRippleWithTouchEffect { SecondarySource = "images/nebula.jpg" };
         ripple.OnCompilationError += (_, e) => ShowError(e);
         _wave = new SkiaShaderEffect { ShaderCode = Wave };

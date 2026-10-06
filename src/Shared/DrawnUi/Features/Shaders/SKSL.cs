@@ -6,11 +6,40 @@ namespace DrawnUi.Infrastructure;
 
 public static class SkSl
 {
-    private static async Task<Stream> OpenResourceStreamAsync(string fileName)
+#if BROWSER || DRAWNUI_NET
+    private static HttpClient _packageHttp;
+
+    /// <summary>
+    /// A package file (shaders, textures) on a non-MAUI head: next to the app on the desktop (OpenTK, WPF, plain
+    /// .NET: the output folder, where those heads copy their assets), fetched from the site in the browser.
+    /// </summary>
+    private static string LocalPackagePath(string fileName) =>
+        Path.IsPathRooted(fileName)
+            ? fileName
+            : Path.Combine(AppContext.BaseDirectory, fileName.Replace('/', Path.DirectorySeparatorChar));
+
+    private static HttpClient PackageHttpClient()
+    {
+        if (Super.Services?.GetService(typeof(HttpClient)) is HttpClient registered)
+            return registered; // Blazor registers one with the site's base address
+#if DRAWNUI_NET
+        return _packageHttp ??= new HttpClient { BaseAddress = SkiaImageManager.HttpBaseAddress };
+#else
+        return _packageHttp ??= new HttpClient();
+#endif
+    }
+#endif
+
+    /// <summary>
+    /// Opens a file that ships with the app, the same way on every head: the MAUI app package, the output folder
+    /// on the desktop heads, the site (relative to its base address) in the browser.
+    /// </summary>
+    public static async Task<Stream> OpenPackageFileAsync(string fileName)
     {
 #if BROWSER || DRAWNUI_NET
-        var httpClient = Super.Services.GetService(typeof(HttpClient)) as HttpClient ?? new HttpClient();
-        return await httpClient.GetStreamAsync(fileName);
+        if (!OperatingSystem.IsBrowser())
+            return File.OpenRead(LocalPackagePath(fileName));
+        return await PackageHttpClient().GetStreamAsync(fileName);
 #else
         return await FileSystem.OpenAppPackageFileAsync(fileName);
 #endif
@@ -20,7 +49,7 @@ public static class SkSl
     {
         if (!LoadedCache.TryGetValue(fileName, out var shaderCode))
         {
-            using var stream = await OpenResourceStreamAsync(fileName);
+            using var stream = await OpenPackageFileAsync(fileName);
             using var reader = new StreamReader(stream);
             shaderCode = await reader.ReadToEndAsync();
             LoadedCache[fileName] = shaderCode;
@@ -28,22 +57,36 @@ public static class SkSl
         return shaderCode;
     }
 
-    public static string LoadFromResources(string fileName)
+    /// <summary>
+    /// Shader code by file, synchronously when the head can read it so: always on MAUI and the desktop heads; in the
+    /// browser only once it was loaded (<see cref="LoadFromResourcesAsync"/>, <see cref="PrecompileAsync(string[])"/>).
+    /// False means: load it asynchronously first.
+    /// </summary>
+    public static bool TryLoadFromResources(string fileName, out string shaderCode)
     {
-        if (!LoadedCache.TryGetValue(fileName, out var shaderCode))
-        {
+        if (LoadedCache.TryGetValue(fileName, out shaderCode))
+            return true;
+
 #if BROWSER || DRAWNUI_NET
-            throw new NotSupportedException(
-                $"Synchronous shader resource loading is not supported on this runtime for '{fileName}'. Use PrecompileAsync or LoadFromResourcesAsync instead.");
+        if (OperatingSystem.IsBrowser())
+            return false;
+        shaderCode = File.ReadAllText(LocalPackagePath(fileName));
 #else
         using var stream = FileSystem.OpenAppPackageFileAsync(fileName).GetAwaiter().GetResult();
         using var reader = new StreamReader(stream);
         shaderCode = reader.ReadToEnd();
-        return shaderCode;
 #endif
-        }
+        LoadedCache[fileName] = shaderCode;
+        return true;
+    }
 
-        return shaderCode;
+    public static string LoadFromResources(string fileName)
+    {
+        if (TryLoadFromResources(fileName, out var shaderCode))
+            return shaderCode;
+
+        throw new NotSupportedException(
+            $"In the browser '{fileName}' loads asynchronously: use PrecompileAsync or LoadFromResourcesAsync first.");
     }
 
     public static void Precompile(string[] filenames, Action<string> onError = null)
