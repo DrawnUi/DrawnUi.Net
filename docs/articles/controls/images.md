@@ -770,12 +770,12 @@ SkiaGif is a dedicated control for displaying animated GIF files with playback c
 | `Source` | string | empty | Path or URL of the GIF |
 | `AutoPlay` | bool | true | Whether the animation starts when loaded |
 | `Repeat` | int | 0 | Extra cycles after the first one, -1 loops forever |
-| `SpeedRatio` | double | 1.0 | Playback speed multiplier |
-| `DefaultFrame` | int | 0 | Frame shown when not playing |
+| `SpeedRatio` | double | 1.0 | Playback speed: 0.5 is half speed (twice as long), 2 is double speed |
+| `DefaultFrame` | int | 0 | Frame index shown when not playing, -1 is the last frame |
 | `Aspect` | TransformAspect | AspectFitFill | How the frames scale to fit |
 | `IsPlaying` | bool | - | Whether the animation is playing (read-only) |
 
-Use `Start()` and `Stop()` to control playback from code.
+Use `Start()` and `Stop()` to control playback from code. `Seek(ms)` jumps to a time position in milliseconds; to show a given frame while stopped, set `DefaultFrame`.
 
 ### Examples
 

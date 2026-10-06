@@ -227,6 +227,9 @@
         {
         }
 
+        /// <summary>
+        /// Jumps to a position: a time in milliseconds for SkiaSprite and SkiaGif, a frame number for SkiaLottie.
+        /// </summary>
         public void Seek(double frame)
         {
             OnAnimatorSeeking(frame);
@@ -310,6 +313,16 @@
         {
         }
 
+        /// <summary>
+        /// Play time of one pass for content that lasts <paramref name="durationMs"/> at normal speed:
+        /// playback speed is <see cref="SpeedRatio"/>, so 2 plays in half the time and 0.5 in twice the time.
+        /// A SpeedRatio of 0 or below plays at normal speed.
+        /// </summary>
+        protected double GetPlaybackDurationMs(double durationMs)
+        {
+            return SpeedRatio > 0 ? durationMs / SpeedRatio : durationMs;
+        }
+
         protected virtual void ApplyDefaultFrame()
         {
             if (!IsPlaying)
@@ -354,7 +367,7 @@
             });
 
         /// <summary>
-        /// Default is 0. If you set to -1 that would mean "last frame".
+        /// Frame index shown when not playing. Default is 0, -1 means "last frame".
         /// </summary>
         public int DefaultFrame
         {
@@ -373,6 +386,9 @@
                 }
             });
 
+        /// <summary>
+        /// Playback speed: 1 is normal, 0.5 is half speed (twice the duration), 2 is double speed. Default is 1.
+        /// </summary>
         public double SpeedRatio
         {
             get => (double)GetValue(SpeedRatioProperty);

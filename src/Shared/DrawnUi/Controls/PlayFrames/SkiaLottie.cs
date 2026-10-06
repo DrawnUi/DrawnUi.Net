@@ -611,12 +611,7 @@ public class SkiaLottie : AnimatedFramesRenderer
         if (Animation == null)
             return;
 
-        var speed = 1.0;
-        if (SpeedRatio < 1)
-            speed = Animation.Duration.TotalMilliseconds * (1 + SpeedRatio);
-        else
-            speed = Animation.Duration.TotalMilliseconds / SpeedRatio;
-        Animator.Speed = speed;
+        Animator.Speed = GetPlaybackDurationMs(Animation.Duration.TotalMilliseconds);
     }
 
     protected override void OnAnimatorInitializing()

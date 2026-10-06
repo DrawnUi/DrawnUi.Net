@@ -237,26 +237,21 @@ public partial class SkiaSprite : AnimatedFramesRenderer
     }
 
     /// <summary>
-    /// Gets frame number from time based on current frame rate
+    /// Gets the animation frame index (position in <see cref="FrameSequence"/> when one is set) at a time.
     /// </summary>
-    /// <param name="msTime">Time in milliseconds</param>
-    /// <returns>Frame number</returns>
+    /// <param name="msTime">Time in milliseconds, negative counts back from the end</param>
+    /// <returns>Frame index, 0 to TotalFrames - 1</returns>
     protected int GetFrameNumberFromTime(double msTime)
     {
+        msTime %= DurationMs;
         if (msTime < 0)
         {
-            msTime = DurationMs + msTime;
+            msTime += DurationMs;
         }
 
-        msTime %= DurationMs;
-
-        int frame = (int)(msTime / FrameDurationMs);
-
-        if (FrameSequence != null && FrameSequence.Length > 0)
-        {
-            int sequenceIndex = frame % FrameSequence.Length;
-            return FrameSequence[sequenceIndex];
-        }
+        // The epsilon keeps the exact start time of a frame on that frame:
+        // k * FrameDurationMs / FrameDurationMs can come out a hair below k.
+        int frame = (int)(msTime / FrameDurationMs + 1e-9);
 
         return Math.Min(frame, TotalFrames - 1);
     }
@@ -282,15 +277,21 @@ public partial class SkiaSprite : AnimatedFramesRenderer
     /// </summary>
     protected override void ApplySpeed()
     {
-        if (SpriteSheet == null)
+        if (SpriteSheet == null || Animator == null)
             return;
 
-        var speed = 1.0;
-        if (SpeedRatio < 1)
-            speed = DurationMs * (1 + SpeedRatio);
-        else
-            speed = DurationMs / SpeedRatio;
-        Animator.Speed = speed;
+        Animator.Speed = GetPlaybackDurationMs(DurationMs);
+    }
+
+    /// <summary>
+    /// Shows DefaultFrame (a frame index, -1 = last) when not playing
+    /// </summary>
+    protected override void ApplyDefaultFrame()
+    {
+        if (!IsPlaying)
+        {
+            SetCurrentFrame(DefaultFrame);
+        }
     }
 
     /// <summary>
@@ -566,6 +567,16 @@ public partial class SkiaSprite : AnimatedFramesRenderer
 
         _lastColumns=Columns;
         _lastRows = Rows;
+
+        if (Animator != null)
+        {
+            // FramesPerSecond, FrameSequence, MaxFrames or the grid changed after loading:
+            // keep the animator range and the shown frame in step with the new frames
+            ApplySpeed();
+            Animator.mMaxValue = DurationMs;
+            Animator.Distance = DurationMs;
+            SetCurrentFrame(CurrentFrame);
+        }
     }
 
     private bool isSettingFrame;
@@ -573,7 +584,7 @@ public partial class SkiaSprite : AnimatedFramesRenderer
     /// <summary>
     /// Sets the current frame and updates the display
     /// </summary>
-    /// <param name="frameNumber">Frame number to display</param>
+    /// <param name="frameNumber">Frame index to display (position in FrameSequence when one is set), negative = last frame</param>
     protected void SetCurrentFrame(int frameNumber)
     {
         if (SpriteSheet == null || TotalFrames == 0 || isSettingFrame) return;
@@ -582,7 +593,10 @@ public partial class SkiaSprite : AnimatedFramesRenderer
 
         try
         {
-            frameNumber = Math.Max(0, Math.Min(frameNumber, TotalFrames - 1));
+            if (frameNumber < 0 || frameNumber >= TotalFrames)
+            {
+                frameNumber = TotalFrames - 1;
+            }
 
             // If using a frame sequence, convert to actual spritesheet frame
             int actualFrame;
@@ -931,10 +945,16 @@ public partial class SkiaSprite : AnimatedFramesRenderer
         typeof(int),
         typeof(SkiaSprite),
         0,
-        propertyChanged: NeedDraw);
+        propertyChanged: (b, o, n) =>
+        {
+            var sprite = (SkiaSprite)b;
+            sprite.SetCurrentFrame((int)n); // no-op when SetCurrentFrame itself is setting it
+            sprite.Update();
+        });
 
     /// <summary>
-    /// Current frame being displayed
+    /// Frame index being displayed (position in FrameSequence when one is set). Set it to show that frame,
+    /// -1 shows the last one. While playing, the next animation frame replaces it.
     /// </summary>
     public int CurrentFrame
     {
