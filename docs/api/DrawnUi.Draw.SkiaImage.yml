@@ -50,6 +50,7 @@ items:
   - DrawnUi.Draw.SkiaImage.Error
   - DrawnUi.Draw.SkiaImage.Gamma
   - DrawnUi.Draw.SkiaImage.GammaProperty
+  - DrawnUi.Draw.SkiaImage.GetDrawnSize(DrawnUi.Draw.LoadedImageSource)
   - DrawnUi.Draw.SkiaImage.GetRenderedSource
   - DrawnUi.Draw.SkiaImage.HasError
   - DrawnUi.Draw.SkiaImage.HasUnstableSize
@@ -226,6 +227,7 @@ items:
   - DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
   - DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
   - DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
+  - DrawnUi.Draw.SkiaControl.LastCompositeRecord
   - DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.CacheSharingProperty
   - DrawnUi.Draw.SkiaControl.CacheSharing
@@ -247,6 +249,7 @@ items:
   - DrawnUi.Draw.SkiaControl.CreateRenderedObject(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean)
   - DrawnUi.Draw.SkiaControl.RasterizeToCache(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.CheckCachedObjectValid(DrawnUi.Draw.CachedObject,SkiaSharp.SKRect,DrawnUi.Draw.SkiaDrawingContext)
+  - DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
   - DrawnUi.Draw.SkiaControl.IsCacheGPU
   - DrawnUi.Draw.SkiaControl.UsingCacheType
   - DrawnUi.Draw.SkiaControl.IsCacheComposite
@@ -636,6 +639,8 @@ items:
   - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
   - DrawnUi.Draw.SkiaControl.OnAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.SkiaControl.OnAccessibilityKey(DrawnUi.Draw.InputKey)
+  - DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+  - DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
   - DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   - DrawnUi.Draw.SkiaControl.AcceptsInput
   - DrawnUi.Draw.SkiaControl.NotifyAccessibility
@@ -671,9 +676,9 @@ items:
   - DrawnUi.Draw.SkiaControl.MeasureAbsolute(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaControl.MeasureAbsoluteBase(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single)
-  - DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  - DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  - DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  - DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  - DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   - DrawnUi.Draw.SkiaControl.GetDrawingRectForChildren(SkiaSharp.SKRect,System.Double)
   - DrawnUi.Draw.SkiaControl.GetDrawingRectWithMargins(SkiaSharp.SKRect,System.Double)
   - DrawnUi.Draw.SkiaControl.lockMeasured
@@ -1389,7 +1394,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CancelLoading
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 146
+    startLine: 147
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1416,7 +1421,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadedSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 148
+    startLine: 149
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1445,7 +1450,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LogEnabled
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 161
+    startLine: 162
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1472,7 +1477,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseAssemblyProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 177
+    startLine: 178
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1499,10 +1504,19 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseAssembly
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 183
+    startLine: 197
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    An <xref href="System.Reflection.Assembly" data-throw-if-not-resolved="false"></xref> or an assembly name. When set, a plain file path in
+
+    <xref href="DrawnUi.Draw.SkiaImage.Source" data-throw-if-not-resolved="false"></xref> ("Images/logo.png") loads as an embedded resource of that assembly
+
+    ("AssemblyName.Images.logo.png"), the same way as "resource://Images.logo.png?assembly=AssemblyName".
+
+    Urls and resource:// sources are not affected. Set it before Source, else the image loads again.
+  example: []
   syntax:
     content: public object UseAssembly { get; set; }
     parameters: []
@@ -1528,7 +1542,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AspectProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 189
+    startLine: 203
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1555,7 +1569,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Aspect
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 199
+    startLine: 213
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1586,7 +1600,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalAlignmentProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 205
+    startLine: 219
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1613,7 +1627,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalAlignment
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 212
+    startLine: 226
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1642,7 +1656,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalAlignmentProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 218
+    startLine: 232
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1669,7 +1683,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalAlignment
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 225
+    startLine: 239
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1698,7 +1712,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SourceProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 260
+    startLine: 274
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1725,7 +1739,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Source
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 266
+    startLine: 280
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1766,7 +1780,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ImageBitmapProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 274
+    startLine: 288
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1793,7 +1807,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ImageBitmap
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 284
+    startLine: 298
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1824,7 +1838,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadSourceOnFirstDrawProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 290
+    startLine: 304
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1851,7 +1865,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadSourceOnFirstDraw
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 304
+    startLine: 318
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1891,7 +1905,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RescalingQualityProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 310
+    startLine: 324
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1918,7 +1932,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RescalingQuality
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 320
+    startLine: 334
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1949,7 +1963,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CacheRescaledSourceProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 326
+    startLine: 340
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1976,7 +1990,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CacheRescaledSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 335
+    startLine: 349
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2007,7 +2021,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RescaleSourceProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 341
+    startLine: 355
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2034,7 +2048,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RescaleSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 351
+    startLine: 365
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2065,7 +2079,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreviewBase64Property
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 365
+    startLine: 379
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2092,7 +2106,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreviewBase64
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 372
+    startLine: 386
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2123,7 +2137,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWillDisposeWithChildren
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 378
+    startLine: 392
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2155,7 +2169,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 389
+    startLine: 403
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2187,7 +2201,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 395
+    startLine: 409
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2216,7 +2230,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 405
+    startLine: 419
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2248,7 +2262,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFromBase64
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 429
+    startLine: 443
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2280,7 +2294,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyNewSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 451
+    startLine: 465
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2309,7 +2323,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetBitmapInternal
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 470
+    startLine: 484
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2351,7 +2365,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetImageInternal
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 479
+    startLine: 493
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2387,7 +2401,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsLoading
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 490
+    startLine: 504
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2416,7 +2430,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 503
+    startLine: 517
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2445,7 +2459,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StopLoading
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 505
+    startLine: 519
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2471,7 +2485,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReloadSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 511
+    startLine: 525
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2497,7 +2511,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Cleared
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 517
+    startLine: 531
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2524,7 +2538,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadImageManagedAsync
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 519
+    startLine: 533
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2559,7 +2573,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadLocalFileSync
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 529
+    startLine: 543
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2600,7 +2614,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetImageSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 535
+    startLine: 549
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2629,7 +2643,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 766
+    startLine: 798
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2660,7 +2674,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ImageSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 768
+    startLine: 800
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2689,7 +2703,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddEffectProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 788
+    startLine: 820
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2716,7 +2730,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddEffect
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 795
+    startLine: 827
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2745,7 +2759,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorTintProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 801
+    startLine: 833
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2772,7 +2786,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorTint
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 808
+    startLine: 840
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2801,7 +2815,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZoomXProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 814
+    startLine: 846
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2828,7 +2842,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZoomX
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 821
+    startLine: 853
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2857,7 +2871,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZoomYProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 827
+    startLine: 859
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2884,7 +2898,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZoomY
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 834
+    startLine: 866
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2913,7 +2927,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DarkenProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 840
+    startLine: 872
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2940,7 +2954,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Darken
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 847
+    startLine: 879
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2969,7 +2983,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LightenProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 853
+    startLine: 885
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2996,7 +3010,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Lighten
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 860
+    startLine: 892
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3025,7 +3039,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContrastProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 866
+    startLine: 898
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3052,7 +3066,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Contrast
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 873
+    startLine: 905
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3081,7 +3095,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BrightnessProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 879
+    startLine: 911
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3108,7 +3122,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Brightness
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 886
+    startLine: 918
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3137,7 +3151,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GammaProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 892
+    startLine: 924
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3164,7 +3178,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Gamma
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 899
+    startLine: 931
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3193,7 +3207,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BlurProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 905
+    startLine: 937
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3220,7 +3234,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Blur
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 912
+    startLine: 944
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3249,7 +3263,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SaturationProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 918
+    startLine: 950
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3276,7 +3290,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Saturation
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 925
+    startLine: 957
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3305,7 +3319,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InflateAmountProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 931
+    startLine: 963
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3332,7 +3346,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InflateAmount
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 938
+    startLine: 970
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3361,7 +3375,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseGradientProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 944
+    startLine: 976
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3388,10 +3402,15 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseGradient
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 951
+    startLine: 996
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    Colors the image with a vertical gradient from <xref href="DrawnUi.Draw.SkiaImage.StartColor" data-throw-if-not-resolved="false"></xref> (top) to <xref href="DrawnUi.Draw.SkiaImage.EndColor" data-throw-if-not-resolved="false"></xref> (bottom),
+
+    keeping the image alpha as the mask: the icon tint case. The gradient spans the visible part of the image.
+  example: []
   syntax:
     content: public bool UseGradient { get; set; }
     parameters: []
@@ -3417,7 +3436,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EraseChangedContentProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 957
+    startLine: 1002
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3444,7 +3463,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EraseChangedContent
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 968
+    startLine: 1013
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3475,7 +3494,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartColorProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 974
+    startLine: 1019
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3502,10 +3521,12 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartColor
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 981
+    startLine: 1029
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: Top color of the <xref href="DrawnUi.Draw.SkiaImage.UseGradient" data-throw-if-not-resolved="false"></xref> gradient.
+  example: []
   syntax:
     content: public Color StartColor { get; set; }
     parameters: []
@@ -3531,7 +3552,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EndColorProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 987
+    startLine: 1035
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3558,10 +3579,12 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EndColor
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 994
+    startLine: 1045
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: Bottom color of the <xref href="DrawnUi.Draw.SkiaImage.UseGradient" data-throw-if-not-resolved="false"></xref> gradient.
+  example: []
   syntax:
     content: public Color EndColor { get; set; }
     parameters: []
@@ -3587,7 +3610,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EffectBlendModeProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1000
+    startLine: 1051
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3614,7 +3637,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EffectBlendMode
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1007
+    startLine: 1058
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3643,7 +3666,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalOffsetProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1013
+    startLine: 1064
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3670,7 +3693,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalOffset
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1020
+    startLine: 1071
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3699,7 +3722,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalOffsetProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1026
+    startLine: 1077
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3726,7 +3749,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalOffset
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1033
+    startLine: 1084
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3755,7 +3778,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawWhenEmptyProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1039
+    startLine: 1090
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3782,7 +3805,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawWhenEmpty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1044
+    startLine: 1095
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3811,7 +3834,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpriteHeightProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1050
+    startLine: 1117
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3838,10 +3861,15 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpriteHeight
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1056
+    startLine: 1128
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    Height of one sprite sheet cell in source pixels. With <xref href="DrawnUi.Draw.SkiaImage.SpriteWidth" data-throw-if-not-resolved="false"></xref> above 0 the image shows
+
+    only the cell picked by <xref href="DrawnUi.Draw.SkiaImage.SpriteIndex" data-throw-if-not-resolved="false"></xref>, laid out by Aspect and alignment as if it were the whole image.
+  example: []
   syntax:
     content: public double SpriteHeight { get; set; }
     parameters: []
@@ -3867,7 +3895,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpriteWidthProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1062
+    startLine: 1134
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3894,10 +3922,12 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpriteWidth
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1068
+    startLine: 1144
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: Width of one sprite sheet cell in source pixels, see <xref href="DrawnUi.Draw.SkiaImage.SpriteHeight" data-throw-if-not-resolved="false"></xref>.
+  example: []
   syntax:
     content: public double SpriteWidth { get; set; }
     parameters: []
@@ -3923,7 +3953,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpriteIndexProperty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1074
+    startLine: 1150
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3950,10 +3980,17 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpriteIndex
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1080
+    startLine: 1162
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    Sprite sheet cell to draw when <xref href="DrawnUi.Draw.SkiaImage.SpriteWidth" data-throw-if-not-resolved="false"></xref> and <xref href="DrawnUi.Draw.SkiaImage.SpriteHeight" data-throw-if-not-resolved="false"></xref> are set. Cells are
+
+    numbered from 0, left to right then top to bottom; partial cells at the right and bottom edges do not count.
+
+    An index outside the sheet (the default -1 included) draws nothing.
+  example: []
   syntax:
     content: public int SpriteIndex { get; set; }
     parameters: []
@@ -3979,7 +4016,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanDraw
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1088
+    startLine: 1170
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4010,7 +4047,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClearBitmap
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1103
+    startLine: 1185
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4036,7 +4073,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnError
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1109
+    startLine: 1191
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4068,7 +4105,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSuccess
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1115
+    startLine: 1197
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4100,7 +4137,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SubscribeToCanReload
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1121
+    startLine: 1203
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4126,7 +4163,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasError
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1132
+    startLine: 1214
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4155,7 +4192,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Error
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1143
+    startLine: 1225
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4182,7 +4219,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Success
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1144
+    startLine: 1226
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4209,7 +4246,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ImagePaint
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1151
+    startLine: 1233
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4238,7 +4275,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintImageFilter
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1156
+    startLine: 1238
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4267,7 +4304,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintColorFilter
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1165
+    startLine: 1247
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4296,7 +4333,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedInvalidateImageFilter
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1168
+    startLine: 1250
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4325,7 +4362,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateImageFilter
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1170
+    startLine: 1252
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4351,7 +4388,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedInvalidateColorFilter
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1175
+    startLine: 1257
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4380,7 +4417,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateColorFilter
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1177
+    startLine: 1259
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4406,7 +4443,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Paint
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1182
+    startLine: 1264
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4444,7 +4481,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClipSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1302
+    startLine: 1387
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4471,7 +4508,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadSourceIfNeeded
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1308
+    startLine: 1393
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4497,7 +4534,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Invalidate
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1321
+    startLine: 1406
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4526,7 +4563,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SwapSources
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1332
+    startLine: 1417
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4563,7 +4600,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1380
+    startLine: 1466
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4594,7 +4631,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1392
+    startLine: 1478
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4623,7 +4660,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1402
+    startLine: 1489
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4652,7 +4689,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AspectScale
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1422
+    startLine: 1511
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4681,7 +4718,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScaledSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1424
+    startLine: 1513
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4710,7 +4747,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawSourceBitmap
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1461
+    startLine: 1550
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4747,7 +4784,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawSourceImage
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1473
+    startLine: 1562
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4784,7 +4821,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawSource
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1488
+    startLine: 1577
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4807,6 +4844,42 @@ items:
       type: SkiaSharp.SKPaint
     content.vb: Protected Overridable Sub DrawSource(ctx As DrawingContext, source As LoadedImageSource, stretch As TransformAspect, horizontal As DrawImageAlignment = DrawImageAlignment.Center, vertical As DrawImageAlignment = DrawImageAlignment.Center, paint As SKPaint = Nothing)
   overload: DrawnUi.Draw.SkiaImage.DrawSource*
+- uid: DrawnUi.Draw.SkiaImage.GetDrawnSize(DrawnUi.Draw.LoadedImageSource)
+  commentId: M:DrawnUi.Draw.SkiaImage.GetDrawnSize(DrawnUi.Draw.LoadedImageSource)
+  id: GetDrawnSize(DrawnUi.Draw.LoadedImageSource)
+  parent: DrawnUi.Draw.SkiaImage
+  langs:
+  - csharp
+  - vb
+  name: GetDrawnSize(LoadedImageSource)
+  nameWithType: SkiaImage.GetDrawnSize(LoadedImageSource)
+  fullName: DrawnUi.Draw.SkiaImage.GetDrawnSize(DrawnUi.Draw.LoadedImageSource)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GetDrawnSize
+    path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
+    startLine: 1709
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Pixel size of what is drawn: the sprite cell when <xref href="DrawnUi.Draw.SkiaImage.SpriteWidth" data-throw-if-not-resolved="false"></xref> and <xref href="DrawnUi.Draw.SkiaImage.SpriteHeight" data-throw-if-not-resolved="false"></xref>
+
+    are set, else the whole source. Aspect, alignment and auto-size all work from this size.
+  example: []
+  syntax:
+    content: protected SKSizeI GetDrawnSize(LoadedImageSource source)
+    parameters:
+    - id: source
+      type: DrawnUi.Draw.LoadedImageSource
+    return:
+      type: SkiaSharp.SKSizeI
+    content.vb: Protected Function GetDrawnSize(source As LoadedImageSource) As SKSizeI
+  overload: DrawnUi.Draw.SkiaImage.GetDrawnSize*
 - uid: DrawnUi.Draw.SkiaImage.DisplayRect
   commentId: P:DrawnUi.Draw.SkiaImage.DisplayRect
   id: DisplayRect
@@ -4825,7 +4898,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisplayRect
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1610
+    startLine: 1878
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4854,7 +4927,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisplayRectChanged
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1623
+    startLine: 1891
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4881,7 +4954,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextureScale
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1625
+    startLine: 1893
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4910,7 +4983,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SourceImageSize
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1626
+    startLine: 1894
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4939,7 +5012,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetAspectScale
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1628
+    startLine: 1896
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4979,7 +5052,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetMeasuredAsEmpty
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1640
+    startLine: 1908
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5015,7 +5088,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AvoidRemeasuring
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1661
+    startLine: 1929
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5048,7 +5121,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMeasuring
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1666
+    startLine: 1934
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5090,7 +5163,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateInternal
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1785
+    startLine: 2055
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5119,7 +5192,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SourceWidth
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1797
+    startLine: 2067
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5150,7 +5223,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SourceHeight
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1802
+    startLine: 2072
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5181,7 +5254,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateDisplayRect
     path: ../src/Shared/DrawnUi/Draw/Images/SkiaImage.cs
-    startLine: 1804
+    startLine: 2074
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6110,6 +6183,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CancelOffscreenRendering
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.LastCompositeRecord
+  commentId: P:DrawnUi.Draw.SkiaControl.LastCompositeRecord
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_LastCompositeRecord
+  name: LastCompositeRecord
+  nameWithType: SkiaControl.LastCompositeRecord
+  fullName: DrawnUi.Draw.SkiaControl.LastCompositeRecord
 - uid: DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaControl
@@ -6572,6 +6652,13 @@ references:
     name: SkiaDrawingContext
     href: DrawnUi.Draw.SkiaDrawingContext.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
+  commentId: P:DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_PaintsLiveInOffscreenBake
+  name: PaintsLiveInOffscreenBake
+  nameWithType: SkiaControl.PaintsLiveInOffscreenBake
+  fullName: DrawnUi.Draw.SkiaControl.PaintsLiveInOffscreenBake
 - uid: DrawnUi.Draw.SkiaControl.IsCacheGPU
   commentId: P:DrawnUi.Draw.SkiaControl.IsCacheGPU
   parent: DrawnUi.Draw.SkiaControl
@@ -14354,6 +14441,56 @@ references:
     name: InputKey
     href: DrawnUi.Draw.InputKey.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+  commentId: M:DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityValue
+  name: GetAccessibilityValue()
+  nameWithType: SkiaControl.GetAccessibilityValue()
+  fullName: DrawnUi.Draw.SkiaControl.GetAccessibilityValue()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+    name: GetAccessibilityValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityValue
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetAccessibilityValue
+    name: GetAccessibilityValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetAccessibilityValue
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilitySetValue_System_Double_
+  name: OnAccessibilitySetValue(double)
+  nameWithType: SkiaControl.OnAccessibilitySetValue(double)
+  fullName: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(double)
+  nameWithType.vb: SkiaControl.OnAccessibilitySetValue(Double)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(Double)
+  name.vb: OnAccessibilitySetValue(Double)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+    name: OnAccessibilitySetValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilitySetValue_System_Double_
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
+    name: OnAccessibilitySetValue
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnAccessibilitySetValue_System_Double_
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   commentId: M:DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
   parent: DrawnUi.Draw.SkiaControl
@@ -15655,21 +15792,21 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
-  name: ContractPixelsRect(SKRect, float, Thickness)
-  nameWithType: SkiaControl.ContractPixelsRect(SKRect, float, Thickness)
-  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect, float, Microsoft.Maui.Thickness)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
+  name: ContractPixelsRect(SKRect, float, in Thickness)
+  nameWithType: SkiaControl.ContractPixelsRect(SKRect, float, in Thickness)
+  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect, float, in Microsoft.Maui.Thickness)
   nameWithType.vb: SkiaControl.ContractPixelsRect(SKRect, Single, Thickness)
   fullName.vb: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect, Single, Microsoft.Maui.Thickness)
   name.vb: ContractPixelsRect(SKRect, Single, Thickness)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -15683,15 +15820,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: ','
   - name: " "
+  - name: in
+  - name: " "
   - uid: Microsoft.Maui.Thickness
     name: Thickness
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -15710,21 +15849,21 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+- uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  commentId: M:DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
-  name: ContractPixelsRectForContent(SKRect, float, Thickness)
-  nameWithType: SkiaControl.ContractPixelsRectForContent(SKRect, float, Thickness)
-  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect, float, Microsoft.Maui.Thickness)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
+  name: ContractPixelsRectForContent(SKRect, float, in Thickness)
+  nameWithType: SkiaControl.ContractPixelsRectForContent(SKRect, float, in Thickness)
+  fullName: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect, float, in Microsoft.Maui.Thickness)
   nameWithType.vb: SkiaControl.ContractPixelsRectForContent(SKRect, Single, Thickness)
   fullName.vb: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect, Single, Microsoft.Maui.Thickness)
   name.vb: ContractPixelsRectForContent(SKRect, Single, Thickness)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRectForContent
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -15738,15 +15877,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: ','
   - name: " "
+  - name: in
+  - name: " "
   - uid: Microsoft.Maui.Thickness
     name: Thickness
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ContractPixelsRectForContent(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ContractPixelsRectForContent
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ContractPixelsRectForContent_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -15765,21 +15906,21 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
-  commentId: M:DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+- uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
+  commentId: M:DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
   parent: DrawnUi.Draw.SkiaControl
   isExternal: true
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
-  name: ExpandPixelsRect(SKRect, float, Thickness)
-  nameWithType: SkiaControl.ExpandPixelsRect(SKRect, float, Thickness)
-  fullName: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect, float, Microsoft.Maui.Thickness)
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
+  name: ExpandPixelsRect(SKRect, float, in Thickness)
+  nameWithType: SkiaControl.ExpandPixelsRect(SKRect, float, in Thickness)
+  fullName: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect, float, in Microsoft.Maui.Thickness)
   nameWithType.vb: SkiaControl.ExpandPixelsRect(SKRect, Single, Thickness)
   fullName.vb: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect, Single, Microsoft.Maui.Thickness)
   name.vb: ExpandPixelsRect(SKRect, Single, Thickness)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ExpandPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -15793,15 +15934,17 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: ','
   - name: " "
+  - name: in
+  - name: " "
   - uid: Microsoft.Maui.Thickness
     name: Thickness
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.thickness
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness)
+  - uid: DrawnUi.Draw.SkiaControl.ExpandPixelsRect(SkiaSharp.SKRect,System.Single,Microsoft.Maui.Thickness@)
     name: ExpandPixelsRect
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness_
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ExpandPixelsRect_SkiaSharp_SKRect_System_Single_Microsoft_Maui_Thickness__
   - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
@@ -38711,12 +38854,54 @@ references:
   name: BindableProperty
   nameWithType: BindableProperty
   fullName: Microsoft.Maui.Controls.BindableProperty
+- uid: System.Reflection.Assembly
+  commentId: T:System.Reflection.Assembly
+  parent: System.Reflection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly
+  name: Assembly
+  nameWithType: Assembly
+  fullName: System.Reflection.Assembly
+- uid: DrawnUi.Draw.SkiaImage.Source
+  commentId: P:DrawnUi.Draw.SkiaImage.Source
+  parent: DrawnUi.Draw.SkiaImage
+  href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_Source
+  name: Source
+  nameWithType: SkiaImage.Source
+  fullName: DrawnUi.Draw.SkiaImage.Source
 - uid: DrawnUi.Draw.SkiaImage.UseAssembly*
   commentId: Overload:DrawnUi.Draw.SkiaImage.UseAssembly
   href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_UseAssembly
   name: UseAssembly
   nameWithType: SkiaImage.UseAssembly
   fullName: DrawnUi.Draw.SkiaImage.UseAssembly
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Reflection
+    name: Reflection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Reflection
+    name: Reflection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection
 - uid: DrawnUi.Draw.SkiaImage.Aspect*
   commentId: Overload:DrawnUi.Draw.SkiaImage.Aspect
   href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_Aspect
@@ -39284,6 +39469,20 @@ references:
   name: InflateAmount
   nameWithType: SkiaImage.InflateAmount
   fullName: DrawnUi.Draw.SkiaImage.InflateAmount
+- uid: DrawnUi.Draw.SkiaImage.StartColor
+  commentId: P:DrawnUi.Draw.SkiaImage.StartColor
+  parent: DrawnUi.Draw.SkiaImage
+  href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_StartColor
+  name: StartColor
+  nameWithType: SkiaImage.StartColor
+  fullName: DrawnUi.Draw.SkiaImage.StartColor
+- uid: DrawnUi.Draw.SkiaImage.EndColor
+  commentId: P:DrawnUi.Draw.SkiaImage.EndColor
+  parent: DrawnUi.Draw.SkiaImage
+  href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_EndColor
+  name: EndColor
+  nameWithType: SkiaImage.EndColor
+  fullName: DrawnUi.Draw.SkiaImage.EndColor
 - uid: DrawnUi.Draw.SkiaImage.UseGradient*
   commentId: Overload:DrawnUi.Draw.SkiaImage.UseGradient
   href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_UseGradient
@@ -39296,6 +39495,13 @@ references:
   name: EraseChangedContent
   nameWithType: SkiaImage.EraseChangedContent
   fullName: DrawnUi.Draw.SkiaImage.EraseChangedContent
+- uid: DrawnUi.Draw.SkiaImage.UseGradient
+  commentId: P:DrawnUi.Draw.SkiaImage.UseGradient
+  parent: DrawnUi.Draw.SkiaImage
+  href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_UseGradient
+  name: UseGradient
+  nameWithType: SkiaImage.UseGradient
+  fullName: DrawnUi.Draw.SkiaImage.UseGradient
 - uid: DrawnUi.Draw.SkiaImage.StartColor*
   commentId: Overload:DrawnUi.Draw.SkiaImage.StartColor
   href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_StartColor
@@ -39340,8 +39546,29 @@ references:
   name: DrawWhenEmpty
   nameWithType: SkiaImage.DrawWhenEmpty
   fullName: DrawnUi.Draw.SkiaImage.DrawWhenEmpty
+- uid: DrawnUi.Draw.SkiaImage.SpriteWidth
+  commentId: P:DrawnUi.Draw.SkiaImage.SpriteWidth
+  parent: DrawnUi.Draw.SkiaImage
+  href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_SpriteWidth
+  name: SpriteWidth
+  nameWithType: SkiaImage.SpriteWidth
+  fullName: DrawnUi.Draw.SkiaImage.SpriteWidth
+- uid: DrawnUi.Draw.SkiaImage.SpriteIndex
+  commentId: P:DrawnUi.Draw.SkiaImage.SpriteIndex
+  parent: DrawnUi.Draw.SkiaImage
+  href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_SpriteIndex
+  name: SpriteIndex
+  nameWithType: SkiaImage.SpriteIndex
+  fullName: DrawnUi.Draw.SkiaImage.SpriteIndex
 - uid: DrawnUi.Draw.SkiaImage.SpriteHeight*
   commentId: Overload:DrawnUi.Draw.SkiaImage.SpriteHeight
+  href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_SpriteHeight
+  name: SpriteHeight
+  nameWithType: SkiaImage.SpriteHeight
+  fullName: DrawnUi.Draw.SkiaImage.SpriteHeight
+- uid: DrawnUi.Draw.SkiaImage.SpriteHeight
+  commentId: P:DrawnUi.Draw.SkiaImage.SpriteHeight
+  parent: DrawnUi.Draw.SkiaImage
   href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_SpriteHeight
   name: SpriteHeight
   nameWithType: SkiaImage.SpriteHeight
@@ -39757,6 +39984,20 @@ references:
   name: DrawSource
   nameWithType: SkiaImage.DrawSource
   fullName: DrawnUi.Draw.SkiaImage.DrawSource
+- uid: DrawnUi.Draw.SkiaImage.GetDrawnSize*
+  commentId: Overload:DrawnUi.Draw.SkiaImage.GetDrawnSize
+  href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_GetDrawnSize_DrawnUi_Draw_LoadedImageSource_
+  name: GetDrawnSize
+  nameWithType: SkiaImage.GetDrawnSize
+  fullName: DrawnUi.Draw.SkiaImage.GetDrawnSize
+- uid: SkiaSharp.SKSizeI
+  commentId: T:SkiaSharp.SKSizeI
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.sksizei
+  name: SKSizeI
+  nameWithType: SKSizeI
+  fullName: SkiaSharp.SKSizeI
 - uid: DrawnUi.Draw.SkiaImage.DisplayRect*
   commentId: Overload:DrawnUi.Draw.SkiaImage.DisplayRect
   href: DrawnUi.Draw.SkiaImage.html#DrawnUi_Draw_SkiaImage_DisplayRect

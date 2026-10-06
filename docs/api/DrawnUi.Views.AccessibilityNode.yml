@@ -12,8 +12,10 @@ items:
   - DrawnUi.Views.AccessibilityNode.IsPressed
   - DrawnUi.Views.AccessibilityNode.Label
   - DrawnUi.Views.AccessibilityNode.Live
+  - DrawnUi.Views.AccessibilityNode.NamedByChild
   - DrawnUi.Views.AccessibilityNode.Rect
   - DrawnUi.Views.AccessibilityNode.Role
+  - DrawnUi.Views.AccessibilityNode.Value
   langs:
   - csharp
   - vb
@@ -327,6 +329,71 @@ items:
       type: System.Int32
     content.vb: Public Property Id As Integer
   overload: DrawnUi.Views.AccessibilityNode.Id*
+- uid: DrawnUi.Views.AccessibilityNode.Value
+  commentId: P:DrawnUi.Views.AccessibilityNode.Value
+  id: Value
+  parent: DrawnUi.Views.AccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: AccessibilityNode.Value
+  fullName: DrawnUi.Views.AccessibilityNode.Value
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Value
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 13
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: The value of a range control (slider, progress bar), null for other nodes.
+  example: []
+  syntax:
+    content: public AccessibilityValue? Value { get; init; }
+    parameters: []
+    return:
+      type: System.Nullable{DrawnUi.Draw.AccessibilityValue}
+    content.vb: Public Property Value As AccessibilityValue?
+  overload: DrawnUi.Views.AccessibilityNode.Value*
+- uid: DrawnUi.Views.AccessibilityNode.NamedByChild
+  commentId: P:DrawnUi.Views.AccessibilityNode.NamedByChild
+  id: NamedByChild
+  parent: DrawnUi.Views.AccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: NamedByChild
+  nameWithType: AccessibilityNode.NamedByChild
+  fullName: DrawnUi.Views.AccessibilityNode.NamedByChild
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: NamedByChild
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 19
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    A title text inside says this node's name (a card and its title), so the node is not named again: a head reads
+
+    no name for it, also not the live <xref href="DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public bool NamedByChild { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property NamedByChild As Boolean
+  overload: DrawnUi.Views.AccessibilityNode.NamedByChild*
 references:
 - uid: DrawnUi.Views
   commentId: N:DrawnUi.Views
@@ -930,3 +997,40 @@ references:
   - uid: DrawnUi.Draw
     name: Draw
     href: DrawnUi.Draw.html
+- uid: DrawnUi.Views.AccessibilityNode.Value*
+  commentId: Overload:DrawnUi.Views.AccessibilityNode.Value
+  href: DrawnUi.Views.AccessibilityNode.html#DrawnUi_Views_AccessibilityNode_Value
+  name: Value
+  nameWithType: AccessibilityNode.Value
+  fullName: DrawnUi.Views.AccessibilityNode.Value
+- uid: System.Nullable{DrawnUi.Draw.AccessibilityValue}
+  commentId: T:System.Nullable{DrawnUi.Draw.AccessibilityValue}
+  parent: System
+  definition: System.Nullable`1
+  href: DrawnUi.Draw.AccessibilityValue.html
+  name: AccessibilityValue?
+  nameWithType: AccessibilityValue?
+  fullName: DrawnUi.Draw.AccessibilityValue?
+  spec.csharp:
+  - uid: DrawnUi.Draw.AccessibilityValue
+    name: AccessibilityValue
+    href: DrawnUi.Draw.AccessibilityValue.html
+  - name: '?'
+  spec.vb:
+  - uid: DrawnUi.Draw.AccessibilityValue
+    name: AccessibilityValue
+    href: DrawnUi.Draw.AccessibilityValue.html
+  - name: '?'
+- uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
+  commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
+  parent: DrawnUi.Draw.ISkiaAccessibilityNode
+  href: DrawnUi.Draw.ISkiaAccessibilityNode.html#DrawnUi_Draw_ISkiaAccessibilityNode_AccessibilityLabel
+  name: AccessibilityLabel
+  nameWithType: ISkiaAccessibilityNode.AccessibilityLabel
+  fullName: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
+- uid: DrawnUi.Views.AccessibilityNode.NamedByChild*
+  commentId: Overload:DrawnUi.Views.AccessibilityNode.NamedByChild
+  href: DrawnUi.Views.AccessibilityNode.html#DrawnUi_Views_AccessibilityNode_NamedByChild
+  name: NamedByChild
+  nameWithType: AccessibilityNode.NamedByChild
+  fullName: DrawnUi.Views.AccessibilityNode.NamedByChild

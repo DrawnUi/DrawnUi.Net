@@ -8,7 +8,9 @@ items:
   - DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.ConvertFrom(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object)
   - DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.ConvertTo(System.ComponentModel.ITypeDescriptorContext,System.Globalization.CultureInfo,System.Object,System.Type)
   - DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.ConvertToString(System.Object)
+  - DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromAssembly(System.String,System.Object)
   - DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromInvariantString(System.String)
+  - DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromResource(System.String,System.Reflection.Assembly,System.String)
   - DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromStream(System.Func{System.IO.Stream},System.String,System.String)
   - DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.StreamFromResourceUrl(System.String,System.Reflection.Assembly)
   langs:
@@ -154,6 +156,89 @@ items:
   nameWithType.vb: FrameworkImageSourceConverter.StreamFromResourceUrl(String, Assembly)
   fullName.vb: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.StreamFromResourceUrl(String, System.Reflection.Assembly)
   name.vb: StreamFromResourceUrl(String, Assembly)
+- uid: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromResource(System.String,System.Reflection.Assembly,System.String)
+  commentId: M:DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromResource(System.String,System.Reflection.Assembly,System.String)
+  id: FromResource(System.String,System.Reflection.Assembly,System.String)
+  parent: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter
+  langs:
+  - csharp
+  - vb
+  name: FromResource(string, Assembly, string)
+  nameWithType: FrameworkImageSourceConverter.FromResource(string, Assembly, string)
+  fullName: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromResource(string, System.Reflection.Assembly, string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Images/FrameworkImageSourceConverter.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: FromResource
+    path: ../src/Shared/DrawnUi/Draw/Images/FrameworkImageSourceConverter.cs
+    startLine: 45
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Infrastructure.Xaml
+  summary: Embedded resource "AssemblyName.resourceName" of <code class="paramref">assembly</code>; <code class="paramref">url</code> is the cache key.
+  example: []
+  syntax:
+    content: public static ImageSource FromResource(string resourceName, Assembly assembly, string url)
+    parameters:
+    - id: resourceName
+      type: System.String
+    - id: assembly
+      type: System.Reflection.Assembly
+    - id: url
+      type: System.String
+    return:
+      type: Microsoft.Maui.Controls.ImageSource
+    content.vb: Public Shared Function FromResource(resourceName As String, assembly As Assembly, url As String) As ImageSource
+  overload: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromResource*
+  nameWithType.vb: FrameworkImageSourceConverter.FromResource(String, Assembly, String)
+  fullName.vb: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromResource(String, System.Reflection.Assembly, String)
+  name.vb: FromResource(String, Assembly, String)
+- uid: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromAssembly(System.String,System.Object)
+  commentId: M:DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromAssembly(System.String,System.Object)
+  id: FromAssembly(System.String,System.Object)
+  parent: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter
+  langs:
+  - csharp
+  - vb
+  name: FromAssembly(string, object)
+  nameWithType: FrameworkImageSourceConverter.FromAssembly(string, object)
+  fullName: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromAssembly(string, object)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Images/FrameworkImageSourceConverter.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: FromAssembly
+    path: ../src/Shared/DrawnUi/Draw/Images/FrameworkImageSourceConverter.cs
+    startLine: 60
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Infrastructure.Xaml
+  summary: >-
+    Embedded resource for a plain file path, used by SkiaImage.UseAssembly: "Images/logo.png" in assembly "MyApp"
+
+    loads resource "MyApp.Images.logo.png", same as "resource://Images.logo.png?assembly=MyApp".
+  example: []
+  syntax:
+    content: public static ImageSource FromAssembly(string path, object assembly)
+    parameters:
+    - id: path
+      type: System.String
+      description: File path inside the project, folders separated by '/', '\' or '.'.
+    - id: assembly
+      type: System.Object
+      description: An <xref href="System.Reflection.Assembly" data-throw-if-not-resolved="false"></xref>, or an assembly name loaded with <xref href="System.Reflection.Assembly.Load(System.Reflection.AssemblyName)" data-throw-if-not-resolved="false"></xref>.
+    return:
+      type: Microsoft.Maui.Controls.ImageSource
+    content.vb: Public Shared Function FromAssembly(path As String, assembly As Object) As ImageSource
+  overload: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromAssembly*
+  nameWithType.vb: FrameworkImageSourceConverter.FromAssembly(String, Object)
+  fullName.vb: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromAssembly(String, Object)
+  name.vb: FromAssembly(String, Object)
 - uid: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromInvariantString(System.String)
   commentId: M:DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromInvariantString(System.String)
   id: FromInvariantString(System.String)
@@ -172,7 +257,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FromInvariantString
     path: ../src/Shared/DrawnUi/Draw/Images/FrameworkImageSourceConverter.cs
-    startLine: 46
+    startLine: 68
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure.Xaml
@@ -206,7 +291,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ConvertFrom
     path: ../src/Shared/DrawnUi/Draw/Images/FrameworkImageSourceConverter.cs
-    startLine: 80
+    startLine: 102
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure.Xaml
@@ -255,7 +340,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ConvertTo
     path: ../src/Shared/DrawnUi/Draw/Images/FrameworkImageSourceConverter.cs
-    startLine: 94
+    startLine: 116
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure.Xaml
@@ -310,7 +395,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ConvertToString
     path: ../src/Shared/DrawnUi/Draw/Images/FrameworkImageSourceConverter.cs
-    startLine: 100
+    startLine: 122
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure.Xaml
@@ -2176,6 +2261,47 @@ references:
     name: Reflection
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.reflection
+- uid: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromResource*
+  commentId: Overload:DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromResource
+  href: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.html#DrawnUi_Infrastructure_Xaml_FrameworkImageSourceConverter_FromResource_System_String_System_Reflection_Assembly_System_String_
+  name: FromResource
+  nameWithType: FrameworkImageSourceConverter.FromResource
+  fullName: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromResource
+- uid: System.Reflection.Assembly.Load(System.Reflection.AssemblyName)
+  commentId: M:System.Reflection.Assembly.Load(System.Reflection.AssemblyName)
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly.load#system-reflection-assembly-load(system-reflection-assemblyname)
+  name: Load(AssemblyName)
+  nameWithType: Assembly.Load(AssemblyName)
+  fullName: System.Reflection.Assembly.Load(System.Reflection.AssemblyName)
+  spec.csharp:
+  - uid: System.Reflection.Assembly.Load(System.Reflection.AssemblyName)
+    name: Load
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly.load#system-reflection-assembly-load(system-reflection-assemblyname)
+  - name: (
+  - uid: System.Reflection.AssemblyName
+    name: AssemblyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assemblyname
+  - name: )
+  spec.vb:
+  - uid: System.Reflection.Assembly.Load(System.Reflection.AssemblyName)
+    name: Load
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assembly.load#system-reflection-assembly-load(system-reflection-assemblyname)
+  - name: (
+  - uid: System.Reflection.AssemblyName
+    name: AssemblyName
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.reflection.assemblyname
+  - name: )
+- uid: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromAssembly*
+  commentId: Overload:DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromAssembly
+  href: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.html#DrawnUi_Infrastructure_Xaml_FrameworkImageSourceConverter_FromAssembly_System_String_System_Object_
+  name: FromAssembly
+  nameWithType: FrameworkImageSourceConverter.FromAssembly
+  fullName: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromAssembly
 - uid: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromInvariantString*
   commentId: Overload:DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.FromInvariantString
   href: DrawnUi.Infrastructure.Xaml.FrameworkImageSourceConverter.html#DrawnUi_Infrastructure_Xaml_FrameworkImageSourceConverter_FromInvariantString_System_String_

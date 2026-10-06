@@ -1,39 +1,47 @@
 ### YamlMime:ManagedReference
 items:
-- uid: DrawnUi.Draw.ScrollToPointOrder
-  commentId: T:DrawnUi.Draw.ScrollToPointOrder
-  id: ScrollToPointOrder
+- uid: DrawnUi.Draw.AccessibilityValue
+  commentId: T:DrawnUi.Draw.AccessibilityValue
+  id: AccessibilityValue
   parent: DrawnUi.Draw
   children:
-  - DrawnUi.Draw.ScrollToPointOrder.Animated
-  - DrawnUi.Draw.ScrollToPointOrder.IsValid
-  - DrawnUi.Draw.ScrollToPointOrder.Location
-  - DrawnUi.Draw.ScrollToPointOrder.MaxTimeSecs
-  - DrawnUi.Draw.ScrollToPointOrder.NotValid
-  - DrawnUi.Draw.ScrollToPointOrder.ToCoords(System.Single,System.Single,System.Boolean)
-  - DrawnUi.Draw.ScrollToPointOrder.ToCoords(System.Single,System.Single,System.Single)
-  - DrawnUi.Draw.ScrollToPointOrder.ToPoint(SkiaSharp.SKPoint,System.Boolean)
+  - DrawnUi.Draw.AccessibilityValue.#ctor(System.Double,System.Double,System.Double,System.Double,System.String,System.Boolean)
+  - DrawnUi.Draw.AccessibilityValue.Max
+  - DrawnUi.Draw.AccessibilityValue.Min
+  - DrawnUi.Draw.AccessibilityValue.Now
+  - DrawnUi.Draw.AccessibilityValue.Step
+  - DrawnUi.Draw.AccessibilityValue.Text
+  - DrawnUi.Draw.AccessibilityValue.Vertical
   langs:
   - csharp
   - vb
-  name: ScrollToPointOrder
-  nameWithType: ScrollToPointOrder
-  fullName: DrawnUi.Draw.ScrollToPointOrder
+  name: AccessibilityValue
+  nameWithType: AccessibilityValue
+  fullName: DrawnUi.Draw.AccessibilityValue
   type: Struct
   source:
     remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: ScrollToPointOrder
-    path: ../src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
+    id: AccessibilityValue
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
     startLine: 102
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    The value of a range control for screen readers: <code class="paramref">Now</code> between <code class="paramref">Min</code> and
+
+    <code class="paramref">Max</code>; <code class="paramref">Step</code> is one Increment / Decrement (0 for a read-only progress bar);
+
+    <code class="paramref">Text</code>, when set, is spoken instead of the number ("65%", "20 – 80").
+  example: []
   syntax:
-    content: public struct ScrollToPointOrder
-    content.vb: Public Structure ScrollToPointOrder
+    content: 'public readonly record struct AccessibilityValue : IEquatable<AccessibilityValue>'
+    content.vb: Public Structure AccessibilityValue Implements IEquatable(Of AccessibilityValue)
+  implements:
+  - System.IEquatable{DrawnUi.Draw.AccessibilityValue}
   inheritedMembers:
   - System.ValueType.Equals(System.Object)
   - System.ValueType.GetHashCode
@@ -43,263 +51,229 @@ items:
   - System.Object.ReferenceEquals(System.Object,System.Object)
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
-- uid: DrawnUi.Draw.ScrollToPointOrder.IsValid
-  commentId: P:DrawnUi.Draw.ScrollToPointOrder.IsValid
-  id: IsValid
-  parent: DrawnUi.Draw.ScrollToPointOrder
+- uid: DrawnUi.Draw.AccessibilityValue.#ctor(System.Double,System.Double,System.Double,System.Double,System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.AccessibilityValue.#ctor(System.Double,System.Double,System.Double,System.Double,System.String,System.Boolean)
+  id: '#ctor(System.Double,System.Double,System.Double,System.Double,System.String,System.Boolean)'
+  parent: DrawnUi.Draw.AccessibilityValue
   langs:
   - csharp
   - vb
-  name: IsValid
-  nameWithType: ScrollToPointOrder.IsValid
-  fullName: DrawnUi.Draw.ScrollToPointOrder.IsValid
-  type: Property
+  name: AccessibilityValue(double, double, double, double, string?, bool)
+  nameWithType: AccessibilityValue.AccessibilityValue(double, double, double, double, string?, bool)
+  fullName: DrawnUi.Draw.AccessibilityValue.AccessibilityValue(double, double, double, double, string?, bool)
+  type: Constructor
   source:
     remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: IsValid
-    path: ../src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-    startLine: 104
+    id: .ctor
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 102
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    The value of a range control for screen readers: <code class="paramref">Now</code> between <code class="paramref">Min</code> and
+
+    <code class="paramref">Max</code>; <code class="paramref">Step</code> is one Increment / Decrement (0 for a read-only progress bar);
+
+    <code class="paramref">Text</code>, when set, is spoken instead of the number ("65%", "20 – 80").
+  example: []
   syntax:
-    content: public bool IsValid { get; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: Public ReadOnly Property IsValid As Boolean
-  overload: DrawnUi.Draw.ScrollToPointOrder.IsValid*
-- uid: DrawnUi.Draw.ScrollToPointOrder.NotValid
-  commentId: P:DrawnUi.Draw.ScrollToPointOrder.NotValid
-  id: NotValid
-  parent: DrawnUi.Draw.ScrollToPointOrder
-  langs:
-  - csharp
-  - vb
-  name: NotValid
-  nameWithType: ScrollToPointOrder.NotValid
-  fullName: DrawnUi.Draw.ScrollToPointOrder.NotValid
-  type: Property
-  source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: NotValid
-    path: ../src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-    startLine: 112
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  syntax:
-    content: public static ScrollToPointOrder NotValid { get; }
-    parameters: []
-    return:
-      type: DrawnUi.Draw.ScrollToPointOrder
-    content.vb: Public Shared ReadOnly Property NotValid As ScrollToPointOrder
-  overload: DrawnUi.Draw.ScrollToPointOrder.NotValid*
-- uid: DrawnUi.Draw.ScrollToPointOrder.ToPoint(SkiaSharp.SKPoint,System.Boolean)
-  commentId: M:DrawnUi.Draw.ScrollToPointOrder.ToPoint(SkiaSharp.SKPoint,System.Boolean)
-  id: ToPoint(SkiaSharp.SKPoint,System.Boolean)
-  parent: DrawnUi.Draw.ScrollToPointOrder
-  langs:
-  - csharp
-  - vb
-  name: ToPoint(SKPoint, bool)
-  nameWithType: ScrollToPointOrder.ToPoint(SKPoint, bool)
-  fullName: DrawnUi.Draw.ScrollToPointOrder.ToPoint(SkiaSharp.SKPoint, bool)
-  type: Method
-  source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: ToPoint
-    path: ../src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-    startLine: 118
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  syntax:
-    content: public static ScrollToPointOrder ToPoint(SKPoint point, bool animated)
+    content: public AccessibilityValue(double Now, double Min, double Max, double Step, string? Text = null, bool Vertical = false)
     parameters:
-    - id: point
-      type: SkiaSharp.SKPoint
-    - id: animated
+    - id: Now
+      type: System.Double
+    - id: Min
+      type: System.Double
+    - id: Max
+      type: System.Double
+    - id: Step
+      type: System.Double
+    - id: Text
+      type: System.String
+    - id: Vertical
       type: System.Boolean
-    return:
-      type: DrawnUi.Draw.ScrollToPointOrder
-    content.vb: Public Shared Function ToPoint(point As SKPoint, animated As Boolean) As ScrollToPointOrder
-  overload: DrawnUi.Draw.ScrollToPointOrder.ToPoint*
-  nameWithType.vb: ScrollToPointOrder.ToPoint(SKPoint, Boolean)
-  fullName.vb: DrawnUi.Draw.ScrollToPointOrder.ToPoint(SkiaSharp.SKPoint, Boolean)
-  name.vb: ToPoint(SKPoint, Boolean)
-- uid: DrawnUi.Draw.ScrollToPointOrder.ToCoords(System.Single,System.Single,System.Boolean)
-  commentId: M:DrawnUi.Draw.ScrollToPointOrder.ToCoords(System.Single,System.Single,System.Boolean)
-  id: ToCoords(System.Single,System.Single,System.Boolean)
-  parent: DrawnUi.Draw.ScrollToPointOrder
+    content.vb: Public Sub New(Now As Double, Min As Double, Max As Double, [Step] As Double, Text As String = Nothing, Vertical As Boolean = False)
+  overload: DrawnUi.Draw.AccessibilityValue.#ctor*
+  nameWithType.vb: AccessibilityValue.New(Double, Double, Double, Double, String, Boolean)
+  fullName.vb: DrawnUi.Draw.AccessibilityValue.New(Double, Double, Double, Double, String, Boolean)
+  name.vb: New(Double, Double, Double, Double, String, Boolean)
+- uid: DrawnUi.Draw.AccessibilityValue.Now
+  commentId: P:DrawnUi.Draw.AccessibilityValue.Now
+  id: Now
+  parent: DrawnUi.Draw.AccessibilityValue
   langs:
   - csharp
   - vb
-  name: ToCoords(float, float, bool)
-  nameWithType: ScrollToPointOrder.ToCoords(float, float, bool)
-  fullName: DrawnUi.Draw.ScrollToPointOrder.ToCoords(float, float, bool)
-  type: Method
-  source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: ToCoords
-    path: ../src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-    startLine: 127
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  syntax:
-    content: public static ScrollToPointOrder ToCoords(float x, float y, bool animated)
-    parameters:
-    - id: x
-      type: System.Single
-    - id: y
-      type: System.Single
-    - id: animated
-      type: System.Boolean
-    return:
-      type: DrawnUi.Draw.ScrollToPointOrder
-    content.vb: Public Shared Function ToCoords(x As Single, y As Single, animated As Boolean) As ScrollToPointOrder
-  overload: DrawnUi.Draw.ScrollToPointOrder.ToCoords*
-  nameWithType.vb: ScrollToPointOrder.ToCoords(Single, Single, Boolean)
-  fullName.vb: DrawnUi.Draw.ScrollToPointOrder.ToCoords(Single, Single, Boolean)
-  name.vb: ToCoords(Single, Single, Boolean)
-- uid: DrawnUi.Draw.ScrollToPointOrder.ToCoords(System.Single,System.Single,System.Single)
-  commentId: M:DrawnUi.Draw.ScrollToPointOrder.ToCoords(System.Single,System.Single,System.Single)
-  id: ToCoords(System.Single,System.Single,System.Single)
-  parent: DrawnUi.Draw.ScrollToPointOrder
-  langs:
-  - csharp
-  - vb
-  name: ToCoords(float, float, float)
-  nameWithType: ScrollToPointOrder.ToCoords(float, float, float)
-  fullName: DrawnUi.Draw.ScrollToPointOrder.ToCoords(float, float, float)
-  type: Method
-  source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: ToCoords
-    path: ../src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-    startLine: 136
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  syntax:
-    content: public static ScrollToPointOrder ToCoords(float x, float y, float maxTimeSecs)
-    parameters:
-    - id: x
-      type: System.Single
-    - id: y
-      type: System.Single
-    - id: maxTimeSecs
-      type: System.Single
-    return:
-      type: DrawnUi.Draw.ScrollToPointOrder
-    content.vb: Public Shared Function ToCoords(x As Single, y As Single, maxTimeSecs As Single) As ScrollToPointOrder
-  overload: DrawnUi.Draw.ScrollToPointOrder.ToCoords*
-  nameWithType.vb: ScrollToPointOrder.ToCoords(Single, Single, Single)
-  fullName.vb: DrawnUi.Draw.ScrollToPointOrder.ToCoords(Single, Single, Single)
-  name.vb: ToCoords(Single, Single, Single)
-- uid: DrawnUi.Draw.ScrollToPointOrder.Animated
-  commentId: P:DrawnUi.Draw.ScrollToPointOrder.Animated
-  id: Animated
-  parent: DrawnUi.Draw.ScrollToPointOrder
-  langs:
-  - csharp
-  - vb
-  name: Animated
-  nameWithType: ScrollToPointOrder.Animated
-  fullName: DrawnUi.Draw.ScrollToPointOrder.Animated
+  name: Now
+  nameWithType: AccessibilityValue.Now
+  fullName: DrawnUi.Draw.AccessibilityValue.Now
   type: Property
   source:
     remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: Animated
-    path: ../src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-    startLine: 145
+    id: Now
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 102
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public bool Animated { readonly get; set; }
+    content: public double Now { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property Now As Double
+  overload: DrawnUi.Draw.AccessibilityValue.Now*
+- uid: DrawnUi.Draw.AccessibilityValue.Min
+  commentId: P:DrawnUi.Draw.AccessibilityValue.Min
+  id: Min
+  parent: DrawnUi.Draw.AccessibilityValue
+  langs:
+  - csharp
+  - vb
+  name: Min
+  nameWithType: AccessibilityValue.Min
+  fullName: DrawnUi.Draw.AccessibilityValue.Min
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Min
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 102
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public double Min { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property Min As Double
+  overload: DrawnUi.Draw.AccessibilityValue.Min*
+- uid: DrawnUi.Draw.AccessibilityValue.Max
+  commentId: P:DrawnUi.Draw.AccessibilityValue.Max
+  id: Max
+  parent: DrawnUi.Draw.AccessibilityValue
+  langs:
+  - csharp
+  - vb
+  name: Max
+  nameWithType: AccessibilityValue.Max
+  fullName: DrawnUi.Draw.AccessibilityValue.Max
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Max
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 102
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public double Max { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property Max As Double
+  overload: DrawnUi.Draw.AccessibilityValue.Max*
+- uid: DrawnUi.Draw.AccessibilityValue.Step
+  commentId: P:DrawnUi.Draw.AccessibilityValue.Step
+  id: Step
+  parent: DrawnUi.Draw.AccessibilityValue
+  langs:
+  - csharp
+  - vb
+  name: Step
+  nameWithType: AccessibilityValue.Step
+  fullName: DrawnUi.Draw.AccessibilityValue.Step
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Step
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 102
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public double Step { get; init; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Property [Step] As Double
+  overload: DrawnUi.Draw.AccessibilityValue.Step*
+- uid: DrawnUi.Draw.AccessibilityValue.Text
+  commentId: P:DrawnUi.Draw.AccessibilityValue.Text
+  id: Text
+  parent: DrawnUi.Draw.AccessibilityValue
+  langs:
+  - csharp
+  - vb
+  name: Text
+  nameWithType: AccessibilityValue.Text
+  fullName: DrawnUi.Draw.AccessibilityValue.Text
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Text
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 102
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public string? Text { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Text As String
+  overload: DrawnUi.Draw.AccessibilityValue.Text*
+- uid: DrawnUi.Draw.AccessibilityValue.Vertical
+  commentId: P:DrawnUi.Draw.AccessibilityValue.Vertical
+  id: Vertical
+  parent: DrawnUi.Draw.AccessibilityValue
+  langs:
+  - csharp
+  - vb
+  name: Vertical
+  nameWithType: AccessibilityValue.Vertical
+  fullName: DrawnUi.Draw.AccessibilityValue.Vertical
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Vertical
+    path: ../src/Shared/DrawnUi/Internals/Interfaces/ISkiaAccessibilityNode.cs
+    startLine: 102
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public bool Vertical { get; init; }
     parameters: []
     return:
       type: System.Boolean
-    content.vb: Public Property Animated As Boolean
-  overload: DrawnUi.Draw.ScrollToPointOrder.Animated*
-- uid: DrawnUi.Draw.ScrollToPointOrder.Location
-  commentId: P:DrawnUi.Draw.ScrollToPointOrder.Location
-  id: Location
-  parent: DrawnUi.Draw.ScrollToPointOrder
-  langs:
-  - csharp
-  - vb
-  name: Location
-  nameWithType: ScrollToPointOrder.Location
-  fullName: DrawnUi.Draw.ScrollToPointOrder.Location
-  type: Property
-  source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: Location
-    path: ../src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-    startLine: 146
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  syntax:
-    content: public SKPoint Location { readonly get; set; }
-    parameters: []
-    return:
-      type: SkiaSharp.SKPoint
-    content.vb: Public Property Location As SKPoint
-  overload: DrawnUi.Draw.ScrollToPointOrder.Location*
-- uid: DrawnUi.Draw.ScrollToPointOrder.MaxTimeSecs
-  commentId: P:DrawnUi.Draw.ScrollToPointOrder.MaxTimeSecs
-  id: MaxTimeSecs
-  parent: DrawnUi.Draw.ScrollToPointOrder
-  langs:
-  - csharp
-  - vb
-  name: MaxTimeSecs
-  nameWithType: ScrollToPointOrder.MaxTimeSecs
-  fullName: DrawnUi.Draw.ScrollToPointOrder.MaxTimeSecs
-  type: Property
-  source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: MaxTimeSecs
-    path: ../src/Shared/DrawnUi/Draw/Scroll/ScrollToIndexOrder.cs
-    startLine: 147
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  syntax:
-    content: public float MaxTimeSecs { readonly get; set; }
-    parameters: []
-    return:
-      type: System.Single
-    content.vb: Public Property MaxTimeSecs As Single
-  overload: DrawnUi.Draw.ScrollToPointOrder.MaxTimeSecs*
+    content.vb: Public Property Vertical As Boolean
+  overload: DrawnUi.Draw.AccessibilityValue.Vertical*
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -323,6 +297,39 @@ references:
   - uid: DrawnUi.Draw
     name: Draw
     href: DrawnUi.Draw.html
+- uid: System.IEquatable{DrawnUi.Draw.AccessibilityValue}
+  commentId: T:System.IEquatable{DrawnUi.Draw.AccessibilityValue}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<AccessibilityValue>
+  nameWithType: IEquatable<AccessibilityValue>
+  fullName: System.IEquatable<DrawnUi.Draw.AccessibilityValue>
+  nameWithType.vb: IEquatable(Of AccessibilityValue)
+  fullName.vb: System.IEquatable(Of DrawnUi.Draw.AccessibilityValue)
+  name.vb: IEquatable(Of AccessibilityValue)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: DrawnUi.Draw.AccessibilityValue
+    name: AccessibilityValue
+    href: DrawnUi.Draw.AccessibilityValue.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.AccessibilityValue
+    name: AccessibilityValue
+    href: DrawnUi.Draw.AccessibilityValue.html
+  - name: )
 - uid: System.ValueType.Equals(System.Object)
   commentId: M:System.ValueType.Equals(System.Object)
   parent: System.ValueType
@@ -545,6 +552,41 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.object
   - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
 - uid: System.ValueType
   commentId: T:System.ValueType
   parent: System
@@ -601,13 +643,6 @@ references:
   name: InternalExtensions
   nameWithType: InternalExtensions
   fullName: DrawnUi.Extensions.InternalExtensions
-- uid: System
-  commentId: N:System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System
-  nameWithType: System
-  fullName: System
 - uid: DrawnUi.Extensions
   commentId: N:DrawnUi.Extensions
   href: DrawnUi.html
@@ -630,12 +665,37 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
-- uid: DrawnUi.Draw.ScrollToPointOrder.IsValid*
-  commentId: Overload:DrawnUi.Draw.ScrollToPointOrder.IsValid
-  href: DrawnUi.Draw.ScrollToPointOrder.html#DrawnUi_Draw_ScrollToPointOrder_IsValid
-  name: IsValid
-  nameWithType: ScrollToPointOrder.IsValid
-  fullName: DrawnUi.Draw.ScrollToPointOrder.IsValid
+- uid: DrawnUi.Draw.AccessibilityValue.#ctor*
+  commentId: Overload:DrawnUi.Draw.AccessibilityValue.#ctor
+  href: DrawnUi.Draw.AccessibilityValue.html#DrawnUi_Draw_AccessibilityValue__ctor_System_Double_System_Double_System_Double_System_Double_System_String_System_Boolean_
+  name: AccessibilityValue
+  nameWithType: AccessibilityValue.AccessibilityValue
+  fullName: DrawnUi.Draw.AccessibilityValue.AccessibilityValue
+  nameWithType.vb: AccessibilityValue.New
+  fullName.vb: DrawnUi.Draw.AccessibilityValue.New
+  name.vb: New
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: System.Boolean
   commentId: T:System.Boolean
   parent: System
@@ -647,72 +707,39 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
-- uid: DrawnUi.Draw.ScrollToPointOrder.NotValid*
-  commentId: Overload:DrawnUi.Draw.ScrollToPointOrder.NotValid
-  href: DrawnUi.Draw.ScrollToPointOrder.html#DrawnUi_Draw_ScrollToPointOrder_NotValid
-  name: NotValid
-  nameWithType: ScrollToPointOrder.NotValid
-  fullName: DrawnUi.Draw.ScrollToPointOrder.NotValid
-- uid: DrawnUi.Draw.ScrollToPointOrder
-  commentId: T:DrawnUi.Draw.ScrollToPointOrder
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.ScrollToPointOrder.html
-  name: ScrollToPointOrder
-  nameWithType: ScrollToPointOrder
-  fullName: DrawnUi.Draw.ScrollToPointOrder
-- uid: DrawnUi.Draw.ScrollToPointOrder.ToPoint*
-  commentId: Overload:DrawnUi.Draw.ScrollToPointOrder.ToPoint
-  href: DrawnUi.Draw.ScrollToPointOrder.html#DrawnUi_Draw_ScrollToPointOrder_ToPoint_SkiaSharp_SKPoint_System_Boolean_
-  name: ToPoint
-  nameWithType: ScrollToPointOrder.ToPoint
-  fullName: DrawnUi.Draw.ScrollToPointOrder.ToPoint
-- uid: SkiaSharp.SKPoint
-  commentId: T:SkiaSharp.SKPoint
-  parent: SkiaSharp
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
-  name: SKPoint
-  nameWithType: SKPoint
-  fullName: SkiaSharp.SKPoint
-- uid: SkiaSharp
-  commentId: N:SkiaSharp
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/skiasharp
-  name: SkiaSharp
-  nameWithType: SkiaSharp
-  fullName: SkiaSharp
-- uid: DrawnUi.Draw.ScrollToPointOrder.ToCoords*
-  commentId: Overload:DrawnUi.Draw.ScrollToPointOrder.ToCoords
-  href: DrawnUi.Draw.ScrollToPointOrder.html#DrawnUi_Draw_ScrollToPointOrder_ToCoords_System_Single_System_Single_System_Boolean_
-  name: ToCoords
-  nameWithType: ScrollToPointOrder.ToCoords
-  fullName: DrawnUi.Draw.ScrollToPointOrder.ToCoords
-- uid: System.Single
-  commentId: T:System.Single
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.single
-  name: float
-  nameWithType: float
-  fullName: float
-  nameWithType.vb: Single
-  fullName.vb: Single
-  name.vb: Single
-- uid: DrawnUi.Draw.ScrollToPointOrder.Animated*
-  commentId: Overload:DrawnUi.Draw.ScrollToPointOrder.Animated
-  href: DrawnUi.Draw.ScrollToPointOrder.html#DrawnUi_Draw_ScrollToPointOrder_Animated
-  name: Animated
-  nameWithType: ScrollToPointOrder.Animated
-  fullName: DrawnUi.Draw.ScrollToPointOrder.Animated
-- uid: DrawnUi.Draw.ScrollToPointOrder.Location*
-  commentId: Overload:DrawnUi.Draw.ScrollToPointOrder.Location
-  href: DrawnUi.Draw.ScrollToPointOrder.html#DrawnUi_Draw_ScrollToPointOrder_Location
-  name: Location
-  nameWithType: ScrollToPointOrder.Location
-  fullName: DrawnUi.Draw.ScrollToPointOrder.Location
-- uid: DrawnUi.Draw.ScrollToPointOrder.MaxTimeSecs*
-  commentId: Overload:DrawnUi.Draw.ScrollToPointOrder.MaxTimeSecs
-  href: DrawnUi.Draw.ScrollToPointOrder.html#DrawnUi_Draw_ScrollToPointOrder_MaxTimeSecs
-  name: MaxTimeSecs
-  nameWithType: ScrollToPointOrder.MaxTimeSecs
-  fullName: DrawnUi.Draw.ScrollToPointOrder.MaxTimeSecs
+- uid: DrawnUi.Draw.AccessibilityValue.Now*
+  commentId: Overload:DrawnUi.Draw.AccessibilityValue.Now
+  href: DrawnUi.Draw.AccessibilityValue.html#DrawnUi_Draw_AccessibilityValue_Now
+  name: Now
+  nameWithType: AccessibilityValue.Now
+  fullName: DrawnUi.Draw.AccessibilityValue.Now
+- uid: DrawnUi.Draw.AccessibilityValue.Min*
+  commentId: Overload:DrawnUi.Draw.AccessibilityValue.Min
+  href: DrawnUi.Draw.AccessibilityValue.html#DrawnUi_Draw_AccessibilityValue_Min
+  name: Min
+  nameWithType: AccessibilityValue.Min
+  fullName: DrawnUi.Draw.AccessibilityValue.Min
+- uid: DrawnUi.Draw.AccessibilityValue.Max*
+  commentId: Overload:DrawnUi.Draw.AccessibilityValue.Max
+  href: DrawnUi.Draw.AccessibilityValue.html#DrawnUi_Draw_AccessibilityValue_Max
+  name: Max
+  nameWithType: AccessibilityValue.Max
+  fullName: DrawnUi.Draw.AccessibilityValue.Max
+- uid: DrawnUi.Draw.AccessibilityValue.Step*
+  commentId: Overload:DrawnUi.Draw.AccessibilityValue.Step
+  href: DrawnUi.Draw.AccessibilityValue.html#DrawnUi_Draw_AccessibilityValue_Step
+  name: Step
+  nameWithType: AccessibilityValue.Step
+  fullName: DrawnUi.Draw.AccessibilityValue.Step
+- uid: DrawnUi.Draw.AccessibilityValue.Text*
+  commentId: Overload:DrawnUi.Draw.AccessibilityValue.Text
+  href: DrawnUi.Draw.AccessibilityValue.html#DrawnUi_Draw_AccessibilityValue_Text
+  name: Text
+  nameWithType: AccessibilityValue.Text
+  fullName: DrawnUi.Draw.AccessibilityValue.Text
+- uid: DrawnUi.Draw.AccessibilityValue.Vertical*
+  commentId: Overload:DrawnUi.Draw.AccessibilityValue.Vertical
+  href: DrawnUi.Draw.AccessibilityValue.html#DrawnUi_Draw_AccessibilityValue_Vertical
+  name: Vertical
+  nameWithType: AccessibilityValue.Vertical
+  fullName: DrawnUi.Draw.AccessibilityValue.Vertical

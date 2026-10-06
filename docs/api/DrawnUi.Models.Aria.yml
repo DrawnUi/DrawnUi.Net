@@ -9,6 +9,7 @@ items:
   - DrawnUi.Models.Aria.IsInteractiveRole(System.String)
   - DrawnUi.Models.Aria.LiveAssertive
   - DrawnUi.Models.Aria.LivePolite
+  - DrawnUi.Models.Aria.PressedStateAttribute(System.String)
   - DrawnUi.Models.Aria.RoleAlert
   - DrawnUi.Models.Aria.RoleAlertDialog
   - DrawnUi.Models.Aria.RoleButton
@@ -1203,6 +1204,47 @@ items:
   nameWithType.vb: Aria.IsInteractiveRole(String)
   fullName.vb: DrawnUi.Models.Aria.IsInteractiveRole(String)
   name.vb: IsInteractiveRole(String)
+- uid: DrawnUi.Models.Aria.PressedStateAttribute(System.String)
+  commentId: M:DrawnUi.Models.Aria.PressedStateAttribute(System.String)
+  id: PressedStateAttribute(System.String)
+  parent: DrawnUi.Models.Aria
+  langs:
+  - csharp
+  - vb
+  name: PressedStateAttribute(string?)
+  nameWithType: Aria.PressedStateAttribute(string?)
+  fullName: DrawnUi.Models.Aria.PressedStateAttribute(string?)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: PressedStateAttribute
+    path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+    startLine: 140
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Models
+  summary: >-
+    The ARIA attribute that carries a node's pressed state (<code>AccessibilityIsPressed</code>) for its role: aria-checked
+
+    for check boxes, switches and radios, aria-selected for options and tabs, aria-pressed for the rest (a toggle
+
+    button). Browsers read a switch's state only from aria-checked: with aria-pressed it reads as off.
+  example: []
+  syntax:
+    content: public static string PressedStateAttribute(string? role)
+    parameters:
+    - id: role
+      type: System.String
+    return:
+      type: System.String
+    content.vb: Public Shared Function PressedStateAttribute(role As String) As String
+  overload: DrawnUi.Models.Aria.PressedStateAttribute*
+  nameWithType.vb: Aria.PressedStateAttribute(String)
+  fullName.vb: DrawnUi.Models.Aria.PressedStateAttribute(String)
+  name.vb: PressedStateAttribute(String)
 - uid: DrawnUi.Models.Aria.RoleGrid
   commentId: F:DrawnUi.Models.Aria.RoleGrid
   id: RoleGrid
@@ -1221,7 +1263,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RoleGrid
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 136
+    startLine: 148
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1250,7 +1292,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RoleToolbar
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 139
+    startLine: 151
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1279,7 +1321,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RoleRadioGroup
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 142
+    startLine: 154
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1308,7 +1350,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RoleMenuBar
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 145
+    startLine: 157
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1337,7 +1379,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsCompositeRole
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 152
+    startLine: 164
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1378,7 +1420,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LivePolite
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 161
+    startLine: 173
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1410,7 +1452,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LiveAssertive
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 167
+    startLine: 179
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1790,6 +1832,12 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: DrawnUi.Models.Aria.PressedStateAttribute*
+  commentId: Overload:DrawnUi.Models.Aria.PressedStateAttribute
+  href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_PressedStateAttribute_System_String_
+  name: PressedStateAttribute
+  nameWithType: Aria.PressedStateAttribute
+  fullName: DrawnUi.Models.Aria.PressedStateAttribute
 - uid: DrawnUi.Models.Aria.RoleRadio
   commentId: F:DrawnUi.Models.Aria.RoleRadio
   href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_RoleRadio

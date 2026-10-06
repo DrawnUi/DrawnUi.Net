@@ -168,6 +168,7 @@ items:
   - DrawnUi.Views.DrawnView.DumpLayersTree(DrawnUi.Draw.VisualLayer,System.String,System.Boolean,System.Int32)
   - DrawnUi.Views.DrawnView.Diagnostics
   - DrawnUi.Views.DrawnView.Update
+  - DrawnUi.Views.DrawnView.RequestNextFrame
   - DrawnUi.Views.DrawnView.IsUsingHardwareAcceleration
   - DrawnUi.Views.DrawnView.NeedRedraw
   - DrawnUi.Views.DrawnView.IsDirty
@@ -205,6 +206,7 @@ items:
   - DrawnUi.Views.DrawnView.CommitPointerOver
   - DrawnUi.Views.DrawnView.ClearPointerOver
   - DrawnUi.Views.DrawnView.KeyboardFocusNode
+  - DrawnUi.Views.DrawnView.HandleKeyboardNavigation(DrawnUi.Draw.InputKey,System.Boolean)
   - DrawnUi.Views.DrawnView.KeyboardFocusColor
   - DrawnUi.Views.DrawnView.WheelDeltaPerNotch
   - DrawnUi.Views.DrawnView.DrawKeyboardFocus(DrawnUi.Draw.DrawingContext)
@@ -1799,7 +1801,7 @@ items:
   summary: IGestureListener implementation
   example: []
   syntax:
-    content: public virtual void OnGestureEvent(TouchActionType type, TouchActionEventArgs args1, TouchActionResult touchAction)
+    content: public override void OnGestureEvent(TouchActionType type, TouchActionEventArgs args1, TouchActionResult touchAction)
     parameters:
     - id: type
       type: AppoMobi.Gestures.TouchActionType
@@ -1810,7 +1812,8 @@ items:
     - id: touchAction
       type: AppoMobi.Gestures.TouchActionResult
       description: ''
-    content.vb: Public Overridable Sub OnGestureEvent(type As TouchActionType, args1 As TouchActionEventArgs, touchAction As TouchActionResult)
+    content.vb: Public Overrides Sub OnGestureEvent(type As TouchActionType, args1 As TouchActionEventArgs, touchAction As TouchActionResult)
+  overridden: DrawnUi.Views.DrawnView.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
   overload: DrawnUi.Views.Canvas.OnGestureEvent*
   implements:
   - AppoMobi.Gestures.IGestureListener.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
@@ -1832,7 +1835,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BreakLine
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 903
+    startLine: 924
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1858,7 +1861,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineBreaks
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 908
+    startLine: 929
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1885,7 +1888,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 911
+    startLine: 932
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1914,7 +1917,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlayRippleAnimation
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 916
+    startLine: 937
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1952,7 +1955,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlayShimmerAnimation
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 922
+    startLine: 943
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1992,7 +1995,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TimeLastGC
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 935
+    startLine: 956
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2021,7 +2024,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DelayNanosBetweenGC
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 936
+    startLine: 957
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2050,7 +2053,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CollectGarbage
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 938
+    startLine: 959
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2082,7 +2085,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 955
+    startLine: 976
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2118,7 +2121,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesDebugColorProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 968
+    startLine: 989
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2145,7 +2148,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesDebugColor
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 974
+    startLine: 995
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2174,7 +2177,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReserveSpaceAroundProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 980
+    startLine: 1001
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2201,7 +2204,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReserveSpaceAround
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 986
+    startLine: 1007
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2230,7 +2233,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1000
+    startLine: 1021
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2257,7 +2260,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Gestures
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1006
+    startLine: 1027
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2286,7 +2289,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1014
+    startLine: 1035
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2313,7 +2316,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Content
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1030
+    startLine: 1051
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2342,7 +2345,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnParentChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1040
+    startLine: 1061
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2372,7 +2375,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnableUpdates
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1050
+    startLine: 1071
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2400,7 +2403,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisableUpdates
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1060
+    startLine: 1081
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2428,7 +2431,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1065
+    startLine: 1086
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2459,7 +2462,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetGesturePositionInsideControl
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1170
+    startLine: 1191
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2506,7 +2509,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindViewCoordinatesRecursive
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1215
+    startLine: 1236
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -3507,6 +3510,25 @@ references:
     href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_Update
   - name: (
   - name: )
+- uid: DrawnUi.Views.DrawnView.RequestNextFrame
+  commentId: M:DrawnUi.Views.DrawnView.RequestNextFrame
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RequestNextFrame
+  name: RequestNextFrame()
+  nameWithType: DrawnView.RequestNextFrame()
+  fullName: DrawnUi.Views.DrawnView.RequestNextFrame()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.RequestNextFrame
+    name: RequestNextFrame
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RequestNextFrame
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.RequestNextFrame
+    name: RequestNextFrame
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RequestNextFrame
+  - name: (
+  - name: )
 - uid: DrawnUi.Views.DrawnView.IsUsingHardwareAcceleration
   commentId: P:DrawnUi.Views.DrawnView.IsUsingHardwareAcceleration
   parent: DrawnUi.Views.DrawnView
@@ -4278,6 +4300,47 @@ references:
   name: KeyboardFocusNode
   nameWithType: DrawnView.KeyboardFocusNode
   fullName: DrawnUi.Views.DrawnView.KeyboardFocusNode
+- uid: DrawnUi.Views.DrawnView.HandleKeyboardNavigation(DrawnUi.Draw.InputKey,System.Boolean)
+  commentId: M:DrawnUi.Views.DrawnView.HandleKeyboardNavigation(DrawnUi.Draw.InputKey,System.Boolean)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_HandleKeyboardNavigation_DrawnUi_Draw_InputKey_System_Boolean_
+  name: HandleKeyboardNavigation(InputKey, bool)
+  nameWithType: DrawnView.HandleKeyboardNavigation(InputKey, bool)
+  fullName: DrawnUi.Views.DrawnView.HandleKeyboardNavigation(DrawnUi.Draw.InputKey, bool)
+  nameWithType.vb: DrawnView.HandleKeyboardNavigation(InputKey, Boolean)
+  fullName.vb: DrawnUi.Views.DrawnView.HandleKeyboardNavigation(DrawnUi.Draw.InputKey, Boolean)
+  name.vb: HandleKeyboardNavigation(InputKey, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.HandleKeyboardNavigation(DrawnUi.Draw.InputKey,System.Boolean)
+    name: HandleKeyboardNavigation
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_HandleKeyboardNavigation_DrawnUi_Draw_InputKey_System_Boolean_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.HandleKeyboardNavigation(DrawnUi.Draw.InputKey,System.Boolean)
+    name: HandleKeyboardNavigation
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_HandleKeyboardNavigation_DrawnUi_Draw_InputKey_System_Boolean_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Views.DrawnView.KeyboardFocusColor
   commentId: F:DrawnUi.Views.DrawnView.KeyboardFocusColor
   parent: DrawnUi.Views.DrawnView
@@ -12234,6 +12297,52 @@ references:
   name: EventHandler
   nameWithType: EventHandler
   fullName: System.EventHandler
+- uid: DrawnUi.Views.DrawnView.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
+  commentId: M:DrawnUi.Views.DrawnView.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnGestureEvent_AppoMobi_Gestures_TouchActionType_AppoMobi_Gestures_TouchActionEventArgs_AppoMobi_Gestures_TouchActionResult_
+  name: OnGestureEvent(TouchActionType, TouchActionEventArgs, TouchActionResult)
+  nameWithType: DrawnView.OnGestureEvent(TouchActionType, TouchActionEventArgs, TouchActionResult)
+  fullName: DrawnUi.Views.DrawnView.OnGestureEvent(AppoMobi.Gestures.TouchActionType, AppoMobi.Gestures.TouchActionEventArgs, AppoMobi.Gestures.TouchActionResult)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
+    name: OnGestureEvent
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnGestureEvent_AppoMobi_Gestures_TouchActionType_AppoMobi_Gestures_TouchActionEventArgs_AppoMobi_Gestures_TouchActionResult_
+  - name: (
+  - uid: AppoMobi.Gestures.TouchActionType
+    name: TouchActionType
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: AppoMobi.Gestures.TouchActionEventArgs
+    name: TouchActionEventArgs
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: AppoMobi.Gestures.TouchActionResult
+    name: TouchActionResult
+    isExternal: true
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
+    name: OnGestureEvent
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnGestureEvent_AppoMobi_Gestures_TouchActionType_AppoMobi_Gestures_TouchActionEventArgs_AppoMobi_Gestures_TouchActionResult_
+  - name: (
+  - uid: AppoMobi.Gestures.TouchActionType
+    name: TouchActionType
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: AppoMobi.Gestures.TouchActionEventArgs
+    name: TouchActionEventArgs
+    isExternal: true
+  - name: ','
+  - name: " "
+  - uid: AppoMobi.Gestures.TouchActionResult
+    name: TouchActionResult
+    isExternal: true
+  - name: )
 - uid: DrawnUi.Views.Canvas.OnGestureEvent*
   commentId: Overload:DrawnUi.Views.Canvas.OnGestureEvent
   href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_OnGestureEvent_AppoMobi_Gestures_TouchActionType_AppoMobi_Gestures_TouchActionEventArgs_AppoMobi_Gestures_TouchActionResult_

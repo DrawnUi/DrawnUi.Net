@@ -18,7 +18,7 @@ items:
   - DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
   - DrawnUi.Extensions.InternalExtensions.GetItemAtIndex``1(System.Collections.Generic.LinkedList{``0},System.Int32)
   - DrawnUi.Extensions.InternalExtensions.GetParentsPath(Microsoft.Maui.Controls.Element)
-  - DrawnUi.Extensions.InternalExtensions.IntersectsWith(SkiaSharp.SKRect,SkiaSharp.SKRect,SkiaSharp.SKPoint)
+  - DrawnUi.Extensions.InternalExtensions.IntersectsWith(SkiaSharp.SKRect,SkiaSharp.SKRect,SkiaSharp.SKPoint@)
   - DrawnUi.Extensions.InternalExtensions.IsEven(System.Int32)
   - DrawnUi.Extensions.InternalExtensions.ToDegrees(System.Single)
   - DrawnUi.Extensions.InternalExtensions.ToMauiPointF(System.Drawing.PointF)
@@ -379,17 +379,17 @@ items:
   nameWithType.vb: InternalExtensions.ToDegrees(Single)
   fullName.vb: DrawnUi.Extensions.InternalExtensions.ToDegrees(Single)
   name.vb: ToDegrees(Single)
-- uid: DrawnUi.Extensions.InternalExtensions.IntersectsWith(SkiaSharp.SKRect,SkiaSharp.SKRect,SkiaSharp.SKPoint)
-  commentId: M:DrawnUi.Extensions.InternalExtensions.IntersectsWith(SkiaSharp.SKRect,SkiaSharp.SKRect,SkiaSharp.SKPoint)
-  id: IntersectsWith(SkiaSharp.SKRect,SkiaSharp.SKRect,SkiaSharp.SKPoint)
+- uid: DrawnUi.Extensions.InternalExtensions.IntersectsWith(SkiaSharp.SKRect,SkiaSharp.SKRect,SkiaSharp.SKPoint@)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.IntersectsWith(SkiaSharp.SKRect,SkiaSharp.SKRect,SkiaSharp.SKPoint@)
+  id: IntersectsWith(SkiaSharp.SKRect,SkiaSharp.SKRect,SkiaSharp.SKPoint@)
   isExtensionMethod: true
   parent: DrawnUi.Extensions.InternalExtensions
   langs:
   - csharp
   - vb
-  name: IntersectsWith(SKRect, SKRect, SKPoint)
-  nameWithType: InternalExtensions.IntersectsWith(SKRect, SKRect, SKPoint)
-  fullName: DrawnUi.Extensions.InternalExtensions.IntersectsWith(SkiaSharp.SKRect, SkiaSharp.SKRect, SkiaSharp.SKPoint)
+  name: IntersectsWith(SKRect, SKRect, in SKPoint)
+  nameWithType: InternalExtensions.IntersectsWith(SKRect, SKRect, in SKPoint)
+  fullName: DrawnUi.Extensions.InternalExtensions.IntersectsWith(SkiaSharp.SKRect, SkiaSharp.SKRect, in SkiaSharp.SKPoint)
   type: Method
   source:
     remote:
@@ -398,12 +398,12 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IntersectsWith
     path: ../src/Shared/DrawnUi/Internals/Extensions/InternalExtensions.cs
-    startLine: 16
+    startLine: 17
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
   syntax:
-    content: public static bool IntersectsWith(this SKRect rect, SKRect with, SKPoint offset)
+    content: public static bool IntersectsWith(this SKRect rect, SKRect with, in SKPoint offset)
     parameters:
     - id: rect
       type: SkiaSharp.SKRect
@@ -415,6 +415,9 @@ items:
       type: System.Boolean
     content.vb: Public Shared Function IntersectsWith(rect As SKRect, [with] As SKRect, offset As SKPoint) As Boolean
   overload: DrawnUi.Extensions.InternalExtensions.IntersectsWith*
+  nameWithType.vb: InternalExtensions.IntersectsWith(SKRect, SKRect, SKPoint)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.IntersectsWith(SkiaSharp.SKRect, SkiaSharp.SKRect, SkiaSharp.SKPoint)
+  name.vb: IntersectsWith(SKRect, SKRect, SKPoint)
 - uid: DrawnUi.Extensions.InternalExtensions.ContainsInclusive(SkiaSharp.SKRect,SkiaSharp.SKPoint)
   commentId: M:DrawnUi.Extensions.InternalExtensions.ContainsInclusive(SkiaSharp.SKRect,SkiaSharp.SKPoint)
   id: ContainsInclusive(SkiaSharp.SKRect,SkiaSharp.SKPoint)
@@ -434,7 +437,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContainsInclusive
     path: ../src/Shared/DrawnUi/Internals/Extensions/InternalExtensions.cs
-    startLine: 29
+    startLine: 30
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -473,7 +476,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContainsInclusive
     path: ../src/Shared/DrawnUi/Internals/Extensions/InternalExtensions.cs
-    startLine: 38
+    startLine: 39
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -514,7 +517,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetItemAtIndex
     path: ../src/Shared/DrawnUi/Internals/Extensions/InternalExtensions.cs
-    startLine: 46
+    startLine: 47
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -553,7 +556,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposeControlAndChildren
     path: ../src/Shared/DrawnUi/Internals/Extensions/InternalExtensions.cs
-    startLine: 64
+    startLine: 65
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -583,7 +586,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithCancellation
     path: ../src/Shared/DrawnUi/Internals/Extensions/InternalExtensions.cs
-    startLine: 121
+    startLine: 122
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -617,7 +620,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithCancellation
     path: ../src/Shared/DrawnUi/Internals/Extensions/InternalExtensions.cs
-    startLine: 132
+    startLine: 133
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -656,7 +659,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clone
     path: ../src/Shared/DrawnUi/Internals/Extensions/InternalExtensions.cs
-    startLine: 142
+    startLine: 143
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -688,7 +691,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsEven
     path: ../src/Shared/DrawnUi/Internals/Extensions/InternalExtensions.cs
-    startLine: 147
+    startLine: 148
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -723,7 +726,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clamp
     path: ../src/Shared/DrawnUi/Internals/Extensions/InternalExtensions.cs
-    startLine: 152
+    startLine: 153
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -762,7 +765,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clamp
     path: ../src/Shared/DrawnUi/Internals/Extensions/InternalExtensions.cs
-    startLine: 171
+    startLine: 172
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -801,7 +804,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clamp
     path: ../src/Shared/DrawnUi/Internals/Extensions/InternalExtensions.cs
-    startLine: 190
+    startLine: 191
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Extensions
@@ -1522,7 +1525,7 @@ references:
   fullName: DrawnUi.Extensions.InternalExtensions.ToDegrees
 - uid: DrawnUi.Extensions.InternalExtensions.IntersectsWith*
   commentId: Overload:DrawnUi.Extensions.InternalExtensions.IntersectsWith
-  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_IntersectsWith_SkiaSharp_SKRect_SkiaSharp_SKRect_SkiaSharp_SKPoint_
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_IntersectsWith_SkiaSharp_SKRect_SkiaSharp_SKRect_SkiaSharp_SKPoint__
   name: IntersectsWith
   nameWithType: InternalExtensions.IntersectsWith
   fullName: DrawnUi.Extensions.InternalExtensions.IntersectsWith

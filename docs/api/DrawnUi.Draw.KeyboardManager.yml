@@ -7,13 +7,18 @@ items:
   children:
   - DrawnUi.Draw.KeyboardManager.IsAltPressed
   - DrawnUi.Draw.KeyboardManager.IsControlPressed
+  - DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement
+  - DrawnUi.Draw.KeyboardManager.IsMetaPressed
   - DrawnUi.Draw.KeyboardManager.IsShiftPressed
   - DrawnUi.Draw.KeyboardManager.KeyChar
   - DrawnUi.Draw.KeyboardManager.KeyDown
   - DrawnUi.Draw.KeyboardManager.KeyUp
   - DrawnUi.Draw.KeyboardManager.KeyboardChar(System.String)
+  - DrawnUi.Draw.KeyboardManager.KeyboardChar(System.String,System.Boolean)
   - DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey)
+  - DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey,System.Boolean)
   - DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey)
+  - DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey,System.Boolean)
   langs:
   - csharp
   - vb
@@ -128,6 +133,44 @@ items:
     return:
       type: System.EventHandler{System.String}
     content.vb: Public Shared Event KeyChar As EventHandler(Of String)
+- uid: DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement
+  commentId: P:DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement
+  id: IsKeyForOtherElement
+  parent: DrawnUi.Draw.KeyboardManager
+  langs:
+  - csharp
+  - vb
+  name: IsKeyForOtherElement
+  nameWithType: KeyboardManager.IsKeyForOtherElement
+  fullName: DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsKeyForOtherElement
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    startLine: 20
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    True while <xref href="DrawnUi.Draw.KeyboardManager.KeyDown" data-throw-if-not-resolved="false"></xref>, <xref href="DrawnUi.Draw.KeyboardManager.KeyUp" data-throw-if-not-resolved="false"></xref> or <xref href="DrawnUi.Draw.KeyboardManager.KeyChar" data-throw-if-not-resolved="false"></xref> is raised for a key that a focused
+
+    element outside DrawnUI receives: a page input next to the canvas, a native text field. Every key is reported,
+
+    but such a key is not for drawn controls: observe it, never act on it as typing or a shortcut. Drawn editors and
+
+    text selection ignore it.
+  example: []
+  syntax:
+    content: public static bool IsKeyForOtherElement { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property IsKeyForOtherElement As Boolean
+  overload: DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement*
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardChar(System.String)
   commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardChar(System.String)
   id: KeyboardChar(System.String)
@@ -146,7 +189,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardChar
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 14
+    startLine: 22
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -160,6 +203,43 @@ items:
   nameWithType.vb: KeyboardManager.KeyboardChar(String)
   fullName.vb: DrawnUi.Draw.KeyboardManager.KeyboardChar(String)
   name.vb: KeyboardChar(String)
+- uid: DrawnUi.Draw.KeyboardManager.KeyboardChar(System.String,System.Boolean)
+  commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardChar(System.String,System.Boolean)
+  id: KeyboardChar(System.String,System.Boolean)
+  parent: DrawnUi.Draw.KeyboardManager
+  langs:
+  - csharp
+  - vb
+  name: KeyboardChar(string, bool)
+  nameWithType: KeyboardManager.KeyboardChar(string, bool)
+  fullName: DrawnUi.Draw.KeyboardManager.KeyboardChar(string, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: KeyboardChar
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    startLine: 26
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  example: []
+  syntax:
+    content: public static void KeyboardChar(string ch, bool forOtherElement)
+    parameters:
+    - id: ch
+      type: System.String
+      description: The typed text.
+    - id: forOtherElement
+      type: System.Boolean
+      description: The key goes to a focused element outside DrawnUI, see <xref href="DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Shared Sub KeyboardChar(ch As String, forOtherElement As Boolean)
+  overload: DrawnUi.Draw.KeyboardManager.KeyboardChar*
+  nameWithType.vb: KeyboardManager.KeyboardChar(String, Boolean)
+  fullName.vb: DrawnUi.Draw.KeyboardManager.KeyboardChar(String, Boolean)
+  name.vb: KeyboardChar(String, Boolean)
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey)
   commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey)
   id: KeyboardPressed(DrawnUi.Draw.InputKey)
@@ -178,7 +258,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 19
+    startLine: 39
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -189,6 +269,43 @@ items:
       type: DrawnUi.Draw.InputKey
     content.vb: Public Shared Sub KeyboardPressed(key As InputKey)
   overload: DrawnUi.Draw.KeyboardManager.KeyboardPressed*
+- uid: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey,System.Boolean)
+  commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey,System.Boolean)
+  id: KeyboardPressed(DrawnUi.Draw.InputKey,System.Boolean)
+  parent: DrawnUi.Draw.KeyboardManager
+  langs:
+  - csharp
+  - vb
+  name: KeyboardPressed(InputKey, bool)
+  nameWithType: KeyboardManager.KeyboardPressed(InputKey, bool)
+  fullName: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: KeyboardPressed
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    startLine: 43
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  example: []
+  syntax:
+    content: public static void KeyboardPressed(InputKey key, bool forOtherElement)
+    parameters:
+    - id: key
+      type: DrawnUi.Draw.InputKey
+      description: The key.
+    - id: forOtherElement
+      type: System.Boolean
+      description: The key goes to a focused element outside DrawnUI, see <xref href="DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Shared Sub KeyboardPressed(key As InputKey, forOtherElement As Boolean)
+  overload: DrawnUi.Draw.KeyboardManager.KeyboardPressed*
+  nameWithType.vb: KeyboardManager.KeyboardPressed(InputKey, Boolean)
+  fullName.vb: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey, Boolean)
+  name.vb: KeyboardPressed(InputKey, Boolean)
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey)
   commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey)
   id: KeyboardReleased(DrawnUi.Draw.InputKey)
@@ -207,7 +324,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardReleased
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 28
+    startLine: 58
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -218,6 +335,43 @@ items:
       type: DrawnUi.Draw.InputKey
     content.vb: Public Shared Sub KeyboardReleased(key As InputKey)
   overload: DrawnUi.Draw.KeyboardManager.KeyboardReleased*
+- uid: DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey,System.Boolean)
+  commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey,System.Boolean)
+  id: KeyboardReleased(DrawnUi.Draw.InputKey,System.Boolean)
+  parent: DrawnUi.Draw.KeyboardManager
+  langs:
+  - csharp
+  - vb
+  name: KeyboardReleased(InputKey, bool)
+  nameWithType: KeyboardManager.KeyboardReleased(InputKey, bool)
+  fullName: DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: KeyboardReleased
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    startLine: 62
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  example: []
+  syntax:
+    content: public static void KeyboardReleased(InputKey key, bool forOtherElement)
+    parameters:
+    - id: key
+      type: DrawnUi.Draw.InputKey
+      description: The key.
+    - id: forOtherElement
+      type: System.Boolean
+      description: The key goes to a focused element outside DrawnUI, see <xref href="DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement" data-throw-if-not-resolved="false"></xref>.
+    content.vb: Public Shared Sub KeyboardReleased(key As InputKey, forOtherElement As Boolean)
+  overload: DrawnUi.Draw.KeyboardManager.KeyboardReleased*
+  nameWithType.vb: KeyboardManager.KeyboardReleased(InputKey, Boolean)
+  fullName.vb: DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey, Boolean)
+  name.vb: KeyboardReleased(InputKey, Boolean)
 - uid: DrawnUi.Draw.KeyboardManager.IsShiftPressed
   commentId: P:DrawnUi.Draw.KeyboardManager.IsShiftPressed
   id: IsShiftPressed
@@ -236,7 +390,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsShiftPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 35
+    startLine: 77
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -265,7 +419,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAltPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 43
+    startLine: 85
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -294,7 +448,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsControlPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 51
+    startLine: 93
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -305,6 +459,37 @@ items:
       type: System.Boolean
     content.vb: Public Shared ReadOnly Property IsControlPressed As Boolean
   overload: DrawnUi.Draw.KeyboardManager.IsControlPressed*
+- uid: DrawnUi.Draw.KeyboardManager.IsMetaPressed
+  commentId: P:DrawnUi.Draw.KeyboardManager.IsMetaPressed
+  id: IsMetaPressed
+  parent: DrawnUi.Draw.KeyboardManager
+  langs:
+  - csharp
+  - vb
+  name: IsMetaPressed
+  nameWithType: KeyboardManager.IsMetaPressed
+  fullName: DrawnUi.Draw.KeyboardManager.IsMetaPressed
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsMetaPressed
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    startLine: 104
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Command (Mac) / Windows key held.
+  example: []
+  syntax:
+    content: public static bool IsMetaPressed { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared ReadOnly Property IsMetaPressed As Boolean
+  overload: DrawnUi.Draw.KeyboardManager.IsMetaPressed*
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -751,6 +936,41 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: DrawnUi.Draw.KeyboardManager.KeyDown
+  commentId: E:DrawnUi.Draw.KeyboardManager.KeyDown
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyDown
+  name: KeyDown
+  nameWithType: KeyboardManager.KeyDown
+  fullName: DrawnUi.Draw.KeyboardManager.KeyDown
+- uid: DrawnUi.Draw.KeyboardManager.KeyUp
+  commentId: E:DrawnUi.Draw.KeyboardManager.KeyUp
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyUp
+  name: KeyUp
+  nameWithType: KeyboardManager.KeyUp
+  fullName: DrawnUi.Draw.KeyboardManager.KeyUp
+- uid: DrawnUi.Draw.KeyboardManager.KeyChar
+  commentId: E:DrawnUi.Draw.KeyboardManager.KeyChar
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyChar
+  name: KeyChar
+  nameWithType: KeyboardManager.KeyChar
+  fullName: DrawnUi.Draw.KeyboardManager.KeyChar
+- uid: DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement*
+  commentId: Overload:DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_IsKeyForOtherElement
+  name: IsKeyForOtherElement
+  nameWithType: KeyboardManager.IsKeyForOtherElement
+  fullName: DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardChar*
   commentId: Overload:DrawnUi.Draw.KeyboardManager.KeyboardChar
   href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardChar_System_String_
@@ -768,6 +988,12 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
+- uid: DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement
+  commentId: P:DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_IsKeyForOtherElement
+  name: IsKeyForOtherElement
+  nameWithType: KeyboardManager.IsKeyForOtherElement
+  fullName: DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardPressed*
   commentId: Overload:DrawnUi.Draw.KeyboardManager.KeyboardPressed
   href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardPressed_DrawnUi_Draw_InputKey_
@@ -793,17 +1019,6 @@ references:
   name: IsShiftPressed
   nameWithType: KeyboardManager.IsShiftPressed
   fullName: DrawnUi.Draw.KeyboardManager.IsShiftPressed
-- uid: System.Boolean
-  commentId: T:System.Boolean
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.boolean
-  name: bool
-  nameWithType: bool
-  fullName: bool
-  nameWithType.vb: Boolean
-  fullName.vb: Boolean
-  name.vb: Boolean
 - uid: DrawnUi.Draw.KeyboardManager.IsAltPressed*
   commentId: Overload:DrawnUi.Draw.KeyboardManager.IsAltPressed
   href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_IsAltPressed
@@ -816,3 +1031,9 @@ references:
   name: IsControlPressed
   nameWithType: KeyboardManager.IsControlPressed
   fullName: DrawnUi.Draw.KeyboardManager.IsControlPressed
+- uid: DrawnUi.Draw.KeyboardManager.IsMetaPressed*
+  commentId: Overload:DrawnUi.Draw.KeyboardManager.IsMetaPressed
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_IsMetaPressed
+  name: IsMetaPressed
+  nameWithType: KeyboardManager.IsMetaPressed
+  fullName: DrawnUi.Draw.KeyboardManager.IsMetaPressed

@@ -10,6 +10,7 @@ items:
   - DrawnUi.Draw.DrawnUiStartupSettings.MobileIsFullscreen
   - DrawnUi.Draw.DrawnUiStartupSettings.Startup
   - DrawnUi.Draw.DrawnUiStartupSettings.UseDesktopKeyboard
+  - DrawnUi.Draw.DrawnUiStartupSettings.UseVulkan
   langs:
   - csharp
   - vb
@@ -167,6 +168,40 @@ items:
       type: System.Boolean
     content.vb: Public Property UseDesktopKeyboard As Boolean
   overload: DrawnUi.Draw.DrawnUiStartupSettings.UseDesktopKeyboard*
+- uid: DrawnUi.Draw.DrawnUiStartupSettings.UseVulkan
+  commentId: P:DrawnUi.Draw.DrawnUiStartupSettings.UseVulkan
+  id: UseVulkan
+  parent: DrawnUi.Draw.DrawnUiStartupSettings
+  langs:
+  - csharp
+  - vb
+  name: UseVulkan
+  nameWithType: DrawnUiStartupSettings.UseVulkan
+  fullName: DrawnUi.Draw.DrawnUiStartupSettings.UseVulkan
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/DrawnUiStartupSettings.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: UseVulkan
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawnUiStartupSettings.cs
+    startLine: 30
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Android: draw hardware-accelerated canvases with Vulkan where the device supports it (Android 7+, Vulkan 1.1),
+
+    with OpenGL ES where it does not or where Vulkan fails to start. Set false to always use OpenGL ES.
+  example: []
+  syntax:
+    content: public bool UseVulkan { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property UseVulkan As Boolean
+  overload: DrawnUi.Draw.DrawnUiStartupSettings.UseVulkan*
 - uid: DrawnUi.Draw.DrawnUiStartupSettings.Startup
   commentId: P:DrawnUi.Draw.DrawnUiStartupSettings.Startup
   id: Startup
@@ -185,7 +220,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Startup
     path: ../src/Shared/DrawnUi/Internals/Models/DrawnUiStartupSettings.cs
-    startLine: 29
+    startLine: 35
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -697,6 +732,12 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: DrawnUi.Draw.DrawnUiStartupSettings.UseVulkan*
+  commentId: Overload:DrawnUi.Draw.DrawnUiStartupSettings.UseVulkan
+  href: DrawnUi.Draw.DrawnUiStartupSettings.html#DrawnUi_Draw_DrawnUiStartupSettings_UseVulkan
+  name: UseVulkan
+  nameWithType: DrawnUiStartupSettings.UseVulkan
+  fullName: DrawnUi.Draw.DrawnUiStartupSettings.UseVulkan
 - uid: DrawnUi.Draw.DrawnUiStartupSettings.Startup*
   commentId: Overload:DrawnUi.Draw.DrawnUiStartupSettings.Startup
   href: DrawnUi.Draw.DrawnUiStartupSettings.html#DrawnUi_Draw_DrawnUiStartupSettings_Startup

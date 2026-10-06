@@ -1,26 +1,27 @@
 ### YamlMime:ManagedReference
 items:
-- uid: DrawnUi.Draw.IInvokeProvider
-  commentId: T:DrawnUi.Draw.IInvokeProvider
-  id: IInvokeProvider
+- uid: DrawnUi.Draw.IUiaToggleProvider
+  commentId: T:DrawnUi.Draw.IUiaToggleProvider
+  id: IUiaToggleProvider
   parent: DrawnUi.Draw
   children:
-  - DrawnUi.Draw.IInvokeProvider.Invoke
+  - DrawnUi.Draw.IUiaToggleProvider.Toggle
+  - DrawnUi.Draw.IUiaToggleProvider.ToggleState
   langs:
   - csharp
   - vb
-  name: IInvokeProvider
-  nameWithType: IInvokeProvider
-  fullName: DrawnUi.Draw.IInvokeProvider
+  name: IUiaToggleProvider
+  nameWithType: IUiaToggleProvider
+  fullName: DrawnUi.Draw.IUiaToggleProvider
   type: Interface
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: IInvokeProvider
+    id: IUiaToggleProvider
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-    startLine: 64
+    startLine: 123
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -28,19 +29,19 @@ items:
     content: >-
       [ComVisible(true)]
 
-      [Guid("54fcb24b-e18e-47a2-b4d3-eccbe77599a2")]
+      [Guid("56d00bd0-c4f4-433c-a836-1a52a57e0892")]
 
       [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 
-      public interface IInvokeProvider
+      public interface IUiaToggleProvider
     content.vb: >-
       <ComVisible(True)>
 
-      <Guid("54fcb24b-e18e-47a2-b4d3-eccbe77599a2")>
+      <Guid("56d00bd0-c4f4-433c-a836-1a52a57e0892")>
 
       <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
 
-      Public Interface IInvokeProvider
+      Public Interface IUiaToggleProvider
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
   attributes:
@@ -53,38 +54,67 @@ items:
     ctor: System.Runtime.InteropServices.GuidAttribute.#ctor(System.String)
     arguments:
     - type: System.String
-      value: 54fcb24b-e18e-47a2-b4d3-eccbe77599a2
+      value: 56d00bd0-c4f4-433c-a836-1a52a57e0892
   - type: System.Runtime.InteropServices.InterfaceTypeAttribute
     ctor: System.Runtime.InteropServices.InterfaceTypeAttribute.#ctor(System.Runtime.InteropServices.ComInterfaceType)
     arguments:
     - type: System.Runtime.InteropServices.ComInterfaceType
       value: 1
-- uid: DrawnUi.Draw.IInvokeProvider.Invoke
-  commentId: M:DrawnUi.Draw.IInvokeProvider.Invoke
-  id: Invoke
-  parent: DrawnUi.Draw.IInvokeProvider
+- uid: DrawnUi.Draw.IUiaToggleProvider.Toggle
+  commentId: M:DrawnUi.Draw.IUiaToggleProvider.Toggle
+  id: Toggle
+  parent: DrawnUi.Draw.IUiaToggleProvider
   langs:
   - csharp
   - vb
-  name: Invoke()
-  nameWithType: IInvokeProvider.Invoke()
-  fullName: DrawnUi.Draw.IInvokeProvider.Invoke()
+  name: Toggle()
+  nameWithType: IUiaToggleProvider.Toggle()
+  fullName: DrawnUi.Draw.IUiaToggleProvider.Toggle()
   type: Method
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: Invoke
+    id: Toggle
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-    startLine: 69
+    startLine: 128
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: void Invoke()
-    content.vb: Sub Invoke()
-  overload: DrawnUi.Draw.IInvokeProvider.Invoke*
+    content: void Toggle()
+    content.vb: Sub Toggle()
+  overload: DrawnUi.Draw.IUiaToggleProvider.Toggle*
+- uid: DrawnUi.Draw.IUiaToggleProvider.ToggleState
+  commentId: P:DrawnUi.Draw.IUiaToggleProvider.ToggleState
+  id: ToggleState
+  parent: DrawnUi.Draw.IUiaToggleProvider
+  langs:
+  - csharp
+  - vb
+  name: ToggleState
+  nameWithType: IUiaToggleProvider.ToggleState
+  fullName: DrawnUi.Draw.IUiaToggleProvider.ToggleState
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ToggleState
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 129
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: int ToggleState { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property ToggleState As Integer
+  overload: DrawnUi.Draw.IUiaToggleProvider.ToggleState*
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -198,9 +228,33 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
-- uid: DrawnUi.Draw.IInvokeProvider.Invoke*
-  commentId: Overload:DrawnUi.Draw.IInvokeProvider.Invoke
-  href: DrawnUi.Draw.IInvokeProvider.html#DrawnUi_Draw_IInvokeProvider_Invoke
-  name: Invoke
-  nameWithType: IInvokeProvider.Invoke
-  fullName: DrawnUi.Draw.IInvokeProvider.Invoke
+- uid: DrawnUi.Draw.IUiaToggleProvider.Toggle*
+  commentId: Overload:DrawnUi.Draw.IUiaToggleProvider.Toggle
+  href: DrawnUi.Draw.IUiaToggleProvider.html#DrawnUi_Draw_IUiaToggleProvider_Toggle
+  name: Toggle
+  nameWithType: IUiaToggleProvider.Toggle
+  fullName: DrawnUi.Draw.IUiaToggleProvider.Toggle
+- uid: DrawnUi.Draw.IUiaToggleProvider.ToggleState*
+  commentId: Overload:DrawnUi.Draw.IUiaToggleProvider.ToggleState
+  href: DrawnUi.Draw.IUiaToggleProvider.html#DrawnUi_Draw_IUiaToggleProvider_ToggleState
+  name: ToggleState
+  nameWithType: IUiaToggleProvider.ToggleState
+  fullName: DrawnUi.Draw.IUiaToggleProvider.ToggleState
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

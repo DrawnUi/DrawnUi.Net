@@ -8,6 +8,7 @@ items:
   - DrawnUi.Draw.SkiaImageManager.QueueItem.#ctor(Microsoft.Maui.Controls.ImageSource,System.Threading.CancellationTokenSource,System.Threading.Tasks.TaskCompletionSource{SkiaSharp.SKBitmap},System.Boolean)
   - DrawnUi.Draw.SkiaImageManager.QueueItem.Cancel
   - DrawnUi.Draw.SkiaImageManager.QueueItem.Dispose
+  - DrawnUi.Draw.SkiaImageManager.QueueItem.Priority
   - DrawnUi.Draw.SkiaImageManager.QueueItem.Source
   - DrawnUi.Draw.SkiaImageManager.QueueItem.Task
   langs:
@@ -24,7 +25,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: QueueItem
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 296
+    startLine: 329
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -64,7 +65,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 300
+    startLine: 333
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -102,7 +103,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Source
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 308
+    startLine: 341
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -131,7 +132,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Cancel
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 309
+    startLine: 342
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -160,7 +161,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Task
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 310
+    startLine: 343
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -171,6 +172,37 @@ items:
       type: System.Threading.Tasks.TaskCompletionSource{SkiaSharp.SKBitmap}
     content.vb: Public Property Task As TaskCompletionSource(Of SKBitmap)
   overload: DrawnUi.Draw.SkiaImageManager.QueueItem.Task*
+- uid: DrawnUi.Draw.SkiaImageManager.QueueItem.Priority
+  commentId: P:DrawnUi.Draw.SkiaImageManager.QueueItem.Priority
+  id: Priority
+  parent: DrawnUi.Draw.SkiaImageManager.QueueItem
+  langs:
+  - csharp
+  - vb
+  name: Priority
+  nameWithType: SkiaImageManager.QueueItem.Priority
+  fullName: DrawnUi.Draw.SkiaImageManager.QueueItem.Priority
+  type: Property
+  source:
+    remote:
+      path: src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Priority
+    path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+    startLine: 348
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Place in line for a network slot.
+  example: []
+  syntax:
+    content: public LoadPriority Priority { get; init; }
+    parameters: []
+    return:
+      type: DrawnUi.Draw.LoadPriority
+    content.vb: Public Property Priority As LoadPriority
+  overload: DrawnUi.Draw.SkiaImageManager.QueueItem.Priority*
 - uid: DrawnUi.Draw.SkiaImageManager.QueueItem.Dispose
   commentId: M:DrawnUi.Draw.SkiaImageManager.QueueItem.Dispose
   id: Dispose
@@ -189,7 +221,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 312
+    startLine: 350
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -846,6 +878,19 @@ references:
   name: Task
   nameWithType: SkiaImageManager.QueueItem.Task
   fullName: DrawnUi.Draw.SkiaImageManager.QueueItem.Task
+- uid: DrawnUi.Draw.SkiaImageManager.QueueItem.Priority*
+  commentId: Overload:DrawnUi.Draw.SkiaImageManager.QueueItem.Priority
+  href: DrawnUi.Draw.SkiaImageManager.QueueItem.html#DrawnUi_Draw_SkiaImageManager_QueueItem_Priority
+  name: Priority
+  nameWithType: SkiaImageManager.QueueItem.Priority
+  fullName: DrawnUi.Draw.SkiaImageManager.QueueItem.Priority
+- uid: DrawnUi.Draw.LoadPriority
+  commentId: T:DrawnUi.Draw.LoadPriority
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.LoadPriority.html
+  name: LoadPriority
+  nameWithType: LoadPriority
+  fullName: DrawnUi.Draw.LoadPriority
 - uid: DrawnUi.Draw.SkiaImageManager.QueueItem.Dispose*
   commentId: Overload:DrawnUi.Draw.SkiaImageManager.QueueItem.Dispose
   href: DrawnUi.Draw.SkiaImageManager.QueueItem.html#DrawnUi_Draw_SkiaImageManager_QueueItem_Dispose

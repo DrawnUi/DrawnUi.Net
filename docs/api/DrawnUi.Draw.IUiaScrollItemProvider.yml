@@ -1,26 +1,26 @@
 ### YamlMime:ManagedReference
 items:
-- uid: DrawnUi.Draw.IInvokeProvider
-  commentId: T:DrawnUi.Draw.IInvokeProvider
-  id: IInvokeProvider
+- uid: DrawnUi.Draw.IUiaScrollItemProvider
+  commentId: T:DrawnUi.Draw.IUiaScrollItemProvider
+  id: IUiaScrollItemProvider
   parent: DrawnUi.Draw
   children:
-  - DrawnUi.Draw.IInvokeProvider.Invoke
+  - DrawnUi.Draw.IUiaScrollItemProvider.ScrollIntoView
   langs:
   - csharp
   - vb
-  name: IInvokeProvider
-  nameWithType: IInvokeProvider
-  fullName: DrawnUi.Draw.IInvokeProvider
+  name: IUiaScrollItemProvider
+  nameWithType: IUiaScrollItemProvider
+  fullName: DrawnUi.Draw.IUiaScrollItemProvider
   type: Interface
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: IInvokeProvider
+    id: IUiaScrollItemProvider
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-    startLine: 64
+    startLine: 115
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -28,19 +28,19 @@ items:
     content: >-
       [ComVisible(true)]
 
-      [Guid("54fcb24b-e18e-47a2-b4d3-eccbe77599a2")]
+      [Guid("2360c714-4bf1-4b26-ba65-9b21316127eb")]
 
       [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 
-      public interface IInvokeProvider
+      public interface IUiaScrollItemProvider
     content.vb: >-
       <ComVisible(True)>
 
-      <Guid("54fcb24b-e18e-47a2-b4d3-eccbe77599a2")>
+      <Guid("2360c714-4bf1-4b26-ba65-9b21316127eb")>
 
       <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
 
-      Public Interface IInvokeProvider
+      Public Interface IUiaScrollItemProvider
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
   attributes:
@@ -53,38 +53,38 @@ items:
     ctor: System.Runtime.InteropServices.GuidAttribute.#ctor(System.String)
     arguments:
     - type: System.String
-      value: 54fcb24b-e18e-47a2-b4d3-eccbe77599a2
+      value: 2360c714-4bf1-4b26-ba65-9b21316127eb
   - type: System.Runtime.InteropServices.InterfaceTypeAttribute
     ctor: System.Runtime.InteropServices.InterfaceTypeAttribute.#ctor(System.Runtime.InteropServices.ComInterfaceType)
     arguments:
     - type: System.Runtime.InteropServices.ComInterfaceType
       value: 1
-- uid: DrawnUi.Draw.IInvokeProvider.Invoke
-  commentId: M:DrawnUi.Draw.IInvokeProvider.Invoke
-  id: Invoke
-  parent: DrawnUi.Draw.IInvokeProvider
+- uid: DrawnUi.Draw.IUiaScrollItemProvider.ScrollIntoView
+  commentId: M:DrawnUi.Draw.IUiaScrollItemProvider.ScrollIntoView
+  id: ScrollIntoView
+  parent: DrawnUi.Draw.IUiaScrollItemProvider
   langs:
   - csharp
   - vb
-  name: Invoke()
-  nameWithType: IInvokeProvider.Invoke()
-  fullName: DrawnUi.Draw.IInvokeProvider.Invoke()
+  name: ScrollIntoView()
+  nameWithType: IUiaScrollItemProvider.ScrollIntoView()
+  fullName: DrawnUi.Draw.IUiaScrollItemProvider.ScrollIntoView()
   type: Method
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: Invoke
+    id: ScrollIntoView
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-    startLine: 69
+    startLine: 120
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: void Invoke()
-    content.vb: Sub Invoke()
-  overload: DrawnUi.Draw.IInvokeProvider.Invoke*
+    content: void ScrollIntoView()
+    content.vb: Sub ScrollIntoView()
+  overload: DrawnUi.Draw.IUiaScrollItemProvider.ScrollIntoView*
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -198,9 +198,9 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
-- uid: DrawnUi.Draw.IInvokeProvider.Invoke*
-  commentId: Overload:DrawnUi.Draw.IInvokeProvider.Invoke
-  href: DrawnUi.Draw.IInvokeProvider.html#DrawnUi_Draw_IInvokeProvider_Invoke
-  name: Invoke
-  nameWithType: IInvokeProvider.Invoke
-  fullName: DrawnUi.Draw.IInvokeProvider.Invoke
+- uid: DrawnUi.Draw.IUiaScrollItemProvider.ScrollIntoView*
+  commentId: Overload:DrawnUi.Draw.IUiaScrollItemProvider.ScrollIntoView
+  href: DrawnUi.Draw.IUiaScrollItemProvider.html#DrawnUi_Draw_IUiaScrollItemProvider_ScrollIntoView
+  name: ScrollIntoView
+  nameWithType: IUiaScrollItemProvider.ScrollIntoView
+  fullName: DrawnUi.Draw.IUiaScrollItemProvider.ScrollIntoView

@@ -6,7 +6,7 @@ items:
   parent: DrawnUi.Draw
   children:
   - DrawnUi.Draw.SpringWithVelocityVectorAnimator.#ctor(DrawnUi.Draw.IDrawnBase)
-  - DrawnUi.Draw.SpringWithVelocityVectorAnimator.Initialize(System.Numerics.Vector2,System.Numerics.Vector2,System.Numerics.Vector2,DrawnUi.Infrastructure.Spring,System.Single)
+  - DrawnUi.Draw.SpringWithVelocityVectorAnimator.Initialize(System.Numerics.Vector2,System.Numerics.Vector2,System.Numerics.Vector2,DrawnUi.Infrastructure.Spring@,System.Single)
   - DrawnUi.Draw.SpringWithVelocityVectorAnimator.Parameters
   - DrawnUi.Draw.SpringWithVelocityVectorAnimator.UpdateValue(System.Int64,System.Int64)
   langs:
@@ -97,16 +97,16 @@ items:
   - System.Object.ToString
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
-- uid: DrawnUi.Draw.SpringWithVelocityVectorAnimator.Initialize(System.Numerics.Vector2,System.Numerics.Vector2,System.Numerics.Vector2,DrawnUi.Infrastructure.Spring,System.Single)
-  commentId: M:DrawnUi.Draw.SpringWithVelocityVectorAnimator.Initialize(System.Numerics.Vector2,System.Numerics.Vector2,System.Numerics.Vector2,DrawnUi.Infrastructure.Spring,System.Single)
-  id: Initialize(System.Numerics.Vector2,System.Numerics.Vector2,System.Numerics.Vector2,DrawnUi.Infrastructure.Spring,System.Single)
+- uid: DrawnUi.Draw.SpringWithVelocityVectorAnimator.Initialize(System.Numerics.Vector2,System.Numerics.Vector2,System.Numerics.Vector2,DrawnUi.Infrastructure.Spring@,System.Single)
+  commentId: M:DrawnUi.Draw.SpringWithVelocityVectorAnimator.Initialize(System.Numerics.Vector2,System.Numerics.Vector2,System.Numerics.Vector2,DrawnUi.Infrastructure.Spring@,System.Single)
+  id: Initialize(System.Numerics.Vector2,System.Numerics.Vector2,System.Numerics.Vector2,DrawnUi.Infrastructure.Spring@,System.Single)
   parent: DrawnUi.Draw.SpringWithVelocityVectorAnimator
   langs:
   - csharp
   - vb
-  name: Initialize(Vector2, Vector2, Vector2, Spring, float)
-  nameWithType: SpringWithVelocityVectorAnimator.Initialize(Vector2, Vector2, Vector2, Spring, float)
-  fullName: DrawnUi.Draw.SpringWithVelocityVectorAnimator.Initialize(System.Numerics.Vector2, System.Numerics.Vector2, System.Numerics.Vector2, DrawnUi.Infrastructure.Spring, float)
+  name: Initialize(Vector2, Vector2, Vector2, in Spring, float)
+  nameWithType: SpringWithVelocityVectorAnimator.Initialize(Vector2, Vector2, Vector2, in Spring, float)
+  fullName: DrawnUi.Draw.SpringWithVelocityVectorAnimator.Initialize(System.Numerics.Vector2, System.Numerics.Vector2, System.Numerics.Vector2, in DrawnUi.Infrastructure.Spring, float)
   type: Method
   source:
     remote:
@@ -115,12 +115,12 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Initialize
     path: ../src/Shared/DrawnUi/Features/Animators/SpringWithVelocityVectorAnimator.cs
-    startLine: 9
+    startLine: 10
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public void Initialize(Vector2 restOffset, Vector2 position, Vector2 velocity, Spring spring, float thresholdStop = 0.5)
+    content: public void Initialize(Vector2 restOffset, Vector2 position, Vector2 velocity, in Spring spring, float thresholdStop = 0.5)
     parameters:
     - id: restOffset
       type: System.Numerics.Vector2
@@ -155,7 +155,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Parameters
     path: ../src/Shared/DrawnUi/Features/Animators/SpringWithVelocityVectorAnimator.cs
-    startLine: 16
+    startLine: 17
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -184,7 +184,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateValue
     path: ../src/Shared/DrawnUi/Features/Animators/SpringWithVelocityVectorAnimator.cs
-    startLine: 18
+    startLine: 19
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -228,7 +228,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Features/Animators/SpringWithVelocityVectorAnimator.cs
-    startLine: 32
+    startLine: 33
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1318,7 +1318,7 @@ references:
     href: DrawnUi.Extensions.html
 - uid: DrawnUi.Draw.SpringWithVelocityVectorAnimator.Initialize*
   commentId: Overload:DrawnUi.Draw.SpringWithVelocityVectorAnimator.Initialize
-  href: DrawnUi.Draw.SpringWithVelocityVectorAnimator.html#DrawnUi_Draw_SpringWithVelocityVectorAnimator_Initialize_System_Numerics_Vector2_System_Numerics_Vector2_System_Numerics_Vector2_DrawnUi_Infrastructure_Spring_System_Single_
+  href: DrawnUi.Draw.SpringWithVelocityVectorAnimator.html#DrawnUi_Draw_SpringWithVelocityVectorAnimator_Initialize_System_Numerics_Vector2_System_Numerics_Vector2_System_Numerics_Vector2_DrawnUi_Infrastructure_Spring__System_Single_
   name: Initialize
   nameWithType: SpringWithVelocityVectorAnimator.Initialize
   fullName: DrawnUi.Draw.SpringWithVelocityVectorAnimator.Initialize

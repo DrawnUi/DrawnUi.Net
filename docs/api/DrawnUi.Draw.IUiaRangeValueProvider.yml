@@ -1,0 +1,457 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.IUiaRangeValueProvider
+  commentId: T:DrawnUi.Draw.IUiaRangeValueProvider
+  id: IUiaRangeValueProvider
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.IUiaRangeValueProvider.IsReadOnly
+  - DrawnUi.Draw.IUiaRangeValueProvider.LargeChange
+  - DrawnUi.Draw.IUiaRangeValueProvider.Maximum
+  - DrawnUi.Draw.IUiaRangeValueProvider.Minimum
+  - DrawnUi.Draw.IUiaRangeValueProvider.SetValue(System.Double)
+  - DrawnUi.Draw.IUiaRangeValueProvider.SmallChange
+  - DrawnUi.Draw.IUiaRangeValueProvider.Value
+  langs:
+  - csharp
+  - vb
+  name: IUiaRangeValueProvider
+  nameWithType: IUiaRangeValueProvider
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider
+  type: Interface
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IUiaRangeValueProvider
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 91
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: >-
+      [ComVisible(true)]
+
+      [Guid("36dc7aef-33e6-4691-afe1-2be7274b3d33")]
+
+      [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+
+      public interface IUiaRangeValueProvider
+    content.vb: >-
+      <ComVisible(True)>
+
+      <Guid("36dc7aef-33e6-4691-afe1-2be7274b3d33")>
+
+      <InterfaceType(ComInterfaceType.InterfaceIsIUnknown)>
+
+      Public Interface IUiaRangeValueProvider
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  attributes:
+  - type: System.Runtime.InteropServices.ComVisibleAttribute
+    ctor: System.Runtime.InteropServices.ComVisibleAttribute.#ctor(System.Boolean)
+    arguments:
+    - type: System.Boolean
+      value: true
+  - type: System.Runtime.InteropServices.GuidAttribute
+    ctor: System.Runtime.InteropServices.GuidAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: 36dc7aef-33e6-4691-afe1-2be7274b3d33
+  - type: System.Runtime.InteropServices.InterfaceTypeAttribute
+    ctor: System.Runtime.InteropServices.InterfaceTypeAttribute.#ctor(System.Runtime.InteropServices.ComInterfaceType)
+    arguments:
+    - type: System.Runtime.InteropServices.ComInterfaceType
+      value: 1
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.SetValue(System.Double)
+  commentId: M:DrawnUi.Draw.IUiaRangeValueProvider.SetValue(System.Double)
+  id: SetValue(System.Double)
+  parent: DrawnUi.Draw.IUiaRangeValueProvider
+  langs:
+  - csharp
+  - vb
+  name: SetValue(double)
+  nameWithType: IUiaRangeValueProvider.SetValue(double)
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.SetValue(double)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SetValue
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 96
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: void SetValue(double val)
+    parameters:
+    - id: val
+      type: System.Double
+    content.vb: Sub SetValue(val As Double)
+  overload: DrawnUi.Draw.IUiaRangeValueProvider.SetValue*
+  nameWithType.vb: IUiaRangeValueProvider.SetValue(Double)
+  fullName.vb: DrawnUi.Draw.IUiaRangeValueProvider.SetValue(Double)
+  name.vb: SetValue(Double)
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.Value
+  commentId: P:DrawnUi.Draw.IUiaRangeValueProvider.Value
+  id: Value
+  parent: DrawnUi.Draw.IUiaRangeValueProvider
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: IUiaRangeValueProvider.Value
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.Value
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Value
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 97
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: double Value { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: ReadOnly Property Value As Double
+  overload: DrawnUi.Draw.IUiaRangeValueProvider.Value*
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.IsReadOnly
+  commentId: P:DrawnUi.Draw.IUiaRangeValueProvider.IsReadOnly
+  id: IsReadOnly
+  parent: DrawnUi.Draw.IUiaRangeValueProvider
+  langs:
+  - csharp
+  - vb
+  name: IsReadOnly
+  nameWithType: IUiaRangeValueProvider.IsReadOnly
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.IsReadOnly
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsReadOnly
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 98
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: bool IsReadOnly { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property IsReadOnly As Boolean
+  overload: DrawnUi.Draw.IUiaRangeValueProvider.IsReadOnly*
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.Maximum
+  commentId: P:DrawnUi.Draw.IUiaRangeValueProvider.Maximum
+  id: Maximum
+  parent: DrawnUi.Draw.IUiaRangeValueProvider
+  langs:
+  - csharp
+  - vb
+  name: Maximum
+  nameWithType: IUiaRangeValueProvider.Maximum
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.Maximum
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Maximum
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 99
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: double Maximum { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: ReadOnly Property Maximum As Double
+  overload: DrawnUi.Draw.IUiaRangeValueProvider.Maximum*
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.Minimum
+  commentId: P:DrawnUi.Draw.IUiaRangeValueProvider.Minimum
+  id: Minimum
+  parent: DrawnUi.Draw.IUiaRangeValueProvider
+  langs:
+  - csharp
+  - vb
+  name: Minimum
+  nameWithType: IUiaRangeValueProvider.Minimum
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.Minimum
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Minimum
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 100
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: double Minimum { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: ReadOnly Property Minimum As Double
+  overload: DrawnUi.Draw.IUiaRangeValueProvider.Minimum*
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.LargeChange
+  commentId: P:DrawnUi.Draw.IUiaRangeValueProvider.LargeChange
+  id: LargeChange
+  parent: DrawnUi.Draw.IUiaRangeValueProvider
+  langs:
+  - csharp
+  - vb
+  name: LargeChange
+  nameWithType: IUiaRangeValueProvider.LargeChange
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.LargeChange
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: LargeChange
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 101
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: double LargeChange { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: ReadOnly Property LargeChange As Double
+  overload: DrawnUi.Draw.IUiaRangeValueProvider.LargeChange*
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.SmallChange
+  commentId: P:DrawnUi.Draw.IUiaRangeValueProvider.SmallChange
+  id: SmallChange
+  parent: DrawnUi.Draw.IUiaRangeValueProvider
+  langs:
+  - csharp
+  - vb
+  name: SmallChange
+  nameWithType: IUiaRangeValueProvider.SmallChange
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.SmallChange
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SmallChange
+    path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
+    startLine: 102
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: double SmallChange { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: ReadOnly Property SmallChange As Double
+  overload: DrawnUi.Draw.IUiaRangeValueProvider.SmallChange*
+references:
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.SetValue*
+  commentId: Overload:DrawnUi.Draw.IUiaRangeValueProvider.SetValue
+  href: DrawnUi.Draw.IUiaRangeValueProvider.html#DrawnUi_Draw_IUiaRangeValueProvider_SetValue_System_Double_
+  name: SetValue
+  nameWithType: IUiaRangeValueProvider.SetValue
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.SetValue
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.Value*
+  commentId: Overload:DrawnUi.Draw.IUiaRangeValueProvider.Value
+  href: DrawnUi.Draw.IUiaRangeValueProvider.html#DrawnUi_Draw_IUiaRangeValueProvider_Value
+  name: Value
+  nameWithType: IUiaRangeValueProvider.Value
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.Value
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.IsReadOnly*
+  commentId: Overload:DrawnUi.Draw.IUiaRangeValueProvider.IsReadOnly
+  href: DrawnUi.Draw.IUiaRangeValueProvider.html#DrawnUi_Draw_IUiaRangeValueProvider_IsReadOnly
+  name: IsReadOnly
+  nameWithType: IUiaRangeValueProvider.IsReadOnly
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.IsReadOnly
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.Maximum*
+  commentId: Overload:DrawnUi.Draw.IUiaRangeValueProvider.Maximum
+  href: DrawnUi.Draw.IUiaRangeValueProvider.html#DrawnUi_Draw_IUiaRangeValueProvider_Maximum
+  name: Maximum
+  nameWithType: IUiaRangeValueProvider.Maximum
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.Maximum
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.Minimum*
+  commentId: Overload:DrawnUi.Draw.IUiaRangeValueProvider.Minimum
+  href: DrawnUi.Draw.IUiaRangeValueProvider.html#DrawnUi_Draw_IUiaRangeValueProvider_Minimum
+  name: Minimum
+  nameWithType: IUiaRangeValueProvider.Minimum
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.Minimum
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.LargeChange*
+  commentId: Overload:DrawnUi.Draw.IUiaRangeValueProvider.LargeChange
+  href: DrawnUi.Draw.IUiaRangeValueProvider.html#DrawnUi_Draw_IUiaRangeValueProvider_LargeChange
+  name: LargeChange
+  nameWithType: IUiaRangeValueProvider.LargeChange
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.LargeChange
+- uid: DrawnUi.Draw.IUiaRangeValueProvider.SmallChange*
+  commentId: Overload:DrawnUi.Draw.IUiaRangeValueProvider.SmallChange
+  href: DrawnUi.Draw.IUiaRangeValueProvider.html#DrawnUi_Draw_IUiaRangeValueProvider_SmallChange
+  name: SmallChange
+  nameWithType: IUiaRangeValueProvider.SmallChange
+  fullName: DrawnUi.Draw.IUiaRangeValueProvider.SmallChange
