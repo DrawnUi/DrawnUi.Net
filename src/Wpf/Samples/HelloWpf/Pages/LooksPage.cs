@@ -124,9 +124,9 @@ public class LooksPage : SkiaLayer
                         HorizontalOptions = LayoutOptions.Fill,
                         Children = new List<SkiaControl>
                         {
-                            new SkiaSwitch { ControlStyle = style, IsToggled = true, VerticalOptions = LayoutOptions.Center }
+                            new SkiaSwitch { ControlStyle = style, AccessibilityLabel = "Wi-Fi", IsToggled = true, VerticalOptions = LayoutOptions.Center }
                                 .Adapt(me => { styled?.Add(me); me.Toggled += (_, v) => Log($"{Title()} switch: {Bool(v)}"); }),
-                            new SkiaCheckbox { ControlStyle = style, IsToggled = true, VerticalOptions = LayoutOptions.Center }
+                            new SkiaCheckbox { ControlStyle = style, AccessibilityLabel = "Remember me", IsToggled = true, VerticalOptions = LayoutOptions.Center }
                                 .Adapt(me => { styled?.Add(me); me.Toggled += (_, v) => Log($"{Title()} checkbox: {Bool(v)}"); }),
                             new SkiaRadioButton { ControlStyle = style, Text = "One", IsToggled = true, GroupName = title, VerticalOptions = LayoutOptions.Center }
                                 .Adapt(me => { styled?.Add(me); me.Toggled += (_, v) => { if (v) Log($"{Title()} radio: One"); }; }),
@@ -139,14 +139,14 @@ public class LooksPage : SkiaLayer
                         .Adapt(me => styled?.Add(me))
                         .OnTapped(me => Log($"{Title()} button tapped")),
 
-                    new SkiaProgress { ControlStyle = style, Value = 65, HorizontalOptions = LayoutOptions.Fill }
+                    new SkiaProgress { ControlStyle = style, AccessibilityLabel = "Download", Value = 65, HorizontalOptions = LayoutOptions.Fill }
                         .Adapt(me => styled?.Add(me)),
 
-                    new SkiaSlider { ControlStyle = style, End = 65, HorizontalOptions = LayoutOptions.Fill }
+                    new SkiaSlider { ControlStyle = style, AccessibilityLabel = "Volume", End = 65, HorizontalOptions = LayoutOptions.Fill }
                         .Adapt(me => { styled?.Add(me); me.EndChanged += (_, v) => Log($"{Title()} slider: {v:0}"); }),
 
                     // range mode: two thumbs
-                    new SkiaSlider { ControlStyle = style, EnableRange = true, Start = 20, End = 80, HorizontalOptions = LayoutOptions.Fill }
+                    new SkiaSlider { ControlStyle = style, AccessibilityLabel = "Price range", EnableRange = true, Start = 20, End = 80, HorizontalOptions = LayoutOptions.Fill }
                         .Adapt(me =>
                         {
                             styled?.Add(me);
