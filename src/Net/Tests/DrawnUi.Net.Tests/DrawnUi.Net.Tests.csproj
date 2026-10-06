@@ -20,6 +20,7 @@
 
     <ItemGroup>
         <EmbeddedResource Include="Resources\green.png" />
+        <None Update="Assets\**" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
 
 </Project>

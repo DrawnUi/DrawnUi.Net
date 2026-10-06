@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 #if !BROWSER && !DRAWNUI_NET
@@ -95,9 +94,6 @@ namespace DrawnUi.Draw
         public SkiaSvg()
         {
             UseCache = SkiaCacheType.Operations;
-
-            _assembly = Assembly.GetCallingAssembly();
-            _part1 = _assembly?.GetName().Name + ".Resources.Images.";
         }
 
         protected static void NeedUpdateIcon(BindableObject bindable, object oldvalue, object newvalue)
@@ -309,10 +305,14 @@ namespace DrawnUi.Draw
             nameof(IconFilePath),
             typeof(string),
             typeof(SkiaSvg),
-            default(string), propertyChanged: NeedUpdateIcon);
+            default(string), propertyChanged: ApplySourceProperty);
 
-        private string _part1;
-
+        /// <summary>
+        /// Path of an SVG file to show, loaded exactly like <see cref="Source"/>, with the same loader and text cache:
+        /// a file of the app (MAUI Resources/Raw, next to the executable on WPF and OpenTK, wwwroot on Blazor),
+        /// a file:// path, or an http(s) URL. Embedded resources are not read. Kept for older XAML: the SVG set last
+        /// through IconFilePath or Source is shown, and a non-empty <see cref="SvgString"/> takes precedence over both.
+        /// </summary>
         public string IconFilePath
         {
             get => (string)GetValue(IconFilePathProperty);
@@ -322,7 +322,6 @@ namespace DrawnUi.Draw
         #endregion
 
         private string _loadedString;
-        private readonly Assembly _assembly;
 
         protected string LoadedString
         {
@@ -425,14 +424,16 @@ namespace DrawnUi.Draw
                 }
                 else
                 {
-                    if (TryGetCachedSvgText(control.Source, out var cached))
+                    // Source and IconFilePath both route here: load the value that changed
+                    var source = (string)newvalue;
+                    if (TryGetCachedSvgText(source, out var cached))
                     {
                         control.UpdateImageFromString(cached);
                         control.UpdateIcon();
                     }
                     else
                     {
-                        _ = control.LoadSource(control.Source);
+                        _ = control.LoadSource(source);
                     }
                 }
             }
