@@ -343,6 +343,9 @@ public class DrawnUiWindow : GameWindow
             case Keys.F11: ToggleFullscreen(); return;
             case Keys.Escape when WindowState == WindowState.Fullscreen:
                 WindowState = WindowState.Normal; return;
+            case Keys.Menu:
+            case Keys.F10 when shift:
+                _gestures.OnContextMenuKey(ClientSize); return;
         }
 
         // Keyboard navigation, the rules of the other desktop heads (DrawnView.HandleKeyboardNavigation): Tab / Shift+Tab

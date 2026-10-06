@@ -10,19 +10,22 @@ namespace DrawnUi.OpenTk;
 
 /// <summary>
 /// Routes GLFW mouse events into the canvas. Every button presses, drags and taps — a control that
-/// only wants the primary button filters on <c>args.Event.Pointer.Button</c>; a right click also
-/// reaches <c>SkiaControl.ContextMenu</c> the usual way. One button owns the pointer at a time: a
-/// second button pressed while the first is held is ignored until the first is released.
+/// only wants the primary button filters on <c>args.Event.Pointer.Button</c>; releasing the right button then also
+/// raises <c>SkiaControl.ContextMenu</c>, as on WPF and the browser heads (the keyboard's Menu key goes through
+/// <see cref="OnContextMenuKey"/>). One button owns the pointer at a time: a second button pressed while the first is
+/// held is ignored until the first is released.
 /// </summary>
 public class DesktopGestureHandler
 {
     private readonly Canvas _canvas;
     private MouseButton? _pressed;
+    private Vector2 _lastPointer;
 
     public DesktopGestureHandler(Canvas canvas) => _canvas = canvas;
 
     public void OnMouseDown(MouseButtonEventArgs e, Vector2 mousePos, Vector2i clientSize, MouseState? mouseState = null)
     {
+        _lastPointer = mousePos;
         if (_pressed != null) return;
         _pressed = e.Button;
         _canvas.HandleDesktopPointerDown(mousePos.X, mousePos.Y, clientSize.X, clientSize.Y,
@@ -31,6 +34,7 @@ public class DesktopGestureHandler
 
     public void OnMouseMove(MouseMoveEventArgs e, Vector2 mousePos, bool isButtonDown, Vector2i clientSize, MouseState? mouseState = null)
     {
+        _lastPointer = mousePos;
         var pointer = _pressed is { } held
             ? DescribePointer(held, AppoMobi.Gestures.MouseButtonState.Pressed, mouseState)
             : null;
@@ -42,11 +46,23 @@ public class DesktopGestureHandler
 
     public void OnMouseUp(MouseButtonEventArgs e, Vector2 mousePos, Vector2i clientSize, MouseState? mouseState = null)
     {
+        _lastPointer = mousePos;
         if (_pressed != e.Button) return;
         _pressed = null;
         _canvas.HandleDesktopPointerUp(mousePos.X, mousePos.Y, clientSize.X, clientSize.Y,
             DescribePointer(e.Button, AppoMobi.Gestures.MouseButtonState.Released, mouseState));
+
+        // the right button's release is the context-menu request, after its tap, as WPF's ContextMenuOpening
+        if (e.Button == MouseButton.Right)
+            _canvas.HandleDesktopContextMenu(mousePos.X, mousePos.Y, clientSize.X, clientSize.Y, PointerDeviceType.Mouse);
     }
+
+    /// <summary>
+    /// The keyboard's Menu key or Shift+F10: a context-menu request at the last pointer position, carrying no pointer
+    /// (that is how <c>SkiaControl.ContextMenuSource</c> tells the keyboard). True when a control took it.
+    /// </summary>
+    public bool OnContextMenuKey(Vector2i clientSize) =>
+        _canvas.HandleDesktopContextMenu(_lastPointer.X, _lastPointer.Y, clientSize.X, clientSize.Y, null);
 
     /// <summary>
     /// GLFW reports the wheel in notches (+1 away from the user, fractions on precision touchpads);
