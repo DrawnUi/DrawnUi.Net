@@ -81,8 +81,8 @@ public class WheelScrollNoPlanesTests
         var (host, picker, robot) = NewWheel(selected: 3);
         using var _ = host;
 
-        // The picker suppresses its own SelectedIndexChanged for scroll-driven updates (echo guard);
-        // the framework selection event raised from the wheel draw/snap path is on the scroller.
+        // the selection event raised from the wheel draw/snap path is on the scroller; the picker re-raises it
+        // (see WheelSelectionEventTests)
         int eventCount = 0;
         int lastEventIndex = -1;
         picker.Scroller.SelectedIndexChanged += (_, idx) => { eventCount++; lastEventIndex = idx; };

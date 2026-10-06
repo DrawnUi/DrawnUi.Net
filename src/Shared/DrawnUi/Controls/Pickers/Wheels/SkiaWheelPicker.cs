@@ -155,6 +155,10 @@ namespace DrawnUi.Controls
 
         #region EVENTS
 
+        /// <summary>
+        /// Raised once each time <see cref="SelectedIndex"/> takes a new value: when it is set from code or a binding,
+        /// and when the user's drag, fling or snap brings the wheel to rest on another item.
+        /// </summary>
         public event EventHandler<int> SelectedIndexChanged;
 
         #endregion
@@ -168,9 +172,15 @@ namespace DrawnUi.Controls
             BindingMode.TwoWay,
             null, propertyChanged: (b, o, n) =>
             {
-                if (b is SkiaWheelPicker control && !control._isUpdatingFromIndex)
+                if (b is SkiaWheelPicker control)
                 {
-                    control.UpdateWheelFromIndex();
+                    // the guard only stops echoing a value that came from the wheel back into it,
+                    // the change itself is real and is reported either way
+                    if (!control._isUpdatingFromIndex)
+                    {
+                        control.UpdateWheelFromIndex();
+                    }
+
                     control.SelectedIndexChanged?.Invoke(control, (int)n);
                 }
             });

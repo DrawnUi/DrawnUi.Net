@@ -154,7 +154,7 @@ A progress bar is an accessibility node by default (role progressbar). Screen re
 
 ### Events
 
-- `SelectedIndexChanged`: Raised when `SelectedIndex` is set from code or a binding. Signature: `EventHandler<int>`. When the user scrolls the wheel, `SelectedIndex` changes (bind or observe it) but this event is not raised.
+- `SelectedIndexChanged`: Raised once each time `SelectedIndex` changes. Signature: `EventHandler<int>` with the new index. It is raised when `SelectedIndex` is set from code or a binding, and when the user turns the wheel: after a drag, a fling or a snap, once the wheel stops on another item. It is never raised twice for one change.
 
 ### Two-Way Binding `SelectedIndex` (C# code-behind)
 
@@ -219,6 +219,8 @@ Scrolling the wheel updates `model.SelectedIndex`; setting `model.SelectedIndex`
 
 ### Events
 
-- `SelectedIndexChanged`: Raised when `SelectedIndex` is set from code or a binding
+- `SelectedIndexChanged`: Raised once each time `SelectedIndex` changes
   - Event signature: `EventHandler<int>` with the new index
-  - When the user spins the wheel, `SelectedIndex` changes (bind or observe it) but this event is not raised
+  - Raised when `SelectedIndex` is set from code or a binding
+  - Raised when the wheel stops on another item: after the user drags or flings it, after the snap, and after `SpinToIndex`, `SpinToIndexShortest` or `SpinToRandom`
+  - While the wheel turns, `SelectedIndex` follows the item at the selection side (bind or observe it to show it live); the event waits until the wheel stops
