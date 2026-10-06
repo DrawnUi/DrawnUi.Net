@@ -1,6 +1,6 @@
 ---
-title: DrawnUI for .NET - SkiaSharp Rendering Engine
-description: Hardware-accelerated rich UIs rendering engine for .NET MAUI, Blazor, pure WebAssembly, OpenTK, WPF, and any .NET.
+title: DrawnUI - Skia Rendering Engine for .NET, React and Rust
+description: A hardware-accelerated rendering engine that works along your framework, for .NET MAUI, Blazor, pure WebAssembly, OpenTK, WPF, React and Rust.
 ---
 
 <div style="position: relative; text-align: center; padding: 30px 0 70px 0; border-radius: 12px; overflow: hidden; background: #0b1220; color: white;">
@@ -12,10 +12,10 @@ description: Hardware-accelerated rich UIs rendering engine for .NET MAUI, Blazo
   <div style="position: relative; z-index: 1;">
     <img src="images/draw.svg" alt="DrawnUI Logo" style="height: 80px; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));">
     <h1 style="font-size: 3.5em; margin: 0; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.45);">
-      DrawnUI for .NET
+      DrawnUI
     </h1>
     <p style="font-size: 1.4em; margin: 20px auto; opacity: 0.95; max-width: 680px;">
-      Hardware-accelerated <strong>rendering engine</strong> for .NET, including MAUI, Blazor, and OpenTK, powered by SkiaSharp
+      Hardware-accelerated <strong>rendering engine</strong> that works along your framework, for .NET, React and Rust, powered by Skia
     </p>
     <div class="hero-buttons" style="margin-top: 30px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
       <a href="https://drawfiddle.com" class="hero-btn hero-btn-primary" style="background: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(37,99,235,0.35); transition: transform 0.2s ease, box-shadow 0.2s ease; display: inline-block; min-width: 160px; text-align: center;">
@@ -328,6 +328,24 @@ dotnet add package DrawnUi.Blazor.Server</code></pre>
   <p><a href="articles/net/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">DrawnUi.Net guide →</a></p>
 </div>
 
+<!-- REACT -->
+<div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
+  <h3 style="margin-top: 0; color: white;">React</h3>
+  <p>Use <strong>drawnui-react</strong> to draw on a canvas inside a React app in the browser, the same engine in TypeScript on CanvasKit.</p>
+  <p><strong>Install:</strong></p>
+  <pre style="white-space: pre-wrap;"><code>npm i drawnui-react@preview react react-dom</code></pre>
+  <p><a href="articles/react/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">React guide →</a></p>
+</div>
+
+<!-- RUST -->
+<div style="background: #1a202c; color: #e2e8f0; padding: 22px; border-radius: 12px; border: 1px solid rgba(66,153,225,0.25);">
+  <h3 style="margin-top: 0; color: white;">Rust</h3>
+  <p>Use the <strong>drawnui</strong> crate to build one Rust app for Windows, macOS, Linux, iOS, Android and the browser.</p>
+  <p><strong>Install:</strong></p>
+  <pre style="white-space: pre-wrap;"><code>cargo add drawnui@0.1.0-preview.4</code></pre>
+  <p><a href="articles/rust/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">Rust guide →</a></p>
+</div>
+
 
 
 </div>
@@ -342,12 +360,18 @@ dotnet add package DrawnUi.Blazor.Server</code></pre>
 
 ## 🌟 What Is DrawnUI?
 
-**DrawnUI** is a rendering engine for **.NET** built on top of **SkiaSharp** that brings together a complete layout system, gesture recognition, smooth animations, and custom-drawn controls across multiple hosts, including .NET MAUI, Blazor, and platform-agnostic .NET runtimes.
+**DrawnUI** is a rendering engine, not a framework. You use it along the framework you already have, to go past the limits of its built-in controls. It does not replace anything: keep your MAUI, WPF, Blazor, React or Rust app, its packages and its native APIs, and draw on a canvas what needs it.
 
-Unlike traditional UI stacks that rely only on native platform widgets, DrawnUI renders everything directly to SkiaSharp-powered surfaces. This approach gives you **pixel-perfect control** over your app's appearance while keeping a shared rendering model that can be hosted in native apps, browser runtimes, and headless .NET workflows.
+You can use it in two ways:
+- **Drawn parts of your app**: put one canvas where a built-in control is too limited, or where a complex control would be slow to build from native views. The rest of the app stays as it is.
+- **A whole drawn app**: one canvas for the full UI, with `SkiaShell` navigation and deep links, while your framework still runs the app and its business logic.
+
+Everything on the canvas is drawn with [Skia](https://skia.org), the graphics engine behind Chrome and Android. Drawn controls are light objects that get drawn, not native views that get created, so a complex screen stays fast and looks the same, pixel for pixel, on every platform. You can write your own drawn controls too, and draw them with the rest of the UI, with hardware acceleration where the platform has it.
+
+DrawnUI comes for three ecosystems that share the same controls and rules: **DrawnUI for .NET** (SkiaSharp: MAUI, WPF, Blazor, WebAssembly, OpenTK and any .NET host), **[DrawnUI for React](articles/react/index.md)** (TypeScript on CanvasKit) and **[DrawnUI for Rust](articles/rust/index.md)**.
 
 **Key Architecture:**
-- **SkiaSharp Foundation**: Leverages Google's Skia graphics engine for consistent, high-performance 2D rendering
+- **Skia Foundation**: Google's Skia graphics engine for consistent, high-performance 2D rendering
 - **Canvas-Based Layout**: Custom layout system that positions and sizes controls on hardware-accelerated surfaces
 - **Gesture Engine**: Multi-touch gesture recognition system with support for complex interactions
 - **Animation Pipeline**: Smooth, performant animations using GPU acceleration and intelligent caching
@@ -376,7 +400,7 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
 - **Shell-like** navigation on canvas (MAUI, WPF and OpenTK)
 - **XAML + Hot Reload** support
 - **Fluent C#** syntax for code-behind UI with bindings
-- **Accessible** canvas: screen readers and keyboard navigation on MAUI, WPF, OpenTK, Blazor and WebAssembly
+- **Accessible** canvas: screen readers and keyboard navigation on every platform
 
 </div>
 
@@ -398,6 +422,8 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
   <a href="articles/maui/getting-started.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Getting Started →</a><br>
   <a href="articles/blazor/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Blazor →</a><br>
   <a href="articles/web/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">DrawnUi.Web →</a><br>
+  <a href="articles/react/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">React →</a><br>
+  <a href="articles/rust/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Rust →</a><br>
   <a href="articles/controls/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Controls Reference →</a><br>
   <a href="articles/advanced/index.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Advanced Topics →</a><br>
   <a href="/api/" style="color: #4299e1; text-decoration: none; font-weight: 600;">API Reference →</a>
@@ -407,6 +433,7 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
   <h4 style="margin-bottom: 15px;">🧙 Tutorials</h4>
   <p style="margin-bottom: 20px; ">Step-by-step practical examples</p>
   <a href="articles/tutorials.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">View Tutorials →</a><br>
+  <a href="https://drawfiddle.com" style="color: #4299e1; text-decoration: none; font-weight: 600;">Try snippets in the Fiddle →</a><br>
   <a href="articles/sample-apps.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Sample Apps →</a><br>
   <a href="articles/fluent-extensions.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">Fluent Syntax →</a>
 </div>
