@@ -2,6 +2,7 @@ using System.Runtime.Versioning;
 using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Automation.Peers;
 using Microsoft.UI.Xaml.Automation.Provider;
+using IValueProvider = Microsoft.UI.Xaml.Automation.Provider.IValueProvider;
 
 namespace DrawnUi.Draw;
 
@@ -208,7 +209,11 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
 // ── Virtual peer (no backing UIElement) ──────────────────────────────────────
 
 [SupportedOSPlatform("windows")]
-internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProvider, IToggleProvider
+// WinUI's IInvokeProvider spelled out: this file is in namespace DrawnUi.Draw, where DrawnUI's own COM IInvokeProvider
+// (WindowsUiaInterfaces.cs, for the raw UIA provider) wins over a using. With that one the peer did not implement WinUI's,
+// the Invoke pattern failed to cast (E_NOINTERFACE) and Narrator could not activate any drawn control.
+internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, Microsoft.UI.Xaml.Automation.Provider.IInvokeProvider, IToggleProvider,
+    IRangeValueProvider, IValueProvider, IScrollItemProvider
 {
     private AccessibilityNode _node;
     private int _index;
@@ -221,10 +226,13 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
     internal void UpdateSnapshot(AccessibilityNode node, int index)
     {
         var wasPressed = _node.IsPressed;
+        var wasValue = _node.Value;
         _node  = node;
         _index = index;
         if (wasPressed != node.IsPressed)
             RaisePropertyChangedEvent(TogglePatternIdentifiers.ToggleStateProperty, ToState(wasPressed), ToState(node.IsPressed));
+        if (wasValue is { } before && node.Value is { } now && before.Now != now.Now)
+            RaisePropertyChangedEvent(RangeValuePatternIdentifiers.ValueProperty, before.Now, now.Now);
     }
 
     internal DrawnUiVirtualAutomationPeer(
@@ -242,7 +250,8 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
 
     // Read live label directly from Source so AT gets the latest value even before the
     // rate-limited snapshot rebuild fires.
-    protected override string GetNameCore()               => Source?.AccessibilityLabel ?? _node.Label ?? string.Empty;
+    // a node whose title text says its name is not named again (every name is said once)
+    protected override string GetNameCore()               => _node.NamedByChild ? string.Empty : Source?.AccessibilityLabel ?? _node.Label ?? string.Empty;
     protected override string GetHelpTextCore()           => _node.Hint  ?? string.Empty;
     protected override string GetClassNameCore()          => "DrawnUiElement";
     protected override string GetLocalizedControlTypeCore() => _node.Role ?? "custom";
@@ -255,7 +264,10 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
     protected override AutomationControlType GetAutomationControlTypeCore()
         => AriaToControlType(_node.Role);
 
-    protected override AutomationOrientation GetOrientationCore() => AutomationOrientation.None;
+    // a range control has a direction: without one VoiceOver read "circular slider", UIA clients guess the same
+    protected override AutomationOrientation GetOrientationCore() => _node.Value is { } value
+        ? value.Vertical ? AutomationOrientation.Vertical : AutomationOrientation.Horizontal
+        : AutomationOrientation.None;
 
     protected override bool IsKeyboardFocusableCore() => _node.CanInteract;
     protected override bool IsEnabledCore()           => _node.CanInteract || !DrawnUi.Models.Aria.IsInteractiveRole(_node.Role);
@@ -305,8 +317,44 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
     {
         PatternInterface.Invoke when _node.CanInteract => this,
         PatternInterface.Toggle when (Source?.AccessibilityIsPressed ?? _node.IsPressed).HasValue => this,
+        PatternInterface.RangeValue when _node.Value.HasValue => this,
+        PatternInterface.Value when !string.IsNullOrEmpty(_node.Value?.Text) => this,
+        PatternInterface.ScrollItem => this,
         _ => null,
     };
+
+    // IRangeValueProvider: a slider / progress bar's value; read only for a progress bar and a slider that takes no input
+
+    private AccessibilityValue RangeValue => Source?.GetAccessibilityValue() ?? _node.Value ?? default;
+
+    double IRangeValueProvider.Value => RangeValue.Now;
+    public double Minimum => RangeValue.Min;
+    public double Maximum => RangeValue.Max;
+    public double SmallChange => RangeValue.Step;
+    public double LargeChange => Math.Max(RangeValue.Step, (RangeValue.Max - RangeValue.Min) / 10);
+    bool IRangeValueProvider.IsReadOnly => RangeValue.Step <= 0 || !_node.CanInteract;
+
+    void IRangeValueProvider.SetValue(double value)
+    {
+        var source = Source;
+        if (source != null)
+            MainThread.BeginInvokeOnMainThread(() => SkiaAccessibilityManager.SetValue(source, value));
+    }
+
+    // IValueProvider: the spoken text where the number alone is not it ("65%", "20 – 80")
+
+    string IValueProvider.Value => RangeValue.Text ?? string.Empty;
+    bool IValueProvider.IsReadOnly => true;
+    void IValueProvider.SetValue(string value) { }
+
+    // IScrollItemProvider: the scrolls above the node bring it into view, as keyboard focus does
+
+    public void ScrollIntoView()
+    {
+        var source = Source;
+        if (source != null)
+            MainThread.BeginInvokeOnMainThread(() => SkiaAccessibilityManager.ScrollIntoView(source));
+    }
 
     // UIA SetFocus moves the reader cursor onto the element; it must not activate it.
     // Same path as Tab: input controls get OnAccessibilityFocused (SkiaEditor opens its sink),

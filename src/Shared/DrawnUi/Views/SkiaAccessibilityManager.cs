@@ -165,7 +165,11 @@ namespace DrawnUi.Views
 
             if ((node is not SkiaControl control || control.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult.Panning))
                 && node.OnAccessibilityKey(key))
+            {
+                if (node.GetAccessibilityValue() != null)
+                    RefreshAfterAction(node); // a reader reads the new value back at once
                 return true;
+            }
 
             return node is SkiaControl focused && focused.Superview?.AccessibilityManager.MoveInGroup(focused, key) == true;
         }

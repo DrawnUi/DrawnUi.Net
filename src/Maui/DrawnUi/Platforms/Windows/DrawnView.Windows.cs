@@ -91,6 +91,8 @@ namespace DrawnUi.Views
             AccessibilityManager.RebuildSkipped   -= OnA11yRebuildSkipped;
             AccessibilityManager.RebuildSkipped   += OnA11yRebuildSkipped;
             AccessibilityManager.FocusChanged     += OnA11yFocusChanged;
+            AccessibilityManager.ReaderRefocusRequested -= OnA11yReaderRefocus;
+            AccessibilityManager.ReaderRefocusRequested += OnA11yReaderRefocus;
             AccessibilityManager.LiveRegionUpdated += OnA11yLiveRegionUpdated;
 
             // Eagerly create the automation peer so A11yPeer is set before any AT client
@@ -436,8 +438,18 @@ namespace DrawnUi.Views
         private Microsoft.UI.Xaml.FrameworkElement? GetCanvasPlatformElement()
             => (CanvasView as View)?.Handler?.PlatformView as Microsoft.UI.Xaml.FrameworkElement;
 
+        // Narrator follows UI Automation focus: the node in focus is the reader's node; when a rebuild drops it (its page
+        // closed), focus moves to the first node that says something instead of staying on an empty spot
+        private void OnA11yReaderRefocus(AccessibilityNode next)
+        {
+            var source = next.Source;
+            if (source != null)
+                MainThread.BeginInvokeOnMainThread(() => AccessibilityManager.NotifyFocused(source));
+        }
+
         private void OnA11yFocusChanged(DrawnUi.Draw.ISkiaAccessibilityNode? focused)
         {
+            AccessibilityManager.NotifyReaderFocused(focused);
             var host = _a11yHost;
             if (host == null) return;
             MainThread.BeginInvokeOnMainThread(() =>
@@ -543,6 +555,7 @@ namespace DrawnUi.Views
             _a11yRefresh?.Dispose();
             _a11yRefresh = null;
             AccessibilityManager.FocusChanged     -= OnA11yFocusChanged;
+            AccessibilityManager.ReaderRefocusRequested -= OnA11yReaderRefocus;
             AccessibilityManager.LiveRegionUpdated -= OnA11yLiveRegionUpdated;
             var canvasElem = GetCanvasPlatformElement();
             if (canvasElem != null)

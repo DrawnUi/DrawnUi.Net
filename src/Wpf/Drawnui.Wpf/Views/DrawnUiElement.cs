@@ -182,6 +182,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         Canvas.AccessibilityManager.FocusChanged += OnAccessibilityFocusChanged;
         Canvas.AccessibilityManager.LiveRegionUpdated += OnAccessibilityLiveRegion;
         Canvas.AccessibilityManager.RebuildSkipped += OnAccessibilityRebuildSkipped;
+        Canvas.AccessibilityManager.ReaderRefocusRequested += OnAccessibilityReaderRefocus;
 
         Super.HotReload += OnHotReload;
 
@@ -320,8 +321,18 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         InvalidateFocusRing();
     });
 
+    // Narrator follows UI Automation focus: the node in focus is the reader's node; when a rebuild drops it (its page
+    // closed), focus moves to the first node that says something instead of staying on an empty spot
+    private void OnAccessibilityReaderRefocus(AccessibilityNode next)
+    {
+        var source = next.Source;
+        if (source != null)
+            Dispatcher.BeginInvoke(() => Canvas.AccessibilityManager.NotifyFocused(source));
+    }
+
     private void OnAccessibilityFocusChanged(ISkiaAccessibilityNode node) => Dispatcher.BeginInvoke(() =>
     {
+        Canvas.AccessibilityManager.NotifyReaderFocused(node);
         _peer?.NotifyFocusChanged(node);
         InvalidateFocusRing();
     });
@@ -429,6 +440,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         CompositionTarget.Rendering -= OnCompositionRendering;
         _a11yRefresh?.Stop();
         Canvas.AccessibilityManager.RebuildSkipped -= OnAccessibilityRebuildSkipped;
+        Canvas.AccessibilityManager.ReaderRefocusRequested -= OnAccessibilityReaderRefocus;
 
         if (_window != null)
         {

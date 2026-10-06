@@ -191,7 +191,8 @@ internal sealed class DrawnUiElementAutomationPeer : FrameworkElementAutomationP
 }
 
 /// <summary>One accessibility node of the drawn tree; has no backing UIElement.</summary>
-internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProvider, IToggleProvider
+internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProvider, IToggleProvider,
+    IRangeValueProvider, IValueProvider, IScrollItemProvider
 {
     private readonly DrawnUiElementAutomationPeer _parent;
     private AccessibilityNode _node;
@@ -211,12 +212,15 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
 
     internal void Update(AccessibilityNode node, int index)
     {
+        var wasValue = _node.Value;
         _node = node;
         _index = index;
+        if (wasValue is { } before && node.Value is { } now && before.Now != now.Now)
+            RaisePropertyChangedEvent(RangeValuePatternIdentifiers.ValueProperty, before.Now, now.Now);
     }
 
-    // live label: the snapshot is rate-limited, the source is not
-    protected override string GetNameCore() => Source?.AccessibilityLabel ?? _node.Label ?? string.Empty;
+    // live label: the snapshot is rate-limited, the source is not; a node whose title text says its name is not named again
+    protected override string GetNameCore() => _node.NamedByChild ? string.Empty : Source?.AccessibilityLabel ?? _node.Label ?? string.Empty;
     protected override string GetHelpTextCore() => _node.Hint ?? string.Empty;
     protected override string GetClassNameCore() => "DrawnUiNode";
     protected override string GetLocalizedControlTypeCore() => _node.Role ?? "custom";
@@ -226,9 +230,13 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
     protected override string GetItemStatusCore() => string.Empty;
     protected override string GetItemTypeCore() => string.Empty;
     protected override AutomationControlType GetAutomationControlTypeCore() => AriaToControlType(_node.Role);
-    protected override AutomationOrientation GetOrientationCore() => AutomationOrientation.None;
+    // a range control has a direction (VoiceOver read "circular slider" without one)
+    protected override AutomationOrientation GetOrientationCore() => _node.Value is { } value
+        ? value.Vertical ? AutomationOrientation.Vertical : AutomationOrientation.Horizontal
+        : AutomationOrientation.None;
     protected override bool IsKeyboardFocusableCore() => _node.CanInteract;
-    protected override bool IsEnabledCore() => true;
+    // a control role that takes no input reads as unavailable, as on MAUI Windows (drawnui-cross 6c rule 2)
+    protected override bool IsEnabledCore() => _node.CanInteract || !DrawnUi.Models.Aria.IsInteractiveRole(_node.Role);
     protected override bool IsOffscreenCore() => false;
     protected override bool IsContentElementCore() => true;
     protected override bool IsControlElementCore() => true;
@@ -263,17 +271,47 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
         return rect.IsEmpty ? new Point(double.NaN, double.NaN) : new Point(rect.X + rect.Width / 2, rect.Y + rect.Height / 2);
     }
 
-    public override object GetPattern(PatternInterface patternInterface)
+    public override object GetPattern(PatternInterface patternInterface) => patternInterface switch
     {
-        if (!_node.CanInteract)
-            return null;
+        PatternInterface.Invoke when _node.CanInteract => this,
+        PatternInterface.Toggle when _node.CanInteract && (Source?.AccessibilityIsPressed ?? _node.IsPressed).HasValue => this,
+        PatternInterface.RangeValue when _node.Value.HasValue => this, // also a read-only progress bar
+        PatternInterface.Value when !string.IsNullOrEmpty(_node.Value?.Text) => this,
+        PatternInterface.ScrollItem => this,
+        _ => null,
+    };
 
-        return patternInterface switch
-        {
-            PatternInterface.Invoke => this,
-            PatternInterface.Toggle when (Source?.AccessibilityIsPressed ?? _node.IsPressed).HasValue => this,
-            _ => null,
-        };
+    // IRangeValueProvider: a slider / progress bar's value; read only for a progress bar and a slider that takes no input
+
+    private AccessibilityValue RangeValue => Source?.GetAccessibilityValue() ?? _node.Value ?? default;
+
+    double IRangeValueProvider.Value => RangeValue.Now;
+    public double Minimum => RangeValue.Min;
+    public double Maximum => RangeValue.Max;
+    public double SmallChange => RangeValue.Step;
+    public double LargeChange => Math.Max(RangeValue.Step, (RangeValue.Max - RangeValue.Min) / 10);
+    bool IRangeValueProvider.IsReadOnly => RangeValue.Step <= 0 || !_node.CanInteract;
+
+    void IRangeValueProvider.SetValue(double value)
+    {
+        var source = Source;
+        if (source != null)
+            _parent.Element.Dispatcher.BeginInvoke(() => SkiaAccessibilityManager.SetValue(source, value));
+    }
+
+    // IValueProvider: the spoken text where the number alone is not it ("65%", "20 – 80")
+
+    string IValueProvider.Value => RangeValue.Text ?? string.Empty;
+    bool IValueProvider.IsReadOnly => true;
+    void IValueProvider.SetValue(string value) { }
+
+    // IScrollItemProvider: the scrolls above the node bring it into view, as keyboard focus does
+
+    public void ScrollIntoView()
+    {
+        var source = Source;
+        if (source != null)
+            _parent.Element.Dispatcher.BeginInvoke(() => SkiaAccessibilityManager.ScrollIntoView(source));
     }
 
     protected override void SetFocusCore()
