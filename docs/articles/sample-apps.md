@@ -24,7 +24,7 @@ Explore real-world applications and demo projects built with DrawnUI to see the 
   A minimal starter app also lives at **[tpls/Wasm/EmptyCode](https://github.com/DrawnUi/DrawnUi.Net/tree/main/tpls/Wasm/EmptyCode)**.
 
 
-- **[HelloMaui](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/HelloMaui)** 📱 - The full feature demo on .NET MAUI (Windows, Android, iOS, MacCatalyst), one page per feature navigated with a drawn `SkiaShell`: recycled cells, images, SVG, shapes, text, layouts, platform looks, carousels, Lottie, shell, editor, keyboard, scroll, shaders, sprites, transforms, drag to reorder, accessibility. Same pages as HelloWpf and the React demo.
+- **[HelloMaui](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/HelloMaui)** 📱 - The full feature demo on .NET MAUI (Windows, Android, iOS, MacCatalyst), one page per feature navigated with a drawn `SkiaShell`: recycled cells, images, SVG, shapes, text, layouts, platform looks, carousels, Lottie, shell, editor, keyboard, scroll, shaders, sprites, transforms, drag to reorder, accessibility. Same pages as HelloWpf and the [React](react/index.md) and [Rust](rust/index.md) demos.
 
 - **[MauiPong](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/MauiPong)** 🕹️ - The Pong game on .NET MAUI: a thin host (window, fonts, background, `RescalingCanvas`) over the shared `src/Shared/Samples/Pong.Shared` game, built with the `DrawnUi.Maui.Game` addon. Tap to serve, arrow keys move the paddle on desktop. The same game runs on OpenTK, WPF, Blazor and pure WebAssembly.
 

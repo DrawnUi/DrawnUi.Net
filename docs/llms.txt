@@ -40,6 +40,16 @@ DrawnUI for React (npm `drawnui-react`) is the same engine in TypeScript on Canv
 - [Live demo](https://helloreact.drawnui.net)
 - [DrawnUI React skill](https://helloreact.drawnui.net/skills/drawnui-react/SKILL.md): install, startup, composition rules for agents
 
+## DrawnUI for Rust
+
+DrawnUI for Rust (crate `drawnui`) is the same engine in Rust on Skia (rust-skia), for Windows, macOS, Linux, iOS, Android and the browser (WebAssembly). Same controls and rules as the .NET version, with Rust names and fluent builders, preview.
+
+- [DrawnUI for Rust overview](https://drawnui.net/articles/rust/index.html)
+- [Source](https://github.com/DrawnUi/DrawnUi.Rust)
+- [Crate](https://crates.io/crates/drawnui) and [API docs](https://docs.rs/drawnui)
+- [Live demo](https://hellorust.drawnui.net)
+- [DrawnUI Rust skill](https://hellorust.drawnui.net/skills/drawnui-rust/SKILL.md): adding the crate, the browser build, the web page, Android, Linux, for agents
+
 ## Try it live
 
 - [DrawnUI Fiddle](https://drawfiddle.com/): in-browser C# playground — Roslyn compiles on WebAssembly, renders live on a DrawnUI canvas. AI-drivable, has its own [llms.txt](https://drawfiddle.com/llms.txt).
