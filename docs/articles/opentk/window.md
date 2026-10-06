@@ -6,7 +6,7 @@ Two integration patterns depending on whether you own the render loop.
 
 ## 1. Fully Drawn App (`DrawnUiWindow`)
 
-Subclass `DrawnUiWindow` and pass a configured `Canvas`. The window handles the Skia GPU surface, mouse/keyboard routing, VSync, and event-driven sleep automatically.
+Subclass `DrawnUiWindow` and pass a configured `Canvas`. The window handles the Skia GPU surface, mouse/keyboard routing, VSync, event-driven sleep, keyboard navigation and screen readers (UI Automation on Windows, AT-SPI2 for Orca on Linux) automatically.
 
 ```csharp
 var gameSettings = new GameWindowSettings { };
@@ -67,6 +67,8 @@ class MyWindow(GameWindowSettings gs, NativeWindowSettings ns, Canvas canvas)
 ## 2. Use DrawnUI UIs In Your Existing App (`CanvasHost`)
 
 Use when your own `GameWindow` subclass owns the render loop and DrawnUI is composited on top as a transparent overlay, to create rich UIs with ease, dialogs, etc.
+
+A `CanvasHost` overlay gets no keyboard navigation and no screen reader support (those come with `DrawnUiWindow`); Tab types four spaces into a focused editor.
 
 **Render order per frame:**
 

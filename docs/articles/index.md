@@ -122,6 +122,7 @@ builder.UseDrawnUi();
 ### 👆 **Interaction & Input**
 * **Advanced gesture support** - panning, scrolling, zooming, custom gestures
 * **Keyboard support** - track any key combination
+* **Accessibility** - screen readers (Narrator, TalkBack, VoiceOver, Orca, browser readers) and keyboard navigation on every platform
 * **Touch and mouse** input handling
 * **Multi-platform input** normalization
 

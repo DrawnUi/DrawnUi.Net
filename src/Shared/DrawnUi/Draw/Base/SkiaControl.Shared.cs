@@ -5125,7 +5125,7 @@ namespace DrawnUi.Draw
         /// <summary>Class-level default role, unset for plain controls. Subclasses expose a static so an app can opt in per class.</summary>
         protected virtual string? GetDefaultAccessibilityRole() => null;
 
-        /// <summary>Label used when <see cref="AccessibilityLabel"/> is not set (a label's text, a button's text, a slider's value).</summary>
+        /// <summary>Label used when <see cref="AccessibilityLabel"/> is not set (a label's text, a button's text). A range control's value is not its name, see <see cref="GetAccessibilityValue"/>.</summary>
         protected virtual string? DefaultAccessibilityLabel() => null;
 
         /// <summary>Interaction default when <see cref="AccessibilityCanInteract"/> is not set: has a Tapped handler.</summary>

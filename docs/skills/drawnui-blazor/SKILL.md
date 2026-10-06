@@ -24,6 +24,8 @@ await builder.UseDrawnUiAsync(new DrawnUiStartupSettings { UseDesktopKeyboard = 
 - Each node of the accessibility snapshot is an invisible element over the canvas; interactive ones are focusable. Inside an arrow-key group (a container with `Aria.RoleList`, `RoleToolbar`...) only the group's current item has `tabindex=0`, the rest `-1`.
 - Enter / Space activate, the arrow keys go to the node and then to its group (the engine moves DOM focus to the next item's element); the element's CSS outline is the focus ring, the canvas draws none.
 - An element that has a role takes the pointer from the canvas: that control gets no hover.
+- What an element carries: `role`, `aria-label`, the hint as `title`, `aria-live`; a pressed state on the attribute its role is read from (`aria-checked` for switch / checkbox / radio, `aria-selected` for option / tab, `aria-pressed` for a toggle button: with `aria-pressed` Chrome reads a switch as unchecked); `aria-valuenow / min / max / valuetext / orientation` for sliders and progress bars; `aria-disabled` for a control role that takes no input. Non-interactive nodes have `tabindex=-1` so a screen reader can be moved to them (refocus after a page closes).
+- A focused element is the screen reader's node and scrolls its node into view. Verify in Chrome with CDP `Accessibility.getFullAXTree` (role, value, min, max, checked); its `valuetext` comes back empty for every element, a CDP gap, not the overlay.
 
 ## Shared-project pattern + BROWSER symbol
 

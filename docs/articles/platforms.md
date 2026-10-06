@@ -16,6 +16,8 @@ Use this page first when you need to decide which package to install and which r
 | WPF (Windows) | `DrawnUi.Wpf` (+ `DrawnUi.Wpf.Game` for games) | You have or want a WPF app and need drawn, GPU-rendered UI inside it | Drawn controls declared in WPF XAML with `{Binding}` and styles, a full drawn window with `SkiaShell`, or a game |
 | Platform-agnostic .NET | `DrawnUi.Net` | You need DrawnUI without a framework-specific UI host | Headless rendering, console app, server-side, image/PDF generation, harnesses, shared-logic debugging |
 
+Every host with a screen gives drawn controls to screen readers: UI Automation on Windows, TalkBack on Android, VoiceOver on iOS and Mac Catalyst, AT-SPI2 (Orca) on Linux, an ARIA overlay in the browser. Keyboard navigation works on the desktop and browser hosts. See [Accessibility](advanced/accessibility.md).
+
 ## .NET MAUI
 
 Install:

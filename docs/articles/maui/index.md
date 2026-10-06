@@ -37,6 +37,7 @@ Choose the MAUI lane when you need:
 - full control over gesture-heavy or animation-heavy screens
 - a custom UI rendered by DrawnUI on top of MAUI app structure
 - access to MAUI platform services while keeping the visible UI fully drawn
+- drawn controls read by Narrator, TalkBack and VoiceOver, with keyboard navigation on Windows and Mac Catalyst
 
 ## Package
 

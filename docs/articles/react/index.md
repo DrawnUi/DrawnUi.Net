@@ -48,7 +48,7 @@ What you can use today:
 - **Animation**: `SkiaLottie`, `SkiaGif`, `SkiaSprite`, `SkiaSpriteSet`, animators and transforms.
 - **Apps and games**: `SkiaShell` navigation (pages, popups, modals, toasts), `DrawnGame`, `KeyboardManager` and styles (`ConfigureStyles`).
 - **Input**: taps and pans. Every mouse button taps, with the button in `e.Parameters.Event.Pointer`, and `ContextMenu` on any control (and on `<Canvas>`) takes the right-click menu request, with the same handler shape as on the .NET web heads.
-- **Accessibility**: the same overlay model as DrawnUi.Blazor.
+- **Accessibility**: an ARIA overlay like DrawnUi.Blazor's.
 
 Caching follows the .NET model: `UseCache` takes the same values. `Operations` records an `SkPicture` and replays it, `Image` snapshots an offscreen surface, `ImageDoubleBuffered` keeps the last cache while a new one is produced, and `ImageComposite` keeps its offscreen surface between records and repaints only the children that changed plus the siblings they overlap. On an accelerated (WebGL) canvas the offscreen surface lives on the GPU, so `Image` and `GPU` caches both stay on the graphics card.
 

@@ -376,7 +376,7 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
 - **Shell-like** navigation on canvas (MAUI only, others soon)
 - **XAML + Hot Reload** support
 - **Fluent C#** syntax for code-behind UI with bindings
-- **Accessible** canvas (Blazor only, others soon)
+- **Accessible** canvas: screen readers and keyboard navigation on MAUI, WPF, OpenTK, Blazor and WebAssembly
 
 </div>
 

@@ -77,7 +77,9 @@ Your `GameWindow` subclass owns rendering; DrawnUI composites as a transparent o
 
 - **Title-bar icon**: embed `icon.ico` as `EmbeddedResource`, at startup decode with `SKBitmap.Decode`, resize to 32×32, swap BGRA→RGBA (`(p[i], p[i+2]) = (p[i+2], p[i])` per pixel), wrap in `OpenTK.Windowing.Common.Input.Image` → `WindowIcon` → `NativeWindowSettings.Icon`. (`ApplicationIcon` csproj property covers only Explorer/taskbar.)
 - **DWM chrome** (override `ConfigureWindowChrome(hwnd)`, helper `WindowChrome`): `SetCaptionColor(hwnd,r,g,b)` / `SetBorderColor` (Win11+, caption text auto black/white by luminance), `SetDarkMode` (Win10 20H1+), `SetRoundedCorners` (Win11+).
-- System menu gets a "Fullscreen" item + Windows UIA accessibility automatically (`DrawnUiWindow`).
+- System menu gets a "Fullscreen" item (Windows), and screen readers work with no app code: UI Automation on Windows (Narrator, NVDA), AT-SPI2 on Linux (Orca, through the `Tmds.DBus.Protocol` package; it connects only once assistive technology turns the accessibility bus on). `CanvasHost` apps get neither.
+- Keyboard navigation (`DrawnUiWindow`): Tab / Shift+Tab walk the Tab stops, also out of a drawn editor (no tab characters); Enter / Space / Escape / arrows / Home / End / PageUp / PageDown go to the focused node only while it has keyboard focus and no editor has the caret, so a game's own keys reach its `OnKeyDown` override untouched; the canvas draws the focus ring. F11 / Escape-out-of-fullscreen first.
+- Checking Orca in WSL (WSLg): inside `dbus-run-session`, start `/usr/libexec/at-spi-bus-launcher --launch-immediately`, the app, then `orca --replace --debug-file=<file>` and read its `SPEECH OUTPUT:` lines; `pyatspi` reads the tree and can grab focus, do actions and set values. Afterwards stop a leftover `speech-dispatcher` and remove `$XDG_RUNTIME_DIR/speech-dispatcher`.
 
 ## Assets
 
@@ -140,7 +142,7 @@ The fastest way to run shared DrawnUI code on desktop: a tiny OpenTK head over y
 ## Samples (in-repo)
 
 - `src/OpenTk/Samples/HelloOpenTk` — the DrawnUI Hello app (20 screens, `drawnui-hello-app` skill): `DrawnUiWindow` + `Dynamic`, `SkiaShell`, pages shared in spirit with HelloWpf (copied, WPF timers ported to a window-thread `UiTimer`), assets linked from HelloWpf, a window subclass feeding `KeyboardManager`. Linux: `pwsh dev\hello-opentk-linux.ps1` (publish linux-x64 on Windows, copy into WSL, start on X11; `-NoBuild` to restart). `SkiaShell` and `Super.HotReload` are shared by the .NET desktop heads (WPF, OpenTK).
-- Not wired in `DrawnUiWindow` yet: keyboard navigation (Tab / arrow groups; Tab types four spaces into a focused editor), Up / Down in a multiline editor, Ctrl+C / X / V for editors.
+- Not wired in `DrawnUiWindow` yet: Up / Down in a multiline editor, Ctrl+C / X / V for editors.
 - `src/OpenTk/Samples/OpenTkPong` — fully-drawn game: `DrawnUiWindow` + `Constant`, `RescalingCanvas`, DWM chrome, key mapper, single-file publish. Shares game code with MAUI/Web heads via `Pong.Shared.projitems`.
 - `src/OpenTk/Samples/OpenTkGpuHost` — event-driven low-power UI: `Dynamic` + `UpdateFrequency=0`.
 - `src/OpenTk/Samples/OpenTkOverlay` — mixed host: custom `GameWindow` + `CanvasHost`, raw GL cube + transparent overlay with `SkiaBackdrop` glass + `SkiaEditor`.

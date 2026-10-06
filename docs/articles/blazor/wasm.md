@@ -103,6 +103,8 @@ Blazor WebAssembly apps using DrawnUI may also need to root `SkiaSharp` for trim
 
 ## Keyboard
 
+Tab navigation and the screen reader overlay need no setup; see [Accessibility](../advanced/accessibility.md).
+
 Enable browser keyboard support during startup:
 
 ```csharp

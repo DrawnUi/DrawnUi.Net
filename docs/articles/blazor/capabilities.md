@@ -20,6 +20,7 @@ This page summarizes what the current Blazor slice does well, where each runtime
 - same-app mixed server + WASM DrawnUI with sibling islands
 - button and tap style interaction in the validated samples
 - browser startup, font registration, and keyboard integration in the browser runtime
+- screen readers through the ARIA overlay, and Tab / arrow-key navigation (WebAssembly)
 
 ## Current Limits
 

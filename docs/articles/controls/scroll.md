@@ -555,6 +555,10 @@ public class MyScrollBar : SkiaLayout, IScrollBar
 }
 ```
 
+## Screen readers
+
+Screen readers page a `SkiaScroll` along its axis (TalkBack scroll forward / back, VoiceOver three-finger swipe) and scroll any control they move to into view. `AccessibilityPage(vertical, forward)` does it from code: it moves by the viewport less a tenth and returns false when the content cannot move that way, so the reader says there are no more pages. See [Accessibility](../advanced/accessibility.md#screen-reader-actions).
+
 ## Performance Considerations
 
 ### Virtualization

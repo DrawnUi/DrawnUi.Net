@@ -22,7 +22,7 @@ protected override void OnKeyUp(KeyboardKeyEventArgs e)
 }
 ```
 
-`DrawnUiWindow` handles editor keys (backspace, arrows, home/end, ctrl+A, tab) automatically. Override `OnKeyDown` and call `base.OnKeyDown(e)` first, then add your key routing.
+`DrawnUiWindow` handles editor keys (backspace, arrows, home/end, ctrl+A) and keyboard navigation automatically: Tab / Shift+Tab walk the Tab stops, also out of a drawn editor, and Enter, Space, the arrows and Escape go to the focused control while the keyboard is in use (see [Accessibility](../advanced/accessibility.md#keyboard-navigation)). Override `OnKeyDown` and call `base.OnKeyDown(e)` first, then add your key routing.
 
 ---
 

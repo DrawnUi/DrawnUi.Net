@@ -37,6 +37,7 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
 * __Optimized for performance__, rendering only visible elements, recycling templates etc
 * __Gestures__ support for anything, panning, scrolling, zooming etc
 * __Keyboard support__, track any key
+* __Accessibility__: screen readers (Narrator, TalkBack, VoiceOver, Orca, browser readers) and keyboard navigation on every platform
 * __Navigate__ on the canvas with shell-like techniques 
 
 😎 [Blazor sample in browser](https://drawnui.net/sandbox/) 👈
@@ -117,6 +118,16 @@ Under active development, more info [on our site](https://drawnui.net/articles/r
   * **Keyboard and accessibility**
     * MAUI Android: TalkBack reads drawn controls. Each control with an accessibility role is its own item: touch it to hear it, swipe right or left to move between items in reading order, double tap to press it. Before, TalkBack saw the whole canvas as one empty view. TalkBack reads the same labels, roles and hints as Narrator on MAUI Windows, and nothing runs while no screen reader is on.
     * MAUI Mac Catalyst: Tab and Shift+Tab move between the drawn controls with a focus ring, and the arrow keys move inside a group (a list, a toolbar, a grid), as on MAUI Windows and WPF.
+    * MAUI iOS and Mac Catalyst: VoiceOver reads drawn controls. Double tap presses, swiping up or down moves a slider, a three-finger swipe scrolls.
+    * OpenTK on Linux: Orca reads drawn controls. It works without any app code once a screen reader is running.
+    * OpenTK: Tab and Shift+Tab move between the drawn controls with a focus ring, Enter and Space press, the arrow keys move a slider or inside a group, Escape leaves, as on WPF. Tab moves on from a text field instead of typing four spaces.
+    * WebAssembly (`DrawnUi.Web`): screen readers read drawn controls and Tab moves between them, as on Blazor. Before, a pure WebAssembly app was silent for screen readers.
+    * Sliders and progress bars: screen readers say the name and the value separately ("Volume, 65", "Download, 65%", "Price range, 20 – 80") and can move a slider or set its value. Before, the value was read as the name. Give each one a name with `AccessibilityLabel`.
+    * Screen readers scroll a control into view when they move to it, and TalkBack and VoiceOver can scroll a page with their own gestures.
+    * When a page closes under a screen reader, it moves to the next control instead of going silent.
+    * A card whose title repeats its name is read once, not twice. A button, switch or slider that cannot be used right now reads as unavailable on every platform.
+    * Blazor: switches, checkboxes and radio buttons read their real state. Before, browsers read them as unchecked.
+    * MAUI Windows and OpenTK: Narrator presses drawn buttons with its default action. Before, the press failed and Narrator could only read them.
     * WPF `SkiaShell`: the page under an opened page is hidden, as on the other heads. Before, Tab and screen readers reached its controls under the new page.
     * WPF and MAUI Windows: screen readers and Tab see the page that is on screen as soon as it settles. Before, they could keep the previous page until something on the canvas moved.
     * MAUI Windows: a right click, Shift+F10 or the Menu key reaches `SkiaControl.ContextMenu`, as on WPF and in the browser.

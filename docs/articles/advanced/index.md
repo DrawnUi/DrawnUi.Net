@@ -6,7 +6,7 @@ This section covers advanced features and concepts for DrawnUi development.
 
 - [Layout System Architecture](layout-system.md) - Deep dive into how the layout system works
 - [Caching System](caching.md) - Cache types, invalidation, cache sharing, ImageComposite internals, and resource management
-- [Accessibility](accessibility.md) - Current accessibility support and the Blazor overlay limitation
+- [Accessibility](accessibility.md) - Screen readers and keyboard navigation on every head
 - [Platform-Specific Styling](platform-styling.md) - Creating platform-specific UI styles
 - [Recycled Cells](recycled-cells.md) - Advanced performance techniques for large lists
 

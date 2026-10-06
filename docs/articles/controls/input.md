@@ -82,7 +82,7 @@ The selected trail is anchored under the thumb centers automatically for any thu
 
 ### Keyboard
 
-A slider is an accessibility node by default (role slider, its value as the label). With keyboard focus, Right / Up and Left / Down step the value by `Step` (a hundredth of the range when `Step` is 0), PageUp / PageDown move a tenth of the range, Home / End go to `Min` / `Max`. A ranged slider moves `End`, which stops at `Start`. Enter and Space do nothing. `EndChanged` fires as for a drag. See [Accessibility](../advanced/accessibility.md#keyboard-navigation).
+A slider is an accessibility node by default (role slider). Its name is your `AccessibilityLabel`, so name it by purpose ("Volume"); its value (`End`, `Min`, `Max`, `Step`, and "20 – 80" for a range slider) and its orientation go to screen readers separately. A screen reader can step it up or down (one arrow-key step) or set a value, which snaps to `Step`. With keyboard focus, Right / Up and Left / Down step the value by `Step` (a hundredth of the range when `Step` is 0), PageUp / PageDown move a tenth of the range, Home / End go to `Min` / `Max`. A ranged slider moves `End`, which stops at `Start`. Enter and Space do nothing. `EndChanged` fires as for a drag. See [Accessibility](../advanced/accessibility.md#keyboard-navigation).
 
 ### Customizing (XAML subclass)
 
@@ -125,6 +125,10 @@ Subclass `SkiaSlider` and provide your own content: a child tagged `"Trail"` hos
 | `BackgroundColor` | Color | Background color of the progress track |
 | `CornerRadius` | double | Corner radius for rounded progress bar |
 | `ControlStyle` | PrebuiltControlStyle | `Unset`, `Platform`, `Cupertino`, `Material`, `Material3` (gap and stop indicator), `Windows`; can be changed at runtime |
+
+### Accessibility
+
+A progress bar is an accessibility node by default (role progressbar). Screen readers read its value as a percentage ("65%"); its name is your `AccessibilityLabel` ("Download"). It is read only. See [Range controls](../advanced/accessibility.md#range-controls-sliders-progress-bars).
 
 ## SkiaWheelPicker
 

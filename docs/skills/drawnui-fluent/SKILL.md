@@ -654,6 +654,8 @@ public class PresetCell : SkiaDynamicDrawnCell
 ```
 
 - A `SkiaButton` needs an explicit `AccessibilityRole = Aria.RoleButton`; a row of them goes in a container with `Aria.RoleToolbar`.
+- Name toggles, sliders and progress bars by purpose: `new SkiaSlider { AccessibilityLabel = "Volume", ... }`. Their value is read separately (a slider reads "Volume, slider, 65"); without a label they read as a bare value.
+- A custom range control overrides `GetAccessibilityValue()` (now, min, max, step, optional spoken text) and `OnAccessibilitySetValue(double)`, and steps on ArrowUp / ArrowDown in `OnAccessibilityKey`: screen readers then adjust and set it.
 - To hide a part of a recycled cell from the pointer and the keyboard, use `Opacity = 0` plus `InputTransparent = true`: opacity alone still takes input.
 - Rules: `drawnui` skill, keyboard bullets.
 

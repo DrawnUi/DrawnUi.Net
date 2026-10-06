@@ -28,6 +28,9 @@ Choose [`DrawnUi.Blazor.Wasm`](../blazor/index.md) instead when DrawnUI should l
 | Interop | `[JSImport]`/`[JSExport]` only | `IJSRuntime`, `ElementReference` |
 | App shape | One full-canvas app per page | Many canvases mixed with Razor UI |
 | Base | `DRAWNUI_NET` (shared with OpenTK) | Blazor `DrawnUi.Blazor.Core` |
+| Accessibility | ARIA overlay + Tab navigation, built in | ARIA overlay + Tab navigation |
+
+Both keep one invisible ARIA element per accessibility node over the canvas (roles, labels, checked / pressed state, range values, disabled, live regions), so browser screen readers read the drawn UI and Tab walks it. On `DrawnUi.Wasm` the overlay never takes the pointer and the canvas draws the focus ring; nothing to wire in `main.js`. See [Accessibility](../advanced/accessibility.md).
 
 ## Rendering modes
 

@@ -150,7 +150,7 @@ Touch is handled natively, one pointer per finger, so pinch and rotate reach the
 
 ## Accessibility
 
-Every node of the engine's accessibility snapshot is exposed as a UI Automation peer under the canvas pane, with role, name, help text, Invoke and Toggle patterns and live regions. Tab and Shift+Tab walk the interactive nodes with a focus ring drawn on the canvas, and the focused control scrolls into view. Enter or Space activates, the arrow keys step sliders and move inside list groups, Escape leaves. Moving the mouse out of the element ends hover. See [Accessibility](../advanced/accessibility.md).
+Every node of the engine's accessibility snapshot is exposed as a UI Automation peer under the canvas pane, with role, name, help text, orientation, the Invoke, Toggle, RangeValue, Value and ScrollItem patterns, and live regions. A control that takes no input reads as disabled. Tab and Shift+Tab walk the interactive nodes with a focus ring drawn on the canvas, and the focused control scrolls into view. Enter or Space activates, the arrow keys step sliders and move inside list groups, Escape leaves. Moving the mouse out of the element ends hover. See [Accessibility](../advanced/accessibility.md).
 
 ---
 
