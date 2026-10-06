@@ -687,10 +687,11 @@ public class SkiaImage : SkiaControl
                                 return;
                             }
 
-                            async Task LoadAction()
+                            // true = loaded, false = failed, null = canceled / disposed (no event: a newer load owns the state)
+                            async Task<bool?> LoadAction()
                             {
                                 if (LifecycleState == ControlLifecycleState.Destroyed)
-                                    return;
+                                    return null;
 
                                 try
                                 {
@@ -702,7 +703,7 @@ public class SkiaImage : SkiaControl
                                         cancel?.Cancel();
                                         IsLoading = false;
                                         TraceLog($"[SkiaImage] Canceled disposed image {source}");
-                                        return;
+                                        return null;
                                     }
 
                                     if (cancel.Token.IsCancellationRequested)
@@ -716,7 +717,7 @@ public class SkiaImage : SkiaControl
                                             DisposeObject(bitmap);
                                         }
 
-                                        return;
+                                        return null;
                                     }
 
                                     if (bitmap != null)
@@ -729,19 +730,22 @@ public class SkiaImage : SkiaControl
 
                                         //TraceLog($"[SkiaImage] Loaded {source}");
                                         OnSuccess(uri);
-                                        return;
+                                        return true;
                                     }
 
                                     TraceLog($"[SkiaImage] Error loading {url} as {source} for tag {Tag} ");
+                                    return false;
 
                                     //ClearBitmap(); //erase old image anyway even if EraseChangedContent is false
                                 }
                                 catch (TaskCanceledException)
                                 {
+                                    return null;
                                 }
                                 catch (Exception e)
                                 {
                                     Super.Log(e);
+                                    return false;
                                 }
                                 finally
                                 {
@@ -750,10 +754,10 @@ public class SkiaImage : SkiaControl
                             }
 
 
-                            await LoadAction();
+                            // a load that succeeded already raised Success: Error only for a real failure
+                            if (await LoadAction() == false)
+                                OnError(url);
                         }
-
-                        OnError(url);
                     }
                     catch (Exception e)
                     {
