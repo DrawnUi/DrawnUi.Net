@@ -61,7 +61,7 @@ namespace DrawnUi.Draw
         #region EVENTS
 
         /// <summary>
-        /// Raised when the caret moves to a new position.
+        /// Raised when the text changes, with the new text.
         /// </summary>
         public event EventHandler<string> TextChanged;
 

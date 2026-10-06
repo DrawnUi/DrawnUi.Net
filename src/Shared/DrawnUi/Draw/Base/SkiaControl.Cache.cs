@@ -206,9 +206,9 @@ public partial class SkiaControl
 
     /// <summary>
     /// When Shared, all instances of this control type on the same Canvas share one CachedObject
-    /// instead of each allocating their own. Effective only for Image and GPU cache types.
+    /// instead of each allocating their own. Effective for the Operations, Image and GPU cache types.
     /// Individual control disposal does not release the shared cache;
-    /// use SuperView.Cache.Free&lt;T&gt;() or let the Canvas dispose it.
+    /// use Superview.SharedCache.Free&lt;T&gt;() or let the Canvas dispose it.
     /// </summary>
     public CacheSharingType CacheSharing
     {
@@ -217,7 +217,7 @@ public partial class SkiaControl
     }
 
     /// <summary>
-    /// Cache sharing is only supported for Image and GPU cache types.
+    /// Cache sharing is supported for the Operations, Image and GPU cache types.
     /// </summary>
     private bool IsSharedCacheEligible => UsingCacheType == SkiaCacheType.Operations ||
                                           UsingCacheType == SkiaCacheType.Image || UsingCacheType == SkiaCacheType.GPU;
@@ -538,7 +538,7 @@ public partial class SkiaControl
     {
         // In shared mode the per-instance RenderObjectNeedsUpdate flag is irrelevant — the shared
         // cache's existence and size are the only validity signals. Individual controls should call
-        // SuperView.Cache.Free<T>() to evict the shared entry and force a full re-render.
+        // Superview.SharedCache.Free<T>() to evict the shared entry and force a full re-render.
         bool isSharedMode = CacheSharing == CacheSharingType.Shared && IsSharedCacheEligible;
 
         if (cache != null && (!RenderObjectNeedsUpdate || isSharedMode))

@@ -5284,7 +5284,6 @@ namespace DrawnUi.Draw
         /// </summary>
         public virtual void OnAccessibilityActivated()
         {
-            System.Diagnostics.Debug.WriteLine($"[A11y-ACT] OnAccessibilityActivated on {GetType().Name} Tag={Tag} CanDraw={CanDraw} Superview={(Superview == null ? "NULL" : "ok")}");
             var scale = Superview?.RenderingScale ?? 1f;
             var hitbox = VisualLayer?.HitBoxWithTransforms.Pixels ?? DrawingRect;
             var center = new PointF(hitbox.MidX, hitbox.MidY);
@@ -5298,8 +5297,7 @@ namespace DrawnUi.Draw
             };
 
             var gestureParams = SkiaGesturesParameters.Create(TouchActionResult.Tapped, args, scale);
-            var result = OnSkiaGestureEvent(gestureParams, GestureEventProcessingInfo.Empty);
-            System.Diagnostics.Debug.WriteLine($"[A11y-ACT] OnSkiaGestureEvent returned {(result == null ? "NULL (not consumed)" : result.GetType().Name)}");
+            OnSkiaGestureEvent(gestureParams, GestureEventProcessingInfo.Empty);
         }
 
         public virtual void OnAccessibilityFocused(bool focused) { }

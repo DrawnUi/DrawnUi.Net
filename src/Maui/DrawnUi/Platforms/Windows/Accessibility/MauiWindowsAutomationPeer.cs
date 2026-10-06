@@ -107,7 +107,6 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
     internal void ActivateFocused()
     {
         // Called from OnCanvasKeyDown (already on main thread) — call directly.
-        System.Diagnostics.Debug.WriteLine($"[A11y-ACT] ActivateFocused FocusedPeer={(FocusedPeer == null ? "NULL" : FocusedPeer.Role)} source={(FocusedPeer?.Source == null ? "NULL" : FocusedPeer.Source.GetType().Name)}");
         if (FocusedPeer?.Source != null)
         {
             FocusedPeer.RaiseAutomationEvent(AutomationEvents.InvokePatternOnInvoked);

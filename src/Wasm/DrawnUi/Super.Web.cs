@@ -33,8 +33,9 @@ namespace DrawnUi.Draw
         public static DrawnUiBuilder UseDrawnUi() => new();
 
         /// <summary>
-        /// Raised after a C# Hot Reload metadata update (debounced). Only fires while a debugger
-        /// is attached. <c>BrowserHost</c> subscribes to rebuild the drawn scene from the factory.
+        /// Raised after a C# Hot Reload metadata update (debounced), with or without a debugger (bare
+        /// <c>dotnet watch</c> too); the runtime applies deltas only during development, so it never fires in a
+        /// published app. <c>BrowserHost</c> subscribes to rebuild the drawn scene from the factory.
         /// </summary>
         public static event Action<Type[]> HotReload;
 
