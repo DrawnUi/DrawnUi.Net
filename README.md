@@ -62,6 +62,18 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
+## What's New 1.10.7.1
+
+A hotfix for `SkiaEditor` on Android and iOS, on top of 1.10.6.22.
+
+  * **Editor**
+    * Android: number keyboards type into `SkiaEditor`. Before, the keyboard opened and the field had focus, but every digit was lost.
+    * iOS: the keyboard closes when you leave a page while typing. Before, it could stay over every screen until the app was closed.
+    * iOS: number, decimal and phone keyboards get a Done button above them. It works like the return key and closes the keyboard of a single-line editor. Before, these keyboards could not be closed.
+    * Android and iOS: when your `TextChanged` handler rejects what was typed (an input filter, a maximum length), the field shows only the text you kept. Before, the rejected characters stayed hidden in the field, the first deletes removed them and the caret jumped to the wrong place.
+  * **PDF**
+    * `Pdf.SplitStackToPages` breaks pages in the right places when there is padding or a margin above the content, and a row taller than a page goes on to the next page instead of being cut.
+
 ## What's New 1.10.6.22
 
   * **Accessibility, reworked on every platform**
