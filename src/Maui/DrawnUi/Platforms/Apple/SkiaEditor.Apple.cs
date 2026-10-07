@@ -81,6 +81,7 @@ namespace DrawnUi.Draw
 
         protected NativeEntryView Control;
         private UIView _layout;
+        private UIToolbar _doneBar;
 
         public int NativeSelectionStart
         {
@@ -119,6 +120,7 @@ namespace DrawnUi.Draw
                 Control.RemoveFromSuperview();
                 Control = null;
             }
+            _doneBar = null;
             _layout = null;
         }
 
@@ -126,7 +128,6 @@ namespace DrawnUi.Draw
         {
             if (Control != null)
             {
-                Control.InputAccessoryView = null;
                 Control.AutocorrectionType = UITextAutocorrectionType.No;
                 Control.Frame = new CGRect(DrawingRect.Right / RenderingScale, DrawingRect.Bottom / RenderingScale, 1, 1);
             }
@@ -247,6 +248,42 @@ namespace DrawnUi.Draw
                 SkiaEditorKeyboard.Email    => UIKeyboardType.EmailAddress,
                 _                           => UIKeyboardType.Default
             };
+
+            // The number, decimal and phone pads have no return key, so without this bar the only
+            // way to close the keyboard is leaving the page. Done does what the return key does.
+            var needsDoneBar = !IsPassword && (Control.KeyboardType == UIKeyboardType.NumberPad
+                                               || Control.KeyboardType == UIKeyboardType.DecimalPad
+                                               || Control.KeyboardType == UIKeyboardType.PhonePad);
+            if (needsDoneBar)
+            {
+                if (_doneBar == null)
+                {
+                    _doneBar = new UIToolbar();
+                    _doneBar.SizeToFit();
+                    _doneBar.Items = new[]
+                    {
+                        new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace),
+                        new UIBarButtonItem(UIBarButtonSystemItem.Done, (s, e) =>
+                        {
+                            // same as the return key for a single-line editor (ShouldChangeText)
+                            ExecuteSubmit(clearFocus: !IsMultiline);
+                        })
+                    };
+                }
+
+                if (Control.InputAccessoryView != _doneBar)
+                {
+                    Control.InputAccessoryView = _doneBar;
+                    if (Control.IsFirstResponder)
+                        Control.ReloadInputViews();
+                }
+            }
+            else if (Control.InputAccessoryView != null)
+            {
+                Control.InputAccessoryView = null;
+                if (Control.IsFirstResponder)
+                    Control.ReloadInputViews();
+            }
 
             SetReturnType(ReturnType);
         }
