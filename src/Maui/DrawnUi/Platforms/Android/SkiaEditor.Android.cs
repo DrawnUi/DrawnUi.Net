@@ -230,6 +230,14 @@ namespace DrawnUi.Draw
                 UpdateNativePosition();
                 AddObservers(true);
                 _layout.AddView(Control);
+
+                // The parent is the Canvas' MAUI ContentViewGroup, which lays out only MAUI-managed
+                // children: without a frame of its own the sink has no bounds, and ViewGroup only
+                // dispatches key events (the number keyboard types digits as key events) to a
+                // focused child that has bounds.
+                var onePixel = Android.Views.View.MeasureSpec.MakeMeasureSpec(1, MeasureSpecMode.Exactly);
+                Control.Measure(onePixel, onePixel);
+                Control.Layout(0, 0, 1, 1);
             }
         }
 
@@ -427,6 +435,22 @@ namespace DrawnUi.Draw
                 // Called when the text has been changed and the editing process is over.
                 // This is where you can check the new cursor position.
                 //_parent.Text = s.ToString();
+
+                // A TextChanged handler may have replaced the text the user just typed (input filter,
+                // max length): OnTextChanged ran it synchronously under _updatingText, so SyncNativeText
+                // skipped, and the native buffer kept the rejected characters. Make it follow Text,
+                // moving the caret by the length difference (back to where it was for a rejected insert).
+                var text = _parent.Text ?? string.Empty;
+                if (!_parent._updatingText && s.ToString() != text)
+                {
+                    var caret = System.Math.Clamp(_parent.Control.SelectionStart + text.Length - s.Length(), 0, text.Length);
+                    _parent._updatingText = true;
+                    try { s.Replace(0, s.Length(), text); }
+                    finally { _parent._updatingText = false; }
+                    _parent.Control.SetSelection(caret);
+                    _parent.SetCursorPositionWithDelay(50, caret);
+                    return;
+                }
 
                 int selectionStart = _parent.Control.SelectionStart;
                 int selectionEnd = _parent.Control.SelectionEnd;
