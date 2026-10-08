@@ -19,7 +19,7 @@ public class ItemsSourceChangesAppliedTests
     const float Spacing = 2;
 
     static (HeadlessCanvasHost host, SkiaScroll scroll, SkiaLayout grid, ObservableRangeCollection<int> items) Scene(
-        MeasuringStrategy strategy, int split, int initial)
+        MeasuringStrategy strategy, int split, int initial, Guid? uid = null)
     {
         var host = new HeadlessCanvasHost(402, 700, scale: 1f, background: Colors.Black);
         var items = new ObservableRangeCollection<int>();
@@ -27,6 +27,7 @@ public class ItemsSourceChangesAppliedTests
 
         var grid = new SkiaLayout
         {
+            Uid = uid ?? Guid.NewGuid(),
             Type = LayoutType.Column,
             Split = split,
             Spacing = Spacing,
@@ -108,10 +109,19 @@ public class ItemsSourceChangesAppliedTests
         }
     }
 
-    [Fact]
-    public void SeveralChangesInOneFrame_RaiseOnce()
+    /// <summary>
+    /// The per-layout key is made from the Uid. For half the Uids it came out negative, which SafeAction reads
+    /// as "no key", so those layouts raised once per change: pinned with such a Uid (101 = the event's key).
+    /// </summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void SeveralChangesInOneFrame_RaiseOnce(bool negativeKeyUid)
     {
-        var (host, _, grid, items) = Scene(MeasuringStrategy.MeasureFirst, 1, 12);
+        var uid = Guid.NewGuid();
+        while ((SkiaControl.CombineToLong(uid, 101) < 0) != negativeKeyUid)
+            uid = Guid.NewGuid();
+        var (host, _, grid, items) = Scene(MeasuringStrategy.MeasureFirst, 1, 12, uid);
         using (host)
         {
             int raised = 0;
