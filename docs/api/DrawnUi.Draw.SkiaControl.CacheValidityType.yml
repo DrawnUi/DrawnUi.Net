@@ -5,6 +5,7 @@ items:
   id: SkiaControl.CacheValidityType
   parent: DrawnUi.Draw
   children:
+  - DrawnUi.Draw.SkiaControl.CacheValidityType.EffectsMarginMismatch
   - DrawnUi.Draw.SkiaControl.CacheValidityType.GraphicContextMismatch
   - DrawnUi.Draw.SkiaControl.CacheValidityType.Missing
   - DrawnUi.Draw.SkiaControl.CacheValidityType.SizeMismatch
@@ -23,7 +24,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CacheValidityType
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
-    startLine: 1135
+    startLine: 1287
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -50,7 +51,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Valid
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
-    startLine: 1137
+    startLine: 1289
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -76,7 +77,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Missing
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
-    startLine: 1138
+    startLine: 1290
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -102,7 +103,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SizeMismatch
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
-    startLine: 1139
+    startLine: 1291
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -128,12 +129,43 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GraphicContextMismatch
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
-    startLine: 1140
+    startLine: 1292
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
     content: GraphicContextMismatch = 3
+    return:
+      type: DrawnUi.Draw.SkiaControl.CacheValidityType
+- uid: DrawnUi.Draw.SkiaControl.CacheValidityType.EffectsMarginMismatch
+  commentId: F:DrawnUi.Draw.SkiaControl.CacheValidityType.EffectsMarginMismatch
+  id: EffectsMarginMismatch
+  parent: DrawnUi.Draw.SkiaControl.CacheValidityType
+  langs:
+  - csharp
+  - vb
+  name: EffectsMarginMismatch
+  nameWithType: SkiaControl.CacheValidityType.EffectsMarginMismatch
+  fullName: DrawnUi.Draw.SkiaControl.CacheValidityType.EffectsMarginMismatch
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: EffectsMarginMismatch
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+    startLine: 1298
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Same size, but the effects margin around it (shadows, a glow on a child) changed: the image surface was
+
+    recorded with another margin, so it has another size and origin.
+  example: []
+  syntax:
+    content: EffectsMarginMismatch = 4
     return:
       type: DrawnUi.Draw.SkiaControl.CacheValidityType
 references:

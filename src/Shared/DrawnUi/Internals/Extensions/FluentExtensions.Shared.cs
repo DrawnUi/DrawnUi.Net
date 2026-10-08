@@ -1522,6 +1522,27 @@ namespace DrawnUi.Draw
         /// <param name="view"></param>
         /// <param name="action"></param>
         /// <returns></returns>
+        /// <summary>
+        /// Mouse hover: <paramref name="action"/> runs with true when the mouse comes over the control and false when it
+        /// leaves (<see cref="SkiaControl.HoverChanged"/>). Turns <see cref="SkiaControl.ReceivesHover"/> on. A card stays
+        /// hovered while the mouse is over a button inside it. Hover is not tracked while content animates under the
+        /// pointer (it is checked when that stops), and touch never hovers.
+        /// </summary>
+        /// <example><code>new SkiaShape().OnHovered((me, on) => me.BackgroundColor = on ? lighter : normal)</code></example>
+        public static T OnHovered<T>(this T view, Action<T, bool> action) where T : SkiaControl
+        {
+            view.ReceivesHover = true;
+
+            void onHoverChanged(object s, bool on)
+            {
+                action?.Invoke(view, on);
+            }
+
+            view.HoverChanged += onHoverChanged;
+            view.ExecuteUponDisposal[$"hovered_{Guid.NewGuid()}"] = () => view.HoverChanged -= onHoverChanged;
+            return view;
+        }
+
         public static T OnTapped<T>(this T view, Action<T> action) where T : SkiaControl
         {
             try

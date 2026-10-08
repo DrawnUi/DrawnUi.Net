@@ -38,8 +38,60 @@ namespace DrawnUi.Views
         // Called from OnCanvasViewChangedPlatform when CanvasView is assigned/replaced.
         partial void OnCanvasViewChangedPlatform()
         {
+            WireHoverLeave();
             if (_bridgeHwnd == 0) return; // SetupWindowsAccessibility not called yet
             TryWireA11yHost();
+        }
+
+        private FrameworkElement? _hoverLeaveElement;
+
+        /// <summary>
+        /// The mouse leaving the canvas ends hover and pointer-over at once. The gestures layer reports an exit only while
+        /// a button is pressed, so the canvas listens to its own platform view.
+        /// </summary>
+        private void WireHoverLeave()
+        {
+            var canvasView = CanvasView as View;
+            if (canvasView == null)
+                return;
+
+            if (canvasView.Handler?.PlatformView is FrameworkElement element)
+            {
+                AttachHoverLeave(element);
+                return;
+            }
+
+            void OnCvHandlerChanged(object? s, EventArgs e)
+            {
+                canvasView.HandlerChanged -= OnCvHandlerChanged;
+                if (canvasView.Handler?.PlatformView is FrameworkElement el)
+                    AttachHoverLeave(el);
+            }
+            canvasView.HandlerChanged += OnCvHandlerChanged;
+        }
+
+        private void AttachHoverLeave(FrameworkElement element)
+        {
+            if (ReferenceEquals(_hoverLeaveElement, element))
+                return;
+            if (_hoverLeaveElement != null)
+                _hoverLeaveElement.PointerExited -= OnPlatformPointerExited;
+            _hoverLeaveElement = element;
+            element.PointerExited += OnPlatformPointerExited;
+        }
+
+        private void OnPlatformPointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            if (e.Pointer.PointerDeviceType == Microsoft.UI.Input.PointerDeviceType.Touch)
+                return;
+
+            // with the gestures, before the next frame
+            PostponeExecutionBeforeDraw(() =>
+            {
+                ClearHover();
+                ClearPointerOver();
+            }, LongKeyGenerator.Next());
+            Update();
         }
 
         private void TryWireA11yHost()

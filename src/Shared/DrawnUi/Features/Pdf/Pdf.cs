@@ -22,12 +22,13 @@ public struct PdfPagePosition
     public int Index { get; set; }
 
     /// <summary>
-    /// Position of the page start
+    /// Offset of the page start inside the content, apply it as the viewport offset when rendering the page.
     /// </summary>
     public SKPoint Position { get; set; }
 
     /// <summary>
-    /// This can sometimes be less then the paper size if the content is smaller
+    /// Printable height of this page: the paper height, or less when the page ends above a row that
+    /// did not fit, or when it is the last page and the content ends earlier.
     /// </summary>
     public float Height { get; set; }
 }
@@ -72,23 +73,23 @@ public static class Pdf
     }
 
     /// <summary>
-    /// Splits a SkiaStack content into multiple pages based on the provided paper size, considering height only.
+    /// Splits content of any shape into fixed slices of the paper height, considering height only.
+    /// A slice can cut through a row or a line of text; use <see cref="SplitStackToPages"/> to break between rows.
     /// </summary>
-    /// <param name="content">The size of the content to be split.</param>
+    /// <param name="content">The size of the content to be split, same units as paper.</param>
     /// <param name="paper">The size of the paper to split the content into.</param>
-    /// <returns>A list of PdfPagePosition representing the positions of the pages.</returns>
+    /// <returns>Contiguous pages: Position is the content offset of the page, Height its printable height.</returns>
     public static List<PdfPagePosition> SplitToPages(SKSize content, SKSize paper)
     {
         var positions = new List<PdfPagePosition>();
-        int index = 0;
 
         if (content.Height <= paper.Height)
         {
-            // Content fits in a single page
             positions.Add(new PdfPagePosition
             {
-                Index = index,
-                Position = new SKPoint(0, 0)
+                Index = 0,
+                Position = new SKPoint(0, 0),
+                Height = content.Height
             });
             return positions;
         }
@@ -97,127 +98,101 @@ public static class Pdf
         {
             positions.Add(new PdfPagePosition
             {
-                Index = index++,
-                Position = new SKPoint(0, y)
+                Index = positions.Count,
+                Position = new SKPoint(0, y),
+                Height = Math.Min(paper.Height, content.Height - y)
             });
         }
 
         return positions;
     }
 
-    static (SkiaLayout Layout, double AccumulatedOffsetPts) FindVStack(SkiaControl control, bool needTemplated, double ptsOffset)
+    /// <summary>
+    /// Depth-first search for the first Column layout, templated or not as requested.
+    /// </summary>
+    static SkiaLayout FindVStack(SkiaControl control, bool needTemplated)
     {
-        //find vstack
-        SkiaLayout vstack = null;
-        if (control is SkiaLayout maybe && maybe.Type == LayoutType.Column)
+        if (control is SkiaLayout maybe && maybe.Type == LayoutType.Column && (!needTemplated || maybe.IsTemplated))
         {
-            if (needTemplated)
-            {
-                if (maybe.IsTemplated)
-                    return (maybe, ptsOffset);
-            }
-            else
-            {
-                return (maybe, ptsOffset);
-            }
+            return maybe;
         }
-        //look deeper
-        var accumulate = ptsOffset + control.Margin.Top + control.Padding.Top;
+
         foreach (SkiaControl child in control.Views)
         {
-            var childStack = FindVStack(child, needTemplated, accumulate);
-            if (childStack.Layout is SkiaLayout maybeChild && maybeChild.Type == LayoutType.Column)
-            {
-                if (needTemplated)
-                {
-                    if (maybeChild.IsTemplated)
-                        return (maybeChild, childStack.AccumulatedOffsetPts);
-                }
-                else
-                {
-                    return (maybeChild, childStack.AccumulatedOffsetPts);
-                }
-
-
-            }
+            var found = FindVStack(child, needTemplated);
+            if (found != null)
+                return found;
         }
-        return (null, ptsOffset);
+
+        return null;
     }
 
     /// <summary>
-    /// Pages will be split upon first found vertical stick children.
-    /// Must specify if stack is templated.
-    /// If no stack is found will split to pages as usual.
+    /// Splits content into pages that break between the children of the first vertical stack found inside it,
+    /// so a table row is never cut in two. A single child taller than a page is sliced at the paper height.
+    /// Without a stack the content is split into fixed slices like <see cref="SplitToPages"/>.
     /// </summary>
-    /// <param name="control"></param>
-    /// <param name="isTemplated"></param>
-    /// <param name="paper"></param>
-    /// <param name="scale"></param>
-    /// <returns></returns>
+    /// <remarks>
+    /// Rows are read from the stack's render tree, so render <paramref name="control"/> once at unlimited height
+    /// before calling (every row must have been drawn). Offsets are relative to the top of <paramref name="control"/>,
+    /// ready to be applied as the viewport offset of a scroll that hosts it. Pixels throughout.
+    /// </remarks>
+    /// <param name="control">The content to paginate, the control whose offset you will set per page.</param>
+    /// <param name="isTemplated">True to look for a templated stack (rows from ItemsSource), false for the first Column layout.</param>
+    /// <param name="paper">Printable page size in pixels.</param>
+    /// <param name="scale">Unused, kept for compatibility: render tree and paper are both in pixels.</param>
+    /// <returns>Contiguous pages: Position is the content offset of the page, Height its printable height.</returns>
     public static List<PdfPagePosition> SplitStackToPages(SkiaControl control, bool isTemplated, SKSize paper, float scale = 1)
     {
+        var vstack = FindVStack(control, isTemplated);
+
+        if (vstack == null)
+        {
+            return SplitToPages(control.MeasuredSize.Pixels, paper);
+        }
+
         var positions = new List<PdfPagePosition>();
+        var pageHeight = paper.Height;
+        var origin = control.DrawingRect.Top;
+        var contentHeight = control.DrawingRect.Height;
+        var offset = 0f;
 
-        var found = FindVStack(control, isTemplated, 0);
-        var vstack = found.Layout;
-
-        if (found.Layout == null)
+        foreach (var cell in vstack.RenderTree)
         {
-            return SplitToPages(control.MeasuredSize.Units, paper);
-        }
+            var top = cell.Rect.Top - origin;
+            var bottom = cell.Rect.Bottom - origin;
 
-        if (vstack.RenderTree.Count < 1)
-        {
-            positions.Add(new PdfPagePosition
+            // the row does not fit the current page: break right above it
+            if (bottom > offset + pageHeight && top > offset)
             {
-                Index = 0,
-                Position = new SKPoint(0, 0),
-                Height = 0
-            });
-            return positions;
-        }
-
-        int index = 0;
-        float offset = 0f;
-        int cellIndex = 0;
-        float pageHeight = paper.Height;
-
-        while (cellIndex < vstack.RenderTree.Count)
-        {
-            var cell = vstack.RenderTree[cellIndex];
-
-            var childBottom = cell.Rect.Bottom + found.AccumulatedOffsetPts * scale;
-            var maxSplit = offset + pageHeight;
-
-            // If adding this cell would exceed the page boundary, start a new page
-            if (childBottom > maxSplit)
-            {
-                var split = cell.Rect.Top + found.AccumulatedOffsetPts * scale;
-
                 positions.Add(new PdfPagePosition
                 {
-                    Index = index++,
+                    Index = positions.Count,
                     Position = new SKPoint(0, offset),
-                    Height = (float)split
+                    Height = top - offset
                 });
-
-                // Move offset to the next page start, aligning to the next cell
-                offset = (float)split;
+                offset = top;
             }
 
-            cellIndex++;
+            // a single row taller than a page can only be sliced
+            while (bottom > offset + pageHeight)
+            {
+                positions.Add(new PdfPagePosition
+                {
+                    Index = positions.Count,
+                    Position = new SKPoint(0, offset),
+                    Height = pageHeight
+                });
+                offset += pageHeight;
+            }
         }
 
-        // Add the last page if it wasn't added yet
-        if (positions.Count == 0 || positions.Last().Position.Y < offset)
+        positions.Add(new PdfPagePosition
         {
-            positions.Add(new PdfPagePosition
-            {
-                Index = index,
-                Position = new SKPoint(0, offset),
-                Height = paper.Height
-            });
-        }
+            Index = positions.Count,
+            Position = new SKPoint(0, offset),
+            Height = Math.Min(pageHeight, Math.Max(0, contentHeight - offset))
+        });
 
         return positions;
     }
@@ -256,8 +231,7 @@ public static class Pdf
             case PaperFormat.Legal:
                 return new SKSize(8.5f, 14f);
             case PaperFormat.Custom:
-                return new SKSize(4.13f, 2.0f);
-                throw new ArgumentException("Custom size must be provided separately.", nameof(format));
+                throw new ArgumentException("Custom size must be provided separately, use the SKSize overloads.", nameof(format));
             default:
                 throw new ArgumentOutOfRangeException(nameof(format), format, null);
         }

@@ -62,6 +62,31 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
+## What's New 1.10.7.2
+
+  * **Hover for lists**
+    * `ReceivesHover`, `HoverChanged` and the fluent `.OnHovered((me, on) => ...)`: any control can take mouse hover. Every hovered control under the mouse is `IsHovered`, so a card stays lit while the mouse is over the button inside it. Before, hover went to one control at a time, and a list card lost it to its own button.
+    * Hover waits while a list scrolls, a carousel slides or a drawer moves, and is checked once when that stops, when a recycled cell under the mouse gets another item, and when a popup opens. Before, a card kept its hover after a wheel scroll until the mouse moved.
+    * Controls hover only when they opt in. Buttons, sliders, toggles, radio buttons, carousels, drawers and pickers hover by default as before.
+    * MAUI Windows: hover ends when the mouse leaves the canvas. WPF and OpenTK: hover works. Before, it never reached any control there.
+  * **ImageComposite redraws a change deep inside by its area.** A card inside an uncached stack in a composite list is redrawn alone, not the whole stack.
+  * **Fix: a cached container drew its content shifted when a child's glow or shadow came or went** (a button's hover glow inside a cached panel). The cache kept its surface from the old effects margin; an `ImageComposite` showed the whole list offset until its next full redraw, an `Image` cache could cut the glow.
+  * **Lists: `ItemsSourceChangesApplied` comes after every change.** Adding, removing, replacing or moving items, every LoadMore page, and the moment a long list switches to its built-in window at 300 items now raise it, once per frame, after the frame that shows the change. Before, it came only for a new `ItemsSource` or a full rebuild, so a "load the next page when the last one is shown" loop could stop after the first page or at 300 items.
+  * **Fewer re-measures when properties change in bursts.** When `Padding`, sizes, margins or `IsVisible` change several times before the next frame (on Android, where drawing has its own thread), every control now measures once. Before, about half of all controls measured again for every single change.
+  * **Editor, Android: one caret when several editors are on screen.** Moving from a `SkiaEditor` to an editor in another canvas, or to a native entry, leaves only the new field focused, and the keyboard stays open while you switch fields. Before, both editors kept a blinking caret and switching fields could close the keyboard.
+
+## What's New 1.10.7.1
+
+A hotfix for `SkiaEditor` on Android and iOS, on top of 1.10.6.22.
+
+  * **Editor**
+    * Android: number keyboards type into `SkiaEditor`. Before, the keyboard opened and the field had focus, but every digit was lost.
+    * iOS: the keyboard closes when you leave a page while typing. Before, it could stay over every screen until the app was closed.
+    * iOS: number, decimal and phone keyboards get a Done button above them. It works like the return key and closes the keyboard of a single-line editor. Before, these keyboards could not be closed.
+    * Android and iOS: when your `TextChanged` handler rejects what was typed (an input filter, a maximum length), the field shows only the text you kept. Before, the rejected characters stayed hidden in the field, the first deletes removed them and the caret jumped to the wrong place.
+  * **PDF**
+    * `Pdf.SplitStackToPages` breaks pages in the right places when there is padding or a margin above the content, and a row taller than a page goes on to the next page instead of being cut.
+
 ## What's New 1.10.6.22
 
   * **Accessibility, reworked on every platform**

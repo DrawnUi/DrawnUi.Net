@@ -26,7 +26,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Pdf
     path: ../src/Shared/DrawnUi/Features/Pdf/Pdf.cs
-    startLine: 34
+    startLine: 35
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -61,7 +61,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetPaperSizePixels
     path: ../src/Shared/DrawnUi/Features/Pdf/Pdf.cs
-    startLine: 42
+    startLine: 43
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -102,7 +102,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetPaperSizePixels
     path: ../src/Shared/DrawnUi/Features/Pdf/Pdf.cs
-    startLine: 54
+    startLine: 55
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -143,7 +143,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetPaperSizePixelsFromMillimeters
     path: ../src/Shared/DrawnUi/Features/Pdf/Pdf.cs
-    startLine: 67
+    startLine: 68
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -184,24 +184,27 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SplitToPages
     path: ../src/Shared/DrawnUi/Features/Pdf/Pdf.cs
-    startLine: 79
+    startLine: 81
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
-  summary: Splits a SkiaStack content into multiple pages based on the provided paper size, considering height only.
+  summary: >-
+    Splits content of any shape into fixed slices of the paper height, considering height only.
+
+    A slice can cut through a row or a line of text; use <xref href="DrawnUi.Infrastructure.Pdf.SplitStackToPages(DrawnUi.Draw.SkiaControl%2cSystem.Boolean%2cSkiaSharp.SKSize%2cSystem.Single)" data-throw-if-not-resolved="false"></xref> to break between rows.
   example: []
   syntax:
     content: public static List<PdfPagePosition> SplitToPages(SKSize content, SKSize paper)
     parameters:
     - id: content
       type: SkiaSharp.SKSize
-      description: The size of the content to be split.
+      description: The size of the content to be split, same units as paper.
     - id: paper
       type: SkiaSharp.SKSize
       description: The size of the paper to split the content into.
     return:
       type: System.Collections.Generic.List{DrawnUi.Infrastructure.PdfPagePosition}
-      description: A list of PdfPagePosition representing the positions of the pages.
+      description: 'Contiguous pages: Position is the content offset of the page, Height its printable height.'
     content.vb: Public Shared Function SplitToPages(content As SKSize, paper As SKSize) As List(Of PdfPagePosition)
   overload: DrawnUi.Infrastructure.Pdf.SplitToPages*
 - uid: DrawnUi.Infrastructure.Pdf.SplitStackToPages(DrawnUi.Draw.SkiaControl,System.Boolean,SkiaSharp.SKSize,System.Single)
@@ -222,35 +225,41 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SplitStackToPages
     path: ../src/Shared/DrawnUi/Features/Pdf/Pdf.cs
-    startLine: 156
+    startLine: 144
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
   summary: >-
-    Pages will be split upon first found vertical stick children.
+    Splits content into pages that break between the children of the first vertical stack found inside it,
 
-    Must specify if stack is templated.
+    so a table row is never cut in two. A single child taller than a page is sliced at the paper height.
 
-    If no stack is found will split to pages as usual.
+    Without a stack the content is split into fixed slices like <xref href="DrawnUi.Infrastructure.Pdf.SplitToPages(SkiaSharp.SKSize%2cSkiaSharp.SKSize)" data-throw-if-not-resolved="false"></xref>.
+  remarks: >-
+    Rows are read from the stack's render tree, so render <code class="paramref">control</code> once at unlimited height
+
+    before calling (every row must have been drawn). Offsets are relative to the top of <code class="paramref">control</code>,
+
+    ready to be applied as the viewport offset of a scroll that hosts it. Pixels throughout.
   example: []
   syntax:
     content: public static List<PdfPagePosition> SplitStackToPages(SkiaControl control, bool isTemplated, SKSize paper, float scale = 1)
     parameters:
     - id: control
       type: DrawnUi.Draw.SkiaControl
-      description: ''
+      description: The content to paginate, the control whose offset you will set per page.
     - id: isTemplated
       type: System.Boolean
-      description: ''
+      description: True to look for a templated stack (rows from ItemsSource), false for the first Column layout.
     - id: paper
       type: SkiaSharp.SKSize
-      description: ''
+      description: Printable page size in pixels.
     - id: scale
       type: System.Single
-      description: ''
+      description: 'Unused, kept for compatibility: render tree and paper are both in pixels.'
     return:
       type: System.Collections.Generic.List{DrawnUi.Infrastructure.PdfPagePosition}
-      description: ''
+      description: 'Contiguous pages: Position is the content offset of the page, Height its printable height.'
     content.vb: Public Shared Function SplitStackToPages(control As SkiaControl, isTemplated As Boolean, paper As SKSize, scale As Single = 1) As List(Of PdfPagePosition)
   overload: DrawnUi.Infrastructure.Pdf.SplitStackToPages*
   nameWithType.vb: Pdf.SplitStackToPages(SkiaControl, Boolean, SKSize, Single)
@@ -274,7 +283,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetPaperSizePixels
     path: ../src/Shared/DrawnUi/Features/Pdf/Pdf.cs
-    startLine: 231
+    startLine: 206
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -315,7 +324,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetPaperSizeInInches
     path: ../src/Shared/DrawnUi/Features/Pdf/Pdf.cs
-    startLine: 243
+    startLine: 218
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -637,6 +646,70 @@ references:
   name: GetPaperSizePixelsFromMillimeters
   nameWithType: Pdf.GetPaperSizePixelsFromMillimeters
   fullName: DrawnUi.Infrastructure.Pdf.GetPaperSizePixelsFromMillimeters
+- uid: DrawnUi.Infrastructure.Pdf.SplitStackToPages(DrawnUi.Draw.SkiaControl,System.Boolean,SkiaSharp.SKSize,System.Single)
+  commentId: M:DrawnUi.Infrastructure.Pdf.SplitStackToPages(DrawnUi.Draw.SkiaControl,System.Boolean,SkiaSharp.SKSize,System.Single)
+  isExternal: true
+  href: DrawnUi.Infrastructure.Pdf.html#DrawnUi_Infrastructure_Pdf_SplitStackToPages_DrawnUi_Draw_SkiaControl_System_Boolean_SkiaSharp_SKSize_System_Single_
+  name: SplitStackToPages(SkiaControl, bool, SKSize, float)
+  nameWithType: Pdf.SplitStackToPages(SkiaControl, bool, SKSize, float)
+  fullName: DrawnUi.Infrastructure.Pdf.SplitStackToPages(DrawnUi.Draw.SkiaControl, bool, SkiaSharp.SKSize, float)
+  nameWithType.vb: Pdf.SplitStackToPages(SkiaControl, Boolean, SKSize, Single)
+  fullName.vb: DrawnUi.Infrastructure.Pdf.SplitStackToPages(DrawnUi.Draw.SkiaControl, Boolean, SkiaSharp.SKSize, Single)
+  name.vb: SplitStackToPages(SkiaControl, Boolean, SKSize, Single)
+  spec.csharp:
+  - uid: DrawnUi.Infrastructure.Pdf.SplitStackToPages(DrawnUi.Draw.SkiaControl,System.Boolean,SkiaSharp.SKSize,System.Single)
+    name: SplitStackToPages
+    href: DrawnUi.Infrastructure.Pdf.html#DrawnUi_Infrastructure_Pdf_SplitStackToPages_DrawnUi_Draw_SkiaControl_System_Boolean_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Infrastructure.Pdf.SplitStackToPages(DrawnUi.Draw.SkiaControl,System.Boolean,SkiaSharp.SKSize,System.Single)
+    name: SplitStackToPages
+    href: DrawnUi.Infrastructure.Pdf.html#DrawnUi_Infrastructure_Pdf_SplitStackToPages_DrawnUi_Draw_SkiaControl_System_Boolean_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
 - uid: DrawnUi.Infrastructure.Pdf.SplitToPages*
   commentId: Overload:DrawnUi.Infrastructure.Pdf.SplitToPages
   href: DrawnUi.Infrastructure.Pdf.html#DrawnUi_Infrastructure_Pdf_SplitToPages_SkiaSharp_SKSize_SkiaSharp_SKSize_
@@ -741,6 +814,45 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: DrawnUi.Infrastructure.Pdf.SplitToPages(SkiaSharp.SKSize,SkiaSharp.SKSize)
+  commentId: M:DrawnUi.Infrastructure.Pdf.SplitToPages(SkiaSharp.SKSize,SkiaSharp.SKSize)
+  isExternal: true
+  href: DrawnUi.Infrastructure.Pdf.html#DrawnUi_Infrastructure_Pdf_SplitToPages_SkiaSharp_SKSize_SkiaSharp_SKSize_
+  name: SplitToPages(SKSize, SKSize)
+  nameWithType: Pdf.SplitToPages(SKSize, SKSize)
+  fullName: DrawnUi.Infrastructure.Pdf.SplitToPages(SkiaSharp.SKSize, SkiaSharp.SKSize)
+  spec.csharp:
+  - uid: DrawnUi.Infrastructure.Pdf.SplitToPages(SkiaSharp.SKSize,SkiaSharp.SKSize)
+    name: SplitToPages
+    href: DrawnUi.Infrastructure.Pdf.html#DrawnUi_Infrastructure_Pdf_SplitToPages_SkiaSharp_SKSize_SkiaSharp_SKSize_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Infrastructure.Pdf.SplitToPages(SkiaSharp.SKSize,SkiaSharp.SKSize)
+    name: SplitToPages
+    href: DrawnUi.Infrastructure.Pdf.html#DrawnUi_Infrastructure_Pdf_SplitToPages_SkiaSharp_SKSize_SkiaSharp_SKSize_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: )
 - uid: DrawnUi.Infrastructure.Pdf.SplitStackToPages*
   commentId: Overload:DrawnUi.Infrastructure.Pdf.SplitStackToPages
   href: DrawnUi.Infrastructure.Pdf.html#DrawnUi_Infrastructure_Pdf_SplitStackToPages_DrawnUi_Draw_SkiaControl_System_Boolean_SkiaSharp_SKSize_System_Single_

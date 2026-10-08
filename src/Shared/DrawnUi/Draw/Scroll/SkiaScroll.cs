@@ -2979,6 +2979,12 @@ namespace DrawnUi.Draw
             {
                 if (_IsScrolling != value)
                 {
+                    // the content moves under the pointer: no hover tracking until it stops, then one check
+                    if (value)
+                        Superview?.PauseHover(this);
+                    else
+                        Superview?.ResumeHover(this);
+
                     OnScrollingStateChanged(value);
 
                     if (value)
@@ -3393,6 +3399,11 @@ namespace DrawnUi.Draw
                     _updatedViewportForPixY != posY
                     || _updatedViewportForPixX != posX
                     || _destination != DrawingRect;
+
+                // the offset jumped without an animation (ScrollTo at once): the content moved under a still mouse,
+                // so hover is checked again; a running scroll waits for its end instead (IsScrolling pauses hover)
+                if (!IsScrolling && (_updatedViewportForPixY != posY || _updatedViewportForPixX != posX))
+                    Superview?.RequestHoverCheck();
 
                 if (needAdjustPos)
                 {

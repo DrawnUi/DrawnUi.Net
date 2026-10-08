@@ -69,6 +69,7 @@ items:
   - DrawnUi.Controls.SkiaCarousel.PreloadNeighboors
   - DrawnUi.Controls.SkiaCarousel.PreloadNeighboorsProperty
   - DrawnUi.Controls.SkiaCarousel.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  - DrawnUi.Controls.SkiaCarousel.ReceivesHoverByDefault
   - DrawnUi.Controls.SkiaCarousel.RenderViewsList(DrawnUi.Draw.DrawingContext,System.Collections.Generic.IEnumerable{DrawnUi.Draw.SkiaControl})
   - DrawnUi.Controls.SkiaCarousel.RenderVisibleChild(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.SkiaControl,System.Numerics.Vector2)
   - DrawnUi.Controls.SkiaCarousel.SafeIndex
@@ -332,6 +333,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.OnItemsSourceCollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)
   - DrawnUi.Draw.SkiaLayout.OnItemsSourceChangesApplied
   - DrawnUi.Draw.SkiaLayout.ItemsSourceChangesApplied
+  - DrawnUi.Draw.SkiaLayout.PostItemsSourceChangesApplied
   - DrawnUi.Draw.SkiaLayout.HandleCollectionChangeWithStructurePreservation(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
   - DrawnUi.Draw.SkiaLayout.StageStructureChange(DrawnUi.Draw.SkiaLayout.StructureChange)
   - DrawnUi.Draw.SkiaLayout.ReportChildVisibilityChanged(System.Int32,System.Boolean)
@@ -466,6 +468,10 @@ items:
   - DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
   - DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
   - DrawnUi.Draw.SkiaControl.LastCompositeRecord
+  - DrawnUi.Draw.SkiaControl.MaxCompositionShare
+  - DrawnUi.Draw.SkiaControl.MaxCompositionAreas
+  - DrawnUi.Draw.SkiaControl.CompositionClip
+  - DrawnUi.Draw.SkiaControl.RenderCompositionChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.CacheSharingProperty
   - DrawnUi.Draw.SkiaControl.CacheSharing
@@ -562,6 +568,8 @@ items:
   - DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
   - DrawnUi.Draw.SkiaControl.IsHoveredProperty
   - DrawnUi.Draw.SkiaControl.IsHovered
+  - DrawnUi.Draw.SkiaControl.HoverChanged
+  - DrawnUi.Draw.SkiaControl.ReceivesHover
   - DrawnUi.Draw.SkiaControl.VisualLayer
   - DrawnUi.Draw.SkiaControl.CachedImage
   - DrawnUi.Draw.SkiaControl.LeftProperty
@@ -970,6 +978,7 @@ items:
   - DrawnUi.Draw.SkiaControl.LastDrawnAt
   - DrawnUi.Draw.SkiaControl.ExecutePostAnimators(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.Repaint
+  - DrawnUi.Draw.SkiaControl.UpdateOrigin
   - DrawnUi.Draw.SkiaControl._paintWithEffects
   - DrawnUi.Draw.SkiaControl._paintWithOpacity
   - DrawnUi.Draw.SkiaControl.CustomizeLayerPaint
@@ -1065,6 +1074,7 @@ items:
   - DrawnUi.Draw.SkiaControl.OnChildAdded(Microsoft.Maui.Controls.Element)
   - DrawnUi.Draw.SkiaControl.ClearDirtyChildren
   - DrawnUi.Draw.SkiaControl.TrackChildAsDirty(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Draw.SkiaControl.TrackDeepChange(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaControl.OnChildRemoved(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaControl.OnViewAttached
   - DrawnUi.Draw.SkiaControl.OnViewDetached
@@ -1310,6 +1320,7 @@ items:
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.Observe``2({TSource},System.Action{DrawnUi.Controls.SkiaCarousel,System.String},System.String[])
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.Observe``2({TSource},System.Action{DrawnUi.Controls.SkiaCarousel},System.String[])
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.OnContextMenu``1(System.Func{DrawnUi.Controls.SkiaCarousel,DrawnUi.Draw.ContextMenuEventArgs,System.Boolean})
+  - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.OnHovered``1(System.Action{DrawnUi.Controls.SkiaCarousel,System.Boolean})
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.OnKeyDown``1(System.Action{DrawnUi.Controls.SkiaCarousel,DrawnUi.Draw.InputKey})
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.OnKeyUp``1(System.Action{DrawnUi.Controls.SkiaCarousel,DrawnUi.Draw.InputKey})
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.OnLongPressing``1(System.Action{DrawnUi.Controls.SkiaCarousel})
@@ -2359,7 +2370,10 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
-  summary: Invokes TransitionChanged event
+  summary: >-
+    Invokes TransitionChanged event. While in transition the content moves under the pointer, so hover is not
+
+    tracked (<xref href="DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)" data-throw-if-not-resolved="false"></xref>); it is checked once when the transition ends.
   example: []
   syntax:
     content: public override void OnTransitionChanged()
@@ -4048,6 +4062,38 @@ items:
       type: DrawnUi.Draw.VelocityAccumulator
     content.vb: Protected ReadOnly Property VelocityAccumulator As VelocityAccumulator
   overload: DrawnUi.Controls.SkiaCarousel.VelocityAccumulator*
+- uid: DrawnUi.Controls.SkiaCarousel.ReceivesHoverByDefault
+  commentId: P:DrawnUi.Controls.SkiaCarousel.ReceivesHoverByDefault
+  id: ReceivesHoverByDefault
+  parent: DrawnUi.Controls.SkiaCarousel
+  langs:
+  - csharp
+  - vb
+  name: ReceivesHoverByDefault
+  nameWithType: SkiaCarousel.ReceivesHoverByDefault
+  fullName: DrawnUi.Controls.SkiaCarousel.ReceivesHoverByDefault
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ReceivesHoverByDefault
+    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    startLine: 1863
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  summary: Takes mouse hover by default (<xref href="DrawnUi.Draw.SkiaControl.ReceivesHover" data-throw-if-not-resolved="false"></xref>), as it always did.
+  example: []
+  syntax:
+    content: protected override bool ReceivesHoverByDefault { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Protected Overrides ReadOnly Property ReceivesHoverByDefault As Boolean
+  overridden: DrawnUi.Draw.SkiaControl.ReceivesHoverByDefault
+  overload: DrawnUi.Controls.SkiaCarousel.ReceivesHoverByDefault*
 - uid: DrawnUi.Controls.SkiaCarousel.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Controls.SkiaCarousel.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   id: ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
@@ -4066,7 +4112,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1862
+    startLine: 1865
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -7723,6 +7769,25 @@ references:
   name: ItemsSourceChangesApplied
   nameWithType: SkiaLayout.ItemsSourceChangesApplied
   fullName: DrawnUi.Draw.SkiaLayout.ItemsSourceChangesApplied
+- uid: DrawnUi.Draw.SkiaLayout.PostItemsSourceChangesApplied
+  commentId: M:DrawnUi.Draw.SkiaLayout.PostItemsSourceChangesApplied
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PostItemsSourceChangesApplied
+  name: PostItemsSourceChangesApplied()
+  nameWithType: SkiaLayout.PostItemsSourceChangesApplied()
+  fullName: DrawnUi.Draw.SkiaLayout.PostItemsSourceChangesApplied()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.PostItemsSourceChangesApplied
+    name: PostItemsSourceChangesApplied
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PostItemsSourceChangesApplied
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.PostItemsSourceChangesApplied
+    name: PostItemsSourceChangesApplied
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PostItemsSourceChangesApplied
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.HandleCollectionChangeWithStructurePreservation(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
   commentId: M:DrawnUi.Draw.SkiaLayout.HandleCollectionChangeWithStructurePreservation(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
   parent: DrawnUi.Draw.SkiaLayout
@@ -10620,6 +10685,62 @@ references:
   name: LastCompositeRecord
   nameWithType: SkiaControl.LastCompositeRecord
   fullName: DrawnUi.Draw.SkiaControl.LastCompositeRecord
+- uid: DrawnUi.Draw.SkiaControl.MaxCompositionShare
+  commentId: F:DrawnUi.Draw.SkiaControl.MaxCompositionShare
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MaxCompositionShare
+  name: MaxCompositionShare
+  nameWithType: SkiaControl.MaxCompositionShare
+  fullName: DrawnUi.Draw.SkiaControl.MaxCompositionShare
+- uid: DrawnUi.Draw.SkiaControl.MaxCompositionAreas
+  commentId: F:DrawnUi.Draw.SkiaControl.MaxCompositionAreas
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MaxCompositionAreas
+  name: MaxCompositionAreas
+  nameWithType: SkiaControl.MaxCompositionAreas
+  fullName: DrawnUi.Draw.SkiaControl.MaxCompositionAreas
+- uid: DrawnUi.Draw.SkiaControl.CompositionClip
+  commentId: P:DrawnUi.Draw.SkiaControl.CompositionClip
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CompositionClip
+  name: CompositionClip
+  nameWithType: SkiaControl.CompositionClip
+  fullName: DrawnUi.Draw.SkiaControl.CompositionClip
+- uid: DrawnUi.Draw.SkiaControl.RenderCompositionChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.DrawingContext)
+  commentId: M:DrawnUi.Draw.SkiaControl.RenderCompositionChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.DrawingContext)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderCompositionChild_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_DrawingContext_
+  name: RenderCompositionChild(SkiaControl, DrawingContext)
+  nameWithType: SkiaControl.RenderCompositionChild(SkiaControl, DrawingContext)
+  fullName: DrawnUi.Draw.SkiaControl.RenderCompositionChild(DrawnUi.Draw.SkiaControl, DrawnUi.Draw.DrawingContext)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RenderCompositionChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.DrawingContext)
+    name: RenderCompositionChild
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderCompositionChild_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_DrawingContext_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RenderCompositionChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.DrawingContext)
+    name: RenderCompositionChild
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderCompositionChild_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_DrawingContext_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaControl
@@ -12680,6 +12801,20 @@ references:
   name: IsHovered
   nameWithType: SkiaControl.IsHovered
   fullName: DrawnUi.Draw.SkiaControl.IsHovered
+- uid: DrawnUi.Draw.SkiaControl.HoverChanged
+  commentId: E:DrawnUi.Draw.SkiaControl.HoverChanged
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HoverChanged
+  name: HoverChanged
+  nameWithType: SkiaControl.HoverChanged
+  fullName: DrawnUi.Draw.SkiaControl.HoverChanged
+- uid: DrawnUi.Draw.SkiaControl.ReceivesHover
+  commentId: P:DrawnUi.Draw.SkiaControl.ReceivesHover
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ReceivesHover
+  name: ReceivesHover
+  nameWithType: SkiaControl.ReceivesHover
+  fullName: DrawnUi.Draw.SkiaControl.ReceivesHover
 - uid: DrawnUi.Draw.SkiaControl.VisualLayer
   commentId: P:DrawnUi.Draw.SkiaControl.VisualLayer
   parent: DrawnUi.Draw.SkiaControl
@@ -21306,6 +21441,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Repaint
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.UpdateOrigin
+  commentId: P:DrawnUi.Draw.SkiaControl.UpdateOrigin
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdateOrigin
+  name: UpdateOrigin
+  nameWithType: SkiaControl.UpdateOrigin
+  fullName: DrawnUi.Draw.SkiaControl.UpdateOrigin
 - uid: DrawnUi.Draw.SkiaControl._paintWithEffects
   commentId: F:DrawnUi.Draw.SkiaControl._paintWithEffects
   parent: DrawnUi.Draw.SkiaControl
@@ -23625,6 +23767,41 @@ references:
     name: TrackChildAsDirty
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TrackChildAsDirty_DrawnUi_Draw_SkiaControl_
   - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.TrackDeepChange(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Draw.SkiaControl.TrackDeepChange(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TrackDeepChange_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_SkiaControl_
+  name: TrackDeepChange(SkiaControl, SkiaControl)
+  nameWithType: SkiaControl.TrackDeepChange(SkiaControl, SkiaControl)
+  fullName: DrawnUi.Draw.SkiaControl.TrackDeepChange(DrawnUi.Draw.SkiaControl, DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.TrackDeepChange(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl)
+    name: TrackDeepChange
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TrackDeepChange_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.TrackDeepChange(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl)
+    name: TrackDeepChange
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TrackDeepChange_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
   - uid: DrawnUi.Draw.SkiaControl
     name: SkiaControl
     href: DrawnUi.Draw.SkiaControl.html
@@ -31806,6 +31983,83 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
   - name: )
+- uid: DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.OnHovered``1(System.Action{DrawnUi.Controls.SkiaCarousel,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.OnHovered``1(``0,System.Action{``0,System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.OnHovered``1(``0,System.Action{``0,System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnHovered__1___0_System_Action___0_System_Boolean__
+  name: OnHovered<SkiaCarousel>(SkiaCarousel, Action<SkiaCarousel, bool>)
+  nameWithType: FluentExtensions.OnHovered<SkiaCarousel>(SkiaCarousel, Action<SkiaCarousel, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.OnHovered<DrawnUi.Controls.SkiaCarousel>(DrawnUi.Controls.SkiaCarousel, System.Action<DrawnUi.Controls.SkiaCarousel, bool>)
+  nameWithType.vb: FluentExtensions.OnHovered(Of SkiaCarousel)(SkiaCarousel, Action(Of SkiaCarousel, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.OnHovered(Of DrawnUi.Controls.SkiaCarousel)(DrawnUi.Controls.SkiaCarousel, System.Action(Of DrawnUi.Controls.SkiaCarousel, Boolean))
+  name.vb: OnHovered(Of SkiaCarousel)(SkiaCarousel, Action(Of SkiaCarousel, Boolean))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.OnHovered``1(DrawnUi.Controls.SkiaCarousel,System.Action{DrawnUi.Controls.SkiaCarousel,System.Boolean})
+    name: OnHovered
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnHovered__1___0_System_Action___0_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.OnHovered``1(DrawnUi.Controls.SkiaCarousel,System.Action{DrawnUi.Controls.SkiaCarousel,System.Boolean})
+    name: OnHovered
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnHovered__1___0_System_Action___0_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
 - uid: DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.OnKeyDown``1(System.Action{DrawnUi.Controls.SkiaCarousel,DrawnUi.Draw.InputKey})
   commentId: M:DrawnUi.Draw.FluentExtensions.OnKeyDown``1(``0,System.Action{``0,DrawnUi.Draw.InputKey})
   parent: DrawnUi.Draw.FluentExtensions
@@ -39938,6 +40192,70 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.OnHovered``1(``0,System.Action{``0,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.OnHovered``1(``0,System.Action{``0,System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnHovered__1___0_System_Action___0_System_Boolean__
+  name: OnHovered<T>(T, Action<T, bool>)
+  nameWithType: FluentExtensions.OnHovered<T>(T, Action<T, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.OnHovered<T>(T, System.Action<T, bool>)
+  nameWithType.vb: FluentExtensions.OnHovered(Of T)(T, Action(Of T, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.OnHovered(Of T)(T, System.Action(Of T, Boolean))
+  name.vb: OnHovered(Of T)(T, Action(Of T, Boolean))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.OnHovered``1(``0,System.Action{``0,System.Boolean})
+    name: OnHovered
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnHovered__1___0_System_Action___0_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.OnHovered``1(``0,System.Action{``0,System.Boolean})
+    name: OnHovered
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnHovered__1___0_System_Action___0_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.OnKeyDown``1(``0,System.Action{``0,DrawnUi.Draw.InputKey})
   commentId: M:DrawnUi.Draw.FluentExtensions.OnKeyDown``1(``0,System.Action{``0,DrawnUi.Draw.InputKey})
   isExternal: true
@@ -44432,6 +44750,31 @@ references:
   name: FixPosition
   nameWithType: SkiaCarousel.FixPosition
   fullName: DrawnUi.Controls.SkiaCarousel.FixPosition
+- uid: DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PauseHover_DrawnUi_Draw_SkiaControl_
+  name: PauseHover(SkiaControl)
+  nameWithType: DrawnView.PauseHover(SkiaControl)
+  fullName: DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
+    name: PauseHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PauseHover_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
+    name: PauseHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PauseHover_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
 - uid: DrawnUi.Draw.SnappingLayout.OnTransitionChanged
   commentId: M:DrawnUi.Draw.SnappingLayout.OnTransitionChanged
   parent: DrawnUi.Draw.SnappingLayout
@@ -44457,6 +44800,35 @@ references:
   name: OnTransitionChanged
   nameWithType: SkiaCarousel.OnTransitionChanged
   fullName: DrawnUi.Controls.SkiaCarousel.OnTransitionChanged
+- uid: DrawnUi.Views.DrawnView
+  commentId: T:DrawnUi.Views.DrawnView
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.DrawnView.html
+  name: DrawnView
+  nameWithType: DrawnView
+  fullName: DrawnUi.Views.DrawnView
+- uid: DrawnUi.Views
+  commentId: N:DrawnUi.Views
+  href: DrawnUi.html
+  name: DrawnUi.Views
+  nameWithType: DrawnUi.Views
+  fullName: DrawnUi.Views
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Views
+    name: Views
+    href: DrawnUi.Views.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Views
+    name: Views
+    href: DrawnUi.Views.html
 - uid: DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
   commentId: M:DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
   parent: DrawnUi.Draw.SnappingLayout
@@ -45111,6 +45483,19 @@ references:
   name: VelocityAccumulator
   nameWithType: VelocityAccumulator
   fullName: DrawnUi.Draw.VelocityAccumulator
+- uid: DrawnUi.Draw.SkiaControl.ReceivesHoverByDefault
+  commentId: P:DrawnUi.Draw.SkiaControl.ReceivesHoverByDefault
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ReceivesHoverByDefault
+  name: ReceivesHoverByDefault
+  nameWithType: SkiaControl.ReceivesHoverByDefault
+  fullName: DrawnUi.Draw.SkiaControl.ReceivesHoverByDefault
+- uid: DrawnUi.Controls.SkiaCarousel.ReceivesHoverByDefault*
+  commentId: Overload:DrawnUi.Controls.SkiaCarousel.ReceivesHoverByDefault
+  href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_ReceivesHoverByDefault
+  name: ReceivesHoverByDefault
+  nameWithType: SkiaCarousel.ReceivesHoverByDefault
+  fullName: DrawnUi.Controls.SkiaCarousel.ReceivesHoverByDefault
 - uid: DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   parent: DrawnUi.Draw.SkiaControl

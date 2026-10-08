@@ -1120,9 +1120,13 @@ public class SkiaSlider : SkiaLayout
         FindViews();
     }
 
+    /// <summary>Takes mouse hover by default (<see cref="SkiaControl.ReceivesHover"/>), as it always did.</summary>
+    protected override bool ReceivesHoverByDefault => true;
+
     public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     {
-        CheckHovered(args);
+        if (ReceivesHover)
+            CheckHovered(args);
 
         //Super.Log($"[Touch] SLIDER got {args.Type}");
 

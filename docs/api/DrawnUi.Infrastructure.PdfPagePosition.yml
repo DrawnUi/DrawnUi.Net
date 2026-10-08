@@ -91,7 +91,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
-  summary: Position of the page start
+  summary: Offset of the page start inside the content, apply it as the viewport offset when rendering the page.
   example: []
   syntax:
     content: public SKPoint Position { readonly get; set; }
@@ -118,11 +118,14 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Height
     path: ../src/Shared/DrawnUi/Features/Pdf/Pdf.cs
-    startLine: 31
+    startLine: 32
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
-  summary: This can sometimes be less then the paper size if the content is smaller
+  summary: >-
+    Printable height of this page: the paper height, or less when the page ends above a row that
+
+    did not fit, or when it is the last page and the content ends earlier.
   example: []
   syntax:
     content: public float Height { readonly get; set; }

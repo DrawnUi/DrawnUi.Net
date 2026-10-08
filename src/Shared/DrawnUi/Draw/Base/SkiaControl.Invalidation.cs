@@ -158,7 +158,15 @@
         public virtual void UpdateByChild(SkiaControl child)
         {
             if (IsCacheComposite)
-                TrackChildAsDirty(child);
+            {
+                // a change that started deeper than the direct child (a card inside an uncached stack): the
+                // composite keeps the control it started at, to redraw only that control's area
+                var origin = UpdateOrigin;
+                if (origin != null && origin != child)
+                    TrackDeepChange(child, origin);
+                else
+                    TrackChildAsDirty(child);
+            }
 
             UpdateInternal();
         }

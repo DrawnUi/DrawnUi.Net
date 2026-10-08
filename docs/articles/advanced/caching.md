@@ -56,6 +56,11 @@ Maintains one surface and repaints only dirty (changed) child regions. Preserves
 
 Use for: mixed-content containers where some children are interactive (badges, counters) while others are static (avatars, titles). More detail in [ImageComposite internals](#imagecomposite-internals).
 
+A change deep inside is redrawn by its area too: in a list whose cards sit in an uncached inner stack, a card that
+changes (a hover, a selection) is the only area erased and redrawn, not the whole inner stack. Put the composite on
+the list's top container and leave the layouts in between uncached. On an accelerated canvas prefer
+`ImageCompositeGPU` for a long list: a raster image goes up to the GPU whole after every change.
+
 ### `GPU`
 Caches to a GPU surface created on the canvas `GRContext`. Zero CPU readback cost; blits directly on GPU. Falls back to `Image` when hardware acceleration is not available. Inside an `ImageDoubleBuffered` parent the control paints live, because that parent is recorded on a background thread.
 
@@ -170,6 +175,14 @@ Never call `.Dispose()` directly on a `CachedObject`, `SKSurface`, or `SKPicture
 2. Erases only those regions on the surface.
 3. Repaints background (`PaintTintBackground`) for dirty areas.
 4. Redraws only dirty children via the layout-specific draw path (`DrawStack`, `DrawChildrenGrid`, `RenderViewsList`).
+
+A child that changed itself is erased and redrawn whole, together with the siblings it overlaps. A change that started
+deeper (`Update()` / `Repaint()` on a control inside an uncached child) is redrawn by area: the composite erases the
+pixels that control can paint (`DirtyRegion`, shadows and effects included) and redraws the child clipped to them
+(`RenderCompositionChild`). When a control between them has a transform, a visual effect or is a backdrop, the child
+is redrawn whole instead. A layout change, or more than `MaxCompositionAreas` areas, or areas covering more than
+`MaxCompositionShare` of the composite, make the record full. `LastCompositeRecord` tells whether the last record was
+partial, which children it redrew, the `Areas` it erased and the controls redrawn by area (`Changed`).
 
 `RenderObjectPrevious` acts as a wrapper: each draw replaces the wrapper reference but reuses the same underlying surface, avoiding a full re-allocation.
 

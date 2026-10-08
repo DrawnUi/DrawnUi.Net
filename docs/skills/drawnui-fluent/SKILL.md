@@ -1,6 +1,6 @@
 ﻿---
 name: drawnui-fluent
-description: "Use when writing DrawnUI C# code-behind with fluent extensions. Covers inline control construction, .Assign(out _field), .Initialize(), .OnTapped(), .OnTextChanged(), .ObserveProperty(), .ObserveProperties(), .ObservePropertyTwoWay() (two-way binding), .Adapt(), .WhenPaint(), .ObserveSelf(), layout aliases (SkiaStack/SkiaRow/SkiaLayer), one-shot and looping animations, gradients, colors, shadows, SkiaLottie, SkiaImageTiles, and SkiaBackdrop code-behind patterns. Load before any DrawnUI C# composition task."
+description: "Use when writing DrawnUI C# code-behind with fluent extensions. Covers inline control construction, .Assign(out _field), .Initialize(), .OnTapped(), .OnHovered(), .OnTextChanged(), .ObserveProperty(), .ObserveProperties(), .ObservePropertyTwoWay() (two-way binding), .Adapt(), .WhenPaint(), .ObserveSelf(), layout aliases (SkiaStack/SkiaRow/SkiaLayer), one-shot and looping animations, gradients, colors, shadows, SkiaLottie, SkiaImageTiles, and SkiaBackdrop code-behind patterns. Load before any DrawnUI C# composition task."
 version: 1.3.1
 tags: [drawnui, csharp, fluent, code-behind, maui, blazor]
 ---
@@ -155,6 +155,7 @@ Always use fluent extension methods — never `+=` events or commands wired outs
 | Tap handler | `.OnTapped(me => { ... })` |
 | Tap with args | `.OnTapped((me, args) => { ... })` |
 | Long press | `.OnLongPressing(me => { ... })` |
+| Mouse hover | `.OnHovered((me, on) => { ... })` — turns `ReceivesHover` on; `on` = mouse over / left. A card and the button inside it are hovered together. Not tracked while content scrolls or slides (checked when it stops); touch never hovers |
 | Context menu (right click / long press / Menu key on the web heads) | `.OnContextMenu((me, e) => true)` — `true` = handled (browser menu suppressed), `false` = browser menu shows |
 | Editor text changed (`SkiaEditor`) | `.OnTextChanged(text => { ... })` |
 | Editor focus (`SkiaEditor`) | `.OnFocusChanged((me, focused) => { ... })` |
@@ -166,6 +167,7 @@ Always use fluent extension methods — never `+=` events or commands wired outs
 | Paint hook (before own background) | `.WhenPaint((me, ctx) => { ... })` |
 | Overlay above content + children | `.WhenPainted((ctx, control) => { ...; return false; })` — `true` = keep repainting |
 | Self-observe any property | `.ObserveSelf((me, propName) => { ... })` |
+| Templated layout applied a collection change | `.WhenItemsSourceChangesApplied(me => { ... })` — after every ItemsSource change (adds, removes, moves, LoadMore pages), once per frame, after the frame that shows it. Under `MeasureVisible` appended rows are measured later: read sizes in `MeasurementApplied` |
 | Raw gesture interception (`SkiaLayout`-derived) | `.WithGestures((me, args, apply) => { ... })` — return `me` = consumed, `null` = pass; never consume Up unless required |
 
 Keyboard: `.OnKeyDown` / `.OnKeyUp` both take `(control, InputKey key)` — `InputKey.ArrowLeft/ArrowRight/ArrowUp/ArrowDown`, `Space`, `Enter`, `KeyD`… Attach them to the ROOT control of the tree, not to the focused child. Verified on the Fiddle WASM build 2026-08-30.
@@ -623,6 +625,8 @@ protected override void ContextPropertyChanged(object sender, PropertyChangedEve
 ```
 
 Prefer `ContextPropertyChanged` over per-control `.ObserveProperty(...)` inside recycled cells — one subscription per cell instead of N, and nothing to unsubscribe on rebind.
+
+Hover in a recycled cell: wire it once in the constructor, `this.OnHovered((me, on) => me.BackgroundColor = on ? HoverColor : NormalColor)`. The canvas checks hover again when a hovered cell gets another item, is hidden or detached, so a recycled cell never keeps the previous item's hover; write no release-on-recycle code.
 
 ### Teardown — `OnWillDisposeWithChildren()`
 

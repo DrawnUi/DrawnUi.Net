@@ -460,10 +460,16 @@ public class SnappingLayout : SkiaLayout
     }
 
     /// <summary>
-    /// Invokes TransitionChanged event
+    /// Invokes TransitionChanged event. While in transition the content moves under the pointer, so hover is not
+    /// tracked (<see cref="DrawnView.PauseHover"/>); it is checked once when the transition ends.
     /// </summary>
     public virtual void OnTransitionChanged()
     {
+        if (InTransition)
+            Superview?.PauseHover(this);
+        else
+            Superview?.ResumeHover(this);
+
         TransitionChanged?.Invoke(this, InTransition);
     }
 

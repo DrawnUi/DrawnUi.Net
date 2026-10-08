@@ -236,6 +236,12 @@ namespace DrawnUi.Views
                 {
                     focused.ClearFocus();
                 }
+                else if (view.RootView?.FindFocus() is Android.Widget.EditText)
+                {
+                    // a text input outside this canvas holds the keyboard (an editor in another Canvas
+                    // took it, which is why this canvas lost its focused child): it is not ours to close
+                    return;
+                }
             }
 
             TouchEffect.CloseKeyboard();

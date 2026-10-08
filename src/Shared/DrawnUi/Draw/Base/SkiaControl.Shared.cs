@@ -337,17 +337,18 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
-        /// For internat custom logic, use IsHovered for usual use.
+        /// For custom logic that hovers a control from code: true makes this control the only hovered one, false ends its
+        /// hover. Mouse hover itself comes from <see cref="ReceivesHover"/> / <see cref="CheckHovered"/>.
         /// </summary>
         /// <param name="state"></param>
         protected virtual void SetHover(bool state)
         {
-            if (Superview is Canvas canvas)
+            if (Superview is DrawnView view)
             {
                 if (state)
-                    canvas.HasHover = this;
-                else if (canvas.HasHover == this)
-                    canvas.HasHover = null;
+                    view.HasHover = this;
+                else if (view.HasHover == this)
+                    view.HasHover = null;
             }
             else
             {
@@ -356,7 +357,10 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
-        /// Will be called by the Canvas. 
+        /// Called by the canvas when the mouse comes over this control (true) or leaves it (false), for controls that take
+        /// hover (<see cref="ReceivesHover"/> or a <see cref="CheckHovered"/> call). The returned value becomes
+        /// <see cref="IsHovered"/>; return false to refuse the hover. Low-level: for a reaction from outside the control
+        /// use <see cref="HoverChanged"/> or the fluent <c>OnHovered</c>.
         /// </summary>
         /// <param name="state"></param>
         /// <returns></returns>
@@ -378,15 +382,46 @@ namespace DrawnUi.Draw
             {
                 if (bindable is SkiaControl control)
                 {
-                    control.SetHover((bool)newValue);
+                    control.HoverChanged?.Invoke(control, (bool)newValue);
                 }
             });
 
+        /// <summary>
+        /// True while the mouse is over this control and the control takes hover (<see cref="ReceivesHover"/>). Every
+        /// such control under the pointer is hovered at once, a card and the button inside it alike, as CSS :hover.
+        /// Set by the canvas: hover is decided after the whole pointer pass, it stays as it is while content animates
+        /// under the pointer and is checked again when that stops. Touch never hovers. Setting it from code changes only
+        /// this flag (and raises <see cref="HoverChanged"/>); use <see cref="SetHover"/> to hover a control from code.
+        /// </summary>
         public bool IsHovered
         {
             get { return (bool)GetValue(IsHoveredProperty); }
             set { SetValue(IsHoveredProperty, value); }
         }
+
+        /// <summary>
+        /// Raised when <see cref="IsHovered"/> changes: true when the mouse came over this control, false when it left
+        /// (or the control stopped being under it after a scroll, a rebind or a popup). Fluent: <c>.OnHovered((me, on) => ...)</c>.
+        /// </summary>
+        public event EventHandler<bool> HoverChanged;
+
+        private bool? _receivesHover;
+
+        /// <summary>
+        /// Whether this control takes mouse hover: when true the canvas sets <see cref="IsHovered"/> while the mouse is
+        /// over it. Opt-in: false by default, true by default only for the controls that always had hover
+        /// (<see cref="SkiaButton"/>, <see cref="SkiaSlider"/>, the toggles, <see cref="SkiaRadioButton"/>,
+        /// <see cref="SkiaCarousel"/>, <see cref="SkiaDrawer"/>, <see cref="SkiaSpinner"/>, <see cref="SkiaWheelScroll"/>).
+        /// Set false on those to turn their hover off. The fluent <c>OnHovered</c> sets it to true.
+        /// </summary>
+        public bool ReceivesHover
+        {
+            get => _receivesHover ?? ReceivesHoverByDefault;
+            set => _receivesHover = value;
+        }
+
+        /// <summary>The value of <see cref="ReceivesHover"/> until it is set: false, true in the controls that always had hover.</summary>
+        protected virtual bool ReceivesHoverByDefault => false;
 
         public VisualLayer? VisualLayer { get; set; }
 
@@ -2434,15 +2469,18 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
-        /// Will check if hovered by pointer and set IsHovered accordingly
+        /// Low-level hover: on a mouse (pointer) move this control reports itself as hovered for the pass being processed;
+        /// the canvas decides after the whole pass (every reporting control under the pointer is hovered). The base
+        /// <see cref="ProcessGestures"/> calls it for controls with <see cref="ReceivesHover"/>; call it yourself only in
+        /// a ProcessGestures override that does not reach the base.
         /// </summary>
         public virtual void CheckHovered(SkiaGesturesParameters args)
         {
 
-#if WINDOWS || MACCATALYST || ANDROID || BROWSER
+#if WINDOWS || MACCATALYST || ANDROID || BROWSER || DRAWNUI_NET
             if (args.Type == TouchActionResult.Pointer)
             {
-                SetHover(true);
+                Superview?.ReportHover(this);
             }
 #else
             //for iOS todo
@@ -2451,9 +2489,9 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
-        /// Opt-in pointer-over tracking: call at the top of <see cref="ProcessGestures"/>. Unlike
-        /// <see cref="CheckHovered"/>, which gives hover to one control at a time, every control under the pointer
-        /// stays <see cref="IsPointerOver"/>: a scroll keeps it while a button inside it is hovered.
+        /// Opt-in pointer-over tracking: call at the top of <see cref="ProcessGestures"/>. Every control under the pointer
+        /// that calls it stays <see cref="IsPointerOver"/> (a scroll keeps it while a button inside it is hovered). Unlike
+        /// hover (<see cref="IsHovered"/>) it is updated on every mouse move, also while content animates.
         /// </summary>
         public void CheckPointerOver(SkiaGesturesParameters args)
         {
@@ -2533,6 +2571,11 @@ namespace DrawnUi.Draw
             ISkiaGestureListener consumed = null;
             ISkiaGestureListener wasConsumed = apply.AlreadyConsumed;
             bool manageChildFocus = false;
+
+            if (ReceivesHover)
+            {
+                CheckHovered(args);
+            }
 
             if (OnGestures != null)
             {
@@ -3046,6 +3089,9 @@ namespace DrawnUi.Draw
         /// <param name="newvalue"></param>
         public virtual void OnVisibilityChanged(bool newvalue)
         {
+            if (!newvalue && IsHovered)
+                Superview?.RequestHoverCheck(); // hidden under the mouse: it stops being hovered
+
             if (IsAccessibilityElement)
             {
                 if (!newvalue)
@@ -3127,6 +3173,7 @@ namespace DrawnUi.Draw
             Rendered = null;
             ClipWith = null;
             Disposing?.Invoke(this, null);
+            Superview?.ForgetHover(this);
             Superview?.UnregisterGestureListener(this as ISkiaGestureListener);
             Superview?.UnregisterAllAnimatorsByParent(this);
             Superview?.AccessibilityManager.UnregisterSubtree(this);
@@ -6047,6 +6094,10 @@ namespace DrawnUi.Draw
             BindingContextWasSet = true;
             ExistingCacheWasRendered = false;
 
+            // a recycled cell under a still mouse now shows another item: hover is checked again
+            if (IsHovered)
+                Superview?.RequestHoverCheck();
+
             try
             {
                 ApplyBindingContext();
@@ -7476,8 +7527,27 @@ namespace DrawnUi.Draw
                 || IsDisposed || Parent == null)
                 return;
 
-            Parent?.UpdateByChild(this);
+            var outer = _updateOrigin;
+            _updateOrigin ??= this; // the control the change started at, for a composite above
+            try
+            {
+                Parent?.UpdateByChild(this);
+            }
+            finally
+            {
+                _updateOrigin = outer;
+            }
         }
+
+        [ThreadStatic]
+        private static SkiaControl _updateOrigin;
+
+        /// <summary>
+        /// While an update climbs the tree (<see cref="Update"/>, <see cref="Repaint"/>), the control it started at;
+        /// null outside of one. An <see cref="SkiaCacheType.ImageComposite"/> above reads it in
+        /// <see cref="UpdateByChild"/> to redraw only that control's area.
+        /// </summary>
+        protected static SkiaControl UpdateOrigin => _updateOrigin;
 
         protected SKPaint _paintWithEffects = null;
         private SKImageFilter _paintWithEffectsImageFilter;
@@ -7748,6 +7818,11 @@ namespace DrawnUi.Draw
             Repaint();
         }
 
+        /// <summary>
+        /// A per-control key for <see cref="SafeAction"/> / <see cref="SyncUniqueAction"/>: the control's Uid mixed
+        /// with a value. Never negative, because SafeAction reads a negative key as "no key" and makes a random one,
+        /// which silently stopped the once-per-frame merge for about half of all controls.
+        /// </summary>
         public static long CombineToLong(Guid guid, int value)
         {
             Span<byte> guidBytes = stackalloc byte[16];
@@ -7762,7 +7837,7 @@ namespace DrawnUi.Draw
             long result = guidPart ^ intPart;
             result = (result ^ (result << 13)) ^ (result >> 7); 
 
-            return result;
+            return result & long.MaxValue;
         }
 
         public const int ChildrenFactoryInitialize = 1;
@@ -8141,7 +8216,7 @@ namespace DrawnUi.Draw
                         {
                             if (DirtyChildrenInternal.Contains(child))
                             {
-                                child.Render(context);
+                                RenderCompositionChild(child, context);
                             }
                             else
                             {
@@ -8412,7 +8487,16 @@ namespace DrawnUi.Draw
 
                 if (!WillNotUpdateParent)
                 {
-                    Parent?.UpdateByChild(this);
+                    var outer = _updateOrigin;
+                    _updateOrigin ??= this; // the control the change started at, for a composite above
+                    try
+                    {
+                        Parent?.UpdateByChild(this);
+                    }
+                    finally
+                    {
+                        _updateOrigin = outer;
+                    }
                 }
             }
             catch (Exception e)
@@ -8588,6 +8672,13 @@ namespace DrawnUi.Draw
                         var clip = dirtyChild.GetTransformedDirtyBounds();
                         clip.Offset(offset);
                         clipPreviousCachePath.AddRect(clip);
+                    }
+
+                    if (CompositionClip != null)
+                    {
+                        // a change deep inside: the background only where it was erased
+                        clipPreviousCachePath.Reset();
+                        clipPreviousCachePath.AddPath(CompositionClip);
                     }
 
                     var saved = canvas.Save();
@@ -9337,13 +9428,45 @@ namespace DrawnUi.Draw
 
         public virtual void ClearDirtyChildren()
         {
-            DirtyChildrenTracker.Clear();
+            lock (DirtyChildrenTracker)
+            {
+                DirtyChildrenTracker.Clear();
+                _compositeWhole?.Clear();
+                _compositeDeep?.Clear();
+            }
         }
 
+        /// <summary>
+        /// The child changed as a whole (or was added or removed): a composite record redraws all of it.
+        /// </summary>
         public virtual void TrackChildAsDirty(SkiaControl child)
         {
-            DirtyChildrenTracker.Add(child);
+            lock (DirtyChildrenTracker)
+            {
+                DirtyChildrenTracker.Add(child);
+                if (IsCacheComposite)
+                    (_compositeWhole ??= new()).Add(child);
+            }
         }
+
+        /// <summary>
+        /// A change started at <paramref name="origin"/>, below the direct child <paramref name="child"/>: a composite
+        /// record can redraw only the origin's area (when nothing between them moves it or depends on all of it).
+        /// </summary>
+        protected void TrackDeepChange(SkiaControl child, SkiaControl origin)
+        {
+            lock (DirtyChildrenTracker)
+            {
+                DirtyChildrenTracker.Add(child);
+                _compositeDeep ??= new();
+                if (!_compositeDeep.TryGetValue(child, out var origins))
+                    _compositeDeep[child] = origins = new();
+                origins.Add(origin);
+            }
+        }
+
+        private HashSet<SkiaControl> _compositeWhole;
+        private Dictionary<SkiaControl, HashSet<SkiaControl>> _compositeDeep;
 
         public virtual void OnChildAdded(SkiaControl child)
         {
@@ -9432,6 +9555,11 @@ namespace DrawnUi.Draw
 
                 Update();
             }
+
+            // a popup or page came or went, or the hovered control was detached: what is under a still mouse may
+            // differ (one check per frame at most, only while something is hovered, none while content animates)
+            if (Superview is { HasHoveredControls: true } view)
+                view.RequestHoverCheck();
 
             ParentChanged?.Invoke(this, Parent);
         }

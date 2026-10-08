@@ -21,9 +21,30 @@ namespace DrawnUi.Draw
                 if (_editor._updatingText)
                     return;
 
+                var nativeText = textView.Text?.Replace("\r\n", "\n").Replace("\r", "\n") ?? string.Empty;
                 _editor._updatingText = true;
-                _editor.Text = textView.Text?.Replace("\r\n", "\n").Replace("\r", "\n");
+                _editor.Text = nativeText;
                 _editor._updatingText = false;
+
+                // A TextChanged handler may have replaced the text the user just typed (input filter, max length):
+                // it ran synchronously under _updatingText, so SyncNativeText skipped and the native view kept the
+                // rejected characters. Make it follow Text. The caret goes to the end of the common prefix, i.e.
+                // where the rejected characters were (SelectedRange is not reliable yet inside textViewDidChange).
+                var text = _editor.Text ?? string.Empty;
+                if (nativeText != text)
+                {
+                    var caret = 0;
+                    while (caret < text.Length && caret < nativeText.Length && text[caret] == nativeText[caret])
+                        caret++;
+                    _editor._updatingText = true;
+                    try
+                    {
+                        textView.Text = text;
+                        textView.SelectedRange = new NSRange(caret, 0);
+                    }
+                    finally { _editor._updatingText = false; }
+                    _editor.SetCursorPositionWithDelay(50, caret);
+                }
             }
 
             public override void SelectionChanged(UITextView textView)
@@ -60,6 +81,7 @@ namespace DrawnUi.Draw
 
         protected NativeEntryView Control;
         private UIView _layout;
+        private UIToolbar _doneBar;
 
         public int NativeSelectionStart
         {
@@ -90,10 +112,15 @@ namespace DrawnUi.Draw
             if (Control != null)
             {
                 Control.Delegate = null;
+                Control.DetachedFromWindow = null;
+                // CanResignFirstResponder is false while IsFocused: clear it or the resign is refused
+                // and the removed view keeps the keyboard up forever.
+                Control.IsFocused = false;
                 Control.ResignFirstResponder();
                 Control.RemoveFromSuperview();
                 Control = null;
             }
+            _doneBar = null;
             _layout = null;
         }
 
@@ -101,7 +128,6 @@ namespace DrawnUi.Draw
         {
             if (Control != null)
             {
-                Control.InputAccessoryView = null;
                 Control.AutocorrectionType = UITextAutocorrectionType.No;
                 Control.Frame = new CGRect(DrawingRect.Right / RenderingScale, DrawingRect.Bottom / RenderingScale, 1, 1);
             }
@@ -135,6 +161,14 @@ namespace DrawnUi.Draw
             _updatingText = false;
 
             Control.Delegate = new TextViewDelegate(this);
+
+            // The sink can leave the window without anyone unfocusing the editor (page popped while
+            // typing): drop the drawn focus too, so the editor state follows the keyboard.
+            Control.DetachedFromWindow = () =>
+            {
+                if (IsFocused)
+                    IsFocused = false;
+            };
 
             _layout.AddSubview(Control);
         }
@@ -215,6 +249,42 @@ namespace DrawnUi.Draw
                 _                           => UIKeyboardType.Default
             };
 
+            // The number, decimal and phone pads have no return key, so without this bar the only
+            // way to close the keyboard is leaving the page. Done does what the return key does.
+            var needsDoneBar = !IsPassword && (Control.KeyboardType == UIKeyboardType.NumberPad
+                                               || Control.KeyboardType == UIKeyboardType.DecimalPad
+                                               || Control.KeyboardType == UIKeyboardType.PhonePad);
+            if (needsDoneBar)
+            {
+                if (_doneBar == null)
+                {
+                    _doneBar = new UIToolbar();
+                    _doneBar.SizeToFit();
+                    _doneBar.Items = new[]
+                    {
+                        new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace),
+                        new UIBarButtonItem(UIBarButtonSystemItem.Done, (s, e) =>
+                        {
+                            // same as the return key for a single-line editor (ShouldChangeText)
+                            ExecuteSubmit(clearFocus: !IsMultiline);
+                        })
+                    };
+                }
+
+                if (Control.InputAccessoryView != _doneBar)
+                {
+                    Control.InputAccessoryView = _doneBar;
+                    if (Control.IsFirstResponder)
+                        Control.ReloadInputViews();
+                }
+            }
+            else if (Control.InputAccessoryView != null)
+            {
+                Control.InputAccessoryView = null;
+                if (Control.IsFirstResponder)
+                    Control.ReloadInputViews();
+            }
+
             SetReturnType(ReturnType);
         }
 
@@ -275,6 +345,23 @@ namespace DrawnUi.Draw
             public bool IsFocused { get; set; }
 
             public override bool CanResignFirstResponder => !IsFocused;
+
+            public Action DetachedFromWindow { get; set; }
+
+            public override void WillMoveToWindow(UIWindow window)
+            {
+                // A keyboard sink leaving the window (its page was popped while the editor was focused)
+                // must give the keyboard back: once detached nobody can reach it to resign, and with
+                // IsFocused still true it refuses every resign, so the keyboard stays over every screen.
+                if (window == null && IsFirstResponder)
+                {
+                    IsFocused = false;
+                    ResignFirstResponder();
+                    DetachedFromWindow?.Invoke();
+                }
+
+                base.WillMoveToWindow(window);
+            }
         }
     }
 }

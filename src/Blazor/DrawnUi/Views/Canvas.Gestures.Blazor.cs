@@ -32,6 +32,12 @@ public partial class Canvas : IGestureListener
         HadInput.TryAdd(consumed.Uid, consumed);
     }
 
+    /// <summary>The hover check: the last mouse position goes through the same pass as a real mouse move.</summary>
+    protected override void OnHoverCheck(SkiaGesturesParameters pointer)
+    {
+        ProcessGestures(pointer);
+    }
+
     protected virtual void ProcessGestures(SkiaGesturesParameters args)
     {
         lock (LockIterateListeners)
@@ -49,7 +55,6 @@ public partial class Canvas : IGestureListener
             }
 
             _checkHover = args.Type == TouchActionResult.Pointer;
-            _hadHover = false;
             ISkiaGestureListener consumed = null;
             ISkiaGestureListener alreadyConsumed = null;
 
@@ -222,13 +227,10 @@ public partial class Canvas : IGestureListener
                 }
             }
 
-            if (_checkHover && !_hadHover)
-            {
-                HasHover = null;
-            }
-
             if (_checkHover)
             {
+                // hover is decided after the whole pass: every control that reported itself is hovered
+                CommitHover(args);
                 CommitPointerOver();
             }
         }
