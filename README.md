@@ -62,6 +62,10 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
+## What's New, next version
+
+  * **Fix: a side drawer took over a scroll's gesture.** Scrolling a list inside a drawer (a modal sliding in from the side) and then moving the finger sideways without lifting it made the drawer slide away. A gesture now belongs to the control that started panning with it until the finger is lifted, and a drawer whose gesture started the other way stays put.
+
 ## What's New 1.10.7.3
 
   * **A hidden control no longer redraws the screen.** A control that keeps updating behind another screen, such as a camera preview under a pushed page, asked for a full canvas frame on every update. Now it waits and draws its latest state when it is shown again.
