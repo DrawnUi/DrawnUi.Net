@@ -7818,6 +7818,11 @@ namespace DrawnUi.Draw
             Repaint();
         }
 
+        /// <summary>
+        /// A per-control key for <see cref="SafeAction"/> / <see cref="SyncUniqueAction"/>: the control's Uid mixed
+        /// with a value. Never negative, because SafeAction reads a negative key as "no key" and makes a random one,
+        /// which silently stopped the once-per-frame merge for about half of all controls.
+        /// </summary>
         public static long CombineToLong(Guid guid, int value)
         {
             Span<byte> guidBytes = stackalloc byte[16];
@@ -7832,7 +7837,7 @@ namespace DrawnUi.Draw
             long result = guidPart ^ intPart;
             result = (result ^ (result << 13)) ^ (result >> 7); 
 
-            return result;
+            return result & long.MaxValue;
         }
 
         public const int ChildrenFactoryInitialize = 1;

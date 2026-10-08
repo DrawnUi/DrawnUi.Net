@@ -1974,9 +1974,8 @@ namespace DrawnUi.Draw
         /// </summary>
         protected void PostItemsSourceChangesApplied()
         {
-            // SafeAction takes a negative key for "no key" and CombineToLong is negative for half the Uids
             SafeAction(() => PostDrawAction(OnItemsSourceChangesApplied),
-                CombineToLong(Uid, ItemsSourceChangesAppliedKey) & long.MaxValue);
+                CombineToLong(Uid, ItemsSourceChangesAppliedKey));
         }
 
         /// <summary>

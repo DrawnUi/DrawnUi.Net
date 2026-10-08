@@ -19,7 +19,7 @@ public class ItemsSourceChangesAppliedTests
     const float Spacing = 2;
 
     static (HeadlessCanvasHost host, SkiaScroll scroll, SkiaLayout grid, ObservableRangeCollection<int> items) Scene(
-        MeasuringStrategy strategy, int split, int initial, Guid? uid = null)
+        MeasuringStrategy strategy, int split, int initial)
     {
         var host = new HeadlessCanvasHost(402, 700, scale: 1f, background: Colors.Black);
         var items = new ObservableRangeCollection<int>();
@@ -27,7 +27,6 @@ public class ItemsSourceChangesAppliedTests
 
         var grid = new SkiaLayout
         {
-            Uid = uid ?? Guid.NewGuid(),
             Type = LayoutType.Column,
             Split = split,
             Spacing = Spacing,
@@ -110,29 +109,27 @@ public class ItemsSourceChangesAppliedTests
     }
 
     /// <summary>
-    /// The per-layout key is made from the Uid. For half the Uids it came out negative, which SafeAction reads
-    /// as "no key", so those layouts raised once per change: pinned with such a Uid (101 = the event's key).
+    /// The per-layout key is made from the Uid; it used to be negative for half the Uids, which SafeAction reads
+    /// as "no key", so those layouts raised once per change. 8 layouts: all must merge (KeyedActionTests pins the key).
     /// </summary>
-    [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void SeveralChangesInOneFrame_RaiseOnce(bool negativeKeyUid)
+    [Fact]
+    public void SeveralChangesInOneFrame_RaiseOnce()
     {
-        var uid = Guid.NewGuid();
-        while ((SkiaControl.CombineToLong(uid, 101) < 0) != negativeKeyUid)
-            uid = Guid.NewGuid();
-        var (host, _, grid, items) = Scene(MeasuringStrategy.MeasureFirst, 1, 12, uid);
-        using (host)
+        for (int i = 0; i < 8; i++)
         {
-            int raised = 0;
-            grid.ItemsSourceChangesApplied += (s, e) => raised++;
+            var (host, _, grid, items) = Scene(MeasuringStrategy.MeasureFirst, 1, 12);
+            using (host)
+            {
+                int raised = 0;
+                grid.ItemsSourceChangesApplied += (s, e) => raised++;
 
-            items.Add(12);
-            items.Add(13);
-            items.Add(14);
-            Settle(host);
+                items.Add(12);
+                items.Add(13);
+                items.Add(14);
+                Settle(host);
 
-            Assert.Equal(1, raised);
+                Assert.Equal(1, raised);
+            }
         }
     }
 
