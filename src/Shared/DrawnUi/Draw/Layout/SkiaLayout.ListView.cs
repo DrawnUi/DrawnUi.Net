@@ -1424,6 +1424,11 @@ public partial class SkiaLayout
             int col = startCol;
             float rowHeight = 0f;
 
+            // continuing a partial row: the row is as tall as its cells measured before this batch
+            var structure = StackStructure;
+            if (startCol > 0 && structure != null && Type == LayoutType.Column)
+                rowHeight = Math.Max(0f, ComputeBottomOfRow(structure, startRow) - startY);
+
             float availableWidth = columnWidth;
             float availableHeight = float.PositiveInfinity;
 
@@ -1787,6 +1792,12 @@ public partial class SkiaLayout
                         if (StackStructure == null)
                         {
                             StackStructure = new LayoutStructure(allRows);
+                        }
+                        else if (Split > 1 && !DynamicColumns)
+                        {
+                            // batches end mid-row: continue the partial last row, so structure rows stay
+                            // the grid's rows (row lookups by index place the next batch from them)
+                            StackStructure.AppendContinuing(allRows.SelectMany(r => r).ToList(), Split);
                         }
                         else
                         {
@@ -2220,9 +2231,10 @@ public partial class SkiaLayout
     /// insert/append is pure arithmetic — followers slide down by rowsAdded*stride, new cells are placed
     /// by row/column multiplication. No template binds, no measures, no full structure-build loop (the
     /// freeze at window slides). Split-aware: a Split&gt;1 grid places new cells across their columns
-    /// (row = index/Split, col = index%Split). Requires the change to be Split-aligned (count and index
-    /// multiples of Split, guaranteed by IsSplitAlignedChange upstream) so survivor column parity is
-    /// preserved by a pure row-shift; returns false otherwise to fall back to the generic path.
+    /// (row = index/Split, col = index%Split). An insert before the end must be Split-aligned (count and
+    /// index multiples of Split) so survivor column parity is preserved by a pure row-shift; an append at the
+    /// end may have any size, its new cells fill the partial last row, then whole rows. Returns false otherwise
+    /// to fall back to the generic path.
     /// </summary>
     private bool TryApplyUniformAddMeasureFirst(StructureChange change)
     {
@@ -2230,10 +2242,7 @@ public partial class SkiaLayout
             return false;
 
         var split = Split > 0 ? Split : 1;
-
-        // Split-aware arithmetic needs row-aligned inserts (col parity preserved by a pure Y-shift).
-        if (split > 1 && (change.Count % split != 0 || change.StartIndex % split != 0))
-            return false;
+        bool aligned = split == 1 || (change.Count % split == 0 && change.StartIndex % split == 0);
 
         lock (LockMeasure)
         {
@@ -2246,6 +2255,12 @@ public partial class SkiaLayout
             var proto = cells[cells.Count - 1];
             if (!proto.WasMeasured || change.StartIndex > proto.ControlIndex + 1)
                 return false; // no measured prototype / append beyond a gap — let the generic path handle it
+
+            // an append moves no existing cell; anything before the end needs whole rows (DynamicColumns
+            // stretches a short last row, which changes when it fills)
+            bool tailAppend = change.StartIndex == proto.ControlIndex + 1 && !DynamicColumns;
+            if (!aligned && !tailAppend)
+                return false;
 
             var spacingPixels = (float)Math.Round(Spacing * RenderingScale);
             float stride = proto.Destination.Height + spacingPixels;     // one ROW = cell height + spacing
@@ -2308,11 +2323,15 @@ public partial class SkiaLayout
             }
 
             float protoHeight = proto.Destination.Height;
+            int protoRow = proto.ControlIndex / split;
             for (int i = 0; i < change.Count; i++)
             {
                 int finalIndex = change.StartIndex + i;
                 int col = finalIndex % split;
-                float top = insertTop + (i / split) * stride;
+                // an append goes by its own row: the first new cells may share the partial last row
+                float top = tailAppend
+                    ? proto.Destination.Top + (finalIndex / split - protoRow) * stride
+                    : insertTop + (i / split) * stride;
                 var dest = new SKRect(colLeft[col], top, colLeft[col] + colWidth, top + protoHeight);
 
                 cells.Add(new ControlInStack
