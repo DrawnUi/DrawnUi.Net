@@ -1558,10 +1558,15 @@ namespace DrawnUi.Draw
             // measured (can't pin exactly).
             if (!TryEngageWindowInPlace())
             {
+                // the reset raises ItemsSourceChangesApplied itself
                 OnItemsSourceCollectionChanged(EffectiveItemsSource,
                     new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                 if (Parent is SkiaScroll fallbackScroll)
                     fallbackScroll.ScrollToIndex(anchor, false, RelativePositionType.Start);
+            }
+            else
+            {
+                PostItemsSourceChangesApplied();
             }
 
             return true;
@@ -1745,7 +1750,7 @@ namespace DrawnUi.Draw
             ApplyNewItemsSource = true;
             Invalidate();
 
-            PostDrawAction(OnItemsSourceChangesApplied);
+            PostItemsSourceChangesApplied();
         }
 
         public virtual void ResetScroll()
@@ -1866,6 +1871,7 @@ namespace DrawnUi.Draw
             {
                 // NEW: Structure-preserving logic for MeasureVisible strategy
                 HandleCollectionChangeWithStructurePreservation(args);
+                PostItemsSourceChangesApplied();
                 return;
             }
 
@@ -1948,7 +1954,29 @@ namespace DrawnUi.Draw
             ItemsSourceChangesApplied?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Fires after a new ItemsSource was set or its observable collection changed, once the frame that
+        /// applied the change was drawn. Several changes within one frame raise it once (the full rebuild path
+        /// raises once per change). Under MeasureVisible, items added past the measured range are measured in
+        /// the background after that frame, so the layout size can still grow: <see cref="MeasurementApplied"/>
+        /// reports each measured batch.
+        /// </summary>
         public event EventHandler ItemsSourceChangesApplied;
+
+        const int ItemsSourceChangesAppliedKey = 101;
+
+        /// <summary>
+        /// Raises <see cref="ItemsSourceChangesApplied"/> after the next frame, once per frame however many
+        /// changes arrive. The after-draw action is posted from the render thread at the start of that frame:
+        /// the staged change is applied by that frame's Paint before the event runs, the after-draw queue is
+        /// only filled by the thread that drains it, and a handler that changes the collection again waits
+        /// for the following frame instead of re-entering the same drain with a layout not applied yet.
+        /// </summary>
+        protected void PostItemsSourceChangesApplied()
+        {
+            SafeAction(() => PostDrawAction(OnItemsSourceChangesApplied),
+                CombineToLong(Uid, ItemsSourceChangesAppliedKey));
+        }
 
         /// <summary>
         /// Handles collection changes while preserving existing measurement structure
