@@ -1,3 +1,4 @@
+using DrawnUi.Controls;
 using AppoMobi.Specials;
 using DrawnUi.Draw;
 using DrawnUi.Testing;
@@ -221,6 +222,36 @@ public class ItemsSourceChangesAppliedTests
             Settle(host);
 
             Assert.Equal(1, raised);
+        }
+    }
+
+    /// <summary>
+    /// SkiaSpinner and SkiaWheelPicker hand their ItemsSource to an inner wheel and skip the base handlers,
+    /// so the event never came for them: a new ItemsSource and a collection change each raise it once.
+    /// </summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Pickers_RaiseOnNewSourceAndOnChange(bool wheelPicker)
+    {
+        var host = new HeadlessCanvasHost(402, 700, scale: 1f, background: Colors.Black);
+        var items = new System.Collections.ObjectModel.ObservableCollection<string> { "One", "Two", "Three", "Four" };
+        SkiaLayout picker = wheelPicker
+            ? new SkiaWheelPicker { WidthRequest = 200, HeightRequest = 200 }
+            : new SkiaSpinner { WidthRequest = 300, HeightRequest = 300 };
+        int raised = 0;
+        picker.ItemsSourceChangesApplied += (s, e) => raised++;
+        host.Canvas.Content = picker;
+        using (host)
+        {
+            Settle(host);
+            picker.ItemsSource = items;
+            Settle(host);
+            Assert.Equal(1, raised);
+
+            items.Add("Five");
+            Settle(host);
+            Assert.Equal(2, raised);
         }
     }
 }
