@@ -534,7 +534,6 @@ public class Canvas : DrawnView, IGestureListener
 
     private bool _debugIsPressed;
     private bool _debugIsDown;
-    private bool _hadHover;
     private bool _checkHover;
 
     // FocusedChild as of the last Down — detects focus claimed during the current gesture.
@@ -569,7 +568,6 @@ public class Canvas : DrawnView, IGestureListener
             }
 
             _checkHover = args.Type == TouchActionResult.Pointer;
-            _hadHover = false;
 
             ISkiaGestureListener consumed = null;
             ISkiaGestureListener alreadyConsumed = null;
@@ -743,46 +741,19 @@ public class Canvas : DrawnView, IGestureListener
                 }
             }
 
-            if (_checkHover && !_hadHover)
-            {
-                this.HasHover = null;
-            }
-
             if (_checkHover)
             {
+                // hover is decided after the whole pass: every control that reported itself is hovered
+                CommitHover(args);
                 CommitPointerOver();
             }
         }
     }
 
-    /// <summary>
-    /// Exchange point to set itsself or read who has hover
-    /// </summary>
-    public SkiaControl HasHover
+    /// <summary>The hover check: the last mouse position goes through the same pass as a real mouse move.</summary>
+    protected override void OnHoverCheck(SkiaGesturesParameters pointer)
     {
-        get => hasHover;
-        set
-        {
-            _hadHover = true;
-
-            if (Equals(value, hasHover))
-            {
-                return;
-            }
-
-            if (hasHover is SkiaControl o)
-            {
-                o.IsHovered = o.OnHover(false);
-            }
-
-            hasHover = value;
-            if (hasHover is SkiaControl n)
-            {
-                n.IsHovered = n.OnHover(true); 
-            }
-
-            OnPropertyChanged();
-        }
+        ProcessGestures(pointer);
     }
 
     /// <summary>
@@ -928,7 +899,6 @@ public class Canvas : DrawnView, IGestureListener
     }
 
     protected List<int> LineBreaks = new List<int>();
-    private SkiaControl hasHover;
 
     public Canvas() : base()
     {

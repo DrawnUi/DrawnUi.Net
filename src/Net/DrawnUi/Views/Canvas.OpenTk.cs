@@ -87,7 +87,7 @@ public partial class Canvas
     {
         lock (LockIterateListeners)
         {
-            HasHover = null;
+            ClearHover();
             ClearPointerOver();
         }
     }

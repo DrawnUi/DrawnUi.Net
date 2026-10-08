@@ -479,6 +479,251 @@ namespace DrawnUi.Views
 
         #endregion
 
+        #region Hover
+
+        private HashSet<SkiaControl> _hovered = new();
+        private HashSet<SkiaControl> _hoveredNext = new();
+        private readonly HashSet<SkiaControl> _hoverPausedBy = new();
+        private readonly object _lockHover = new();
+        private SkiaGesturesParameters _hoverPointer;
+        private SkiaControl _hoverInnermost, _hoverInnermostNext;
+        private bool _hoverCheckQueued;
+
+        /// <summary>Key of the queued hover check: one per frame however many times it is asked for.</summary>
+        private static readonly long HoverCheckKey = LongKeyGenerator.EncodeSemantic("HOVERCHK");
+
+        /// <summary>
+        /// The controls that take hover and are under the mouse now (<see cref="SkiaControl.ReceivesHover"/>, or a
+        /// control calling <see cref="SkiaControl.CheckHovered"/>): a card and the button inside it alike, as CSS :hover.
+        /// Touch never hovers.
+        /// </summary>
+        public IReadOnlyCollection<SkiaControl> HoveredControls
+        {
+            get
+            {
+                lock (_lockHover)
+                    return _hovered.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// The innermost hovered control of the last pointer pass (the last one that reported itself). Setting it
+        /// makes that control the only hovered one; null clears the hover. Kept for code written when hover went to
+        /// one control at a time; <see cref="HoveredControls"/> lists them all.
+        /// </summary>
+        public SkiaControl HasHover
+        {
+            get => _hoverInnermost;
+            set
+            {
+                HoverChanges changes;
+                lock (_lockHover)
+                {
+                    _hoveredNext.Clear();
+                    if (value != null)
+                        _hoveredNext.Add(value);
+                    _hoverInnermostNext = value;
+                    changes = ApplyHover();
+                }
+                changes.Notify(this);
+            }
+        }
+
+        /// <summary>
+        /// A control reached by the pointer pass being processed takes hover; called by
+        /// <see cref="SkiaControl.CheckHovered"/>. Takes effect when the head commits the pass (<see cref="CommitHover"/>).
+        /// </summary>
+        public void ReportHover(SkiaControl control)
+        {
+            lock (_lockHover)
+            {
+                _hoveredNext.Add(control);
+                _hoverInnermostNext = control;
+            }
+        }
+
+        /// <summary>
+        /// Heads call it after a mouse (hover) pass went through the tree: the controls that reported themselves are
+        /// hovered, the others stop being hovered. While content animates under the pointer (<see cref="PauseHover"/>)
+        /// nothing changes: no hover changes, no redraws; one check follows when it stops.
+        /// </summary>
+        public void CommitHover(SkiaGesturesParameters pointer)
+        {
+            HoverChanges changes;
+            lock (_lockHover)
+            {
+                _hoverPointer = pointer;
+                if (HoverIsPaused())
+                {
+                    _hoveredNext.Clear();
+                    _hoverInnermostNext = null;
+                    return;
+                }
+
+                changes = ApplyHover();
+            }
+            changes.Notify(this);
+        }
+
+        /// <summary>The pointer left the canvas: hover ends at once, also while content animates.</summary>
+        public void ClearHover()
+        {
+            HoverChanges changes;
+            lock (_lockHover)
+            {
+                _hoverPointer = null;
+                _hoveredNext.Clear();
+                _hoverInnermostNext = null;
+                changes = ApplyHover();
+            }
+            changes.Notify(this);
+        }
+
+        /// <summary>
+        /// Content starts moving under the pointer (a scroll glide or fling, a carousel slide, a drawer move): hover is
+        /// not tracked until every owner called <see cref="ResumeHover"/>. What was hovered stays as it is meanwhile.
+        /// </summary>
+        public void PauseHover(SkiaControl owner)
+        {
+            lock (_lockHover)
+                _hoverPausedBy.Add(owner);
+        }
+
+        /// <summary>The content of <paramref name="owner"/> stopped moving: when nothing else moves, one hover check at the last pointer position.</summary>
+        public void ResumeHover(SkiaControl owner)
+        {
+            bool resumed;
+            lock (_lockHover)
+                resumed = _hoverPausedBy.Remove(owner) && !HoverIsPaused();
+            if (resumed)
+                RequestHoverCheck();
+        }
+
+        /// <summary>
+        /// Something under a still pointer may have changed (a recycled cell got another item, the hovered control was
+        /// hidden or detached, a popup opened): the pointer pass runs again at the last pointer position before the next
+        /// frame. At most once per frame, never while content animates, nothing when the pointer is not over the canvas.
+        /// </summary>
+        public void RequestHoverCheck()
+        {
+            lock (_lockHover)
+            {
+                if (_hoverPointer == null || _hoverCheckQueued || HoverIsPaused())
+                    return;
+                _hoverCheckQueued = true;
+            }
+
+            PostponeExecutionBeforeDraw(CheckHoverNow, HoverCheckKey);
+            Update();
+        }
+
+        /// <summary><paramref name="control"/> is going away: it leaves the hovered controls and the pause owners, without callbacks.</summary>
+        public void ForgetHover(SkiaControl control)
+        {
+            lock (_lockHover)
+            {
+                _hovered.Remove(control);
+                _hoveredNext.Remove(control);
+                _hoverPausedBy.Remove(control);
+                if (_hoverInnermost == control)
+                    _hoverInnermost = null;
+                if (_hoverInnermostNext == control)
+                    _hoverInnermostNext = null;
+            }
+        }
+
+        /// <summary>True when something is hovered now.</summary>
+        public bool HasHoveredControls
+        {
+            get
+            {
+                lock (_lockHover)
+                    return _hovered.Count > 0;
+            }
+        }
+
+        void CheckHoverNow()
+        {
+            SkiaGesturesParameters pointer;
+            lock (_lockHover)
+            {
+                _hoverCheckQueued = false;
+                pointer = _hoverPointer;
+                if (pointer == null || HoverIsPaused())
+                    return;
+            }
+
+            OnHoverCheck(pointer);
+        }
+
+        /// <summary>
+        /// Runs the pointer pass again at <paramref name="pointer"/>, the last mouse position over the canvas. Each head
+        /// sends it through the same path as a real mouse move; the base does nothing.
+        /// </summary>
+        protected virtual void OnHoverCheck(SkiaGesturesParameters pointer)
+        {
+        }
+
+        bool HoverIsPaused()
+        {
+            if (_hoverPausedBy.Count == 0)
+                return false;
+            // an owner that went away while its content moved never resumes: it must not stop hover forever
+            _hoverPausedBy.RemoveWhere(c => c.IsDisposed || c.IsDisposing || c.Superview != this);
+            return _hoverPausedBy.Count > 0;
+        }
+
+        /// <summary>The controls that left and entered hover in one commit; told after the lock is released (their callbacks may take other locks).</summary>
+        readonly struct HoverChanges
+        {
+            readonly SkiaControl[] _left, _entered;
+
+            public HoverChanges(SkiaControl[] left, SkiaControl[] entered)
+            {
+                _left = left;
+                _entered = entered;
+            }
+
+            public void Notify(DrawnView view)
+            {
+                if (_left == null)
+                    return;
+                foreach (var control in _left)
+                    SetHovered(control, false);
+                foreach (var control in _entered)
+                    SetHovered(control, true);
+                view.OnPropertyChanged(nameof(HasHover));
+            }
+
+            static void SetHovered(SkiaControl control, bool state)
+            {
+                if (control.IsDisposed || control.IsDisposing)
+                    return;
+                control.IsHovered = control.OnHover(state);
+            }
+        }
+
+        /// <summary>Makes the reported set the hovered one; nothing is allocated when it did not change (the usual mouse move).</summary>
+        HoverChanges ApplyHover()
+        {
+            _hoverInnermost = _hoverInnermostNext;
+            _hoverInnermostNext = null;
+
+            if (_hovered.SetEquals(_hoveredNext))
+            {
+                _hoveredNext.Clear();
+                return default;
+            }
+
+            var left = _hovered.Where(c => !_hoveredNext.Contains(c)).ToArray();
+            var entered = _hoveredNext.Where(c => !_hovered.Contains(c)).ToArray();
+            (_hovered, _hoveredNext) = (_hoveredNext, _hovered);
+            _hoveredNext.Clear();
+            return new HoverChanges(left, entered);
+        }
+
+        #endregion
+
         private ISkiaAccessibilityNode _keyboardFocusNode;
         private SKPaint _keyboardFocusPaint;
 

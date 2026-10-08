@@ -62,6 +62,15 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
+## What's New, next version
+
+  * **Hover for lists**
+    * `ReceivesHover`, `HoverChanged` and the fluent `.OnHovered((me, on) => ...)`: any control can take mouse hover. Every hovered control under the mouse is `IsHovered`, so a card stays lit while the mouse is over the button inside it. Before, hover went to one control at a time, and a list card lost it to its own button.
+    * Hover waits while a list scrolls, a carousel slides or a drawer moves, and is checked once when that stops, when a recycled cell under the mouse gets another item, and when a popup opens. Before, a card kept its hover after a wheel scroll until the mouse moved.
+    * Controls hover only when they opt in. Buttons, sliders, toggles, radio buttons, carousels, drawers and pickers hover by default as before.
+    * MAUI Windows: hover ends when the mouse leaves the canvas. WPF and OpenTK: hover works. Before, it never reached any control there.
+  * **ImageComposite redraws a change deep inside by its area.** A card inside an uncached stack in a composite list is redrawn alone, not the whole stack.
+
 ## What's New 1.10.7.1
 
 A hotfix for `SkiaEditor` on Android and iOS, on top of 1.10.6.22.

@@ -1860,9 +1860,13 @@ public class SkiaCarousel : SnappingLayout
 
     protected VelocityAccumulator VelocityAccumulator { get; } = new();
 
+    /// <summary>Takes mouse hover by default (<see cref="SkiaControl.ReceivesHover"/>), as it always did.</summary>
+    protected override bool ReceivesHoverByDefault => true;
+
     public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     {
-        CheckHovered(args);
+        if (ReceivesHover)
+            CheckHovered(args);
 
         bool wrongDirection = false;
         bool passedToChildren = false;

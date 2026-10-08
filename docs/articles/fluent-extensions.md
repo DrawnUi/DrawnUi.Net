@@ -858,6 +858,17 @@ anyControl
 });
 ```
 
+### Hover
+
+`.OnHovered((me, on) => ...)` runs with `true` when the mouse comes over the control and `false` when it leaves,
+and turns `ReceivesHover` on. A card stays hovered while the mouse is over a button inside it; hover waits while
+content animates under the pointer; touch never hovers. See [Hover and pointer-over](gestures.md#hover-and-pointer-over).
+
+```csharp
+new SkiaShape { BackgroundColor = cardColor }
+    .OnHovered((me, on) => me.BackgroundColor = on ? hoverColor : cardColor);
+```
+
 ### Advanced Gesture Handling
 
 Controls deriving from `SkiaLayout` can use this extension.

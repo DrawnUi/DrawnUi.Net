@@ -77,9 +77,19 @@ public partial class SkiaControl
     /// What an <see cref="SkiaCacheType.ImageComposite"/> cache redrew the last time it was recorded.
     /// </summary>
     /// <param name="Partial">True when only the changed children, and the ones they overlap, were redrawn over the
-    /// previous image; false for a full redraw (first record, size change, cache invalidated).</param>
-    /// <param name="Redrawn">The children painted by that record.</param>
-    public readonly record struct CompositeRecord(bool Partial, IReadOnlyList<SkiaControl> Redrawn);
+    /// previous image; false for a full redraw (first record, size change, cache invalidated, too much changed).</param>
+    /// <param name="Redrawn">The direct children painted by that record.</param>
+    public readonly record struct CompositeRecord(bool Partial, IReadOnlyList<SkiaControl> Redrawn)
+    {
+        /// <summary>
+        /// The areas erased and redrawn, in the recording's pixels: a whole changed child, or for a change deeper
+        /// inside (a card in an uncached stack) only that control's area. Empty for a full record.
+        /// </summary>
+        public IReadOnlyList<SKRect> Areas { get; init; } = Array.Empty<SKRect>();
+
+        /// <summary>The controls whose change was redrawn by area (deeper than the direct children). Empty when none.</summary>
+        public IReadOnlyList<SkiaControl> Changed { get; init; } = Array.Empty<SkiaControl>();
+    }
 
     /// <summary>
     /// The last record of this control's <see cref="SkiaCacheType.ImageComposite"/> cache: full or partial, and which
@@ -88,16 +98,103 @@ public partial class SkiaControl
     public CompositeRecord LastCompositeRecord { get; protected set; } = new(false, Array.Empty<SkiaControl>());
 
     /// <summary>
-    /// Find intersections between changed children and DrawingRect,
-    /// add intersecting ones to DirtyChildrenInternal and set IsRenderingWithComposition = true if any.
+    /// A partial record whose areas cover more than this share of the composite, or more than
+    /// <see cref="MaxCompositionAreas"/> areas, redraws everything instead: one full redraw costs less than many clipped ones.
+    /// </summary>
+    public const float MaxCompositionShare = 0.5f;
+
+    /// <summary>The most areas a partial composite record redraws one by one before it redraws everything instead.</summary>
+    public const int MaxCompositionAreas = 16;
+
+    private List<SKRect> _compositionAreas;
+    private SKPath _compositionClip;
+    private HashSet<SkiaControl> _compositionClipped;
+
+    /// <summary>
+    /// During a partial composite record with changes deeper than the direct children, the union of the erased
+    /// areas: children in <see cref="RenderCompositionChild"/> draw only inside it. Null otherwise.
+    /// </summary>
+    protected SKPath CompositionClip { get; private set; }
+
+    /// <summary>
+    /// Draws a child of a composite record: whole, or clipped to <see cref="CompositionClip"/> when the change that
+    /// made it dirty was deeper inside it, so pixels outside the changed areas stay as they were. Layouts call it
+    /// for the dirty children of a partial record.
+    /// </summary>
+    protected void RenderCompositionChild(SkiaControl child, DrawingContext context)
+    {
+        if (CompositionClip == null || _compositionClipped == null || !_compositionClipped.Contains(child))
+        {
+            child.Render(context);
+            return;
+        }
+
+        var canvas = context.Context.Canvas;
+        var saved = canvas.Save();
+        canvas.ClipPath(CompositionClip, SKClipOperation.Intersect, false); //rectangles, no antialiasing
+        child.Render(context);
+        canvas.RestoreToCount(saved);
+    }
+
+    /// <summary>
+    /// The areas of the changes that reached the direct child <paramref name="child"/> from deeper inside: true when
+    /// every change can be redrawn by area. False when the child itself changed, or a control on the way moves its
+    /// content (a transform) or depends on all of it (a visual effect, a backdrop): the child is redrawn whole then.
+    /// </summary>
+    bool TryAddDeepAreas(SkiaControl child, List<SKRect> areas, List<SkiaControl> changed)
+    {
+        if (_compositeWhole != null && _compositeWhole.Contains(child))
+            return false;
+        if (_compositeDeep == null || !_compositeDeep.TryGetValue(child, out var origins) || origins.Count == 0)
+            return false;
+        if (child.HasTransform || child.VisualEffects.Count > 0 || child is SkiaBackdrop)
+            return false;
+
+        foreach (var origin in origins)
+        {
+            if (origin.IsDisposed || origin.IsDisposing)
+                return false;
+
+            // the way up from the change to the child: nothing on it may move or blend the content
+            var control = origin;
+            while (control != child)
+            {
+                if (control.HasTransform)
+                    return false;
+                if (control != origin && (control.VisualEffects.Count > 0 || control is SkiaBackdrop))
+                    return false;
+                control = control.Parent as SkiaControl;
+                if (control == null)
+                    return false; // detached since
+            }
+
+            // the pixels it can paint, shadows and effects included; a layout change would have made the record full
+            var area = origin.DirtyRegion;
+            if (area.Width <= 0 || area.Height <= 0)
+                return false; // never drawn yet
+            areas.Add(area);
+            changed.Add(origin);
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Sets up a partial record of an <see cref="SkiaCacheType.ImageComposite"/> cache: decides which children are
+    /// redrawn and erases their areas in the previous image, and sets IsRenderingWithComposition = true if it can be
+    /// partial. A child that changed itself is redrawn whole (its old area erased) together with the siblings it
+    /// overlaps. A change that came from deeper inside a child (a card inside an uncached stack) erases only that
+    /// control's area and redraws the child clipped to it.
     /// </summary>
     /// <param name="ctx"></param>
-    /// <param name="destination"></param>
     protected virtual void SetupRenderingWithComposition(DrawingContext ctx)
     {
+        CompositionClip = null;
+
         if (IsCacheComposite)
         {
             DirtyChildrenInternal.Clear();
+            _compositionClipped?.Clear();
 
             var previousCache = RenderObjectPrevious;
 
@@ -111,78 +208,116 @@ public partial class SkiaControl
 
                 //Super.Log($"[ImageComposite] {Tag} drawing cached at {offset}  {DrawingRect}");
 
+                var areas = _compositionAreas ??= new();
+                areas.Clear();
+                var changed = new List<SkiaControl>();
+                var deep = false;
 
-                // Add more children that are not already added but intersect with the dirty regions
-                var asSpans = CollectionsMarshal.AsSpan(DirtyChildrenTracker.GetList());
-                foreach (var item in asSpans)
+                lock (DirtyChildrenTracker)
                 {
-                    DirtyChildrenInternal.Add(item);
+                    var asSpans = CollectionsMarshal.AsSpan(DirtyChildrenTracker.GetList());
+                    foreach (var item in asSpans)
+                    {
+                        DirtyChildrenInternal.Add(item);
+
+                        var areasBefore = areas.Count;
+                        var changedBefore = changed.Count;
+                        if (TryAddDeepAreas(item, areas, changed))
+                        {
+                            deep = true;
+                            (_compositionClipped ??= new()).Add(item);
+                        }
+                        else
+                        {
+                            areas.RemoveRange(areasBefore, areas.Count - areasBefore);
+                            changed.RemoveRange(changedBefore, changed.Count - changedBefore);
+                            areas.Add(item.GetTransformedDirtyBounds());
+                        }
+                    }
                 }
 
-                //make intersecting children dirty too
                 var asSpan = RenderTree.AsSpans();
-                foreach (var cell in asSpan)
+                if (deep)
                 {
-                    //use full transform-aware bounds (handles rotation, scale, skew, perspective)
-                    if (!DirtyChildrenInternal.Contains(cell.Control) &&
-                        DirtyChildrenInternal.Any(dirtyChild =>
-                            dirtyChild.GetTransformedDirtyBounds()
-                                .IntersectsWith(cell.Control.GetTransformedDirtyBounds())))
+                    // a sibling over the erased areas is redrawn too, inside them only
+                    foreach (var cell in asSpan)
                     {
-                        DirtyChildrenInternal.Add(cell.Control);
+                        if (DirtyChildrenInternal.Contains(cell.Control))
+                            continue;
+                        var bounds = cell.Control.GetTransformedDirtyBounds();
+                        foreach (var area in areas)
+                        {
+                            if (area.IntersectsWith(bounds))
+                            {
+                                DirtyChildrenInternal.Add(cell.Control);
+                                _compositionClipped.Add(cell.Control);
+                                break;
+                            }
+                        }
                     }
 
-                    // Log the current cell's DirtyRegion
-                    /*
-                      var cellRect = cell.Control.DirtyRegion;
-                      Trace.WriteLine($"Checking cell.Control: {cell.Control}, DirtyRegion: X={cellRect.Left}, Y={cellRect.Top}, Width={cellRect.Width}, Height={cellRect.Height}");
+                    float covered = 0;
+                    foreach (var area in areas)
+                        covered += area.Width * area.Height;
 
-                      if (!DirtyChildrenInternal.Contains(cell.Control))
-                      {
-                          bool intersects = false;
-                          foreach (var dirtyChild in DirtyChildrenInternal)
-                          {
-                              var dirtyChildRect = dirtyChild.DirtyRegion;
-                              bool doesIntersect = dirtyChild.DirtyRegion.IntersectsWith(cell.Control.DirtyRegion);
+                    if (areas.Count > MaxCompositionAreas || covered > DrawingRect.Width * DrawingRect.Height * MaxCompositionShare)
+                    {
+                        // too much changed: one full redraw over a cleared image
+                        previousCache.Surface.Canvas.Clear();
+                        DirtyChildrenInternal.Clear();
+                        _compositionClipped.Clear();
+                        IsRenderingWithComposition = false;
+                        LastCompositeRecord = new(false, Views.ToArray());
+                        return;
+                    }
+                }
+                else
+                {
+                    //make intersecting children dirty too
+                    foreach (var cell in asSpan)
+                    {
+                        //use full transform-aware bounds (handles rotation, scale, skew, perspective)
+                        if (!DirtyChildrenInternal.Contains(cell.Control) &&
+                            DirtyChildrenInternal.Any(dirtyChild =>
+                                dirtyChild.GetTransformedDirtyBounds()
+                                    .IntersectsWith(cell.Control.GetTransformedDirtyBounds())))
+                        {
+                            DirtyChildrenInternal.Add(cell.Control);
+                        }
+                    }
 
-                              // Log the comparison details
-                              Trace.WriteLine($"  Comparing with dirtyChild: {dirtyChild}, DirtyRegion: X={dirtyChildRect.Left}, Y={dirtyChildRect.Top}, Width={dirtyChildRect.Width}, Height={dirtyChildRect.Height}");
-                              Trace.WriteLine($"  Intersects: {doesIntersect}");
-
-                              if (doesIntersect)
-                              {
-                                  intersects = true;
-                                  // Optionally break early if you only need one intersection
-                                  // break;
-                              }
-                          }
-
-                          if (intersects)
-                          {
-                              Trace.WriteLine($"Adding cell.Control: {cell.Control} to DirtyChildrenInternal");
-                              DirtyChildrenInternal.Add(cell.Control);
-                          }
-                      }
-                      else
-                      {
-                          Trace.WriteLine($"Skipping cell.Control: {cell.Control} (already in DirtyChildrenInternal)");
-                      }
-                     */
+                    // the overlapping siblings are erased and redrawn whole as well
+                    areas.Clear();
+                    foreach (var dirtyChild in DirtyChildrenInternal)
+                        areas.Add(dirtyChild.GetTransformedDirtyBounds());
                 }
 
-                var count = 0;
-                foreach (var dirtyChild in DirtyChildrenInternal)
+                if (deep)
                 {
-                    var clip = dirtyChild.GetTransformedDirtyBounds();
+                    _compositionClip ??= new();
+                    _compositionClip.Reset();
+                }
+
+                var erased = new SKRect[areas.Count];
+                for (var i = 0; i < areas.Count; i++)
+                {
+                    var clip = areas[i];
                     clip.Offset(offset);
                     //clip.Inflate(0.4f, 0.4f);
 
                     previousCache.Surface.Canvas.DrawRect(clip, PaintErase);
-
-                    count++;
+                    _compositionClip?.AddRect(clip);
+                    erased[i] = clip;
                 }
 
-                LastCompositeRecord = new(true, DirtyChildrenInternal.ToArray());
+                if (deep)
+                    CompositionClip = _compositionClip;
+
+                LastCompositeRecord = new(true, DirtyChildrenInternal.ToArray())
+                {
+                    Areas = erased,
+                    Changed = changed.ToArray(),
+                };
             }
             else
             {

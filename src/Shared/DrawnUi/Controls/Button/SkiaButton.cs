@@ -811,11 +811,15 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
     bool hadDown;
     public static float PanThreshold = 5;
 
+    /// <summary>Takes mouse hover by default (<see cref="SkiaControl.ReceivesHover"/>), as it always did.</summary>
+    protected override bool ReceivesHoverByDefault => true;
+
     public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     {
         //Debug.WriteLine($"SkiaButton {Text}. {args.Type} {args.Event.Distance.Delta}");
 
-        CheckHovered(args);
+        if (ReceivesHover)
+            CheckHovered(args);
 
         var point = TranslateInputOffsetToPixels(args.Event.Location, apply.ChildOffset);
 

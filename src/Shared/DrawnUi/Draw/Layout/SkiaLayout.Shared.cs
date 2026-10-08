@@ -576,7 +576,10 @@ namespace DrawnUi.Draw
                 }
             }
 
-            child.Render(ctx);
+            if (IsRenderingWithComposition && child is SkiaControl control)
+                RenderCompositionChild(control, ctx);
+            else
+                child.Render(ctx);
 
             return true;
         }

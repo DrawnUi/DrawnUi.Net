@@ -8,9 +8,13 @@ namespace DrawnUi.Draw;
 /// </summary>
 public class SkiaToggle : SkiaLayout
 {
+    /// <summary>Takes mouse hover by default (<see cref="SkiaControl.ReceivesHover"/>), as it always did.</summary>
+    protected override bool ReceivesHoverByDefault => true;
+
     public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     {
-        CheckHovered(args);
+        if (ReceivesHover)
+            CheckHovered(args);
 
         if (args.Type == TouchActionResult.Tapped)
         {

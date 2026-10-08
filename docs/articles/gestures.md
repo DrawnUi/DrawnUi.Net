@@ -325,11 +325,35 @@ selected text shows the browser's own copy menu, never a DrawnUI `ContextMenu`.
 
 ## Hover and pointer-over
 
-A control shows hover feedback by calling `CheckHovered(args)` at the top of its `ProcessGestures` and reacting in `OnHover(bool)` (`IsHovered`). Hover belongs to one control at a time: a button inside a list takes it from the list.
+Mouse hover is opt-in. Set `ReceivesHover = true` on a control, or use the fluent `.OnHovered`, and react to
+`IsHovered` / `HoverChanged`:
 
-To know that the mouse is anywhere inside a container, call `CheckPointerOver(args)` in its `ProcessGestures` and react in `OnPointerOver(bool)`. `IsPointerOver` stays true for every control under the pointer, the container and the button inside it. `SkiaScroll` uses it to show its auto-hiding scroll bars on hover.
+```csharp
+new SkiaShape { BackgroundColor = normal, /* a list card */ }
+    .OnHovered((me, on) => me.BackgroundColor = on ? lighter : normal); // also turns ReceivesHover on
+```
 
-Touch never hovers. On WPF and OpenTK both end when the mouse leaves the window; on MAUI, Blazor and the WebAssembly head they end at the next pointer move over the canvas.
+- Every control that takes hover and is under the mouse is hovered: a card and the button inside it alike, as CSS
+  `:hover`. The card stays lit while the mouse is over its button.
+- Only controls that opt in hover. `SkiaButton`, `SkiaSlider`, the toggles, `SkiaRadioButton`, `SkiaCarousel`,
+  `SkiaDrawer`, `SkiaSpinner` and `SkiaWheelScroll` take hover by default, as they always did (set
+  `ReceivesHover = false` to turn it off). A tap handler alone never makes a control hover.
+- The canvas decides after the whole pointer pass. A control that blocks gestures below (a popup) takes the hover away
+  from what is under it.
+- While content moves under the pointer (a scroll glide or fling, a carousel slide, a drawer), hover is not tracked:
+  what was hovered stays, nothing redraws. One check at the last pointer position follows when it stops, and also
+  when a recycled cell under the mouse gets another item, a hovered control is hidden or removed, or a popup or page
+  opens or closes.
+- Touch never hovers, and hover ends when the mouse leaves the canvas (MAUI Windows, WPF, OpenTK). Pressed state and
+  keyboard focus are separate from hover.
+
+Low level, as before: a control that overrides `ProcessGestures` without reaching the base calls `CheckHovered(args)`
+itself; `OnHover(bool)` is called on every change and its return value becomes `IsHovered`. `DrawnView.HoveredControls`
+lists what is hovered now.
+
+To know that the mouse is anywhere inside a container, call `CheckPointerOver(args)` in its `ProcessGestures` and react in `OnPointerOver(bool)`. `IsPointerOver` stays true for every control under the pointer, the container and the button inside it, and follows every mouse move, also while content animates. `SkiaScroll` uses it to show its auto-hiding scroll bars on hover.
+
+Touch never hovers. On MAUI Windows, WPF and OpenTK both end when the mouse leaves the canvas; on Blazor, the WebAssembly head, MAUI Mac Catalyst and Android they end at the next pointer move over the canvas.
 
 ## Gesture locking and propagation
 
