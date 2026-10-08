@@ -1748,6 +1748,7 @@ namespace DrawnUi.Draw
 
                     bool retAdd = true;
                     var wasLastChunk = false;
+                    var lineLimit = limitWidth; // this line's room: after a previous span on the first line
 
                     totalHeight += (float)LineHeightWithSpacing;
                     limitWidth = maxWidth; //reset the first line offset
@@ -1768,7 +1769,7 @@ namespace DrawnUi.Draw
                                 if (LineBreakMode == LineBreakMode.TailTruncation)
                                 {
                                     var maybeTrail = full + Trail;
-                                    var limitText = CutLineToFit(paint, font, maybeTrail, limitWidth);
+                                    var limitText = CutLineToFit(paint, font, maybeTrail, lineLimit, needsShaping, scale);
                                     if (limitText.Limit > 0)
                                     {
                                         adding = maybeTrail.Left(limitText.Limit).TrimEnd() + Trail;
@@ -2034,7 +2035,7 @@ namespace DrawnUi.Draw
                             cycle = textLine.Substring(posInsideWord, lenInsideWord);
                             MeasureText(paint, font, cycle, ref bounds);
 
-                            if (Math.Round(bounds.Width) > limitWidth)
+                            if (Math.Round(bounds.Width + CharacterSpacingWidth(cycle, needsShaping, scale)) > limitWidth)
                             {
                                 //remove one last character to maybe fit?
                                 var chunk = textLine.Substring(posInsideWord, lenInsideWord - 1);
@@ -2461,10 +2462,15 @@ namespace DrawnUi.Draw
             */
         }
 
+        /// <summary>
+        /// Finds how many characters of <paramref name="textIn"/> fit in <paramref name="maxWidth"/> pixels with the
+        /// truncation trail. Pass <paramref name="needsShaping"/> and <paramref name="scale"/> as the line is measured
+        /// with, so CharacterSpacing counts as drawn; scale 0 measures without it.
+        /// </summary>
         public virtual (int Limit, float Width) CutLineToFit(
             SKPaint paint,
             SKFont font,
-            string textIn, float maxWidth)
+            string textIn, float maxWidth, bool needsShaping = false, float scale = 0f)
         {
             SKRect bounds = new SKRect();
             var cycle = "";
@@ -2479,20 +2485,40 @@ namespace DrawnUi.Draw
 
             MeasureText(paint, font, textIn, ref bounds);
 
-            if (bounds.Width > maxWidth && !string.IsNullOrEmpty(textIn))
+            if (bounds.Width + CharacterSpacingWidth(textIn, needsShaping, scale) > maxWidth && !string.IsNullOrEmpty(textIn))
             {
                 for (int pos = 0; pos < textIn.Length; pos++)
                 {
                     cycle = textIn.Left(pos + 1).TrimEnd() + tail;
                     MeasureText(paint, font, cycle, ref bounds);
-                    if (bounds.Width > maxWidth)
+                    var cycleWidth = bounds.Width + CharacterSpacingWidth(cycle, needsShaping, scale);
+                    if (cycleWidth > maxWidth)
                         break;
-                    resultWidth = bounds.Width;
+                    resultWidth = cycleWidth;
                     limit = pos + 1;
                 }
             }
 
             return (limit, resultWidth);
+        }
+
+        /// <summary>
+        /// Width CharacterSpacing adds to a run of text, as MeasureLineGlyphs lays it out: the gap after every glyph
+        /// but the last. Zero where glyphs are drawn without it (shaped text, MonoForDigits) and for scale 0.
+        /// </summary>
+        float CharacterSpacingWidth(string text, bool needsShaping, float scale)
+        {
+            if (CharacterSpacing == 1f || scale == 0f || needsShaping || charMonoWidthPixels > 0 || string.IsNullOrEmpty(text))
+                return 0f;
+
+            var glyphs = 0;
+            foreach (var rune in text.EnumerateRunes())
+            {
+                if (rune.Value != 0xFE0F && rune.Value != 0xFE0E) // variation selectors get no gap
+                    glyphs++;
+            }
+
+            return glyphs > 1 ? (glyphs - 1) * (float)(scale * (CharacterSpacing - 1)) : 0f;
         }
 
 

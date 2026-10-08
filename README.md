@@ -66,6 +66,8 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 
   * **Fix: a drawer closed when you let go of a short drag.** Dragging a side drawer a little, holding the finger still and lifting it closed the drawer, because the slight movement of a resting finger counted as a flick. Now the drawer goes back unless you flick it or drag it past half. `SnapVelocityThreshold` (100 points per second) sets how fast a release must be to count as a flick, for drawers and carousels alike.
   * **Fix: a side drawer took over a scroll's gesture.** Scrolling a list inside a drawer (a modal sliding in from the side) and then moving the finger sideways without lifting it made the drawer slide away. A gesture now belongs to the control that started panning with it until the finger is lifted, and a drawer whose gesture started the other way stays put.
+  * **Fix: text in a grid's star column was cut to one line.** A label on an `Auto` row next to an `Auto` column (a title beside a button) was measured against the row height of its first, full-width pass, so text that wraps in the narrower column was cut to one line ending in "..". The row now grows to the wrapped text, up to `MaxLines`.
+  * **Fix: `CharacterSpacing` text ran past its label when cut.** Cutting a line to fit (`MaxLines`, a word longer than the line) measured the text without the letter spacing, so the cut line was drawn wider than the label. The second span of a cut line also ignored the space the first span already took.
 
 ## What's New 1.10.7.3
 
