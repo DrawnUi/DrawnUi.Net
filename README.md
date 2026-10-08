@@ -64,6 +64,7 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 
 ## What's New 1.10.7.4
 
+  * **Fix: a drawer closed when you let go of a short drag.** Dragging a side drawer a little, holding the finger still and lifting it closed the drawer, because the slight movement of a resting finger counted as a flick. Now the drawer goes back unless you flick it or drag it past half. `SnapVelocityThreshold` (100 points per second) sets how fast a release must be to count as a flick, for drawers and carousels alike.
   * **Fix: a side drawer took over a scroll's gesture.** Scrolling a list inside a drawer (a modal sliding in from the side) and then moving the finger sideways without lifting it made the drawer slide away. A gesture now belongs to the control that started panning with it until the finger is lifted, and a drawer whose gesture started the other way stays put.
 
 ## What's New 1.10.7.3

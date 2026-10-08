@@ -909,7 +909,11 @@ namespace DrawnUi.Controls
                         if (ChildWasTapped || !IsUserPanning)
                             break;
 
-                        direction = DirectionType.None;
+                        // the release sample along the drawer's own axis (it was always the vertical one: a side
+                        // drawer never got the finger's real release speed, only its moves before it)
+                        direction = Direction is DrawerDirection.FromLeft or DrawerDirection.FromRight
+                            ? DirectionType.Horizontal
+                            : DirectionType.Vertical;
                         var Velocity = Vector2.Zero;
 
                         if (direction == DirectionType.Horizontal)

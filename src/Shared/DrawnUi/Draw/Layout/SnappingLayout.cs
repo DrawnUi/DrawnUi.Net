@@ -139,12 +139,24 @@ public class SnappingLayout : SkiaLayout
     /// </summary>
     public double SnapDistanceRatio { get; set; } = 0.2;
 
+    /// <summary>
+    /// Release speed, in points per second along an axis, below which the snap ignores the velocity and goes
+    /// to the nearest anchor by distance. A finger held still before lifting is not a flick: it still trembles,
+    /// and without this a few points per second toward the next anchor were enough to go there. Default 100.
+    /// </summary>
+    public float SnapVelocityThreshold { get; set; } = 100f;
+
     public virtual void ScrollToNearestAnchor(Vector2 location, Vector2 velocity)
     {
         if (SnapPoints.Count == 0)
         {
             return;
         }
+
+        if (Math.Abs(velocity.X) < SnapVelocityThreshold)
+            velocity.X = 0;
+        if (Math.Abs(velocity.Y) < SnapVelocityThreshold)
+            velocity.Y = 0;
 
         var origin = FindNearestAnchorInternal(location, velocity);
 
