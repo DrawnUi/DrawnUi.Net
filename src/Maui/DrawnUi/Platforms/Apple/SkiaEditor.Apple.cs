@@ -13,6 +13,7 @@ namespace DrawnUi.Draw
         {
             private readonly SkiaEditor _editor;
             private bool _firstSynced;
+            private int _caretAfterEdit = -1;
 
             public TextViewDelegate(SkiaEditor editor) => _editor = editor;
 
@@ -21,21 +22,25 @@ namespace DrawnUi.Draw
                 if (_editor._updatingText)
                     return;
 
+                var caretAfterEdit = _caretAfterEdit;
+                _caretAfterEdit = -1;
+
                 var nativeText = textView.Text?.Replace("\r\n", "\n").Replace("\r", "\n") ?? string.Empty;
                 _editor._updatingText = true;
                 _editor.Text = nativeText;
                 _editor._updatingText = false;
 
-                // A TextChanged handler may have replaced the text the user just typed (input filter, max length):
-                // it ran synchronously under _updatingText, so SyncNativeText skipped and the native view kept the
-                // rejected characters. Make it follow Text. The caret goes to the end of the common prefix, i.e.
-                // where the rejected characters were (SelectedRange is not reliable yet inside textViewDidChange).
+                // A TextChanged handler may have replaced the text the user just typed: it ran synchronously under
+                // _updatingText, so SyncNativeText skipped and the native view kept the old text. Make it follow Text.
+                // Same contract as Android: the caret keeps its distance from the end of the text, so it stays where
+                // the user typed whether the handler dropped characters (input filter, max length) or rewrote the
+                // text ("0" then 5 typed becomes "5"). The caret after the edit comes from ShouldChangeText,
+                // SelectedRange is not reliable yet inside textViewDidChange.
                 var text = _editor.Text ?? string.Empty;
                 if (nativeText != text)
                 {
-                    var caret = 0;
-                    while (caret < text.Length && caret < nativeText.Length && text[caret] == nativeText[caret])
-                        caret++;
+                    var nativeCaret = caretAfterEdit >= 0 ? caretAfterEdit : nativeText.Length;
+                    var caret = Math.Clamp(nativeCaret + text.Length - nativeText.Length, 0, text.Length);
                     _editor._updatingText = true;
                     try
                     {
@@ -75,6 +80,9 @@ namespace DrawnUi.Draw
                     _editor.ExecuteSubmit(clearFocus: !_editor.IsMultiline);
                     return false;
                 }
+
+                // where the caret will be once this edit is applied, read by Changed
+                _caretAfterEdit = (int)range.Location + (text?.Length ?? 0);
                 return true;
             }
         }
