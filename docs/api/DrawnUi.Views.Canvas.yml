@@ -36,7 +36,6 @@ items:
   - DrawnUi.Views.Canvas.GetGesturePositionInsideControl(DrawnUi.Draw.SkiaControl,SkiaSharp.SKPoint)
   - DrawnUi.Views.Canvas.GetMeasuringRectForChildren(System.Single,System.Single,System.Single)
   - DrawnUi.Views.Canvas.HadInput
-  - DrawnUi.Views.Canvas.HasHover
   - DrawnUi.Views.Canvas.Invalidate
   - DrawnUi.Views.Canvas.InvalidateMeasure
   - DrawnUi.Views.Canvas.IsSavedGesture(AppoMobi.Gestures.TouchActionResult)
@@ -52,6 +51,7 @@ items:
   - DrawnUi.Views.Canvas.OnGesturesAttachChanged
   - DrawnUi.Views.Canvas.OnHandlerChanged
   - DrawnUi.Views.Canvas.OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs)
+  - DrawnUi.Views.Canvas.OnHoverCheck(DrawnUi.Draw.SkiaGesturesParameters)
   - DrawnUi.Views.Canvas.OnParentChanged
   - DrawnUi.Views.Canvas.OnPropertyChanged(System.String)
   - DrawnUi.Views.Canvas.OnSizeChanged
@@ -205,6 +205,16 @@ items:
   - DrawnUi.Views.DrawnView.ReportPointerOver(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Views.DrawnView.CommitPointerOver
   - DrawnUi.Views.DrawnView.ClearPointerOver
+  - DrawnUi.Views.DrawnView.HoveredControls
+  - DrawnUi.Views.DrawnView.HasHover
+  - DrawnUi.Views.DrawnView.ReportHover(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Views.DrawnView.CommitHover(DrawnUi.Draw.SkiaGesturesParameters)
+  - DrawnUi.Views.DrawnView.ClearHover
+  - DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Views.DrawnView.ResumeHover(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Views.DrawnView.RequestHoverCheck
+  - DrawnUi.Views.DrawnView.ForgetHover(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Views.DrawnView.HasHoveredControls
   - DrawnUi.Views.DrawnView.KeyboardFocusNode
   - DrawnUi.Views.DrawnView.HandleKeyboardNavigation(DrawnUi.Draw.InputKey,System.Boolean)
   - DrawnUi.Views.DrawnView.KeyboardFocusColor
@@ -1672,7 +1682,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 553
+    startLine: 552
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1683,37 +1693,38 @@ items:
       type: DrawnUi.Draw.SkiaGesturesParameters
     content.vb: Protected Overridable Sub ProcessGestures(args As SkiaGesturesParameters)
   overload: DrawnUi.Views.Canvas.ProcessGestures*
-- uid: DrawnUi.Views.Canvas.HasHover
-  commentId: P:DrawnUi.Views.Canvas.HasHover
-  id: HasHover
+- uid: DrawnUi.Views.Canvas.OnHoverCheck(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Views.Canvas.OnHoverCheck(DrawnUi.Draw.SkiaGesturesParameters)
+  id: OnHoverCheck(DrawnUi.Draw.SkiaGesturesParameters)
   parent: DrawnUi.Views.Canvas
   langs:
   - csharp
   - vb
-  name: HasHover
-  nameWithType: Canvas.HasHover
-  fullName: DrawnUi.Views.Canvas.HasHover
-  type: Property
+  name: OnHoverCheck(SkiaGesturesParameters)
+  nameWithType: Canvas.OnHoverCheck(SkiaGesturesParameters)
+  fullName: DrawnUi.Views.Canvas.OnHoverCheck(DrawnUi.Draw.SkiaGesturesParameters)
+  type: Method
   source:
     remote:
       path: src/Maui/DrawnUi/Views/Canvas.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: HasHover
+    id: OnHoverCheck
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 760
+    startLine: 753
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
-  summary: Exchange point to set itsself or read who has hover
+  summary: 'The hover check: the last mouse position goes through the same pass as a real mouse move.'
   example: []
   syntax:
-    content: public SkiaControl HasHover { get; set; }
-    parameters: []
-    return:
-      type: DrawnUi.Draw.SkiaControl
-    content.vb: Public Property HasHover As SkiaControl
-  overload: DrawnUi.Views.Canvas.HasHover*
+    content: protected override void OnHoverCheck(SkiaGesturesParameters pointer)
+    parameters:
+    - id: pointer
+      type: DrawnUi.Draw.SkiaGesturesParameters
+    content.vb: Protected Overrides Sub OnHoverCheck(pointer As SkiaGesturesParameters)
+  overridden: DrawnUi.Views.DrawnView.OnHoverCheck(DrawnUi.Draw.SkiaGesturesParameters)
+  overload: DrawnUi.Views.Canvas.OnHoverCheck*
 - uid: DrawnUi.Views.Canvas.SignalInput(DrawnUi.Draw.ISkiaGestureListener,AppoMobi.Gestures.TouchActionResult)
   commentId: M:DrawnUi.Views.Canvas.SignalInput(DrawnUi.Draw.ISkiaGestureListener,AppoMobi.Gestures.TouchActionResult)
   id: SignalInput(DrawnUi.Draw.ISkiaGestureListener,AppoMobi.Gestures.TouchActionResult)
@@ -1732,7 +1743,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SignalInput
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 790
+    startLine: 761
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1767,7 +1778,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tapped
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 805
+    startLine: 776
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1794,7 +1805,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnGestureEvent
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 822
+    startLine: 793
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1835,7 +1846,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BreakLine
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 924
+    startLine: 895
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1861,7 +1872,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineBreaks
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 929
+    startLine: 900
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1888,7 +1899,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 932
+    startLine: 902
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1917,7 +1928,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlayRippleAnimation
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 937
+    startLine: 907
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1955,7 +1966,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlayShimmerAnimation
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 943
+    startLine: 913
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1995,7 +2006,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TimeLastGC
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 956
+    startLine: 926
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2024,7 +2035,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DelayNanosBetweenGC
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 957
+    startLine: 927
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2053,7 +2064,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CollectGarbage
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 959
+    startLine: 929
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2085,7 +2096,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 976
+    startLine: 946
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2121,7 +2132,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesDebugColorProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 989
+    startLine: 959
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2148,7 +2159,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesDebugColor
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 995
+    startLine: 965
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2177,7 +2188,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReserveSpaceAroundProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1001
+    startLine: 971
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2204,7 +2215,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReserveSpaceAround
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1007
+    startLine: 977
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2233,7 +2244,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1021
+    startLine: 991
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2260,7 +2271,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Gestures
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1027
+    startLine: 997
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2289,7 +2300,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1035
+    startLine: 1005
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2316,7 +2327,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Content
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1051
+    startLine: 1021
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2345,7 +2356,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnParentChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1061
+    startLine: 1031
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2375,7 +2386,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnableUpdates
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1071
+    startLine: 1041
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2403,7 +2414,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisableUpdates
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1081
+    startLine: 1051
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2431,7 +2442,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1086
+    startLine: 1056
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2462,7 +2473,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetGesturePositionInsideControl
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1191
+    startLine: 1161
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2509,7 +2520,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindViewCoordinatesRecursive
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1236
+    startLine: 1206
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4293,6 +4304,190 @@ references:
     href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClearPointerOver
   - name: (
   - name: )
+- uid: DrawnUi.Views.DrawnView.HoveredControls
+  commentId: P:DrawnUi.Views.DrawnView.HoveredControls
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_HoveredControls
+  name: HoveredControls
+  nameWithType: DrawnView.HoveredControls
+  fullName: DrawnUi.Views.DrawnView.HoveredControls
+- uid: DrawnUi.Views.DrawnView.HasHover
+  commentId: P:DrawnUi.Views.DrawnView.HasHover
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_HasHover
+  name: HasHover
+  nameWithType: DrawnView.HasHover
+  fullName: DrawnUi.Views.DrawnView.HasHover
+- uid: DrawnUi.Views.DrawnView.ReportHover(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Views.DrawnView.ReportHover(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportHover_DrawnUi_Draw_SkiaControl_
+  name: ReportHover(SkiaControl)
+  nameWithType: DrawnView.ReportHover(SkiaControl)
+  fullName: DrawnUi.Views.DrawnView.ReportHover(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.ReportHover(DrawnUi.Draw.SkiaControl)
+    name: ReportHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportHover_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.ReportHover(DrawnUi.Draw.SkiaControl)
+    name: ReportHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportHover_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: DrawnUi.Views.DrawnView.CommitHover(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Views.DrawnView.CommitHover(DrawnUi.Draw.SkiaGesturesParameters)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CommitHover_DrawnUi_Draw_SkiaGesturesParameters_
+  name: CommitHover(SkiaGesturesParameters)
+  nameWithType: DrawnView.CommitHover(SkiaGesturesParameters)
+  fullName: DrawnUi.Views.DrawnView.CommitHover(DrawnUi.Draw.SkiaGesturesParameters)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.CommitHover(DrawnUi.Draw.SkiaGesturesParameters)
+    name: CommitHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CommitHover_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.CommitHover(DrawnUi.Draw.SkiaGesturesParameters)
+    name: CommitHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CommitHover_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+- uid: DrawnUi.Views.DrawnView.ClearHover
+  commentId: M:DrawnUi.Views.DrawnView.ClearHover
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClearHover
+  name: ClearHover()
+  nameWithType: DrawnView.ClearHover()
+  fullName: DrawnUi.Views.DrawnView.ClearHover()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.ClearHover
+    name: ClearHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClearHover
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.ClearHover
+    name: ClearHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClearHover
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PauseHover_DrawnUi_Draw_SkiaControl_
+  name: PauseHover(SkiaControl)
+  nameWithType: DrawnView.PauseHover(SkiaControl)
+  fullName: DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
+    name: PauseHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PauseHover_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
+    name: PauseHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PauseHover_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: DrawnUi.Views.DrawnView.ResumeHover(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Views.DrawnView.ResumeHover(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ResumeHover_DrawnUi_Draw_SkiaControl_
+  name: ResumeHover(SkiaControl)
+  nameWithType: DrawnView.ResumeHover(SkiaControl)
+  fullName: DrawnUi.Views.DrawnView.ResumeHover(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.ResumeHover(DrawnUi.Draw.SkiaControl)
+    name: ResumeHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ResumeHover_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.ResumeHover(DrawnUi.Draw.SkiaControl)
+    name: ResumeHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ResumeHover_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: DrawnUi.Views.DrawnView.RequestHoverCheck
+  commentId: M:DrawnUi.Views.DrawnView.RequestHoverCheck
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RequestHoverCheck
+  name: RequestHoverCheck()
+  nameWithType: DrawnView.RequestHoverCheck()
+  fullName: DrawnUi.Views.DrawnView.RequestHoverCheck()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.RequestHoverCheck
+    name: RequestHoverCheck
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RequestHoverCheck
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.RequestHoverCheck
+    name: RequestHoverCheck
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_RequestHoverCheck
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.ForgetHover(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Views.DrawnView.ForgetHover(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ForgetHover_DrawnUi_Draw_SkiaControl_
+  name: ForgetHover(SkiaControl)
+  nameWithType: DrawnView.ForgetHover(SkiaControl)
+  fullName: DrawnUi.Views.DrawnView.ForgetHover(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.ForgetHover(DrawnUi.Draw.SkiaControl)
+    name: ForgetHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ForgetHover_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.ForgetHover(DrawnUi.Draw.SkiaControl)
+    name: ForgetHover
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ForgetHover_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: DrawnUi.Views.DrawnView.HasHoveredControls
+  commentId: P:DrawnUi.Views.DrawnView.HasHoveredControls
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_HasHoveredControls
+  name: HasHoveredControls
+  nameWithType: DrawnView.HasHoveredControls
+  fullName: DrawnUi.Views.DrawnView.HasHoveredControls
 - uid: DrawnUi.Views.DrawnView.KeyboardFocusNode
   commentId: P:DrawnUi.Views.DrawnView.KeyboardFocusNode
   parent: DrawnUi.Views.DrawnView
@@ -12270,12 +12465,37 @@ references:
   name: SkiaGesturesParameters
   nameWithType: SkiaGesturesParameters
   fullName: DrawnUi.Draw.SkiaGesturesParameters
-- uid: DrawnUi.Views.Canvas.HasHover*
-  commentId: Overload:DrawnUi.Views.Canvas.HasHover
-  href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_HasHover
-  name: HasHover
-  nameWithType: Canvas.HasHover
-  fullName: DrawnUi.Views.Canvas.HasHover
+- uid: DrawnUi.Views.DrawnView.OnHoverCheck(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Views.DrawnView.OnHoverCheck(DrawnUi.Draw.SkiaGesturesParameters)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnHoverCheck_DrawnUi_Draw_SkiaGesturesParameters_
+  name: OnHoverCheck(SkiaGesturesParameters)
+  nameWithType: DrawnView.OnHoverCheck(SkiaGesturesParameters)
+  fullName: DrawnUi.Views.DrawnView.OnHoverCheck(DrawnUi.Draw.SkiaGesturesParameters)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.OnHoverCheck(DrawnUi.Draw.SkiaGesturesParameters)
+    name: OnHoverCheck
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnHoverCheck_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.OnHoverCheck(DrawnUi.Draw.SkiaGesturesParameters)
+    name: OnHoverCheck
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnHoverCheck_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+- uid: DrawnUi.Views.Canvas.OnHoverCheck*
+  commentId: Overload:DrawnUi.Views.Canvas.OnHoverCheck
+  href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_OnHoverCheck_DrawnUi_Draw_SkiaGesturesParameters_
+  name: OnHoverCheck
+  nameWithType: Canvas.OnHoverCheck
+  fullName: DrawnUi.Views.Canvas.OnHoverCheck
 - uid: DrawnUi.Views.Canvas.SignalInput*
   commentId: Overload:DrawnUi.Views.Canvas.SignalInput
   href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_SignalInput_DrawnUi_Draw_ISkiaGestureListener_AppoMobi_Gestures_TouchActionResult_

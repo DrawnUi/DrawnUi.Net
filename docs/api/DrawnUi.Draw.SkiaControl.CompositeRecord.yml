@@ -6,6 +6,8 @@ items:
   parent: DrawnUi.Draw
   children:
   - DrawnUi.Draw.SkiaControl.CompositeRecord.#ctor(System.Boolean,System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.SkiaControl})
+  - DrawnUi.Draw.SkiaControl.CompositeRecord.Areas
+  - DrawnUi.Draw.SkiaControl.CompositeRecord.Changed
   - DrawnUi.Draw.SkiaControl.CompositeRecord.Partial
   - DrawnUi.Draw.SkiaControl.CompositeRecord.Redrawn
   langs:
@@ -73,10 +75,10 @@ items:
       type: System.Boolean
       description: >-
         True when only the changed children, and the ones they overlap, were redrawn over the
-            previous image; false for a full redraw (first record, size change, cache invalidated).
+            previous image; false for a full redraw (first record, size change, cache invalidated, too much changed).
     - id: Redrawn
       type: System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.SkiaControl}
-      description: The children painted by that record.
+      description: The direct children painted by that record.
     content.vb: Public Sub New([Partial] As Boolean, Redrawn As IReadOnlyList(Of SkiaControl))
   overload: DrawnUi.Draw.SkiaControl.CompositeRecord.#ctor*
   nameWithType.vb: SkiaControl.CompositeRecord.New(Boolean, IReadOnlyList(Of SkiaControl))
@@ -106,7 +108,7 @@ items:
   namespace: DrawnUi.Draw
   summary: >-
     True when only the changed children, and the ones they overlap, were redrawn over the
-        previous image; false for a full redraw (first record, size change, cache invalidated).
+        previous image; false for a full redraw (first record, size change, cache invalidated, too much changed).
   example: []
   syntax:
     content: public bool Partial { get; init; }
@@ -137,7 +139,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: The children painted by that record.
+  summary: The direct children painted by that record.
   example: []
   syntax:
     content: public IReadOnlyList<SkiaControl> Redrawn { get; init; }
@@ -146,6 +148,71 @@ items:
       type: System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.SkiaControl}
     content.vb: Public Property Redrawn As IReadOnlyList(Of SkiaControl)
   overload: DrawnUi.Draw.SkiaControl.CompositeRecord.Redrawn*
+- uid: DrawnUi.Draw.SkiaControl.CompositeRecord.Areas
+  commentId: P:DrawnUi.Draw.SkiaControl.CompositeRecord.Areas
+  id: Areas
+  parent: DrawnUi.Draw.SkiaControl.CompositeRecord
+  langs:
+  - csharp
+  - vb
+  name: Areas
+  nameWithType: SkiaControl.CompositeRecord.Areas
+  fullName: DrawnUi.Draw.SkiaControl.CompositeRecord.Areas
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Areas
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+    startLine: 87
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The areas erased and redrawn, in the recording's pixels: a whole changed child, or for a change deeper
+
+    inside (a card in an uncached stack) only that control's area. Empty for a full record.
+  example: []
+  syntax:
+    content: public IReadOnlyList<SKRect> Areas { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{SkiaSharp.SKRect}
+    content.vb: Public Property Areas As IReadOnlyList(Of SKRect)
+  overload: DrawnUi.Draw.SkiaControl.CompositeRecord.Areas*
+- uid: DrawnUi.Draw.SkiaControl.CompositeRecord.Changed
+  commentId: P:DrawnUi.Draw.SkiaControl.CompositeRecord.Changed
+  id: Changed
+  parent: DrawnUi.Draw.SkiaControl.CompositeRecord
+  langs:
+  - csharp
+  - vb
+  name: Changed
+  nameWithType: SkiaControl.CompositeRecord.Changed
+  fullName: DrawnUi.Draw.SkiaControl.CompositeRecord.Changed
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Changed
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+    startLine: 90
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: The controls whose change was redrawn by area (deeper than the direct children). Empty when none.
+  example: []
+  syntax:
+    content: public IReadOnlyList<SkiaControl> Changed { get; init; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.SkiaControl}
+    content.vb: Public Property Changed As IReadOnlyList(Of SkiaControl)
+  overload: DrawnUi.Draw.SkiaControl.CompositeRecord.Changed*
 references:
 - uid: DrawnUi.Draw.SkiaCacheType.ImageComposite
   commentId: F:DrawnUi.Draw.SkiaCacheType.ImageComposite
@@ -681,3 +748,50 @@ references:
   name: Redrawn
   nameWithType: SkiaControl.CompositeRecord.Redrawn
   fullName: DrawnUi.Draw.SkiaControl.CompositeRecord.Redrawn
+- uid: DrawnUi.Draw.SkiaControl.CompositeRecord.Areas*
+  commentId: Overload:DrawnUi.Draw.SkiaControl.CompositeRecord.Areas
+  href: DrawnUi.Draw.SkiaControl.CompositeRecord.html#DrawnUi_Draw_SkiaControl_CompositeRecord_Areas
+  name: Areas
+  nameWithType: SkiaControl.CompositeRecord.Areas
+  fullName: DrawnUi.Draw.SkiaControl.CompositeRecord.Areas
+- uid: System.Collections.Generic.IReadOnlyList{SkiaSharp.SKRect}
+  commentId: T:System.Collections.Generic.IReadOnlyList{SkiaSharp.SKRect}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<SKRect>
+  nameWithType: IReadOnlyList<SKRect>
+  fullName: System.Collections.Generic.IReadOnlyList<SkiaSharp.SKRect>
+  nameWithType.vb: IReadOnlyList(Of SKRect)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of SkiaSharp.SKRect)
+  name.vb: IReadOnlyList(Of SKRect)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.CompositeRecord.Changed*
+  commentId: Overload:DrawnUi.Draw.SkiaControl.CompositeRecord.Changed
+  href: DrawnUi.Draw.SkiaControl.CompositeRecord.html#DrawnUi_Draw_SkiaControl_CompositeRecord_Changed
+  name: Changed
+  nameWithType: SkiaControl.CompositeRecord.Changed
+  fullName: DrawnUi.Draw.SkiaControl.CompositeRecord.Changed

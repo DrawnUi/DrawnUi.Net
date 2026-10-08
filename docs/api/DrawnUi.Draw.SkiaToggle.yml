@@ -36,6 +36,7 @@ items:
   - DrawnUi.Draw.SkiaToggle.OnLayoutChanged
   - DrawnUi.Draw.SkiaToggle.OnToggledChanged
   - DrawnUi.Draw.SkiaToggle.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  - DrawnUi.Draw.SkiaToggle.ReceivesHoverByDefault
   - DrawnUi.Draw.SkiaToggle.RespondsToGestures
   - DrawnUi.Draw.SkiaToggle.RespondsToGesturesProperty
   - DrawnUi.Draw.SkiaToggle.Toggled
@@ -241,6 +242,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.OnItemsSourceCollectionChanged(System.Object,System.Collections.Specialized.NotifyCollectionChangedEventArgs)
   - DrawnUi.Draw.SkiaLayout.OnItemsSourceChangesApplied
   - DrawnUi.Draw.SkiaLayout.ItemsSourceChangesApplied
+  - DrawnUi.Draw.SkiaLayout.PostItemsSourceChangesApplied
   - DrawnUi.Draw.SkiaLayout.HandleCollectionChangeWithStructurePreservation(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
   - DrawnUi.Draw.SkiaLayout.StageStructureChange(DrawnUi.Draw.SkiaLayout.StructureChange)
   - DrawnUi.Draw.SkiaLayout.ReportChildVisibilityChanged(System.Int32,System.Boolean)
@@ -375,6 +377,10 @@ items:
   - DrawnUi.Draw.SkiaControl.IsOffscreenRenderSuperseded(System.Int64)
   - DrawnUi.Draw.SkiaControl.CancelOffscreenRendering
   - DrawnUi.Draw.SkiaControl.LastCompositeRecord
+  - DrawnUi.Draw.SkiaControl.MaxCompositionShare
+  - DrawnUi.Draw.SkiaControl.MaxCompositionAreas
+  - DrawnUi.Draw.SkiaControl.CompositionClip
+  - DrawnUi.Draw.SkiaControl.RenderCompositionChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.CacheSharingProperty
   - DrawnUi.Draw.SkiaControl.CacheSharing
@@ -471,6 +477,8 @@ items:
   - DrawnUi.Draw.SkiaControl.SetFrameworkFocus(System.Boolean)
   - DrawnUi.Draw.SkiaControl.IsHoveredProperty
   - DrawnUi.Draw.SkiaControl.IsHovered
+  - DrawnUi.Draw.SkiaControl.HoverChanged
+  - DrawnUi.Draw.SkiaControl.ReceivesHover
   - DrawnUi.Draw.SkiaControl.VisualLayer
   - DrawnUi.Draw.SkiaControl.CachedImage
   - DrawnUi.Draw.SkiaControl.LeftProperty
@@ -878,6 +886,7 @@ items:
   - DrawnUi.Draw.SkiaControl.LastDrawnAt
   - DrawnUi.Draw.SkiaControl.ExecutePostAnimators(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaControl.Repaint
+  - DrawnUi.Draw.SkiaControl.UpdateOrigin
   - DrawnUi.Draw.SkiaControl._paintWithEffects
   - DrawnUi.Draw.SkiaControl._paintWithOpacity
   - DrawnUi.Draw.SkiaControl.CustomizeLayerPaint
@@ -976,6 +985,7 @@ items:
   - DrawnUi.Draw.SkiaControl.OnChildAdded(Microsoft.Maui.Controls.Element)
   - DrawnUi.Draw.SkiaControl.ClearDirtyChildren
   - DrawnUi.Draw.SkiaControl.TrackChildAsDirty(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Draw.SkiaControl.TrackDeepChange(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaControl.OnChildAdded(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaControl.OnChildRemoved(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Draw.SkiaControl.OnViewAttached
@@ -1233,6 +1243,7 @@ items:
   - DrawnUi.Draw.SkiaToggle.DrawnUi.Draw.FluentExtensions.Observe``2({TSource},System.Action{DrawnUi.Draw.SkiaToggle,System.String},System.String[])
   - DrawnUi.Draw.SkiaToggle.DrawnUi.Draw.FluentExtensions.Observe``2({TSource},System.Action{DrawnUi.Draw.SkiaToggle},System.String[])
   - DrawnUi.Draw.SkiaToggle.DrawnUi.Draw.FluentExtensions.OnContextMenu``1(System.Func{DrawnUi.Draw.SkiaToggle,DrawnUi.Draw.ContextMenuEventArgs,System.Boolean})
+  - DrawnUi.Draw.SkiaToggle.DrawnUi.Draw.FluentExtensions.OnHovered``1(System.Action{DrawnUi.Draw.SkiaToggle,System.Boolean})
   - DrawnUi.Draw.SkiaToggle.DrawnUi.Draw.FluentExtensions.OnKeyDown``1(System.Action{DrawnUi.Draw.SkiaToggle,DrawnUi.Draw.InputKey})
   - DrawnUi.Draw.SkiaToggle.DrawnUi.Draw.FluentExtensions.OnKeyUp``1(System.Action{DrawnUi.Draw.SkiaToggle,DrawnUi.Draw.InputKey})
   - DrawnUi.Draw.SkiaToggle.DrawnUi.Draw.FluentExtensions.OnLongPressing``1(System.Action{DrawnUi.Draw.SkiaToggle})
@@ -1293,6 +1304,38 @@ items:
   - Microsoft.Maui.Controls.VisualElement.DrawnUi.Draw.StaticResourcesExtensions.GetAllWithMyselfParents
   - Microsoft.Maui.IView.DrawnUi.Extensions.InternalExtensions.DisposeControlAndChildren
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.SkiaToggle.ReceivesHoverByDefault
+  commentId: P:DrawnUi.Draw.SkiaToggle.ReceivesHoverByDefault
+  id: ReceivesHoverByDefault
+  parent: DrawnUi.Draw.SkiaToggle
+  langs:
+  - csharp
+  - vb
+  name: ReceivesHoverByDefault
+  nameWithType: SkiaToggle.ReceivesHoverByDefault
+  fullName: DrawnUi.Draw.SkiaToggle.ReceivesHoverByDefault
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ReceivesHoverByDefault
+    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    startLine: 11
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Takes mouse hover by default (<xref href="DrawnUi.Draw.SkiaControl.ReceivesHover" data-throw-if-not-resolved="false"></xref>), as it always did.
+  example: []
+  syntax:
+    content: protected override bool ReceivesHoverByDefault { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Protected Overrides ReadOnly Property ReceivesHoverByDefault As Boolean
+  overridden: DrawnUi.Draw.SkiaControl.ReceivesHoverByDefault
+  overload: DrawnUi.Draw.SkiaToggle.ReceivesHoverByDefault*
 - uid: DrawnUi.Draw.SkiaToggle.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Draw.SkiaToggle.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   id: ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
@@ -1311,7 +1354,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 10
+    startLine: 13
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1346,7 +1389,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 23
+    startLine: 27
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1375,7 +1418,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnToggledChanged
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 33
+    startLine: 37
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1403,7 +1446,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsInternalCall
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 42
+    startLine: 46
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1430,7 +1473,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityIsPressed
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 44
+    startLine: 48
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1461,7 +1504,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityCanInteract
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 46
+    startLine: 50
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1492,7 +1535,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChangeDefaultValue
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 48
+    startLine: 52
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1518,7 +1561,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyWasToggled
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 56
+    startLine: 60
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1544,7 +1587,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 68
+    startLine: 72
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1573,7 +1616,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Toggled
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 75
+    startLine: 79
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1600,7 +1643,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyProperties
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 80
+    startLine: 84
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1628,7 +1671,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandToggledProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 87
+    startLine: 91
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1655,7 +1698,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandToggled
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 90
+    startLine: 94
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1684,7 +1727,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsToggledProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 96
+    startLine: 100
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1711,7 +1754,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsToggled
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 109
+    startLine: 113
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1740,7 +1783,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultValueProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 115
+    startLine: 119
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1767,7 +1810,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultValue
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 127
+    startLine: 131
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1796,7 +1839,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGesturesProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 133
+    startLine: 137
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1823,7 +1866,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGestures
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 139
+    startLine: 143
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1852,7 +1895,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 145
+    startLine: 149
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1879,7 +1922,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTapped
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 151
+    startLine: 155
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1908,7 +1951,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameterProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 157
+    startLine: 161
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1935,7 +1978,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameter
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 163
+    startLine: 167
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1964,7 +2007,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedUpdateProperties
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 169
+    startLine: 173
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2000,7 +2043,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorThumbOnProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 176
+    startLine: 180
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2027,7 +2070,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorThumbOn
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 182
+    startLine: 186
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2056,7 +2099,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorFrameOnProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 188
+    startLine: 192
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2083,7 +2126,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorFrameOn
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 194
+    startLine: 198
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2112,7 +2155,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorThumbOffProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 200
+    startLine: 204
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2139,7 +2182,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorThumbOff
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 206
+    startLine: 210
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2168,7 +2211,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorFrameOffProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 212
+    startLine: 216
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2195,7 +2238,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorFrameOff
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 218
+    startLine: 222
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2224,7 +2267,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAnimatedProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 224
+    startLine: 228
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2251,7 +2294,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAnimated
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 230
+    startLine: 234
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5482,6 +5525,25 @@ references:
   name: ItemsSourceChangesApplied
   nameWithType: SkiaLayout.ItemsSourceChangesApplied
   fullName: DrawnUi.Draw.SkiaLayout.ItemsSourceChangesApplied
+- uid: DrawnUi.Draw.SkiaLayout.PostItemsSourceChangesApplied
+  commentId: M:DrawnUi.Draw.SkiaLayout.PostItemsSourceChangesApplied
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PostItemsSourceChangesApplied
+  name: PostItemsSourceChangesApplied()
+  nameWithType: SkiaLayout.PostItemsSourceChangesApplied()
+  fullName: DrawnUi.Draw.SkiaLayout.PostItemsSourceChangesApplied()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.PostItemsSourceChangesApplied
+    name: PostItemsSourceChangesApplied
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PostItemsSourceChangesApplied
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.PostItemsSourceChangesApplied
+    name: PostItemsSourceChangesApplied
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PostItemsSourceChangesApplied
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.HandleCollectionChangeWithStructurePreservation(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
   commentId: M:DrawnUi.Draw.SkiaLayout.HandleCollectionChangeWithStructurePreservation(System.Collections.Specialized.NotifyCollectionChangedEventArgs)
   parent: DrawnUi.Draw.SkiaLayout
@@ -8379,6 +8441,62 @@ references:
   name: LastCompositeRecord
   nameWithType: SkiaControl.LastCompositeRecord
   fullName: DrawnUi.Draw.SkiaControl.LastCompositeRecord
+- uid: DrawnUi.Draw.SkiaControl.MaxCompositionShare
+  commentId: F:DrawnUi.Draw.SkiaControl.MaxCompositionShare
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MaxCompositionShare
+  name: MaxCompositionShare
+  nameWithType: SkiaControl.MaxCompositionShare
+  fullName: DrawnUi.Draw.SkiaControl.MaxCompositionShare
+- uid: DrawnUi.Draw.SkiaControl.MaxCompositionAreas
+  commentId: F:DrawnUi.Draw.SkiaControl.MaxCompositionAreas
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_MaxCompositionAreas
+  name: MaxCompositionAreas
+  nameWithType: SkiaControl.MaxCompositionAreas
+  fullName: DrawnUi.Draw.SkiaControl.MaxCompositionAreas
+- uid: DrawnUi.Draw.SkiaControl.CompositionClip
+  commentId: P:DrawnUi.Draw.SkiaControl.CompositionClip
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_CompositionClip
+  name: CompositionClip
+  nameWithType: SkiaControl.CompositionClip
+  fullName: DrawnUi.Draw.SkiaControl.CompositionClip
+- uid: DrawnUi.Draw.SkiaControl.RenderCompositionChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.DrawingContext)
+  commentId: M:DrawnUi.Draw.SkiaControl.RenderCompositionChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.DrawingContext)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderCompositionChild_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_DrawingContext_
+  name: RenderCompositionChild(SkiaControl, DrawingContext)
+  nameWithType: SkiaControl.RenderCompositionChild(SkiaControl, DrawingContext)
+  fullName: DrawnUi.Draw.SkiaControl.RenderCompositionChild(DrawnUi.Draw.SkiaControl, DrawnUi.Draw.DrawingContext)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RenderCompositionChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.DrawingContext)
+    name: RenderCompositionChild
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderCompositionChild_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_DrawingContext_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RenderCompositionChild(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.DrawingContext)
+    name: RenderCompositionChild
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderCompositionChild_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_DrawingContext_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaControl.SetupRenderingWithComposition(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaControl
@@ -10439,6 +10557,20 @@ references:
   name: IsHovered
   nameWithType: SkiaControl.IsHovered
   fullName: DrawnUi.Draw.SkiaControl.IsHovered
+- uid: DrawnUi.Draw.SkiaControl.HoverChanged
+  commentId: E:DrawnUi.Draw.SkiaControl.HoverChanged
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HoverChanged
+  name: HoverChanged
+  nameWithType: SkiaControl.HoverChanged
+  fullName: DrawnUi.Draw.SkiaControl.HoverChanged
+- uid: DrawnUi.Draw.SkiaControl.ReceivesHover
+  commentId: P:DrawnUi.Draw.SkiaControl.ReceivesHover
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ReceivesHover
+  name: ReceivesHover
+  nameWithType: SkiaControl.ReceivesHover
+  fullName: DrawnUi.Draw.SkiaControl.ReceivesHover
 - uid: DrawnUi.Draw.SkiaControl.VisualLayer
   commentId: P:DrawnUi.Draw.SkiaControl.VisualLayer
   parent: DrawnUi.Draw.SkiaControl
@@ -19052,6 +19184,13 @@ references:
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Repaint
   - name: (
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.UpdateOrigin
+  commentId: P:DrawnUi.Draw.SkiaControl.UpdateOrigin
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_UpdateOrigin
+  name: UpdateOrigin
+  nameWithType: SkiaControl.UpdateOrigin
+  fullName: DrawnUi.Draw.SkiaControl.UpdateOrigin
 - uid: DrawnUi.Draw.SkiaControl._paintWithEffects
   commentId: F:DrawnUi.Draw.SkiaControl._paintWithEffects
   parent: DrawnUi.Draw.SkiaControl
@@ -21462,6 +21601,41 @@ references:
     name: TrackChildAsDirty
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TrackChildAsDirty_DrawnUi_Draw_SkiaControl_
   - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.TrackDeepChange(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Draw.SkiaControl.TrackDeepChange(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TrackDeepChange_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_SkiaControl_
+  name: TrackDeepChange(SkiaControl, SkiaControl)
+  nameWithType: SkiaControl.TrackDeepChange(SkiaControl, SkiaControl)
+  fullName: DrawnUi.Draw.SkiaControl.TrackDeepChange(DrawnUi.Draw.SkiaControl, DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.TrackDeepChange(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl)
+    name: TrackDeepChange
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TrackDeepChange_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.TrackDeepChange(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl)
+    name: TrackDeepChange
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TrackDeepChange_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
   - uid: DrawnUi.Draw.SkiaControl
     name: SkiaControl
     href: DrawnUi.Draw.SkiaControl.html
@@ -30335,6 +30509,83 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaToggle.DrawnUi.Draw.FluentExtensions.OnHovered``1(System.Action{DrawnUi.Draw.SkiaToggle,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.OnHovered``1(``0,System.Action{``0,System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.OnHovered``1(``0,System.Action{``0,System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnHovered__1___0_System_Action___0_System_Boolean__
+  name: OnHovered<SkiaToggle>(SkiaToggle, Action<SkiaToggle, bool>)
+  nameWithType: FluentExtensions.OnHovered<SkiaToggle>(SkiaToggle, Action<SkiaToggle, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.OnHovered<DrawnUi.Draw.SkiaToggle>(DrawnUi.Draw.SkiaToggle, System.Action<DrawnUi.Draw.SkiaToggle, bool>)
+  nameWithType.vb: FluentExtensions.OnHovered(Of SkiaToggle)(SkiaToggle, Action(Of SkiaToggle, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.OnHovered(Of DrawnUi.Draw.SkiaToggle)(DrawnUi.Draw.SkiaToggle, System.Action(Of DrawnUi.Draw.SkiaToggle, Boolean))
+  name.vb: OnHovered(Of SkiaToggle)(SkiaToggle, Action(Of SkiaToggle, Boolean))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.OnHovered``1(DrawnUi.Draw.SkiaToggle,System.Action{DrawnUi.Draw.SkiaToggle,System.Boolean})
+    name: OnHovered
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnHovered__1___0_System_Action___0_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Draw.SkiaToggle
+    name: SkiaToggle
+    href: DrawnUi.Draw.SkiaToggle.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaToggle
+    name: SkiaToggle
+    href: DrawnUi.Draw.SkiaToggle.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: DrawnUi.Draw.SkiaToggle
+    name: SkiaToggle
+    href: DrawnUi.Draw.SkiaToggle.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.OnHovered``1(DrawnUi.Draw.SkiaToggle,System.Action{DrawnUi.Draw.SkiaToggle,System.Boolean})
+    name: OnHovered
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnHovered__1___0_System_Action___0_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaToggle
+    name: SkiaToggle
+    href: DrawnUi.Draw.SkiaToggle.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaToggle
+    name: SkiaToggle
+    href: DrawnUi.Draw.SkiaToggle.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaToggle
+    name: SkiaToggle
+    href: DrawnUi.Draw.SkiaToggle.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.SkiaToggle.DrawnUi.Draw.FluentExtensions.OnKeyDown``1(System.Action{DrawnUi.Draw.SkiaToggle,DrawnUi.Draw.InputKey})
   commentId: M:DrawnUi.Draw.FluentExtensions.OnKeyDown``1(``0,System.Action{``0,DrawnUi.Draw.InputKey})
   parent: DrawnUi.Draw.FluentExtensions
@@ -38595,6 +38846,70 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.OnHovered``1(``0,System.Action{``0,System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.OnHovered``1(``0,System.Action{``0,System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnHovered__1___0_System_Action___0_System_Boolean__
+  name: OnHovered<T>(T, Action<T, bool>)
+  nameWithType: FluentExtensions.OnHovered<T>(T, Action<T, bool>)
+  fullName: DrawnUi.Draw.FluentExtensions.OnHovered<T>(T, System.Action<T, bool>)
+  nameWithType.vb: FluentExtensions.OnHovered(Of T)(T, Action(Of T, Boolean))
+  fullName.vb: DrawnUi.Draw.FluentExtensions.OnHovered(Of T)(T, System.Action(Of T, Boolean))
+  name.vb: OnHovered(Of T)(T, Action(Of T, Boolean))
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.OnHovered``1(``0,System.Action{``0,System.Boolean})
+    name: OnHovered
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnHovered__1___0_System_Action___0_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.OnHovered``1(``0,System.Action{``0,System.Boolean})
+    name: OnHovered
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_OnHovered__1___0_System_Action___0_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.OnKeyDown``1(``0,System.Action{``0,DrawnUi.Draw.InputKey})
   commentId: M:DrawnUi.Draw.FluentExtensions.OnKeyDown``1(``0,System.Action{``0,DrawnUi.Draw.InputKey})
   isExternal: true
@@ -41673,6 +41988,30 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.SkiaControl.ReceivesHoverByDefault
+  commentId: P:DrawnUi.Draw.SkiaControl.ReceivesHoverByDefault
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ReceivesHoverByDefault
+  name: ReceivesHoverByDefault
+  nameWithType: SkiaControl.ReceivesHoverByDefault
+  fullName: DrawnUi.Draw.SkiaControl.ReceivesHoverByDefault
+- uid: DrawnUi.Draw.SkiaToggle.ReceivesHoverByDefault*
+  commentId: Overload:DrawnUi.Draw.SkiaToggle.ReceivesHoverByDefault
+  href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_ReceivesHoverByDefault
+  name: ReceivesHoverByDefault
+  nameWithType: SkiaToggle.ReceivesHoverByDefault
+  fullName: DrawnUi.Draw.SkiaToggle.ReceivesHoverByDefault
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
 - uid: DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   commentId: M:DrawnUi.Draw.SkiaControl.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   parent: DrawnUi.Draw.SkiaControl
@@ -41759,17 +42098,6 @@ references:
   name: OnToggledChanged
   nameWithType: SkiaToggle.OnToggledChanged
   fullName: DrawnUi.Draw.SkiaToggle.OnToggledChanged
-- uid: System.Boolean
-  commentId: T:System.Boolean
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.boolean
-  name: bool
-  nameWithType: bool
-  fullName: bool
-  nameWithType.vb: Boolean
-  fullName.vb: Boolean
-  name.vb: Boolean
 - uid: DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
   commentId: M:DrawnUi.Draw.SkiaControl.DefaultAccessibilityIsPressed
   parent: DrawnUi.Draw.SkiaControl
