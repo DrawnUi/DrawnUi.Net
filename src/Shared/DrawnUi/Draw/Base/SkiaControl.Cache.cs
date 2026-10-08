@@ -689,6 +689,22 @@ public partial class SkiaControl
                 return false;
             }
 
+            // An image cache is recorded on a surface as big as the area plus the effects margin of the subtree
+            // (shadows, a child's glow). When that margin changed (a button's glow on hover) the old surface has another
+            // size and origin: reusing it drew the content offset by the margin's change, and an ImageComposite kept
+            // that offset image (a whole list shown shifted for a second after hover-off).
+            if (cache.Picture == null)
+            {
+                var area = GetCacheArea(recordingArea);
+                if (!CompareSize(cache.Bounds.Size, area.Size, 1)
+                    || Math.Abs((cache.RecordingArea.Left - cache.Bounds.Left) - (recordingArea.Left - area.Left)) > 0.5f
+                    || Math.Abs((cache.RecordingArea.Top - cache.Bounds.Top) - (recordingArea.Top - area.Top)) > 0.5f)
+                {
+                    CacheValidity = CacheValidityType.EffectsMarginMismatch;
+                    return false;
+                }
+            }
+
             //check hardware context maybe changed
             if (IsCacheGPU && cache.Surface != null &&
                 cache.Surface.Context != null &&
@@ -877,7 +893,8 @@ public partial class SkiaControl
                 {
                     surface = CreateSurface(width, height, IsCacheGPU);
 
-                    if (IsCacheComposite && RenderObjectPrevious != null)
+                    // a new size needs the layout again; a new effects margin alone does not
+                    if (IsCacheComposite && RenderObjectPrevious != null && CacheValidity != CacheValidityType.EffectsMarginMismatch)
                     {
                         InvalidateMeasure();
                     }
@@ -1273,7 +1290,13 @@ public partial class SkiaControl
         Valid,
         Missing,
         SizeMismatch,
-        GraphicContextMismatch
+        GraphicContextMismatch,
+
+        /// <summary>
+        /// Same size, but the effects margin around it (shadows, a glow on a child) changed: the image surface was
+        /// recorded with another margin, so it has another size and origin.
+        /// </summary>
+        EffectsMarginMismatch
     }
 
     public Action GetOffscreenRenderingAction()

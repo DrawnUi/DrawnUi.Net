@@ -70,6 +70,7 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
     * Controls hover only when they opt in. Buttons, sliders, toggles, radio buttons, carousels, drawers and pickers hover by default as before.
     * MAUI Windows: hover ends when the mouse leaves the canvas. WPF and OpenTK: hover works. Before, it never reached any control there.
   * **ImageComposite redraws a change deep inside by its area.** A card inside an uncached stack in a composite list is redrawn alone, not the whole stack.
+  * **Fix: a cached container drew its content shifted when a child's glow or shadow came or went** (a button's hover glow inside a cached panel). The cache kept its surface from the old effects margin; an `ImageComposite` showed the whole list offset until its next full redraw, an `Image` cache could cut the glow.
 
 ## What's New 1.10.7.1
 

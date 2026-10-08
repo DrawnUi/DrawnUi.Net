@@ -161,6 +161,141 @@ public class CompositeDeepChangeTests
         Assert.Contains(caption, record.Redrawn);
     }
 
+    /// <summary>
+    /// A child whose glow comes and goes (a button's hover) changes the effects margin the composite's surface is
+    /// recorded with. The old surface was reused at the old margin's offset and the whole list showed shifted
+    /// (DrawnCamera 1.0.2, Reset under the Background sliders).
+    /// </summary>
+    [Fact]
+    public void ChildGlowComesAndGoes_NoShift()
+    {
+        using var host = new HeadlessCanvasHost(300, 400, scale: 1f, background: Colors.Black);
+        var (list, _, cards, caption) = Build();
+        host.Canvas.Content = list;
+        host.AdvanceFrames(3);
+
+        var glow = new OuterGlowEffect { Color = Colors.White, Blur = 10 };
+        cards[4].VisualEffects.Add(glow);
+        cards[4].Update();
+        host.AdvanceFrames(3);
+        cards[4].VisualEffects.Remove(glow);
+        cards[4].Update();
+        host.AdvanceFrames(3);
+
+        AssertSameAsFullRender(host, c => { });
+    }
+
+    /// <summary>The Background panel as shipped: the composite list in a scroll scrolled to its end, a button that glows
+    /// on hover as a direct child at the list's left edge.</summary>
+    static (SkiaScroll Scroll, SkiaStack List, SkiaShape Button) BuildScrolledWithButton(bool composite)
+    {
+        var (list, _, _, _) = Build(count: 8, composite: composite);
+        SkiaShape button = null;
+        list.AddSubView(new SkiaShape
+        {
+            CornerRadius = 14,
+            WidthRequest = 120,
+            HeightRequest = 40,
+            BackgroundColor = Colors.DimGray,
+            StrokeColor = Colors.Gray,
+            StrokeWidth = 1,
+            HorizontalOptions = LayoutOptions.Start,
+        }.Assign(out button));
+        var scroll = new SkiaScroll { VerticalOptions = LayoutOptions.Fill, Content = list };
+        return (scroll, list, button);
+    }
+
+    [Fact]
+    public void DirectChildGlowInScrolledComposite_NoShift()
+    {
+        using var host = new HeadlessCanvasHost(300, 300, scale: 1f, background: Colors.Black);
+        var (scroll, list, button) = BuildScrolledWithButton(composite: true);
+        host.Canvas.Content = scroll;
+        host.AdvanceFrames(3);
+        scroll.ScrollToBottom(0);
+        host.AdvanceFrames(5);
+
+        var glow = new OuterGlowEffect { Color = Colors.White, Blur = 10 };
+        button.VisualEffects.Add(glow);
+        button.Update();
+        host.AdvanceFrames(3);
+        button.VisualEffects.Remove(glow);
+        button.Update();
+        host.AdvanceFrames(3);
+
+        using var reference = new HeadlessCanvasHost(300, 300, scale: 1f, background: Colors.Black);
+        var built = BuildScrolledWithButton(composite: false);
+        reference.Canvas.Content = built.Scroll;
+        reference.AdvanceFrames(3);
+        built.Scroll.ScrollToBottom(0);
+        reference.AdvanceFrames(5);
+
+        using var a = Pixels(host);
+        using var b = Pixels(reference);
+        var different = 0;
+        for (var y = 0; y < a.Height; y++)
+        for (var x = 0; x < a.Width; x++)
+        {
+            var p = a.GetPixel(x, y);
+            var q = b.GetPixel(x, y);
+            if (Math.Abs(p.Red - q.Red) > 2 || Math.Abs(p.Green - q.Green) > 2 || Math.Abs(p.Blue - q.Blue) > 2)
+                different++;
+        }
+        Assert.Equal(0, different);
+    }
+
+    /// <summary>
+    /// The shipped bug as it happens: the mouse rests on a button that glows while hovered, inside a scrolled composite
+    /// list. One hover change, no flicker, and the picture equals a full render of the hovered state.
+    /// </summary>
+    [Fact]
+    public void GlowOnHover_PointerResting_HoverStaysAndNoShift()
+    {
+        using var host = new HeadlessCanvasHost(300, 300, scale: 1f, background: Colors.Black);
+        var (scroll, list, button) = BuildScrolledWithButton(composite: true);
+        var changes = new List<bool>();
+        var glow = new OuterGlowEffect { Color = Colors.White, Blur = 10 };
+        button.OnHovered((me, on) =>
+        {
+            changes.Add(on);
+            if (on)
+                me.VisualEffects.Add(glow);
+            else
+                me.VisualEffects.Remove(glow);
+            me.Update();
+        });
+        host.Canvas.Content = scroll;
+        host.AdvanceFrames(3);
+        scroll.ScrollToBottom(0);
+        host.AdvanceFrames(5);
+
+        // every record of the list: its surface must be the size of the area it says it holds (the effects margin
+        // of the glow included); a surface kept from another margin draws everything shifted
+        var mismatches = new List<string>();
+        list.CreatedCache += (_, ro) =>
+        {
+            var clip = ro.Surface?.Canvas.DeviceClipBounds;
+            if (clip != null && (Math.Abs(clip.Value.Width - ro.Bounds.Width) > 1 || Math.Abs(clip.Value.Height - ro.Bounds.Height) > 1))
+                mismatches.Add($"surface {clip.Value.Width}x{clip.Value.Height} for bounds {ro.Bounds.Width}x{ro.Bounds.Height}");
+        };
+
+        var r = button.GetAccessibilityPixelRect();
+        for (var i = 0; i < 30; i++)
+        {
+            host.Canvas.HandleDesktopPointerMove(r.MidX + (i % 5), r.MidY, false, 300, 300);
+            host.RenderFrame();
+        }
+
+        Assert.True(changes.Count > 0, $"no hover: button at {r}, scroll {scroll.ViewportOffsetY}, drawing {button.DrawingRect}");
+        Assert.Equal(new[] { true }, changes);
+
+        // the mouse leaves: the glow goes, the margin shrinks back
+        host.Canvas.HandleDesktopPointerMove(5, 5, false, 300, 300);
+        host.AdvanceFrames(3);
+        Assert.Equal(new[] { true, false }, changes);
+        Assert.Empty(mismatches);
+    }
+
     [Fact]
     public void ManyChanges_OneFullRecord()
     {
