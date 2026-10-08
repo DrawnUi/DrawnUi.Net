@@ -64,6 +64,7 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 
 ## What's New 1.10.7.3
 
+  * **Smoother scrolling on iOS and Mac Catalyst.** A frame no longer waits for the screen buffer before it starts drawing, so frames that used to show one refresh late (a short stutter while scrolling) are now on time.
   * **Grids (`Split`) add pages without rebuilding.** A LoadMore page appended to a templated grid keeps every cell it already has, also when the page does not fill whole rows: the new items fill the last row, then new rows. Before, such a page re-laid and rebound the whole grid, so each page got slower as the list grew.
   * **Fix: `MeasureVisible` grids placed rows wrong after the first screen.** Rows measured in the background could land one row too high and overlap the row above.
   * **Fix: `SkiaSpinner` and `SkiaWheelPicker` never raised `ItemsSourceChangesApplied`**, neither for a new `ItemsSource` nor when its collection changed.
