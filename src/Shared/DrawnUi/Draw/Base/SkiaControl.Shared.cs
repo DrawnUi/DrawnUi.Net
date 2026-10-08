@@ -8485,7 +8485,12 @@ namespace DrawnUi.Draw
                 NeedUpdateFrontCache = true;
                 NeedUpdate = true;
 
-                if (!WillNotUpdateParent)
+                // A hidden control (or one under a hidden ancestor: the climb stops at the first hidden level)
+                // stays marked dirty but asks for no frame: nothing of it is drawn. A live control behind a
+                // pushed screen (a camera preview) used to cost a whole canvas frame per update. Showing it
+                // again invalidates the parent (OnVisibilityChanged), so it draws fresh then; hiding it
+                // invalidates the parent directly, not through this climb.
+                if (!WillNotUpdateParent && IsVisible)
                 {
                     var outer = _updateOrigin;
                     _updateOrigin ??= this; // the control the change started at, for a composite above

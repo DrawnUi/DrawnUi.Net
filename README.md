@@ -64,6 +64,7 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 
 ## What's New 1.10.7.3
 
+  * **A hidden control no longer redraws the screen.** A control that keeps updating behind another screen, such as a camera preview under a pushed page, asked for a full canvas frame on every update. Now it waits and draws its latest state when it is shown again.
   * **Smoother scrolling on iOS.** A frame no longer waits for the screen buffer before it starts drawing, so frames that used to show one refresh late (a short stutter while scrolling) are now on time.
   * **Grids (`Split`) add pages without rebuilding.** A LoadMore page appended to a templated grid keeps every cell it already has, also when the page does not fill whole rows: the new items fill the last row, then new rows. Before, such a page re-laid and rebound the whole grid, so each page got slower as the list grew.
   * **Fix: `MeasureVisible` grids placed rows wrong after the first screen.** Rows measured in the background could land one row too high and overlap the row above.
