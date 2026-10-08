@@ -1259,11 +1259,12 @@ public class SkiaCachedStack : SkiaStack
     {
         get
         {
-            // plane state on top of the layout diagnostics: coverage band, validity, transition hold
+            // plane state on top of the layout diagnostics: coverage band, validity, transition hold. The hold
+            // owns the frozen plane (ForegroundPlane is null while it serves), so it is reported on its own.
             var plane = ForegroundPlane == null
                 ? "plane none"
-                : $"plane [{_foregroundCoveredTop:0}..{_foregroundCoveredBot:0}] valid={_cacheValid}{(_transitionHold ? " HOLD" : "")}";
-            return $"{base.DebugString}, {plane}";
+                : $"plane [{_foregroundCoveredTop:0}..{_foregroundCoveredBot:0}] valid={_cacheValid}";
+            return $"{base.DebugString}, {plane}{(_transitionHold ? " HOLD" : "")}";
         }
     }
 
