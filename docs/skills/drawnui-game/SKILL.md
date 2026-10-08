@@ -74,7 +74,7 @@ MyGame/
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.80" />
-    <PackageReference Include="DrawnUi.Maui.Game" Version="1.10.7.1" />
+    <PackageReference Include="DrawnUi.Maui.Game" Version="1.10.7.2" />
   </ItemGroup>
 </Project>
 ```
@@ -113,7 +113,7 @@ MyGame/
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
-    <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.7.1" />
+    <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.7.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -220,7 +220,7 @@ src/
 <!-- In MyGame.Mobile.csproj -->
 <Import Project="../Shared/MyGame.Shared.projitems" Label="Shared" />
 <ItemGroup>
-  <PackageReference Include="DrawnUi.Maui.Game" Version="1.10.7.1" />
+  <PackageReference Include="DrawnUi.Maui.Game" Version="1.10.7.2" />
 </ItemGroup>
 ```
 
@@ -231,7 +231,7 @@ src/
 <!-- ... -->
 <Import Project="../../Shared/MyGame.Shared.projitems" Label="Shared" />
 <ItemGroup>
-  <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.7.1" />
+  <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.7.2" />
 </ItemGroup>
 ```
 
