@@ -241,11 +241,16 @@ namespace DrawnUi.Views
         void IMTKViewDelegate.Draw(MTKView view)
         {
 
+            // No CurrentDrawable here: reading it acquires the next drawable, which BLOCKS until the compositor
+            // frees one (about a vsync when frames are back to back). Taken at the top, that wait came BEFORE the
+            // render and added to it, so a frame whose wait ran long missed its vsync (iPhone: 17 ms waits in
+            // exactly the frames shown one vsync late). Everything below renders into the retained texture, which
+            // needs no drawable: the drawable is taken only for the final copy, so the wait overlaps the render.
 #if NET9
-            if (_designMode || _sharedBackendContext.Queue == null || CurrentDrawable?.Texture == null || stopped)
+            if (_designMode || _sharedBackendContext.Queue == null || stopped || Window == null)
                 return;
 #else
-            if (_designMode || _sharedBackendContext.QueueHandle == IntPtr.Zero || CurrentDrawable?.Texture == null || stopped)
+            if (_designMode || _sharedBackendContext.QueueHandle == IntPtr.Zero || stopped || Window == null)
                 return;
 #endif
             _canvasSize = DrawableSize.ToSKSize();
@@ -330,22 +335,7 @@ namespace DrawnUi.Views
                         //Debug.WriteLine("[SKMetalView] First frame: Used CPU pre-rendered image (fast blit)");
 
                         // Immediately copy to screen and return - skip normal rendering
-#if NET9
-                        using IMTLCommandBuffer commandBuffer = _sharedBackendContext.Queue.CommandBuffer();
-#else
-                        using IMTLCommandBuffer commandBuffer = _sharedQueue.CommandBuffer();
-#endif
-                        if (commandBuffer == null) return;
-                        using var blitEncoder = commandBuffer.BlitCommandEncoder;
-
-                        blitEncoder.CopyFromTexture(
-                            textureToUse, 0, 0, new MTLOrigin(0, 0, 0),
-                            new MTLSize((int)_canvasSize.Width, (int)_canvasSize.Height, 1),
-                            CurrentDrawable.Texture, 0, 0, new MTLOrigin(0, 0, 0));
-
-                        blitEncoder.EndEncoding();
-                        commandBuffer.PresentDrawable(CurrentDrawable);
-                        commandBuffer.Commit();
+                        PresentRetained(textureToUse);
 
                         return; // CRITICAL: Exit here - do NOT run normal rendering path
                     }
@@ -379,22 +369,7 @@ namespace DrawnUi.Views
                 _needsFullRedraw = false;
 
                 // Copy retained texture to screen
-#if NET9
-                using IMTLCommandBuffer commandBuffer2 = _sharedBackendContext.Queue.CommandBuffer();
-#else
-                using IMTLCommandBuffer commandBuffer2 = _sharedQueue.CommandBuffer();
-#endif
-                if (commandBuffer2 == null) return;
-                using var blitEncoder2 = commandBuffer2.BlitCommandEncoder;
-
-                blitEncoder2.CopyFromTexture(
-                    textureToUse, 0, 0, new MTLOrigin(0, 0, 0),
-                    new MTLSize((int)_canvasSize.Width, (int)_canvasSize.Height, 1),
-                    CurrentDrawable.Texture, 0, 0, new MTLOrigin(0, 0, 0));
-
-                blitEncoder2.EndEncoding();
-                commandBuffer2.PresentDrawable(CurrentDrawable);
-                commandBuffer2.Commit();
+                PresentRetained(textureToUse);
             }
             catch (Exception ex)
             {
@@ -551,6 +526,36 @@ namespace DrawnUi.Views
             PaintSurface?.Invoke(this, e);
         }
  
+
+        /// <summary>
+        /// Copies the retained texture to the next drawable and presents it. The drawable is acquired HERE, after
+        /// the frame was rendered (see the Draw delegate): no drawable (offscreen, timed out) skips the present,
+        /// the retained texture keeps the frame for the next draw.
+        /// </summary>
+        void PresentRetained(IMTLTexture textureToUse)
+        {
+            var drawable = CurrentDrawable;
+            if (drawable?.Texture == null)
+                return;
+
+#if NET9
+            using IMTLCommandBuffer commandBuffer = _sharedBackendContext.Queue.CommandBuffer();
+#else
+            using IMTLCommandBuffer commandBuffer = _sharedQueue.CommandBuffer();
+#endif
+            if (commandBuffer == null)
+                return;
+
+            using var blitEncoder = commandBuffer.BlitCommandEncoder;
+            blitEncoder.CopyFromTexture(
+                textureToUse, 0, 0, new MTLOrigin(0, 0, 0),
+                new MTLSize((int)_canvasSize.Width, (int)_canvasSize.Height, 1),
+                drawable.Texture, 0, 0, new MTLOrigin(0, 0, 0));
+            blitEncoder.EndEncoding();
+
+            commandBuffer.PresentDrawable(drawable);
+            commandBuffer.Commit();
+        }
 
         /// <summary>
         /// Forces the view to redraw its contents.
