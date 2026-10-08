@@ -112,6 +112,13 @@ namespace DrawnUi.Draw
                         }
                         catch { }
                     }
+                    else if (!e.HasFocus && IsFocused)
+                    {
+                        // Another input took the keyboard (an editor in another Canvas, a native entry):
+                        // only one view holds native focus, so the drawn editor drops its focus too,
+                        // otherwise both editors keep drawing a caret.
+                        IsFocused = false;
+                    }
                 };
                 Control.FocusChange += _focusChangeListener;
             }
@@ -301,6 +308,10 @@ namespace DrawnUi.Draw
                 else
                 {
                     PlatformClearFocusNow();
+
+                    // the sink already lost native focus to another input: the keyboard is that input's now
+                    if (!Control.IsFocused)
+                        return;
 
                     Control.ClearFocus();
                     if (closeKeyboard)
