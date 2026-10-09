@@ -30,7 +30,7 @@ Rules that differ from a screen:
 - **Root is a Column** when the report must break into pages; the table is a templated `SkiaLayout Type="Column"` with `ItemsSource`, `RecyclingTemplate="Disabled"` and `MeasureItemsStrategy="MeasureAll"`: there is no viewport, every row must exist and be measured.
 - **Units are pixels of the chosen dpi**, `scale = 1`. At 150 dpi a portrait A4 is 1240 x 1753 units and `FontSize="19"` prints at about 9 pt. Design margins and font sizes for that.
 - **Bindings work as usual**, set `BindingContext` at export time. Fonts are the ones registered at startup, the Skia PDF backend embeds them.
-- **Images load async** (urls, files, map tiles). Count them: the template implements a small `IContentReadyAware { bool ContentIsLoaded { get; } }` and increments a counter from `SkiaImage` `Success` AND `Error` (both mean "done"), compared with the number of images the view model asked to show.
+- **Images load async** (urls, files, map tiles). The template implements a small `IContentReadyAware { bool ContentIsLoaded { get; } }`. Decide readiness from STATE, not from counted events: keep the `SkiaImage` instances in a list and report ready when `list.Count >= expected && list.All(i => i.LoadedSource != null || i.HasError || !i.IsLoading)`. Counting `Success`/`Error` events misses two cases and then the export sits on its timeout: a cached source raises `Success` synchronously inside the `Source` setter (before a handler attached after it in an object initializer), and a load cancelled mid-flight (`ReloadSource`, a second `Source` set) returns without any event. If you do subscribe to events, subscribe before setting `Source`. For map tiles use the control's own signal (`SkiaMapsUi.LoadingChanged`).
 - Custom charts and bars as small `SkiaControl` subclasses overriding `Paint(DrawingContext ctx)` draw with raw Skia and land in the PDF as paths.
 
 ## Export, step by step
@@ -187,7 +187,24 @@ Open a second `Window` with a `BasePageReloadable` page holding `Canvas > SkiaSc
 
 ## Headless, server side
 
-The `DrawnUi.Net` package runs the same engine without MAUI: `Super.UseDrawnUi().ConfigureFonts(...).Build()` once, then the exact export code above with a C# template (XAML needs MAUI). Fonts must be registered with the same aliases the template uses. Same for images: local files load synchronously, urls through the image manager.
+The `DrawnUi.Net` package (also inside `DrawnUi.Blazor.Server`) runs the same engine without MAUI: the exact export code above with a C# template (XAML needs MAUI). Startup, once:
+
+```csharp
+new DrawnUiBuilder()
+    .ConfigureFonts(fonts =>
+    {
+        fonts.AddFont("OpenSans-Regular.ttf", "FontText");   // file next to the app (AppContext.BaseDirectory)
+        fonts.AddFont("OpenSans-Semibold.ttf", "FontTextTitle");
+    })
+    .Build();
+```
+
+No `Super.Init()` and no screen density are needed: the layouts you measure by hand take the scale you pass to `Measure(w, h, scale)`. (Grid did not before the fix after 1.10.7.4: it measured its cells with each child's own `RenderingScale`, which falls back to the global density, 0 in a bare process, so a detached grid came out 0x0 with NaN cells while rows and columns worked. On 1.10.7.4 or older call `Super.Init()` once at startup as the workaround.)
+
+- Fonts: copy the `.ttf` files next to the app (`<Content Include="Resources\Fonts\**" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />`) and register them by file name; same for `SkiaSvg` sources.
+- The Net head has its own `Color` (`global using Color = DrawnUi.Color;`): `Parse`, `FromRgba`, `FromHsla(float...)`, `ToSKColor()`, no `AddLuminosity`. `BindableProperty`, `DataTemplate`, `Command`, `Thickness`, `LayoutOptions` exist as shims.
+- `ItemTemplate` before `ItemsSource` in a C# object initializer, or the templated layout creates no cells.
+- Blazor Server: `builder.Services.AddDrawnUiBlazorServer()`, a `<Canvas Content="@report" Width="1100" HeightRequest="@measuredHeight" JpegQuality="95" />` shows the same template as server-rendered image frames (its auto height stops around 1200 px, measure the report yourself for `HeightRequest`), and a minimal API endpoint returns `Results.File(bytes, "application/pdf", name)`. Reference: the RepoReportBlazor sample linked from the article.
 
 ## References
 

@@ -62,6 +62,13 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
+## What's New 1.10.7.5
+
+**Hotfix for iOS and Mac Catalyst.** Versions 1.10.7.1 to 1.10.7.4 crash on Apple platforms: update if you ship to iOS or Mac Catalyst.
+
+  * **Fix: the app crashed when a page with a Canvas closed (iOS, Mac Catalyst).** Closing a page or a popup that holds a `Canvas` aborted the app with an `ArgumentNullException` in `DrawnView.ReleaseAccessibility`, with VoiceOver on or off ([#361](https://github.com/DrawnUi/DrawnUi.Net/issues/361)).
+  * **Fix: a grid drawn off screen came out empty.** A grid rendered without a screen (PDF or image export) measured its cells at scale 0. It now measures them at its own scale. Nothing changes on screen.
+
 ## What's New 1.10.7.4
 
   * **Fix: a drawer closed when you let go of a short drag.** Dragging a side drawer a little, holding the finger still and lifting it closed the drawer, because the slight movement of a resting finger counted as a flick. Now the drawer goes back unless you flick it or drag it past half. `SnapVelocityThreshold` (100 points per second) sets how fast a release must be to count as a flick, for drawers and carousels alike.

@@ -89,8 +89,10 @@ namespace DrawnUi.Views
             foreach (var element in _a11yElements.Values)
                 element.Node = null;
             _a11yElements = new();
+            // an empty array, never null: the binding's SetValueForKey throws ArgumentNullException for a null value,
+            // which crashed every canvas teardown (GitHub #361)
             if (view != null && view.Handle != IntPtr.Zero)
-                view.SetValueForKey(null, AccessibilityElementsKey);
+                view.SetValueForKey(new NSArray(), AccessibilityElementsKey);
         }
 
         // UI thread. Mac Catalyst: always on (the Mac's VoiceOver, Full Keyboard Access and Voice Control read the elements too)
