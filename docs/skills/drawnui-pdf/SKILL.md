@@ -187,20 +187,20 @@ Open a second `Window` with a `BasePageReloadable` page holding `Canvas > SkiaSc
 
 ## Headless, server side
 
-The `DrawnUi.Net` package (also inside `DrawnUi.Blazor.Server`) runs the same engine without MAUI: the exact export code above with a C# template (XAML needs MAUI). Startup, once, before any control is measured:
+The `DrawnUi.Net` package (also inside `DrawnUi.Blazor.Server`) runs the same engine without MAUI: the exact export code above with a C# template (XAML needs MAUI). Startup, once:
 
 ```csharp
-new DrawnUiBuilder()                       // Super.UseDrawnUi() on packages newer than 1.10.7.4
+new DrawnUiBuilder()
     .ConfigureFonts(fonts =>
     {
         fonts.AddFont("OpenSans-Regular.ttf", "FontText");   // file next to the app (AppContext.BaseDirectory)
         fonts.AddFont("OpenSans-Semibold.ttf", "FontTextTitle");
     })
     .Build();
-Super.Init();                              // sets Super.Screen.Density = 1 and the engine state
 ```
 
-- **`Super.Init()` is the app's duty before any detached rendering.** It is not a lib defect to work around: an engine with `Super.Screen.Density` = 0 is an uninitialized engine, and measuring a `Grid` in it gives NaN cell widths ("NaN is not a valid value for width", logged and swallowed), a 0x0 grid, a templated table without `RenderTree` and no rows for `SplitStackToPages`. The Blazor Server renderer initializes lazily when its first `Canvas` is created, so an API endpoint that renders before any canvas must call `Super.Init()` itself at startup. Rows and columns happen to measure without it, which hides the mistake.
+No `Super.Init()` and no screen density are needed: the layouts you measure by hand take the scale you pass to `Measure(w, h, scale)`. (Grid did not before the fix after 1.10.7.4: it measured its cells with each child's own `RenderingScale`, which falls back to the global density, 0 in a bare process, so a detached grid came out 0x0 with NaN cells while rows and columns worked. On 1.10.7.4 or older call `Super.Init()` once at startup as the workaround.)
+
 - Fonts: copy the `.ttf` files next to the app (`<Content Include="Resources\Fonts\**" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />`) and register them by file name; same for `SkiaSvg` sources.
 - The Net head has its own `Color` (`global using Color = DrawnUi.Color;`): `Parse`, `FromRgba`, `FromHsla(float...)`, `ToSKColor()`, no `AddLuminosity`. `BindableProperty`, `DataTemplate`, `Command`, `Thickness`, `LayoutOptions` exist as shims.
 - `ItemTemplate` before `ItemsSource` in a C# object initializer, or the templated layout creates no cells.
