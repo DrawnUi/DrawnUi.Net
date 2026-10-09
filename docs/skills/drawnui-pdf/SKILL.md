@@ -187,7 +187,24 @@ Open a second `Window` with a `BasePageReloadable` page holding `Canvas > SkiaSc
 
 ## Headless, server side
 
-The `DrawnUi.Net` package runs the same engine without MAUI: `Super.UseDrawnUi().ConfigureFonts(...).Build()` once, then the exact export code above with a C# template (XAML needs MAUI). Fonts must be registered with the same aliases the template uses. Same for images: local files load synchronously, urls through the image manager.
+The `DrawnUi.Net` package (also inside `DrawnUi.Blazor.Server`) runs the same engine without MAUI: the exact export code above with a C# template (XAML needs MAUI). Startup, once, before any control is measured:
+
+```csharp
+new DrawnUiBuilder()                       // Super.UseDrawnUi() on packages newer than 1.10.7.4
+    .ConfigureFonts(fonts =>
+    {
+        fonts.AddFont("OpenSans-Regular.ttf", "FontText");   // file next to the app (AppContext.BaseDirectory)
+        fonts.AddFont("OpenSans-Semibold.ttf", "FontTextTitle");
+    })
+    .Build();
+Super.Init();                              // sets Super.Screen.Density = 1 and the engine state
+```
+
+- **`Super.Init()` is mandatory for detached rendering.** Without it `Super.Screen.Density` is 0 and every `Grid` measures its cells with NaN widths (`SkiaGridStructure.MeasureChild`, "NaN is not a valid value for width", logged and swallowed), so the grid is 0x0, the templated table has no `RenderTree` and `SplitStackToPages` sees no rows. The Blazor Server renderer calls it lazily when its first `Canvas` is created, an API endpoint hit before that must not rely on it. Rows and columns measure fine without it, which hides the problem.
+- Fonts: copy the `.ttf` files next to the app (`<Content Include="Resources\Fonts\**" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />`) and register them by file name; same for `SkiaSvg` sources.
+- The Net head has its own `Color` (`global using Color = DrawnUi.Color;`): `Parse`, `FromRgba`, `FromHsla(float...)`, `ToSKColor()`, no `AddLuminosity`. `BindableProperty`, `DataTemplate`, `Command`, `Thickness`, `LayoutOptions` exist as shims.
+- `ItemTemplate` before `ItemsSource` in a C# object initializer, or the templated layout creates no cells.
+- Blazor Server: `builder.Services.AddDrawnUiBlazorServer()`, a `<Canvas Content="@report" Width="1100" HeightRequest="@measuredHeight" JpegQuality="95" />` shows the same template as server-rendered image frames (its auto height stops around 1200 px, measure the report yourself for `HeightRequest`), and a minimal API endpoint returns `Results.File(bytes, "application/pdf", name)`. Reference: the RepoReportBlazor sample linked from the article.
 
 ## References
 

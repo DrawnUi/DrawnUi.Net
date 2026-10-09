@@ -146,7 +146,8 @@ public static class Pdf
     {
         var vstack = FindVStack(control, isTemplated);
 
-        if (vstack == null)
+        // no stack, or a stack that was never rendered (no render tree yet): plain slices
+        if (vstack?.RenderTree == null)
         {
             return SplitToPages(control.MeasuredSize.Pixels, paper);
         }
