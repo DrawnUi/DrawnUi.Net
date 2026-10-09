@@ -53,13 +53,12 @@ public class SkiaCarousel : SnappingLayout
 
     public override void ScrollToNearestAnchor(Vector2 location, Vector2 velocity)
     {
-        var theshold = 100f;
-        if (Math.Abs(velocity.X) < theshold)
+        if (Math.Abs(velocity.X) < SnapVelocityThreshold)
         {
             velocity.X = 0;
         }
 
-        if (Math.Abs(velocity.Y) < theshold)
+        if (Math.Abs(velocity.Y) < SnapVelocityThreshold)
         {
             velocity.Y = 0;
         }

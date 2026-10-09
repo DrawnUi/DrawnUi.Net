@@ -65,12 +65,14 @@ public class SkiaSpinner : SkiaLayout
     public override void OnItemSourceChanged()
     {
         SyncItemsSource();
+        PostItemsSourceChangesApplied(); // the base is skipped: raise ItemsSourceChangesApplied here
     }
 
     // Redirect ItemsSource property to inner wheel shape
     protected override void OnItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
     {
         SyncItemsSource();
+        PostItemsSourceChangesApplied(); // the base is skipped: raise ItemsSourceChangesApplied here
     }
 
     /// <summary>

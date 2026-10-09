@@ -10,7 +10,8 @@ public sealed partial class ChatPage : BindableObject, IChatCellActions
     // Probe accessors into the migrated built-in-window state (same class -> can read it).
     public int ProbeWindowStart => _windowStart;
     public int ProbeWindowEnd => _windowEnd;
-    public int ProbeResident => ChatStack?.ItemsWindow?.Items.Count ?? _items.Count;
+    // what the list shows: the built-in window, else the ItemsSource the variant set (_messages or the WindowedSource window)
+    public int ProbeResident => ChatStack?.ItemsWindow?.Items.Count ?? (ChatStack?.ItemsSource as System.Collections.IList)?.Count ?? _items.Count;
     public int ProbeListCount => _items.Count;
 
     // Drive the app's private jump helpers from the harness (exact same code path as the UI buttons).

@@ -62,6 +62,22 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
+## What's New 1.10.7.4
+
+  * **Fix: a drawer closed when you let go of a short drag.** Dragging a side drawer a little, holding the finger still and lifting it closed the drawer, because the slight movement of a resting finger counted as a flick. Now the drawer goes back unless you flick it or drag it past half. `SnapVelocityThreshold` (100 points per second) sets how fast a release must be to count as a flick, for drawers and carousels alike.
+  * **Fix: a side drawer took over a scroll's gesture.** Scrolling a list inside a drawer (a modal sliding in from the side) and then moving the finger sideways without lifting it made the drawer slide away. A gesture now belongs to the control that started panning with it until the finger is lifted, and a drawer whose gesture started the other way stays put.
+  * **Fix: text in a grid's star column was cut to one line.** A label on an `Auto` row next to an `Auto` column (a title beside a button) was measured against the row height of its first, full-width pass, so text that wraps in the narrower column was cut to one line ending in "..". The row now grows to the wrapped text, up to `MaxLines`.
+  * **Fix: `CharacterSpacing` text ran past its label when cut.** Cutting a line to fit (`MaxLines`, a word longer than the line) measured the text without the letter spacing, so the cut line was drawn wider than the label. The second span of a cut line also ignored the space the first span already took.
+
+## What's New 1.10.7.3
+
+  * **A hidden control no longer redraws the screen.** A control that keeps updating behind another screen, such as a camera preview under a pushed page, asked for a full canvas frame on every update. Now it waits and draws its latest state when it is shown again.
+  * **Smoother scrolling on iOS.** A frame no longer waits for the screen buffer before it starts drawing, so frames that used to show one refresh late (a short stutter while scrolling) are now on time.
+  * **Grids (`Split`) add pages without rebuilding.** A LoadMore page appended to a templated grid keeps every cell it already has, also when the page does not fill whole rows: the new items fill the last row, then new rows. Before, such a page re-laid and rebound the whole grid, so each page got slower as the list grew.
+  * **Fix: `MeasureVisible` grids placed rows wrong after the first screen.** Rows measured in the background could land one row too high and overlap the row above.
+  * **Fix: `SkiaSpinner` and `SkiaWheelPicker` never raised `ItemsSourceChangesApplied`**, neither for a new `ItemsSource` nor when its collection changed.
+  * **Fix: editor, iOS: the caret stays after what you type when the app changes the text.** A number field showing "0" turned "05" into "5" and put the caret before the 5. Now the caret keeps its distance from the end of the text, like on Android, also when a filter drops characters.
+
 ## What's New 1.10.7.2
 
   * **Hover for lists**

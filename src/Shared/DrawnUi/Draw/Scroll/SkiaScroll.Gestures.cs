@@ -472,12 +472,9 @@ public partial class SkiaScroll
                             }
                         }
 
+                        // panning already: the gesture is ours until Up. A move the other way is still consumed and
+                        // applied along our axis; dropping it handed it to a parent (a side drawer slid away mid-scroll)
                         IsUserPanning = true;
-
-                        if (IgnoreWrongDirection && wrongDirection)
-                        {
-                            return consumedDefault;
-                        }
 
                         // arrival time, NOT now: a burst drained after a long frame must age out instead of
                         // seeding a fling from a flick that ended seconds ago

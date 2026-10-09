@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using System.Text.RegularExpressions;
 using DrawnChatList;
 using DrawnUi.Draw;
 using DrawnUi.Testing;
@@ -14,22 +12,10 @@ namespace VirtualizationHarnessDemo;
 /// frame — two different frames => hit rects offset by the scroll delta between them.
 /// A/B proof: identical deterministic pan + tap at the same screen point with UseDoubleBuffering=false
 /// (sync record rebuilds the tree in the same frame it records the plane — reference) vs true.
-/// The actually-tapped message is captured END-TO-END from the cell's own tap handler
-/// ("[CHAT] tapped message N") via a Debug trace listener.
+/// The actually-tapped message is captured END-TO-END from the chat stack's ChildTapped event.
 /// </summary>
 public static class TapStaleTreeRepro
 {
-    private sealed class CaptureListener : TraceListener
-    {
-        public readonly List<string> Lines = new();
-        private readonly System.Text.StringBuilder _buf = new();
-        public override void Write(string message) { lock (Lines) _buf.Append(message); }
-        public override void WriteLine(string message)
-        {
-            lock (Lines) { Lines.Add(_buf.Append(message).ToString()); _buf.Clear(); }
-        }
-    }
-
     private const float TapX = 220, TapY = 460;
 
     public static void Run()
@@ -86,25 +72,25 @@ public static class TapStaleTreeRepro
                 }
         }
 
-        // end-to-end tap, recipient captured from the cell's own handler via Debug trace
-        var capture = new CaptureListener();
-        Trace.Listeners.Add(capture);
+        // end-to-end tap: the recipient is the cell the chat stack reports as tapped (ChildTapped is raised
+        // for the child that took the Tapped gesture). Not the cell's own Debug.WriteLine: Release builds
+        // compile it out, which made this repro report "tapped -1" in both modes.
         int tapped = -1;
+        void onChildTapped(object s, ControlTappedEventArgs e)
+        {
+            if (e.Control is SkiaControl child && child.BindingContext is ChatMessage m)
+                tapped = m.Index;
+        }
+
+        page.ChatStack.ChildTapped += onChildTapped;
         try
         {
             robot.Tap(TapX, TapY);
             for (int f = 0; f < 10; f++) { host.RenderFrame(16); Thread.Sleep(3); }
-
-            lock (capture.Lines)
-                foreach (var line in capture.Lines)
-                {
-                    var m = Regex.Match(line, @"\[CHAT\] tapped message (\d+)");
-                    if (m.Success) tapped = int.Parse(m.Groups[1].Value);
-                }
         }
         finally
         {
-            Trace.Listeners.Remove(capture);
+            page.ChatStack.ChildTapped -= onChildTapped;
         }
 
         return (offY, tapped, treeAtP);

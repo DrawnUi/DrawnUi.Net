@@ -1800,9 +1800,11 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
-        /// True when an Add/Remove lands on split-row boundaries (count AND index both multiples of Split),
-        /// so the uniform structure-preserving arithmetic keeps every survivor in its original column (pure
-        /// row-shift). Non-aligned changes would flip column parity and must take the full-rebuild path.
+        /// True when a Split grid can keep its structure through this change: an Add/Remove on split-row
+        /// boundaries (count AND index both multiples of Split, every survivor keeps its column through a pure
+        /// row-shift), or an Add at the END of any size (it moves no existing item, the new ones fill the partial
+        /// last row, then whole rows). Other changes would flip column parity and take the full-rebuild path, as
+        /// does an end append with <see cref="DynamicColumns"/>, whose short last row changes when it fills.
         /// </summary>
         private bool IsSplitAlignedChange(NotifyCollectionChangedEventArgs args)
         {
@@ -1812,6 +1814,10 @@ namespace DrawnUi.Draw
                 case NotifyCollectionChangedAction.Add:
                     count = args.NewItems?.Count ?? 0;
                     index = args.NewStartingIndex;
+                    // the collection already holds the new items: an append ends at its count
+                    if (count > 0 && !DynamicColumns && index >= 0
+                        && index + count == (EffectiveItemsSource?.Count ?? -1))
+                        return true;
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     count = args.OldItems?.Count ?? 0;

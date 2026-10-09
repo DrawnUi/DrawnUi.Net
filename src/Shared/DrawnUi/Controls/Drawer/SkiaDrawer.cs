@@ -632,6 +632,12 @@ namespace DrawnUi.Controls
 
         private bool GesturesPassThrough = false;
 
+        // Ownership of the current gesture, decided once between Down and Up: a child took a pan move first
+        // (the child keeps the gesture), or the drawer's own first move went the wrong way (IgnoreWrongDirection).
+        // Either way the drawer does not start panning in this gesture, whatever direction the finger turns.
+        private bool _childOwnsGesture;
+        private bool _gestureRejected;
+
         /// <summary>Takes mouse hover by default (<see cref="SkiaControl.ReceivesHover"/>), as it always did.</summary>
         protected override bool ReceivesHoverByDefault => true;
 
@@ -676,6 +682,12 @@ namespace DrawnUi.Controls
                 var passed = true;
             }
 
+            if (args.Type == TouchActionResult.Down)
+            {
+                _childOwnsGesture = false;
+                _gestureRejected = false;
+            }
+
             bool passedToChildren = false;
 
             ISkiaGestureListener PassToChildren()
@@ -711,6 +723,10 @@ namespace DrawnUi.Controls
                     if (args.Type == TouchActionResult.Tapped)
                     {
                         ChildWasTapped = true;
+                    }
+                    else if (args.Type == TouchActionResult.Panning)
+                    {
+                        _childOwnsGesture = true; // a scroll inside owns this gesture until Up
                     }
 
                     return consumed;
@@ -811,10 +827,16 @@ namespace DrawnUi.Controls
 
                         if (!IsUserPanning) //for the first panning move only
                         {
+                            if (_childOwnsGesture || _gestureRejected)
+                            {
+                                return consumedDefault; // decided earlier in this gesture: not ours
+                            }
+
                             var mainDirection = GetDirectionType(_panningOffset, new Vector2(x, y), 0.9f);
 
                             if (direction == DirectionType.None || mainDirection != direction && IgnoreWrongDirection)
                             {
+                                _gestureRejected = direction != DirectionType.None && mainDirection != DirectionType.None;
                                 break; //ignore this gesture
                             }
 
@@ -887,7 +909,11 @@ namespace DrawnUi.Controls
                         if (ChildWasTapped || !IsUserPanning)
                             break;
 
-                        direction = DirectionType.None;
+                        // the release sample along the drawer's own axis (it was always the vertical one: a side
+                        // drawer never got the finger's real release speed, only its moves before it)
+                        direction = Direction is DrawerDirection.FromLeft or DrawerDirection.FromRight
+                            ? DirectionType.Horizontal
+                            : DirectionType.Vertical;
                         var Velocity = Vector2.Zero;
 
                         if (direction == DirectionType.Horizontal)

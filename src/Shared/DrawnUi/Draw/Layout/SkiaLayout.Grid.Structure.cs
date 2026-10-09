@@ -434,8 +434,16 @@ public partial class SkiaLayout
                     continue;
                 }
 
+                // on an Auto row a child that is not Fill vertically keeps the height the row can grow to, as in
+                // MeasureKnownCells: the same request returns at once, and wrapped text is not cut to the row
+                var height = rectCell.Height;
+                if (SizesAutoRow(cell, control) && !((SkiaControl)control).NeedFillY)
+                {
+                    height = Math.Max(height, AvailableHeight(cell));
+                }
+
                 var scale = (float)control.RenderingScale;
-                var measured = control.Measure((float)(rectCell.Width * scale), (float)Math.Round(rectCell.Height * scale), scale);
+                var measured = control.Measure((float)(rectCell.Width * scale), (float)Math.Round(height * scale), scale);
 
                 if (cell.ColumnSpan == 1 && Columns[cell.Column].IsAuto && measured.Units.Width > Columns[cell.Column].Size)
                 {
@@ -792,8 +800,30 @@ public partial class SkiaLayout
             ResolveStars(Rows, availableSpace, cellCheck, getDimension);
         }
 
+        /// <summary>
+        /// True when the child decides the height of its single Auto row: it is then measured with the height
+        /// that row could still grow to, not with the row's current size (see <see cref="HeightOnAutoRow"/>).
+        /// </summary>
+        bool SizesAutoRow(Cell cell, ISkiaControl control)
+        {
+            return cell.RowSpan == 1 && Rows[cell.Row].IsAuto && control is SkiaControl;
+        }
+
+        /// <summary>
+        /// Height to measure a child with on its single Auto row once its columns are resolved: the height the row
+        /// could still grow to, unbounded for a vertical Fill child (which would take the whole constraint). The
+        /// row's current size came from a first pass at the grid's whole width, so a label wrapping on a star
+        /// column was measured against its one-line height and cut to one line.
+        /// </summary>
+        double HeightOnAutoRow(Cell cell, SkiaControl control)
+        {
+            return control.NeedFillY ? double.PositiveInfinity : AvailableHeight(cell);
+        }
+
         void MeasureKnownCells()
         {
+            var autoRowGrew = false;
+
             foreach (var cell in _cells)
             {
                 if (!cell.NeedsKnownMeasurePass)
@@ -826,8 +856,30 @@ public partial class SkiaLayout
                 var measure = rectCell;
 
                 var scale = (float)control.RenderingScale;
-                control.Measure((float)(rectCell.Width * scale), (float)Math.Round(rectCell.Height * scale),
-                    scale);
+
+                if (control.IsVisible && SizesAutoRow(cell, control))
+                {
+                    var measured = control.Measure((float)(rectCell.Width * scale),
+                        (float)Math.Round(HeightOnAutoRow(cell, (SkiaControl)control) * scale), scale);
+
+                    double grown = measured.Units.Height;
+                    var available = AvailableHeight(cell);
+                    if (double.IsFinite(available) && grown > available)
+                    {
+                        grown = available;
+                    }
+
+                    if (grown > Rows[cell.Row].Size)
+                    {
+                        Rows[cell.Row].Update(grown);
+                        autoRowGrew = true;
+                    }
+                }
+                else
+                {
+                    control.Measure((float)(rectCell.Width * scale), (float)Math.Round(rectCell.Height * scale),
+                        scale);
+                }
 
                 if (cell.IsColumnSpanStar && cell.ColumnSpan > 1)
                 {
@@ -839,6 +891,17 @@ public partial class SkiaLayout
                 {
                     var span = new GridSpan(cell.Row, cell.RowSpan, false, measure.Height);
                     TrackSpan(span);
+                }
+            }
+
+            if (autoRowGrew)
+            {
+                // star rows were resolved against the smaller Auto rows: give them what is left now, nothing
+                // when the Auto rows took it all
+                ZeroOutStarSizes(Rows);
+                if (_gridHeightConstraint - GridHeight() > 0)
+                {
+                    ResolveStarRows(_gridHeightConstraint);
                 }
             }
         }
