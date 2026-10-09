@@ -80,7 +80,7 @@ public partial class SkiaLayout
     {
         var constraints = GetSizeInPoints(rectForChildrenPixels.Size, scale);
 
-        BuildGridLayout(constraints);
+        BuildGridLayout(constraints, scale);
 
         GridStructureMeasured.DecompressStars(constraints);
 
@@ -219,7 +219,16 @@ public partial class SkiaLayout
 
     protected void BuildGridLayout(SKSize constraints)
     {
-        GridStructureMeasured = new SkiaGridStructure(this, constraints.Width, constraints.Height);
+        BuildGridLayout(constraints, RenderingScale);
+    }
+
+    /// <summary>
+    /// Builds the measured grid structure with the scale the grid is being measured with,
+    /// so cells are measured with it even before they got a RenderingScale of their own.
+    /// </summary>
+    protected void BuildGridLayout(SKSize constraints, float scale)
+    {
+        GridStructureMeasured = new SkiaGridStructure(this, constraints.Width, constraints.Height, scale);
     }
 
     public SkiaGridStructure GridStructure;

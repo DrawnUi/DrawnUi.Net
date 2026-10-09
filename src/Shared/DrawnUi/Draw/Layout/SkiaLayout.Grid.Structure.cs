@@ -48,9 +48,22 @@ public partial class SkiaLayout
         private DefinitionInfo[] _rows;
         private DefinitionInfo[] _columns;
 
+        /// <summary>
+        /// Rendering scale the grid was measured with. Every cell is measured with it, never with the
+        /// child's own RenderingScale: a child measured for the first time has none yet and would fall
+        /// back to the global screen density, which is 0 in a headless process.
+        /// </summary>
+        readonly float _scale;
+
         public SkiaGridStructure(ISkiaGridLayout parentGrid, double widthConstraint, double heightConstraint)
+            : this(parentGrid, widthConstraint, heightConstraint, (float)parentGrid.RenderingScale)
+        {
+        }
+
+        public SkiaGridStructure(ISkiaGridLayout parentGrid, double widthConstraint, double heightConstraint, float scale)
         {
             _parentGrid = parentGrid;
+            _scale = scale > 0 ? scale : (float)parentGrid.RenderingScale;
 
             //ported from Xamarin Grid and heavily modified
 
@@ -442,7 +455,7 @@ public partial class SkiaLayout
                     height = Math.Max(height, AvailableHeight(cell));
                 }
 
-                var scale = (float)control.RenderingScale;
+                var scale = _scale;
                 var measured = control.Measure((float)(rectCell.Width * scale), (float)Math.Round(height * scale), scale);
 
                 if (cell.ColumnSpan == 1 && Columns[cell.Column].IsAuto && measured.Units.Width > Columns[cell.Column].Size)
@@ -496,7 +509,7 @@ public partial class SkiaLayout
             //if (availableWidth > 0 && availableHeight > 0)
             {
                 var control = _childrenToLayOut[cell.ViewIndex];
-                var scale = (float)control.RenderingScale;
+                var scale = _scale;
 
                 var width = availableWidth * scale;
                 if (width < 0)
@@ -617,7 +630,7 @@ public partial class SkiaLayout
                 if (skiaChild == null)
                     continue;
 
-                var scale = (float)child.RenderingScale;
+                var scale = _scale;
 
                 // Check horizontal Fill children for MinimumWidthRequest
                 if (skiaChild.NeedFillX && skiaChild.MinimumWidthRequest >= 0)
@@ -855,7 +868,7 @@ public partial class SkiaLayout
                 var rectCell = GetCellBoundsFor(control, 0, 0);
                 var measure = rectCell;
 
-                var scale = (float)control.RenderingScale;
+                var scale = _scale;
 
                 if (control.IsVisible && SizesAutoRow(cell, control))
                 {
