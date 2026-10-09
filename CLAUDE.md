@@ -20,6 +20,7 @@ Skills live in-repo at `docs/skills/<name>/SKILL.md` and are published to `https
 | Games (DrawnGame, sprites, pooling, WASM startup) | + `drawnui-game` |
 | Blazor head apps, font subsetting, GitHub Pages publishing | + `drawnui-blazor` |
 | Pure-WASM DrawnUi.Web apps, WASM runtime bug hunting | + `drawnui-web-app` |
+| Rendering a layout to PDF / image, report templates, page splitting | + `drawnui-pdf` |
 | OpenTK desktop apps, GL overlays, window chrome | + `drawnui-opentk` |
 | Headless testing/repros (no device/GPU) | + `drawnui-net-harness` |
 | SkiaSharp SKMesh / SkSL mesh drawing | + `skmech` |
