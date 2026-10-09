@@ -53,7 +53,7 @@ Put in shared: scenes, controls, game logic, view models, the `Canvas`/scene fac
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DrawnUi.Web" Version="1.10.7.4" />
+    <PackageReference Include="DrawnUi.Web" Version="1.10.7.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.148.0" />
