@@ -59,7 +59,7 @@ npm i drawnui-react@preview react react-dom
 
 **For Rust (desktop, mobile, browser):**
 ```bash
-cargo add drawnui@0.1.0-preview.4
+cargo add drawnui
 ```
 
 **Initialize in MauiProgram.cs when using MAUI:**
