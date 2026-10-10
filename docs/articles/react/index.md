@@ -11,7 +11,7 @@ It is early and under active development. The package is published under the `pr
 ## Install
 
 ```bash
-npm i drawnui-react@preview react react-dom
+npm i drawnui-react react react-dom
 ```
 
 `drawnui-react` gives you the React tags plus the engine types, `drawnui-react/core` the engine alone. CanvasKit's `.wasm` is referenced with a `?url` import, so a bundler that understands it (Vite) is required.

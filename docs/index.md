@@ -333,7 +333,7 @@ dotnet add package DrawnUi.Blazor.Server</code></pre>
   <h3 style="margin-top: 0; color: white;">React</h3>
   <p>Use <strong>drawnui-react</strong> to draw on a canvas inside a React app in the browser, the same engine in TypeScript on CanvasKit.</p>
   <p><strong>Install:</strong></p>
-  <pre style="white-space: pre-wrap;"><code>npm i drawnui-react@preview react react-dom</code></pre>
+  <pre style="white-space: pre-wrap;"><code>npm i drawnui-react react react-dom</code></pre>
   <p><a href="articles/react/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">React guide →</a></p>
 </div>
 

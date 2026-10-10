@@ -54,7 +54,7 @@ dotnet add package DrawnUi.Net
 
 **For React (browser):**
 ```bash
-npm i drawnui-react@preview react react-dom
+npm i drawnui-react react react-dom
 ```
 
 **For Rust (desktop, mobile, browser):**

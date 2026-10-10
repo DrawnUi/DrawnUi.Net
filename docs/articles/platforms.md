@@ -162,7 +162,7 @@ Start here:
 Install:
 
 ```bash
-npm i drawnui-react@preview react react-dom
+npm i drawnui-react react react-dom
 ```
 
 Choose `drawnui-react` for a React app in the browser: React composes the control tree, the engine measures, arranges and draws it on a CanvasKit canvas. Same control names and properties as on .NET.
