@@ -62,6 +62,10 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
+## What's New 1.10.7.6
+
+  * **Fix: on iOS 26 every tap was also a mouse right click.** The gestures library's right-click recognizer fired on every plain finger tap, so each tap also sent `Pointer` events typed `Mouse`; a mouse context menu or hover effect could react to every tap. With AppoMobi.Gestures 3.11.6 a finger tap is only a tap, and hover comes only from a mouse or an Apple Pencil.
+
 ## What's New 1.10.7.5
 
 **Hotfix for iOS and Mac Catalyst.** Versions 1.10.7.1 to 1.10.7.4 crash on Apple platforms: update if you ship to iOS or Mac Catalyst.
