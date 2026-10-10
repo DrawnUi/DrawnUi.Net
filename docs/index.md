@@ -342,7 +342,7 @@ dotnet add package DrawnUi.Blazor.Server</code></pre>
   <h3 style="margin-top: 0; color: white;">Rust</h3>
   <p>Use the <strong>drawnui</strong> crate to build one Rust app for Windows, macOS, Linux, iOS, Android and the browser.</p>
   <p><strong>Install:</strong></p>
-  <pre style="white-space: pre-wrap;"><code>cargo add drawnui@0.1.0-preview.4</code></pre>
+  <pre style="white-space: pre-wrap;"><code>cargo add drawnui</code></pre>
   <p><a href="articles/rust/index.md" style="color: #63b3ed; font-weight: 600; text-decoration: none;">Rust guide →</a></p>
 </div>
 

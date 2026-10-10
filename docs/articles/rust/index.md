@@ -12,12 +12,18 @@ It is early and under active development. The crate is published as a preview (`
 
 ## Install
 
-In your `Cargo.toml`:
+```bash
+cargo add drawnui
+```
+
+It takes the newest preview. Or by hand, in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-drawnui = "0.1.0-preview.4"
+drawnui = "0.1.0-preview"
 ```
+
+`"0.1.0-preview"` is the newest 0.1.0 preview; `cargo update` moves a project to a newer one.
 
 That is the only dependency. The first build downloads Skia prebuilt for your platform from [DrawnUi/rust-skia's releases](https://github.com/DrawnUi/rust-skia/releases), so there is nothing else to install for the desktop. Use Skia's own API through `drawnui::skia`, and do not add `skia-safe` to the app: a program links one Skia.
 

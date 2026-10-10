@@ -176,7 +176,7 @@ Start here:
 Install:
 
 ```bash
-cargo add drawnui@0.1.0-preview.4
+cargo add drawnui
 ```
 
 Choose the `drawnui` crate when your app is written in Rust: one source for Windows, macOS, Linux, iOS, Android and the browser, Skia downloaded prebuilt.
