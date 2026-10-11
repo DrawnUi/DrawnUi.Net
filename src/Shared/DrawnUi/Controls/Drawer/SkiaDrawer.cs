@@ -158,6 +158,7 @@ namespace DrawnUi.Controls
             StateTransitionComplete = null;
             IsOpenChanged = null;
             Stopped = null;
+            ClosingStarted = null;
 
             Content?.Dispose();
         }
@@ -173,6 +174,13 @@ namespace DrawnUi.Controls
 
         public event EventHandler<bool> IsOpenChanged;
         public event EventHandler<Vector2> Stopped;
+
+        /// <summary>
+        /// Raised when the drawer starts moving from an open snap to the closed one, whatever started it:
+        /// a released swipe, IsOpen = false or Close(). After a swipe IsOpen changes only when the move ends,
+        /// so the shell uses this to take a modal out of its stack at once, as PopModalAsync does.
+        /// </summary>
+        internal event EventHandler ClosingStarted;
 
         #endregion
 
@@ -557,7 +565,24 @@ namespace DrawnUi.Controls
             }
 
             //Debug.WriteLine($"[SkiaDrawer] SetIsOpen: open {isOpen} moving {InTransition}");
+            _headingOpen = isOpen;
             IsOpen = isOpen;
+        }
+
+        // the state of the snap the drawer was last sent to; IsOpen catches up with it when the move ends
+        bool _headingOpen;
+
+        protected override bool ScrollToOffset(Vector2 targetOffset, Vector2 velocity, bool animate)
+        {
+            var wasHeadingOpen = _headingOpen;
+            if (!base.ScrollToOffset(targetOffset, velocity, animate))
+                return false;
+
+            _headingOpen = SnapPoints.Count < 2 || targetOffset != SnapPoints[1];
+            if (wasHeadingOpen && !_headingOpen)
+                ClosingStarted?.Invoke(this, EventArgs.Empty);
+
+            return true;
         }
 
         public override void UpdateReportedPosition()

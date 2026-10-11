@@ -812,6 +812,7 @@ namespace DrawnUi.Controls
 
                                 _pushModalWasOpen = false;
                                 drawer.StateTransitionComplete += OnModalDrawerStateTransitionComplete;
+                                drawer.ClosingStarted += OnModalDrawerClosingStarted;
 
                                 control.IsOpen = true;
 
@@ -880,6 +881,10 @@ namespace DrawnUi.Controls
             {
                 //animated to closed
                 _pushModalWasOpen = false;
+                if (control.Parent is ModalWrapper wrapper)
+                {
+                    LeaveModalStack(wrapper); // released right at the closed snap: no move, no ClosingStarted
+                }
                 await RemoveModal(control.Parent as SkiaControl, true);
 
                 //OnNavigated(new(control, CurrentRouteAuto, NavigationSource.Pop));
@@ -904,6 +909,37 @@ namespace DrawnUi.Controls
             {
                 FinalizeTransition(control);
             }
+        }
+
+        void OnModalDrawerClosingStarted(object sender, EventArgs e)
+        {
+            if (sender is SkiaDrawer control && control.Parent is ModalWrapper wrapper)
+            {
+                LeaveModalStack(wrapper);
+            }
+        }
+
+        /// <summary>
+        /// A modal leaves NavigationStackModals as soon as its drawer starts closing, whatever closed it
+        /// (PopModalAsync, a swipe, IsOpen = false), and reports the pop. The slide-out then only finishes:
+        /// the drawer stops taking pans, so it cannot be dragged back open outside the stack. RemoveModal
+        /// clears the rest when the slide ends. Returns false when the modal had already left.
+        /// </summary>
+        bool LeaveModalStack(ModalWrapper wrapper)
+        {
+            var inStack = NavigationStackModals.FirstOrDefault(x => x.Page == wrapper);
+            if (inStack == null)
+                return false;
+
+            if (wrapper.Drawer != null)
+            {
+                wrapper.Drawer.RespondsToGestures = false;
+            }
+
+            NavigationStackModals.Remove(inStack);
+            OnModalStackChanged(NavigationStackModals.Count);
+            OnNavigated(new(wrapper.Drawer?.Content, CurrentRouteAuto, NavigationSource.Pop));
+            return true;
         }
 
         protected void SetCurrentRouteNodes(List<ShellStackChild> children)
@@ -1074,6 +1110,7 @@ namespace DrawnUi.Controls
                             try
                             {
                                 modalWrapper.Drawer.StateTransitionComplete -= OnModalDrawerStateTransitionComplete;
+                                modalWrapper.Drawer.ClosingStarted -= OnModalDrawerClosingStarted;
                                 if (removed is IVisibilityAware aware)
                                 {
                                     aware.OnDisappearing();
@@ -1143,14 +1180,14 @@ namespace DrawnUi.Controls
 
                         return modal;
                     }
-                    else
+                    // closing the drawer above usually took it out already (LeaveModalStack)
+                    if (NavigationStackModals.Remove(inStack))
                     {
-                        NavigationStackModals.Remove(inStack);
                         OnModalStackChanged(NavigationStackModals.Count);
-                    }
 
-                    //RootLayout?.Update();
-                    OnNavigated(new(removed, CurrentRouteAuto, NavigationSource.Pop));
+                        //RootLayout?.Update();
+                        OnNavigated(new(removed, CurrentRouteAuto, NavigationSource.Pop));
+                    }
 
                     return removed;
                 }
