@@ -485,6 +485,16 @@ namespace DrawnUi.Controls
             if (Parent == null)
                 return;
 
+            if (MeasuredSize.Pixels.Width <= 0 || MeasuredSize.Pixels.Height <= 0)
+            {
+                // not measured yet (opened in the tick it became visible): snap points from a zero size are both
+                // zero, SetIsOpen reads that as closed and flips IsOpen back. Keep IsOpen and forget the viewport,
+                // so MaybeInit builds the snap points on the first paint with a size.
+                Viewport = SKRect.Empty;
+                _lastViewport = SKRect.Empty;
+                return;
+            }
+
             Viewport = Parent.DrawingRect;
 
             var hideContent = GetOffsetToHide();
