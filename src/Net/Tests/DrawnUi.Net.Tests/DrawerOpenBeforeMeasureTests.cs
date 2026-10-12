@@ -68,4 +68,56 @@ public class DrawerOpenBeforeMeasureTests
         else
             Assert.Equal(400, drawer.TranslationX, 1);
     }
+
+    /// <summary>The FiltersCamera Adjust sheet: a fixed-height bottom drawer with margins over an Absolute layout.</summary>
+    [Fact]
+    public void FixedHeightBottomSheet_OpenedInTheTickItBecomesVisible_StaysOpen_ThenCloses()
+    {
+        using var host = new HeadlessCanvasHost(485, 693, scale: 1.25f, background: Colors.Black);
+        SkiaDrawer drawer = null;
+        var closed = false;
+        host.Canvas.Content = new SkiaLayout
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new SkiaDrawer
+                {
+                    ZIndex = 55,
+                    IsVisible = false,
+                    Direction = DrawerDirection.FromBottom,
+                    IsClippedToBounds = true,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.End,
+                    HeightRequest = 258,
+                    Margin = new Thickness(12, 0, 12, 108),
+                    Content = new SkiaShape
+                    {
+                        UseCache = SkiaCacheType.Image,
+                        BackgroundColor = Colors.Gray,
+                        HorizontalOptions = LayoutOptions.Fill,
+                        VerticalOptions = LayoutOptions.End,
+                        HeightRequest = 258,
+                    },
+                }.Assign(out drawer)
+            }
+        };
+        drawer.StateTransitionComplete += (_, isOpen) => closed |= !isOpen;
+        host.AdvanceFrames(10);
+
+        drawer.IsVisible = true;
+        drawer.IsOpen = true;
+        host.AdvanceFrames(60);
+
+        Assert.True(drawer.IsOpen, "IsOpen flipped back to false");
+        Assert.Equal(0, drawer.TranslationY, 1);
+
+        drawer.IsOpen = false;
+        host.AdvanceFrames(90);
+
+        Assert.False(drawer.IsOpen);
+        Assert.True(drawer.TranslationY >= 258, $"not slid out: {drawer.TranslationY}"); // its measured size includes the margin
+        Assert.True(closed, "StateTransitionComplete(false) never came");
+    }
 }
