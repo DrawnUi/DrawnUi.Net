@@ -95,6 +95,7 @@ using (var document = SKDocument.CreatePdf(stream, new SKDocumentPdfMetadata
         {
             canvas.Scale(72f / Dpi);
             canvas.Clear(SKColors.White);
+            canvas.ClipRect(SKRect.Create(0, 0, paper.Width, margins + page.Height)); // page ends at the split, not at the paper edge
             var ctx = new SkiaDrawingContext { Canvas = canvas, Width = paper.Width, Height = paper.Height };
             wrapper.Render(new DrawingContext(ctx, new SKRect(0, 0, paper.Width, paper.Height), scale));
         }
@@ -171,12 +172,15 @@ using var image = surface.Snapshot();
 using var encoded = image.Encode(SKEncodedImageFormat.Jpeg, 90);
 ```
 
-## Preview window with hot reload (Windows / Mac Catalyst)
+## Preview window with hot reload (Windows)
+
+Mac Catalyst: `Application.OpenWindow` needs `UIApplicationSceneManifest` with `UIApplicationSupportsMultipleScenes` in Info.plist, and with that manifest a DrawnUI MAUI 10.0.80 app comes up with an empty main window (observed 2026-10-13, cause not found yet). Keep the preview window Windows-only until that is understood.
 
 Open a second `Window` with a `BasePageReloadable` page holding `Canvas > SkiaScroll > factory()`. The factory builds a fresh template on every hot reload, the window is sized to the paper proportions (`inches * Dpi * 0.75` fits most screens). Position it next to the main window with `Application.Current.Windows[0].X + Width + 20`, open with `Application.Current.OpenWindow(window)`.
 
 ## Pitfalls
 
+- Clip every page to `margins + page.Height`: the scroll viewport is a full paper tall, so without the clip the top of the next row shows at the bottom of the page and repeats whole on the next one.
 - `SKDocument.BeginPage` takes POINTS (72 per inch). Passing the dpi pixel size makes an "A4" 2.08x too large; viewers fit it to the window so it looks right until printed. Open the page in points and `canvas.Scale(72f / dpi)`.
 - A PDF canvas records every pass. Warm up into `SKPictureRecorder`, render once into the page.
 - `SplitStackToPages` reads `RenderTree`, which holds only the rows that were drawn: render at unlimited height first, not through a page-sized scroll.
