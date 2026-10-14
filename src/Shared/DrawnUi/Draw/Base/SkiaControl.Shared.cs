@@ -9947,30 +9947,28 @@ namespace DrawnUi.Draw
         private SKRect _drawingRect;
 
         /// <summary>
-        /// Rounds SKRect coordinates to nearest pixel values
+        /// Rounds SKRect coordinates to nearest pixel values, a half pixel up on every edge, so a rect at a
+        /// half-pixel offset keeps its whole-pixel width. Math.Round rounds a half to the even pixel: 17.5 to 94.5
+        /// became 18 to 94 and a label arranged there lost the pixel its last glyph needed.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static SKRect RoundToPixels(SKRect rect)
         {
-            return new SKRect(
-                (float)Math.Round(rect.Left),
-                (float)Math.Round(rect.Top),
-                (float)Math.Round(rect.Right),
-                (float)Math.Round(rect.Bottom)
-            );
+            return RoundToPixels(rect.Left, rect.Top, rect.Right, rect.Bottom);
         }
 
         /// <summary>
-        /// Rounds SKRect coordinates to nearest pixel values
+        /// Rounds SKRect coordinates to nearest pixel values, a half pixel up on every edge
+        /// (see <see cref="RoundToPixels(SKRect)"/>).
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static SKRect RoundToPixels(float left, float top, float right, float bottom)
         {
             return new SKRect(
-                (float)Math.Round(left),
-                (float)Math.Round(top),
-                (float)Math.Round(right),
-                (float)Math.Round(bottom)
+                MathF.Floor(left + 0.5f),
+                MathF.Floor(top + 0.5f),
+                MathF.Floor(right + 0.5f),
+                MathF.Floor(bottom + 0.5f)
             );
         }
 
