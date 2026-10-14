@@ -140,6 +140,73 @@ public class ShellModalPopTests
         Assert.False(topInStack);
     }
 
+    /// <summary>Closing a freezing modal shows what its freeze hid: the freezing modal below and every modal above it.</summary>
+    [Fact]
+    public async Task FreezeEnds_NonFreezingModalAboveRemainingFreeze_IsShownAndTakesInput()
+    {
+        var shell = CreateShell();
+        var a = await Push(shell);
+        var b = await Push(shell, freezes: false);
+        var c = await Push(shell);
+        Assert.False(b.Wrapper.IsVisibleInViewTree());
+
+        await SlideOutEnded(shell, c);
+
+        Assert.True(a.Wrapper.IsVisibleInViewTree());
+        Assert.True(b.Wrapper.IsVisibleInViewTree());
+        Assert.False(b.Wrapper.InputTransparent);
+        Assert.True(a.Wrapper.InputTransparent);
+        Assert.False(shell.RootLayout.IsVisible); // a still freezes
+    }
+
+    [Fact]
+    public async Task LastFreezeEnds_NonFreezingModalBelow_IsShown()
+    {
+        var shell = CreateShell();
+        var a = await Push(shell, freezes: false);
+        var c = await Push(shell);
+        Assert.False(a.Wrapper.IsVisibleInViewTree());
+
+        await SlideOutEnded(shell, c);
+
+        Assert.True(a.Wrapper.IsVisibleInViewTree());
+        Assert.False(a.Wrapper.InputTransparent);
+        Assert.True(shell.RootLayout.IsVisible);
+    }
+
+    [Fact]
+    public async Task FreezeEnds_FreezingModalBelow_IsShown()
+    {
+        var shell = CreateShell();
+        var a = await Push(shell);
+        var b = await Push(shell);
+
+        await SlideOutEnded(shell, b);
+
+        Assert.True(a.Wrapper.IsVisibleInViewTree());
+        Assert.False(a.Wrapper.InputTransparent);
+        Assert.False(shell.RootLayout.IsVisible); // a still freezes
+    }
+
+    /// <summary>The hidden modal popped while the top one is still closing: open popups are left alone.</summary>
+    [Fact]
+    public async Task HiddenPopWhileTopCloses_PopupsStayVisible()
+    {
+        var shell = CreateShell();
+        var lower = await Push(shell);
+        var top = await Push(shell);
+        var popup = new SkiaLayout();
+        shell.Popups.NavigationStack.Add(popup);
+
+        Task<BindableObject> popBelow = null;
+        top.Content.Disappearing = () => popBelow = shell.PopModalAsync(lower.InStack, true);
+        await SlideOutEnded(shell, top);
+        await popBelow;
+
+        Assert.True(popup.IsVisible);
+        Assert.False(popup.InputTransparent);
+    }
+
     [Fact]
     public async Task PopOnEmptyStack_ReturnsNull()
     {

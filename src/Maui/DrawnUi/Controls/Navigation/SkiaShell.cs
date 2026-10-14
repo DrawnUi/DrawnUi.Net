@@ -1308,9 +1308,15 @@ namespace DrawnUi.Controls
                 {
                     FreezingModals.Remove(control);
                     var topmost = FreezingModals.LastOrDefault();
-                    if (topmost != null)
+                    if (topmost == null)
                     {
-                        await SetupModalsVisibility(topmost);
+                        ShowModalsFrom(null); // no freeze left: every modal again
+                    }
+                    else
+                    {
+                        // what this freeze hid: the freezing modal below and every modal above it
+                        if (!ShowModalsFrom(topmost) && Popups.NavigationStack.Contains(topmost))
+                            await SetupModalsVisibility(topmost); // a freezing popup
                         FrozenLayers.TryGetValue(topmost, out var frozen);
                         if (frozen != null)
                         {
@@ -1422,6 +1428,31 @@ namespace DrawnUi.Controls
             {
                 UnlockLayers();
             }
+        }
+
+        /// <summary>
+        /// After a freeze ended: shows <paramref name="lowest"/> and every modal above it in the stack and hides the
+        /// ones below, which the remaining freeze still covers. Null shows every modal. Only the top modal takes
+        /// input. Returns false when <paramref name="lowest"/> is not in the stack (a modal already closing, which
+        /// still covers them all, or a popup): every modal stays hidden then.
+        /// </summary>
+        protected bool ShowModalsFrom(SkiaControl lowest)
+        {
+            var shown = lowest == null;
+            var found = shown;
+            var top = NavigationStackModals.Last?.Value?.Page;
+            foreach (var modal in NavigationStackModals)
+            {
+                if (modal.Page is SkiaControl skia)
+                {
+                    if (skia == lowest)
+                        shown = found = true;
+                    skia.IsVisible = shown;
+                    skia.InputTransparent = !shown || skia != top;
+                }
+            }
+
+            return found;
         }
 
         public virtual async Task<bool> SetupModalsVisibility(SkiaControl control)
