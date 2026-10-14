@@ -127,6 +127,7 @@ namespace DrawnUi.Draw
             {
                 Control.Delegate = null;
                 Control.DetachedFromWindow = null;
+                Control.LostFirstResponder = null;
                 // CanResignFirstResponder is false while IsFocused: clear it or the resign is refused
                 // and the removed view keeps the keyboard up forever.
                 Control.IsFocused = false;
@@ -184,6 +185,14 @@ namespace DrawnUi.Draw
                     IsFocused = false;
             };
 
+            // The sink lost first responder (another editor or a native entry took the keyboard): the drawn
+            // editor drops its focus too, so only one caret blinks. Android does this in its focus listener.
+            Control.LostFirstResponder = () =>
+            {
+                if (IsFocused)
+                    IsFocused = false;
+            };
+
             _layout.AddSubview(Control);
         }
 
@@ -223,6 +232,11 @@ namespace DrawnUi.Draw
 
                     ApplyKeyboardType();
 
+                    // A sink of another editor (another Canvas) refuses to resign while its flag is set, which made
+                    // BecomeFirstResponder fail here: the keyboard stayed on the old field and both carets blinked.
+                    // Same as Android, focus moves to the input that asks for it.
+                    NativeEntryView.ReleaseCurrent(Control);
+
                     Control.IsFocused = true;
                     Control.BecomeFirstResponder();
                 }
@@ -231,7 +245,9 @@ namespace DrawnUi.Draw
                     if (Control != null)
                     {
                         Control.IsFocused = false;
-                        Control.ResignFirstResponder();
+                        // the keyboard already belongs to the input that took first responder: leave it up
+                        if (Control.IsFirstResponder)
+                            Control.ResignFirstResponder();
                     }
                 }
             }
@@ -331,13 +347,73 @@ namespace DrawnUi.Draw
             return uniqueId;
         }
 
+        /// <summary>
+        /// True when a text input that is not inside <paramref name="view"/> holds the keyboard
+        /// (an editor in another Canvas or a native entry): that keyboard is not this view's to close.
+        /// </summary>
+        public static bool TextInputHoldsKeyboardOutside(UIView view)
+        {
+            var responder = FindFirstResponder(view?.Window);
+            if (responder is not (UITextView or UITextField))
+                return false;
+            return view == null || !responder.IsDescendantOfView(view);
+        }
+
+        static UIView FindFirstResponder(UIView root)
+        {
+            if (root == null)
+                return null;
+            if (root.IsFirstResponder)
+                return root;
+            foreach (var sub in root.Subviews)
+            {
+                var found = FindFirstResponder(sub);
+                if (found != null)
+                    return found;
+            }
+            return null;
+        }
+
         public class NativeEntryView : UITextView
         {
             public bool IsFocused { get; set; }
 
             public override bool CanResignFirstResponder => !IsFocused;
 
+            public override bool ResignFirstResponder()
+            {
+                var wasFirstResponder = IsFirstResponder;
+                var r = base.ResignFirstResponder();
+                if (wasFirstResponder && !IsFirstResponder)
+                {
+                    IsFocused = false;
+                    LostFirstResponder?.Invoke();
+                }
+                return r;
+            }
+
             public Action DetachedFromWindow { get; set; }
+
+            public Action LostFirstResponder { get; set; }
+
+            static WeakReference<NativeEntryView> _current;
+
+            /// <summary>
+            /// Lets the sink currently holding the keyboard give it up to <paramref name="next"/>.
+            /// </summary>
+            public static void ReleaseCurrent(NativeEntryView next)
+            {
+                if (_current != null && _current.TryGetTarget(out var current) && current != next && current.IsFirstResponder)
+                    current.IsFocused = false;
+            }
+
+            public override bool BecomeFirstResponder()
+            {
+                var ok = base.BecomeFirstResponder();
+                if (ok)
+                    _current = new WeakReference<NativeEntryView>(this);
+                return ok;
+            }
 
             public override void WillMoveToWindow(UIWindow window)
             {
