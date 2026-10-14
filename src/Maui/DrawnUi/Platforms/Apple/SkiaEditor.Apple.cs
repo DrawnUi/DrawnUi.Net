@@ -34,8 +34,7 @@ namespace DrawnUi.Draw
                 // _updatingText, so SyncNativeText skipped and the native view kept the old text. Make it follow Text.
                 // Same contract as Android: the caret keeps its distance from the end of the text, so it stays where
                 // the user typed whether the handler dropped characters (input filter, max length) or rewrote the
-                // text ("0" then 5 typed becomes "5"). The caret after the edit comes from ShouldChangeText,
-                // SelectedRange is not reliable yet inside textViewDidChange.
+                // text ("0" then 5 typed becomes "5"). The caret after the edit comes from ShouldChangeText.
                 var text = _editor.Text ?? string.Empty;
                 if (nativeText != text)
                 {
@@ -48,8 +47,13 @@ namespace DrawnUi.Draw
                         textView.SelectedRange = new NSRange(caret, 0);
                     }
                     finally { _editor._updatingText = false; }
-                    _editor.SetCursorPositionWithDelay(50, caret);
+                    _editor.SetCursorFromNative(caret, 0);
+                    return;
                 }
+
+                // UIKit applied the text and the selection: the drawn caret takes it now, no delay
+                var range = textView.SelectedRange;
+                _editor.SetCursorFromNative((int)range.Location, (int)range.Length);
             }
 
             public override void SelectionChanged(UITextView textView)
@@ -60,12 +64,14 @@ namespace DrawnUi.Draw
                     return;
                 }
 
-                var range = textView.SelectedRange;
-                var location = (int)range.Location;
-                var length = (int)range.Length;
+                // our own writes to the sink (text sync, rewrite resync) are not the user's
+                if (_editor._updatingText)
+                    return;
 
-                _editor.SelectionLength = length;
-                _editor.SetCursorPositionWithDelay(50, location + length);
+                // a selection change alone (IME, autocorrect, hardware arrows) moves the caret too, at once;
+                // while typing it comes before Changed, the caret is placed once the label drew the new text
+                var range = textView.SelectedRange;
+                _editor.SetCursorFromNative((int)range.Location, (int)range.Length);
             }
 
             public override bool ShouldChangeText(UITextView textView, NSRange range, string text)
@@ -317,29 +323,6 @@ namespace DrawnUi.Draw
             if (Control.IsFirstResponder)
                 Control.ReloadInputViews();
         }
-
-        private CancellationTokenSource? _deferCts;
-
-        private async void DeferVisualCursorUpdate()
-        {
-            _deferCts?.Cancel();
-            _deferCts = new CancellationTokenSource();
-            var token = _deferCts.Token;
-            try
-            {
-                await Task.Delay(50, token);
-                _suppressImmediateCursorMove = false;
-                MoveInternalCursor();
-            }
-            catch (OperationCanceledException)
-            {
-                _suppressImmediateCursorMove = false;
-            }
-        }
-
-        partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
-
-        partial void OnTextInsertedAtCursor() => DeferVisualCursorUpdate();
 
         public int GenerateUniqueId()
         {

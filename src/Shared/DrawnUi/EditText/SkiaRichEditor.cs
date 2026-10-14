@@ -251,7 +251,7 @@ public class SkiaRichEditor : SkiaEditor
 
         richLabel.SetSpans(BuildSpans());
 
-        UpdateCursorVisibility();
+        InvalidateCaret();
         Invalidate();
     }
 

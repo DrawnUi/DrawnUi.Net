@@ -104,7 +104,7 @@ namespace DrawnUi.Draw
             if (ReferenceEquals(oldLabel, newLabel))
                 return;
 
-            Label = newLabel;
+            SetLabel(newLabel);
             _selectionControl.SourceLabel = Label;
 
             _contentLayer.ClearChildren();
@@ -170,7 +170,7 @@ namespace DrawnUi.Draw
             }
 
             UpdateCursorStyle();
-            UpdateCursorVisibility();
+            InvalidateCaret();
 
             UpdatePlaceholder();
             UpdateViewportHeight();
@@ -367,7 +367,7 @@ namespace DrawnUi.Draw
         {
             ApplyControlStyleVisuals();
 
-            Label = CreateLabel();
+            SetLabel(CreateLabel());
 
             _placeholderLabel = CreatePlaceholderLabel();
 
@@ -417,6 +417,49 @@ namespace DrawnUi.Draw
         public SkiaLabel Label { get; protected set; }
 
         public SkiaCursor Cursor { get; protected set; }
+
+        void SetLabel(SkiaLabel label)
+        {
+            if (Label != null)
+                Label.Rendered -= OnLabelRendered;
+            Label = label;
+            if (Label != null)
+                Label.Rendered += OnLabelRendered;
+        }
+
+        volatile bool _caretDirty;
+        object _caretLines;
+
+        /// <summary>
+        /// The caret is placed again in the next frame, right after the label drew the current text
+        /// (see <see cref="OnLabelRendered"/>). Call after the caret index, the selection or the text changed.
+        /// </summary>
+        protected void InvalidateCaret()
+        {
+            _caretDirty = true;
+            // from the layer holding the label and the caret: the scroll would blit its cached content otherwise
+            if (_contentLayer != null)
+                _contentLayer.Update();
+            else
+                Update();
+        }
+
+        /// <summary>
+        /// The label drew its lines in this frame, before the selection and the caret draw: place the caret now, so
+        /// its pixels always come from the glyphs on screen, never from lines of a text not laid out yet (a typed
+        /// character drawn first and the caret moving after it a moment later). Runs only after a change or when
+        /// the label laid out new lines; otherwise a reference check.
+        /// </summary>
+        void OnLabelRendered(object sender, EventArgs e)
+        {
+            var lines = Label?.Lines;
+            if (!_caretDirty && ReferenceEquals(lines, _caretLines))
+                return;
+
+            _caretDirty = false;
+            _caretLines = lines;
+            UpdateCursorVisibility();
+        }
 
         #endregion
 
@@ -969,19 +1012,11 @@ namespace DrawnUi.Draw
 
 
         /// <summary>
-        /// Sets native control cursor position to CursorPosition (and selection end if active) and calls UpdateCursorVisibility.
+        /// Sets native control cursor position to CursorPosition (and selection end if active) and places the drawn
+        /// caret in the next frame.
         /// </summary>
-        /// <summary>
-        /// Set to true to suppress the immediate MoveInternalCursor() triggered
-        /// by CursorPosition property change while a deferred post-measure update is pending.
-        /// </summary>
-        protected bool _suppressImmediateCursorMove;
-
         protected void MoveInternalCursor()
         {
-            if (_suppressImmediateCursorMove)
-                return;
-
             if (!_cursorFromNative)
             {
                 if (SelectionLength > 0)
@@ -990,13 +1025,12 @@ namespace DrawnUi.Draw
                     SetCursorPositionNative(CursorPosition);
             }
 
-            UpdateCursorVisibility();
+            InvalidateCaret();
         }
 
         /// <summary>
         /// True while <see cref="CursorPosition"/> is being set from the native control's own caret
-        /// (see SetCursorPositionWithDelay): the native caret is the source then and must not be moved back.
-        /// Per thread, the timer callback runs on a worker thread.
+        /// (see <see cref="SetCursorFromNative"/>): the native caret is the source then and must not be moved back.
         /// </summary>
         [ThreadStatic]
         static bool _cursorFromNative;
@@ -1021,10 +1055,9 @@ namespace DrawnUi.Draw
                 if (Label != null && Cursor != null)
                 {
 
-                    // Clamp to text length — CursorPosition can be stale (16 ms delay on Windows,
-                    // 50 ms on Android) while text has already shrunk via native TextBox events.
-                    // Without clamping, the glyph loop exits without calling MoveCursorTo and the
-                    // cursor stays at its previous pixel position indefinitely.
+                    // Clamp to text length: CursorPosition and Text come from separate native events and
+                    // may disagree for an instant. Without clamping, the glyph loop exits without calling
+                    // MoveCursorTo and the cursor stays at its previous pixel position indefinitely.
                     var textLen = Text?.Length ?? 0;
                     var cursorIndex = SelectionLength > 0
                         ? Math.Min(CursorPosition + SelectionLength, textLen)
@@ -1070,11 +1103,8 @@ namespace DrawnUi.Draw
 #if !BROWSER
                         else
                         {
-                            // On Blazor, Lines are populated during the render pass which happens
-                            // after property-change handlers. Hiding cursor here would cause a
-                            // 1-frame invisible flicker every keystroke; defer instead (see DeferVisualCursorUpdate).
-                            // Text was just changed and label hasn't re-measured yet — hide
-                            // cursor briefly; it will be repositioned by the delayed position update.
+                            // The label has not laid out this text yet: hide the cursor, it is placed
+                            // when the label draws new lines (OnLabelRendered).
                             SetCursorVisible(false);
                         }
 #endif
@@ -1215,18 +1245,12 @@ namespace DrawnUi.Draw
 
             Cursor.Left = x;
             Cursor.Top = y;
-            // BindableProperty skips propertyChanged when value equals the default (0.0).
-            // At cursor position 0 both Left and Top are 0, so NeedRepaint never fires.
-            // Force a repaint so the cursor always redraws at the new position.
+            // Placed after a change (index, selection, text): visible, the blink starts over. Also when not moved,
+            // e.g. a forward delete or at position 0, where BindableProperty skips propertyChanged for the
+            // default (0.0) and NeedRepaint never fires.
+            Cursor.OnMoved();
             if (moved)
-            {
-                Cursor.OnMoved();
                 OnCursorMoved();
-            }
-            else
-            {
-                Cursor.Repaint();
-            }
 
             // scroll to keep cursor visible
             if (_scroll != null)
@@ -1397,39 +1421,29 @@ namespace DrawnUi.Draw
 
  
 
-        protected RestartingTimer<int> TimerUpdateParentCursorPosition;
-
         /// <summary>
-        /// We have to sync with a delay after text was changed otherwise the cursor position is not updated yet.
-        /// Using restarting timer, every time this is called the timer is reset if callback wasn't executed yet.
+        /// Takes the caret and the selection from the platform's native input (a keystroke, the IME, a selection
+        /// change) at once, in the native event. The caret pixels are placed when the label drew the text
+        /// (<see cref="OnLabelRendered"/>), so it does not matter that iOS and Android report the new selection
+        /// before the new text.
         /// </summary>
-        /// <param name="ms"></param>
-        /// <param name="position"></param>
-        protected void SetCursorPositionWithDelay(int ms, int position)
+        /// <param name="start">Selection start, or the caret when <paramref name="length"/> is 0.</param>
+        /// <param name="length">Selection length.</param>
+        protected void SetCursorFromNative(int start, int length)
         {
-            if (TimerUpdateParentCursorPosition == null)
+            // the position came FROM the native control: only the drawn cursor follows it.
+            // Writing it back could move the native caret to a position captured before the
+            // keystrokes typed meanwhile (fast typing / SendKeys burst): the next characters
+            // went in before the last ones ("drawncamera.com" came out as "drawncameracom.").
+            _cursorFromNative = true;
+            try
             {
-                TimerUpdateParentCursorPosition = new(TimeSpan.FromMilliseconds(ms), (arg) =>
-                {
-                    // the position came FROM the native control: only the drawn cursor follows it.
-                    // Writing it back moved the native caret to a position captured before the
-                    // keystrokes typed meanwhile (fast typing / SendKeys burst): the next characters
-                    // went in before the last ones ("drawncamera.com" came out as "drawncameracom.").
-                    _cursorFromNative = true;
-                    try
-                    {
-                        CursorPosition = arg;
-                    }
-                    finally
-                    {
-                        _cursorFromNative = false;
-                    }
-                });
-                TimerUpdateParentCursorPosition.Start(position);
+                SelectionLength = Math.Max(0, length);
+                CursorPosition = Math.Max(0, start);
             }
-            else
+            finally
             {
-                TimerUpdateParentCursorPosition.Restart(position);
+                _cursorFromNative = false;
             }
         }
 
@@ -1536,7 +1550,8 @@ namespace DrawnUi.Draw
             if (len == 0) return;
             Text = text.Remove(start, len);
             SelectionLength = 0;
-            OnSelectionDeleted();
+            // the native text was replaced: put its caret back where ours is
+            MoveInternalCursor();
         }
 
         public void InsertAtCursor(string value)
@@ -1547,10 +1562,10 @@ namespace DrawnUi.Draw
             var len = Math.Clamp(SelectionLength, 0, existing.Length - start);
             var normalized = NormalizeEditorInput(value);
             Text = existing.Remove(start, len).Insert(start, normalized);
-            _suppressImmediateCursorMove = true;
             CursorPosition = start + normalized.Length;
             SelectionLength = 0;
-            OnTextInsertedAtCursor();
+            // the native text was replaced: put its caret back where ours is
+            MoveInternalCursor();
         }
 
 #if !BROWSER && !DRAWNUI_NET
@@ -1601,10 +1616,6 @@ namespace DrawnUi.Draw
             });
         }
 #endif
-
-        partial void OnSelectionDeleted();
-
-        partial void OnTextInsertedAtCursor();
 
         public override void OnDisposing()
         {
@@ -2087,7 +2098,7 @@ namespace DrawnUi.Draw
         {
             if (bindable is SkiaEditor control)
             {
-                control.UpdateCursorVisibility();
+                control.InvalidateCaret();
             }
         }
 

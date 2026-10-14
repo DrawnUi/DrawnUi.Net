@@ -16,6 +16,9 @@ namespace DrawnUi.Draw
         private TextBox _hiddenTextBox;
         private bool _updatingText;
         private bool _suppressSelectionChanged;
+        // the box's text as Text last took it (or wrote it): a different one is a change its TextChanged has not
+        // delivered yet (WinUI raises it after SelectionChanged)
+        private string _nativeTextTaken = string.Empty;
 
         public int NativeSelectionStart
         {
@@ -108,6 +111,7 @@ namespace DrawnUi.Draw
             _updatingText = true;
             try { _hiddenTextBox.Text = newText; }
             finally { _updatingText = false; }
+            _nativeTextTaken = _hiddenTextBox.Text;
         }
 
         private void EnsureTextBox()
@@ -202,6 +206,7 @@ namespace DrawnUi.Draw
                         _updatingText = true;
                         _hiddenTextBox.Text = this.Text ?? string.Empty;
                         _updatingText = false;
+                        _nativeTextTaken = _hiddenTextBox.Text;
                     }
 
                     ApplyKeyboardType();
@@ -294,6 +299,7 @@ namespace DrawnUi.Draw
         private void HiddenTextBox_TextChanged(object sender, TextChangedEventArgs textChangedEventArgs)
         {
             //Debug.WriteLine($"[SkiaEditor] TextChanged updatingText={_updatingText} newText='{_hiddenTextBox?.Text}'");
+            _nativeTextTaken = _hiddenTextBox.Text;
             if (!_updatingText)
             {
                 _updatingText = true;
@@ -304,6 +310,9 @@ namespace DrawnUi.Draw
                 // Block out-of-bounds Down processing for 250 ms to prevent focus theft.
                 _spuriousDownBlockUntilMs = Environment.TickCount64 + 250;
                 _updatingText = false;
+
+                // the text and its selection, together and at once
+                SetCursorFromNative(_hiddenTextBox.SelectionStart, _hiddenTextBox.SelectionLength);
             }
         }
 
@@ -390,13 +399,12 @@ namespace DrawnUi.Draw
 
         private void HiddenTextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            if (_suppressSelectionChanged) return;
-            var start = _hiddenTextBox.SelectionStart;
-            var length = _hiddenTextBox.SelectionLength;
-            SelectionLength = length;
+            if (_suppressSelectionChanged || _updatingText) return;
+            // typing: the box reports the new selection before the new text, TextChanged takes both together
+            if (_hiddenTextBox.Text != _nativeTextTaken) return;
             // CursorPosition tracks the start of the selection; UpdateCursorVisibility draws
             // cursor at CursorPosition+SelectionLength (end) when selection is non-empty.
-            SetCursorPositionWithDelay(16, start);
+            SetCursorFromNative(_hiddenTextBox.SelectionStart, _hiddenTextBox.SelectionLength);
         }
 
         private void HiddenTextBox_GotFocus(object sender, RoutedEventArgs e)
@@ -411,31 +419,6 @@ namespace DrawnUi.Draw
             _hiddenTextBox.SelectionLength = len;
             _suppressSelectionChanged = false;
         }
-
-        private CancellationTokenSource? _deferCts;
-
-        // Label.Lines is populated during the render pass, which happens after property-change
-        // events. Suppress the immediate MoveInternalCursor() and defer until after the next render.
-        private async void DeferVisualCursorUpdate()
-        {
-            _deferCts?.Cancel();
-            _deferCts = new CancellationTokenSource();
-            var token = _deferCts.Token;
-            try
-            {
-                await Task.Delay(50, token);
-                _suppressImmediateCursorMove = false;
-                MoveInternalCursor();
-            }
-            catch (OperationCanceledException)
-            {
-                _suppressImmediateCursorMove = false;
-            }
-        }
-
-        //partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
-
-        partial void OnTextInsertedAtCursor() => DeferVisualCursorUpdate();
 
         public int GenerateUniqueId()
         {

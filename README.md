@@ -62,13 +62,13 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.7.6
+## What's New 1.10.7.7
 
-  * **Fix: on iOS 26 every tap was also a mouse right click.** The gestures library's right-click recognizer fired on every plain finger tap, so each tap also sent `Pointer` events typed `Mouse`; a mouse context menu or hover effect could react to every tap. With AppoMobi.Gestures 3.11.6 a finger tap is only a tap, and hover comes only from a mouse or an Apple Pencil.
+  * **Editor caret follows your typing:** the caret moves after each typed character in the same frame that draws it, on every platform, instead of catching up a moment later. When the keyboard itself moves the caret (autocorrect, an input method), the drawn caret follows at once. It stays visible while you type and starts blinking again when you stop.
 
 ### Previously
 
-  * **1.10.7.5, hotfix for iOS and Mac Catalyst:** versions 1.10.7.1 to 1.10.7.4 crashed the app when a page or popup with a `Canvas` closed ([#361](https://github.com/DrawnUi/DrawnUi.Net/issues/361)). Update if you ship to Apple platforms.
+  * **1.10.7.5 and 1.10.7.6, fixes for iOS and Mac Catalyst:** versions 1.10.7.1 to 1.10.7.4 crashed the app when a page or popup with a `Canvas` closed ([#361](https://github.com/DrawnUi/DrawnUi.Net/issues/361)), and on iOS 26 every finger tap was also a mouse right click (AppoMobi.Gestures 3.11.6 fixes it). Update if you ship to Apple platforms.
   * **Drawers:** a drawer no longer takes over the gesture of a scroll inside it, and a short drag held still before lifting goes back instead of closing. `SnapVelocityThreshold` sets how fast a release must be to count as a flick, for drawers and carousels.
   * **Text in grids:** a label in a star column next to an `Auto` column wraps and its row grows, instead of being cut to one line. Text with `CharacterSpacing` stays inside its label when it is cut to fit.
   * **Lists:** `ItemsSourceChangesApplied` comes after every change (add, remove, move, every LoadMore page). Templated grids (`Split`) add a LoadMore page without rebuilding the cells they have, and `MeasureVisible` grids place their rows right after the first screen.
