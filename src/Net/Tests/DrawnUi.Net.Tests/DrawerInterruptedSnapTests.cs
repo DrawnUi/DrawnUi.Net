@@ -72,6 +72,47 @@ public class DrawerInterruptedSnapTests
         }
     }
 
+    /// <summary>
+    /// FiltersCamera's sheet as filterscam-improve reproduced it: a fixed-height drawer at the bottom that blocks
+    /// gestures below, default speed (0.14 s), closed by IsOpen = false, a click on the sheet 80 ms later.
+    /// </summary>
+    [Fact]
+    public void FixedHeightSheet_ClickAt80ms_EndsClosed()
+    {
+        using var host = new HeadlessCanvasHost(W, H, scale: 1f, background: Colors.Black);
+        SkiaDrawer drawer = null;
+        host.Canvas.Content = new SkiaDrawer
+        {
+            Direction = DrawerDirection.FromBottom,
+            BlockGesturesBelow = true,
+            HeightRequest = 300,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.End,
+            Content = new SkiaShape
+            {
+                BackgroundColor = Colors.Gray,
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+            },
+        }.Assign(out drawer);
+        host.AdvanceFrames(4);
+        drawer.IsOpen = true;
+        host.AdvanceFrames(60);
+        bool? completed = null;
+        drawer.StateTransitionComplete += (_, open) => completed = open;
+
+        drawer.IsOpen = false;
+        host.AdvanceFrames(5);
+        Assert.InRange(drawer.TranslationY, 1, 299);
+
+        new GestureRobot(host).Tap(150, H - 10);
+
+        host.AdvanceFrames(60);
+        Assert.False(drawer.IsOpen);
+        Assert.Equal(300, drawer.TranslationY, 1);
+        Assert.False(completed);
+    }
+
     [Fact]
     public void ClosedInCode_HoldMidMove_EndsClosedOnRelease()
     {
