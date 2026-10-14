@@ -164,7 +164,7 @@ items:
   - DrawnUi.Draw.SkiaLabel.HasCjk(System.String)
   - DrawnUi.Draw.SkiaLabel.SplitLines(System.String,SkiaSharp.SKPaint,SkiaSharp.SKFont,SkiaSharp.SKPoint,System.Single,System.Single,System.Int32,System.Boolean,DrawnUi.Draw.TextSpan,System.Single)
   - DrawnUi.Draw.SkiaLabel.MergeSpansForLines(DrawnUi.Draw.TextSpan,DrawnUi.Draw.TextLine,DrawnUi.Draw.TextLine)
-  - DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.String,System.Single)
+  - DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.String,System.Single,System.Boolean,System.Single)
   - DrawnUi.Draw.SkiaLabel.MeasureTextWidthWithAdvance(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.String)
   - DrawnUi.Draw.SkiaLabel.MeasureTextWidthWithAdvance(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.ReadOnlySpan{System.Char})
   - DrawnUi.Draw.SkiaLabel.MeasureText(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.String,SkiaSharp.SKRect@)
@@ -4514,21 +4514,21 @@ references:
     name: TextLine
     href: DrawnUi.Draw.TextLine.html
   - name: )
-- uid: DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.String,System.Single)
-  commentId: M:DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.String,System.Single)
+- uid: DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.String,System.Single,System.Boolean,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.String,System.Single,System.Boolean,System.Single)
   parent: DrawnUi.Draw.SkiaLabel
   isExternal: true
-  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_CutLineToFit_SkiaSharp_SKPaint_SkiaSharp_SKFont_System_String_System_Single_
-  name: CutLineToFit(SKPaint, SKFont, string, float)
-  nameWithType: SkiaLabel.CutLineToFit(SKPaint, SKFont, string, float)
-  fullName: DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint, SkiaSharp.SKFont, string, float)
-  nameWithType.vb: SkiaLabel.CutLineToFit(SKPaint, SKFont, String, Single)
-  fullName.vb: DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint, SkiaSharp.SKFont, String, Single)
-  name.vb: CutLineToFit(SKPaint, SKFont, String, Single)
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_CutLineToFit_SkiaSharp_SKPaint_SkiaSharp_SKFont_System_String_System_Single_System_Boolean_System_Single_
+  name: CutLineToFit(SKPaint, SKFont, string, float, bool, float)
+  nameWithType: SkiaLabel.CutLineToFit(SKPaint, SKFont, string, float, bool, float)
+  fullName: DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint, SkiaSharp.SKFont, string, float, bool, float)
+  nameWithType.vb: SkiaLabel.CutLineToFit(SKPaint, SKFont, String, Single, Boolean, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint, SkiaSharp.SKFont, String, Single, Boolean, Single)
+  name.vb: CutLineToFit(SKPaint, SKFont, String, Single, Boolean, Single)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.String,System.Single)
+  - uid: DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.String,System.Single,System.Boolean,System.Single)
     name: CutLineToFit
-    href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_CutLineToFit_SkiaSharp_SKPaint_SkiaSharp_SKFont_System_String_System_Single_
+    href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_CutLineToFit_SkiaSharp_SKPaint_SkiaSharp_SKFont_System_String_System_Single_System_Boolean_System_Single_
   - name: (
   - uid: SkiaSharp.SKPaint
     name: SKPaint
@@ -4552,11 +4552,23 @@ references:
     name: float
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.String,System.Single)
+  - uid: DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint,SkiaSharp.SKFont,System.String,System.Single,System.Boolean,System.Single)
     name: CutLineToFit
-    href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_CutLineToFit_SkiaSharp_SKPaint_SkiaSharp_SKFont_System_String_System_Single_
+    href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_CutLineToFit_SkiaSharp_SKPaint_SkiaSharp_SKFont_System_String_System_Single_System_Boolean_System_Single_
   - name: (
   - uid: SkiaSharp.SKPaint
     name: SKPaint
@@ -4574,6 +4586,18 @@ references:
     name: String
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: ','
   - name: " "
   - uid: System.Single

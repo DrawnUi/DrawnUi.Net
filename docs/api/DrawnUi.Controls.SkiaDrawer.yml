@@ -48,6 +48,7 @@ items:
   - DrawnUi.Controls.SkiaDrawer.Paint(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Controls.SkiaDrawer.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Controls.SkiaDrawer.ReceivesHoverByDefault
+  - DrawnUi.Controls.SkiaDrawer.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
   - DrawnUi.Controls.SkiaDrawer.SendStateTransitionComplete
   - DrawnUi.Controls.SkiaDrawer.SetContent(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl)
   - DrawnUi.Controls.SkiaDrawer.SetIsOpen
@@ -135,13 +136,13 @@ items:
   - DrawnUi.Draw.SnappingLayout.FindNearestAnchorInternal(System.Numerics.Vector2,System.Numerics.Vector2)
   - DrawnUi.Draw.SnappingLayout.SelectNextAnchor(System.Numerics.Vector2,System.Numerics.Vector2)
   - DrawnUi.Draw.SnappingLayout.SnapDistanceRatio
+  - DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
   - DrawnUi.Draw.SnappingLayout.ScrollToNearestAnchor(System.Numerics.Vector2,System.Numerics.Vector2)
   - DrawnUi.Draw.SnappingLayout.CanAnimate
   - DrawnUi.Draw.SnappingLayout.ScrollLocked
   - DrawnUi.Draw.SnappingLayout.VectorAnimatorSpring
   - DrawnUi.Draw.SnappingLayout.AnimatorRange
   - DrawnUi.Draw.SnappingLayout.CurrentSnap
-  - DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
   - DrawnUi.Draw.SnappingLayout.Render(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SnappingLayout.SendScrolled
   - DrawnUi.Draw.SnappingLayout.Scrolled
@@ -317,6 +318,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.MeasureGrid(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.DrawChildrenGrid(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize)
+  - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
   - DrawnUi.Draw.SkiaLayout.GridStructure
   - DrawnUi.Draw.SkiaLayout.GridStructureMeasured
   - DrawnUi.Draw.SkiaLayout.DefaultColumnDefinitionProperty
@@ -1771,7 +1773,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SendStateTransitionComplete
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 166
+    startLine: 167
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1797,7 +1799,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StateTransitionComplete
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 171
+    startLine: 172
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1824,7 +1826,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsOpenChanged
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 173
+    startLine: 174
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1851,7 +1853,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Stopped
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 174
+    startLine: 175
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1878,7 +1880,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AmplitudeSizeProperty
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 180
+    startLine: 188
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1905,7 +1907,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AmplitudeSize
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 189
+    startLine: 197
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1936,7 +1938,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HeaderSizeProperty
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 195
+    startLine: 203
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1963,7 +1965,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HeaderSize
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 204
+    startLine: 212
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1994,7 +1996,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DirectionProperty
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 210
+    startLine: 218
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2021,7 +2023,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Direction
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 216
+    startLine: 224
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2050,7 +2052,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsOpenProperty
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 222
+    startLine: 230
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2077,7 +2079,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsOpen
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 237
+    startLine: 245
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2106,7 +2108,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentProperty
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 243
+    startLine: 251
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2133,7 +2135,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Content
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 257
+    startLine: 265
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2162,7 +2164,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetContent
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 265
+    startLine: 273
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2193,7 +2195,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Close
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 289
+    startLine: 297
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2219,7 +2221,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Open
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 294
+    startLine: 302
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2245,7 +2247,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 325
+    startLine: 333
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2274,7 +2276,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOffsetToHide
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 354
+    startLine: 362
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2305,7 +2307,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoVelocity
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 406
+    startLine: 414
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2341,7 +2343,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetAutoVelocity
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 408
+    startLine: 416
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2377,7 +2379,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetContentOffsetBounds
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 426
+    startLine: 434
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2408,7 +2410,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyPosition
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 466
+    startLine: 474
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2439,7 +2441,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyOptions
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 474
+    startLine: 482
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2473,7 +2475,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Paint
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 520
+    startLine: 538
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2511,7 +2513,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckNeedToSnap
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 541
+    startLine: 559
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2539,7 +2541,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetIsOpen
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 549
+    startLine: 567
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2547,6 +2549,48 @@ items:
     content: public void SetIsOpen()
     content.vb: Public Sub SetIsOpen()
   overload: DrawnUi.Controls.SkiaDrawer.SetIsOpen*
+- uid: DrawnUi.Controls.SkiaDrawer.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  commentId: M:DrawnUi.Controls.SkiaDrawer.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  id: ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  parent: DrawnUi.Controls.SkiaDrawer
+  langs:
+  - csharp
+  - vb
+  name: ScrollToOffset(Vector2, Vector2, bool)
+  nameWithType: SkiaDrawer.ScrollToOffset(Vector2, Vector2, bool)
+  fullName: DrawnUi.Controls.SkiaDrawer.ScrollToOffset(System.Numerics.Vector2, System.Numerics.Vector2, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ScrollToOffset
+    path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
+    startLine: 584
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  summary: ''
+  example: []
+  syntax:
+    content: protected override bool ScrollToOffset(Vector2 targetOffset, Vector2 velocity, bool animate)
+    parameters:
+    - id: targetOffset
+      type: System.Numerics.Vector2
+    - id: velocity
+      type: System.Numerics.Vector2
+    - id: animate
+      type: System.Boolean
+      description: ''
+    return:
+      type: System.Boolean
+    content.vb: Protected Overrides Function ScrollToOffset(targetOffset As Vector2, velocity As Vector2, animate As Boolean) As Boolean
+  overridden: DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  overload: DrawnUi.Controls.SkiaDrawer.ScrollToOffset*
+  nameWithType.vb: SkiaDrawer.ScrollToOffset(Vector2, Vector2, Boolean)
+  fullName.vb: DrawnUi.Controls.SkiaDrawer.ScrollToOffset(System.Numerics.Vector2, System.Numerics.Vector2, Boolean)
+  name.vb: ScrollToOffset(Vector2, Vector2, Boolean)
 - uid: DrawnUi.Controls.SkiaDrawer.UpdateReportedPosition
   commentId: M:DrawnUi.Controls.SkiaDrawer.UpdateReportedPosition
   id: UpdateReportedPosition
@@ -2565,7 +2609,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateReportedPosition
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 562
+    startLine: 597
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2593,7 +2637,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetClosestSidePoint
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 578
+    startLine: 613
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2634,7 +2678,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUserFocused
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 624
+    startLine: 659
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2663,7 +2707,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUserPanning
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 625
+    startLine: 660
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2692,7 +2736,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _panningOffset
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 626
+    startLine: 661
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2719,7 +2763,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VelocityAccumulator
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 628
+    startLine: 663
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2748,7 +2792,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildWasTapped
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 630
+    startLine: 665
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2775,7 +2819,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReceivesHoverByDefault
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 635
+    startLine: 676
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2807,7 +2851,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 637
+    startLine: 678
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2842,7 +2886,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoClose
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 976
+    startLine: 1037
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2871,7 +2915,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClampOffsetWithRubberBand
     path: ../src/Shared/DrawnUi/Controls/Drawer/SkiaDrawer.cs
-    startLine: 984
+    startLine: 1045
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3503,6 +3547,13 @@ references:
   name: SnapDistanceRatio
   nameWithType: SnappingLayout.SnapDistanceRatio
   fullName: DrawnUi.Draw.SnappingLayout.SnapDistanceRatio
+- uid: DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
+  commentId: P:DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
+  parent: DrawnUi.Draw.SnappingLayout
+  href: DrawnUi.Draw.SnappingLayout.html#DrawnUi_Draw_SnappingLayout_SnapVelocityThreshold
+  name: SnapVelocityThreshold
+  nameWithType: SnappingLayout.SnapVelocityThreshold
+  fullName: DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
 - uid: DrawnUi.Draw.SnappingLayout.ScrollToNearestAnchor(System.Numerics.Vector2,System.Numerics.Vector2)
   commentId: M:DrawnUi.Draw.SnappingLayout.ScrollToNearestAnchor(System.Numerics.Vector2,System.Numerics.Vector2)
   parent: DrawnUi.Draw.SnappingLayout
@@ -3578,61 +3629,6 @@ references:
   name: CurrentSnap
   nameWithType: SnappingLayout.CurrentSnap
   fullName: DrawnUi.Draw.SnappingLayout.CurrentSnap
-- uid: DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
-  commentId: M:DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
-  parent: DrawnUi.Draw.SnappingLayout
-  isExternal: true
-  href: DrawnUi.Draw.SnappingLayout.html#DrawnUi_Draw_SnappingLayout_ScrollToOffset_System_Numerics_Vector2_System_Numerics_Vector2_System_Boolean_
-  name: ScrollToOffset(Vector2, Vector2, bool)
-  nameWithType: SnappingLayout.ScrollToOffset(Vector2, Vector2, bool)
-  fullName: DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2, System.Numerics.Vector2, bool)
-  nameWithType.vb: SnappingLayout.ScrollToOffset(Vector2, Vector2, Boolean)
-  fullName.vb: DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2, System.Numerics.Vector2, Boolean)
-  name.vb: ScrollToOffset(Vector2, Vector2, Boolean)
-  spec.csharp:
-  - uid: DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
-    name: ScrollToOffset
-    href: DrawnUi.Draw.SnappingLayout.html#DrawnUi_Draw_SnappingLayout_ScrollToOffset_System_Numerics_Vector2_System_Numerics_Vector2_System_Boolean_
-  - name: (
-  - uid: System.Numerics.Vector2
-    name: Vector2
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
-  - name: ','
-  - name: " "
-  - uid: System.Numerics.Vector2
-    name: Vector2
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
-  - name: ','
-  - name: " "
-  - uid: System.Boolean
-    name: bool
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
-    name: ScrollToOffset
-    href: DrawnUi.Draw.SnappingLayout.html#DrawnUi_Draw_SnappingLayout_ScrollToOffset_System_Numerics_Vector2_System_Numerics_Vector2_System_Boolean_
-  - name: (
-  - uid: System.Numerics.Vector2
-    name: Vector2
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
-  - name: ','
-  - name: " "
-  - uid: System.Numerics.Vector2
-    name: Vector2
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
-  - name: ','
-  - name: " "
-  - uid: System.Boolean
-    name: Boolean
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: )
 - uid: DrawnUi.Draw.SnappingLayout.Render(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SnappingLayout.Render(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SnappingLayout
@@ -7277,6 +7273,49 @@ references:
     name: SKSize
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  name: BuildGridLayout(SKSize, float)
+  nameWithType: SkiaLayout.BuildGridLayout(SKSize, float)
+  fullName: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, float)
+  nameWithType.vb: SkiaLayout.BuildGridLayout(SKSize, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, Single)
+  name.vb: BuildGridLayout(SKSize, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.GridStructure
   commentId: F:DrawnUi.Draw.SkiaLayout.GridStructure
@@ -43676,6 +43715,67 @@ references:
   name: SetIsOpen
   nameWithType: SkiaDrawer.SetIsOpen
   fullName: DrawnUi.Controls.SkiaDrawer.SetIsOpen
+- uid: DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  commentId: M:DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+  parent: DrawnUi.Draw.SnappingLayout
+  isExternal: true
+  href: DrawnUi.Draw.SnappingLayout.html#DrawnUi_Draw_SnappingLayout_ScrollToOffset_System_Numerics_Vector2_System_Numerics_Vector2_System_Boolean_
+  name: ScrollToOffset(Vector2, Vector2, bool)
+  nameWithType: SnappingLayout.ScrollToOffset(Vector2, Vector2, bool)
+  fullName: DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2, System.Numerics.Vector2, bool)
+  nameWithType.vb: SnappingLayout.ScrollToOffset(Vector2, Vector2, Boolean)
+  fullName.vb: DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2, System.Numerics.Vector2, Boolean)
+  name.vb: ScrollToOffset(Vector2, Vector2, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+    name: ScrollToOffset
+    href: DrawnUi.Draw.SnappingLayout.html#DrawnUi_Draw_SnappingLayout_ScrollToOffset_System_Numerics_Vector2_System_Numerics_Vector2_System_Boolean_
+  - name: (
+  - uid: System.Numerics.Vector2
+    name: Vector2
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  - name: ','
+  - name: " "
+  - uid: System.Numerics.Vector2
+    name: Vector2
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
+    name: ScrollToOffset
+    href: DrawnUi.Draw.SnappingLayout.html#DrawnUi_Draw_SnappingLayout_ScrollToOffset_System_Numerics_Vector2_System_Numerics_Vector2_System_Boolean_
+  - name: (
+  - uid: System.Numerics.Vector2
+    name: Vector2
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  - name: ','
+  - name: " "
+  - uid: System.Numerics.Vector2
+    name: Vector2
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector2
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Controls.SkiaDrawer.ScrollToOffset*
+  commentId: Overload:DrawnUi.Controls.SkiaDrawer.ScrollToOffset
+  href: DrawnUi.Controls.SkiaDrawer.html#DrawnUi_Controls_SkiaDrawer_ScrollToOffset_System_Numerics_Vector2_System_Numerics_Vector2_System_Boolean_
+  name: ScrollToOffset
+  nameWithType: SkiaDrawer.ScrollToOffset
+  fullName: DrawnUi.Controls.SkiaDrawer.ScrollToOffset
 - uid: DrawnUi.Draw.SnappingLayout.UpdateReportedPosition
   commentId: M:DrawnUi.Draw.SnappingLayout.UpdateReportedPosition
   parent: DrawnUi.Draw.SnappingLayout

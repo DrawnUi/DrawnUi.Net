@@ -275,6 +275,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.MeasureGrid(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.DrawChildrenGrid(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize)
+  - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
   - DrawnUi.Draw.SkiaLayout.GridStructure
   - DrawnUi.Draw.SkiaLayout.GridStructureMeasured
   - DrawnUi.Draw.SkiaLayout.DefaultColumnDefinitionProperty
@@ -1507,7 +1508,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnItemsSourceCollectionChanged
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 70
+    startLine: 71
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1544,7 +1545,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 105
+    startLine: 107
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1571,7 +1572,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndex
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 113
+    startLine: 115
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1600,7 +1601,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WheelRotationProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 119
+    startLine: 121
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1627,7 +1628,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WheelRotation
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 126
+    startLine: 128
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1656,7 +1657,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ItemTemplate
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 204
+    startLine: 206
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1685,7 +1686,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionPositionProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 210
+    startLine: 212
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1712,7 +1713,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SidePosition
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 220
+    startLine: 222
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1743,7 +1744,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 242
+    startLine: 244
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1770,7 +1771,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Snap
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 251
+    startLine: 253
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1801,7 +1802,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VelocityProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 257
+    startLine: 259
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1828,7 +1829,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Velocity
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 266
+    startLine: 268
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1859,7 +1860,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DecelerationProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 272
+    startLine: 274
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1886,7 +1887,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Deceleration
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 281
+    startLine: 283
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1920,7 +1921,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InverseVisualRotationProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 287
+    startLine: 289
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1947,7 +1948,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InverseVisualRotation
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 297
+    startLine: 299
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1978,7 +1979,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGesturesProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 303
+    startLine: 305
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2005,7 +2006,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGestures
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 312
+    startLine: 314
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2036,7 +2037,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexChanged
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 327
+    startLine: 329
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2070,7 +2071,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ItemsCount
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 414
+    startLine: 416
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2099,7 +2100,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSelectionPositionOffset
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 508
+    startLine: 510
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2129,7 +2130,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpinToIndex
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 530
+    startLine: 532
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2170,7 +2171,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpinToIndexShortest
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 548
+    startLine: 550
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2208,7 +2209,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetShortestRotationDistance
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 567
+    startLine: 569
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2249,7 +2250,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetRotationForIndex
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 583
+    startLine: 585
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2287,7 +2288,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpinToRandom
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 609
+    startLine: 611
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2315,7 +2316,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Rotate
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 627
+    startLine: 629
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2351,7 +2352,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _rangeAnimator
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 650
+    startLine: 652
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2378,7 +2379,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _flingAnimator
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 651
+    startLine: 653
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2405,7 +2406,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StopScrolling
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 653
+    startLine: 655
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2431,7 +2432,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUserPanning
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 715
+    startLine: 717
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2458,7 +2459,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InContact
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 742
+    startLine: 744
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2485,7 +2486,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HadDown
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 743
+    startLine: 745
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2514,7 +2515,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResetPan
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 745
+    startLine: 747
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2540,7 +2541,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReceivesHoverByDefault
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 767
+    startLine: 769
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2572,7 +2573,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 769
+    startLine: 771
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -6429,6 +6430,49 @@ references:
     name: SKSize
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  name: BuildGridLayout(SKSize, float)
+  nameWithType: SkiaLayout.BuildGridLayout(SKSize, float)
+  fullName: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, float)
+  nameWithType.vb: SkiaLayout.BuildGridLayout(SKSize, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, Single)
+  name.vb: BuildGridLayout(SKSize, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.GridStructure
   commentId: F:DrawnUi.Draw.SkiaLayout.GridStructure

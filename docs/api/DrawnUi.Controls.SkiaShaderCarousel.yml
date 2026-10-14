@@ -199,6 +199,7 @@ items:
   - DrawnUi.Draw.SnappingLayout.SnapPoints
   - DrawnUi.Draw.SnappingLayout.FindNearestAnchor(System.Numerics.Vector2)
   - DrawnUi.Draw.SnappingLayout.SnapDistanceRatio
+  - DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
   - DrawnUi.Draw.SnappingLayout.CanAnimate
   - DrawnUi.Draw.SnappingLayout.ScrollLocked
   - DrawnUi.Draw.SnappingLayout.VectorAnimatorSpring
@@ -378,6 +379,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.MeasureGrid(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.DrawChildrenGrid(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize)
+  - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
   - DrawnUi.Draw.SkiaLayout.GridStructure
   - DrawnUi.Draw.SkiaLayout.GridStructureMeasured
   - DrawnUi.Draw.SkiaLayout.DefaultColumnDefinitionProperty
@@ -4121,6 +4123,13 @@ references:
   name: SnapDistanceRatio
   nameWithType: SnappingLayout.SnapDistanceRatio
   fullName: DrawnUi.Draw.SnappingLayout.SnapDistanceRatio
+- uid: DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
+  commentId: P:DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
+  parent: DrawnUi.Draw.SnappingLayout
+  href: DrawnUi.Draw.SnappingLayout.html#DrawnUi_Draw_SnappingLayout_SnapVelocityThreshold
+  name: SnapVelocityThreshold
+  nameWithType: SnappingLayout.SnapVelocityThreshold
+  fullName: DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
 - uid: DrawnUi.Draw.SnappingLayout.CanAnimate
   commentId: P:DrawnUi.Draw.SnappingLayout.CanAnimate
   parent: DrawnUi.Draw.SnappingLayout
@@ -7754,6 +7763,49 @@ references:
     name: SKSize
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  name: BuildGridLayout(SKSize, float)
+  nameWithType: SkiaLayout.BuildGridLayout(SKSize, float)
+  fullName: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, float)
+  nameWithType.vb: SkiaLayout.BuildGridLayout(SKSize, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, Single)
+  name.vb: BuildGridLayout(SKSize, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.GridStructure
   commentId: F:DrawnUi.Draw.SkiaLayout.GridStructure

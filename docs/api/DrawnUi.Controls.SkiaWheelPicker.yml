@@ -255,6 +255,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.MeasureGrid(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.DrawChildrenGrid(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize)
+  - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
   - DrawnUi.Draw.SkiaLayout.GridStructure
   - DrawnUi.Draw.SkiaLayout.GridStructureMeasured
   - DrawnUi.Draw.SkiaLayout.DefaultColumnDefinitionProperty
@@ -1552,7 +1553,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnItemsSourceCollectionChanged
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 92
+    startLine: 93
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1589,7 +1590,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ItemsCount
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 111
+    startLine: 113
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1618,7 +1619,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateIndexFromWheel
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 124
+    startLine: 126
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1644,7 +1645,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateWheelFromIndex
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 145
+    startLine: 147
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1670,7 +1671,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexChanged
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 161
+    startLine: 163
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1702,7 +1703,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 167
+    startLine: 169
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1729,7 +1730,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndex
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 187
+    startLine: 189
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1758,7 +1759,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VisibleItemsProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 193
+    startLine: 195
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1785,7 +1786,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VisibleItems
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 199
+    startLine: 201
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1814,7 +1815,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BackgroundViewProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 205
+    startLine: 207
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1841,7 +1842,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BackgroundView
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 217
+    startLine: 219
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1870,7 +1871,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinesColorProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 223
+    startLine: 225
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1897,7 +1898,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinesColor
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 229
+    startLine: 231
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1926,7 +1927,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColorProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 235
+    startLine: 237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1953,7 +1954,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColor
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 241
+    startLine: 243
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1982,7 +1983,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextSelectedColorProperty
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 247
+    startLine: 249
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2009,7 +2010,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextSelectedColor
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 253
+    startLine: 255
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2038,7 +2039,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetBackgroundView
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 281
+    startLine: 283
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2072,7 +2073,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultTemplate
     path: ../src/Shared/DrawnUi/Controls/Pickers/Wheels/SkiaWheelPicker.cs
-    startLine: 302
+    startLine: 304
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -5922,6 +5923,49 @@ references:
     name: SKSize
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  name: BuildGridLayout(SKSize, float)
+  nameWithType: SkiaLayout.BuildGridLayout(SKSize, float)
+  fullName: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, float)
+  nameWithType.vb: SkiaLayout.BuildGridLayout(SKSize, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, Single)
+  name.vb: BuildGridLayout(SKSize, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.GridStructure
   commentId: F:DrawnUi.Draw.SkiaLayout.GridStructure

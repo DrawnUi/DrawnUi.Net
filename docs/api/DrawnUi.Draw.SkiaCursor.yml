@@ -303,6 +303,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.MeasureGrid(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.DrawChildrenGrid(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize)
+  - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
   - DrawnUi.Draw.SkiaLayout.GridStructure
   - DrawnUi.Draw.SkiaLayout.GridStructureMeasured
   - DrawnUi.Draw.SkiaLayout.DefaultColumnDefinitionProperty
@@ -1385,7 +1386,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Invalidate
     path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
-    startLine: 47
+    startLine: 53
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1414,7 +1415,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnVisibilityChanged
     path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
-    startLine: 60
+    startLine: 66
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1450,7 +1451,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnParentVisibilityChanged
     path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
-    startLine: 85
+    startLine: 91
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1496,7 +1497,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BlinkAlpha
     path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
-    startLine: 111
+    startLine: 117
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1523,7 +1524,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateColors
     path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
-    startLine: 113
+    startLine: 119
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1549,7 +1550,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
-    startLine: 119
+    startLine: 125
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1578,7 +1579,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
-    startLine: 128
+    startLine: 134
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1605,7 +1606,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Color
     path: ../src/Shared/DrawnUi/EditText/SkiaCursor.cs
-    startLine: 140
+    startLine: 146
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -7063,6 +7064,49 @@ references:
     name: SKSize
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  name: BuildGridLayout(SKSize, float)
+  nameWithType: SkiaLayout.BuildGridLayout(SKSize, float)
+  fullName: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, float)
+  nameWithType.vb: SkiaLayout.BuildGridLayout(SKSize, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, Single)
+  name.vb: BuildGridLayout(SKSize, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.GridStructure
   commentId: F:DrawnUi.Draw.SkiaLayout.GridStructure

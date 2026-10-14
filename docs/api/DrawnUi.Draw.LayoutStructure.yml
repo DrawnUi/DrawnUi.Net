@@ -8,6 +8,7 @@ items:
   - DrawnUi.Draw.LayoutStructure.#ctor
   - DrawnUi.Draw.LayoutStructure.#ctor(System.Collections.Generic.List{System.Collections.Generic.List{DrawnUi.Draw.ControlInStack}})
   - DrawnUi.Draw.LayoutStructure.Append(System.Collections.Generic.List{System.Collections.Generic.List{DrawnUi.Draw.ControlInStack}})
+  - DrawnUi.Draw.LayoutStructure.AppendContinuing(System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.ControlInStack},System.Int32)
   - DrawnUi.Draw.LayoutStructure.Clone
   - DrawnUi.Draw.LayoutStructure.GetForIndex(System.Int32)
   langs:
@@ -188,6 +189,47 @@ items:
   nameWithType.vb: LayoutStructure.New(List(Of List(Of ControlInStack)))
   fullName.vb: DrawnUi.Draw.LayoutStructure.New(System.Collections.Generic.List(Of System.Collections.Generic.List(Of DrawnUi.Draw.ControlInStack)))
   name.vb: New(List(Of List(Of ControlInStack)))
+- uid: DrawnUi.Draw.LayoutStructure.AppendContinuing(System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.ControlInStack},System.Int32)
+  commentId: M:DrawnUi.Draw.LayoutStructure.AppendContinuing(System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.ControlInStack},System.Int32)
+  id: AppendContinuing(System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.ControlInStack},System.Int32)
+  parent: DrawnUi.Draw.LayoutStructure
+  langs:
+  - csharp
+  - vb
+  name: AppendContinuing(IReadOnlyList<ControlInStack>, int)
+  nameWithType: LayoutStructure.AppendContinuing(IReadOnlyList<ControlInStack>, int)
+  fullName: DrawnUi.Draw.LayoutStructure.AppendContinuing(System.Collections.Generic.IReadOnlyList<DrawnUi.Draw.ControlInStack>, int)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/LayoutStructure.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AppendContinuing
+    path: ../src/Shared/DrawnUi/Draw/Layout/LayoutStructure.cs
+    startLine: 52
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Appends cells in index order to a grid of <code class="paramref">columns</code> columns: the first ones fill the
+
+    last row when it is partial, the rest start whole rows. Keeps structure rows equal to the grid's rows
+
+    when items arrive in batches that end mid-row (background measurement of a Split grid).
+  example: []
+  syntax:
+    content: public void AppendContinuing(IReadOnlyList<ControlInStack> cells, int columns)
+    parameters:
+    - id: cells
+      type: System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.ControlInStack}
+    - id: columns
+      type: System.Int32
+    content.vb: Public Sub AppendContinuing(cells As IReadOnlyList(Of ControlInStack), columns As Integer)
+  overload: DrawnUi.Draw.LayoutStructure.AppendContinuing*
+  nameWithType.vb: LayoutStructure.AppendContinuing(IReadOnlyList(Of ControlInStack), Integer)
+  fullName.vb: DrawnUi.Draw.LayoutStructure.AppendContinuing(System.Collections.Generic.IReadOnlyList(Of DrawnUi.Draw.ControlInStack), Integer)
+  name.vb: AppendContinuing(IReadOnlyList(Of ControlInStack), Integer)
 - uid: DrawnUi.Draw.LayoutStructure.Append(System.Collections.Generic.List{System.Collections.Generic.List{DrawnUi.Draw.ControlInStack}})
   commentId: M:DrawnUi.Draw.LayoutStructure.Append(System.Collections.Generic.List{System.Collections.Generic.List{DrawnUi.Draw.ControlInStack}})
   id: Append(System.Collections.Generic.List{System.Collections.Generic.List{DrawnUi.Draw.ControlInStack}})
@@ -206,7 +248,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Append
     path: ../src/Shared/DrawnUi/Draw/Layout/LayoutStructure.cs
-    startLine: 47
+    startLine: 75
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1529,6 +1571,73 @@ references:
     name: Generic
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: DrawnUi.Draw.LayoutStructure.AppendContinuing*
+  commentId: Overload:DrawnUi.Draw.LayoutStructure.AppendContinuing
+  href: DrawnUi.Draw.LayoutStructure.html#DrawnUi_Draw_LayoutStructure_AppendContinuing_System_Collections_Generic_IReadOnlyList_DrawnUi_Draw_ControlInStack__System_Int32_
+  name: AppendContinuing
+  nameWithType: LayoutStructure.AppendContinuing
+  fullName: DrawnUi.Draw.LayoutStructure.AppendContinuing
+- uid: System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.ControlInStack}
+  commentId: T:System.Collections.Generic.IReadOnlyList{DrawnUi.Draw.ControlInStack}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<ControlInStack>
+  nameWithType: IReadOnlyList<ControlInStack>
+  fullName: System.Collections.Generic.IReadOnlyList<DrawnUi.Draw.ControlInStack>
+  nameWithType.vb: IReadOnlyList(Of ControlInStack)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of DrawnUi.Draw.ControlInStack)
+  name.vb: IReadOnlyList(Of ControlInStack)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: DrawnUi.Draw.ControlInStack
+    name: ControlInStack
+    href: DrawnUi.Draw.ControlInStack.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.ControlInStack
+    name: ControlInStack
+    href: DrawnUi.Draw.ControlInStack.html
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: DrawnUi.Draw.LayoutStructure.Append*
   commentId: Overload:DrawnUi.Draw.LayoutStructure.Append
   href: DrawnUi.Draw.LayoutStructure.html#DrawnUi_Draw_LayoutStructure_Append_System_Collections_Generic_List_System_Collections_Generic_List_DrawnUi_Draw_ControlInStack___
