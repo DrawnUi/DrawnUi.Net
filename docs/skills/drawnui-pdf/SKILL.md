@@ -181,6 +181,7 @@ Open a second `Window` with a `BasePageReloadable` page holding `Canvas > SkiaSc
 ## Pitfalls
 
 - Clip every page to `margins + page.Height`: the scroll viewport is a full paper tall, so without the clip the top of the next row shows at the bottom of the page and repeats whole on the next one.
+- Showing the exported instance on screen afterwards (one data load, images already loaded): re-parent it directly (`scroll.Content = report`). Never detach it first with `Content = null`: `ClearParent` sets its BindingContext to null by design and the templated rows vanish. Set `UseCache = Image` and `WidthRequest` = printable width on it for the screen only.
 - `SKDocument.BeginPage` takes POINTS (72 per inch). Passing the dpi pixel size makes an "A4" 2.08x too large; viewers fit it to the window so it looks right until printed. Open the page in points and `canvas.Scale(72f / dpi)`.
 - A PDF canvas records every pass. Warm up into `SKPictureRecorder`, render once into the page.
 - `SplitStackToPages` reads `RenderTree`, which holds only the rows that were drawn: render at unlimited height first, not through a page-sized scroll.
