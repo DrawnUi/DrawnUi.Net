@@ -69,6 +69,8 @@ SkiaDrawer is a versatile control that provides a sliding panel (drawer) with an
 | `RespondsToGestures` | bool | Default true. False: the drawer cannot be dragged open or closed, only `IsOpen` from code moves it |
 | `AutoClose` | bool | Default false. True: a click or tap inside the drawer's area but outside its content closes the open drawer. Moving the mouse or the wheel there does not |
 
+A touch on a drawer while it moves (after `IsOpen` changed, or after a swipe) stops it under the finger, so a drag can take it from there. Lift without dragging and it finishes the move it was making. Up to 1.10.7.8 it stayed between open and closed instead, and setting `IsOpen` again did nothing.
+
 ### Drawer Direction
 
 The `Direction` property controls the edge from which the drawer appears:
