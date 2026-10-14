@@ -7800,8 +7800,11 @@ namespace DrawnUi.Draw
             var super = this.Superview;
             if (super != null)
             {
-                Superview.PostponeExecutionBeforeDraw(() => { action(); }, key);
+                super.PostponeExecutionBeforeDraw(() => { action(); }, key);
                 Repaint();
+                // the action waits for the canvas's next frame: ask the canvas for it, Repaint climbs the parents
+                // and stops at a hidden one (the root a shell modal froze), then no frame came until another redraw
+                super.RequestNextFrame();
             }
             else
             {
