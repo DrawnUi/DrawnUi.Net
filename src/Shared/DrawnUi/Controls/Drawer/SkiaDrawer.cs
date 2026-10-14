@@ -941,8 +941,13 @@ namespace DrawnUi.Controls
 
                     case TouchActionResult.Up:
 
+                        _inContact = false;
+
                         if (ChildWasTapped || !IsUserPanning)
+                        {
+                            FinishStoppedMove();
                             break;
+                        }
 
                         // the release sample along the drawer's own axis (it was always the vertical one: a side
                         // drawer never got the finger's real release speed, only its moves before it)
@@ -1010,9 +1015,6 @@ namespace DrawnUi.Controls
                         IsUserPanning = false;
                         IsUserFocused = false;
 
-
-                        _inContact = false;
-
                         break;
                 }
 
@@ -1033,6 +1035,22 @@ namespace DrawnUi.Controls
             }
 
             return consumedDefault;
+        }
+
+        /// <summary>
+        /// A Down stops a running move to a snap, so a pan can take the drawer from where it is. When the touch
+        /// ends without a pan, the drawer finishes that move to the snap it was sent to (IsOpen changed in code,
+        /// or a released swipe), instead of staying between its snaps.
+        /// </summary>
+        void FinishStoppedMove()
+        {
+            if (AnimatorRange?.IsRunning == true || VectorAnimatorSpring?.IsRunning == true
+                || !SnapPoints.Contains(CurrentSnap) || AreVectorsEqual(CurrentPosition, CurrentSnap, 1))
+                return;
+
+            var target = CurrentSnap;
+            CurrentSnap = CurrentPosition;
+            ScrollToOffset(target, Vector2.Zero, CanAnimate);
         }
 
         public bool AutoClose { get; set; }
