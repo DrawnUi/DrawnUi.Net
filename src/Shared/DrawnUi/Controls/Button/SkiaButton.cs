@@ -562,14 +562,14 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
     // The spoken label follows Text unless the app set AccessibilityLabel (icon-only button, longer description).
     protected override string? DefaultAccessibilityLabel() => string.IsNullOrEmpty(Text) ? null : Text;
 
-    protected override bool DefaultAccessibilityCanInteract() => !IsDisabled;
+    protected override bool DefaultAccessibilityCanInteract() => RespondsToGestures;
 
-    /// <summary>A disabled button ignores taps, so keyboard navigation skips it too.</summary>
-    protected override bool AcceptsInput() => !IsDisabled;
+    /// <summary>With RespondsToGestures = false the button ignores taps, keyboard navigation skips it and it is reported disabled.</summary>
+    protected override bool AcceptsInput() => RespondsToGestures;
 
     public virtual void ApplyProperties()
     {
-        NotifyAccessibility(); // Text / IsDisabled feed the node defaults
+        NotifyAccessibility(); // Text / RespondsToGestures feed the node defaults
 
         if (MainLabel != null)
         {
@@ -779,7 +779,7 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
     {
         var ret = false;
 
-        if (!IsDisabled)
+        if (RespondsToGestures)
         {
             if (SendTapped(this, args, GestureEventProcessingInfo.Empty, Super.SendTapsOnMainThread))
             {
@@ -817,6 +817,12 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
     public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     {
         //Debug.WriteLine($"SkiaButton {Text}. {args.Type} {args.Event.Distance.Delta}");
+
+        if (!RespondsToGestures)
+        {
+            // no pressed state, no Down / Up / Tapped / Clicked / command; a tap on it stops here
+            return BlockedGestureResult(args);
+        }
 
         if (ReceivesHover)
             CheckHovered(args);
@@ -1101,15 +1107,38 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
         set { SetValue(FontFamilyProperty, value); }
     }
 
+    public static readonly BindableProperty RespondsToGesturesProperty = BindableProperty.Create(
+        nameof(RespondsToGestures),
+        typeof(bool),
+        typeof(SkiaButton),
+        true, propertyChanged: OnLookChanged);
+
+    /// <summary>
+    /// False switches the button off for the user: taps, presses and keyboard activation do nothing (no Tapped,
+    /// Clicked or command), a tap on it does not reach controls under it, and screen readers report it disabled.
+    /// Code can still change it. Same property as on toggles, sliders, scrolls and drawers. Default true.
+    /// </summary>
+    public bool RespondsToGestures
+    {
+        get { return (bool)GetValue(RespondsToGesturesProperty); }
+        set { SetValue(RespondsToGesturesProperty, value); }
+    }
+
     public static readonly BindableProperty IsDisabledProperty = BindableProperty.Create(
         nameof(IsDisabled),
         typeof(bool),
         typeof(SkiaButton),
-        false, propertyChanged: OnLookChanged);
+        false, propertyChanged: (b, o, n) =>
+        {
+            if (b is SkiaButton control)
+                control.RespondsToGestures = !(bool)n;
+        });
 
+    /// <summary>Obsolete: the opposite of <see cref="RespondsToGestures"/>, which every control uses.</summary>
+    [Obsolete("Use RespondsToGestures = false, as on the other controls.")]
     public bool IsDisabled
     {
-        get { return (bool)GetValue(IsDisabledProperty); }
+        get { return !RespondsToGestures; }
         set { SetValue(IsDisabledProperty, value); }
     }
 

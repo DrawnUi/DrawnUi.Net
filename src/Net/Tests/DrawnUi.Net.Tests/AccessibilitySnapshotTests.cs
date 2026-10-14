@@ -100,7 +100,7 @@ public class AccessibilitySnapshotTests
         Assert.Null(sl.Label); // the value is never the name (drawnui-cross 6c, range values)
         Assert.Equal(new AccessibilityValue(25, 0, 100, 1), sl.Value);
 
-        button.IsDisabled = true;
+        button.RespondsToGestures = false;
         button.AccessibilityLabel = "Custom";
         host.AdvanceFrames(2);
         var b2 = Assert.Single(manager.Snapshot, n => n.Role == Aria.RoleButton);

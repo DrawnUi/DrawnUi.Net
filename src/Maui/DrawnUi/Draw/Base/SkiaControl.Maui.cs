@@ -174,6 +174,13 @@ namespace DrawnUi.Draw
         public static Color BlackColor = Colors.Black;
         public static Color RedColor = Colors.Red;
 
+        /// <summary>
+        /// MAUI IsEnabled for drawn input: false makes this control and its children take no taps, presses or
+        /// keyboard activation, and screen readers report them disabled. The same as RespondsToGestures = false
+        /// on a control, but for a whole subtree. Other heads have no IsEnabled and always return true.
+        /// </summary>
+        public bool IsInputEnabled => IsEnabled;
+
         protected override void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             try
@@ -184,6 +191,12 @@ namespace DrawnUi.Draw
             {
                 //we are avoiding MAUI crashes due concurrent access to properties from different threads
                 Super.Log($"[{propertyName}] {e}");
+            }
+
+            if (propertyName == nameof(IsEnabled))
+            {
+                // the subtree's accessibility state changes with it (reported disabled)
+                Superview?.AccessibilityManager?.ForceRebuildOnNextFrame();
             }
 
             //if (!isApplyingStyle && !string.IsNullOrEmpty(propertyName))

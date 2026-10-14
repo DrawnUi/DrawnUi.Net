@@ -998,7 +998,7 @@ namespace DrawnUi.Draw
             nameof(RespondsToGestures),
             typeof(bool),
             typeof(SkiaScroll),
-            true);
+            true, propertyChanged: OnInputStateChanged);
 
         /// <summary>
         /// If disabled will not scroll using gestures. Scrolling will still be possible by code.
@@ -1008,6 +1008,9 @@ namespace DrawnUi.Draw
             get { return (bool)GetValue(RespondsToGesturesProperty); }
             set { SetValue(RespondsToGesturesProperty, value); }
         }
+
+        /// <summary>With RespondsToGestures = false neither a drag nor the keyboard scrolls it, and it is reported disabled; its children are not affected.</summary>
+        protected override bool AcceptsInput() => RespondsToGestures;
 
         public static readonly BindableProperty CanScrollUsingHeaderProperty = BindableProperty.Create(
             nameof(CanScrollUsingHeader),

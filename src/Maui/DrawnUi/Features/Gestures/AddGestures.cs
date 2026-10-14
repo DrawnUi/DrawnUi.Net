@@ -69,6 +69,9 @@ public static partial class AddGestures
             if (_parent == null || !_parent.CanDraw)
                 return null;
 
+            if (!_parent.IsInputEnabled)
+                return BlockedGestureResult(args); // IsEnabled = false: no attached commands or animations either
+
             if (_parent is ISkiaGestureListener listener)
             {
                 var consumed = listener.OnSkiaGestureEvent(args, apply);

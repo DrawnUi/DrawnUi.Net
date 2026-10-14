@@ -1917,6 +1917,12 @@ namespace DrawnUi.Draw
         {
             if (CanDraw && this is ISkiaGestureListener listener)
             {
+                if (!IsInputEnabled)
+                {
+                    // disabled (MAUI IsEnabled = false): neither this control nor its children react
+                    return BlockedGestureResult(args);
+                }
+
                 var canvas = _superview as Canvas;
                 if (canvas != null)
                 {
@@ -5370,13 +5376,14 @@ namespace DrawnUi.Draw
         /// </summary>
         public bool CanReceiveGesture(TouchActionResult gesture)
         {
-            if (!CanDraw || InputTransparent || !AcceptsInput())
+            if (!CanDraw || InputTransparent || !IsInputEnabled || !AcceptsInput())
                 return false;
 
             var parent = Parent as SkiaControl;
             while (parent != null)
             {
-                if (!parent.CanDraw || parent.InputTransparent || parent.CheckChildrenGesturesLocked(gesture))
+                if (!parent.CanDraw || parent.InputTransparent || !parent.IsInputEnabled
+                    || parent.CheckChildrenGesturesLocked(gesture))
                     return false;
                 parent = parent.Parent as SkiaControl;
             }
@@ -5384,8 +5391,33 @@ namespace DrawnUi.Draw
             return true;
         }
 
-        /// <summary>False while the control ignores gestures itself, e.g. a disabled button. Default true.</summary>
+        /// <summary>
+        /// False while the control ignores input itself: RespondsToGestures = false on a button, toggle, slider,
+        /// scroll... Taps, keyboard and the accessibility state (reported disabled) all follow it. Default true.
+        /// </summary>
         protected virtual bool AcceptsInput() => true;
+
+        /// <summary>
+        /// Property-changed callback for what <see cref="AcceptsInput"/> reads (RespondsToGestures): screen readers
+        /// get the new enabled / disabled state.
+        /// </summary>
+        protected static void OnInputStateChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            (bindable as SkiaControl)?.NotifyAccessibility();
+        }
+
+        /// <summary>
+        /// What a control that takes no input returns for a gesture that reached it: it keeps a press, tap, long
+        /// press or context menu, so nothing under it reacts to them, and lets moves, wheel and hover go on to the
+        /// controls around it (a scroll behind it still scrolls).
+        /// </summary>
+        protected ISkiaGestureListener BlockedGestureResult(SkiaGesturesParameters args)
+        {
+            return args.Type is TouchActionResult.Down or TouchActionResult.Tapped
+                or TouchActionResult.LongPressing or TouchActionResult.ContextMenu
+                ? this as ISkiaGestureListener
+                : null;
+        }
 
         /// <summary>
         /// Called automatically on first layout. Call manually when label, hint, or state changes.

@@ -399,7 +399,7 @@ public class SnappingLayout : SkiaLayout
         nameof(RespondsToGestures),
         typeof(bool),
         typeof(SnappingLayout),
-        true);
+        true, propertyChanged: OnInputStateChanged);
 
     /// <summary>
     /// Can be open/closed by gestures along with code-behind, default is true
@@ -409,6 +409,9 @@ public class SnappingLayout : SkiaLayout
         get { return (bool)GetValue(RespondsToGesturesProperty); }
         set { SetValue(RespondsToGesturesProperty, value); }
     }
+
+    /// <summary>With RespondsToGestures = false neither a swipe nor the keyboard moves it, and it is reported disabled; its children are not affected.</summary>
+    protected override bool AcceptsInput() => RespondsToGestures;
 
     public static readonly BindableProperty IgnoreWrongDirectionProperty = BindableProperty.Create(
         nameof(IgnoreWrongDirection),
