@@ -6472,10 +6472,13 @@ namespace DrawnUi.Draw
 
         public virtual SKRect GetMeasuringRectForChildren(float widthConstraint, float heightConstraint, double scale)
         {
-            var constraintLeft = (UsePadding.Left + Margins.Left) * scale;
-            var constraintRight = (UsePadding.Right + Margins.Right) * scale;
-            var constraintTop = (UsePadding.Top + Margins.Top) * scale;
-            var constraintBottom = (UsePadding.Bottom + Margins.Bottom) * scale;
+            // the measured size adds each side rounded (GetAllMarginsInPixels): subtracting the raw sides took up
+            // to a pixel more, so a control measured again at its own measured size lost a line of text
+            // (18 pt margin at scale 1.25: 22 px added, 22.5 taken)
+            var constraintLeft = Reserve(UsePadding.Left + Margins.Left, (float)scale);
+            var constraintRight = Reserve(UsePadding.Right + Margins.Right, (float)scale);
+            var constraintTop = Reserve(UsePadding.Top + Margins.Top, (float)scale);
+            var constraintBottom = Reserve(UsePadding.Bottom + Margins.Bottom, (float)scale);
 
             //SKRect rectForChild = new SKRect(0 + (float)constraintLeft,
             //    0 + (float)constraintTop,
@@ -6567,18 +6570,23 @@ namespace DrawnUi.Draw
         /// </summary>
         public static SKRect ContractPixelsRectForContent(SKRect rect, float scale, in Thickness amount)
         {
-            static float Reserve(double inset, float scale)
-            {
-                var raw = (float)(inset * scale);
-                return Math.Min(raw, (float)Math.Round(raw));
-            }
-
             return new SKRect(
                 rect.Left + Reserve(amount.Left, scale),
                 rect.Top + Reserve(amount.Top, scale),
                 rect.Right - Reserve(amount.Right, scale),
                 rect.Bottom - Reserve(amount.Bottom, scale)
             );
+        }
+
+        /// <summary>
+        /// Pixels an inset takes from the content: the smaller of the raw inset and the rounded one that measuring
+        /// adds to the measured size (<see cref="GetAllMarginsInPixels"/>), so content never gets less room than
+        /// it was measured with.
+        /// </summary>
+        static float Reserve(double inset, float scale)
+        {
+            var raw = (float)(inset * scale);
+            return Math.Min(raw, (float)Math.Round(raw));
         }
 
         public static SKRect ExpandPixelsRect(SKRect rect, float scale, in Thickness amount)
