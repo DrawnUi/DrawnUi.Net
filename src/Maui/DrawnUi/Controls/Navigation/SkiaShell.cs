@@ -1146,12 +1146,30 @@ namespace DrawnUi.Controls
                     {
                         ShellLayout?.DisposeObject(control);
                     });
+
+                    OnModalRemoved((control as ModalWrapper)?.Drawer?.Content ?? control);
                 }
             }
             catch (Exception e)
             {
                 Super.Log(e);
             }
+        }
+
+        /// <summary>
+        /// Raised when a modal is gone: out of the stack, the layout unfrozen, the modal below shown again and
+        /// the modal detached. Passes the content that was pushed. Its <c>OnDisappearing</c> comes earlier, while
+        /// the shell is still taking it down: navigate from here when the next step needs the settled state.
+        /// </summary>
+        public event EventHandler<SkiaControl> ModalRemoved;
+
+        /// <summary>
+        /// Raises <see cref="ModalRemoved"/> at the very end of a modal's removal.
+        /// </summary>
+        /// <param name="content">The content that was pushed as the modal.</param>
+        protected virtual void OnModalRemoved(SkiaControl content)
+        {
+            ModalRemoved?.Invoke(this, content);
         }
 
         bool isBusyClosingModal;
@@ -1163,38 +1181,46 @@ namespace DrawnUi.Controls
 
             try
             {
-                var modal = inStack.Page as SkiaControl; //GetTopModal();
-
-                if (modal.IsVisibleInViewTree())
-                {
-                    //will close drawer..
-                    SkiaControl removed = await PopModalAsync(modal, animated);
-
-                    //if wasnt animater drawer will not scroll
-                    //so kill it manually
-                    if (removed != null && !animated)
-                    {
-                        await RemoveModal(modal, animated);
-
-                        OnNavigated(new(modal, CurrentRouteAuto, NavigationSource.Pop));
-
-                        return modal;
-                    }
-                    // closing the drawer above usually took it out already (LeaveModalStack)
-                    if (NavigationStackModals.Remove(inStack))
-                    {
-                        OnModalStackChanged(NavigationStackModals.Count);
-
-                        //RootLayout?.Update();
-                        OnNavigated(new(removed, CurrentRouteAuto, NavigationSource.Pop));
-                    }
-
-                    return removed;
-                }
-                else
-                {
+                var modal = inStack?.Page as SkiaControl; //GetTopModal();
+                if (modal == null)
                     return null;
+
+                if (!modal.IsVisibleInViewTree())
+                {
+                    // Hidden by a modal above that froze the layout (SetupModalsVisibility), or the shell is hidden:
+                    // nothing to animate, it goes at once. It used to be refused with a null while it stayed in the
+                    // stack, so a pop from the top modal's OnDisappearing never happened.
+                    if (modal is not ModalWrapper wrapper || !LeaveModalStack(wrapper))
+                        return null; // not a stacked shell modal, or already closing
+
+                    var content = wrapper.Drawer?.Content;
+                    await RemoveModal(wrapper, false);
+                    return content;
                 }
+
+                //will close drawer..
+                SkiaControl removed = await PopModalAsync(modal, animated);
+
+                //if wasnt animater drawer will not scroll
+                //so kill it manually
+                if (removed != null && !animated)
+                {
+                    await RemoveModal(modal, animated);
+
+                    OnNavigated(new(modal, CurrentRouteAuto, NavigationSource.Pop));
+
+                    return modal;
+                }
+                // closing the drawer above usually took it out already (LeaveModalStack)
+                if (NavigationStackModals.Remove(inStack))
+                {
+                    OnModalStackChanged(NavigationStackModals.Count);
+
+                    //RootLayout?.Update();
+                    OnNavigated(new(removed, CurrentRouteAuto, NavigationSource.Pop));
+                }
+
+                return removed;
             }
             finally
             {
