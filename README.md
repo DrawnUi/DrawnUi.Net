@@ -65,6 +65,9 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 ## What's New 1.10.7.7
 
   * **Editor caret follows your typing:** the caret moves after each typed character in the same frame that draws it, on every platform, instead of catching up a moment later. When the keyboard itself moves the caret (autocorrect, an input method), the drawn caret follows at once. It stays visible while you type and starts blinking again when you stop.
+  * **Shell modals:** `PopModalAsync` closes any modal in the stack, also one hidden under another modal, instead of returning null and leaving it there. Modals hidden while a modal above them froze the background come back when that modal closes. A modal swiped away leaves the modal stack when the finger lifts, as with `PopModalAsync`, and takes no more touches while it slides out. The new `ModalRemoved` event comes when a modal is fully gone and the one below is shown again.
+  * **Drawers:** a drawer opened in the same moment it becomes visible stays open, and closes when asked later.
+  * **Mac Catalyst:** an app that sets a desktop window size no longer crashes when it becomes active if its `Info.plist` declares a scene manifest.
 
 ### Previously
 
