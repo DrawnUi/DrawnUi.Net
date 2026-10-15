@@ -62,9 +62,12 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.7.8
+## What's New 1.10.7.9
 
-  * **Fix: editor, iOS: one caret when switching between fields in different canvases.** Tapping a second field kept the keyboard on the first one, so both fields blinked and the typed digits went into the first field. Now the new field takes the keyboard, the old one drops its caret, and the keyboard stays open while you switch, like on Android.
+  * **Switching input off, the same on every control:** `RespondsToGestures = false` now works on `SkiaButton` too (it replaces `IsDisabled`, which still works) and on switches, checkboxes and radio buttons, which used to toggle on a tap anyway. A control switched off ignores taps and the keyboard, a tap on it no longer reaches what is under it, and screen readers read it as unavailable. On .NET MAUI, `IsEnabled = false` on a drawn control or layout now switches it and everything inside it off ([#368](https://github.com/DrawnUi/DrawnUi.Net/issues/368)).
+  * **Fix: a drawer no longer stops halfway.** A tap on a drawer while it was moving left it between open and closed, and setting `IsOpen` again did nothing. Now it finishes its move, and a drag still takes it from where it is. With `AutoClose`, a press outside the drawer closes it again after you touched its panel.
+  * **Fix: no more cut text at in-between screen scales.** A control with a margin that is not a whole number of pixels (like 18 at scale 1.25) could lose its last line of text in a grid `Auto` row, and a label with `CharacterSpacing` in a padded box could lose the right edge of its last letter.
+  * **Fix: `SafeAction` runs on time** for a control under a hidden parent, for example the page under a shell modal. Before, the action waited until something else redrew the screen.
 
 ### Previously
 
@@ -74,7 +77,7 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
   * **Lists:** `ItemsSourceChangesApplied` comes after every change (add, remove, move, every LoadMore page). Templated grids (`Split`) add a LoadMore page without rebuilding the cells they have, and `MeasureVisible` grids place their rows right after the first screen.
   * **Hover for lists:** `ReceivesHover`, `HoverChanged` and `.OnHovered((me, on) => ...)` let any control take mouse hover, and every hovered control under the mouse stays lit (a card and the button inside it). Hover waits while a list scrolls and is checked again when it stops.
   * **Faster:** a control that keeps updating behind another screen (a camera preview under a pushed page) no longer redraws the canvas, iOS frames no longer show one refresh late, controls measure once when properties change in bursts, and an `ImageComposite` cache redraws only the area of a deep change.
-  * **Editor:** the caret moves with each typed character in the same frame, also when the keyboard moves it (autocorrect, an input method); number keyboards type on Android, iOS number keyboards get a Done button, the iOS keyboard closes when you leave the page, the caret stays after what you type when the app rewrites the text, and only one editor shows a caret when several are on screen.
+  * **Editor:** the caret moves with each typed character in the same frame, also when the keyboard moves it (autocorrect, an input method); number keyboards type on Android, iOS number keyboards get a Done button, the iOS keyboard closes when you leave the page, the caret stays after what you type when the app rewrites the text, and only one editor shows a caret when several are on screen, also on iOS with fields in different canvases, where the keyboard now stays open while you switch fields.
   * **Accessibility on every platform:** TalkBack (Android), VoiceOver (iOS, Mac Catalyst), Orca (Linux) and browser screen readers (WebAssembly) read drawn controls, next to Narrator and Blazor. Tab, a focus ring, Enter / Space and the arrow keys work on Mac Catalyst and OpenTK too. Guide: [Accessibility](https://drawnui.net/articles/advanced/accessibility.html).
   * **Android draws with Vulkan:** hardware-accelerated canvases use Vulkan where available, about 11% less CPU per frame than OpenGL on a Mali-G57 phone, and fall back to OpenGL by themselves. `UseVulkan = false` keeps OpenGL.
   * **Text:** Japanese and Chinese text wraps properly, symbols and emoji inside normal text use `FontFamilyFallback` (one font or a list), people can select and copy a label's text (`AccessibilityTextSelectable`), and `AutoSize = FitHorizontal` grows back when there is room.

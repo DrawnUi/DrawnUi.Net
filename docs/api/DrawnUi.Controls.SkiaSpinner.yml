@@ -6,6 +6,7 @@ items:
   parent: DrawnUi.Controls
   children:
   - DrawnUi.Controls.SkiaSpinner.#ctor
+  - DrawnUi.Controls.SkiaSpinner.AcceptsInput
   - DrawnUi.Controls.SkiaSpinner.ApplyItemsSource
   - DrawnUi.Controls.SkiaSpinner.CreateWheel
   - DrawnUi.Controls.SkiaSpinner.Deceleration
@@ -380,6 +381,7 @@ items:
   - DrawnUi.Draw.SkiaControl.WhiteColor
   - DrawnUi.Draw.SkiaControl.BlackColor
   - DrawnUi.Draw.SkiaControl.RedColor
+  - DrawnUi.Draw.SkiaControl.IsInputEnabled
   - DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   - DrawnUi.Draw.SkiaControl.OffscreenRenderToken
   - DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
@@ -799,7 +801,8 @@ items:
   - DrawnUi.Draw.SkiaControl.GetAccessibilityValue
   - DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
   - DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
-  - DrawnUi.Draw.SkiaControl.AcceptsInput
+  - DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+  - DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
   - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.NotifyAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
@@ -2019,6 +2022,37 @@ items:
       type: System.Boolean
     content.vb: Public Property RespondsToGestures As Boolean
   overload: DrawnUi.Controls.SkiaSpinner.RespondsToGestures*
+- uid: DrawnUi.Controls.SkiaSpinner.AcceptsInput
+  commentId: M:DrawnUi.Controls.SkiaSpinner.AcceptsInput
+  id: AcceptsInput
+  parent: DrawnUi.Controls.SkiaSpinner
+  langs:
+  - csharp
+  - vb
+  name: AcceptsInput()
+  nameWithType: SkiaSpinner.AcceptsInput()
+  fullName: DrawnUi.Controls.SkiaSpinner.AcceptsInput()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AcceptsInput
+    path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
+    startLine: 321
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Controls
+  summary: With RespondsToGestures = false neither a drag nor the keyboard spins it, and it is reported disabled; its children are not affected.
+  example: []
+  syntax:
+    content: protected override bool AcceptsInput()
+    return:
+      type: System.Boolean
+    content.vb: Protected Overrides Function AcceptsInput() As Boolean
+  overridden: DrawnUi.Draw.SkiaControl.AcceptsInput
+  overload: DrawnUi.Controls.SkiaSpinner.AcceptsInput*
 - uid: DrawnUi.Controls.SkiaSpinner.SelectedIndexChanged
   commentId: E:DrawnUi.Controls.SkiaSpinner.SelectedIndexChanged
   id: SelectedIndexChanged
@@ -2037,7 +2071,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexChanged
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 329
+    startLine: 332
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2071,7 +2105,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ItemsCount
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 416
+    startLine: 419
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2100,7 +2134,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSelectionPositionOffset
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 510
+    startLine: 513
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2130,7 +2164,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpinToIndex
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 532
+    startLine: 535
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2171,7 +2205,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpinToIndexShortest
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 550
+    startLine: 553
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2209,7 +2243,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetShortestRotationDistance
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 569
+    startLine: 572
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2250,7 +2284,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetRotationForIndex
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 585
+    startLine: 588
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2288,7 +2322,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpinToRandom
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 611
+    startLine: 614
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2316,7 +2350,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Rotate
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 629
+    startLine: 632
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2352,7 +2386,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _rangeAnimator
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 652
+    startLine: 655
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2379,7 +2413,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _flingAnimator
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 653
+    startLine: 656
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2406,7 +2440,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StopScrolling
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 655
+    startLine: 658
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2432,7 +2466,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUserPanning
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 717
+    startLine: 720
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2459,7 +2493,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InContact
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 744
+    startLine: 747
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2486,7 +2520,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HadDown
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 745
+    startLine: 748
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2515,7 +2549,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResetPan
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 747
+    startLine: 750
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2541,7 +2575,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReceivesHoverByDefault
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 769
+    startLine: 772
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2573,7 +2607,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Controls/Pickers/Spinner/SkiaSpinner.cs
-    startLine: 771
+    startLine: 774
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -8598,6 +8632,13 @@ references:
   name: RedColor
   nameWithType: SkiaControl.RedColor
   fullName: DrawnUi.Draw.SkiaControl.RedColor
+- uid: DrawnUi.Draw.SkiaControl.IsInputEnabled
+  commentId: P:DrawnUi.Draw.SkiaControl.IsInputEnabled
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsInputEnabled
+  name: IsInputEnabled
+  nameWithType: SkiaControl.IsInputEnabled
+  fullName: DrawnUi.Draw.SkiaControl.IsInputEnabled
 - uid: DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   commentId: M:DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   parent: DrawnUi.Draw.SkiaControl
@@ -16931,24 +16972,85 @@ references:
     name: TouchActionResult
     isExternal: true
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.AcceptsInput
-  commentId: M:DrawnUi.Draw.SkiaControl.AcceptsInput
+- uid: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
-  name: AcceptsInput()
-  nameWithType: SkiaControl.AcceptsInput()
-  fullName: DrawnUi.Draw.SkiaControl.AcceptsInput()
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnInputStateChanged_Microsoft_Maui_Controls_BindableObject_System_Object_System_Object_
+  name: OnInputStateChanged(BindableObject, object, object)
+  nameWithType: SkiaControl.OnInputStateChanged(BindableObject, object, object)
+  fullName: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject, object, object)
+  nameWithType.vb: SkiaControl.OnInputStateChanged(BindableObject, Object, Object)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject, Object, Object)
+  name.vb: OnInputStateChanged(BindableObject, Object, Object)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
-    name: AcceptsInput
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - uid: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+    name: OnInputStateChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnInputStateChanged_Microsoft_Maui_Controls_BindableObject_System_Object_System_Object_
   - name: (
+  - uid: Microsoft.Maui.Controls.BindableObject
+    name: BindableObject
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.bindableobject
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
-    name: AcceptsInput
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - uid: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+    name: OnInputStateChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnInputStateChanged_Microsoft_Maui_Controls_BindableObject_System_Object_System_Object_
   - name: (
+  - uid: Microsoft.Maui.Controls.BindableObject
+    name: BindableObject
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.bindableobject
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BlockedGestureResult_DrawnUi_Draw_SkiaGesturesParameters_
+  name: BlockedGestureResult(SkiaGesturesParameters)
+  nameWithType: SkiaControl.BlockedGestureResult(SkiaGesturesParameters)
+  fullName: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+    name: BlockedGestureResult
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BlockedGestureResult_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+    name: BlockedGestureResult
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BlockedGestureResult_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
   commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility
@@ -42346,6 +42448,31 @@ references:
   name: RespondsToGestures
   nameWithType: SkiaSpinner.RespondsToGestures
   fullName: DrawnUi.Controls.SkiaSpinner.RespondsToGestures
+- uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+  commentId: M:DrawnUi.Draw.SkiaControl.AcceptsInput
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  name: AcceptsInput()
+  nameWithType: SkiaControl.AcceptsInput()
+  fullName: DrawnUi.Draw.SkiaControl.AcceptsInput()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
+  - name: )
+- uid: DrawnUi.Controls.SkiaSpinner.AcceptsInput*
+  commentId: Overload:DrawnUi.Controls.SkiaSpinner.AcceptsInput
+  href: DrawnUi.Controls.SkiaSpinner.html#DrawnUi_Controls_SkiaSpinner_AcceptsInput
+  name: AcceptsInput
+  nameWithType: SkiaSpinner.AcceptsInput
+  fullName: DrawnUi.Controls.SkiaSpinner.AcceptsInput
 - uid: DrawnUi.Controls.SkiaSpinner.SelectedIndex
   commentId: P:DrawnUi.Controls.SkiaSpinner.SelectedIndex
   href: DrawnUi.Controls.SkiaSpinner.html#DrawnUi_Controls_SkiaSpinner_SelectedIndex

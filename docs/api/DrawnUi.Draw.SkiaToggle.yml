@@ -5,6 +5,7 @@ items:
   id: SkiaToggle
   parent: DrawnUi.Draw
   children:
+  - DrawnUi.Draw.SkiaToggle.AcceptsInput
   - DrawnUi.Draw.SkiaToggle.ApplyProperties
   - DrawnUi.Draw.SkiaToggle.ChangeDefaultValue
   - DrawnUi.Draw.SkiaToggle.ColorFrameOff
@@ -372,6 +373,7 @@ items:
   - DrawnUi.Draw.SkiaControl.WhiteColor
   - DrawnUi.Draw.SkiaControl.BlackColor
   - DrawnUi.Draw.SkiaControl.RedColor
+  - DrawnUi.Draw.SkiaControl.IsInputEnabled
   - DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   - DrawnUi.Draw.SkiaControl.OffscreenRenderToken
   - DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
@@ -789,7 +791,8 @@ items:
   - DrawnUi.Draw.SkiaControl.GetAccessibilityValue
   - DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
   - DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
-  - DrawnUi.Draw.SkiaControl.AcceptsInput
+  - DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+  - DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
   - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.NotifyAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
@@ -1390,7 +1393,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 27
+    startLine: 30
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1419,7 +1422,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnToggledChanged
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 37
+    startLine: 40
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1447,7 +1450,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsInternalCall
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 46
+    startLine: 49
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1474,7 +1477,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityIsPressed
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 48
+    startLine: 51
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1505,7 +1508,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityCanInteract
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 50
+    startLine: 53
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1518,6 +1521,37 @@ items:
     content.vb: Protected Overrides Function DefaultAccessibilityCanInteract() As Boolean
   overridden: DrawnUi.Draw.SkiaControl.DefaultAccessibilityCanInteract
   overload: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract*
+- uid: DrawnUi.Draw.SkiaToggle.AcceptsInput
+  commentId: M:DrawnUi.Draw.SkiaToggle.AcceptsInput
+  id: AcceptsInput
+  parent: DrawnUi.Draw.SkiaToggle
+  langs:
+  - csharp
+  - vb
+  name: AcceptsInput()
+  nameWithType: SkiaToggle.AcceptsInput()
+  fullName: DrawnUi.Draw.SkiaToggle.AcceptsInput()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AcceptsInput
+    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    startLine: 56
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: With RespondsToGestures = false a tap or the keyboard does not toggle it and it is reported disabled.
+  example: []
+  syntax:
+    content: protected override bool AcceptsInput()
+    return:
+      type: System.Boolean
+    content.vb: Protected Overrides Function AcceptsInput() As Boolean
+  overridden: DrawnUi.Draw.SkiaControl.AcceptsInput
+  overload: DrawnUi.Draw.SkiaToggle.AcceptsInput*
 - uid: DrawnUi.Draw.SkiaToggle.ChangeDefaultValue
   commentId: M:DrawnUi.Draw.SkiaToggle.ChangeDefaultValue
   id: ChangeDefaultValue
@@ -1536,7 +1570,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChangeDefaultValue
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 52
+    startLine: 58
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1562,7 +1596,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyWasToggled
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 60
+    startLine: 66
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1588,7 +1622,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 72
+    startLine: 78
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1617,7 +1651,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Toggled
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 79
+    startLine: 85
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1644,7 +1678,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyProperties
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 84
+    startLine: 90
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1672,7 +1706,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandToggledProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 91
+    startLine: 97
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1699,7 +1733,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandToggled
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 94
+    startLine: 100
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1728,7 +1762,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsToggledProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 100
+    startLine: 106
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1755,7 +1789,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsToggled
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 113
+    startLine: 119
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1784,7 +1818,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultValueProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 119
+    startLine: 125
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1811,7 +1845,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultValue
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 131
+    startLine: 137
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1840,7 +1874,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGesturesProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 137
+    startLine: 143
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1867,7 +1901,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGestures
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 143
+    startLine: 149
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1896,7 +1930,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 149
+    startLine: 155
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1923,7 +1957,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTapped
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 155
+    startLine: 161
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1952,7 +1986,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameterProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 161
+    startLine: 167
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1979,7 +2013,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameter
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 167
+    startLine: 173
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2008,7 +2042,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedUpdateProperties
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 173
+    startLine: 179
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2044,7 +2078,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorThumbOnProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 180
+    startLine: 186
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2071,7 +2105,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorThumbOn
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 186
+    startLine: 192
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2100,7 +2134,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorFrameOnProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 192
+    startLine: 198
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2127,7 +2161,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorFrameOn
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 198
+    startLine: 204
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2156,7 +2190,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorThumbOffProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 204
+    startLine: 210
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2183,7 +2217,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorThumbOff
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 210
+    startLine: 216
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2212,7 +2246,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorFrameOffProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 216
+    startLine: 222
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2239,7 +2273,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorFrameOff
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 222
+    startLine: 228
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2268,7 +2302,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAnimatedProperty
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 228
+    startLine: 234
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2295,7 +2329,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAnimated
     path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-    startLine: 234
+    startLine: 240
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -8357,6 +8391,13 @@ references:
   name: RedColor
   nameWithType: SkiaControl.RedColor
   fullName: DrawnUi.Draw.SkiaControl.RedColor
+- uid: DrawnUi.Draw.SkiaControl.IsInputEnabled
+  commentId: P:DrawnUi.Draw.SkiaControl.IsInputEnabled
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsInputEnabled
+  name: IsInputEnabled
+  nameWithType: SkiaControl.IsInputEnabled
+  fullName: DrawnUi.Draw.SkiaControl.IsInputEnabled
 - uid: DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   commentId: M:DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   parent: DrawnUi.Draw.SkiaControl
@@ -16652,24 +16693,85 @@ references:
     name: TouchActionResult
     isExternal: true
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.AcceptsInput
-  commentId: M:DrawnUi.Draw.SkiaControl.AcceptsInput
+- uid: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
-  name: AcceptsInput()
-  nameWithType: SkiaControl.AcceptsInput()
-  fullName: DrawnUi.Draw.SkiaControl.AcceptsInput()
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnInputStateChanged_Microsoft_Maui_Controls_BindableObject_System_Object_System_Object_
+  name: OnInputStateChanged(BindableObject, object, object)
+  nameWithType: SkiaControl.OnInputStateChanged(BindableObject, object, object)
+  fullName: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject, object, object)
+  nameWithType.vb: SkiaControl.OnInputStateChanged(BindableObject, Object, Object)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject, Object, Object)
+  name.vb: OnInputStateChanged(BindableObject, Object, Object)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
-    name: AcceptsInput
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - uid: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+    name: OnInputStateChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnInputStateChanged_Microsoft_Maui_Controls_BindableObject_System_Object_System_Object_
   - name: (
+  - uid: Microsoft.Maui.Controls.BindableObject
+    name: BindableObject
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.bindableobject
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
-    name: AcceptsInput
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - uid: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+    name: OnInputStateChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnInputStateChanged_Microsoft_Maui_Controls_BindableObject_System_Object_System_Object_
   - name: (
+  - uid: Microsoft.Maui.Controls.BindableObject
+    name: BindableObject
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.bindableobject
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BlockedGestureResult_DrawnUi_Draw_SkiaGesturesParameters_
+  name: BlockedGestureResult(SkiaGesturesParameters)
+  nameWithType: SkiaControl.BlockedGestureResult(SkiaGesturesParameters)
+  fullName: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+    name: BlockedGestureResult
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BlockedGestureResult_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+    name: BlockedGestureResult
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BlockedGestureResult_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
   commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility
@@ -42243,6 +42345,31 @@ references:
   name: DefaultAccessibilityCanInteract
   nameWithType: SkiaToggle.DefaultAccessibilityCanInteract
   fullName: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract
+- uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+  commentId: M:DrawnUi.Draw.SkiaControl.AcceptsInput
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  name: AcceptsInput()
+  nameWithType: SkiaControl.AcceptsInput()
+  fullName: DrawnUi.Draw.SkiaControl.AcceptsInput()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaToggle.AcceptsInput*
+  commentId: Overload:DrawnUi.Draw.SkiaToggle.AcceptsInput
+  href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_AcceptsInput
+  name: AcceptsInput
+  nameWithType: SkiaToggle.AcceptsInput
+  fullName: DrawnUi.Draw.SkiaToggle.AcceptsInput
 - uid: DrawnUi.Draw.SkiaToggle.ChangeDefaultValue*
   commentId: Overload:DrawnUi.Draw.SkiaToggle.ChangeDefaultValue
   href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_ChangeDefaultValue
