@@ -1791,7 +1791,7 @@ namespace DrawnUi.Draw
                         var widthBlock = (float)Math.Round(smartMeasure.Width);
                         var spanMetrics = font.Metrics;
                         var spanLineHeight =
-                            (float)Math.Round((GetCorrectedAscent(font, paint) + spanMetrics.Descent) * LineHeight);
+                            (float)Math.Round((-spanMetrics.Ascent + spanMetrics.Descent) * LineHeight);
                         var heightBlock = spanLineHeight > LineHeightPixels ? spanLineHeight : LineHeightPixels;
 
                         if (font.SkewX != 0)
@@ -3016,50 +3016,9 @@ namespace DrawnUi.Draw
 
         #region FONT
 
-#if WINDOWS
         /// <summary>
-        /// On Windows/DirectWrite, Ascent is read from OS/2 usWinAscent which is inflated
-        /// compared to FreeType/hhea on Android. We measure an actual ascender glyph ("l")
-        /// to get the true ascender height, which is what FontMetrics.Ascent is supposed to
-        /// represent. Result is cached per (typeface, size) to avoid repeated native calls
-        /// in the per-span measurement loop.
-        /// </summary>
-        static readonly System.Collections.Concurrent.ConcurrentDictionary<(IntPtr, float), float> _correctedAscentCache
- = new();
-
-        static float GetCorrectedAscent(SKFont font, SKPaint paint)
-        {
-            var key = (font.Typeface?.Handle ?? IntPtr.Zero, font.Size);
-            return _correctedAscentCache.GetOrAdd(key, _ =>
-            {
-                var rawAscent = -font.Metrics.Ascent;
-
-                var bounds = new SKRect();
-                font.MeasureText("ÁÃǺẼỠ".AsSpan(), out bounds, paint);
-
-                if (bounds.IsEmpty || bounds.Top >= 0)
-                    return rawAscent;
-
-                var measuredAscent = -bounds.Top;
-
-                // Only correct if the measured value is meaningfully taller
-                // (e.g. the font has one or two outlier glyphs with crazy diacritics)
-                const float tolerance = 2.5f; // pixels, can tune
-                if (measuredAscent > rawAscent + tolerance)
-                    return measuredAscent;   // use correction for fonts that really need it
-
-                return rawAscent;
-            });
-        }
-#else
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static float GetCorrectedAscent(SKFont font, SKPaint paint) => -font.Metrics.Ascent;
-#endif
-
-
-        /// <summary>
-        /// Pixels the font's glyphs can paint ABOVE the corrected ascent (FontMetrics.Top) and BELOW
-        /// FontMetrics.Descent (FontMetrics.Bottom). The line box is ascent + descent, so this ink lands
+        /// Pixels the font's glyphs can paint ABOVE the ascent (FontMetrics.Top, e.g. accented capitals) and BELOW
+        /// FontMetrics.Descent (FontMetrics.Bottom). The line box is ascent + descent on every platform, so this ink lands
         /// outside the measured rect: reported through ComputeEffectsMargin so a cached label (the
         /// default Operations cache draws the picture clipped to its recording area) keeps it.
         /// </summary>
@@ -3069,7 +3028,7 @@ namespace DrawnUi.Draw
         void UpdateFontMetrics(SKPaint paint, SKFont font)
         {
             FontMetrics = font.Metrics;
-            var ascent = GetCorrectedAscent(font, paint);
+            var ascent = -FontMetrics.Ascent;
             LineHeightPixels =
                 (float)Math.Round((ascent + FontMetrics.Descent) *
                                   LineHeight); //PaintText.FontSpacing;
