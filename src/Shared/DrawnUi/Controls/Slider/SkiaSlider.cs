@@ -30,6 +30,9 @@ public class SkiaSlider : SkiaLayout
 
     protected override bool DefaultAccessibilityCanInteract() => RespondsToGestures;
 
+    /// <summary>With RespondsToGestures = false neither a drag nor the arrow keys move it, and it is reported disabled.</summary>
+    protected override bool AcceptsInput() => RespondsToGestures;
+
     /// <summary>
     /// A slider has no activation: Enter / Space from keyboard navigation leave the value alone
     /// (the base synthesizes a tap at the center, which would jump the value to the middle).
@@ -1370,7 +1373,7 @@ public class SkiaSlider : SkiaLayout
         nameof(RespondsToGestures),
         typeof(bool),
         typeof(SkiaSlider),
-        true);
+        true, propertyChanged: OnInputStateChanged);
 
     /// <summary>
     /// Can be open/closed by gestures along with code-behind, default is true

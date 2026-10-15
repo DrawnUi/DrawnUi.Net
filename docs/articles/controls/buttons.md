@@ -76,7 +76,7 @@ Set the bindable `ControlStyle` property (XAML or code) to pick a look; `UsingCo
 | `TextCase` | TextTransform | The text case transformation (None, Uppercase, Lowercase) |
 | `FontSize` | double | The font size of the button text |
 | `FontFamily` | string | The font family of the button text |
-| `IsDisabled` | bool | Disables the button if true |
+| `RespondsToGestures` | bool | False switches the button off: no taps, presses or keyboard, a tap on it stops there, screen readers report it disabled (default true). On MAUI `IsEnabled = false` does the same. `IsDisabled` is its obsolete opposite |
 | `IsPressed` | bool | True while the button is pressed |
 | `IconPosition` | IconPositionType | Position of icon (icon support planned) |
 | `ApplyEffect` | SkiaTouchAnimation | Touch animation effect (`None`, `Ripple` (default), `Shimmer`) |
@@ -95,7 +95,7 @@ Icon support is planned. The `IconPosition` property exists, but icon rendering 
 
 ### Accessibility and keyboard
 
-A `SkiaButton` becomes an accessibility node when you give it a role: `AccessibilityRole = Aria.RoleButton` (its `Text` is the label), or `SkiaButton.DefaultAccessibilityRole = Aria.RoleButton` once at startup for every button. Then Tab reaches it and Enter or Space presses it; a disabled button (`IsDisabled`) is skipped by Tab, and screen readers read it as unavailable. Buttons in a container with `AccessibilityRole = Aria.RoleToolbar` are one Tab stop, the arrow keys move between them. See [Accessibility](../advanced/accessibility.md#keyboard-navigation).
+A `SkiaButton` becomes an accessibility node when you give it a role: `AccessibilityRole = Aria.RoleButton` (its `Text` is the label), or `SkiaButton.DefaultAccessibilityRole = Aria.RoleButton` once at startup for every button. Then Tab reaches it and Enter or Space presses it; a button with `RespondsToGestures = false` (or `IsEnabled = false` on MAUI) is skipped by Tab, and screen readers read it as unavailable. Buttons in a container with `AccessibilityRole = Aria.RoleToolbar` are one Tab stop, the arrow keys move between them. See [Accessibility](../advanced/accessibility.md#keyboard-navigation).
 
 ## API XML Documentation
 

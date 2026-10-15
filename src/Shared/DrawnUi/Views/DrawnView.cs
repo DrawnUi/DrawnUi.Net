@@ -3078,6 +3078,12 @@ namespace DrawnUi.Views
 #elif BROWSER
                                  
 #else
+#if IOS || MACCATALYST
+                                // a text input outside this canvas holds the keyboard (an editor in another Canvas
+                                // took it, which is why this canvas lost its focused child): it is not ours to close
+                                if (DrawnUi.Draw.SkiaEditor.TextInputHoldsKeyboardOutside(Handler?.PlatformView as UIKit.UIView))
+                                    return;
+#endif
                                 this.Focus();
                                 TouchEffect.CloseKeyboard();
 #endif

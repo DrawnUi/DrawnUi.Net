@@ -1,9 +1,15 @@
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 
 namespace DrawnUi.Draw
 {
     public partial class SkiaControl
     {
+        /// <summary>
+        /// Always true on this head: it has no IsEnabled. On MAUI it follows IsEnabled, and false makes the control
+        /// and its children take no input. Switch input off with RespondsToGestures or InputTransparent.
+        /// </summary>
+        public bool IsInputEnabled => true;
+
         #region STYLES
 
         public static readonly BindableProperty StyleProperty = BindableProperty.Create(

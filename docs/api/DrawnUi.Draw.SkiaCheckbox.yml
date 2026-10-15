@@ -103,6 +103,7 @@ items:
   - DrawnUi.Draw.SkiaToggle.IsInternalCall
   - DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed
   - DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract
+  - DrawnUi.Draw.SkiaToggle.AcceptsInput
   - DrawnUi.Draw.SkiaToggle.ChangeDefaultValue
   - DrawnUi.Draw.SkiaToggle.NotifyWasToggled
   - DrawnUi.Draw.SkiaToggle.OnDisposing
@@ -285,6 +286,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.MeasureGrid(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.DrawChildrenGrid(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize)
+  - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
   - DrawnUi.Draw.SkiaLayout.GridStructure
   - DrawnUi.Draw.SkiaLayout.GridStructureMeasured
   - DrawnUi.Draw.SkiaLayout.DefaultColumnDefinitionProperty
@@ -389,6 +391,7 @@ items:
   - DrawnUi.Draw.SkiaControl.WhiteColor
   - DrawnUi.Draw.SkiaControl.BlackColor
   - DrawnUi.Draw.SkiaControl.RedColor
+  - DrawnUi.Draw.SkiaControl.IsInputEnabled
   - DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   - DrawnUi.Draw.SkiaControl.OffscreenRenderToken
   - DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
@@ -804,7 +807,8 @@ items:
   - DrawnUi.Draw.SkiaControl.GetAccessibilityValue
   - DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
   - DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
-  - DrawnUi.Draw.SkiaControl.AcceptsInput
+  - DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+  - DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
   - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.NotifyAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
@@ -2498,6 +2502,25 @@ references:
   - uid: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract
     name: DefaultAccessibilityCanInteract
     href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_DefaultAccessibilityCanInteract
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaToggle.AcceptsInput
+  commentId: M:DrawnUi.Draw.SkiaToggle.AcceptsInput
+  parent: DrawnUi.Draw.SkiaToggle
+  href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_AcceptsInput
+  name: AcceptsInput()
+  nameWithType: SkiaToggle.AcceptsInput()
+  fullName: DrawnUi.Draw.SkiaToggle.AcceptsInput()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaToggle.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_AcceptsInput
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaToggle.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaToggle.html#DrawnUi_Draw_SkiaToggle_AcceptsInput
   - name: (
   - name: )
 - uid: DrawnUi.Draw.SkiaToggle.ChangeDefaultValue
@@ -6242,6 +6265,49 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
   - name: )
+- uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  name: BuildGridLayout(SKSize, float)
+  nameWithType: SkiaLayout.BuildGridLayout(SKSize, float)
+  fullName: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, float)
+  nameWithType.vb: SkiaLayout.BuildGridLayout(SKSize, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, Single)
+  name.vb: BuildGridLayout(SKSize, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.GridStructure
   commentId: F:DrawnUi.Draw.SkiaLayout.GridStructure
   parent: DrawnUi.Draw.SkiaLayout
@@ -8366,6 +8432,13 @@ references:
   name: RedColor
   nameWithType: SkiaControl.RedColor
   fullName: DrawnUi.Draw.SkiaControl.RedColor
+- uid: DrawnUi.Draw.SkiaControl.IsInputEnabled
+  commentId: P:DrawnUi.Draw.SkiaControl.IsInputEnabled
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsInputEnabled
+  name: IsInputEnabled
+  nameWithType: SkiaControl.IsInputEnabled
+  fullName: DrawnUi.Draw.SkiaControl.IsInputEnabled
 - uid: DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   commentId: M:DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   parent: DrawnUi.Draw.SkiaControl
@@ -16623,24 +16696,85 @@ references:
     name: TouchActionResult
     isExternal: true
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.AcceptsInput
-  commentId: M:DrawnUi.Draw.SkiaControl.AcceptsInput
+- uid: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
-  name: AcceptsInput()
-  nameWithType: SkiaControl.AcceptsInput()
-  fullName: DrawnUi.Draw.SkiaControl.AcceptsInput()
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnInputStateChanged_Microsoft_Maui_Controls_BindableObject_System_Object_System_Object_
+  name: OnInputStateChanged(BindableObject, object, object)
+  nameWithType: SkiaControl.OnInputStateChanged(BindableObject, object, object)
+  fullName: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject, object, object)
+  nameWithType.vb: SkiaControl.OnInputStateChanged(BindableObject, Object, Object)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject, Object, Object)
+  name.vb: OnInputStateChanged(BindableObject, Object, Object)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
-    name: AcceptsInput
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - uid: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+    name: OnInputStateChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnInputStateChanged_Microsoft_Maui_Controls_BindableObject_System_Object_System_Object_
   - name: (
+  - uid: Microsoft.Maui.Controls.BindableObject
+    name: BindableObject
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.bindableobject
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
-    name: AcceptsInput
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - uid: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+    name: OnInputStateChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnInputStateChanged_Microsoft_Maui_Controls_BindableObject_System_Object_System_Object_
   - name: (
+  - uid: Microsoft.Maui.Controls.BindableObject
+    name: BindableObject
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.bindableobject
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BlockedGestureResult_DrawnUi_Draw_SkiaGesturesParameters_
+  name: BlockedGestureResult(SkiaGesturesParameters)
+  nameWithType: SkiaControl.BlockedGestureResult(SkiaGesturesParameters)
+  fullName: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+    name: BlockedGestureResult
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BlockedGestureResult_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+    name: BlockedGestureResult
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BlockedGestureResult_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
   commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility

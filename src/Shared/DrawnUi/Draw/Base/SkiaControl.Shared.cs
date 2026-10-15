@@ -1917,6 +1917,12 @@ namespace DrawnUi.Draw
         {
             if (CanDraw && this is ISkiaGestureListener listener)
             {
+                if (!IsInputEnabled)
+                {
+                    // disabled (MAUI IsEnabled = false): neither this control nor its children react
+                    return BlockedGestureResult(args);
+                }
+
                 var canvas = _superview as Canvas;
                 if (canvas != null)
                 {
@@ -5370,13 +5376,14 @@ namespace DrawnUi.Draw
         /// </summary>
         public bool CanReceiveGesture(TouchActionResult gesture)
         {
-            if (!CanDraw || InputTransparent || !AcceptsInput())
+            if (!CanDraw || InputTransparent || !IsInputEnabled || !AcceptsInput())
                 return false;
 
             var parent = Parent as SkiaControl;
             while (parent != null)
             {
-                if (!parent.CanDraw || parent.InputTransparent || parent.CheckChildrenGesturesLocked(gesture))
+                if (!parent.CanDraw || parent.InputTransparent || !parent.IsInputEnabled
+                    || parent.CheckChildrenGesturesLocked(gesture))
                     return false;
                 parent = parent.Parent as SkiaControl;
             }
@@ -5384,8 +5391,33 @@ namespace DrawnUi.Draw
             return true;
         }
 
-        /// <summary>False while the control ignores gestures itself, e.g. a disabled button. Default true.</summary>
+        /// <summary>
+        /// False while the control ignores input itself: RespondsToGestures = false on a button, toggle, slider,
+        /// scroll... Taps, keyboard and the accessibility state (reported disabled) all follow it. Default true.
+        /// </summary>
         protected virtual bool AcceptsInput() => true;
+
+        /// <summary>
+        /// Property-changed callback for what <see cref="AcceptsInput"/> reads (RespondsToGestures): screen readers
+        /// get the new enabled / disabled state.
+        /// </summary>
+        protected static void OnInputStateChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            (bindable as SkiaControl)?.NotifyAccessibility();
+        }
+
+        /// <summary>
+        /// What a control that takes no input returns for a gesture that reached it: it keeps a press, tap, long
+        /// press or context menu, so nothing under it reacts to them, and lets moves, wheel and hover go on to the
+        /// controls around it (a scroll behind it still scrolls).
+        /// </summary>
+        protected ISkiaGestureListener BlockedGestureResult(SkiaGesturesParameters args)
+        {
+            return args.Type is TouchActionResult.Down or TouchActionResult.Tapped
+                or TouchActionResult.LongPressing or TouchActionResult.ContextMenu
+                ? this as ISkiaGestureListener
+                : null;
+        }
 
         /// <summary>
         /// Called automatically on first layout. Call manually when label, hint, or state changes.
@@ -6472,10 +6504,13 @@ namespace DrawnUi.Draw
 
         public virtual SKRect GetMeasuringRectForChildren(float widthConstraint, float heightConstraint, double scale)
         {
-            var constraintLeft = (UsePadding.Left + Margins.Left) * scale;
-            var constraintRight = (UsePadding.Right + Margins.Right) * scale;
-            var constraintTop = (UsePadding.Top + Margins.Top) * scale;
-            var constraintBottom = (UsePadding.Bottom + Margins.Bottom) * scale;
+            // the measured size adds each side rounded (GetAllMarginsInPixels): subtracting the raw sides took up
+            // to a pixel more, so a control measured again at its own measured size lost a line of text
+            // (18 pt margin at scale 1.25: 22 px added, 22.5 taken)
+            var constraintLeft = Reserve(UsePadding.Left + Margins.Left, (float)scale);
+            var constraintRight = Reserve(UsePadding.Right + Margins.Right, (float)scale);
+            var constraintTop = Reserve(UsePadding.Top + Margins.Top, (float)scale);
+            var constraintBottom = Reserve(UsePadding.Bottom + Margins.Bottom, (float)scale);
 
             //SKRect rectForChild = new SKRect(0 + (float)constraintLeft,
             //    0 + (float)constraintTop,
@@ -6567,18 +6602,23 @@ namespace DrawnUi.Draw
         /// </summary>
         public static SKRect ContractPixelsRectForContent(SKRect rect, float scale, in Thickness amount)
         {
-            static float Reserve(double inset, float scale)
-            {
-                var raw = (float)(inset * scale);
-                return Math.Min(raw, (float)Math.Round(raw));
-            }
-
             return new SKRect(
                 rect.Left + Reserve(amount.Left, scale),
                 rect.Top + Reserve(amount.Top, scale),
                 rect.Right - Reserve(amount.Right, scale),
                 rect.Bottom - Reserve(amount.Bottom, scale)
             );
+        }
+
+        /// <summary>
+        /// Pixels an inset takes from the content: the smaller of the raw inset and the rounded one that measuring
+        /// adds to the measured size (<see cref="GetAllMarginsInPixels"/>), so content never gets less room than
+        /// it was measured with.
+        /// </summary>
+        static float Reserve(double inset, float scale)
+        {
+            var raw = (float)(inset * scale);
+            return Math.Min(raw, (float)Math.Round(raw));
         }
 
         public static SKRect ExpandPixelsRect(SKRect rect, float scale, in Thickness amount)
@@ -7792,8 +7832,11 @@ namespace DrawnUi.Draw
             var super = this.Superview;
             if (super != null)
             {
-                Superview.PostponeExecutionBeforeDraw(() => { action(); }, key);
+                super.PostponeExecutionBeforeDraw(() => { action(); }, key);
                 Repaint();
+                // the action waits for the canvas's next frame: ask the canvas for it, Repaint climbs the parents
+                // and stops at a hidden one (the root a shell modal froze), then no frame came until another redraw
+                super.RequestNextFrame();
             }
             else
             {
@@ -9939,30 +9982,28 @@ namespace DrawnUi.Draw
         private SKRect _drawingRect;
 
         /// <summary>
-        /// Rounds SKRect coordinates to nearest pixel values
+        /// Rounds SKRect coordinates to nearest pixel values, a half pixel up on every edge, so a rect at a
+        /// half-pixel offset keeps its whole-pixel width. Math.Round rounds a half to the even pixel: 17.5 to 94.5
+        /// became 18 to 94 and a label arranged there lost the pixel its last glyph needed.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static SKRect RoundToPixels(SKRect rect)
         {
-            return new SKRect(
-                (float)Math.Round(rect.Left),
-                (float)Math.Round(rect.Top),
-                (float)Math.Round(rect.Right),
-                (float)Math.Round(rect.Bottom)
-            );
+            return RoundToPixels(rect.Left, rect.Top, rect.Right, rect.Bottom);
         }
 
         /// <summary>
-        /// Rounds SKRect coordinates to nearest pixel values
+        /// Rounds SKRect coordinates to nearest pixel values, a half pixel up on every edge
+        /// (see <see cref="RoundToPixels(SKRect)"/>).
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static SKRect RoundToPixels(float left, float top, float right, float bottom)
         {
             return new SKRect(
-                (float)Math.Round(left),
-                (float)Math.Round(top),
-                (float)Math.Round(right),
-                (float)Math.Round(bottom)
+                MathF.Floor(left + 0.5f),
+                MathF.Floor(top + 0.5f),
+                MathF.Floor(right + 0.5f),
+                MathF.Floor(bottom + 0.5f)
             );
         }
 

@@ -372,7 +372,13 @@ Options:
 - `PassTap`: Only tap/click events reach children
 - `PassTapAndLongPress`: Tap and long-press pass through
 
-Interactive controls that move themselves, `SkiaScroll`, `SkiaDrawer`, `SkiaCarousel`, `SkiaSlider`, `SkiaSpinner`, and the toggles `SkiaSwitch` / `SkiaCheckbox` / `SkiaRadioButton`, also expose `RespondsToGestures` (default true). Set it to false and the control ignores user input while still being driven from code: a code-only scroll, a drawer opened only by a button, a read-only toggle. It also works as a temporary hand-over: a drag handle inside a scroll sets `scroll.RespondsToGestures = false` on Down and back to true on Up, so the vertical pan is the handle's for the length of the drag (see [Drag to Reorder a List](advanced/reorder.md)).
+## Switching input off
+
+Interactive controls, `SkiaButton`, `SkiaScroll`, `SkiaDrawer`, `SkiaCarousel`, `SkiaSlider`, `SkiaSpinner`, and the toggles `SkiaSwitch` / `SkiaCheckbox` / `SkiaRadioButton`, expose `RespondsToGestures` (default true). Set it to false and the control ignores the user while code still drives it: a button that can't be pressed yet, a read-only toggle, a code-only scroll, a drawer opened only by a button. Taps and the keyboard do nothing, a tap on a button or toggle stops there (nothing under it reacts), and screen readers report the control as disabled. Content inside a scroll or drawer still takes its own taps. `SkiaButton.IsDisabled` is the obsolete opposite of `RespondsToGestures`.
+
+To switch off a whole area on MAUI, set `IsEnabled = false` on any drawn control or layout: it and everything inside it take no taps or keyboard input and are reported disabled, and a tap on them stops there. Other heads have no `IsEnabled`: use `InputTransparent = true`, which also stops input for the area and reports it disabled, but lets a tap through to what is under it.
+
+`RespondsToGestures` also works as a temporary hand-over: a drag handle inside a scroll sets `scroll.RespondsToGestures = false` on Down and back to true on Up, so the vertical pan is the handle's for the length of the drag (see [Drag to Reorder a List](advanced/reorder.md)).
 
 ## Practical routing
 

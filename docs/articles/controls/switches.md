@@ -69,7 +69,7 @@ private void OnSwitchToggled(object sender, bool isToggled)
 | `ControlStyle` | PrebuiltControlStyle | The platform-specific style, can be changed at runtime |
 | `IsAnimated` | bool | Whether state changes are animated |
 | `AnimationSpeed` | static uint | Animation duration in milliseconds for every switch, `SkiaSwitch.AnimationSpeed` (default: 200) |
-| `RespondsToGestures` | bool | Default true. False: a tap does not toggle it, only `IsToggled` from code does |
+| `RespondsToGestures` | bool | Default true. False: a tap or the keyboard does not toggle it, only `IsToggled` from code does; a tap on it stops there and screen readers read it as unavailable |
 
 ### Events
 
@@ -115,7 +115,7 @@ SkiaCheckbox shares most properties with SkiaSwitch, both inheriting from SkiaTo
 | `ColorFrameOn/Off` | Color | The color of the frame in each state |
 | `ColorThumbOn/Off` | Color | The color of the thumb in each state |
 | `IsAnimated` | bool | Whether state changes are animated |
-| `RespondsToGestures` | bool | Default true. False: user taps are ignored, `IsToggled` is set from code only |
+| `RespondsToGestures` | bool | Default true. False: user taps and the keyboard are ignored, `IsToggled` is set from code only; screen readers read it as unavailable |
 
 ### Events
 

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -307,7 +307,7 @@ public class SkiaSpinner : SkiaLayout
         nameof(RespondsToGestures),
         typeof(bool),
         typeof(SkiaSpinner),
-        true);
+        true, propertyChanged: OnInputStateChanged);
 
     /// <summary>
     /// If disabled will not scroll using gestures. Scrolling will still be possible by code.
@@ -317,6 +317,9 @@ public class SkiaSpinner : SkiaLayout
         get { return (bool)GetValue(RespondsToGesturesProperty); }
         set { SetValue(RespondsToGesturesProperty, value); }
     }
+
+    /// <summary>With RespondsToGestures = false neither a drag nor the keyboard spins it, and it is reported disabled; its children are not affected.</summary>
+    protected override bool AcceptsInput() => RespondsToGestures;
 
     #endregion
 

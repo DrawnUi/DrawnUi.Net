@@ -291,12 +291,16 @@ public static partial class DrawnExtensions
                     Super.Init();
 
 #if MACCATALYST
-                    var appWindow = Super.App.Windows.FirstOrDefault() as Microsoft.Maui.Controls.Window;
 
                     Foundation.NSNotificationCenter.DefaultCenter.AddObserver("NSWindowDidBecomeMainNotification", null, null,
                               (h) =>
                               {
-                                  if (!windowAdapted && StartupSettings.DesktopWindow != null)
+                                  // Resolve the window here, not at FinishedLaunching: when the app declares
+                                  // UIApplicationSceneManifest the scene has not connected yet at launch, so
+                                  // Super.App.Windows is still empty and a captured reference would stay null.
+                                  var appWindow = Super.App?.Windows?.FirstOrDefault() as Microsoft.Maui.Controls.Window;
+
+                                  if (!windowAdapted && StartupSettings.DesktopWindow != null && appWindow != null)
                                   {
                                       Super.ResizeWindow(appWindow,
                                           StartupSettings.DesktopWindow.Value.Width,
@@ -305,7 +309,7 @@ public static partial class DrawnExtensions
                                       windowAdapted = true;
                                   }
 
-                                  if (UIKit.UIApplication.SharedApplication.KeyWindow.RootViewController is Microsoft.Maui.Platform.ContainerViewController container)
+                                  if (UIKit.UIApplication.SharedApplication.KeyWindow?.RootViewController is Microsoft.Maui.Platform.ContainerViewController container)
                                   {
                                       if (container.CurrentView is DrawnUiBasePage page)
                                       {

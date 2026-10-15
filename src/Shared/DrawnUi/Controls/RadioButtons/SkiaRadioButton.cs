@@ -391,6 +391,9 @@ public class SkiaRadioButton : SkiaToggle, ISkiaRadioButton
 
     public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     {
+        if (!RespondsToGestures)
+            return BlockedGestureResult(args); // a tap does not select it, nor reach controls under it
+
         if (ReceivesHover)
             CheckHovered(args);
 

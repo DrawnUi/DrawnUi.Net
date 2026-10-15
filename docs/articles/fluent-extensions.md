@@ -333,12 +333,12 @@ new SkiaButton("Submit")
     {
         if (viewModel.CanSubmit && !viewModel.IsLoading)
         {
-            me.IsEnabled = true;
+            me.RespondsToGestures = true;
             me.Opacity = 1.0;
         }
         else
         {
-            me.IsEnabled = false;
+            me.RespondsToGestures = false;
             me.Opacity = 0.5;
         }
     });
@@ -648,7 +648,7 @@ var submitButton = new SkiaButton("Submit")
         bool attached = prop == nameof(BindingContext);
         if (attached || prop == nameof(vm.CanSubmit))
         {
-            btn.IsEnabled = vm.CanSubmit;
+            btn.RespondsToGestures = vm.CanSubmit;
             btn.Opacity = vm.CanSubmit ? 1.0 : 0.5;
         }
         if (attached || prop == nameof(vm.IsReadOnly))

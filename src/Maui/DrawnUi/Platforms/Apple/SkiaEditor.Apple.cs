@@ -34,8 +34,7 @@ namespace DrawnUi.Draw
                 // _updatingText, so SyncNativeText skipped and the native view kept the old text. Make it follow Text.
                 // Same contract as Android: the caret keeps its distance from the end of the text, so it stays where
                 // the user typed whether the handler dropped characters (input filter, max length) or rewrote the
-                // text ("0" then 5 typed becomes "5"). The caret after the edit comes from ShouldChangeText,
-                // SelectedRange is not reliable yet inside textViewDidChange.
+                // text ("0" then 5 typed becomes "5"). The caret after the edit comes from ShouldChangeText.
                 var text = _editor.Text ?? string.Empty;
                 if (nativeText != text)
                 {
@@ -48,8 +47,13 @@ namespace DrawnUi.Draw
                         textView.SelectedRange = new NSRange(caret, 0);
                     }
                     finally { _editor._updatingText = false; }
-                    _editor.SetCursorPositionWithDelay(50, caret);
+                    _editor.SetCursorFromNative(caret, 0);
+                    return;
                 }
+
+                // UIKit applied the text and the selection: the drawn caret takes it now, no delay
+                var range = textView.SelectedRange;
+                _editor.SetCursorFromNative((int)range.Location, (int)range.Length);
             }
 
             public override void SelectionChanged(UITextView textView)
@@ -60,12 +64,14 @@ namespace DrawnUi.Draw
                     return;
                 }
 
-                var range = textView.SelectedRange;
-                var location = (int)range.Location;
-                var length = (int)range.Length;
+                // our own writes to the sink (text sync, rewrite resync) are not the user's
+                if (_editor._updatingText)
+                    return;
 
-                _editor.SelectionLength = length;
-                _editor.SetCursorPositionWithDelay(50, location + length);
+                // a selection change alone (IME, autocorrect, hardware arrows) moves the caret too, at once;
+                // while typing it comes before Changed, the caret is placed once the label drew the new text
+                var range = textView.SelectedRange;
+                _editor.SetCursorFromNative((int)range.Location, (int)range.Length);
             }
 
             public override bool ShouldChangeText(UITextView textView, NSRange range, string text)
@@ -121,6 +127,7 @@ namespace DrawnUi.Draw
             {
                 Control.Delegate = null;
                 Control.DetachedFromWindow = null;
+                Control.LostFirstResponder = null;
                 // CanResignFirstResponder is false while IsFocused: clear it or the resign is refused
                 // and the removed view keeps the keyboard up forever.
                 Control.IsFocused = false;
@@ -178,6 +185,14 @@ namespace DrawnUi.Draw
                     IsFocused = false;
             };
 
+            // The sink lost first responder (another editor or a native entry took the keyboard): the drawn
+            // editor drops its focus too, so only one caret blinks. Android does this in its focus listener.
+            Control.LostFirstResponder = () =>
+            {
+                if (IsFocused)
+                    IsFocused = false;
+            };
+
             _layout.AddSubview(Control);
         }
 
@@ -217,6 +232,11 @@ namespace DrawnUi.Draw
 
                     ApplyKeyboardType();
 
+                    // A sink of another editor (another Canvas) refuses to resign while its flag is set, which made
+                    // BecomeFirstResponder fail here: the keyboard stayed on the old field and both carets blinked.
+                    // Same as Android, focus moves to the input that asks for it.
+                    NativeEntryView.ReleaseCurrent(Control);
+
                     Control.IsFocused = true;
                     Control.BecomeFirstResponder();
                 }
@@ -225,7 +245,9 @@ namespace DrawnUi.Draw
                     if (Control != null)
                     {
                         Control.IsFocused = false;
-                        Control.ResignFirstResponder();
+                        // the keyboard already belongs to the input that took first responder: leave it up
+                        if (Control.IsFirstResponder)
+                            Control.ResignFirstResponder();
                     }
                 }
             }
@@ -318,34 +340,38 @@ namespace DrawnUi.Draw
                 Control.ReloadInputViews();
         }
 
-        private CancellationTokenSource? _deferCts;
-
-        private async void DeferVisualCursorUpdate()
-        {
-            _deferCts?.Cancel();
-            _deferCts = new CancellationTokenSource();
-            var token = _deferCts.Token;
-            try
-            {
-                await Task.Delay(50, token);
-                _suppressImmediateCursorMove = false;
-                MoveInternalCursor();
-            }
-            catch (OperationCanceledException)
-            {
-                _suppressImmediateCursorMove = false;
-            }
-        }
-
-        partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
-
-        partial void OnTextInsertedAtCursor() => DeferVisualCursorUpdate();
-
         public int GenerateUniqueId()
         {
             long currentTime = DateTime.Now.Ticks;
             int uniqueId = unchecked((int)currentTime);
             return uniqueId;
+        }
+
+        /// <summary>
+        /// True when a text input that is not inside <paramref name="view"/> holds the keyboard
+        /// (an editor in another Canvas or a native entry): that keyboard is not this view's to close.
+        /// </summary>
+        public static bool TextInputHoldsKeyboardOutside(UIView view)
+        {
+            var responder = FindFirstResponder(view?.Window);
+            if (responder is not (UITextView or UITextField))
+                return false;
+            return view == null || !responder.IsDescendantOfView(view);
+        }
+
+        static UIView FindFirstResponder(UIView root)
+        {
+            if (root == null)
+                return null;
+            if (root.IsFirstResponder)
+                return root;
+            foreach (var sub in root.Subviews)
+            {
+                var found = FindFirstResponder(sub);
+                if (found != null)
+                    return found;
+            }
+            return null;
         }
 
         public class NativeEntryView : UITextView
@@ -354,7 +380,40 @@ namespace DrawnUi.Draw
 
             public override bool CanResignFirstResponder => !IsFocused;
 
+            public override bool ResignFirstResponder()
+            {
+                var wasFirstResponder = IsFirstResponder;
+                var r = base.ResignFirstResponder();
+                if (wasFirstResponder && !IsFirstResponder)
+                {
+                    IsFocused = false;
+                    LostFirstResponder?.Invoke();
+                }
+                return r;
+            }
+
             public Action DetachedFromWindow { get; set; }
+
+            public Action LostFirstResponder { get; set; }
+
+            static WeakReference<NativeEntryView> _current;
+
+            /// <summary>
+            /// Lets the sink currently holding the keyboard give it up to <paramref name="next"/>.
+            /// </summary>
+            public static void ReleaseCurrent(NativeEntryView next)
+            {
+                if (_current != null && _current.TryGetTarget(out var current) && current != next && current.IsFirstResponder)
+                    current.IsFocused = false;
+            }
+
+            public override bool BecomeFirstResponder()
+            {
+                var ok = base.BecomeFirstResponder();
+                if (ok)
+                    _current = new WeakReference<NativeEntryView>(this);
+                return ok;
+            }
 
             public override void WillMoveToWindow(UIWindow window)
             {

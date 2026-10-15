@@ -409,7 +409,7 @@
 
                                     <draw:SkiaButton
                                         BackgroundColor="#bdc3c7"
-                                        IsDisabled="True"
+                                        RespondsToGestures="False"
                                         Tapped="OnButtonClicked"
                                         Text="Disabled Button"
                                         WidthRequest="180" />

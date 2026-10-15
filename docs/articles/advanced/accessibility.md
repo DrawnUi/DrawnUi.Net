@@ -236,9 +236,9 @@ On an OpenTK window, Enter, Space, Escape and the arrow keys go to the focused n
 - the control and every ancestor draw;
 - none of them is `InputTransparent`;
 - no ancestor's `LockChildrenGestures` holds that gesture back;
-- the control accepts input (a disabled `SkiaButton` does not).
+- the control accepts input: its `RespondsToGestures` is true (button, toggles, slider, spinner, scroll, drawer, carousel), and on .NET MAUI neither it nor an ancestor has `IsEnabled = false`.
 
-`AccessibilityCanInteract` reports it, even when you set it to true yourself. Opacity does not count, just as for the pointer: to take a control out of input, use `InputTransparent` or `IsVisible`. A dimmed locked group with `InputTransparent = true` locks its sliders for the keyboard too. Changes at runtime (a recycled cell rebound, a lock lifted) apply at the next key press.
+`AccessibilityCanInteract` reports it, even when you set it to true yourself. Opacity does not count, just as for the pointer: to take a control out of input, use `RespondsToGestures = false` on an interactive control (it keeps its look and reads as unavailable), `IsEnabled = false` on .NET MAUI for a whole subtree, or `InputTransparent` / `IsVisible`. A dimmed locked group with `InputTransparent = true` locks its sliders for the keyboard too. Changes at runtime (a recycled cell rebound, a lock lifted) apply at the next key press.
 
 **Text fields.** A `SkiaEditor` is a Tab stop by default, like a native text box:
 

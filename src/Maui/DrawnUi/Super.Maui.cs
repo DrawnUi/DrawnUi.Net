@@ -221,6 +221,9 @@ namespace DrawnUi.Draw
         /// <param name="isFixed"></param>
         public static void ResizeWindow(Window window, int width, int height, bool isFixed)
         {
+            if (window == null)
+                return;
+
             var disp = DeviceDisplay.Current.MainDisplayInfo;
 
             // move to screen center

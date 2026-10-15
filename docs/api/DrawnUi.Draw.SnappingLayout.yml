@@ -5,6 +5,7 @@ items:
   id: SnappingLayout
   parent: DrawnUi.Draw
   children:
+  - DrawnUi.Draw.SnappingLayout.AcceptsInput
   - DrawnUi.Draw.SnappingLayout.Animated
   - DrawnUi.Draw.SnappingLayout.AnimatedProperty
   - DrawnUi.Draw.SnappingLayout.AnimatorRange
@@ -47,6 +48,7 @@ items:
   - DrawnUi.Draw.SnappingLayout.SendScrolled
   - DrawnUi.Draw.SnappingLayout.SnapDistanceRatio
   - DrawnUi.Draw.SnappingLayout.SnapPoints
+  - DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
   - DrawnUi.Draw.SnappingLayout.TransitionChanged
   - DrawnUi.Draw.SnappingLayout.TransitionDirection
   - DrawnUi.Draw.SnappingLayout.TransitionDirectionProperty
@@ -277,6 +279,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.MeasureGrid(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.DrawChildrenGrid(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize)
+  - DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
   - DrawnUi.Draw.SkiaLayout.GridStructure
   - DrawnUi.Draw.SkiaLayout.GridStructureMeasured
   - DrawnUi.Draw.SkiaLayout.DefaultColumnDefinitionProperty
@@ -381,6 +384,7 @@ items:
   - DrawnUi.Draw.SkiaControl.WhiteColor
   - DrawnUi.Draw.SkiaControl.BlackColor
   - DrawnUi.Draw.SkiaControl.RedColor
+  - DrawnUi.Draw.SkiaControl.IsInputEnabled
   - DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   - DrawnUi.Draw.SkiaControl.OffscreenRenderToken
   - DrawnUi.Draw.SkiaControl.RenewOffscreenRenderToken(System.Int64@)
@@ -802,7 +806,8 @@ items:
   - DrawnUi.Draw.SkiaControl.GetAccessibilityValue
   - DrawnUi.Draw.SkiaControl.OnAccessibilitySetValue(System.Double)
   - DrawnUi.Draw.SkiaControl.CanReceiveGesture(AppoMobi.Gestures.TouchActionResult)
-  - DrawnUi.Draw.SkiaControl.AcceptsInput
+  - DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+  - DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
   - DrawnUi.Draw.SkiaControl.NotifyAccessibility
   - DrawnUi.Draw.SkiaControl.NotifyAccessibilityFocused(System.Boolean)
   - DrawnUi.Draw.SkiaControl.IsLayoutReady
@@ -1733,6 +1738,42 @@ items:
       type: System.Double
     content.vb: Public Property SnapDistanceRatio As Double
   overload: DrawnUi.Draw.SnappingLayout.SnapDistanceRatio*
+- uid: DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
+  commentId: P:DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
+  id: SnapVelocityThreshold
+  parent: DrawnUi.Draw.SnappingLayout
+  langs:
+  - csharp
+  - vb
+  name: SnapVelocityThreshold
+  nameWithType: SnappingLayout.SnapVelocityThreshold
+  fullName: DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SnapVelocityThreshold
+    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    startLine: 146
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Release speed, in points per second along an axis, below which the snap ignores the velocity and goes
+
+    to the nearest anchor by distance. A finger held still before lifting is not a flick: it still trembles,
+
+    and without this a few points per second toward the next anchor were enough to go there. Default 100.
+  example: []
+  syntax:
+    content: public float SnapVelocityThreshold { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property SnapVelocityThreshold As Single
+  overload: DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold*
 - uid: DrawnUi.Draw.SnappingLayout.ScrollToNearestAnchor(System.Numerics.Vector2,System.Numerics.Vector2)
   commentId: M:DrawnUi.Draw.SnappingLayout.ScrollToNearestAnchor(System.Numerics.Vector2,System.Numerics.Vector2)
   id: ScrollToNearestAnchor(System.Numerics.Vector2,System.Numerics.Vector2)
@@ -1751,7 +1792,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToNearestAnchor
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 141
+    startLine: 148
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1782,7 +1823,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanAnimate
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 163
+    startLine: 175
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1811,7 +1852,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollLocked
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 171
+    startLine: 183
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1840,7 +1881,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VectorAnimatorSpring
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 173
+    startLine: 185
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1867,7 +1908,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimatorRange
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 175
+    startLine: 187
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1894,7 +1935,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CurrentSnap
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 179
+    startLine: 191
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1923,7 +1964,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetAutoVelocity
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 196
+    startLine: 208
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1958,7 +1999,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToOffset
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 209
+    startLine: 221
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1999,7 +2040,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyPosition
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 306
+    startLine: 318
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2028,7 +2069,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Render
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 317
+    startLine: 329
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2059,7 +2100,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SendScrolled
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 324
+    startLine: 336
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2085,7 +2126,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Scrolled
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 329
+    startLine: 341
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2112,7 +2153,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckTransitionEnded
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 331
+    startLine: 343
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2140,7 +2181,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CurrentPosition
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 338
+    startLine: 350
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2169,7 +2210,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateReportedPosition
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 350
+    startLine: 362
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2195,7 +2236,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyOptions
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 359
+    startLine: 371
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2227,7 +2268,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimatedProperty
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 364
+    startLine: 376
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2254,7 +2295,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Animated
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 370
+    startLine: 382
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2283,7 +2324,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedApplyOptions
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 377
+    startLine: 389
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2319,7 +2360,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGesturesProperty
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 385
+    startLine: 397
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2346,7 +2387,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGestures
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 394
+    startLine: 406
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2359,6 +2400,37 @@ items:
       type: System.Boolean
     content.vb: Public Property RespondsToGestures As Boolean
   overload: DrawnUi.Draw.SnappingLayout.RespondsToGestures*
+- uid: DrawnUi.Draw.SnappingLayout.AcceptsInput
+  commentId: M:DrawnUi.Draw.SnappingLayout.AcceptsInput
+  id: AcceptsInput
+  parent: DrawnUi.Draw.SnappingLayout
+  langs:
+  - csharp
+  - vb
+  name: AcceptsInput()
+  nameWithType: SnappingLayout.AcceptsInput()
+  fullName: DrawnUi.Draw.SnappingLayout.AcceptsInput()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AcceptsInput
+    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    startLine: 413
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: With RespondsToGestures = false neither a swipe nor the keyboard moves it, and it is reported disabled; its children are not affected.
+  example: []
+  syntax:
+    content: protected override bool AcceptsInput()
+    return:
+      type: System.Boolean
+    content.vb: Protected Overrides Function AcceptsInput() As Boolean
+  overridden: DrawnUi.Draw.SkiaControl.AcceptsInput
+  overload: DrawnUi.Draw.SnappingLayout.AcceptsInput*
 - uid: DrawnUi.Draw.SnappingLayout.IgnoreWrongDirectionProperty
   commentId: F:DrawnUi.Draw.SnappingLayout.IgnoreWrongDirectionProperty
   id: IgnoreWrongDirectionProperty
@@ -2377,7 +2449,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IgnoreWrongDirectionProperty
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 400
+    startLine: 415
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2404,7 +2476,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IgnoreWrongDirection
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 409
+    startLine: 424
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2435,7 +2507,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BouncesProperty
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 416
+    startLine: 431
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2462,7 +2534,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Bounces
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 422
+    startLine: 437
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2491,7 +2563,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TransitionDirectionProperty
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 429
+    startLine: 444
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2518,7 +2590,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TransitionDirection
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 435
+    startLine: 450
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2547,7 +2619,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InTransitionProperty
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 441
+    startLine: 456
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2574,7 +2646,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InTransition
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 455
+    startLine: 470
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2603,7 +2675,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTransitionChanged
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 465
+    startLine: 480
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2634,7 +2706,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RubberDampingProperty
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 475
+    startLine: 490
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2661,7 +2733,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RubberDamping
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 484
+    startLine: 499
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2692,7 +2764,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoVelocityMultiplyPtsProperty
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 490
+    startLine: 505
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2719,7 +2791,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoVelocityMultiplyPts
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 500
+    startLine: 515
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2753,7 +2825,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RubberEffectProperty
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 506
+    startLine: 521
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2780,7 +2852,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RubberEffect
     path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-    startLine: 515
+    startLine: 530
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6715,6 +6787,49 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
   - name: )
+- uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  name: BuildGridLayout(SKSize, float)
+  nameWithType: SkiaLayout.BuildGridLayout(SKSize, float)
+  fullName: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, float)
+  nameWithType.vb: SkiaLayout.BuildGridLayout(SKSize, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize, Single)
+  name.vb: BuildGridLayout(SKSize, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.BuildGridLayout(SkiaSharp.SKSize,System.Single)
+    name: BuildGridLayout
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_BuildGridLayout_SkiaSharp_SKSize_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKSize
+    name: SKSize
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.sksize
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
 - uid: DrawnUi.Draw.SkiaLayout.GridStructure
   commentId: F:DrawnUi.Draw.SkiaLayout.GridStructure
   parent: DrawnUi.Draw.SkiaLayout
@@ -8839,6 +8954,13 @@ references:
   name: RedColor
   nameWithType: SkiaControl.RedColor
   fullName: DrawnUi.Draw.SkiaControl.RedColor
+- uid: DrawnUi.Draw.SkiaControl.IsInputEnabled
+  commentId: P:DrawnUi.Draw.SkiaControl.IsInputEnabled
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsInputEnabled
+  name: IsInputEnabled
+  nameWithType: SkiaControl.IsInputEnabled
+  fullName: DrawnUi.Draw.SkiaControl.IsInputEnabled
 - uid: DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   commentId: M:DrawnUi.Draw.SkiaControl.OnPropertyChanged(System.String)
   parent: DrawnUi.Draw.SkiaControl
@@ -17214,24 +17336,85 @@ references:
     name: TouchActionResult
     isExternal: true
   - name: )
-- uid: DrawnUi.Draw.SkiaControl.AcceptsInput
-  commentId: M:DrawnUi.Draw.SkiaControl.AcceptsInput
+- uid: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+  commentId: M:DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
   parent: DrawnUi.Draw.SkiaControl
-  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
-  name: AcceptsInput()
-  nameWithType: SkiaControl.AcceptsInput()
-  fullName: DrawnUi.Draw.SkiaControl.AcceptsInput()
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnInputStateChanged_Microsoft_Maui_Controls_BindableObject_System_Object_System_Object_
+  name: OnInputStateChanged(BindableObject, object, object)
+  nameWithType: SkiaControl.OnInputStateChanged(BindableObject, object, object)
+  fullName: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject, object, object)
+  nameWithType.vb: SkiaControl.OnInputStateChanged(BindableObject, Object, Object)
+  fullName.vb: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject, Object, Object)
+  name.vb: OnInputStateChanged(BindableObject, Object, Object)
   spec.csharp:
-  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
-    name: AcceptsInput
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - uid: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+    name: OnInputStateChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnInputStateChanged_Microsoft_Maui_Controls_BindableObject_System_Object_System_Object_
   - name: (
+  - uid: Microsoft.Maui.Controls.BindableObject
+    name: BindableObject
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.bindableobject
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
   - name: )
   spec.vb:
-  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
-    name: AcceptsInput
-    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - uid: DrawnUi.Draw.SkiaControl.OnInputStateChanged(Microsoft.Maui.Controls.BindableObject,System.Object,System.Object)
+    name: OnInputStateChanged
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_OnInputStateChanged_Microsoft_Maui_Controls_BindableObject_System_Object_System_Object_
   - name: (
+  - uid: Microsoft.Maui.Controls.BindableObject
+    name: BindableObject
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.bindableobject
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BlockedGestureResult_DrawnUi_Draw_SkiaGesturesParameters_
+  name: BlockedGestureResult(SkiaGesturesParameters)
+  nameWithType: SkiaControl.BlockedGestureResult(SkiaGesturesParameters)
+  fullName: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+    name: BlockedGestureResult
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BlockedGestureResult_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.BlockedGestureResult(DrawnUi.Draw.SkiaGesturesParameters)
+    name: BlockedGestureResult
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_BlockedGestureResult_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
   - name: )
 - uid: DrawnUi.Draw.SkiaControl.NotifyAccessibility
   commentId: M:DrawnUi.Draw.SkiaControl.NotifyAccessibility
@@ -42562,6 +42745,12 @@ references:
   nameWithType.vb: Double
   fullName.vb: Double
   name.vb: Double
+- uid: DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold*
+  commentId: Overload:DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
+  href: DrawnUi.Draw.SnappingLayout.html#DrawnUi_Draw_SnappingLayout_SnapVelocityThreshold
+  name: SnapVelocityThreshold
+  nameWithType: SnappingLayout.SnapVelocityThreshold
+  fullName: DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
 - uid: DrawnUi.Draw.SnappingLayout.ScrollToNearestAnchor*
   commentId: Overload:DrawnUi.Draw.SnappingLayout.ScrollToNearestAnchor
   href: DrawnUi.Draw.SnappingLayout.html#DrawnUi_Draw_SnappingLayout_ScrollToNearestAnchor_System_Numerics_Vector2_System_Numerics_Vector2_
@@ -42747,6 +42936,31 @@ references:
   name: RespondsToGestures
   nameWithType: SnappingLayout.RespondsToGestures
   fullName: DrawnUi.Draw.SnappingLayout.RespondsToGestures
+- uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+  commentId: M:DrawnUi.Draw.SkiaControl.AcceptsInput
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  name: AcceptsInput()
+  nameWithType: SkiaControl.AcceptsInput()
+  fullName: DrawnUi.Draw.SkiaControl.AcceptsInput()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.AcceptsInput
+    name: AcceptsInput
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AcceptsInput
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SnappingLayout.AcceptsInput*
+  commentId: Overload:DrawnUi.Draw.SnappingLayout.AcceptsInput
+  href: DrawnUi.Draw.SnappingLayout.html#DrawnUi_Draw_SnappingLayout_AcceptsInput
+  name: AcceptsInput
+  nameWithType: SnappingLayout.AcceptsInput
+  fullName: DrawnUi.Draw.SnappingLayout.AcceptsInput
 - uid: DrawnUi.Draw.SnappingLayout.IgnoreWrongDirection*
   commentId: Overload:DrawnUi.Draw.SnappingLayout.IgnoreWrongDirection
   href: DrawnUi.Draw.SnappingLayout.html#DrawnUi_Draw_SnappingLayout_IgnoreWrongDirection

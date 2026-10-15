@@ -13,6 +13,9 @@ public class SkiaToggle : SkiaLayout
 
     public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     {
+        if (!RespondsToGestures)
+            return BlockedGestureResult(args); // a tap does not toggle it, nor reach controls under it
+
         if (ReceivesHover)
             CheckHovered(args);
 
@@ -49,6 +52,9 @@ public class SkiaToggle : SkiaLayout
     protected override bool? DefaultAccessibilityIsPressed() => IsToggled;
 
     protected override bool DefaultAccessibilityCanInteract() => RespondsToGestures;
+
+    /// <summary>With RespondsToGestures = false a tap or the keyboard does not toggle it and it is reported disabled.</summary>
+    protected override bool AcceptsInput() => RespondsToGestures;
 
     protected virtual void ChangeDefaultValue()
     {
@@ -139,7 +145,7 @@ public class SkiaToggle : SkiaLayout
         nameof(RespondsToGestures),
         typeof(bool),
         typeof(SkiaToggle),
-        true);
+        true, propertyChanged: OnInputStateChanged);
 
     public bool RespondsToGestures
     {

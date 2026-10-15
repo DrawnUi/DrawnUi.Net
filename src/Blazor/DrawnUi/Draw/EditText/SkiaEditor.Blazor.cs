@@ -10,32 +10,6 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
     // this is the caret side that grows/shrinks. Tracked separately because CursorPosition is
     // pinned to the selection's LEFT edge (the overlay renders [CursorPosition, +SelectionLength]).
     private int _selectionMovingEdge = -1;
-    private CancellationTokenSource _deferCts;
-
-    // On Blazor, Label.Lines is populated during the render pass, which happens after
-    // property-change events. Restarting the timer on every text change ensures we wait
-    // until after the LAST mutation before repositioning the cursor.
-    // _suppressImmediateCursorMove must be set BEFORE CursorPosition is changed by the
-    // caller so the property-changed MoveInternalCursor() is blocked while label data is stale.
-    private async void DeferVisualCursorUpdate()
-    {
-        _deferCts?.Cancel();
-        _deferCts = new CancellationTokenSource();
-        var token = _deferCts.Token;
-        try
-        {
-            await Task.Delay(32, token);
-            _suppressImmediateCursorMove = false;
-            MoveInternalCursor();
-        }
-        catch (OperationCanceledException)
-        {
-            // New timer started; its caller already set _suppressImmediateCursorMove=true
-            // before touching CursorPosition, so clearing here is safe and prevents
-            // the flag from getting permanently stuck if no further call follows.
-            _suppressImmediateCursorMove = false;
-        }
-    }
 
     public int NativeSelectionStart => CursorPosition;
 
@@ -193,10 +167,8 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
 
         var start = CursorPosition - remove;
         Text = text.Remove(start, remove);
-        _suppressImmediateCursorMove = true;
         CursorPosition = start;
         SelectionLength = 0;
-        DeferVisualCursorUpdate();
     }
 
     public void StubDelete(int count = 1)
@@ -218,9 +190,7 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
         if (remove == 0)
             return;
         Text = text.Remove(CursorPosition, remove);
-        _suppressImmediateCursorMove = true;
         SelectionLength = 0;
-        DeferVisualCursorUpdate();
     }
 
     public void StubMoveCursor(int delta, bool extendSelection = false)
@@ -278,10 +248,6 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
 
     private bool HasSelection => SelectionLength > 0;
 
-    partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
-
-    partial void OnTextInsertedAtCursor() => DeferVisualCursorUpdate();
-
     public void CopySelection()
     {
         var text = GetSelectedText();
@@ -319,7 +285,6 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
                 if (!string.IsNullOrEmpty(text))
                 {
                     InsertAtCursor(text);
-                    DeferVisualCursorUpdate();
                 }
             }
         }
@@ -337,10 +302,8 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
         var normalized = NormalizeEditorInput(insertedText);
 
         Text = text.Remove(selectionStart, selectionLength).Insert(selectionStart, normalized);
-        _suppressImmediateCursorMove = true;
         CursorPosition = selectionStart + normalized.Length;
         SelectionLength = 0;
         _stubSelectionStop = -1;
-        DeferVisualCursorUpdate();
     }
 }

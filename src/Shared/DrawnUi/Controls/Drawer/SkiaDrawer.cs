@@ -158,6 +158,7 @@ namespace DrawnUi.Controls
             StateTransitionComplete = null;
             IsOpenChanged = null;
             Stopped = null;
+            ClosingStarted = null;
 
             Content?.Dispose();
         }
@@ -173,6 +174,13 @@ namespace DrawnUi.Controls
 
         public event EventHandler<bool> IsOpenChanged;
         public event EventHandler<Vector2> Stopped;
+
+        /// <summary>
+        /// Raised when the drawer starts moving from an open snap to the closed one, whatever started it:
+        /// a released swipe, IsOpen = false or Close(). After a swipe IsOpen changes only when the move ends,
+        /// so the shell uses this to take a modal out of its stack at once, as PopModalAsync does.
+        /// </summary>
+        internal event EventHandler ClosingStarted;
 
         #endregion
 
@@ -477,6 +485,16 @@ namespace DrawnUi.Controls
             if (Parent == null)
                 return;
 
+            if (MeasuredSize.Pixels.Width <= 0 || MeasuredSize.Pixels.Height <= 0)
+            {
+                // not measured yet (opened in the tick it became visible): snap points from a zero size are both
+                // zero, SetIsOpen reads that as closed and flips IsOpen back. Keep IsOpen and forget the viewport,
+                // so MaybeInit builds the snap points on the first paint with a size.
+                Viewport = SKRect.Empty;
+                _lastViewport = SKRect.Empty;
+                return;
+            }
+
             Viewport = Parent.DrawingRect;
 
             var hideContent = GetOffsetToHide();
@@ -557,7 +575,24 @@ namespace DrawnUi.Controls
             }
 
             //Debug.WriteLine($"[SkiaDrawer] SetIsOpen: open {isOpen} moving {InTransition}");
+            _headingOpen = isOpen;
             IsOpen = isOpen;
+        }
+
+        // the state of the snap the drawer was last sent to; IsOpen catches up with it when the move ends
+        bool _headingOpen;
+
+        protected override bool ScrollToOffset(Vector2 targetOffset, Vector2 velocity, bool animate)
+        {
+            var wasHeadingOpen = _headingOpen;
+            if (!base.ScrollToOffset(targetOffset, velocity, animate))
+                return false;
+
+            _headingOpen = SnapPoints.Count < 2 || targetOffset != SnapPoints[1];
+            if (wasHeadingOpen && !_headingOpen)
+                ClosingStarted?.Invoke(this, EventArgs.Empty);
+
+            return true;
         }
 
         public override void UpdateReportedPosition()
@@ -906,8 +941,13 @@ namespace DrawnUi.Controls
 
                     case TouchActionResult.Up:
 
+                        _inContact = false;
+
                         if (ChildWasTapped || !IsUserPanning)
+                        {
+                            FinishStoppedMove();
                             break;
+                        }
 
                         // the release sample along the drawer's own axis (it was always the vertical one: a side
                         // drawer never got the finger's real release speed, only its moves before it)
@@ -975,9 +1015,6 @@ namespace DrawnUi.Controls
                         IsUserPanning = false;
                         IsUserFocused = false;
 
-
-                        _inContact = false;
-
                         break;
                 }
 
@@ -998,6 +1035,22 @@ namespace DrawnUi.Controls
             }
 
             return consumedDefault;
+        }
+
+        /// <summary>
+        /// A Down stops a running move to a snap, so a pan can take the drawer from where it is. When the touch
+        /// ends without a pan, the drawer finishes that move to the snap it was sent to (IsOpen changed in code,
+        /// or a released swipe), instead of staying between its snaps.
+        /// </summary>
+        void FinishStoppedMove()
+        {
+            if (AnimatorRange?.IsRunning == true || VectorAnimatorSpring?.IsRunning == true
+                || !SnapPoints.Contains(CurrentSnap) || AreVectorsEqual(CurrentPosition, CurrentSnap, 1))
+                return;
+
+            var target = CurrentSnap;
+            CurrentSnap = CurrentPosition;
+            ScrollToOffset(target, Vector2.Zero, CanAnimate);
         }
 
         public bool AutoClose { get; set; }

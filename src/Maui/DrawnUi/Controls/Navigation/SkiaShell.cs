@@ -812,6 +812,7 @@ namespace DrawnUi.Controls
 
                                 _pushModalWasOpen = false;
                                 drawer.StateTransitionComplete += OnModalDrawerStateTransitionComplete;
+                                drawer.ClosingStarted += OnModalDrawerClosingStarted;
 
                                 control.IsOpen = true;
 
@@ -880,6 +881,10 @@ namespace DrawnUi.Controls
             {
                 //animated to closed
                 _pushModalWasOpen = false;
+                if (control.Parent is ModalWrapper wrapper)
+                {
+                    LeaveModalStack(wrapper); // released right at the closed snap: no move, no ClosingStarted
+                }
                 await RemoveModal(control.Parent as SkiaControl, true);
 
                 //OnNavigated(new(control, CurrentRouteAuto, NavigationSource.Pop));
@@ -904,6 +909,37 @@ namespace DrawnUi.Controls
             {
                 FinalizeTransition(control);
             }
+        }
+
+        void OnModalDrawerClosingStarted(object sender, EventArgs e)
+        {
+            if (sender is SkiaDrawer control && control.Parent is ModalWrapper wrapper)
+            {
+                LeaveModalStack(wrapper);
+            }
+        }
+
+        /// <summary>
+        /// A modal leaves NavigationStackModals as soon as its drawer starts closing, whatever closed it
+        /// (PopModalAsync, a swipe, IsOpen = false), and reports the pop. The slide-out then only finishes:
+        /// the drawer stops taking pans, so it cannot be dragged back open outside the stack. RemoveModal
+        /// clears the rest when the slide ends. Returns false when the modal had already left.
+        /// </summary>
+        bool LeaveModalStack(ModalWrapper wrapper)
+        {
+            var inStack = NavigationStackModals.FirstOrDefault(x => x.Page == wrapper);
+            if (inStack == null)
+                return false;
+
+            if (wrapper.Drawer != null)
+            {
+                wrapper.Drawer.RespondsToGestures = false;
+            }
+
+            NavigationStackModals.Remove(inStack);
+            OnModalStackChanged(NavigationStackModals.Count);
+            OnNavigated(new(wrapper.Drawer?.Content, CurrentRouteAuto, NavigationSource.Pop));
+            return true;
         }
 
         protected void SetCurrentRouteNodes(List<ShellStackChild> children)
@@ -1074,6 +1110,7 @@ namespace DrawnUi.Controls
                             try
                             {
                                 modalWrapper.Drawer.StateTransitionComplete -= OnModalDrawerStateTransitionComplete;
+                                modalWrapper.Drawer.ClosingStarted -= OnModalDrawerClosingStarted;
                                 if (removed is IVisibilityAware aware)
                                 {
                                     aware.OnDisappearing();
@@ -1109,12 +1146,30 @@ namespace DrawnUi.Controls
                     {
                         ShellLayout?.DisposeObject(control);
                     });
+
+                    OnModalRemoved((control as ModalWrapper)?.Drawer?.Content ?? control);
                 }
             }
             catch (Exception e)
             {
                 Super.Log(e);
             }
+        }
+
+        /// <summary>
+        /// Raised when a modal is gone: out of the stack, the layout unfrozen, the modal below shown again and
+        /// the modal detached. Passes the content that was pushed. Its <c>OnDisappearing</c> comes earlier, while
+        /// the shell is still taking it down: navigate from here when the next step needs the settled state.
+        /// </summary>
+        public event EventHandler<SkiaControl> ModalRemoved;
+
+        /// <summary>
+        /// Raises <see cref="ModalRemoved"/> at the very end of a modal's removal.
+        /// </summary>
+        /// <param name="content">The content that was pushed as the modal.</param>
+        protected virtual void OnModalRemoved(SkiaControl content)
+        {
+            ModalRemoved?.Invoke(this, content);
         }
 
         bool isBusyClosingModal;
@@ -1126,38 +1181,46 @@ namespace DrawnUi.Controls
 
             try
             {
-                var modal = inStack.Page as SkiaControl; //GetTopModal();
+                var modal = inStack?.Page as SkiaControl; //GetTopModal();
+                if (modal == null)
+                    return null;
 
-                if (modal.IsVisibleInViewTree())
+                if (!modal.IsVisibleInViewTree())
                 {
-                    //will close drawer..
-                    SkiaControl removed = await PopModalAsync(modal, animated);
+                    // Hidden by a modal above that froze the layout (SetupModalsVisibility), or the shell is hidden:
+                    // nothing to animate, it goes at once. It used to be refused with a null while it stayed in the
+                    // stack, so a pop from the top modal's OnDisappearing never happened.
+                    if (modal is not ModalWrapper wrapper || !LeaveModalStack(wrapper))
+                        return null; // not a stacked shell modal, or already closing
 
-                    //if wasnt animater drawer will not scroll
-                    //so kill it manually
-                    if (removed != null && !animated)
-                    {
-                        await RemoveModal(modal, animated);
+                    var content = wrapper.Drawer?.Content;
+                    await RemoveModal(wrapper, false);
+                    return content;
+                }
 
-                        OnNavigated(new(modal, CurrentRouteAuto, NavigationSource.Pop));
+                //will close drawer..
+                SkiaControl removed = await PopModalAsync(modal, animated);
 
-                        return modal;
-                    }
-                    else
-                    {
-                        NavigationStackModals.Remove(inStack);
-                        OnModalStackChanged(NavigationStackModals.Count);
-                    }
+                //if wasnt animater drawer will not scroll
+                //so kill it manually
+                if (removed != null && !animated)
+                {
+                    await RemoveModal(modal, animated);
+
+                    OnNavigated(new(modal, CurrentRouteAuto, NavigationSource.Pop));
+
+                    return modal;
+                }
+                // closing the drawer above usually took it out already (LeaveModalStack)
+                if (NavigationStackModals.Remove(inStack))
+                {
+                    OnModalStackChanged(NavigationStackModals.Count);
 
                     //RootLayout?.Update();
                     OnNavigated(new(removed, CurrentRouteAuto, NavigationSource.Pop));
+                }
 
-                    return removed;
-                }
-                else
-                {
-                    return null;
-                }
+                return removed;
             }
             finally
             {
@@ -1245,9 +1308,15 @@ namespace DrawnUi.Controls
                 {
                     FreezingModals.Remove(control);
                     var topmost = FreezingModals.LastOrDefault();
-                    if (topmost != null)
+                    if (topmost == null)
                     {
-                        await SetupModalsVisibility(topmost);
+                        ShowModalsFrom(null); // no freeze left: every modal again
+                    }
+                    else
+                    {
+                        // what this freeze hid: the freezing modal below and every modal above it
+                        if (!ShowModalsFrom(topmost) && Popups.NavigationStack.Contains(topmost))
+                            await SetupModalsVisibility(topmost); // a freezing popup
                         FrozenLayers.TryGetValue(topmost, out var frozen);
                         if (frozen != null)
                         {
@@ -1359,6 +1428,31 @@ namespace DrawnUi.Controls
             {
                 UnlockLayers();
             }
+        }
+
+        /// <summary>
+        /// After a freeze ended: shows <paramref name="lowest"/> and every modal above it in the stack and hides the
+        /// ones below, which the remaining freeze still covers. Null shows every modal. Only the top modal takes
+        /// input. Returns false when <paramref name="lowest"/> is not in the stack (a modal already closing, which
+        /// still covers them all, or a popup): every modal stays hidden then.
+        /// </summary>
+        protected bool ShowModalsFrom(SkiaControl lowest)
+        {
+            var shown = lowest == null;
+            var found = shown;
+            var top = NavigationStackModals.Last?.Value?.Page;
+            foreach (var modal in NavigationStackModals)
+            {
+                if (modal.Page is SkiaControl skia)
+                {
+                    if (skia == lowest)
+                        shown = found = true;
+                    skia.IsVisible = shown;
+                    skia.InputTransparent = !shown || skia != top;
+                }
+            }
+
+            return found;
         }
 
         public virtual async Task<bool> SetupModalsVisibility(SkiaControl control)

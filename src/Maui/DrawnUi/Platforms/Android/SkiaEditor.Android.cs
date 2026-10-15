@@ -57,6 +57,8 @@ namespace DrawnUi.Draw
             try
             {
                 AddObservers(false);
+                if (Control is HiddenEditText hidden)
+                    hidden.SelectionChangedHandler = null;
                 if (_focusChangeListener != null)
                 {
                     Control.FocusChange -= _focusChangeListener;
@@ -224,7 +226,16 @@ namespace DrawnUi.Draw
             _layout = (ViewGroup)Superview.Handler?.PlatformView;
             if (_layout != null)
             {
-                Control = new HiddenEditText(_layout.Context);
+                Control = new HiddenEditText(_layout.Context)
+                {
+                    // a selection change alone (IME, autocorrect, hardware arrows) moves the drawn caret at once;
+                    // while typing it comes before OnTextChanged, the caret is placed once the label drew the text
+                    SelectionChangedHandler = (start, end) =>
+                    {
+                        if (!_updatingText && start >= 0 && end >= 0)
+                            SetCursorFromNative(System.Math.Min(start, end), System.Math.Abs(end - start));
+                    }
+                };
                 // 1x1 minimum — 0x0 blocks IME input connection on Android 10+
                 Control.LayoutParameters = new ViewGroup.LayoutParams(1, 1);
                 Control.Id = _hiddenEditTextId;
@@ -267,7 +278,7 @@ namespace DrawnUi.Draw
 
                     // Guard SetReturnType: SetSingleLine() internally triggers onTextChanged
                     // with SelectionStart=0 on first focus (selection not yet positioned),
-                    // which would queue SetCursorPositionWithDelay(50, 0) and jump cursor.
+                    // which would move the caret to 0.
                     _updatingText = true;
                     try { SetReturnType(this.ReturnType); }
                     finally { _updatingText = false; }
@@ -347,29 +358,6 @@ namespace DrawnUi.Draw
             InputMethodManager imm = (InputMethodManager)Platform.AppContext.GetSystemService(Context.InputMethodService);
             imm.HideSoftInputFromWindow(Control.WindowToken, HideSoftInputFlags.None);
         }
-
-        private CancellationTokenSource? _deferCts;
-
-        private async void DeferVisualCursorUpdate()
-        {
-            _deferCts?.Cancel();
-            _deferCts = new CancellationTokenSource();
-            var token = _deferCts.Token;
-            try
-            {
-                await Task.Delay(50, token);
-                _suppressImmediateCursorMove = false;
-                MoveInternalCursor();
-            }
-            catch (OperationCanceledException)
-            {
-                _suppressImmediateCursorMove = false;
-            }
-        }
-
-        partial void OnSelectionDeleted() => DeferVisualCursorUpdate();
-
-        partial void OnTextInsertedAtCursor() => DeferVisualCursorUpdate();
 
         public int GenerateUniqueId()
         {
@@ -459,7 +447,7 @@ namespace DrawnUi.Draw
                     try { s.Replace(0, s.Length(), text); }
                     finally { _parent._updatingText = false; }
                     _parent.Control.SetSelection(caret);
-                    _parent.SetCursorPositionWithDelay(50, caret);
+                    _parent.SetCursorFromNative(caret, 0);
                     return;
                 }
 
@@ -489,13 +477,12 @@ namespace DrawnUi.Draw
                 try { _parent.Text = s.ToString(); }
                 finally { _parent._updatingText = false; }
 
+                // the text and its selection, together and at once
                 int selectionStart = _parent.Control.SelectionStart;
                 int selectionEnd = _parent.Control.SelectionEnd;
-
-                if (selectionStart == selectionEnd)
-                {
-                    _parent.SetCursorPositionWithDelay(50, selectionStart);
-                }
+                if (selectionStart >= 0 && selectionEnd >= 0)
+                    _parent.SetCursorFromNative(System.Math.Min(selectionStart, selectionEnd),
+                        System.Math.Abs(selectionEnd - selectionStart));
             }
         }
 
@@ -505,6 +492,15 @@ namespace DrawnUi.Draw
         private class HiddenEditText : EditText
         {
             public HiddenEditText(Context context) : base(context) { }
+
+            /// <summary>Selection start and end after every selection change, typing included.</summary>
+            public Action<int, int> SelectionChangedHandler { get; set; }
+
+            protected override void OnSelectionChanged(int selStart, int selEnd)
+            {
+                base.OnSelectionChanged(selStart, selEnd);
+                SelectionChangedHandler?.Invoke(selStart, selEnd);
+            }
 
             public override IInputConnection OnCreateInputConnection(EditorInfo outAttrs)
             {

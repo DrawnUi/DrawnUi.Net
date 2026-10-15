@@ -92,7 +92,7 @@ public class KeyboardInputEligibilityTests
         {
             Children =
             {
-                new SkiaButton("off") { WidthRequest = 100, HeightRequest = 40, IsDisabled = true, AccessibilityRole = Aria.RoleButton, AccessibilityCanInteract = true }.Assign(out disabled),
+                new SkiaButton("off") { WidthRequest = 100, HeightRequest = 40, RespondsToGestures = false, AccessibilityRole = Aria.RoleButton, AccessibilityCanInteract = true }.Assign(out disabled),
                 new SkiaLayout
                 {
                     LockChildrenGestures = LockTouch.PassTap,

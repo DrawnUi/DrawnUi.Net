@@ -4,10 +4,10 @@ namespace DrawnUi.Draw;
 
 public class SkiaCursor : SkiaShape
 {
-    private const long SolidOnMoveDurationNanos = 200_000_000L;
+    private const long BlinkHalfPeriodNanos = 500_000_000L;
 
     private SkiaLabel _label;
-    private long _solidUntilNanos;
+    private long _blinkStartNanos;
 
     /// <summary>
     /// Called by SkiaEditor after creating the cursor. Parent chain is not yet complete at AddSubView time.
@@ -24,9 +24,12 @@ public class SkiaCursor : SkiaShape
                 Ratio = 0.5,
                 OnUpdated = (value) =>
                 {
-                    var opacity = Super.GetCurrentTimeNanos() < _solidUntilNanos
-                        ? 1.0
-                        : (_blinkAnimator.State ? 0.01 : 1.0);
+                    // the blink counts from the last change: visible for the first half period, as a native caret
+                    var now = _blinkAnimator.LastFrameTimeNanos;
+                    if (_blinkStartNanos == 0)
+                        _blinkStartNanos = now;
+                    var phase = (now - _blinkStartNanos) / BlinkHalfPeriodNanos;
+                    var opacity = phase % 2 == 0 ? 1.0 : 0.01;
 
                     if (Opacity != opacity)
                         Opacity = opacity;
@@ -37,9 +40,12 @@ public class SkiaCursor : SkiaShape
         UpdateColors();
     }
 
+    /// <summary>
+    /// The editor placed the caret after a change: show it and start the blink over.
+    /// </summary>
     internal void OnMoved()
     {
-        _solidUntilNanos = Super.GetCurrentTimeNanos() + SolidOnMoveDurationNanos;
+        _blinkStartNanos = 0; // from the next frame
         if (Opacity != 1.0)
             Opacity = 1.0;
         Repaint();
