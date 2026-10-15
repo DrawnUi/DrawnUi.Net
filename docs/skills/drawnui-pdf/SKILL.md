@@ -180,6 +180,7 @@ Open a second `Window` with a `BasePageReloadable` page holding `Canvas > SkiaSc
 
 ## Pitfalls
 
+- MAUI, long templated tables, slow on a phone: a Debug build inflates XAML at runtime through reflection, about 150 ms per `DataTemplate` row on a mid-range Android (100 rows = 18 s inside the first `Measure`, measured 2026-10-15). Set `<MauiXamlInflator>SourceGen</MauiXamlInflator>` in the csproj (.NET 10 XAML source generator): 10 ms per row. Check with a stopwatch around `ItemTemplate.CreateContent()` before suspecting the layout; DrawnUI measures each cell once (linear, 100 cells in 34 ms headless).
 - Clip every page to `margins + page.Height`: the scroll viewport is a full paper tall, so without the clip the top of the next row shows at the bottom of the page and repeats whole on the next one.
 - Showing the exported instance on screen afterwards (one data load, images already loaded): re-parent it directly (`scroll.Content = report`). Never detach it first with `Content = null`: `ClearParent` sets its BindingContext to null by design and the templated rows vanish. Set `UseCache = Image` and `WidthRequest` = printable width on it for the screen only.
 - `SKDocument.BeginPage` takes POINTS (72 per inch). Passing the dpi pixel size makes an "A4" 2.08x too large; viewers fit it to the window so it looks right until printed. Open the page in points and `canvas.Scale(72f / dpi)`.
