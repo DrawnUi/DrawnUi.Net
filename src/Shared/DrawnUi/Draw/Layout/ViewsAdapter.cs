@@ -1013,8 +1013,9 @@ namespace DrawnUi.Draw
 
             lock (lockVisible)
             {
-                // Get the view being moved
-                _cellsInUseViews.TryGetValue(oldIndex, out SkiaControl movingView);
+                // Take the moved view out first: the shift below writes a neighbour into oldIndex,
+                // and removing oldIndex after it dropped that neighbour (a blank row per drag step)
+                _cellsInUseViews.Remove(oldIndex, out SkiaControl movingView);
 
                 // Update all affected indexes
                 if (oldIndex < newIndex)
@@ -1047,7 +1048,6 @@ namespace DrawnUi.Draw
                 // Place the moved view in its new position
                 if (movingView != null)
                 {
-                    _cellsInUseViews.Remove(oldIndex);
                     _cellsInUseViews[newIndex] = movingView;
                     movingView.ContextIndex = newIndex;
                 }
