@@ -1864,6 +1864,19 @@ public class SkiaCarousel : SnappingLayout
 
     public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     {
+        var consumed = ProcessCarouselGestures(args, apply);
+
+        // the finger is up, whichever way the Up went (a tap, a child's Up, a pan): a tap that interrupted no snap
+        // left IsUserFocused true until the next pan, so an app waiting for it to clear (a windowed ItemsSource
+        // shifting at rest) waited forever (FiltersCamera viewer, 2026-10-17)
+        if (args.Type == TouchActionResult.Up)
+            IsUserFocused = false;
+
+        return consumed;
+    }
+
+    private ISkiaGestureListener ProcessCarouselGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
+    {
         if (ReceivesHover)
             CheckHovered(args);
 

@@ -155,4 +155,129 @@ public class ShaderCarouselInterruptedSwipeTests
 
         Assert.Equal(40, window[carousel.SelectedIndex]);
     }
+
+    [Fact]
+    public void Tap_ClearsIsUserFocused()
+    {
+        using var host = new HeadlessCanvasHost(Width, Height, scale: 1f, background: Colors.Black);
+        var carousel = Create(host, Enumerable.Range(0, 5).ToList(), 2, looped: false);
+
+        new GestureRobot(host).Tap(Width / 2f, Height / 2f);
+        host.AdvanceFrames(5, 16);
+
+        Assert.False(carousel.IsUserFocused); // the finger is up: a tap that interrupted no snap left it true
+    }
+
+    /// <summary>A carousel that says when a finger left it, as the FiltersCamera viewer's does.</summary>
+    private class TouchCarousel : SkiaShaderCarousel
+    {
+        public event EventHandler TouchEnded;
+
+        public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
+        {
+            var consumed = base.ProcessGestures(args, apply);
+            if (args.Type == AppoMobi.Gestures.TouchActionResult.Up)
+                TouchEnded?.Invoke(this, EventArgs.Empty);
+            return consumed;
+        }
+    }
+
+    /// <summary>
+    /// Non-stop fast swipes through the viewer's window: every rest comes while the next swipe's finger is down, so
+    /// the window moves only when the viewer looks again after the finger left. Without that look the carousel ran
+    /// into the window's last slide and stayed there whatever was swiped (FiltersCamera iPhone, 2026-10-17).
+    /// </summary>
+    [Theory]
+    [InlineData(500)]
+    [InlineData(1000)]
+    public void NonStopSwipes_ThroughAWindow_KeepGoing(int speedMs)
+    {
+        const int sourceCount = 60, windowSize = 30, windowMargin = 6;
+        var source = Enumerable.Range(0, sourceCount).ToList();
+        var windowStart = 15;
+        var window = new ObservableRangeCollection<int>(Enumerable.Range(windowStart, windowSize));
+        var recentering = false;
+
+        using var host = new HeadlessCanvasHost(Width, Height, scale: 1f, background: Colors.Black);
+        TouchCarousel carousel = null;
+        host.Canvas.Content = new SkiaLayer
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new TouchCarousel
+                {
+                    LinearSpeedMs = speedMs,
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill,
+                    ItemsSource = window,
+                    SelectedIndex = 15,
+                    ItemTemplate = new DataTemplate(() => new SkiaLayer
+                    {
+                        BackgroundColor = Colors.DarkGray,
+                        HorizontalOptions = LayoutOptions.Fill,
+                        VerticalOptions = LayoutOptions.Fill,
+                    }),
+                }.Assign(out carousel)
+            }
+        };
+        host.AdvanceFrames(30, 16);
+
+        void Recenter()
+        {
+            if (recentering || carousel.InTransition || carousel.IsUserFocused)
+                return;
+            var index = carousel.SelectedIndex;
+            if (index >= windowMargin && index <= windowSize - 1 - windowMargin)
+                return;
+            var shift = index - windowSize / 2;
+            recentering = true;
+            try
+            {
+                if (shift > 0)
+                {
+                    window.RemoveRange(0, shift);
+                    window.InsertRange(window.Count,
+                        Enumerable.Range(windowSize, shift).Select(k => source[(windowStart + k) % sourceCount]));
+                }
+                else
+                {
+                    window.RemoveRange(windowSize + shift, -shift);
+                    window.InsertRange(0,
+                        Enumerable.Range(shift, -shift).Select(k => source[((windowStart + k) % sourceCount + sourceCount) % sourceCount]));
+                }
+                windowStart = ((windowStart + shift) % sourceCount + sourceCount) % sourceCount;
+                carousel.ScrollTo(index - shift, animate: false);
+            }
+            finally
+            {
+                recentering = false;
+            }
+        }
+
+        carousel.Stopped += (s, p) => MainThread.BeginInvokeOnMainThread(Recenter);
+        carousel.TouchEnded += (s, e) =>
+        {
+            carousel.Superview?.PostponeExecutionAfterDraw(() => MainThread.BeginInvokeOnMainThread(Recenter));
+            carousel.Update();
+        };
+
+        var robot = new GestureRobot(host);
+        for (var i = 0; i < 30; i++)
+        {
+            robot.Pan(new PointF(300, Height / 2f), new PointF(180, Height / 2f), 60, 4);
+            host.AdvanceFrames(3, 16);
+        }
+        Settle(host);
+
+        // 30 swipes from shot 30: one swipe at each window edge moves nothing, every other one moves a shot
+        var moved = (window[carousel.SelectedIndex] - 30 + sourceCount) % sourceCount;
+        Assert.InRange(moved, 26, 30);
+
+        var before = window[carousel.SelectedIndex];
+        robot.Pan(new PointF(300, Height / 2f), new PointF(180, Height / 2f), 60, 4);
+        Settle(host);
+        Assert.Equal((before + 1) % sourceCount, window[carousel.SelectedIndex]); // never stuck
+    }
 }
