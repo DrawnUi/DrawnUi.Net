@@ -187,6 +187,9 @@
         {
             SubscribeToRenderingChain(false);
 
+            if (Element != null)
+                Element.PropertyChanged -= OnElementPropertyChanged;
+
 #if ONPLATFORM
             RemoveMauiElement(Element);
 #endif
@@ -303,6 +306,14 @@
 
             if (Element == view)
             {
+#if ONPLATFORM
+                if (Element.Handler == null && Superview != null)
+                {
+                    // its native view was never set up: the canvas had no handler yet when the content came
+                    SetupMauiElement(Element);
+                    return;
+                }
+#endif
                 //better update layout
 #if ANDROID || WINDOWS
                 MainThread.BeginInvokeOnMainThread(() =>
@@ -326,6 +337,9 @@
 #endif
                 return;
             }
+
+            if (Element != null)
+                Element.PropertyChanged -= OnElementPropertyChanged;
 
             if (Superview != null && Element != null)
             {
@@ -355,10 +369,28 @@
             Element = element;
 
             Element.BindingContext = this.BindingContext;
+            Element.PropertyChanged += OnElementPropertyChanged;
 
 #if ONPLATFORM
             SetupMauiElement(Element);
 #endif
+        }
+
+        void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            // MAUI shows or hides the native view itself right after this event when the content's IsVisible
+            // changes, also while this element is not drawn: lay it out after that, so the drawn visibility wins.
+            // Dispatch always queues; MainThread.BeginInvokeOnMainThread would run inline, before MAUI.
+            if (e.PropertyName == nameof(VisualElement.IsVisible) && sender is VisualElement element)
+            {
+#if ONPLATFORM
+                element.Dispatcher?.Dispatch(() =>
+                {
+                    if (Element == element)
+                        LayoutNativeView(element);
+                });
+#endif
+            }
         }
 
         public bool NeedsLayoutNative { get; set; } = true;
@@ -367,7 +399,7 @@
         {
             _transform = transform;
 
-            if (Element == null || Element.Handler == null)
+            if (Element == null)
                 return;
 
             var outRect = DrawingRect;
@@ -378,6 +410,13 @@
 
             if (native != VisualTransformNative) // && !ShowSnapshot)
             {
+                if (Element.Handler == null)
+                {
+                    // no native view yet: keep where it is drawn, its setup lays it out from here
+                    VisualTransformNative = native;
+                    return;
+                }
+
                 UpdateElementSize();
                 VisualTransformNative = native;
                 NeedsLayoutNative = true;

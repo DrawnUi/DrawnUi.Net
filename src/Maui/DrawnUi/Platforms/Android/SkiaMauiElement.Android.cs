@@ -70,9 +70,9 @@ public partial class SkiaMauiElement
 
     protected virtual void LayoutNativeView(VisualElement element)
     {
-        if (element.Handler?.PlatformView is View nativeView)
+        if (element?.Handler?.PlatformView is View nativeView)
         {
-            nativeView.Visibility = VisualTransformNative.IsVisible && IsNativeVisible
+            nativeView.Visibility = VisualTransformNative.IsVisible && IsNativeVisible && element.IsVisible
                 ? ViewStates.Visible
                 : ViewStates.Invisible;
 
@@ -167,7 +167,7 @@ public partial class SkiaMauiElement
                 //add native view to canvas
                 var view = element.Handler?.PlatformView as Android.Views.View;
                 var layout = Superview.Handler?.PlatformView as ViewGroup;
-                if (layout != null)
+                if (layout != null && view != null && view.Parent == null)
                     layout.AddView(view);
 
                 if (VisualTransformNative.IsVisible)
