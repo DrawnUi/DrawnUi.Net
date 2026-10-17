@@ -224,6 +224,7 @@ public class SkiaShaderCarousel : SkiaCarousel
         IndexFromLast = -1;
         IndexToLast = -1;
         _initialized = false;
+        _pendingTarget = null; // new slides: an offset queued for the old ones means nothing here
 
         base.OnChildrenInitialized();
     }
@@ -377,6 +378,12 @@ public class SkiaShaderCarousel : SkiaCarousel
     /// </summary>
     protected override bool ScrollToOffset(Vector2 targetOffset, Vector2 velocity, bool animate)
     {
+        // a real move by code (ScrollTo, SelectedIndex, GoNext/GoPrev) drops a queued phase 2: its raw offset
+        // would replay over that move. The carousel's own echo of its index (a target already at CurrentSnap) is
+        // not a move and keeps it.
+        if (!_inGestureRelease && targetOffset != CurrentSnap)
+            _pendingTarget = null;
+
         if (!_inGestureRelease || !animate || SnapPoints.Count < 2)
         {
             return base.ScrollToOffset(targetOffset, velocity, animate);
@@ -473,16 +480,25 @@ public class SkiaShaderCarousel : SkiaCarousel
         return started;
     }
 
-    public override void OnTransitionChanged()
+    /// <summary>
+    /// Phase 2 of an interrupted swipe starts here, the moment phase 1 arrives, so the carousel never reports a
+    /// stop between the two phases: InTransition stays true and <see cref="SkiaCarousel.Stopped"/> fires once, at
+    /// real rest. A Stopped in between let an app move its slides there (a windowed ItemsSource shifting on
+    /// Stopped), and the queued second half, a raw offset, then replayed in the new slides: the carousel swept
+    /// on by itself through about ten slides (FiltersCamera viewer, 2026-10-17).
+    /// </summary>
+    public override bool CheckTransitionEnded()
     {
-        base.OnTransitionChanged();
-
-        // phase 2: the interrupted transition is wrapped up, now go where the swipe pointed
-        if (!InTransition && _pendingTarget is Vector2 next)
+        var ended = base.CheckTransitionEnded();
+        if (ended && _pendingTarget is Vector2 next)
         {
             _pendingTarget = null;
-            ScrollToOffset(next, Vector2.Zero, true);
+            FixPosition(); // looped: back from a virtual slot first, as at every stop
+            if (ScrollToOffset(next, Vector2.Zero, true))
+                return false; // phase 2 runs
         }
+
+        return ended;
     }
 
     #endregion
