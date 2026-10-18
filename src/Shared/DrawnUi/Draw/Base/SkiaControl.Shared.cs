@@ -4050,6 +4050,10 @@ namespace DrawnUi.Draw
             {
                 lock (lockMeasured)
                 {
+                    // set on every draw: an unchanged scale returns before boxing, SetValue would do nothing either
+                    if (GetValue(RenderingScaleProperty) is float current && current == value)
+                        return;
+
                     SetValue(RenderingScaleProperty, value);
                 }
             }
@@ -7248,6 +7252,8 @@ namespace DrawnUi.Draw
             return null;
         }
 
+        private VisualLayer _renderedNodeA, _renderedNodeB, _renderedNodeLast;
+
         public virtual VisualLayer CreateRenderedNode(SKRect destination, float scale)
         {
             VisualLayer parentVisualNode = null;
@@ -7256,7 +7262,22 @@ namespace DrawnUi.Draw
                 parentVisualNode = skia.VisualLayer;
             }
 
-            VisualLayer = new VisualLayer(this, parentVisualNode, destination, scale);
+            if (Super.UseFrozenVisualLayers)
+            {
+                // frozen layers: a cache keeps the children list of the layer it was recorded with
+                VisualLayer = new VisualLayer(this, parentVisualNode, destination, scale);
+            }
+            else
+            {
+                // two layers per control, used in turn instead of a new one per draw: the one built last time
+                // stays as it was while gestures or the frame's subscribers may still read it
+                var node = _renderedNodeLast == _renderedNodeA
+                    ? _renderedNodeB ??= VisualLayer.CreateEmpty()
+                    : _renderedNodeA ??= VisualLayer.CreateEmpty();
+                node.Reset(this, parentVisualNode, destination, scale);
+                _renderedNodeLast = node;
+                VisualLayer = node;
+            }
 
             if (parentVisualNode != null)
                 ((SkiaControl)Parent).VisualLayer?.Children.Add(VisualLayer);
@@ -7614,6 +7635,23 @@ namespace DrawnUi.Draw
             bool useClipping,
             Action<DrawingContext> draw)
         {
+            DrawWithClipAndTransforms(ctx, transformsArea, useOpacity, useClipping, draw,
+                static (context, action) => action(context));
+        }
+
+        /// <summary>
+        /// Same as <see cref="DrawWithClipAndTransforms(DrawingContext, SKRect, bool, bool, Action{DrawingContext})"/>,
+        /// with the drawing state passed in: a static lambda over <paramref name="state"/> allocates nothing, while a
+        /// lambda capturing locals allocates a closure and a delegate on every draw.
+        /// </summary>
+        public void DrawWithClipAndTransforms<TState>(
+            DrawingContext ctx,
+            SKRect transformsArea,
+            bool useOpacity,
+            bool useClipping,
+            TState state,
+            Action<DrawingContext, TState> draw)
+        {
             bool isClipping = (WillClipBounds || Clipping != null
                                               || ClipWith != null || HasPlatformClip()) && useClipping;
 
@@ -7705,7 +7743,7 @@ namespace DrawnUi.Draw
                         ClipSmart(ctx.Context.Canvas, _preparedClipBounds);
                     }
 
-                    draw(ctx);
+                    draw(ctx, state);
                 }
 
                 ctx.Context.Canvas.RestoreToCount(restore);
@@ -7725,7 +7763,7 @@ namespace DrawnUi.Draw
                     }
                 }
 
-                draw(ctx);
+                draw(ctx, state);
             }
         }
 
@@ -7941,12 +7979,48 @@ namespace DrawnUi.Draw
             if (IsDisposed || IsDisposing)
                 return;
 
+            if (!DisableEffects && VisualEffects.Count > 0)
+            {
+                PaintWithVisualEffects(ctx);
+            }
+            else
+            {
+                PaintWithShadowsThenPaint(ctx, ctx);
+            }
+        }
+
+        private Action _paintWithStoredContext;
+        private DrawingContext _paintStoredContext;
+
+        /// <summary>
+        /// <see cref="PaintWithShadows"/> with <see cref="Paint"/> of <paramref name="paintCtx"/> as its render action,
+        /// through one delegate per control instead of a new closure per draw.
+        /// </summary>
+        void PaintWithShadowsThenPaint(DrawingContext context, DrawingContext paintCtx)
+        {
+            _paintStoredContext = paintCtx;
+            try
+            {
+                PaintWithShadows(context, _paintWithStoredContext ??= PaintStoredContext);
+            }
+            finally
+            {
+                _paintStoredContext = default;
+            }
+        }
+
+        void PaintStoredContext()
+        {
+            Paint(_paintStoredContext);
+        }
+
+        void PaintWithVisualEffects(DrawingContext ctx)
+        {
             void PaintWithEffectsInternal(DrawingContext context)
             {
-                PaintWithShadows(context, () => { Paint(ctx); });
+                PaintWithShadowsThenPaint(context, ctx);
             }
 
-            if (!DisableEffects && VisualEffects.Count > 0)
             {
                 var effectColor = EffectColorFilter;
                 var effectImage = EffectImageFilter;
@@ -8006,10 +8080,6 @@ namespace DrawnUi.Draw
                     // Only post-renderers in VisualEffects — no SaveLayer needed
                     PaintWithEffectsInternal(ctx);
                 }
-            }
-            else
-            {
-                PaintWithEffectsInternal(ctx);
             }
         }
 
@@ -8204,29 +8274,32 @@ namespace DrawnUi.Draw
         /// <param name="destination"></param>
         public virtual void DrawRenderObject(DrawingContext context, CachedObject cache)
         {
-            DrawWithClipAndTransforms(context, context.Destination, true, true, (ctx) =>
+            DrawWithClipAndTransforms(context, context.Destination, true, true, (control: this, context, cache),
+                static (ctx, s) => s.control.PaintRenderObject(ctx, s.context, s.cache));
+        }
+
+        void PaintRenderObject(DrawingContext ctx, DrawingContext context, CachedObject cache)
+        {
+            if (_paintWithOpacity == null)
             {
-                if (_paintWithOpacity == null)
-                {
-                    _paintWithOpacity = new SKPaint();
-                }
+                _paintWithOpacity = new SKPaint();
+            }
 
-                _paintWithOpacity.GuardColor(ref _paintWithOpacityColor, SKColors.White);
-                _paintWithOpacity.GuardIsAntialias(ref _paintWithOpacityIsAntialias, true);
-                _paintWithOpacity.GuardIsDither(ref _paintWithOpacityIsDither, IsDistorted);
+            _paintWithOpacity.GuardColor(ref _paintWithOpacityColor, SKColors.White);
+            _paintWithOpacity.GuardIsAntialias(ref _paintWithOpacityIsAntialias, true);
+            _paintWithOpacity.GuardIsDither(ref _paintWithOpacityIsDither, IsDistorted);
 
-                if (EffectPostRenderers.Count == 0)
-                {
-                    cache.Draw(ctx.Context.Canvas, context.Destination, _paintWithOpacity,
-                        IsDistorted ? SkiaSamplingOptions.LinearLinear : SkiaSamplingOptions.NearestNoMip);
-                }
+            if (EffectPostRenderers.Count == 0)
+            {
+                cache.Draw(ctx.Context.Canvas, context.Destination, _paintWithOpacity,
+                    IsDistorted ? SkiaSamplingOptions.LinearLinear : SkiaSamplingOptions.NearestNoMip);
+            }
 
-                // Apply chained post renderers - each snapshots from canvas, enabling shader-after-shader
-                foreach (var postRenderer in EffectPostRenderers)
-                {
-                    postRenderer.Render(context);
-                }
-            });
+            // Apply chained post renderers - each snapshots from canvas, enabling shader-after-shader
+            foreach (var postRenderer in EffectPostRenderers)
+            {
+                postRenderer.Render(context);
+            }
         }
 
         /// <summary>

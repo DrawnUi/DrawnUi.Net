@@ -3480,7 +3480,8 @@ namespace DrawnUi.Draw
                 else
                 {
                     var clone = AddPaintArguments(context).WithDestination(DrawingRect);
-                    DrawWithClipAndTransforms(clone, DrawingRect, true, true, (ctx) => { PaintWithEffects(ctx); });
+                    DrawWithClipAndTransforms(clone, DrawingRect, true, true, this,
+                        static (ctx, me) => me.PaintWithEffects(ctx));
                 }
              
             }

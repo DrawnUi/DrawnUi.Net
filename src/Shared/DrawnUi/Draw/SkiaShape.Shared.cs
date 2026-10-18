@@ -83,6 +83,8 @@ namespace DrawnUi.Draw
 
         protected SKRoundRect DrawRoundedRect { get; set; }
 
+        private SKRoundRect _clipRoundedRect;
+
         private static void NeedSetType(BindableObject bindable, object oldValue, object newValue)
         {
             if (bindable is SkiaShape control)
@@ -256,6 +258,7 @@ namespace DrawnUi.Draw
         {
             DrawPath?.Dispose();
             DrawRoundedRect?.Dispose();
+            _clipRoundedRect?.Dispose();
             DrawPathResized?.Dispose();
             DrawPathAligned?.Dispose();
         }
@@ -346,9 +349,10 @@ namespace DrawnUi.Draw
                     if (CornerRadius != default)
                     {
                         ShouldClipAntialiased = true;
-                        using var roundedRect = new SKRoundRect(strokeAwareChildrenSize);
-                        roundedRect.SetRectRadii(strokeAwareChildrenSize, CreateScaledRadii(RenderingScale));
-                        path.AddRoundRect(roundedRect);
+                        // one per shape, not a new native object per clip (clips are made on every paint)
+                        _clipRoundedRect ??= new SKRoundRect();
+                        _clipRoundedRect.SetRectRadii(strokeAwareChildrenSize, CreateScaledRadii(RenderingScale));
+                        path.AddRoundRect(_clipRoundedRect);
                     }
                     else
                     {

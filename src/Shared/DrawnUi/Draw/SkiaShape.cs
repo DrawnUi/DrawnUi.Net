@@ -716,7 +716,9 @@ namespace DrawnUi.Draw
                 paint.Shader = null;
             }
 
-            void PaintWithShadowsInternal(Action render)
+            // local functions called directly (never turned into delegates): their captured locals stay on the
+            // stack, where a lambda passed as Action allocated a closure and a delegate on every paint
+            void PaintWithShadowsInternal()
             {
                 void RenderShadow(SkiaShadow shadow)
                 {
@@ -731,13 +733,13 @@ namespace DrawnUi.Draw
                         var saved = ctx.Context.Canvas.Save();
 
                         ClipSmart(ctx.Context.Canvas, ClipContentPath, SKClipOperation.Difference);
-                        render();
+                        PaintBackgroundPass();
 
                         ctx.Context.Canvas.RestoreToCount(saved);
                     }
                     else
                     {
-                        render();
+                        PaintBackgroundPass();
                     }
                 }
 
@@ -754,7 +756,7 @@ namespace DrawnUi.Draw
                 }
                 else
                 {
-                    render();
+                    PaintBackgroundPass();
                 }
             }
 
@@ -763,8 +765,7 @@ namespace DrawnUi.Draw
 
             CreateClip(arguments, true, ClipContentPath);
 
-            //background with shadows pass, no stroke
-            PaintWithShadowsInternal(() =>
+            void PaintBackgroundPass()
             {
                 if (SetupBackgroundPaint(RenderingPaint, rectBackground))
                 {
@@ -779,7 +780,10 @@ namespace DrawnUi.Draw
                         PaintBackground(ctx.Context, rectBackground, radii, minSize, RenderingPaint);
                     }
                 }
-            });
+            }
+
+            //background with shadows pass, no stroke
+            PaintWithShadowsInternal();
 
             // Apply bevel or emboss effect if enabled
             if (BevelType != BevelType.None && Bevel != null)

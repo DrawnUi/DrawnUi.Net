@@ -1191,35 +1191,7 @@ public partial class SkiaControl
 
                 if (needBuild)
                 {
-                    var clone = AddPaintArguments(context);
-                    var paintDestination = DrawingRect;
-                    // Each bake is stamped. A rapidly self-invalidating cell (a streaming AI bubble growing
-                    // word by word) queues several bakes as the text grows; without ordering, an OLDER bake
-                    // completing AFTER a newer one overwrites RenderObject with STALE content — the cell's text
-                    // visibly REVERTS (2 lines -> 1 line -> 2 again). Only a bake newer than the one shown
-                    // publishes. Direct increment (no CancellationTokenSource alloc) keeps the 180ms streaming
-                    // path cheap.
-                    long bakeGeneration = BeginOffscreenBake();
-                    PushToOffscreenRendering(() =>
-                    {
-                        try
-                        {
-                            //will be executed on background thread in parallel
-                            var prepared = RecordOffscreenBake(clone, recordArea, paintDestination);
-                            PublishOffscreenBake(prepared, bakeGeneration);
-                        }
-                        finally
-                        {
-                            EndOffscreenBake(bakeGeneration);
-                        }
-
-                        // UNCONDITIONAL wakeup: gating this on Parent.UpdateLocks lost the present
-                        // when the bake completed DURING the very frame that queued it (parent holds
-                        // LockUpdate while painting) — cache READY but no frame ever requested: static
-                        // content stayed a placeholder until user interaction (Sandbox car image).
-                        // A locked parent defers via _neededUpdate and LockUpdate(false) replays it.
-                        Repaint();
-                    });
+                    QueueOffscreenBake(AddPaintArguments(context), recordArea, DrawingRect);
                 }
 
                 return !NeedUpdateFrontCache;
@@ -1227,6 +1199,41 @@ public partial class SkiaControl
 
             return false;
         }
+    }
+
+    /// <summary>
+    /// Queues a background bake of this control's double-buffered cache. A method of its own so the closure is
+    /// allocated only when a bake is queued, not on every <see cref="UseRenderingObject"/> call.
+    /// </summary>
+    void QueueOffscreenBake(DrawingContext clone, SKRect recordArea, SKRect paintDestination)
+    {
+        // Each bake is stamped. A rapidly self-invalidating cell (a streaming AI bubble growing
+        // word by word) queues several bakes as the text grows; without ordering, an OLDER bake
+        // completing AFTER a newer one overwrites RenderObject with STALE content — the cell's text
+        // visibly REVERTS (2 lines -> 1 line -> 2 again). Only a bake newer than the one shown
+        // publishes. Direct increment (no CancellationTokenSource alloc) keeps the 180ms streaming
+        // path cheap.
+        long bakeGeneration = BeginOffscreenBake();
+        PushToOffscreenRendering(() =>
+        {
+            try
+            {
+                //will be executed on background thread in parallel
+                var prepared = RecordOffscreenBake(clone, recordArea, paintDestination);
+                PublishOffscreenBake(prepared, bakeGeneration);
+            }
+            finally
+            {
+                EndOffscreenBake(bakeGeneration);
+            }
+
+            // UNCONDITIONAL wakeup: gating this on Parent.UpdateLocks lost the present
+            // when the bake completed DURING the very frame that queued it (parent holds
+            // LockUpdate while painting) — cache READY but no frame ever requested: static
+            // content stayed a placeholder until user interaction (Sandbox car image).
+            // A locked parent defers via _neededUpdate and LockUpdate(false) replays it.
+            Repaint();
+        });
     }
 
     /// <summary>
@@ -1765,15 +1772,18 @@ public partial class SkiaControl
         var destination = context.Destination;
 
         var clone = AddPaintArguments(context).WithDestination(drawingRect);
-        DrawWithClipAndTransforms(clone, drawingRect, true, true, (ctx) =>
-        {
-            PaintWithEffects(ctx);
+        DrawWithClipAndTransforms(clone, drawingRect, true, true, (control: this, destination),
+            static (ctx, s) => s.control.PaintDirect(ctx, s.destination));
+    }
 
-            foreach (var postRenderer in EffectPostRenderers)
-            {
-                postRenderer.Render(ctx.WithDestination(destination));
-            }
-        });
+    void PaintDirect(DrawingContext ctx, SKRect destination)
+    {
+        PaintWithEffects(ctx);
+
+        foreach (var postRenderer in EffectPostRenderers)
+        {
+            postRenderer.Render(ctx.WithDestination(destination));
+        }
     }
 
     /// <summary>
