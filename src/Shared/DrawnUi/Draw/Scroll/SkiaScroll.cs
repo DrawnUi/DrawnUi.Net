@@ -3171,12 +3171,12 @@ namespace DrawnUi.Draw
         /// <param name="ctx"></param>
         protected virtual void PaintViews(DrawingContext ctx)
         {
-            if (ctx.GetArgument(ContextArguments.Scale.ToString()) is float zoomedScale)
+            if (ctx.GetArgument(nameof(ContextArguments.Scale)) is float zoomedScale)
             {
                 ctx = ctx.WithScale(zoomedScale);
             }
 
-            if (ctx.GetArgument(ContextArguments.Rect.ToString()) is SKRect childRectWithOffset)
+            if (ctx.GetArgument(nameof(ContextArguments.Rect)) is SKRect childRectWithOffset)
             {
                 ctx = ctx.WithDestination(childRectWithOffset);
             }
@@ -3192,8 +3192,8 @@ namespace DrawnUi.Draw
             base.Paint(ctx);
 
             var c = ctx.WithArguments(
-                new(ContextArguments.Scale.ToString(), _zoomedScale),
-                new(ContextArguments.Rect.ToString(), ContentRectWithOffset.Pixels));
+                new(nameof(ContextArguments.Scale), _zoomedScale),
+                new(nameof(ContextArguments.Rect), ContentRectWithOffset.Pixels));
 
             //Children containment, same pattern SkiaShape uses for its outline: the outer clip in
             //DrawWithClipAndTransforms is an EFFECTS concern (expanded by the subtree's aggregated

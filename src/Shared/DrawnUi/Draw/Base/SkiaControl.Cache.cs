@@ -1115,7 +1115,7 @@ public partial class SkiaControl
             // sync rebuild there is the ~150ms fling stall the fast path exists to avoid.
             if (cache != null && UsesCacheDoubleBuffering && !PixelsForeign && !OffscreenBakeBusy
                 && !CompareSize(cache.RecordingArea.Size, recordArea.Size, 1)
-                && TrySyncRebuildStaleSize(context, recordArea))
+                && TrySyncRebuildStaleSize(AddPaintArguments(context), recordArea))
             {
                 return true; // fresh new-size cache built AND painted (CreateRenderingObjectAndPaint draws it)
             }
@@ -1629,8 +1629,8 @@ public partial class SkiaControl
                     destination = recordArea;
                 }
 
-                //paint from cache
-                var clone = AddPaintArguments(context).WithDestination(destination);
+                //paint from cache; the paint arguments are added where a cache gets painted, not for a blit
+                var clone = context.WithDestination(destination);
 
                 if (TryUseExistingRenderingObjectOrCreateNewAndPaint(clone, recordArea))
                 {
@@ -1690,14 +1690,15 @@ public partial class SkiaControl
         if (!UseRenderingObject(ctx, recordArea))
         {
             //record to cache and paint
+            var painting = AddPaintArguments(ctx);
             if (UsesCacheDoubleBuffering)
             {
                 // UseRenderingObject already drew the cache, the previous one or the placeholder
-                PrepareOffscreenCache(ctx, recordArea);
+                PrepareOffscreenCache(painting, recordArea);
             }
             else
             {
-                CreateRenderingObjectAndPaint(ctx, recordArea,
+                CreateRenderingObjectAndPaint(painting, recordArea,
                     (ctx) => { PaintWithEffects(ctx.WithDestination(DrawingRect)); });
             }
 

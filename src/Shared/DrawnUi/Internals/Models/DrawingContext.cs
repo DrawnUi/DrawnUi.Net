@@ -88,7 +88,7 @@ public struct DrawingContext
 
     /// <summary>
     /// Gets the argument associated with the specified key or returns null if not found.
-    /// Example: `if (ctx.GetArgument(ContextArguments.Scale.ToString()) is float zoomedScale) {}`
+    /// Example: `if (ctx.GetArgument(nameof(ContextArguments.Scale)) is float zoomedScale) {}`
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
