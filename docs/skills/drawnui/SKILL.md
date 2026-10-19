@@ -518,6 +518,22 @@ float valueNoise(float2 p) {
 - An `OrderedScrollToIndex` is HELD until ARRIVAL, not until issue: while pending it gates LoadMore for the whole animated flight, re-aims if content resizes mid-travel, re-issues on stall (≤2) then accepts, and is cancelled by user touch (Down). Under `MeasureVisible` it also waits until `LastMeasuredIndex >= target` and kicks `KickBackgroundMeasurement()` when measurement is idle — never resolve a jump against estimated extents.
 - Background measurement invariants: only the current pass may clear `_isBackgroundMeasuring` (generation/cts identity check — a stale task's finally must not clobber it), and the measure loop must not break on its OWN staged BackgroundMeasurement changes (only on real structure mutations), else it starves to one batch per draw.
 
+## 3D turns with perspective (RotationX, RotationY, TranslationZ)
+
+Every control can turn in 3D, with perspective built in; no shader or custom matrix is needed (measured
+2026-10-19, headless, a 200x200 square):
+- `RotationY` turns around the vertical axis (a card flip / door turn). At 50 the square draws 130 wide
+  (cos 50) and its near edge is taller than its far edge (230 vs 178 px). A positive value brings the left
+  edge toward the viewer, a negative value the right edge.
+- `RotationX` turns around the horizontal axis. At 40 the square draws 154 tall and the bottom edge is the
+  near one (224 wide vs 180 at the top).
+- `Rotation` / `RotationZ` stay the flat turn; all three combine.
+- `TranslationZ` sets how strong the perspective is: positive moves the control toward the viewer (stronger,
+  near / far edge 274 / 158 at RotationY 50 and TranslationZ 300), negative moves it away (flatter, 218 / 184
+  at -300).
+- Not measured yet: a turn past 90 (the back side), `AnchorX` / `AnchorY` with a 3D turn, taps on a turned
+  control, `Perspective1` / `Perspective2`. Measure before relying on them.
+
 ## Visual Effects (VisualEffects, shadows, glow)
 
 - Every `SkiaControl` has a `VisualEffects` collection (`IList<SkiaEffect>`). Effects: `IImageEffect` (SKImageFilter), `IColorEffect` (SKColorFilter), `IRenderEffect`/`BaseChainedEffect` (wrap paint), `IPostRendererEffect` (after paint, shaders/backdrop), `IStateEffect`, `ISkiaGestureProcessor`.
