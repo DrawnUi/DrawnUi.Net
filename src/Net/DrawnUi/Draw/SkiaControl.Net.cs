@@ -64,8 +64,13 @@ namespace DrawnUi.Draw
             }
             else if (propertyName == nameof(Padding))
             {
-                UsePadding = OnPaddingSet(this.Padding);
-                InvalidateMeasure();
+                // as on MAUI: a change made off the drawing thread (a background cache bake) is applied before the
+                // next frame, never in the middle of that bake's layout where it was lost
+                SyncUniqueAction(() =>
+                {
+                    UsePadding = OnPaddingSet(this.Padding);
+                    InvalidateMeasure();
+                }, 3);
             }
             else if (propertyName.IsEither(
                          nameof(HorizontalOptions), nameof(VerticalOptions)))
@@ -83,11 +88,14 @@ namespace DrawnUi.Draw
                          nameof(MaximumHeightRequest), nameof(MinimumHeightRequest)
                      ))
             {
-                InvalidateMeasure();
-                //if (UsingCacheType != SkiaCacheType.ImageDoubleBuffered)
+                SyncUniqueAction(() =>
                 {
-                    UpdateSizeRequest();
-                }
+                    InvalidateMeasure();
+                    //if (UsingCacheType != SkiaCacheType.ImageDoubleBuffered)
+                    {
+                        UpdateSizeRequest();
+                    }
+                }, 1);
             }
             else if (propertyName.IsEither(nameof(IsVisible)))
             {
