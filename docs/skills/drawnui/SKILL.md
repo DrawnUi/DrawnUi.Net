@@ -528,9 +528,10 @@ Every control can turn in 3D, with perspective built in; no shader or custom mat
 - `RotationX` turns around the horizontal axis. At 40 the square draws 154 tall and the bottom edge is the
   near one (224 wide vs 180 at the top).
 - `Rotation` / `RotationZ` stay the flat turn; all three combine.
-- `TranslationZ` sets how strong the perspective is: positive moves the control toward the viewer (stronger,
-  near / far edge 274 / 158 at RotationY 50 and TranslationZ 300), negative moves it away (flatter, 218 / 184
-  at -300).
+- `TranslationZ` only sets how strong the perspective is; it does not move the control toward the viewer,
+  the size stays. Positive = stronger (near / far edge 274 / 158 at RotationY 50 and TranslationZ 300),
+  negative = flatter (218 / 184 at -300). On a control that is not turned it changes nothing (a 200x120 box
+  stays 200x120 at -300 and at 300).
 - Not measured yet: a turn past 90 (the back side), `AnchorX` / `AnchorY` with a 3D turn, taps on a turned
   control, `Perspective1` / `Perspective2`. Measure before relying on them.
 
