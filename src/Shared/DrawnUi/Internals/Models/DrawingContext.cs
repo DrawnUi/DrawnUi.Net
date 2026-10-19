@@ -191,6 +191,18 @@ public class SkiaDrawingContext
     /// </summary>
     public bool IsRecycled { get; set; }
 
+    /// <summary>
+    /// Recording a picture that will be drawn scaled, turned, skewed or projected (the recording control's own
+    /// transforms or an ancestor's): images blitted into it are recorded with smooth sampling.
+    /// </summary>
+    public bool PlaybackDistorted { get; set; }
+
+    /// <summary>
+    /// An image cache (or a picture holding one) was blitted here. A picture recorded with it is recorded again
+    /// when its playback changes between distorted and straight.
+    /// </summary>
+    public bool HasImageBlits { get; set; }
+
     public SkiaDrawingContext Clone()
     {
         return new SkiaDrawingContext()
@@ -201,6 +213,7 @@ public class SkiaDrawingContext
             Canvas = this.Canvas,
             Surface = this.Surface,
             FrameTimeNanos = this.FrameTimeNanos,
+            PlaybackDistorted = this.PlaybackDistorted,
         };
     }
 

@@ -4875,13 +4875,7 @@ namespace DrawnUi.Draw
                 provider.TranslationZ != 0)
             {
                 draw3d = true;
-                Helper3d ??= new();
-                Helper3d.Reset();
-                Helper3d.RotateXDegrees((float)provider.RotationX);
-                Helper3d.RotateYDegrees((float)provider.RotationY);
-                Helper3d.RotateZDegrees(-(float)provider.RotationZ);
-                Helper3d.Translate(0, 0, (float)provider.TranslationZ);
-                matrix = matrix.PostConcat(Helper3d.Matrix);
+                matrix = matrix.PostConcat(Create3dMatrix(provider));
             }
 
             // Translate back from pivot point
@@ -4895,6 +4889,26 @@ namespace DrawnUi.Draw
 
             // Save the complete transformation matrix for hit testing
             RenderTransformMatrix = matrix;
+        }
+
+        /// <summary>
+        /// The 3D part of the render transform, around the pivot: RotationX / RotationY / RotationZ seen with
+        /// perspective from the default camera distance, and TranslationZ as a real depth, so a control moved
+        /// toward the viewer (positive) draws bigger and one moved away (negative) smaller, turned or not.
+        /// </summary>
+        SKMatrix Create3dMatrix(SkiaControl provider)
+        {
+            Helper3d ??= new();
+            Helper3d.Reset();
+            Helper3d.RotateXDegrees((float)provider.RotationX);
+            Helper3d.RotateYDegrees((float)provider.RotationY);
+            Helper3d.RotateZDegrees(-(float)provider.RotationZ);
+            var matrix = Helper3d.Matrix;
+            // w = (distance to the camera) / (camera distance): a flat control at depth TranslationZ scales by
+            // camera / (camera - TranslationZ); this also drops the helper's 1 + m22 / distance term
+            var camera = Helper3d.CameraDistance;
+            matrix.Persp2 = Math.Max(camera - (float)provider.TranslationZ, 1f) / camera;
+            return matrix;
         }
 
         protected virtual void ApplyTransforms(SkiaDrawingContext ctx, SKRect destination)
@@ -4952,13 +4966,7 @@ namespace DrawnUi.Draw
             if (draw3d || RotationX != 0 || RotationY != 0 || RotationZ != 0 || TranslationZ != 0)
             {
                 draw3d = true;
-                Helper3d ??= new();
-                Helper3d.Reset();
-                Helper3d.RotateXDegrees((float)RotationX);
-                Helper3d.RotateYDegrees((float)RotationY);
-                Helper3d.RotateZDegrees(-(float)RotationZ);
-                Helper3d.Translate(0, 0, (float)TranslationZ);
-                matrix = matrix.PostConcat(Helper3d.Matrix);
+                matrix = matrix.PostConcat(Create3dMatrix(this));
             }
 
             // Translate back from pivot point
@@ -8267,6 +8275,16 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Whether what this control draws here ends up scaled, turned, skewed or projected on screen: by its own
+        /// transforms, a live ancestor's (the canvas matrix) or those of the picture it is recorded into. Images
+        /// then need smooth sampling; nearest keeps them sharp only while they are just moved.
+        /// </summary>
+        protected bool WillDrawDistorted(SkiaDrawingContext context)
+        {
+            return IsDistorted || context.PlaybackDistorted || !SkiaSamplingOptions.IsMoveOnly(context.Canvas.TotalMatrix);
+        }
+
+        /// <summary>
         /// Drawing cache, applying clip and transforms as well
         /// </summary>
         /// <param name="cache"></param>
@@ -8291,8 +8309,14 @@ namespace DrawnUi.Draw
 
             if (EffectPostRenderers.Count == 0)
             {
+                // a picture being recorded here replays this blit later, with the sampling chosen now
+                if (cache.Image != null || cache.HasImageBlits)
+                    ctx.Context.HasImageBlits = true;
+
                 cache.Draw(ctx.Context.Canvas, context.Destination, _paintWithOpacity,
-                    IsDistorted ? SkiaSamplingOptions.LinearLinear : SkiaSamplingOptions.NearestNoMip);
+                    cache.Image != null && WillDrawDistorted(ctx.Context)
+                        ? SkiaSamplingOptions.LinearLinear
+                        : SkiaSamplingOptions.NearestNoMip);
             }
 
             // Apply chained post renderers - each snapshots from canvas, enabling shader-after-shader

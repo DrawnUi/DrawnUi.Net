@@ -70,6 +70,14 @@ public static class SkiaSamplingOptions
         new SKSamplingOptions(SKCubicResampler.CatmullRom);
 
 
+    /// <summary>
+    /// True when the matrix only moves (or mirrors) what is drawn, so an image keeps its pixels 1:1 and nearest
+    /// sampling stays sharp; false once it scales, turns, skews or projects.
+    /// </summary>
+    public static bool IsMoveOnly(in SKMatrix m) =>
+        m.SkewX == 0 && m.SkewY == 0 && m.Persp0 == 0 && m.Persp1 == 0 && m.Persp2 == 1
+        && Math.Abs(m.ScaleX) == 1 && Math.Abs(m.ScaleY) == 1;
+
     public static SKSamplingOptions QualityNone => GetSamplingOptions(FilterQuality.None);
     public static SKSamplingOptions QualityLow => GetSamplingOptions(FilterQuality.Low);
     public static SKSamplingOptions QualityMedium => GetSamplingOptions(FilterQuality.Medium);

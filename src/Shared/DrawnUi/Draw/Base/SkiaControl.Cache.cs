@@ -705,6 +705,15 @@ public partial class SkiaControl
                 }
             }
 
+            // a picture replays the images blitted into it with the sampling chosen when it was recorded: smooth only
+            // if it was going to be drawn distorted. Recorded again when that changed (a card with a cached child starts
+            // to turn), else the turned child stayed pixel-sampled and jagged.
+            if (cache.Picture != null && cache.HasImageBlits && cache.PlaybackDistorted != WillDrawDistorted(context))
+            {
+                CacheValidity = CacheValidityType.SamplingMismatch;
+                return false;
+            }
+
             //check hardware context maybe changed
             if (IsCacheGPU && cache.Surface != null &&
                 cache.Surface.Context != null &&
@@ -854,13 +863,17 @@ public partial class SkiaControl
                 using (var recorder = new SKPictureRecorder())
                 {
                     var recordingContext = context.CreateForRecordingOperations(recorder, cullRect);
+                    var playbackDistorted = WillDrawDistorted(context.Context);
+                    recordingContext.Context.PlaybackDistorted = playbackDistorted;
 
                     action(recordingContext);
 
                     SKPicture skPicture = recorder.EndRecording();
                     renderObject = new(UsingCacheType, skPicture, context.Destination, cacheRecordingArea)
                     {
-                        DataContext = this.ContextIndex
+                        DataContext = this.ContextIndex,
+                        PlaybackDistorted = playbackDistorted,
+                        HasImageBlits = recordingContext.Context.HasImageBlits
                     };
                 }
             }
@@ -1303,7 +1316,13 @@ public partial class SkiaControl
         /// Same size, but the effects margin around it (shadows, a glow on a child) changed: the image surface was
         /// recorded with another margin, so it has another size and origin.
         /// </summary>
-        EffectsMarginMismatch
+        EffectsMarginMismatch,
+
+        /// <summary>
+        /// A picture holding image blits was recorded for a straight (or a distorted) playback and is now drawn the
+        /// other way: the images in it need the other sampling.
+        /// </summary>
+        SamplingMismatch
     }
 
     public Action GetOffscreenRenderingAction()
