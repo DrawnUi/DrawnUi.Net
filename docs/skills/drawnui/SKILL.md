@@ -518,22 +518,43 @@ float valueNoise(float2 p) {
 - An `OrderedScrollToIndex` is HELD until ARRIVAL, not until issue: while pending it gates LoadMore for the whole animated flight, re-aims if content resizes mid-travel, re-issues on stall (≤2) then accepts, and is cancelled by user touch (Down). Under `MeasureVisible` it also waits until `LastMeasuredIndex >= target` and kicks `KickBackgroundMeasurement()` when measurement is idle — never resolve a jump against estimated extents.
 - Background measurement invariants: only the current pass may clear `_isBackgroundMeasuring` (generation/cts identity check — a stale task's finally must not clobber it), and the measure loop must not break on its OWN staged BackgroundMeasurement changes (only on real structure mutations), else it starves to one batch per draw.
 
-## 3D turns with perspective (RotationX, RotationY, TranslationZ)
+## Transforms, 2D and 3D
 
-Every control can turn in 3D, with perspective built in; no shader or custom matrix is needed (measured
-2026-10-19, headless, a 200x200 square):
-- `RotationY` turns around the vertical axis (a card flip / door turn). At 50 the square draws 130 wide
-  (cos 50) and its near edge is taller than its far edge (230 vs 178 px). A positive value brings the left
-  edge toward the viewer, a negative value the right edge.
-- `RotationX` turns around the horizontal axis. At 40 the square draws 154 tall and the bottom edge is the
-  near one (224 wide vs 180 at the top).
-- `Rotation` / `RotationZ` stay the flat turn; all three combine.
-- `TranslationZ` only sets how strong the perspective is; it does not move the control toward the viewer,
-  the size stays. Positive = stronger (near / far edge 274 / 158 at RotationY 50 and TranslationZ 300),
-  negative = flatter (218 / 184 at -300). On a control that is not turned it changes nothing (a 200x120 box
-  stays 200x120 at -300 and at 300).
-- Not measured yet: a turn past 90 (the back side), `AnchorX` / `AnchorY` with a 3D turn, taps on a turned
-  control, `Perspective1` / `Perspective2`. Measure before relying on them.
+Every control moves, turns, scales and turns in 3D at render time, around its arranged box: layout never
+changes, and the control's own cache stays valid while it does (measured 2026-10-19: a turning Image-cached card
+keeps the same cache object). Property names are MAUI's. The Hello apps' Transforms page shows all of them.
+
+2D:
+- `TranslationX` / `TranslationY` (points), `Rotation` (degrees, clockwise), `ScaleX` / `ScaleY` (`ScaleX = -1`
+  mirrors), `SkewX` / `SkewY` (degrees), `Opacity`.
+- `AnchorX` / `AnchorY` set the pivot as a fraction of the box (default 0.5, 0.5 = center; 0, 0 = top left).
+- Taps land on the drawn control, not on its layout box (the hit test uses the inverse of the render matrix).
+- One-shot animations: `TranslateToAsync`, `RotateToAsync`, `ScaleToAsync`, `FadeToAsync`; each cancels its own
+  previous run. Any other property: `AnimateRangeAsync(v => control.RotationY = v, from, to, ms, easing)`.
+  Loops: `drawnui-fluent` (`.AnimateRotation`, `.Animate`).
+
+3D (perspective built in, no shader or custom matrix needed; measured 2026-10-19, headless):
+- `RotationY` turns around the vertical axis (a card flip, a door). A 200x200 square at 50 draws 130 wide (cos 50)
+  with the near edge taller than the far one (230 vs 178 px). Positive brings the left edge toward the viewer.
+- `RotationX` turns around the horizontal axis; at 40 the square draws 154 tall, the bottom edge nearer (224 wide
+  vs 180 at the top). `Rotation` stays the flat turn; all of them combine (RotationX 16, RotationY 20, Rotation -6
+  gives the "card lying on a table" look).
+- `AnchorX` / `AnchorY` are the hinge: with `AnchorX = 0` a RotationY turn keeps the left edge in place (a door),
+  with 1 the right edge.
+- Past 90 the control shows its content mirrored, as its back: at RotationY 180 a bar drawn at the left shows at
+  the right. A card with a real back side: show a second face while `cos(RotationX) * cos(RotationY) < 0` and
+  mirror that face (`ScaleX = -1` for a Y turn, `ScaleY = -1` for an X turn) so it reads right.
+- `TranslationZ` is depth: positive moves the control toward the viewer, which draws it bigger, negative farther
+  and smaller, turned or flat. Scale = 576 / (576 - TranslationZ) (576 px = the camera distance): -300 = 0.66x,
+  +150 = 1.35x, +300 = 2.09x. Up to 1.10.7.12-pre2 it only changed how strong the perspective of a TURNED control
+  was and did nothing on a flat one.
+- Cached content inside a turned control is drawn smooth. Up to 1.10.7.12-pre2 an Image-cached child of a turned
+  parent that records its content as a picture (`UseCache = Operations`, the default of SkiaShape and SkiaLabel)
+  was drawn pixel-sampled: stair steps on every edge.
+- Gestures go through the 3D matrix: a horizontal `SkiaScroll` inside a tilted card scrolls by a sideways swipe,
+  and a tap picks the item under the finger. A vertical scroll nested in a vertically scrolling page never gets
+  the pan, turned or flat (the page takes it): inside a page use a horizontal strip.
+- Not measured: `Perspective1` / `Perspective2`. Measure before relying on them.
 
 ## Visual Effects (VisualEffects, shadows, glow)
 
