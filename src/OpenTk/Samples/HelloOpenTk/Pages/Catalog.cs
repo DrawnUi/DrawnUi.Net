@@ -28,7 +28,7 @@ public static class Catalog
         new("scroll", "SkiaScroll", "Header in flow / sticky / behind with parallax, Footer, scroll bars, pull to refresh, SnapToChildren, TrackIndexPosition"),
         new("shaders", "Shaders", "SkiaShaderEffect — SkSL on any control (iImage1, iTime, iMouse, custom uniforms, touch ripples) and SkiaShaderCarousel gl-transitions"),
         new("sprites", "Sprites", "SkiaSprite spritesheets and a SkiaSpriteSet warrior on a tile board, moved with the keyboard (FastRepro sprites)"),
-        new("transforms", "Transforms", "Rotation, Scale, Skew, Translation, Opacity — hit-testing through them, *ToAsync animations"),
+        new("transforms", "Transforms", "Rotation, 3D turns with perspective, Scale, Skew, Translation, Opacity — hit-testing through them, *ToAsync animations"),
         new("reorder", "Drag to reorder", "Language preferences, Android style: drag one by its grip and it lifts and floats over the list, which reorders live under it keeping its measured heights and its scroll offset, then the drop glides into the new slot"),
         new("pong", "Pong", "DrawnGame: game loop, sprites moved by Left / Top, an AI paddle, keyboard and touch — the .NET Pong sample, field fitted to any screen"),
         new("a11y", "Accessibility", "ARIA overlay over the canvas — roles, labels, hints, toggles, live regions, keyboard"),
