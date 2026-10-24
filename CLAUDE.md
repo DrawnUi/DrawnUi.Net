@@ -23,6 +23,7 @@ Skills live in-repo at `docs/skills/<name>/SKILL.md` and are published to `https
 | Rendering a layout to PDF / image, report templates, page splitting | + `drawnui-pdf` |
 | OpenTK desktop apps, GL overlays, window chrome | + `drawnui-opentk` |
 | Headless testing/repros (no device/GPU) | + `drawnui-net-harness` |
+| Writing or porting shaders (SkSL, GLSL, Shadertoy) | + `drawnui-shaders` |
 | SkiaSharp SKMesh / SkSL mesh drawing | + `skmech` |
 
 ---

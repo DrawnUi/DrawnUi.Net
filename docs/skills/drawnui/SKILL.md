@@ -428,72 +428,7 @@ Conditional: `AutoCache` on `SkiaScroll`/`SkiaDrawer` sets THEIR OWN `UseCache =
 
 ## Shader Effects (SkiaShaderEffect / SkiaBackdrop)
 
-- Write inline SkSL as a **raw string literal** in its own `const` (`const string mySksl = """ ... """;`), never as a verbatim `@"..."` inlined at the property. No `""` escaping, and the closing `"""` strips the C# indentation so the shader reaches the compiler without leading whitespace on every line. Bonus in Monaco-based editors (DrawnUI Fiddle): the bundled `csharp` tokenizer has a rule for `@"` but none for `"""`, so a raw-literal shader body is tokenized as code and gets keyword/number/comment colours instead of one flat string colour.
-- Shader files by path (`ShaderSource`, `ShaderTemplate`, `TransitionShader`, effect textures) load on every head: MAUI from Resources/Raw, OpenTK / WPF from the exe folder (copy them there with `CopyToOutputDirectory`), the web heads from the site, asynchronously (the effect draws nothing until the file arrives). Only the synchronous `SkiaShader.FromResource` / `SkSl.LoadFromResources` throw `NotSupportedException` in the browser for a file not loaded yet: `await SkSl.PrecompileAsync(...)` first. Before 2026-10-06 OpenTK could not read them at all and WPF needed a startup preload.
-- `SkiaBackdrop` + `VisualEffects` + a `SkiaShaderEffect` subclass (e.g. `GlassBackdropEffect`, a SAMPLE class in `src/OpenTk/Samples/OpenTkOverlay`, not library API — copy it, do not expect to reference it) works on the OpenTK target. The backdrop snapshots `ctx.Context.Surface` which is the same GPU framebuffer used by raw GL — so GL-drawn content (cube, 3D scene) IS captured and passed to the shader as `iImage1`.
-- For liquid glass over a GL scene: place `SkiaBackdrop` as the first child inside the `SkiaShape` panel. Do NOT put GPU cache (`UseCache = GPU`) on the outer shape — that caches the backdrop snapshot and prevents live updates each frame.
-- Match `GlassBackdropEffect.CornerRadius` to the parent `SkiaShape.CornerRadius` (in points, not pixels — the effect multiplies by `RenderingScale` internally).
-- `SkiaBackdrop.Blur = 0` when using a custom shader effect — the shader handles its own blur.
-
-### Resolution-independent procedural textures (grain, dither, scanlines, halftone)
-
-The same shader often renders at very different sizes: a camera preview frame (~720-1080 px), a thumbnail, a full-resolution photo (4K, 12 MP+). Anything computed per OUTPUT pixel keeps its pixel size, so relative to the picture it gets N times finer on the big image, and shown fit-to-screen (downscaled) it averages away or aliases into mush. It looks identical where preview and photo have the same size (desktop webcam) and breaks on phone captures. Verified 2026-09-13 on iPhone 16 Pro (4K still, 3x display): a newspaper dither filter looked right in preview and wrong in the photo until its pattern was made image-relative as below.
-
-Mandatory for any shader used on camera preview, photos or video (filter apps especially):
-- **Existing shader**: before changing or shipping it, check every pattern and pixel distance against the bullets below (grain, dither, stripes, blur/kernel taps, neighbour offsets).
-- **New shader**: implement image-relative scaling from the start, never raw `fragCoord` / `inputCoord` patterns.
-
-Rule: build every pattern in image-relative space.
-
-```glsl
-float2 inputCoord = (fragCoord - iOffset) * iImageResolution / iResolution; // texture pixels
-float patternScale = iImageResolution.y / 720.0;  // texture pixels per reference pixel
-float2 p = inputCoord / patternScale;             // pattern space, same density at any size
-```
-
-- **Cells** (Bayer dither, halftone grid, pixelation): `int2 cell = int2(floor(p));` then look the threshold up by `cell`. Never by `fragCoord`.
-- **Hash grain** `fract(sin(dot(c, k)) * 43758.5453)` is chaotic at sub-unit steps: **scaling its input does NOT enlarge the grain**. `grain(inputCoord * 0.5)` is still 1-pixel noise (measured: correlation length 1 px at 720 and at 2880 px tall). Put it on a lattice: hard grain `hash21(floor(p))`, organic grain `valueNoise(p)`:
-
-```glsl
-float hash21(float2 p) { return fract(sin(dot(p, float2(127.1, 311.7))) * 43758.5453); }
-float valueNoise(float2 p) {
-    float2 i = floor(p);
-    float2 f = fract(p);
-    f = f * f * (3.0 - 2.0 * f);
-    float a = hash21(i);
-    float b = hash21(i + float2(1.0, 0.0));
-    float c = hash21(i + float2(0.0, 1.0));
-    float d = hash21(i + float2(1.0, 1.0));
-    return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
-}
-// grain = (valueNoise(p) - 0.5) * amount;  for finer/coarser grain multiply p, never inputCoord
-```
-
-- **Matching an existing preview look**: the hard lattice `grainFn(floor(inputCoord / patternScale))` keeps each shader's own grain function, stays identical at the 720 reference and, measured on 7 film shaders, keeps the grain strength of a 4x photo box-downscaled to screen size equal to the preview (before the fix it dropped to 20-50%). `valueNoise` is softer when zoomed in but interpolation lowers the grain's variance between cells, so expect weaker grain on the photo unless you compensate.
-- **Lattice on OUTPUT coordinates**: put grain on `inputCoord`, not on lens-distorted / compressed sampling coordinates. A distorted lattice drifts off the pixel grid and averages the grain away on the photo (measured: 67% of preview strength vs 100% on `inputCoord`). Grain lives on the film, not in the scene.
-- **Stripes / scanlines**: frequency from `p` or from `uv` (`uv.y * 720.0` lines), never from raw pixels.
-- **Anti-aliasing is the exception**: pattern sizes (line width, glow, cells) are image-relative, but an edge's blend width must be ~1 OUTPUT pixel: `aa = 0.75 * max(iImageResolution / iResolution)` in texture pixels. Scaling the AA with the image blurs edges on the photo.
-- **Posterize / zone look without pixel speckle, cheap enough for realtime video** (measured 2026-09-13 in a SkiaSharp harness on a neon pop-art filter: 82 -> 17 samples per pixel, CPU render 11.4 s -> 1.3 s at 2160x2880, isolated zone-flip pixels at 100% zoom 1.33% -> 0.10%). Look caveat: the app owner REJECTED the ink outlines for pop art, because dark lines between colour zones kill the flat-colour concept. Outlines are a comics/print choice only. For flat-colour looks, blur the colour before posterizing (Comics-style gaussian) and keep zones touching directly:
-  - **Pick the zone from smoothed luminance**, never from the raw pixel: a 3x3 binomial of taps spaced `1 * pxPerBase`. Near a threshold, camera noise flips raw pixels between zones, which reads as computer-generated dithering.
-  - **Half-texel shift for free denoise**: `p = inputCoord + 0.5` puts every linear-filtered tap between 4 texels, so 9 samples average 36 texels. Needs linear filtering, which is the DrawnUI default.
-  - **Border distance from the same taps**: a Sobel gradient on the 3x3 gives luminance per texture pixel. `(lum - threshold) / grad` is the distance to the zone border in pixels. It drives crisp anti-aliased borders (`smoothstep(-aa, aa, distance)`) and ink outlines of fixed image-relative width (`1 - smoothstep(halfWidth - aa, halfWidth + aa, distance)`) with no extra samples.
-  - **Guards**: fade the ink by `smoothstep(k*0.5, k, grad * pxPerBase)` so noise and soft gradients get no lines, and give the zone blend a minimum luminance width (`max(aa * grad, 0.02)`) so soft-shading borders do not fray.
-  - **Wide soft effects (glow) need few taps**: an 8-tap ring at the radius plus the inner mean replaced an 81-tap grid.
-  - **Sketch / ink lines from a colour dodge (`pow(grey(colorDodge(col, 1 - blur)), k)`) draw every faint dip: wrinkles, pores, skin texture.** Gate them by local darkness: `line = mix(1.0, line, smoothstep(T, 1.5*T, grey(blur) - grey(col)))` with T about 0.06. A line is drawn only where the pixel is clearly darker than its surroundings, it costs no samples, and it does not depend on resolution. Tested on a real unfiltered selfie (2026-09-13, sketch, anime cel and B&W manga shaders; the owner picked this variant): the forehead comes out clean, while eyes, brows, nose, mouth and the head outline are kept. REJECTED on the same image: a size gate (dodging against a small blur instead of the pixel) softens and fades all lines, and size plus contrast together removes eyes and most outlines. A colour-burn line blend hides faint lines only because bright skin swallows them; it cannot work on white-paper outputs (burn over white = no line at all).
-  - **Removing a posterize step moves the thresholds**: for gray, `floor(c*8)/8 > T` means `c >= (floor(8T)+1)/8`. Apply that to the smoothed luminance, otherwise zones grow and the look changes.
-- **Pixel distances** (blur radius, kernel taps, edge / micro-contrast neighbours, chromatic offset): multiply by `patternScale`, or express them as a fraction of `iImageResolution`. Keep kernel WEIGHTS computed from the unscaled tap index.
-- **Neighbour sampling trap**: `iImage1.eval` takes texture PIXELS. A neighbour is `inputCoord + float2(1.0, 0.0) * patternScale`. `1.0 / iImageResolution` is a UV-space step; added to a pixel coordinate it is ~0.001 px, so the kernel silently samples the centre pixel and the effect does nothing (seen in film-emulation micro-contrast / acutance code).
-- **Reference choice**: 720 (typical preview height) keeps the preview look unchanged. Use `min(iImageResolution.x, iImageResolution.y)` instead of `.y` when preview and output can differ in orientation. Pick one reference per app. Below the reference (thumbnails) cells become sub-pixel.
-- The `inputCoord` formula is correct in both render paths: `SkiaShaderEffect` (`iImageResolution == iResolution == destination size`) and direct `SkiaShader.DrawImage` / `DrawRect(canvas, image, dst)` (`iImageResolution` = image size).
-- **Verify without a device**: single-file SkiaSharp console (`#:package SkiaSharp@4.148.0`, `dotnet run check.cs`), `SKRuntimeEffect.CreateShader`, render the same content at N and 4N px, measure the pattern size — mean run length of equal output values for cell patterns, lag where horizontal autocorrelation drops below 0.5 for grain. Same size at both = still output-pixel bound; growing with the image = fixed. (The 0.5-lag metric quantizes: a 1 px block reads 1, a 4 px block reads 3.)
-
-### Shader slide transitions (SkiaShaderCarousel / ShaderTransitionEffect)
-
-- `SkiaShaderCarousel` (`DrawnUi.Controls`): `SkiaCarousel` subclass where slides never translate — an attached `ShaderTransitionEffect` (a `ShaderDoubleTexturesEffect` adding `progress` + `ratio` uniforms) blends the from/to cells' cached images. Give it a gl-transitions style `transition(vec2 uv)` via `TransitionShader` (file path in the app package), `TransitionShaderCode` (raw SkSL string — required in the fiddle), or a custom `TransitionTemplate`. Cell templates MUST use `UseCache = Image` (the effect samples cell RenderObject caches); ctor forces `RecyclingTemplate.Disabled`.
-- `InterruptedTransitionMs` (default 50): a swipe during a running transition wraps the current transition up in ~that time, then plays the next. Gesture targeting is deterministic: max ONE slide per gesture, direction from velocity (threshold 100) or displacement, target computed from the gesture-origin snap — never from nearest-to-finger.
-- Custom effect subclass: override `protected virtual ShaderTransitionEffect CreateTransitionEffect()` — called once from ctor; effect is attached lazily on first `Render`.
-- AspectFit letterboxed slides (photo viewer case): the shader spans the whole cell, so e.g. the cube transition's reflection projects at SCREEN bottom instead of under the photo. Fix = a band-clipped effect subclass: (1) override `Render`, intersect `ctx.Destination` with the union of from/to inner `SkiaImage.DisplayRect`, call `base.Render(ctx.WithDestination(clipped))`; (2) override `SyncEngineState` and set `GetEngine().Offset` to the clipped destination origin (base sets it to TEXTURE bounds origin, so uv would not be [0,1] over the band); (3) cell textures stay full-size, so remap sampling in a custom template: `getFromColor/getToColor` sample `(uBandOffset + float2(uv.x, 1.0-uv.y) * uBandScale) * uTexResolution` with those uniforms added in `CreateUniforms` (band rect vs stored textureBounds ratios). NB `iResolution` AND `iImageResolution` are both destination-sized (`engine.CreateUniforms(destW, destH, destW, destH)`) — after clipping they are band-sized, so the full texture pixel size needs its own uniform.
-- Single-texture variant of the same hack, written app-side (no such class in the library): `ClippedShaderEffect` — only intersect destination with `SkiaImage.DisplayRect`, no remap needed, because with `AutoCreateInputTexture` the snapshot is taken FROM the clipped destination, so texture == band content exactly.
+Load the `drawnui-shaders` skill (`docs/skills/drawnui-shaders/SKILL.md`, https://drawnui.net/skills/drawnui-shaders/SKILL.md) before writing, porting or debugging any shader: a shader in `VisualEffects` (`ShaderCode` / `ShaderSource`), the standard uniforms every shader must declare, custom uniforms, sampling the picture in pixels, porting GLSL / Shadertoy / CodePen code to SkSL, the same look on preview and full photo, backdrop / glass, `SkiaShaderCarousel` transitions, performance, and checking a shader without a device.
 
 ## Visual Structure
 
