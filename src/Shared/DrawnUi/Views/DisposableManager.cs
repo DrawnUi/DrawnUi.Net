@@ -18,7 +18,7 @@ namespace DrawnUi.Views
         /// <summary>
         /// Represents a disposable object with its associated frame number.
         /// </summary>
-        internal class FramedDisposable : IDisposable
+        internal readonly struct FramedDisposable : IDisposable // a struct: no object per disposed resource
         {
             public IDisposable Disposable { get; }
             public long FrameNumber { get; }

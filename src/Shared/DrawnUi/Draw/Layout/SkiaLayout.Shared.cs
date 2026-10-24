@@ -1111,8 +1111,13 @@ namespace DrawnUi.Draw
             if (IsDisposed || IsDisposing)
                 return;
 
-            InvalidatedChildrenInternal = InvalidatedChildren;
-            InvalidatedChildren = new();
+            // swap the two sets instead of a new one per draw: the set drawn last time is cleared before it
+            // collects again, while nothing else holds it
+            var collected = InvalidatedChildren;
+            var next = InvalidatedChildrenInternal ?? new();
+            next.Clear();
+            InvalidatedChildren = next;
+            InvalidatedChildrenInternal = collected;
 
             ApplyMeasureResult();
 

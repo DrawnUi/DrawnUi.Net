@@ -1202,7 +1202,9 @@ public class SkiaCachedStack : SkiaStack
                 tree.Offset = CalculateCacheOffset(cache, dest);
             }
 
-            cache.Draw(context.Context.Canvas, dest, null, FilterQuality.None);
+            context.Context.HasImageBlits = true;
+            cache.Draw(context.Context.Canvas, dest, null,
+                WillDrawDistorted(context.Context) ? SkiaSamplingOptions.LinearLinear : SkiaSamplingOptions.NearestNoMip);
         }
     }
 

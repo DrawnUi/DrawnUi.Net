@@ -2367,12 +2367,31 @@ else
         /// Renders stack/wrap layout.
         /// Returns number of drawn children.
         /// </summary>
+        private List<ControlInStack> _visibleElementsSpare;
+        private int _lastRenderTreeCount;
+
         protected virtual int DrawStack(DrawingContext ctx, LayoutStructure structure)
         {
+            // the visible cells of one draw, in a list kept between draws instead of a new one each frame;
+            // a draw running at the same time (a plane bake on a worker) finds it taken and makes its own
+            var visibleElements = Interlocked.Exchange(ref _visibleElementsSpare, null) ?? new List<ControlInStack>();
+            try
+            {
+                return DrawStack(ctx, structure, visibleElements);
+            }
+            finally
+            {
+                visibleElements.Clear();
+                _visibleElementsSpare = visibleElements;
+            }
+        }
+
+        int DrawStack(DrawingContext ctx, LayoutStructure structure, List<ControlInStack> visibleElements)
+        {
             var drawn = 0;
-            List<SkiaControlWithRect> tree = new();
+            // published as RenderTree, so a new list each draw; sized like the last one so it never regrows
+            List<SkiaControlWithRect> tree = new(_lastRenderTreeCount);
             var needrebuild = templatesInvalidated;
-            List<ControlInStack> visibleElements = new();
             bool updateInternal = false;
 
             var planeId = ctx.GetArgument(nameof(ContextArguments.Plane)) as string;
@@ -2600,6 +2619,7 @@ else
                 templatesInvalidated = false;
             }
 
+            _lastRenderTreeCount = tree.Count;
             SetRenderingTree(tree);
 
             if (Parent is IDefinesViewport viewport &&

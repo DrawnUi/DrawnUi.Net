@@ -451,7 +451,8 @@ Perfect for apps requiring **custom UI designs**, **complex animations**, **game
   <p style="margin-bottom: 20px; ">Get help and share your creations</p>
   <a href="https://github.com/DrawnUi/DrawnUi.Net/discussions" style="color: #4299e1; text-decoration: none; font-weight: 600;">GitHub Discussions →</a><br>
   <a href="https://github.com/DrawnUi/DrawnUi.Net/issues" style="color: #4299e1; text-decoration: none; font-weight: 600;">Report Issues →</a><br>
-  <a href="articles/faq.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">FAQ →</a>
+  <a href="articles/faq.md" style="color: #4299e1; text-decoration: none; font-weight: 600;">FAQ →</a><br>
+  <a href="https://github.com/sponsors/taublast" style="color: #4299e1; text-decoration: none; font-weight: 600;">Sponsor DrawnUI →</a>
 </div>
 
 </div>

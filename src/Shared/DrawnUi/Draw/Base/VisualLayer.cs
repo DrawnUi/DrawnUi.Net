@@ -52,7 +52,7 @@
         /// <summary>
         /// Layout bounds in local coordinates at time of creation
         /// </summary>
-        public SKRect Origin { get; }
+        public SKRect Origin { get; private set; }
 
         /// <summary>
         /// Local transformation matrix applied to this layer
@@ -244,8 +244,26 @@
         /// <param name="tag"></param>
         public VisualLayer(SkiaControl control, VisualLayer parent, SKRect destination, float scale)
         {
+            Reset(control, parent, destination, scale);
+        }
+
+        private List<VisualLayer> _ownChildren;
+
+        /// <summary>
+        /// Makes this layer describe <paramref name="control"/> as drawn now, exactly as a new layer would, so a
+        /// control can reuse its layers frame after frame instead of allocating one per draw.
+        /// </summary>
+        public void Reset(SkiaControl control, VisualLayer parent, SKRect destination, float scale)
+        {
+            // own list: AttachFromCache may have pointed Children at a cache's list, never clear that one
+            _ownChildren ??= new();
+            _ownChildren.Clear();
+            Children = _ownChildren;
+            IsFrozen = false;
+            Cache = null;
+            _isValid = false;
+
             Control = control;
-            Children = new();
             Transforms = control.RenderTransformMatrix;
 
             TransformsTotal = Transforms;
@@ -377,23 +395,17 @@
         /// <returns></returns>
         public static SKRect TransformRect(SKRect rect, SKMatrix matrix)
         {
-            // Transform all four corners of the rectangle
-            SKPoint[] corners = new SKPoint[4]
-            {
-                new SKPoint(rect.Left, rect.Top), new SKPoint(rect.Right, rect.Top),
-                new SKPoint(rect.Right, rect.Bottom), new SKPoint(rect.Left, rect.Bottom)
-            };
-
-            for (int i = 0; i < 4; i++)
-            {
-                corners[i] = matrix.MapPoint(corners[i]);
-            }
+            // Transform all four corners of the rectangle (locals: this runs for every drawn control each frame)
+            var c0 = matrix.MapPoint(rect.Left, rect.Top);
+            var c1 = matrix.MapPoint(rect.Right, rect.Top);
+            var c2 = matrix.MapPoint(rect.Right, rect.Bottom);
+            var c3 = matrix.MapPoint(rect.Left, rect.Bottom);
 
             return new SKRect(
-                Math.Min(Math.Min(corners[0].X, corners[1].X), Math.Min(corners[2].X, corners[3].X)),
-                Math.Min(Math.Min(corners[0].Y, corners[1].Y), Math.Min(corners[2].Y, corners[3].Y)),
-                Math.Max(Math.Max(corners[0].X, corners[1].X), Math.Max(corners[2].X, corners[3].X)),
-                Math.Max(Math.Max(corners[0].Y, corners[1].Y), Math.Max(corners[2].Y, corners[3].Y))
+                Math.Min(Math.Min(c0.X, c1.X), Math.Min(c2.X, c3.X)),
+                Math.Min(Math.Min(c0.Y, c1.Y), Math.Min(c2.Y, c3.Y)),
+                Math.Max(Math.Max(c0.X, c1.X), Math.Max(c2.X, c3.X)),
+                Math.Max(Math.Max(c0.Y, c1.Y), Math.Max(c2.Y, c3.Y))
             );
         }
     }

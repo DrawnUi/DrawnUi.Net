@@ -1622,7 +1622,8 @@ public partial class SkiaLayout
         // Get all pending changes atomically
         lock (_structureChangesLock)
         {
-            if (GetStackStructure() == null || _pendingStructureChanges.Count == 0)
+            // no changes first: GetStackStructure makes a new empty structure when there is none, every frame
+            if (_pendingStructureChanges.Count == 0 || GetStackStructure() == null)
                 return;
 
             // Copy and clear in one atomic operation

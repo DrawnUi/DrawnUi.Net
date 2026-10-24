@@ -705,6 +705,15 @@ public partial class SkiaControl
                 }
             }
 
+            // a picture replays the images blitted into it with the sampling chosen when it was recorded: smooth only
+            // if it was going to be drawn distorted. Recorded again when that changed (a card with a cached child starts
+            // to turn), else the turned child stayed pixel-sampled and jagged.
+            if (cache.Picture != null && cache.HasImageBlits && cache.PlaybackDistorted != WillDrawDistorted(context))
+            {
+                CacheValidity = CacheValidityType.SamplingMismatch;
+                return false;
+            }
+
             //check hardware context maybe changed
             if (IsCacheGPU && cache.Surface != null &&
                 cache.Surface.Context != null &&
@@ -854,13 +863,17 @@ public partial class SkiaControl
                 using (var recorder = new SKPictureRecorder())
                 {
                     var recordingContext = context.CreateForRecordingOperations(recorder, cullRect);
+                    var playbackDistorted = WillDrawDistorted(context.Context);
+                    recordingContext.Context.PlaybackDistorted = playbackDistorted;
 
                     action(recordingContext);
 
                     SKPicture skPicture = recorder.EndRecording();
                     renderObject = new(UsingCacheType, skPicture, context.Destination, cacheRecordingArea)
                     {
-                        DataContext = this.ContextIndex
+                        DataContext = this.ContextIndex,
+                        PlaybackDistorted = playbackDistorted,
+                        HasImageBlits = recordingContext.Context.HasImageBlits
                     };
                 }
             }
@@ -1115,7 +1128,7 @@ public partial class SkiaControl
             // sync rebuild there is the ~150ms fling stall the fast path exists to avoid.
             if (cache != null && UsesCacheDoubleBuffering && !PixelsForeign && !OffscreenBakeBusy
                 && !CompareSize(cache.RecordingArea.Size, recordArea.Size, 1)
-                && TrySyncRebuildStaleSize(context, recordArea))
+                && TrySyncRebuildStaleSize(AddPaintArguments(context), recordArea))
             {
                 return true; // fresh new-size cache built AND painted (CreateRenderingObjectAndPaint draws it)
             }
@@ -1191,35 +1204,7 @@ public partial class SkiaControl
 
                 if (needBuild)
                 {
-                    var clone = AddPaintArguments(context);
-                    var paintDestination = DrawingRect;
-                    // Each bake is stamped. A rapidly self-invalidating cell (a streaming AI bubble growing
-                    // word by word) queues several bakes as the text grows; without ordering, an OLDER bake
-                    // completing AFTER a newer one overwrites RenderObject with STALE content — the cell's text
-                    // visibly REVERTS (2 lines -> 1 line -> 2 again). Only a bake newer than the one shown
-                    // publishes. Direct increment (no CancellationTokenSource alloc) keeps the 180ms streaming
-                    // path cheap.
-                    long bakeGeneration = BeginOffscreenBake();
-                    PushToOffscreenRendering(() =>
-                    {
-                        try
-                        {
-                            //will be executed on background thread in parallel
-                            var prepared = RecordOffscreenBake(clone, recordArea, paintDestination);
-                            PublishOffscreenBake(prepared, bakeGeneration);
-                        }
-                        finally
-                        {
-                            EndOffscreenBake(bakeGeneration);
-                        }
-
-                        // UNCONDITIONAL wakeup: gating this on Parent.UpdateLocks lost the present
-                        // when the bake completed DURING the very frame that queued it (parent holds
-                        // LockUpdate while painting) — cache READY but no frame ever requested: static
-                        // content stayed a placeholder until user interaction (Sandbox car image).
-                        // A locked parent defers via _neededUpdate and LockUpdate(false) replays it.
-                        Repaint();
-                    });
+                    QueueOffscreenBake(AddPaintArguments(context), recordArea, DrawingRect);
                 }
 
                 return !NeedUpdateFrontCache;
@@ -1227,6 +1212,41 @@ public partial class SkiaControl
 
             return false;
         }
+    }
+
+    /// <summary>
+    /// Queues a background bake of this control's double-buffered cache. A method of its own so the closure is
+    /// allocated only when a bake is queued, not on every <see cref="UseRenderingObject"/> call.
+    /// </summary>
+    void QueueOffscreenBake(DrawingContext clone, SKRect recordArea, SKRect paintDestination)
+    {
+        // Each bake is stamped. A rapidly self-invalidating cell (a streaming AI bubble growing
+        // word by word) queues several bakes as the text grows; without ordering, an OLDER bake
+        // completing AFTER a newer one overwrites RenderObject with STALE content — the cell's text
+        // visibly REVERTS (2 lines -> 1 line -> 2 again). Only a bake newer than the one shown
+        // publishes. Direct increment (no CancellationTokenSource alloc) keeps the 180ms streaming
+        // path cheap.
+        long bakeGeneration = BeginOffscreenBake();
+        PushToOffscreenRendering(() =>
+        {
+            try
+            {
+                //will be executed on background thread in parallel
+                var prepared = RecordOffscreenBake(clone, recordArea, paintDestination);
+                PublishOffscreenBake(prepared, bakeGeneration);
+            }
+            finally
+            {
+                EndOffscreenBake(bakeGeneration);
+            }
+
+            // UNCONDITIONAL wakeup: gating this on Parent.UpdateLocks lost the present
+            // when the bake completed DURING the very frame that queued it (parent holds
+            // LockUpdate while painting) — cache READY but no frame ever requested: static
+            // content stayed a placeholder until user interaction (Sandbox car image).
+            // A locked parent defers via _neededUpdate and LockUpdate(false) replays it.
+            Repaint();
+        });
     }
 
     /// <summary>
@@ -1296,7 +1316,13 @@ public partial class SkiaControl
         /// Same size, but the effects margin around it (shadows, a glow on a child) changed: the image surface was
         /// recorded with another margin, so it has another size and origin.
         /// </summary>
-        EffectsMarginMismatch
+        EffectsMarginMismatch,
+
+        /// <summary>
+        /// A picture holding image blits was recorded for a straight (or a distorted) playback and is now drawn the
+        /// other way: the images in it need the other sampling.
+        /// </summary>
+        SamplingMismatch
     }
 
     public Action GetOffscreenRenderingAction()
@@ -1622,8 +1648,8 @@ public partial class SkiaControl
                     destination = recordArea;
                 }
 
-                //paint from cache
-                var clone = AddPaintArguments(context).WithDestination(destination);
+                //paint from cache; the paint arguments are added where a cache gets painted, not for a blit
+                var clone = context.WithDestination(destination);
 
                 if (TryUseExistingRenderingObjectOrCreateNewAndPaint(clone, recordArea))
                 {
@@ -1683,14 +1709,15 @@ public partial class SkiaControl
         if (!UseRenderingObject(ctx, recordArea))
         {
             //record to cache and paint
+            var painting = AddPaintArguments(ctx);
             if (UsesCacheDoubleBuffering)
             {
                 // UseRenderingObject already drew the cache, the previous one or the placeholder
-                PrepareOffscreenCache(ctx, recordArea);
+                PrepareOffscreenCache(painting, recordArea);
             }
             else
             {
-                CreateRenderingObjectAndPaint(ctx, recordArea,
+                CreateRenderingObjectAndPaint(painting, recordArea,
                     (ctx) => { PaintWithEffects(ctx.WithDestination(DrawingRect)); });
             }
 
@@ -1765,15 +1792,18 @@ public partial class SkiaControl
         var destination = context.Destination;
 
         var clone = AddPaintArguments(context).WithDestination(drawingRect);
-        DrawWithClipAndTransforms(clone, drawingRect, true, true, (ctx) =>
-        {
-            PaintWithEffects(ctx);
+        DrawWithClipAndTransforms(clone, drawingRect, true, true, (control: this, destination),
+            static (ctx, s) => s.control.PaintDirect(ctx, s.destination));
+    }
 
-            foreach (var postRenderer in EffectPostRenderers)
-            {
-                postRenderer.Render(ctx.WithDestination(destination));
-            }
-        });
+    void PaintDirect(DrawingContext ctx, SKRect destination)
+    {
+        PaintWithEffects(ctx);
+
+        foreach (var postRenderer in EffectPostRenderers)
+        {
+            postRenderer.Render(ctx.WithDestination(destination));
+        }
     }
 
     /// <summary>

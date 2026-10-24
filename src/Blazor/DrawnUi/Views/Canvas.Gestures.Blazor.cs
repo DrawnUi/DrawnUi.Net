@@ -26,10 +26,18 @@ public partial class Canvas : IGestureListener
         return type == TouchActionResult.Panning || type == TouchActionResult.Wheel || type == TouchActionResult.Up;
     }
 
+    /// <summary>
+    /// The listener that consumed the last event of this gesture: it owns the gesture and is offered the next event
+    /// first. An earlier consumer, such as a page root that only blocked gestures below it, dispatches again by hit
+    /// test, so asked first it gave a scroll's moves to whatever lay under the finger once it left the scroll.
+    /// </summary>
+    private ISkiaGestureListener _gestureOwner;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void AddHadInput(ISkiaGestureListener consumed)
     {
         HadInput.TryAdd(consumed.Uid, consumed);
+        _gestureOwner = consumed;
     }
 
     /// <summary>The hover check: the last mouse position goes through the same pass as a real mouse move.</summary>
@@ -47,6 +55,7 @@ public partial class Canvas : IGestureListener
                 if (HadInput.Count > 0)
                 {
                     HadInput.Clear();
+                    _gestureOwner = null;
                 }
                 // Focus state at gesture start: if a control claims focus DURING this gesture (editor
                 // self-focusing on Down -> keyboard spacer relayout shifts the layout), the completed
@@ -67,11 +76,12 @@ public partial class Canvas : IGestureListener
             {
                 var adjust = new GestureEventProcessingInfo(touchLocation, SKPoint.Empty, SKPoint.Empty, null);
 
-                foreach (var hadInput in HadInput.Values)
+                // true when the event stays with this listener
+                bool Offer(ISkiaGestureListener hadInput)
                 {
                     if (!hadInput.CanDraw || hadInput.InputTransparent || hadInput.GestureListenerRegistrationTime == null)
                     {
-                        continue;
+                        return false;
                     }
 
                     consumed = hadInput.OnSkiaGestureEvent(args, adjust);
@@ -82,6 +92,21 @@ public partial class Canvas : IGestureListener
                         {
                             secondPass = false;
                             AddHadInput(consumed);
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+
+                // the gesture's owner first, then the others that had input
+                var owner = _gestureOwner;
+                if (owner == null || !HadInput.ContainsKey(owner.Uid) || !Offer(owner))
+                {
+                    foreach (var hadInput in HadInput.Values)
+                    {
+                        if (hadInput != owner && Offer(hadInput))
+                        {
                             break;
                         }
                     }
@@ -177,6 +202,7 @@ public partial class Canvas : IGestureListener
             if (args.Type == TouchActionResult.Up && HadInput.Count > 0)
             {
                 HadInput.Clear();
+                _gestureOwner = null;
             }
 
             if (args.Type != TouchActionResult.Pointer)

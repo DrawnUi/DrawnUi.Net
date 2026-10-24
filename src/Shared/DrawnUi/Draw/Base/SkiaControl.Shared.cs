@@ -4050,6 +4050,10 @@ namespace DrawnUi.Draw
             {
                 lock (lockMeasured)
                 {
+                    // set on every draw: an unchanged scale returns before boxing, SetValue would do nothing either
+                    if (GetValue(RenderingScaleProperty) is float current && current == value)
+                        return;
+
                     SetValue(RenderingScaleProperty, value);
                 }
             }
@@ -4871,13 +4875,7 @@ namespace DrawnUi.Draw
                 provider.TranslationZ != 0)
             {
                 draw3d = true;
-                Helper3d ??= new();
-                Helper3d.Reset();
-                Helper3d.RotateXDegrees((float)provider.RotationX);
-                Helper3d.RotateYDegrees((float)provider.RotationY);
-                Helper3d.RotateZDegrees(-(float)provider.RotationZ);
-                Helper3d.Translate(0, 0, (float)provider.TranslationZ);
-                matrix = matrix.PostConcat(Helper3d.Matrix);
+                matrix = matrix.PostConcat(Create3dMatrix(provider));
             }
 
             // Translate back from pivot point
@@ -4891,6 +4889,26 @@ namespace DrawnUi.Draw
 
             // Save the complete transformation matrix for hit testing
             RenderTransformMatrix = matrix;
+        }
+
+        /// <summary>
+        /// The 3D part of the render transform, around the pivot: RotationX / RotationY / RotationZ seen with
+        /// perspective from the default camera distance, and TranslationZ as a real depth, so a control moved
+        /// toward the viewer (positive) draws bigger and one moved away (negative) smaller, turned or not.
+        /// </summary>
+        SKMatrix Create3dMatrix(SkiaControl provider)
+        {
+            Helper3d ??= new();
+            Helper3d.Reset();
+            Helper3d.RotateXDegrees((float)provider.RotationX);
+            Helper3d.RotateYDegrees((float)provider.RotationY);
+            Helper3d.RotateZDegrees(-(float)provider.RotationZ);
+            var matrix = Helper3d.Matrix;
+            // w = (distance to the camera) / (camera distance): a flat control at depth TranslationZ scales by
+            // camera / (camera - TranslationZ); this also drops the helper's 1 + m22 / distance term
+            var camera = Helper3d.CameraDistance;
+            matrix.Persp2 = Math.Max(camera - (float)provider.TranslationZ, 1f) / camera;
+            return matrix;
         }
 
         protected virtual void ApplyTransforms(SkiaDrawingContext ctx, SKRect destination)
@@ -4948,13 +4966,7 @@ namespace DrawnUi.Draw
             if (draw3d || RotationX != 0 || RotationY != 0 || RotationZ != 0 || TranslationZ != 0)
             {
                 draw3d = true;
-                Helper3d ??= new();
-                Helper3d.Reset();
-                Helper3d.RotateXDegrees((float)RotationX);
-                Helper3d.RotateYDegrees((float)RotationY);
-                Helper3d.RotateZDegrees(-(float)RotationZ);
-                Helper3d.Translate(0, 0, (float)TranslationZ);
-                matrix = matrix.PostConcat(Helper3d.Matrix);
+                matrix = matrix.PostConcat(Create3dMatrix(this));
             }
 
             // Translate back from pivot point
@@ -7248,6 +7260,8 @@ namespace DrawnUi.Draw
             return null;
         }
 
+        private VisualLayer _renderedNodeA, _renderedNodeB, _renderedNodeLast;
+
         public virtual VisualLayer CreateRenderedNode(SKRect destination, float scale)
         {
             VisualLayer parentVisualNode = null;
@@ -7256,7 +7270,22 @@ namespace DrawnUi.Draw
                 parentVisualNode = skia.VisualLayer;
             }
 
-            VisualLayer = new VisualLayer(this, parentVisualNode, destination, scale);
+            if (Super.UseFrozenVisualLayers)
+            {
+                // frozen layers: a cache keeps the children list of the layer it was recorded with
+                VisualLayer = new VisualLayer(this, parentVisualNode, destination, scale);
+            }
+            else
+            {
+                // two layers per control, used in turn instead of a new one per draw: the one built last time
+                // stays as it was while gestures or the frame's subscribers may still read it
+                var node = _renderedNodeLast == _renderedNodeA
+                    ? _renderedNodeB ??= VisualLayer.CreateEmpty()
+                    : _renderedNodeA ??= VisualLayer.CreateEmpty();
+                node.Reset(this, parentVisualNode, destination, scale);
+                _renderedNodeLast = node;
+                VisualLayer = node;
+            }
 
             if (parentVisualNode != null)
                 ((SkiaControl)Parent).VisualLayer?.Children.Add(VisualLayer);
@@ -7614,6 +7643,23 @@ namespace DrawnUi.Draw
             bool useClipping,
             Action<DrawingContext> draw)
         {
+            DrawWithClipAndTransforms(ctx, transformsArea, useOpacity, useClipping, draw,
+                static (context, action) => action(context));
+        }
+
+        /// <summary>
+        /// Same as <see cref="DrawWithClipAndTransforms(DrawingContext, SKRect, bool, bool, Action{DrawingContext})"/>,
+        /// with the drawing state passed in: a static lambda over <paramref name="state"/> allocates nothing, while a
+        /// lambda capturing locals allocates a closure and a delegate on every draw.
+        /// </summary>
+        public void DrawWithClipAndTransforms<TState>(
+            DrawingContext ctx,
+            SKRect transformsArea,
+            bool useOpacity,
+            bool useClipping,
+            TState state,
+            Action<DrawingContext, TState> draw)
+        {
             bool isClipping = (WillClipBounds || Clipping != null
                                               || ClipWith != null || HasPlatformClip()) && useClipping;
 
@@ -7705,7 +7751,7 @@ namespace DrawnUi.Draw
                         ClipSmart(ctx.Context.Canvas, _preparedClipBounds);
                     }
 
-                    draw(ctx);
+                    draw(ctx, state);
                 }
 
                 ctx.Context.Canvas.RestoreToCount(restore);
@@ -7725,7 +7771,7 @@ namespace DrawnUi.Draw
                     }
                 }
 
-                draw(ctx);
+                draw(ctx, state);
             }
         }
 
@@ -7941,12 +7987,48 @@ namespace DrawnUi.Draw
             if (IsDisposed || IsDisposing)
                 return;
 
+            if (!DisableEffects && VisualEffects.Count > 0)
+            {
+                PaintWithVisualEffects(ctx);
+            }
+            else
+            {
+                PaintWithShadowsThenPaint(ctx, ctx);
+            }
+        }
+
+        private Action _paintWithStoredContext;
+        private DrawingContext _paintStoredContext;
+
+        /// <summary>
+        /// <see cref="PaintWithShadows"/> with <see cref="Paint"/> of <paramref name="paintCtx"/> as its render action,
+        /// through one delegate per control instead of a new closure per draw.
+        /// </summary>
+        void PaintWithShadowsThenPaint(DrawingContext context, DrawingContext paintCtx)
+        {
+            _paintStoredContext = paintCtx;
+            try
+            {
+                PaintWithShadows(context, _paintWithStoredContext ??= PaintStoredContext);
+            }
+            finally
+            {
+                _paintStoredContext = default;
+            }
+        }
+
+        void PaintStoredContext()
+        {
+            Paint(_paintStoredContext);
+        }
+
+        void PaintWithVisualEffects(DrawingContext ctx)
+        {
             void PaintWithEffectsInternal(DrawingContext context)
             {
-                PaintWithShadows(context, () => { Paint(ctx); });
+                PaintWithShadowsThenPaint(context, ctx);
             }
 
-            if (!DisableEffects && VisualEffects.Count > 0)
             {
                 var effectColor = EffectColorFilter;
                 var effectImage = EffectImageFilter;
@@ -8006,10 +8088,6 @@ namespace DrawnUi.Draw
                     // Only post-renderers in VisualEffects — no SaveLayer needed
                     PaintWithEffectsInternal(ctx);
                 }
-            }
-            else
-            {
-                PaintWithEffectsInternal(ctx);
             }
         }
 
@@ -8197,6 +8275,16 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Whether what this control draws here ends up scaled, turned, skewed or projected on screen: by its own
+        /// transforms, a live ancestor's (the canvas matrix) or those of the picture it is recorded into. Images
+        /// then need smooth sampling; nearest keeps them sharp only while they are just moved.
+        /// </summary>
+        protected bool WillDrawDistorted(SkiaDrawingContext context)
+        {
+            return IsDistorted || context.PlaybackDistorted || !SkiaSamplingOptions.IsMoveOnly(context.Canvas.TotalMatrix);
+        }
+
+        /// <summary>
         /// Drawing cache, applying clip and transforms as well
         /// </summary>
         /// <param name="cache"></param>
@@ -8204,29 +8292,38 @@ namespace DrawnUi.Draw
         /// <param name="destination"></param>
         public virtual void DrawRenderObject(DrawingContext context, CachedObject cache)
         {
-            DrawWithClipAndTransforms(context, context.Destination, true, true, (ctx) =>
+            DrawWithClipAndTransforms(context, context.Destination, true, true, (control: this, context, cache),
+                static (ctx, s) => s.control.PaintRenderObject(ctx, s.context, s.cache));
+        }
+
+        void PaintRenderObject(DrawingContext ctx, DrawingContext context, CachedObject cache)
+        {
+            if (_paintWithOpacity == null)
             {
-                if (_paintWithOpacity == null)
-                {
-                    _paintWithOpacity = new SKPaint();
-                }
+                _paintWithOpacity = new SKPaint();
+            }
 
-                _paintWithOpacity.GuardColor(ref _paintWithOpacityColor, SKColors.White);
-                _paintWithOpacity.GuardIsAntialias(ref _paintWithOpacityIsAntialias, true);
-                _paintWithOpacity.GuardIsDither(ref _paintWithOpacityIsDither, IsDistorted);
+            _paintWithOpacity.GuardColor(ref _paintWithOpacityColor, SKColors.White);
+            _paintWithOpacity.GuardIsAntialias(ref _paintWithOpacityIsAntialias, true);
+            _paintWithOpacity.GuardIsDither(ref _paintWithOpacityIsDither, IsDistorted);
 
-                if (EffectPostRenderers.Count == 0)
-                {
-                    cache.Draw(ctx.Context.Canvas, context.Destination, _paintWithOpacity,
-                        IsDistorted ? SkiaSamplingOptions.LinearLinear : SkiaSamplingOptions.NearestNoMip);
-                }
+            if (EffectPostRenderers.Count == 0)
+            {
+                // a picture being recorded here replays this blit later, with the sampling chosen now
+                if (cache.Image != null || cache.HasImageBlits)
+                    ctx.Context.HasImageBlits = true;
 
-                // Apply chained post renderers - each snapshots from canvas, enabling shader-after-shader
-                foreach (var postRenderer in EffectPostRenderers)
-                {
-                    postRenderer.Render(context);
-                }
-            });
+                cache.Draw(ctx.Context.Canvas, context.Destination, _paintWithOpacity,
+                    cache.Image != null && WillDrawDistorted(ctx.Context)
+                        ? SkiaSamplingOptions.LinearLinear
+                        : SkiaSamplingOptions.NearestNoMip);
+            }
+
+            // Apply chained post renderers - each snapshots from canvas, enabling shader-after-shader
+            foreach (var postRenderer in EffectPostRenderers)
+            {
+                postRenderer.Render(context);
+            }
         }
 
         /// <summary>

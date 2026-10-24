@@ -14,6 +14,7 @@ Compose with alias containers, not raw `SkiaLayout { Type = LayoutType.X }`: `Sk
 Constructor shorthand is the documented idiom for text controls: `new SkiaLabel("text")`, `new SkiaRichLabel("**md**")`, `new SkiaButton("Caption")`.
 
 **Row does NOT distribute Fill children** (device-verified 2026-08-15): two `HorizontalOptions=Fill` children inside a `SkiaRow` each take full width and overflow the screen — a Row is not a star-grid. For proportional button rows use `SkiaGrid` + `.WithColumnDefinitions("2*,3*")` + `.SetGrid(col, 0)` per child. Same for `HorizontalFillRatio` inside a Row — not a substitute for grid columns.
+A child that is not Fill does get what is left, as in a `SkiaStack` vertically: a wrapping label after a title wraps in the remaining width, and an `End` child sits at the row's end. Pick containers in the order `SkiaLayer` (alignment + `Margin`), `SkiaStack`, `SkiaRow`, `SkiaWrap`, and `SkiaGrid` last (drawnui skill, "Choosing a container").
 
 ## Composition Style — MANDATORY
 

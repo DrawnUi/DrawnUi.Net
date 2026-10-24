@@ -243,6 +243,16 @@ public class CachedObject : ISkiaDisposable
     /// </summary>
     public bool SurfaceIsRecycled { get; set; }
 
+    /// <summary>
+    /// A picture recorded to be drawn distorted (scaled, turned, skewed, projected): the images in it use smooth sampling.
+    /// </summary>
+    public bool PlaybackDistorted { get; set; }
+
+    /// <summary>
+    /// A picture that holds image blits, whose sampling was fixed when it was recorded.
+    /// </summary>
+    public bool HasImageBlits { get; set; }
+
     public SKPicture Picture { get; set; }
 
     public SKImage Image { get; set; }

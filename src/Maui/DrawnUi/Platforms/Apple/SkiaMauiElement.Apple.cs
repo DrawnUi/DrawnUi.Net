@@ -28,10 +28,10 @@ public partial class SkiaMauiElement
 
     protected virtual void LayoutNativeView(VisualElement element)
     {
-        if (element.Handler?.PlatformView is UIView nativeView)
+        if (element?.Handler?.PlatformView is UIView nativeView)
         {
             var visibility = //IsVisibleInViewTree() &&
-                                    VisualTransformNative.IsVisible && IsNativeVisible ? Visibility.Visible : Visibility.Hidden;
+                                    VisualTransformNative.IsVisible && IsNativeVisible && element.IsVisible ? Visibility.Visible : Visibility.Hidden;
 
             Debug.WriteLine($"[SkiaMauiElement] LayoutNativeView maybe at {VisualTransformNative.Rect.Location} visibility {visibility} size {VisualTransformNative.Rect.Size}");
 
