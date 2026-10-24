@@ -182,6 +182,8 @@ Hosted native MAUI views (`SkiaMauiElement` and its `SkiaMauiEntry`/`SkiaMauiEdi
 
 **`SkiaControl.Render()` sets `VisualLayer = null` every frame and rebuilds it.** A control drawing from CACHE does NOT re-render its children → its fresh node has EMPTY `Children` → the hosted element's node is unreachable from the root → `IsVisible=false` → Android view forced `ViewStates.Invisible` (size 0x0) → **absent from the native view hierarchy, cannot take focus, keyboard never opens**. Silent: no exception, the drawn placeholder/frame still paints, so it looks like "focus is broken".
 
+iOS / Mac Catalyst taps on hosted native views need AppoMobi.Maui.Gestures 3.11.7+ (DrawnUi 1.10.7.12+ pins it, #374): before it the canvas's touch recognizer made UIKit hold every hosted view's `touchesEnded` forever, so a MAUI `Button` / `TapGestureRecognizer` / raw `UIView` inside a `SkiaMauiElement` got the press but never the release, and the next touch was swallowed. On an older DrawnUi, reference `AppoMobi.Maui.Gestures` 3.11.7 in the app.
+
 Rules until the lib stops depending on the node tree:
 - EVERY ancestor of a `SkiaMauiElement` must be uncached. Two default-on traps: `SkiaShape` sets `UseCache=Operations` in its ctor (a plain frame around an entry kills it → `UseCache="None"`), and `SkiaScroll.AutoCache` sets `Operations` on itself (→ `AutoCache="False"`).
 - Diagnosing on Android, in order: `adb shell uiautomator dump` → is there an `EditText` node at all? (missing = native view Invisible, NOT a focus bug); `adb shell dumpsys input_method | grep -E "mInputShown|mServedView="` (`mServedView=DecorView` = nothing focused); only then look at focus code.
