@@ -9,6 +9,7 @@ It is early and under active development. The crate is published as a preview (`
 - Live demo: [hellorust.drawnui.net](https://hellorust.drawnui.net)
 - A game made with it: [run.drawnui.net](https://run.drawnui.net) (Dungeon Run, a 3D runner drawn with SkMesh)
 - Agent skill: [drawnui-rust/SKILL.md](https://hellorust.drawnui.net/skills/drawnui-rust/SKILL.md)
+- Porting a .NET DrawnUI app to Rust: [drawnui-port-net-to-rust/SKILL.md](https://hellorust.drawnui.net/skills/drawnui-port-net-to-rust/SKILL.md)
 
 ## Install
 
