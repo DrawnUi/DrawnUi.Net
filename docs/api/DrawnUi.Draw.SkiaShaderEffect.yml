@@ -53,11 +53,14 @@ items:
   - DrawnUi.Draw.SkiaShaderEffect.ShaderTemplate
   - DrawnUi.Draw.SkiaShaderEffect.ShaderTemplateProperty
   - DrawnUi.Draw.SkiaShaderEffect.ShouldDisposePreviousTexture(DrawnUi.Draw.CachedTexture)
+  - DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
+  - DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCacheProperty
   - DrawnUi.Draw.SkiaShaderEffect.SyncEngineState(SkiaSharp.SKRect,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaShaderEffect.TileMode
   - DrawnUi.Draw.SkiaShaderEffect.TileModeProperty
   - DrawnUi.Draw.SkiaShaderEffect.TimeSeconds
   - DrawnUi.Draw.SkiaShaderEffect.Uniforms
+  - DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
   - DrawnUi.Draw.SkiaShaderEffect.UseBackground
   - DrawnUi.Draw.SkiaShaderEffect.UseContext
   - DrawnUi.Draw.SkiaShaderEffect.UseContextProperty
@@ -748,6 +751,108 @@ items:
       type: System.Boolean
     content.vb: Public Property AutoCreateInputTexture As Boolean
   overload: DrawnUi.Draw.SkiaShaderEffect.AutoCreateInputTexture*
+- uid: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCacheProperty
+  commentId: F:DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCacheProperty
+  id: ShouldInvalidateParentCacheProperty
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  langs:
+  - csharp
+  - vb
+  name: ShouldInvalidateParentCacheProperty
+  nameWithType: SkiaShaderEffect.ShouldInvalidateParentCacheProperty
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCacheProperty
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ShouldInvalidateParentCacheProperty
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    startLine: 262
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public static readonly BindableProperty ShouldInvalidateParentCacheProperty
+    return:
+      type: Microsoft.Maui.Controls.BindableProperty
+    content.vb: Public Shared ReadOnly ShouldInvalidateParentCacheProperty As BindableProperty
+- uid: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
+  commentId: P:DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
+  id: ShouldInvalidateParentCache
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  langs:
+  - csharp
+  - vb
+  name: ShouldInvalidateParentCache
+  nameWithType: SkiaShaderEffect.ShouldInvalidateParentCache
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ShouldInvalidateParentCache
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    startLine: 276
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    When true, animation ticks, <xref href="DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String%2cSystem.Single%5b%5d)" data-throw-if-not-resolved="false"></xref> and <xref href="DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms" data-throw-if-not-resolved="false"></xref> also
+
+    invalidate the parent's cache, so the parent re-renders its content on every change, as before 1.10.7.14.
+
+    Default is false: they only redraw this effect over the parent's cache. The effect paints over the parent's
+
+    cached content, so a uniform change does not need a new cache.
+
+    Set it when the parent's content refreshes only through the effect's redraws, such as a custom Paint reading
+
+    changing data without calling Update(). <xref href="DrawnUi.Draw.SkiaEffect.Update" data-throw-if-not-resolved="false"></xref> always invalidates the cache.
+  example: []
+  syntax:
+    content: public bool ShouldInvalidateParentCache { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property ShouldInvalidateParentCache As Boolean
+  overload: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache*
+- uid: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
+  id: UpdateUniforms
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  langs:
+  - csharp
+  - vb
+  name: UpdateUniforms()
+  nameWithType: SkiaShaderEffect.UpdateUniforms()
+  fullName: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: UpdateUniforms
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    startLine: 287
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Call after changing a value that only the shader reads (a uniform, an animation progress): redraws the
+
+    effect over the parent's cache, or does <xref href="DrawnUi.Draw.SkiaEffect.Update" data-throw-if-not-resolved="false"></xref> when
+
+    <xref href="DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache" data-throw-if-not-resolved="false"></xref> is true.
+  example: []
+  syntax:
+    content: public virtual void UpdateUniforms()
+    content.vb: Public Overridable Sub UpdateUniforms()
+  overload: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms*
 - uid: DrawnUi.Draw.SkiaShaderEffect.BlendMode
   commentId: P:DrawnUi.Draw.SkiaShaderEffect.BlendMode
   id: BlendMode
@@ -766,7 +871,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BlendMode
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 264
+    startLine: 303
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -800,7 +905,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Flush
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 268
+    startLine: 307
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -829,7 +934,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateSnapshot
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 283
+    startLine: 322
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -864,7 +969,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetPrimaryTexture
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 310
+    startLine: 349
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -906,7 +1011,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SyncEngineState
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 357
+    startLine: 396
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -939,7 +1044,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Render
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 373
+    startLine: 412
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -972,7 +1077,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShouldDisposePreviousTexture
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 419
+    startLine: 458
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1008,7 +1113,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateShader
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 430
+    startLine: 469
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1043,7 +1148,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedApply
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 505
+    startLine: 544
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1076,7 +1181,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TimeSeconds
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 513
+    startLine: 552
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1107,7 +1212,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MouseCurrent
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 520
+    startLine: 559
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1138,7 +1243,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MouseInitial
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 525
+    startLine: 564
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1169,7 +1274,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Uniforms
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 534
+    startLine: 573
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1209,7 +1314,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 537
+    startLine: 576
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1247,7 +1352,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 541
+    startLine: 580
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1287,7 +1392,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 545
+    startLine: 584
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1329,7 +1434,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 549
+    startLine: 588
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1373,7 +1478,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 553
+    startLine: 592
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1411,7 +1516,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateUniforms
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 567
+    startLine: 606
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1447,7 +1552,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateTexturesUniforms
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 595
+    startLine: 634
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1484,7 +1589,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _template
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 607
+    startLine: 646
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1511,7 +1616,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _templatePlacehodler
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 608
+    startLine: 647
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1538,7 +1643,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadedCode
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 610
+    startLine: 649
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1567,7 +1672,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompileShader
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 615
+    startLine: 654
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1595,7 +1700,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCompilationError
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 658
+    startLine: 697
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1622,7 +1727,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SendError
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 660
+    startLine: 699
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1654,7 +1759,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompileShader
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 669
+    startLine: 708
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1690,7 +1795,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyShaderSource
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 695
+    startLine: 734
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1716,7 +1821,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedChangeSource
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 711
+    startLine: 750
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1752,7 +1857,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderCodeProperty
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 721
+    startLine: 760
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1779,7 +1884,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderCode
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 729
+    startLine: 768
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1810,7 +1915,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderSourceProperty
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 735
+    startLine: 774
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1837,7 +1942,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderSource
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 743
+    startLine: 782
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1868,7 +1973,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderTemplateProperty
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 749
+    startLine: 788
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1895,7 +2000,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderTemplate
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 754
+    startLine: 793
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1924,7 +2029,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FilterModeProperty
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 760
+    startLine: 799
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1951,7 +2056,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MipmapModeProperty
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 767
+    startLine: 806
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1978,7 +2083,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FilterMode
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 774
+    startLine: 813
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2007,7 +2112,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MipmapMode
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 780
+    startLine: 819
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2036,7 +2141,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TileModeProperty
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 786
+    startLine: 825
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2063,7 +2168,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TileMode
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 794
+    startLine: 833
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2094,7 +2199,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 802
+    startLine: 841
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4181,6 +4286,91 @@ references:
   name: AutoCreateInputTexture
   nameWithType: SkiaShaderEffect.AutoCreateInputTexture
   fullName: DrawnUi.Draw.SkiaShaderEffect.AutoCreateInputTexture
+- uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single___
+  name: SetUniform(string, float[])
+  nameWithType: SkiaShaderEffect.SetUniform(string, float[])
+  fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float[])
+  nameWithType.vb: SkiaShaderEffect.SetUniform(String, Single())
+  fullName.vb: DrawnUi.Draw.SkiaShaderEffect.SetUniform(String, Single())
+  name.vb: SetUniform(String, Single())
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single___
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.SetUniform(System.String,System.Single[])
+    name: SetUniform
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_SetUniform_System_String_System_Single___
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: (
+  - name: )
+  - name: )
+- uid: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_UpdateUniforms
+  name: UpdateUniforms()
+  nameWithType: SkiaShaderEffect.UpdateUniforms()
+  fullName: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
+    name: UpdateUniforms
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_UpdateUniforms
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
+    name: UpdateUniforms
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_UpdateUniforms
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache*
+  commentId: Overload:DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ShouldInvalidateParentCache
+  name: ShouldInvalidateParentCache
+  nameWithType: SkiaShaderEffect.ShouldInvalidateParentCache
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
+- uid: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
+  commentId: P:DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ShouldInvalidateParentCache
+  name: ShouldInvalidateParentCache
+  nameWithType: SkiaShaderEffect.ShouldInvalidateParentCache
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
+- uid: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms*
+  commentId: Overload:DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_UpdateUniforms
+  name: UpdateUniforms
+  nameWithType: SkiaShaderEffect.UpdateUniforms
+  fullName: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
 - uid: DrawnUi.Draw.SkiaShaderEffect.BlendMode*
   commentId: Overload:DrawnUi.Draw.SkiaShaderEffect.BlendMode
   href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_BlendMode

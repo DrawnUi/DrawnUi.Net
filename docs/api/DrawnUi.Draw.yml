@@ -121,6 +121,7 @@ items:
   - DrawnUi.Draw.ISkiaEffect
   - DrawnUi.Draw.ISkiaGestureListener
   - DrawnUi.Draw.ISkiaGestureProcessor
+  - DrawnUi.Draw.ISkiaGpuDrawable
   - DrawnUi.Draw.ISkiaGridLayout
   - DrawnUi.Draw.ISkiaLayer
   - DrawnUi.Draw.ISkiaLayout
@@ -2371,6 +2372,12 @@ references:
   name: ISkiaDrawable
   nameWithType: ISkiaDrawable
   fullName: DrawnUi.Draw.ISkiaDrawable
+- uid: DrawnUi.Draw.ISkiaGpuDrawable
+  commentId: T:DrawnUi.Draw.ISkiaGpuDrawable
+  href: DrawnUi.Draw.ISkiaGpuDrawable.html
+  name: ISkiaGpuDrawable
+  nameWithType: ISkiaGpuDrawable
+  fullName: DrawnUi.Draw.ISkiaGpuDrawable
 - uid: DrawnUi.Draw.ISkiaAccessibilityNode
   commentId: T:DrawnUi.Draw.ISkiaAccessibilityNode
   parent: DrawnUi.Draw

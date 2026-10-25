@@ -8,6 +8,7 @@ items:
   - DrawnUi.Draw.SkiaSamplingOptions.CatmullRomCubic
   - DrawnUi.Draw.SkiaSamplingOptions.GetSamplingOptions(DrawnUi.Draw.FilterQuality)
   - DrawnUi.Draw.SkiaSamplingOptions.GetSamplingOptions(DrawnUi.Draw.FilterQuality,System.Boolean)
+  - DrawnUi.Draw.SkiaSamplingOptions.IsMoveOnly(SkiaSharp.SKMatrix@)
   - DrawnUi.Draw.SkiaSamplingOptions.LinearLinear
   - DrawnUi.Draw.SkiaSamplingOptions.LinearNearest
   - DrawnUi.Draw.SkiaSamplingOptions.LinearNoMip
@@ -223,6 +224,45 @@ items:
     return:
       type: SkiaSharp.SKSamplingOptions
     content.vb: Public Shared ReadOnly CatmullRomCubic As SKSamplingOptions
+- uid: DrawnUi.Draw.SkiaSamplingOptions.IsMoveOnly(SkiaSharp.SKMatrix@)
+  commentId: M:DrawnUi.Draw.SkiaSamplingOptions.IsMoveOnly(SkiaSharp.SKMatrix@)
+  id: IsMoveOnly(SkiaSharp.SKMatrix@)
+  parent: DrawnUi.Draw.SkiaSamplingOptions
+  langs:
+  - csharp
+  - vb
+  name: IsMoveOnly(in SKMatrix)
+  nameWithType: SkiaSamplingOptions.IsMoveOnly(in SKMatrix)
+  fullName: DrawnUi.Draw.SkiaSamplingOptions.IsMoveOnly(in SkiaSharp.SKMatrix)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsMoveOnly
+    path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
+    startLine: 76
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    True when the matrix only moves (or mirrors) what is drawn, so an image keeps its pixels 1:1 and nearest
+
+    sampling stays sharp; false once it scales, turns, skews or projects.
+  example: []
+  syntax:
+    content: public static bool IsMoveOnly(in SKMatrix m)
+    parameters:
+    - id: m
+      type: SkiaSharp.SKMatrix
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function IsMoveOnly(m As SKMatrix) As Boolean
+  overload: DrawnUi.Draw.SkiaSamplingOptions.IsMoveOnly*
+  nameWithType.vb: SkiaSamplingOptions.IsMoveOnly(SKMatrix)
+  fullName.vb: DrawnUi.Draw.SkiaSamplingOptions.IsMoveOnly(SkiaSharp.SKMatrix)
+  name.vb: IsMoveOnly(SKMatrix)
 - uid: DrawnUi.Draw.SkiaSamplingOptions.QualityNone
   commentId: P:DrawnUi.Draw.SkiaSamplingOptions.QualityNone
   id: QualityNone
@@ -241,7 +281,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: QualityNone
     path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
-    startLine: 72
+    startLine: 80
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -270,7 +310,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: QualityLow
     path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
-    startLine: 73
+    startLine: 81
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -299,7 +339,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: QualityMedium
     path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
-    startLine: 74
+    startLine: 82
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -328,7 +368,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: QualityHigh
     path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
-    startLine: 75
+    startLine: 83
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -357,7 +397,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: QualityUltra
     path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
-    startLine: 76
+    startLine: 84
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -386,7 +426,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSamplingOptions
     path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
-    startLine: 78
+    startLine: 86
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -417,7 +457,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSamplingOptions
     path: ../src/Shared/DrawnUi/Internals/Enums/FilterQuality.cs
-    startLine: 80
+    startLine: 88
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -710,6 +750,31 @@ references:
   name: SkiaSharp
   nameWithType: SkiaSharp
   fullName: SkiaSharp
+- uid: DrawnUi.Draw.SkiaSamplingOptions.IsMoveOnly*
+  commentId: Overload:DrawnUi.Draw.SkiaSamplingOptions.IsMoveOnly
+  href: DrawnUi.Draw.SkiaSamplingOptions.html#DrawnUi_Draw_SkiaSamplingOptions_IsMoveOnly_SkiaSharp_SKMatrix__
+  name: IsMoveOnly
+  nameWithType: SkiaSamplingOptions.IsMoveOnly
+  fullName: DrawnUi.Draw.SkiaSamplingOptions.IsMoveOnly
+- uid: SkiaSharp.SKMatrix
+  commentId: T:SkiaSharp.SKMatrix
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skmatrix
+  name: SKMatrix
+  nameWithType: SKMatrix
+  fullName: SkiaSharp.SKMatrix
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
 - uid: DrawnUi.Draw.SkiaSamplingOptions.QualityNone*
   commentId: Overload:DrawnUi.Draw.SkiaSamplingOptions.QualityNone
   href: DrawnUi.Draw.SkiaSamplingOptions.html#DrawnUi_Draw_SkiaSamplingOptions_QualityNone
@@ -753,14 +818,3 @@ references:
   name: FilterQuality
   nameWithType: FilterQuality
   fullName: DrawnUi.Draw.FilterQuality
-- uid: System.Boolean
-  commentId: T:System.Boolean
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.boolean
-  name: bool
-  nameWithType: bool
-  fullName: bool
-  nameWithType.vb: Boolean
-  fullName.vb: Boolean
-  name.vb: Boolean

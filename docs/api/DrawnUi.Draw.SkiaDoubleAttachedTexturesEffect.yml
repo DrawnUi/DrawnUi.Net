@@ -58,6 +58,9 @@ items:
   - DrawnUi.Draw.SkiaShaderEffect.UseContext
   - DrawnUi.Draw.SkiaShaderEffect.AutoCreateInputTextureProperty
   - DrawnUi.Draw.SkiaShaderEffect.AutoCreateInputTexture
+  - DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCacheProperty
+  - DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
+  - DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
   - DrawnUi.Draw.SkiaShaderEffect.BlendMode
   - DrawnUi.Draw.SkiaShaderEffect.Flush(DrawnUi.Draw.SkiaDrawingContext)
   - DrawnUi.Draw.SkiaShaderEffect.CreateSnapshot(DrawnUi.Draw.SkiaDrawingContext,SkiaSharp.SKRect)
@@ -557,6 +560,39 @@ references:
   name: AutoCreateInputTexture
   nameWithType: SkiaShaderEffect.AutoCreateInputTexture
   fullName: DrawnUi.Draw.SkiaShaderEffect.AutoCreateInputTexture
+- uid: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCacheProperty
+  commentId: F:DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCacheProperty
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ShouldInvalidateParentCacheProperty
+  name: ShouldInvalidateParentCacheProperty
+  nameWithType: SkiaShaderEffect.ShouldInvalidateParentCacheProperty
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCacheProperty
+- uid: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
+  commentId: P:DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ShouldInvalidateParentCache
+  name: ShouldInvalidateParentCache
+  nameWithType: SkiaShaderEffect.ShouldInvalidateParentCache
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
+- uid: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_UpdateUniforms
+  name: UpdateUniforms()
+  nameWithType: SkiaShaderEffect.UpdateUniforms()
+  fullName: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
+    name: UpdateUniforms
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_UpdateUniforms
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms
+    name: UpdateUniforms
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_UpdateUniforms
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaShaderEffect.BlendMode
   commentId: P:DrawnUi.Draw.SkiaShaderEffect.BlendMode
   parent: DrawnUi.Draw.SkiaShaderEffect

@@ -21,6 +21,7 @@ items:
   - DrawnUi.Draw.VisualLayer.OpacityTotal
   - DrawnUi.Draw.VisualLayer.Origin
   - DrawnUi.Draw.VisualLayer.Render(DrawnUi.Draw.DrawingContext)
+  - DrawnUi.Draw.VisualLayer.Reset(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.VisualLayer,SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.VisualLayer.RotationTotal
   - DrawnUi.Draw.VisualLayer.ScaleTotal
   - DrawnUi.Draw.VisualLayer.TransformRect(SkiaSharp.SKRect,SkiaSharp.SKMatrix)
@@ -275,7 +276,7 @@ items:
     parameters: []
     return:
       type: SkiaSharp.SKRect
-    content.vb: Public ReadOnly Property Origin As SKRect
+    content.vb: Public Property Origin As SKRect
   overload: DrawnUi.Draw.VisualLayer.Origin*
 - uid: DrawnUi.Draw.VisualLayer.Transforms
   commentId: P:DrawnUi.Draw.VisualLayer.Transforms
@@ -668,6 +669,49 @@ items:
   nameWithType.vb: VisualLayer.New(SkiaControl, VisualLayer, SKRect, Single)
   fullName.vb: DrawnUi.Draw.VisualLayer.New(DrawnUi.Draw.SkiaControl, DrawnUi.Draw.VisualLayer, SkiaSharp.SKRect, Single)
   name.vb: New(SkiaControl, VisualLayer, SKRect, Single)
+- uid: DrawnUi.Draw.VisualLayer.Reset(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.VisualLayer,SkiaSharp.SKRect,System.Single)
+  commentId: M:DrawnUi.Draw.VisualLayer.Reset(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.VisualLayer,SkiaSharp.SKRect,System.Single)
+  id: Reset(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.VisualLayer,SkiaSharp.SKRect,System.Single)
+  parent: DrawnUi.Draw.VisualLayer
+  langs:
+  - csharp
+  - vb
+  name: Reset(SkiaControl, VisualLayer, SKRect, float)
+  nameWithType: VisualLayer.Reset(SkiaControl, VisualLayer, SKRect, float)
+  fullName: DrawnUi.Draw.VisualLayer.Reset(DrawnUi.Draw.SkiaControl, DrawnUi.Draw.VisualLayer, SkiaSharp.SKRect, float)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/VisualLayer.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Reset
+    path: ../src/Shared/DrawnUi/Draw/Base/VisualLayer.cs
+    startLine: 255
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Makes this layer describe <code class="paramref">control</code> as drawn now, exactly as a new layer would, so a
+
+    control can reuse its layers frame after frame instead of allocating one per draw.
+  example: []
+  syntax:
+    content: public void Reset(SkiaControl control, VisualLayer parent, SKRect destination, float scale)
+    parameters:
+    - id: control
+      type: DrawnUi.Draw.SkiaControl
+    - id: parent
+      type: DrawnUi.Draw.VisualLayer
+    - id: destination
+      type: SkiaSharp.SKRect
+    - id: scale
+      type: System.Single
+    content.vb: Public Sub Reset(control As SkiaControl, parent As VisualLayer, destination As SKRect, scale As Single)
+  overload: DrawnUi.Draw.VisualLayer.Reset*
+  nameWithType.vb: VisualLayer.Reset(SkiaControl, VisualLayer, SKRect, Single)
+  fullName.vb: DrawnUi.Draw.VisualLayer.Reset(DrawnUi.Draw.SkiaControl, DrawnUi.Draw.VisualLayer, SkiaSharp.SKRect, Single)
+  name.vb: Reset(SkiaControl, VisualLayer, SKRect, Single)
 - uid: DrawnUi.Draw.VisualLayer.#ctor
   commentId: M:DrawnUi.Draw.VisualLayer.#ctor
   id: '#ctor'
@@ -686,7 +730,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Draw/Base/VisualLayer.cs
-    startLine: 283
+    startLine: 301
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -715,7 +759,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateEmpty
     path: ../src/Shared/DrawnUi/Draw/Base/VisualLayer.cs
-    startLine: 288
+    startLine: 306
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -743,7 +787,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TransformRect
     path: ../src/Shared/DrawnUi/Draw/Base/VisualLayer.cs
-    startLine: 377
+    startLine: 395
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1434,6 +1478,12 @@ references:
   name: VisualLayer
   nameWithType: VisualLayer
   fullName: DrawnUi.Draw.VisualLayer
+- uid: DrawnUi.Draw.VisualLayer.Reset*
+  commentId: Overload:DrawnUi.Draw.VisualLayer.Reset
+  href: DrawnUi.Draw.VisualLayer.html#DrawnUi_Draw_VisualLayer_Reset_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_VisualLayer_SkiaSharp_SKRect_System_Single_
+  name: Reset
+  nameWithType: VisualLayer.Reset
+  fullName: DrawnUi.Draw.VisualLayer.Reset
 - uid: DrawnUi.Draw.VisualLayer.CreateEmpty*
   commentId: Overload:DrawnUi.Draw.VisualLayer.CreateEmpty
   href: DrawnUi.Draw.VisualLayer.html#DrawnUi_Draw_VisualLayer_CreateEmpty

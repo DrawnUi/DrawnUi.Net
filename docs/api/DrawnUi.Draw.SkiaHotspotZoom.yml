@@ -676,6 +676,7 @@ items:
   - DrawnUi.Draw.SkiaControl.CustomizeLayerPaint
   - DrawnUi.Draw.SkiaControl.Helper3d
   - DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,System.Action{DrawnUi.Draw.DrawingContext})
+  - DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,{TState},System.Action{DrawnUi.Draw.DrawingContext,{TState}})
   - DrawnUi.Draw.SkiaControl.IsSimpleRectangle(SkiaSharp.SKPath)
   - DrawnUi.Draw.SkiaControl.ClipSmart(SkiaSharp.SKCanvas,SkiaSharp.SKPath,SkiaSharp.SKClipOperation)
   - DrawnUi.Draw.SkiaControl.ShouldClipAntialiased
@@ -701,6 +702,7 @@ items:
   - DrawnUi.Draw.SkiaControl.UseTranslationY
   - DrawnUi.Draw.SkiaControl.UseTranslationX
   - DrawnUi.Draw.SkiaControl.LinkTransforms
+  - DrawnUi.Draw.SkiaControl.WillDrawDistorted(DrawnUi.Draw.SkiaDrawingContext)
   - DrawnUi.Draw.SkiaControl.DrawRenderObject(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.CachedObject)
   - DrawnUi.Draw.SkiaControl.RenderViewsList(DrawnUi.Draw.DrawingContext,System.Collections.Generic.IEnumerable{DrawnUi.Draw.SkiaControl})
   - DrawnUi.Draw.SkiaControl.CreateHitRect
@@ -14366,6 +14368,115 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,{TState},System.Action{DrawnUi.Draw.DrawingContext,{TState}})
+  commentId: M:DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+  parent: DrawnUi.Draw.SkiaControl
+  definition: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DrawWithClipAndTransforms__1_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_System_Boolean_System_Boolean___0_System_Action_DrawnUi_Draw_DrawingContext___0__
+  name: DrawWithClipAndTransforms<TState>(DrawingContext, SKRect, bool, bool, TState, Action<DrawingContext, TState>)
+  nameWithType: SkiaControl.DrawWithClipAndTransforms<TState>(DrawingContext, SKRect, bool, bool, TState, Action<DrawingContext, TState>)
+  fullName: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms<TState>(DrawnUi.Draw.DrawingContext, SkiaSharp.SKRect, bool, bool, TState, System.Action<DrawnUi.Draw.DrawingContext, TState>)
+  nameWithType.vb: SkiaControl.DrawWithClipAndTransforms(Of TState)(DrawingContext, SKRect, Boolean, Boolean, TState, Action(Of DrawingContext, TState))
+  fullName.vb: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms(Of TState)(DrawnUi.Draw.DrawingContext, SkiaSharp.SKRect, Boolean, Boolean, TState, System.Action(Of DrawnUi.Draw.DrawingContext, TState))
+  name.vb: DrawWithClipAndTransforms(Of TState)(DrawingContext, SKRect, Boolean, Boolean, TState, Action(Of DrawingContext, TState))
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+    name: DrawWithClipAndTransforms
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DrawWithClipAndTransforms__1_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_System_Boolean_System_Boolean___0_System_Action_DrawnUi_Draw_DrawingContext___0__
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+    name: DrawWithClipAndTransforms
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DrawWithClipAndTransforms__1_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_System_Boolean_System_Boolean___0_System_Action_DrawnUi_Draw_DrawingContext___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.IsSimpleRectangle(SkiaSharp.SKPath)
   commentId: M:DrawnUi.Draw.SkiaControl.IsSimpleRectangle(SkiaSharp.SKPath)
   parent: DrawnUi.Draw.SkiaControl
@@ -14917,6 +15028,31 @@ references:
   name: LinkTransforms
   nameWithType: SkiaControl.LinkTransforms
   fullName: DrawnUi.Draw.SkiaControl.LinkTransforms
+- uid: DrawnUi.Draw.SkiaControl.WillDrawDistorted(DrawnUi.Draw.SkiaDrawingContext)
+  commentId: M:DrawnUi.Draw.SkiaControl.WillDrawDistorted(DrawnUi.Draw.SkiaDrawingContext)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WillDrawDistorted_DrawnUi_Draw_SkiaDrawingContext_
+  name: WillDrawDistorted(SkiaDrawingContext)
+  nameWithType: SkiaControl.WillDrawDistorted(SkiaDrawingContext)
+  fullName: DrawnUi.Draw.SkiaControl.WillDrawDistorted(DrawnUi.Draw.SkiaDrawingContext)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.WillDrawDistorted(DrawnUi.Draw.SkiaDrawingContext)
+    name: WillDrawDistorted
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WillDrawDistorted_DrawnUi_Draw_SkiaDrawingContext_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaDrawingContext
+    name: SkiaDrawingContext
+    href: DrawnUi.Draw.SkiaDrawingContext.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.WillDrawDistorted(DrawnUi.Draw.SkiaDrawingContext)
+    name: WillDrawDistorted
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WillDrawDistorted_DrawnUi_Draw_SkiaDrawingContext_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaDrawingContext
+    name: SkiaDrawingContext
+    href: DrawnUi.Draw.SkiaDrawingContext.html
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.DrawRenderObject(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.CachedObject)
   commentId: M:DrawnUi.Draw.SkiaControl.DrawRenderObject(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.CachedObject)
   parent: DrawnUi.Draw.SkiaControl
@@ -28858,6 +28994,114 @@ references:
     name: Collections
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections
+- uid: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+  commentId: M:DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DrawWithClipAndTransforms__1_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_System_Boolean_System_Boolean___0_System_Action_DrawnUi_Draw_DrawingContext___0__
+  name: DrawWithClipAndTransforms<TState>(DrawingContext, SKRect, bool, bool, TState, Action<DrawingContext, TState>)
+  nameWithType: SkiaControl.DrawWithClipAndTransforms<TState>(DrawingContext, SKRect, bool, bool, TState, Action<DrawingContext, TState>)
+  fullName: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms<TState>(DrawnUi.Draw.DrawingContext, SkiaSharp.SKRect, bool, bool, TState, System.Action<DrawnUi.Draw.DrawingContext, TState>)
+  nameWithType.vb: SkiaControl.DrawWithClipAndTransforms(Of TState)(DrawingContext, SKRect, Boolean, Boolean, TState, Action(Of DrawingContext, TState))
+  fullName.vb: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms(Of TState)(DrawnUi.Draw.DrawingContext, SkiaSharp.SKRect, Boolean, Boolean, TState, System.Action(Of DrawnUi.Draw.DrawingContext, TState))
+  name.vb: DrawWithClipAndTransforms(Of TState)(DrawingContext, SKRect, Boolean, Boolean, TState, Action(Of DrawingContext, TState))
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+    name: DrawWithClipAndTransforms
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DrawWithClipAndTransforms__1_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_System_Boolean_System_Boolean___0_System_Action_DrawnUi_Draw_DrawingContext___0__
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+    name: DrawWithClipAndTransforms
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DrawWithClipAndTransforms__1_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_System_Boolean_System_Boolean___0_System_Action_DrawnUi_Draw_DrawingContext___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.DrawnExtensions.GetVelocityRatioForChild(DrawnUi.Draw.IDrawnBase,DrawnUi.Draw.ISkiaControl)
   commentId: M:DrawnUi.Draw.DrawnExtensions.GetVelocityRatioForChild(DrawnUi.Draw.IDrawnBase,DrawnUi.Draw.ISkiaControl)
   href: DrawnUi.Draw.DrawnExtensions.html#DrawnUi_Draw_DrawnExtensions_GetVelocityRatioForChild_DrawnUi_Draw_IDrawnBase_DrawnUi_Draw_ISkiaControl_

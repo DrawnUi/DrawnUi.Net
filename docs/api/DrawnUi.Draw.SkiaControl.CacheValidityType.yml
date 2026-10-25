@@ -8,6 +8,7 @@ items:
   - DrawnUi.Draw.SkiaControl.CacheValidityType.EffectsMarginMismatch
   - DrawnUi.Draw.SkiaControl.CacheValidityType.GraphicContextMismatch
   - DrawnUi.Draw.SkiaControl.CacheValidityType.Missing
+  - DrawnUi.Draw.SkiaControl.CacheValidityType.SamplingMismatch
   - DrawnUi.Draw.SkiaControl.CacheValidityType.SizeMismatch
   - DrawnUi.Draw.SkiaControl.CacheValidityType.Valid
   langs:
@@ -24,7 +25,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CacheValidityType
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
-    startLine: 1287
+    startLine: 1307
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -51,7 +52,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Valid
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
-    startLine: 1289
+    startLine: 1309
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -77,7 +78,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Missing
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
-    startLine: 1290
+    startLine: 1310
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -103,7 +104,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SizeMismatch
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
-    startLine: 1291
+    startLine: 1311
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -129,7 +130,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GraphicContextMismatch
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
-    startLine: 1292
+    startLine: 1312
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -155,7 +156,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EffectsMarginMismatch
     path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
-    startLine: 1298
+    startLine: 1318
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -166,6 +167,37 @@ items:
   example: []
   syntax:
     content: EffectsMarginMismatch = 4
+    return:
+      type: DrawnUi.Draw.SkiaControl.CacheValidityType
+- uid: DrawnUi.Draw.SkiaControl.CacheValidityType.SamplingMismatch
+  commentId: F:DrawnUi.Draw.SkiaControl.CacheValidityType.SamplingMismatch
+  id: SamplingMismatch
+  parent: DrawnUi.Draw.SkiaControl.CacheValidityType
+  langs:
+  - csharp
+  - vb
+  name: SamplingMismatch
+  nameWithType: SkiaControl.CacheValidityType.SamplingMismatch
+  fullName: DrawnUi.Draw.SkiaControl.CacheValidityType.SamplingMismatch
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SamplingMismatch
+    path: ../src/Shared/DrawnUi/Draw/Base/SkiaControl.Cache.cs
+    startLine: 1324
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    A picture holding image blits was recorded for a straight (or a distorted) playback and is now drawn the
+
+    other way: the images in it need the other sampling.
+  example: []
+  syntax:
+    content: SamplingMismatch = 5
     return:
       type: DrawnUi.Draw.SkiaControl.CacheValidityType
 references:

@@ -314,7 +314,7 @@ items:
   summary: >-
     Gets the argument associated with the specified key or returns null if not found.
 
-    Example: `if (ctx.GetArgument(ContextArguments.Scale.ToString()) is float zoomedScale) {}`
+    Example: `if (ctx.GetArgument(nameof(ContextArguments.Scale)) is float zoomedScale) {}`
   example: []
   syntax:
     content: public object? GetArgument(string key)

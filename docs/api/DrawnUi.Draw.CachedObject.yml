@@ -19,6 +19,8 @@ items:
   - DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint,DrawnUi.Draw.FilterQuality)
   - DrawnUi.Draw.CachedObject.Draw(SkiaSharp.SKCanvas,System.Single,System.Single,SkiaSharp.SKPaint,SkiaSharp.SKSamplingOptions@)
   - DrawnUi.Draw.CachedObject.GetBitmap
+  - DrawnUi.Draw.CachedObject.GetPictureImage(SkiaSharp.GRContext)
+  - DrawnUi.Draw.CachedObject.HasImageBlits
   - DrawnUi.Draw.CachedObject.Id
   - DrawnUi.Draw.CachedObject.Image
   - DrawnUi.Draw.CachedObject.IsAlive
@@ -27,6 +29,7 @@ items:
   - DrawnUi.Draw.CachedObject.LastDrawnAt
   - DrawnUi.Draw.CachedObject.LogicalBounds
   - DrawnUi.Draw.CachedObject.Picture
+  - DrawnUi.Draw.CachedObject.PlaybackDistorted
   - DrawnUi.Draw.CachedObject.PreserveSourceFromDispose
   - DrawnUi.Draw.CachedObject.RecordingArea
   - DrawnUi.Draw.CachedObject.Surface
@@ -686,6 +689,68 @@ items:
       type: System.Boolean
     content.vb: Public Property SurfaceIsRecycled As Boolean
   overload: DrawnUi.Draw.CachedObject.SurfaceIsRecycled*
+- uid: DrawnUi.Draw.CachedObject.PlaybackDistorted
+  commentId: P:DrawnUi.Draw.CachedObject.PlaybackDistorted
+  id: PlaybackDistorted
+  parent: DrawnUi.Draw.CachedObject
+  langs:
+  - csharp
+  - vb
+  name: PlaybackDistorted
+  nameWithType: CachedObject.PlaybackDistorted
+  fullName: DrawnUi.Draw.CachedObject.PlaybackDistorted
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: PlaybackDistorted
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 248
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: 'A picture recorded to be drawn distorted (scaled, turned, skewed, projected): the images in it use smooth sampling.'
+  example: []
+  syntax:
+    content: public bool PlaybackDistorted { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property PlaybackDistorted As Boolean
+  overload: DrawnUi.Draw.CachedObject.PlaybackDistorted*
+- uid: DrawnUi.Draw.CachedObject.HasImageBlits
+  commentId: P:DrawnUi.Draw.CachedObject.HasImageBlits
+  id: HasImageBlits
+  parent: DrawnUi.Draw.CachedObject
+  langs:
+  - csharp
+  - vb
+  name: HasImageBlits
+  nameWithType: CachedObject.HasImageBlits
+  fullName: DrawnUi.Draw.CachedObject.HasImageBlits
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: HasImageBlits
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 253
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: A picture that holds image blits, whose sampling was fixed when it was recorded.
+  example: []
+  syntax:
+    content: public bool HasImageBlits { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property HasImageBlits As Boolean
+  overload: DrawnUi.Draw.CachedObject.HasImageBlits*
 - uid: DrawnUi.Draw.CachedObject.Picture
   commentId: P:DrawnUi.Draw.CachedObject.Picture
   id: Picture
@@ -704,7 +769,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Picture
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 245
+    startLine: 255
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -733,7 +798,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Image
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 247
+    startLine: 257
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -744,6 +809,45 @@ items:
       type: SkiaSharp.SKImage
     content.vb: Public Property Image As SKImage
   overload: DrawnUi.Draw.CachedObject.Image*
+- uid: DrawnUi.Draw.CachedObject.GetPictureImage(SkiaSharp.GRContext)
+  commentId: M:DrawnUi.Draw.CachedObject.GetPictureImage(SkiaSharp.GRContext)
+  id: GetPictureImage(SkiaSharp.GRContext)
+  parent: DrawnUi.Draw.CachedObject
+  langs:
+  - csharp
+  - vb
+  name: GetPictureImage(GRContext)
+  nameWithType: CachedObject.GetPictureImage(GRContext)
+  fullName: DrawnUi.Draw.CachedObject.GetPictureImage(SkiaSharp.GRContext)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GetPictureImage
+    path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
+    startLine: 265
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The picture of a picture-backed cache (Operations, OperationsFull) drawn into an image, made on the first
+
+    call and kept as long as this cache lives. Shader effects read it as their input texture, so on such a
+
+    control they work on its own content, as on an Image cache. Null for image-backed caches.
+  example: []
+  syntax:
+    content: public SKImage GetPictureImage(GRContext context)
+    parameters:
+    - id: context
+      type: SkiaSharp.GRContext
+      description: GPU context to make the image on, null for a CPU image
+    return:
+      type: SkiaSharp.SKImage
+    content.vb: Public Function GetPictureImage(context As GRContext) As SKImage
+  overload: DrawnUi.Draw.CachedObject.GetPictureImage*
 - uid: DrawnUi.Draw.CachedObject.Bounds
   commentId: P:DrawnUi.Draw.CachedObject.Bounds
   id: Bounds
@@ -762,7 +866,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Bounds
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 249
+    startLine: 290
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -791,7 +895,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RecordingArea
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 251
+    startLine: 292
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -820,7 +924,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Type
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 253
+    startLine: 294
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -849,7 +953,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 255
+    startLine: 296
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -879,7 +983,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisposed
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 277
+    startLine: 320
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -908,7 +1012,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tag
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 279
+    startLine: 322
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -937,7 +1041,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreserveSourceFromDispose
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 281
+    startLine: 324
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -966,7 +1070,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetBitmap
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 283
+    startLine: 326
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -994,7 +1098,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Surface
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 288
+    startLine: 331
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1023,7 +1127,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Children
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 290
+    startLine: 333
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1052,7 +1156,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAlive
     path: ../src/Shared/DrawnUi/Internals/Models/CachedObject.cs
-    startLine: 292
+    startLine: 335
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1620,6 +1724,18 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: DrawnUi.Draw.CachedObject.PlaybackDistorted*
+  commentId: Overload:DrawnUi.Draw.CachedObject.PlaybackDistorted
+  href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_PlaybackDistorted
+  name: PlaybackDistorted
+  nameWithType: CachedObject.PlaybackDistorted
+  fullName: DrawnUi.Draw.CachedObject.PlaybackDistorted
+- uid: DrawnUi.Draw.CachedObject.HasImageBlits*
+  commentId: Overload:DrawnUi.Draw.CachedObject.HasImageBlits
+  href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_HasImageBlits
+  name: HasImageBlits
+  nameWithType: CachedObject.HasImageBlits
+  fullName: DrawnUi.Draw.CachedObject.HasImageBlits
 - uid: DrawnUi.Draw.CachedObject.Picture*
   commentId: Overload:DrawnUi.Draw.CachedObject.Picture
   href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_Picture
@@ -1632,6 +1748,20 @@ references:
   name: Image
   nameWithType: CachedObject.Image
   fullName: DrawnUi.Draw.CachedObject.Image
+- uid: DrawnUi.Draw.CachedObject.GetPictureImage*
+  commentId: Overload:DrawnUi.Draw.CachedObject.GetPictureImage
+  href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_GetPictureImage_SkiaSharp_GRContext_
+  name: GetPictureImage
+  nameWithType: CachedObject.GetPictureImage
+  fullName: DrawnUi.Draw.CachedObject.GetPictureImage
+- uid: SkiaSharp.GRContext
+  commentId: T:SkiaSharp.GRContext
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.grcontext
+  name: GRContext
+  nameWithType: GRContext
+  fullName: SkiaSharp.GRContext
 - uid: DrawnUi.Draw.CachedObject.Bounds*
   commentId: Overload:DrawnUi.Draw.CachedObject.Bounds
   href: DrawnUi.Draw.CachedObject.html#DrawnUi_Draw_CachedObject_Bounds
