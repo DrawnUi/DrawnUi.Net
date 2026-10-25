@@ -202,13 +202,6 @@ public class SkiaBackdrop : ContentLayout, ISkiaGestureListener
                     var deviceSpace = false;
                     if (UseContext)
                     {
-                        if (ctx.Context.IsVirtual && !_warnedImageCache)
-                        {
-                            // drawn into an ancestor's Image / GPU cache surface: that surface holds only the cached
-                            // subtree, not the screen behind, and the copy freezes with the cache
-                            _warnedImageCache = true;
-                            Super.Log($"[SkiaBackdrop] {Tag} is drawn into an ancestor's Image/GPU cache: it copies that cache, not the screen behind. Remove the cache from its ancestors.");
-                        }
                         canvas.Flush();
                         // copy what is really under the backdrop on this surface: the layout rect mapped through
                         // the canvas matrix (ancestor scale, move, rotation, 3D), clamped to the surface
@@ -266,8 +259,6 @@ public class SkiaBackdrop : ContentLayout, ISkiaGestureListener
     }
 
     protected SKImage Snapshot { get; set; }
-
-    private bool _warnedImageCache;
 
     /// <summary>
     /// True when this draw goes into an ancestor's picture cache (Operations, OperationsFull) instead of a surface.
