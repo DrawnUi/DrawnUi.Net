@@ -271,9 +271,8 @@ public class SkiaBackdrop : ContentLayout, ISkiaGestureListener
 
     /// <summary>
     /// A copy of the screen recorded into a picture would be replayed frozen on every later frame. So instead of
-    /// drawing it, the picture-cached ancestors get <see cref="SkiaControl.UseCache"/> = None (once, so nothing is
-    /// added to the per-frame cache path): they draw live from the next frame on, and this backdrop then copies what
-    /// is under it every frame. Only this one recording frame shows no copy.
+    /// drawing it, mark the picture-cached ancestors: they draw without their picture from the next frame on, and
+    /// this backdrop then copies what is under it every frame. Only this one recording frame shows no copy.
     /// </summary>
     protected virtual void StopPictureCachesAbove()
     {
@@ -284,7 +283,6 @@ public class SkiaBackdrop : ContentLayout, ISkiaGestureListener
             if (type == SkiaCacheType.Operations || type == SkiaCacheType.OperationsFull)
             {
                 parent.HostsBackdrop = true;
-                parent.UseCache = SkiaCacheType.None;
                 parent.InvalidateCache();
             }
             parent = parent.Parent as SkiaControl;
