@@ -87,7 +87,7 @@ public class MultiRippleWithTouchEffect : ShaderDoubleTexturesEffect, IStateEffe
             await Parent.AnimateRangeAsync(value =>
             {
                 ripple.Progress = value;
-                Update();
+                UpdateUniforms(); // only the progress changed: the image keeps its cache
             }, 0, 1, 4500);
 
             Ripples.TryRemove(ripple.Uid, out _);

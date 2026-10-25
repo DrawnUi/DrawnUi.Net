@@ -210,8 +210,7 @@ half4 main(float2 fragCoord) {
     private void SetStrength(double strength)
     {
         _strength = strength;
-        _wave.SetUniform("strength", (float)strength);
-        _wave.Update();
+        _wave.SetUniform("strength", (float)strength); // redraws the effect, the image keeps its cache
         var values = new[] { 0, 0.005, 0.01, 0.03 };
         for (var i = 0; i < _strengthButtons.Count; i++)
             _strengthButtons[i].BackgroundColor = Color.Parse(values[i] == strength ? "#533483" : "#495057");
@@ -219,12 +218,13 @@ half4 main(float2 fragCoord) {
     }
 
     // iTime shaders repaint only when something asks for frames: a looping animator on each host ticks them.
+    // UpdateUniforms redraws the effect over the host's cache instead of rebuilding the cache every frame.
     private void StartAnimators()
     {
         StopAnimators();
         foreach (var host in new SkiaControl[] { _waveHost, _plasmaHost })
         {
-            var animator = new SkiaValueAnimator(host) { mMinValue = 0, mMaxValue = 1, Speed = 1000, Repeat = -1, OnUpdated = _ => { _wave.Update(); _plasma.Update(); } };
+            var animator = new SkiaValueAnimator(host) { mMinValue = 0, mMaxValue = 1, Speed = 1000, Repeat = -1, OnUpdated = _ => { _wave.UpdateUniforms(); _plasma.UpdateUniforms(); } };
             animator.Start();
             _animators.Add(animator);
         }
