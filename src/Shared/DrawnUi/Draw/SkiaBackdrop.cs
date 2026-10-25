@@ -190,6 +190,14 @@ public class SkiaBackdrop : ContentLayout, ISkiaGestureListener
                 }
                 else
                 {
+                    if (!_warnedPicture && ctx.Context.IsVirtual && ctx.Context.Surface != null
+                        && ctx.Context.Canvas.Handle != ctx.Context.Surface.Canvas.Handle)
+                    {
+                        // recorded into a parent's picture cache: the copy below is frozen into the picture
+                        _warnedPicture = true;
+                        Super.Log($"[SkiaBackdrop] {Tag} is recorded into a parent's picture cache (Operations / OperationsFull, the default of SkiaShape): its copy of what is behind freezes. Set UseCache = None on its picture-cached parents.");
+                    }
+
                     SKImage snapshot;
                     var canvas = ctx.Context.Canvas;
                     // where the copy is drawn back: the layout rect for the global surface (read while
@@ -255,6 +263,8 @@ public class SkiaBackdrop : ContentLayout, ISkiaGestureListener
     }
 
     protected SKImage Snapshot { get; set; }
+
+    private bool _warnedPicture;
 
     public static readonly BindableProperty CacheSourceProperty = BindableProperty.Create(
         nameof(SkiaBackdrop),
