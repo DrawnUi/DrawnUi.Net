@@ -113,6 +113,28 @@ Supports snap points for controlled scrolling, ideal for carousels or paginated 
 </draw:SkiaLayout>
 ```
 
+On every frame it copies the screen area it covers, applies `Blur` and its other effects, and draws the result in its place. Things to know:
+
+- **Transformed parents.** Inside a parent that is scaled, moved, rotated or turned in 3D (a popup that zooms in, for example), it copies the area it really covers on screen and draws it back exactly there, so the glass lines up with what is behind it. `Blur` stays the same on screen while the parent scales. Up to 1.10.7.14 it copied its layout rect, so in such a parent the glass showed a shifted, wrongly scaled part of the screen.
+- **Cached parents.** A backdrop must draw live on every frame, so none of its parents may keep an old copy:
+  - A picture cache (`Operations`, `OperationsFull`, the default of `SkiaShape`) recorded the backdrop's copy once and replayed it frozen: a frosted `SkiaShape` panel in a zooming popup kept the glass of its first frame. Since 1.10.7.15 such parents drop their picture cache by themselves as soon as they hold a backdrop. On older versions set `UseCache = None` on them.
+  - Inside an `Image` or `GPU` cache the backdrop copies only that cache's own content, not the screen behind, and freezes with it. Keep such caches off its parents; DrawnUI logs a warning once when it finds one.
+- **Frosted glass panel:** put the backdrop as the first child of a `SkiaShape` (for its corners and stroke), then the panel's content after it:
+
+```csharp
+new SkiaShape
+{
+    CornerRadius = 24,
+    StrokeColor = Colors.White.WithAlpha(0.3f),
+    StrokeWidth = 1,
+    Children =
+    {
+        new SkiaBackdrop { Blur = 6, BackgroundColor = Colors.White.WithAlpha(0.1f) }.Fill(),
+        new SkiaStack { Padding = 20, Children = { /* content */ } },
+    }
+}
+```
+
 ## Example: Creating a Grid Layout
 
 ```xml
