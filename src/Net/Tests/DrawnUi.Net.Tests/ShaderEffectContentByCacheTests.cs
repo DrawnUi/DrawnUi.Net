@@ -13,6 +13,7 @@ namespace DrawnUi.Net.Tests;
 /// replaces the control and iImage1 is the control's own content; on an UNCACHED control the control paints and
 /// the shader draws over it, iImage1 being the canvas there (the control plus what is behind it).
 /// </summary>
+[Collection("Multithreaded")] // reads pixels of fresh canvases: flaky next to the parallel load of other classes
 public class ShaderEffectContentByCacheTests
 {
     readonly ITestOutputHelper _output;
@@ -96,9 +97,9 @@ half4 main(float2 fragCoord)
         Assert.Equal(transparent, clear);
     }
 
-    /// <summary>KeepParentCache on a picture-cached shape: the picture and its image are kept, the new value drawn.</summary>
+    /// <summary>A uniform change on a picture-cached shape: the picture and its image are kept, the new value drawn.</summary>
     [Fact]
-    public void KeepParentCache_OnOperationsShape_KeepsPictureAndDrawsNewValue()
+    public void UniformChange_OnOperationsShape_KeepsPictureAndDrawsNewValue()
     {
         const string tint = Header + @"
 uniform float uAmount;
@@ -108,7 +109,7 @@ half4 main(float2 fragCoord)
     return mix(c, half4(0, 0, 1, 1), uAmount);
 }";
         SkiaShape shape = null;
-        var effect = new SkiaShaderEffect { ShaderCode = tint, KeepParentCache = true }.SetUniform("uAmount", 0f);
+        var effect = new SkiaShaderEffect { ShaderCode = tint }.SetUniform("uAmount", 0f);
         using var host = new HeadlessCanvasHost(200, 200, scale: 1f, background: Colors.Black);
         host.Canvas.Content = new SkiaLayer
         {

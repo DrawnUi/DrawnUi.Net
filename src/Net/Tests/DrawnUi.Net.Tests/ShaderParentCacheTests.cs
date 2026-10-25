@@ -7,11 +7,13 @@ using Xunit;
 namespace DrawnUi.Net.Tests;
 
 /// <summary>
-/// A shader effect paints over its parent's cached content. With <see cref="SkiaShaderEffect.KeepParentCache"/> a
-/// uniform change or an animation tick redraws the effect with the new value and the parent keeps its cache; without
-/// it (the default) every such change rebuilds the parent's cache, as before.
+/// A shader effect paints over its parent's cached content. By default a uniform change or an animation tick redraws
+/// the effect with the new value and the parent keeps its cache; with
+/// <see cref="SkiaShaderEffect.ShouldInvalidateParentCache"/> every such change rebuilds the parent's cache, as before
+/// 1.10.7.14.
 /// </summary>
-public class ShaderKeepParentCacheTests
+[Collection("Multithreaded")] // reads pixels of fresh canvases: flaky next to the parallel load of other classes
+public class ShaderParentCacheTests
 {
     // Every uniform a shader declares must be written: an unset one holds whatever memory it got, not 0.
     // So the SetUniform shader declares only uAmount, the animated one only what AnimatedShaderEffect writes.
@@ -63,9 +65,9 @@ half4 main(float2 fragCoord)
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
-    public void SetUniform_DrawsTheNewValue_ParentCacheKeptOnlyWhenAsked(bool keep)
+    public void SetUniform_DrawsTheNewValue_ParentCacheRebuiltOnlyWhenAsked(bool invalidate)
     {
-        var effect = new SkiaShaderEffect { ShaderCode = TintShader, KeepParentCache = keep }.SetUniform("uAmount", 0f);
+        var effect = new SkiaShaderEffect { ShaderCode = TintShader, ShouldInvalidateParentCache = invalidate }.SetUniform("uAmount", 0f);
         var (host, card) = Scene(effect);
         using (host)
         {
@@ -80,17 +82,17 @@ half4 main(float2 fragCoord)
 
             var after = Center(host);
             Assert.True(after.Blue > 200 && after.Red < 50, $"the new uniform was not drawn: {after}");
-            if (keep)
-                Assert.Same(cache, card.RenderObject);
-            else
+            if (invalidate)
                 Assert.NotSame(cache, card.RenderObject);
+            else
+                Assert.Same(cache, card.RenderObject);
         }
     }
 
     [Fact]
-    public void AnimatedTicks_WithKeepParentCache_AnimateOverTheSameCache()
+    public void AnimatedTicks_ByDefault_AnimateOverTheSameCache()
     {
-        var effect = new AnimatedShaderEffect { ShaderCode = ProgressShader, KeepParentCache = true, DurationMs = 200 };
+        var effect = new AnimatedShaderEffect { ShaderCode = ProgressShader, DurationMs = 200 };
         var (host, card) = Scene(effect);
         using (host)
         {
