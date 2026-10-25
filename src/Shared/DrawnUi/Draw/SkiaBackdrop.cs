@@ -190,12 +190,36 @@ public class SkiaBackdrop : ContentLayout, ISkiaGestureListener
                 }
                 else
                 {
+                    if (!_warnedPicture && ctx.Context.IsVirtual && ctx.Context.Surface != null
+                        && ctx.Context.Canvas.Handle != ctx.Context.Surface.Canvas.Handle)
+                    {
+                        // recorded into a parent's picture cache: the copy below is frozen into the picture
+                        _warnedPicture = true;
+                        Super.Log($"[SkiaBackdrop] {Tag} is recorded into a parent's picture cache (Operations / OperationsFull, the default of SkiaShape): its copy of what is behind freezes. Set UseCache = None on its picture-cached parents.");
+                    }
+
                     SKImage snapshot;
+                    var canvas = ctx.Context.Canvas;
+                    // where the copy is drawn back: the layout rect for the global surface (read while
+                    // drawing into a cache), the on-screen area for the context surface
+                    SKRect drawAt = destination;
+                    var deviceSpace = false;
                     if (UseContext)
                     {
-                        ctx.Context.Canvas.Flush();
-                        snapshot = ctx.Context.Surface.Snapshot(new((int)destination.Left, (int)destination.Top,
-                            (int)destination.Right, (int)destination.Bottom));
+                        canvas.Flush();
+                        // copy what is really under the backdrop on this surface: the layout rect mapped through
+                        // the canvas matrix (ancestor scale, move, rotation, 3D), clamped to the surface
+                        var device = canvas.TotalMatrix.MapRect(destination);
+                        var area = new SKRectI((int)Math.Floor(device.Left), (int)Math.Floor(device.Top),
+                            (int)Math.Ceiling(device.Right), (int)Math.Ceiling(device.Bottom));
+                        snapshot = ctx.Context.Surface.Snapshot(area);
+                        if (snapshot != null)
+                        {
+                            var left = Math.Max(area.Left, 0);
+                            var top = Math.Max(area.Top, 0);
+                            drawAt = new SKRect(left, top, left + snapshot.Width, top + snapshot.Height);
+                            deviceSpace = true;
+                        }
                     }
                     else
                     {
@@ -207,7 +231,20 @@ public class SkiaBackdrop : ContentLayout, ISkiaGestureListener
                     if (snapshot != null && Snapshot != snapshot)
                     {
                         var kill = Snapshot;
-                        ctx.Context.Canvas.DrawImage(snapshot, destination, ImagePaint);
+                        if (deviceSpace)
+                        {
+                            // drawn back 1:1 where it was taken, clipped to the backdrop's own (maybe turned) rect;
+                            // the blur stays the same on screen while an ancestor scales
+                            var saved = canvas.Save();
+                            canvas.ClipRect(destination, SKClipOperation.Intersect, true);
+                            canvas.ResetMatrix();
+                            canvas.DrawImage(snapshot, drawAt, ImagePaint);
+                            canvas.RestoreToCount(saved);
+                        }
+                        else
+                        {
+                            canvas.DrawImage(snapshot, drawAt, ImagePaint);
+                        }
                         Snapshot = snapshot;
                         if (kill != null)
                         {
@@ -226,6 +263,8 @@ public class SkiaBackdrop : ContentLayout, ISkiaGestureListener
     }
 
     protected SKImage Snapshot { get; set; }
+
+    private bool _warnedPicture;
 
     public static readonly BindableProperty CacheSourceProperty = BindableProperty.Create(
         nameof(SkiaBackdrop),

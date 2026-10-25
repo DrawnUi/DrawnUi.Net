@@ -154,6 +154,7 @@ public class ShellPage : SkiaLayer
                                             new SkiaShape
                                             {
                                                 Type = ShapeType.Rectangle, Margin = new Thickness(16), BackgroundColor = Color.Parse("#66FFFFFF"), ClipBackgroundColor = true, CornerRadius = 19,
+                                                UseCache = SkiaCacheType.None, // it holds a SkiaBackdrop: a picture cache would freeze its copy of what is behind
                                                 HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
                                                 Shadows = { new SkiaShadow { X = 4, Y = 4, Blur = 3, Opacity = 1, Color = Color.Parse("#44000000") } },
                                                 Children = new List<SkiaControl>

@@ -113,6 +113,29 @@ Supports snap points for controlled scrolling, ideal for carousels or paginated 
 </draw:SkiaLayout>
 ```
 
+On every frame it copies the screen area it covers, applies `Blur` and its other effects, and draws the result in its place. Things to know:
+
+- **Transformed parents.** Inside a parent that is scaled, moved, rotated or turned in 3D (a popup that zooms in, for example), it copies the area it really covers on screen and draws it back exactly there, so the glass lines up with what is behind it. `Blur` stays the same on screen while the parent scales. Up to 1.10.7.14 it copied its layout rect, so in such a parent the glass showed a shifted, wrongly scaled part of the screen.
+- **Cached parents.** A backdrop must draw live on every frame, so none of its parents may keep an old copy:
+  - A picture cache (`Operations`, `OperationsFull`, the default of `SkiaShape`) records the backdrop's copy once and replays it frozen: a frosted `SkiaShape` panel in a zooming popup kept the glass of its first frame. Set `UseCache = None` on every picture-cached parent of a backdrop, a `SkiaShape` holding it included. DrawnUI logs a warning once when a backdrop is recorded into a picture; it never changes a parent's cache for you.
+  - Inside an `Image` or `GPU` cache the backdrop copies that cache's own surface, not the screen behind it, and the copy is redrawn only when that cache is. That is right when what should show through the glass is inside the same cache (a cached card whose picture lies under its glass panel). When the glass should show content outside it, keep such caches off its parents.
+- **Frosted glass panel:** put the backdrop as the first child of a `SkiaShape` (for its corners and stroke), then the panel's content after it:
+
+```csharp
+new SkiaShape
+{
+    CornerRadius = 24,
+    UseCache = SkiaCacheType.None, // SkiaShape defaults to Operations, which would freeze the backdrop
+    StrokeColor = Colors.White.WithAlpha(0.3f),
+    StrokeWidth = 1,
+    Children =
+    {
+        new SkiaBackdrop { Blur = 6, BackgroundColor = Colors.White.WithAlpha(0.1f) }.Fill(),
+        new SkiaStack { Padding = 20, Children = { /* content */ } },
+    }
+}
+```
+
 ## Example: Creating a Grid Layout
 
 ```xml

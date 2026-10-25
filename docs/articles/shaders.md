@@ -473,18 +473,15 @@ this yet: it builds a new `SKRuntimeEffectChildren` every frame.
 5. **Never cache** a layer that hosts a shader effect in `SkiaScroll`,
    `SkiaDrawer`, `SkiaCarousel`, or any layout that virtualizes — follow the
    standard DrawnUI caching rules for dynamic content.
-6. **A shader effect reads the control's cache, so give it an image cache or
-   none.** `SkiaShaderEffect` is a post renderer: its input texture comes from
-   `Parent.CachedImage` (`SkiaControl.Shared.cs:417`), which holds an image only
-   for an image-backed cache — `Image`, `ImageDoubleBuffered`, `GPU`,
-   `ImageComposite`, `ImageCompositeGPU` all snapshot their surface
-   (`CachedObject.cs:217-223`). `Operations` and `OperationsFull` store an
-   `SKPicture` and no image (`CachedObject.cs:209-215`), so the effect finds
-   nothing and, with `AutoCreateInputTexture` (default `true`), snapshots the
-   canvas instead — and since a control carrying post renderers never blits its
-   own cache (`SkiaControl.Shared.cs:8102`), that snapshot holds what is *behind*
-   the control, not the control. `GPU` is a perfectly good cache for a shader;
-   `Operations` is the one that leaves `iImage1` without the control in it.
+6. **A shader effect reads the control's cache.** `SkiaShaderEffect` is a post
+   renderer: its input texture is `Parent.CachedImage`. Image-backed caches
+   (`Image`, `ImageDoubleBuffered`, `GPU`, `ImageComposite`, `ImageCompositeGPU`)
+   give their surface image; picture caches (`Operations`, `OperationsFull`)
+   give their picture drawn into an image once per cache
+   (`CachedObject.GetPictureImage`). Up to 1.10.7.13 a picture cache gave
+   nothing, so the effect snapshotted the canvas, which held what was *behind*
+   the control, not the control. An uncached control has no cache image: the
+   effect snapshots the canvas there (the control plus what is behind it).
 7. **Keep GPU textures off bake threads.** `ImageDoubleBuffered` bakes on a
    worker; GPU child caches are painted live inside the bake, but post renderers
    and backdrops are not guarded yet, so a shader effect under an
