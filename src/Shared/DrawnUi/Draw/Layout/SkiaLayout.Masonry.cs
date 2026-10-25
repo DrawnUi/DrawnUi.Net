@@ -112,99 +112,86 @@ public partial class SkiaLayout
             return false;
         }
 
-        var useOneTemplate = RecyclingTemplate != RecyclingTemplate.Disabled;
-        var template = useOneTemplate ? ChildrenFactory.GetTemplateInstance() : null;
-        try
+        // the dirty views are the ones showing those items: measured themselves, as they will draw
+        Dictionary<ControlInStack, SkiaControl> changed = null;
+        foreach (var dirty in DirtyChildrenTracker.GetList())
         {
-            HashSet<ControlInStack> changed = null;
-            foreach (var dirty in DirtyChildrenTracker.GetList())
+            var cell = FindCellByContextIndex(structure, dirty.ContextIndex);
+            if (cell == null || !dirty.CanDraw)
+                return false;
+
+            var measured = MeasureChild(dirty, cell.Area.Width, float.PositiveInfinity, scale);
+            dirty.NeedMeasure = false;
+            if (measured.IsEmpty)
+                return false;
+
+            if (Math.Abs(measured.Pixels.Height - cell.Measured.Pixels.Height) < 0.5f
+                && Math.Abs(measured.Pixels.Width - cell.Measured.Pixels.Width) < 0.5f)
+                continue;
+
+            cell.Measured = measured;
+            (changed ??= new())[cell] = dirty;
+        }
+
+        var columns = Math.Max(1, Split);
+        var spacing = (float)Math.Round(Spacing * scale);
+        var columnWidth = GetMasonryColumnWidth(rectForChildrenPixels.Width, columns, scale);
+        var bottoms = new float[columns];
+
+        if (changed == null)
+        {
+            // nothing moved: the content keeps its size
+            foreach (var cell in structure.GetChildren())
+                bottoms[cell.Column] = Math.Max(bottoms[cell.Column],
+                    cell.Area.Top + cell.Measured.Pixels.Height - rectForChildrenPixels.Top);
+        }
+        else
+        {
+            var rows = new int[columns];
+            var placed = new LayoutStructure();
+            foreach (var cell in structure.GetChildren()) // item order
             {
-                var cell = FindCellByContextIndex(structure, dirty.ContextIndex);
-                if (cell == null)
-                    return false;
-
-                var view = ChildrenFactory.GetViewForIndex(cell.ControlIndex, template, 0, useOneTemplate);
-                if (view == null || !view.CanDraw)
-                    return false;
-
-                var measured = MeasureChild(view, cell.Area.Width, float.PositiveInfinity, scale);
-                view.NeedMeasure = false;
-                if (measured.IsEmpty)
-                    return false;
-
-                if (Math.Abs(measured.Pixels.Height - cell.Measured.Pixels.Height) < 0.5f
-                    && Math.Abs(measured.Pixels.Width - cell.Measured.Pixels.Width) < 0.5f)
-                    continue;
-
-                cell.Measured = measured;
-                (changed ??= new()).Add(cell);
-            }
-
-            var columns = Math.Max(1, Split);
-            var spacing = (float)Math.Round(Spacing * scale);
-            var columnWidth = GetMasonryColumnWidth(rectForChildrenPixels.Width, columns, scale);
-            var bottoms = new float[columns];
-
-            if (changed == null)
-            {
-                // nothing moved: the content keeps its size
-                foreach (var cell in structure.GetChildren())
-                    bottoms[cell.Column] = Math.Max(bottoms[cell.Column], cell.Area.Bottom - rectForChildrenPixels.Top);
-            }
-            else
-            {
-                var rows = new int[columns];
-                var placed = new LayoutStructure();
-                foreach (var cell in structure.GetChildren()) // item order
+                var column = 0;
+                for (var c = 1; c < columns; c++)
                 {
-                    var column = 0;
-                    for (var c = 1; c < columns; c++)
-                    {
-                        if (bottoms[c] < bottoms[column])
-                            column = c;
-                    }
-
-                    var left = rectForChildrenPixels.Left + column * (columnWidth + spacing);
-                    var top = rectForChildrenPixels.Top + bottoms[column] + (rows[column] > 0 ? spacing : 0);
-                    var height = cell.Measured.Pixels.Height;
-
-                    if (changed.Contains(cell))
-                    {
-                        var view = ChildrenFactory.GetViewForIndex(cell.ControlIndex, template, 0, useOneTemplate);
-                        cell.Area = new SKRect(left, top, left + columnWidth, top + height);
-                        LayoutCell(cell.Measured, cell, view, cell.Area, scale);
-                    }
-                    else
-                    {
-                        var dx = left - cell.Area.Left;
-                        var dy = top - cell.Area.Top;
-                        if (dx != 0 || dy != 0)
-                        {
-                            cell.Area = new SKRect(cell.Area.Left + dx, cell.Area.Top + dy,
-                                cell.Area.Right + dx, cell.Area.Bottom + dy);
-                            cell.Destination = new SKRect(cell.Destination.Left + dx, cell.Destination.Top + dy,
-                                cell.Destination.Right + dx, cell.Destination.Bottom + dy);
-                        }
-                    }
-
-                    cell.Column = column;
-                    cell.Row = rows[column];
-                    placed.Add(cell, column, rows[column]++);
-                    bottoms[column] = cell.Area.Bottom - rectForChildrenPixels.Top;
+                    if (bottoms[c] < bottoms[column])
+                        column = c;
                 }
 
-                StackStructureMeasured = placed;
+                var left = rectForChildrenPixels.Left + column * (columnWidth + spacing);
+                var top = rectForChildrenPixels.Top + bottoms[column] + (rows[column] > 0 ? spacing : 0);
+                var height = cell.Measured.Pixels.Height;
+
+                if (changed.TryGetValue(cell, out var view))
+                {
+                    cell.Area = new SKRect(left, top, left + columnWidth, float.PositiveInfinity);
+                    LayoutCell(cell.Measured, cell, view, cell.Area, scale);
+                }
+                else
+                {
+                    var dx = left - cell.Area.Left;
+                    var dy = top - cell.Area.Top;
+                    if (dx != 0 || dy != 0)
+                    {
+                        cell.Area = new SKRect(cell.Area.Left + dx, cell.Area.Top + dy,
+                            cell.Area.Right + dx, cell.Area.Bottom + dy);
+                        cell.Destination = new SKRect(cell.Destination.Left + dx, cell.Destination.Top + dy,
+                            cell.Destination.Right + dx, cell.Destination.Bottom + dy);
+                    }
+                }
+
+                cell.Column = column;
+                cell.Row = rows[column];
+                placed.Add(cell, column, rows[column]++);
+                bottoms[column] = top + height - rectForChildrenPixels.Top;
             }
 
-            ClearDirtyChildren();
-            result = GetMasonryContentSize(rectForChildrenPixels, bottoms, count, columnWidth, spacing, scale);
-            return true;
+            StackStructureMeasured = placed;
         }
-        finally
-        {
-            if (useOneTemplate && template != null)
-                ChildrenFactory.ReleaseTemplateInstance(template);
-        }
+
+        ClearDirtyChildren();
+        result = GetMasonryContentSize(rectForChildrenPixels, bottoms, count, columnWidth, spacing, scale);
+        return true;
     }
 
     /// <summary>
@@ -262,7 +249,8 @@ public partial class SkiaLayout
             {
                 if (cell.Column >= columns || cell.ControlIndex >= from)
                     return false;
-                bottoms[cell.Column] = Math.Max(bottoms[cell.Column], cell.Area.Bottom - rectForChildrenPixels.Top);
+                bottoms[cell.Column] = Math.Max(bottoms[cell.Column],
+                    cell.Area.Top + cell.Measured.Pixels.Height - rectForChildrenPixels.Top);
                 rows[cell.Column]++;
             }
 
@@ -327,13 +315,15 @@ public partial class SkiaLayout
                 return;
             }
 
-            cell.Area = new SKRect(left, top, left + columnWidth, top + measured.Pixels.Height);
+            // open below, as in a Column: the item measures unbounded and can grow (LayoutCell arranges it at its
+            // own height)
+            cell.Area = new SKRect(left, top, left + columnWidth, float.PositiveInfinity);
             _layout.LayoutCell(measured, cell, child, cell.Area, scale);
 
             cell.Column = column;
             cell.Row = rows[column];
             structure.Add(cell, column, rows[column]++);
-            bottoms[column] = cell.Area.Bottom - available.Top;
+            bottoms[column] = top + measured.Pixels.Height - available.Top;
         }
 
         /// <summary>

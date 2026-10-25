@@ -475,4 +475,47 @@ public class MasonryLayoutTests
             AssertPlacedAsFresh(masonry, items);
         }
     }
+
+    [Fact]
+    public void Templated_VisibleCellGrowsAgainAndAgain_ItemsArePlacedAgain()
+    {
+        // a recycled view stops telling its layout after a few invalidations (IsParentIndependent): the masonry
+        // must still see it grow, from its draw pass
+        using var host = new HeadlessCanvasHost(200, 400, scale: 1f, background: Colors.Black);
+        var items = Enumerable.Range(0, 12).Select(i => new Item { Height = Heights[i % Heights.Length] }).ToList();
+        SkiaLayout masonry = null;
+        host.Canvas.Content = new SkiaScroll
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaLayout
+            {
+                Type = LayoutType.Masonry,
+                Split = 2,
+                Spacing = 0,
+                HorizontalOptions = LayoutOptions.Fill,
+                RecyclingTemplate = RecyclingTemplate.Enabled,
+                ItemsSource = items,
+                ItemTemplate = new DataTemplate(() => new GrowingCell()),
+            }.Assign(out masonry)
+        };
+        host.AdvanceFrames(8);
+
+        for (var round = 0; round < 6; round++)
+        {
+            items[2].Height += 20; // on screen, right column
+            host.AdvanceFrames(4);
+
+            var heights = items.Select(i => i.Height).ToList();
+            var expected = Expected(heights, out var height);
+            var structure = masonry.GetStackStructure();
+            for (var i = 0; i < items.Count; i++)
+            {
+                var c = structure.GetForIndex(i);
+                Assert.True(Math.Abs(expected[i].top - c.Destination.Top) < 1 && Math.Abs(heights[i] - c.Destination.Height) < 1,
+                    $"round {round}: #{i} at {c.Destination}, expected top {expected[i].top} height {heights[i]}");
+            }
+            Assert.Equal(height, masonry.MeasuredSize.Units.Height, 1);
+        }
+    }
 }

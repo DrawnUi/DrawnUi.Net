@@ -2877,6 +2877,10 @@ else
                                 // recycled view, measured for its slot only on the template instance, is never
                                 // measured and never drawn
                                 || Type == LayoutType.Wrap && !CompareSize(child.MeasuredSize.Pixels, cell.Measured.Pixels, 1f)
+                                // a recycled masonry item that asks to be measured may have grown (its view no longer
+                                // tells the layout, IsParentIndependent): measured in its open slot, a new size goes
+                                // to MeasureMasonry below
+                                || Type == LayoutType.Masonry
                                 || InvalidatedChildrenInternal.Contains(child)
                                )
                             {
@@ -2908,24 +2912,37 @@ else
                                         Interlocked.Exchange(ref child.MeasureClaim, 0);
                                 }
 
-                                cell.Measured = measured;
-                                cell.WasMeasured = true;
-
-                                if (child.IsVisible)
+                                if (Type == LayoutType.Masonry && !bakePass && reservedSlot != SKSize.Empty
+                                    && !CompareSize(reservedSlot, measured.Pixels, 1f))
                                 {
-                                    LayoutCell(measured, cell, child, cell.Area, ctx.Scale);
+                                    // a masonry item that changed size can move every item after it, to other
+                                    // columns too: the next measure places them again (MeasureMasonry); this
+                                    // frame still draws the item in its slot
+                                    TrackChildAsDirty(child);
+                                    Invalidate();
+                                    Superview?.RequestNextFrame();
                                 }
-
-                                if (reservedSlot != SKSize.Empty &&
-                                    !CompareSize(reservedSlot, child.MeasuredSize.Pixels, 1f))
+                                else
                                 {
-                                    // Durably shift the FOLLOWING cells' structure positions by this grow delta so
-                                    // the new layout persists (PASS 1 derives cell.Drawn from cell.Destination every
-                                    // frame). Without it the draw-time grow only patched the current frame via the
-                                    // OffsetOthers accumulator below, and the next cell overlapped until a staged
-                                    // restack landed a frame later — the visible "wrong Top" flicker while a bubble
-                                    // grows in realtime (streaming AI answer). Same call the smart-measure path uses.
-                                    ShiftFollowersByGrow(structure, cell, child.MeasuredSize.Pixels, reservedSlot, durable: true);
+                                    cell.Measured = measured;
+                                    cell.WasMeasured = true;
+
+                                    if (child.IsVisible)
+                                    {
+                                        LayoutCell(measured, cell, child, cell.Area, ctx.Scale);
+                                    }
+
+                                    if (reservedSlot != SKSize.Empty &&
+                                        !CompareSize(reservedSlot, child.MeasuredSize.Pixels, 1f))
+                                    {
+                                        // Durably shift the FOLLOWING cells' structure positions by this grow delta so
+                                        // the new layout persists (PASS 1 derives cell.Drawn from cell.Destination every
+                                        // frame). Without it the draw-time grow only patched the current frame via the
+                                        // OffsetOthers accumulator below, and the next cell overlapped until a staged
+                                        // restack landed a frame later — the visible "wrong Top" flicker while a bubble
+                                        // grows in realtime (streaming AI answer). Same call the smart-measure path uses.
+                                        ShiftFollowersByGrow(structure, cell, child.MeasuredSize.Pixels, reservedSlot, durable: true);
+                                    }
                                 }
                             }
                         }
