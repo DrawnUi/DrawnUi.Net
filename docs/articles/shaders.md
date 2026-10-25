@@ -233,7 +233,11 @@ sourced:
   post-render effect, the engine skips its usual cache blit and runs the effects
   instead. The shader output is the only thing painted, so a pass-through shader
   must return the texture (`return iImage1.eval(...)`). Returning transparent
-  hides the control.
+  hides the control. `iImage1` is the control's own content for every cache
+  type: a picture cache (`Operations`, `OperationsFull`, the default of
+  `SkiaShape` and `SkiaLabel`) is drawn into an image once per cache for it.
+  Up to 1.10.7.13 a picture cache gave the effect a snapshot of what was behind
+  the control instead, so the control's own content was missing.
 - **On an uncached control**, the control paints normally and the effect draws
   its output on top of it with `BlendMode`.
 - **Every draw of the control runs the shader** and then flushes the canvas. The
@@ -292,15 +296,11 @@ board.VisualEffects.Add(new AnimatedShaderEffect
 });
 ```
 
-Use it when the control has an `Image` or `GPU` cache and its content asks for
-its own updates (a child that changes calls `Update()`, which still rebuilds the
-cache). Leave it `false`:
-
-- on a control with a picture cache (`Operations`, the default of `SkiaShape`
-  and `SkiaLabel`): a picture has no image to reuse, so the effect reads the
-  canvas instead;
-- when the control's content refreshes only through the effect's redraws, for
-  example a custom `Paint` that reads changing data without calling `Update()`.
+Use it when the control is cached (`Image`, `GPU`, `Operations`...) and its
+content asks for its own updates (a child that changes calls `Update()`, which
+still rebuilds the cache). Leave it `false` when the control's content refreshes
+only through the effect's redraws, for example a custom `Paint` that reads
+changing data without calling `Update()`.
 
 ### AnimatedShaderEffect
 

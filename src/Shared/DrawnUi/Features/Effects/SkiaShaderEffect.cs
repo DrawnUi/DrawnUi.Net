@@ -271,9 +271,9 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
     /// redraw this effect and the parent keeps its cache. Default is false: every such change rebuilds the parent's
     /// cache, as <see cref="SkiaEffect.Update"/> does.
     /// The effect paints over the parent's cached content, so a uniform change does not need a new cache. Use it
-    /// when the parent has an Image or GPU cache and its content asks for its own updates, for example a large
-    /// cached layer under an animated effect. Leave it false for a parent with a picture cache (Operations, the
-    /// default of SkiaShape and SkiaLabel), or whose content refreshes only through the effect's redraws.
+    /// when the parent is cached (Image, GPU, Operations...) and its content asks for its own updates, for example
+    /// a large cached layer under an animated effect. Leave it false when the parent's content refreshes only through
+    /// the effect's redraws, such as a custom Paint reading changing data without calling Update().
     /// </summary>
     public bool KeepParentCache
     {
