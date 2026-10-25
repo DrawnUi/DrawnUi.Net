@@ -73,7 +73,7 @@ public class AnimatedShaderEffect : SkiaShaderEffect
             {
                 //Debug.WriteLine($"Animator {value}");
                 Progress = value;
-                Update();
+                UpdateUniforms();
             },
             start:   0.0,
             end:     1.0,

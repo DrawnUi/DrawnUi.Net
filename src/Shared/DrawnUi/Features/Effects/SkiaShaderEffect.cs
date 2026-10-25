@@ -258,6 +258,46 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
         set { SetValue(AutoCreateInputTextureProperty, value); }
     }
 
+    // ─── KeepParentCache ─────────────────────────────────────────────────────
+
+    public static readonly BindableProperty KeepParentCacheProperty = BindableProperty.Create(
+        nameof(KeepParentCache),
+        typeof(bool),
+        typeof(SkiaShaderEffect),
+        false);
+
+    /// <summary>
+    /// When true, animation ticks, <see cref="SetUniform(string, float[])"/> and <see cref="UpdateUniforms"/> only
+    /// redraw this effect and the parent keeps its cache. Default is false: every such change rebuilds the parent's
+    /// cache, as <see cref="SkiaEffect.Update"/> does.
+    /// The effect paints over the parent's cached content, so a uniform change does not need a new cache. Use it
+    /// when the parent has an Image or GPU cache and its content asks for its own updates, for example a large
+    /// cached layer under an animated effect. Leave it false for a parent with a picture cache (Operations, the
+    /// default of SkiaShape and SkiaLabel), or whose content refreshes only through the effect's redraws.
+    /// </summary>
+    public bool KeepParentCache
+    {
+        get { return (bool)GetValue(KeepParentCacheProperty); }
+        set { SetValue(KeepParentCacheProperty, value); }
+    }
+
+    /// <summary>
+    /// Call after changing a value that only the shader reads (a uniform, an animation progress): redraws the
+    /// effect, keeping the parent's cache when <see cref="KeepParentCache"/> is true, otherwise same as
+    /// <see cref="SkiaEffect.Update"/>.
+    /// </summary>
+    public virtual void UpdateUniforms()
+    {
+        if (KeepParentCache)
+        {
+            Parent?.Repaint();
+        }
+        else
+        {
+            Update();
+        }
+    }
+
     /// <summary>
     /// Blend mode used when drawing the shader effect on the canvas. Default is SrcOver.
     /// For generative overlay effects (UseBackground = Never), use Plus for additive blending.
@@ -556,7 +596,7 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
         if (!string.IsNullOrEmpty(name) && values != null)
         {
             Uniforms[name] = values;
-            Update();
+            UpdateUniforms();
         }
         return this;
     }

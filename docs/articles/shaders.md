@@ -204,6 +204,7 @@ Compiler error line numbers count the template lines that precede the snippet.
 | `UseBackground` | `Always` | How `iImage1` is sourced (see below). |
 | `AutoCreateInputTexture` | `true` | Take a snapshot of the drawn area when no cache image is available. Set `false` for output-only shaders. |
 | `UseContext` | `true` | Snapshot from the current drawing context (which may be a parent's cache surface). `false` reads the canvas surface instead. |
+| `KeepParentCache` | `false` | `true`: animation ticks and `SetUniform` only redraw the effect and the parent keeps its cache (see [Uniform changes and the parent's cache](#uniform-changes-and-the-parents-cache)). |
 | `BlendMode` | `SrcOver` | Blend used to draw the shader output. `Plus` suits additive generative overlays. |
 | `FilterMode` / `MipmapMode` / `TileMode` | `Linear` / `None` / `Clamp` | Sampling of the `iImage1` texture. |
 | `MouseCurrent` / `MouseInitial` | `(0,0)` | Values written to `iMouse`. |
@@ -268,6 +269,38 @@ sessions, keep your own time value wrapped to the animation period and pass it
 with `SetUniform`.
 
 `SetUniform` and `SkiaEffect.Update()` both request a redraw.
+
+### Uniform changes and the parent's cache
+
+By default every redraw request from an effect (`Update()`, `SetUniform`, each
+tick of an `AnimatedShaderEffect`) also throws away the cache of the control
+that carries it, so the control re-renders all its children on every frame of
+the animation. The effect only paints over that cache, so when only a uniform
+changed this work is wasted, and it is expensive for big cached layers.
+
+Set `KeepParentCache = true` on the effect to keep the cache: animation ticks,
+`SetUniform` and `UpdateUniforms()` then only redraw the effect, over the same
+cached content. Call `UpdateUniforms()` after changing a value your own
+`CreateUniforms` reads (a progress you drive yourself); keep `Update()` for
+changes to the shader itself.
+
+```csharp
+board.VisualEffects.Add(new AnimatedShaderEffect
+{
+    ShaderSource = "Shaders/glow.sksl",
+    KeepParentCache = true, // the board has UseCache = Image or GPU and asks for its own updates
+});
+```
+
+Use it when the control has an `Image` or `GPU` cache and its content asks for
+its own updates (a child that changes calls `Update()`, which still rebuilds the
+cache). Leave it `false`:
+
+- on a control with a picture cache (`Operations`, the default of `SkiaShape`
+  and `SkiaLabel`): a picture has no image to reuse, so the effect reads the
+  canvas instead;
+- when the control's content refreshes only through the effect's redraws, for
+  example a custom `Paint` that reads changing data without calling `Update()`.
 
 ### AnimatedShaderEffect
 
@@ -344,8 +377,13 @@ new SkiaShaderEffect { ShaderCode = mySksl }
 ```
 
 Overloads exist for `float`, `float2`, `float3` and `float4`. Call `SetUniform`
-again at any time (from a slider, for example); it requests a redraw. Names the
-shader does not declare are logged and skipped, not thrown.
+again at any time (from a slider, for example); it requests a redraw, and keeps
+the parent's cache when `KeepParentCache` is on. Names the shader does not
+declare are logged and skipped, not thrown.
+
+Write every uniform the shader declares. A declared uniform that nothing sets is
+not 0: it holds whatever memory it got, so the shader can draw garbage, and
+differently from run to run.
 
 ### Subclass pattern
 
