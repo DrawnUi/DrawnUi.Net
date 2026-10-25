@@ -1997,12 +1997,10 @@ namespace DrawnUi.Views
             {
                 return accelerated.GRContext;
             }
-#if WEB
-            if (CanvasView is WebSkiaView web && web.IsHardwareAccelerated)
+            if (CanvasView is ISkiaGpuDrawable gpu)
             {
-                return web.GRContext;
+                return gpu.GRContext;
             }
-#endif
             return null;
         }
 
