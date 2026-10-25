@@ -1595,6 +1595,78 @@ namespace DrawnUi.Draw
         {
         }
 
+        // A Column measuring every item under the built-in window: a slide's head trim or head insert takes the
+        // full re-measure path, which lays the slice out again from local 0. The scroll offset is pinned by the
+        // height that left or arrived at the top once that measure lands (PinWindowHeadChange).
+        private float _windowHeadTrimPx;
+        private int _windowHeadInsertCount;
+
+        /// <summary>
+        /// Records a window slide's change at the head of a MeasureAll Column: the height of the trimmed items
+        /// (read now, from the cells before the change) or the count of the inserted ones (their height is known
+        /// after the next measure).
+        /// </summary>
+        private void NoteWindowHeadChange(NotifyCollectionChangedEventArgs args)
+        {
+            if (args.Action == NotifyCollectionChangedAction.Remove && args.OldStartingIndex == 0)
+            {
+                var removed = args.OldItems?.Count ?? 0;
+                var structure = StackStructure;
+                if (removed <= 0 || structure == null)
+                    return;
+
+                ControlInStack first = null, survivor = null;
+                foreach (var cell in structure.GetChildren())
+                {
+                    if (cell.ControlIndex == 0)
+                        first = cell;
+                    else if (cell.ControlIndex == removed)
+                        survivor = cell;
+                }
+
+                if (first != null && survivor != null)
+                    _windowHeadTrimPx += survivor.Destination.Top - first.Destination.Top;
+            }
+            else if (args.Action == NotifyCollectionChangedAction.Add && args.NewStartingIndex == 0)
+            {
+                _windowHeadInsertCount += args.NewItems?.Count ?? 0;
+            }
+        }
+
+        /// <summary>
+        /// After the measure that laid a MeasureAll Column's window slice out again: shifts the scroll offset by the
+        /// height trimmed from the head minus the height inserted at the head, so the visible rows stay on the
+        /// same pixels (as the MeasureFirst / MeasureVisible slides do through their structure-preserving paths).
+        /// </summary>
+        private void PinWindowHeadChange(LayoutStructure measured, float scale)
+        {
+            if (_windowHeadTrimPx == 0 && _windowHeadInsertCount == 0)
+                return;
+
+            var delta = _windowHeadTrimPx;
+            var inserted = _windowHeadInsertCount;
+            _windowHeadTrimPx = 0;
+            _windowHeadInsertCount = 0;
+
+            if (inserted > 0 && measured != null)
+            {
+                ControlInStack first = null, previousHead = null;
+                foreach (var cell in measured.GetChildren())
+                {
+                    if (cell.ControlIndex == 0)
+                        first = cell;
+                    else if (cell.ControlIndex == inserted)
+                        previousHead = cell;
+                }
+
+                if (first != null && previousHead != null)
+                    delta -= previousHead.Destination.Top - first.Destination.Top;
+            }
+
+            if (scale > 0)
+                (Parent as SkiaScroll)?.OffsetVisibleAnchorY(delta / scale);
+        }
+
         /// <summary>
         /// Pixel-stable window engage: rebuilds the layout structure from the CURRENT (full-source) structure's
         /// already-measured cells that fall inside the freshly-created window slice — re-indexed to local and
@@ -1915,6 +1987,9 @@ namespace DrawnUi.Draw
 
                 if (Type == LayoutType.Masonry)
                     NoteMasonryChange(args);
+                else if (_itemsWindow != null && ReferenceEquals(sender, _itemsWindow.Items)
+                         && Type == LayoutType.Column && MeasureItemsStrategy == MeasuringStrategy.MeasureAll)
+                    NoteWindowHeadChange(args);
 
                 var fullReplace = IsFullCollectionReplace(args);
 
