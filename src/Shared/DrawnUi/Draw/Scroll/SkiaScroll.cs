@@ -1687,7 +1687,7 @@ namespace DrawnUi.Draw
                 if (this.Orientation == ScrollOrientation.Vertical || this.Orientation == ScrollOrientation.Horizontal)
                 {
                     if (layout.Type == LayoutType.Column || layout.Type == LayoutType.Row ||
-                        layout.Type == LayoutType.Wrap && layout.Split > 0) //todo grid
+                        layout.Type == LayoutType.Wrap && layout.Split > 0 || layout.Type == LayoutType.Masonry) //todo grid
                     {
                         var stackStructure = layout.GetStackStructure();
                         int index = -1;
@@ -1779,7 +1779,7 @@ namespace DrawnUi.Draw
                     (float)Math.Abs(pixelsOffsetY)
                 );
 
-                if (layout.Type == LayoutType.Column || layout.Type == LayoutType.Wrap && layout.Split > 0) //todo grid
+                if (layout.Type == LayoutType.Column || layout.Type == LayoutType.Wrap && layout.Split > 0 || layout.Type == LayoutType.Masonry) //todo grid
                 {
                     var stackStructure = layout.GetStackStructure();
                     int index = -1;
@@ -1942,7 +1942,15 @@ namespace DrawnUi.Draw
                         var split = layout.Split > 1 ? layout.Split : 1;
                         var cellIndex = index / split;
                         var cellLane = index % split;
-                        if (Orientation == ScrollOrientation.Horizontal)
+                        if (layout.Type == LayoutType.Masonry)
+                        {
+                            // cells are stored in item order, a column holds no fixed share of them
+                            childInfo = structure[index];
+                            if (childInfo?.ControlIndex != index)
+                                childInfo = structure.GetForIndex(index);
+                            isValid = childInfo != null;
+                        }
+                        else if (Orientation == ScrollOrientation.Horizontal)
                         {
                             if (cellIndex < structure.MaxColumns)
                             {

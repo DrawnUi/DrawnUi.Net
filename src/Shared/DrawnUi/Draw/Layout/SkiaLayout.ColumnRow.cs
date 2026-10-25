@@ -126,7 +126,7 @@ namespace DrawnUi.Draw
             int hKey = 0;
             //if (RecyclingTemplate != RecyclingTemplate.Disabled)
             {
-                if (Type == LayoutType.Column)
+                if (Type == LayoutType.Column || Type == LayoutType.Masonry) // masonry columns have a fixed width
                 {
                     hKey = (int)Math.Round(size.Height);
                 }
@@ -1860,7 +1860,7 @@ else
             if (!IsTemplated ||
                 //MeasureItemsStrategy != MeasuringStrategy.MeasureAll ||
                 DirtyChildrenTracker.IsEmpty || !WasMeasured ||
-                Type == LayoutType.Wrap) // Wrap layouts are too complex for this optimization
+                Type == LayoutType.Wrap || Type == LayoutType.Masonry) // too complex for this optimization
             {
                 return false;
             }

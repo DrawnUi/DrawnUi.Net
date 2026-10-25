@@ -958,6 +958,10 @@ namespace DrawnUi.Draw
                             ContentSize = MeasureWrap(constraints.Content, request.Scale);
                             break;
 
+                        case LayoutType.Masonry:
+                            ContentSize = MeasureMasonry(constraints.Content, request.Scale);
+                            break;
+
                         default:
                             ContentSize = ScaledSize.FromPixels(constraints.Content.Width, constraints.Content.Height,
                                 request.Scale);
@@ -1315,7 +1319,7 @@ namespace DrawnUi.Draw
         /// </summary>
         public bool IsStack
         {
-            get { return this.Type == LayoutType.Column || Type == LayoutType.Row || Type == LayoutType.Wrap; }
+            get { return this.Type == LayoutType.Column || Type == LayoutType.Row || Type == LayoutType.Wrap || Type == LayoutType.Masonry; }
         }
 
         public static readonly BindableProperty TypeProperty = BindableProperty.Create(nameof(Type), typeof(LayoutType),
