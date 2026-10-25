@@ -70,7 +70,7 @@ public class DrawnUiWindow : GameWindow
         var glInterface = GRGlInterface.Create();
         _grContext = GRContext.CreateGl(glInterface);
 
-        _drawable = new GpuDrawable();
+        _drawable = new GpuDrawable { GRContext = _grContext };
         _canvas.ConnectDesktopDrawable(_drawable);
 
         // GLFW gives whole hertz, 59 for a 59.95 Hz panel: frames paced 16.95 ms apart would fall behind the display,

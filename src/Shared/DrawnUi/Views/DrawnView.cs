@@ -1988,14 +1988,19 @@ namespace DrawnUi.Views
 
         protected SurfaceCacheManager SurfaceCacheManager { get; set; }
 
+        /// <summary>
+        /// The GPU context of the canvas view, null when it draws on the CPU. GPU caches are made on it.
+        /// </summary>
         public GRContext GetGRContext()
         {
-            if (CanvasView is SkiaViewAccelerated accelerated
-                && accelerated.GRContext != null)
+            if (CanvasView is SkiaViewAccelerated accelerated)
             {
                 return accelerated.GRContext;
             }
-
+            if (CanvasView is ISkiaGpuDrawable gpu)
+            {
+                return gpu.GRContext;
+            }
             return null;
         }
 
@@ -2012,12 +2017,12 @@ namespace DrawnUi.Views
 
             if (isGpu)
             {
-                if (CanvasView is SkiaViewAccelerated accelerated
-                    && accelerated.GRContext != null)
+                var gpu = GetGRContext();
+                if (gpu != null)
                 {
                     //var cacheSurfaceInfo = new SKImageInfo(width, height);
                     var cacheSurfaceInfo = new SKImageInfo(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
-                    surface = SKSurface.Create(accelerated.GRContext, true, cacheSurfaceInfo);
+                    surface = SKSurface.Create(gpu, true, cacheSurfaceInfo);
                 }
                 if (surface != null)
                 {

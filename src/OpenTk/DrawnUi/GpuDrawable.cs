@@ -3,7 +3,7 @@ using SkiaSharp;
 
 namespace DrawnUi.OpenTk;
 
-public sealed class GpuDrawable : ISkiaDrawable
+public sealed class GpuDrawable : ISkiaDrawable, ISkiaGpuDrawable
 {
     public Func<SKSurface, SKRect, bool> OnDraw { get; set; } = static (_, _) => false;
 
@@ -12,6 +12,11 @@ public sealed class GpuDrawable : ISkiaDrawable
     SKSurface ISkiaDrawable.Surface => Surface!;
 
     public bool IsHardwareAccelerated => true;
+
+    /// <summary>
+    /// The window's OpenGL context: GPU caches are made on it.
+    /// </summary>
+    public GRContext? GRContext { get; set; }
 
     public double FPS { get; private set; }
 

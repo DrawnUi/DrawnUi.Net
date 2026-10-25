@@ -11,7 +11,7 @@ namespace DrawnUi.Draw;
 /// making both RenderingMode.Default and RenderingMode.Accelerated work.
 /// </summary>
 [SupportedOSPlatform("browser")]
-public class WebSkiaView : ISkiaDrawable, IDisposable
+public class WebSkiaView : ISkiaDrawable, ISkiaGpuDrawable, IDisposable
 {
     private const int ResourceCacheBytes = 256 * 1024 * 1024; // 256 MB
     private const SKColorType ColorType = SKColorType.Rgba8888;
@@ -49,6 +49,7 @@ public class WebSkiaView : ISkiaDrawable, IDisposable
     public SKSize CanvasSize => _canvasSize;
     public SKSurface? Surface => _surface;
     public SKCanvas? Canvas => _canvas;
+    /// <inheritdoc />
     public GRContext? GRContext => _context;
 
     /// <summary>

@@ -50,7 +50,7 @@ public class CanvasHost : IDisposable
         var glInterface = GRGlInterface.Create();
         _grContext = GRContext.CreateGl(glInterface);
 
-        _drawable = new GpuDrawable();
+        _drawable = new GpuDrawable { GRContext = _grContext };
         _canvas.ConnectDesktopDrawable(_drawable);
 
         Super.MaxFps = GetPrimaryMonitorRefreshRate();

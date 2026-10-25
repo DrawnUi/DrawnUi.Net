@@ -51,6 +51,7 @@ For Blazor-specific work load the **`drawnui-blazor`** skill. For pure-WebAssemb
 - Keep `Canvas` at `RenderingMode="Accelerated"` when hosting DrawnUI camera or GPU-rendered content.
 - Do not nest `UseCache="GPU"` inside already GPU-cached or GPU-rendered content unless runtime evidence proves it safe.
 - Prefer top-level GPU cache only. Do not assume inner controls should default to no cache; decide from redraw source, visual stability, and subtree cost.
+- `UseCache = GPU` on the WebAssembly head (`DrawnUi.Web`) and on OpenTK was a CPU surface up to 1.10.7.12 (only MAUI, Blazor and WPF made GPU surfaces); since 1.10.7.13 it is a GPU surface on the canvas's WebGL / OpenGL context on every head. A web or OpenTK app on an older version that leans on GPU caches (shader effects on cached layers) pays CPU work on every cache rebuild.
 - Preserve stable layout sizing. Avoid `Auto` sizing around performance-sensitive DrawnUI surfaces unless existing code already depends on it.
 - For camera overlays, place controls inside DrawnUI tree when interaction/visual sync matters.
 - For simple app chrome over DrawnUI, MAUI overlay is acceptable only if user did not ask for DrawnUI-native controls.
