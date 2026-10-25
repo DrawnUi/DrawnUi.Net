@@ -204,7 +204,7 @@ Compiler error line numbers count the template lines that precede the snippet.
 | `UseBackground` | `Always` | How `iImage1` is sourced (see below). |
 | `AutoCreateInputTexture` | `true` | Take a snapshot of the drawn area when no cache image is available. Set `false` for output-only shaders. |
 | `UseContext` | `true` | Snapshot from the current drawing context (which may be a parent's cache surface). `false` reads the canvas surface instead. |
-| `ShouldInvalidateParentCache` | `false` | `true`: animation ticks and `SetUniform` also rebuild the parent's cache, as before 1.10.7.14 (see [Uniform changes and the parent's cache](#uniform-changes-and-the-parents-cache)). |
+| `ShouldInvalidateParentCache` | `false` | `true`: animation ticks and `SetUniform` also rebuild the parent's cache (see [Uniform changes and the parent's cache](#uniform-changes-and-the-parents-cache)). |
 | `BlendMode` | `SrcOver` | Blend used to draw the shader output. `Plus` suits additive generative overlays. |
 | `FilterMode` / `MipmapMode` / `TileMode` | `Linear` / `None` / `Clamp` | Sampling of the `iImage1` texture. |
 | `MouseCurrent` / `MouseInitial` | `(0,0)` | Values written to `iMouse`. |
@@ -236,8 +236,6 @@ sourced:
   hides the control. `iImage1` is the control's own content for every cache
   type: a picture cache (`Operations`, `OperationsFull`, the default of
   `SkiaShape` and `SkiaLabel`) is drawn into an image once per cache for it.
-  Up to 1.10.7.13 a picture cache gave the effect a snapshot of what was behind
-  the control instead, so the control's own content was missing.
 - **On an uncached control**, the control paints normally and the effect draws
   its output on top of it with `BlendMode`.
 - **Every draw of the control runs the shader** and then flushes the canvas. The
@@ -290,7 +288,7 @@ The cache still follows the control's content: a child that changes calls
 Set `ShouldInvalidateParentCache = true` when the control's content refreshes
 only through the effect's redraws, for example a custom `Paint` that reads
 changing data without calling `Update()`. Every tick and uniform change then
-rebuilds the cache, as before 1.10.7.14.
+rebuilds the cache.
 
 ```csharp
 new AnimatedShaderEffect
@@ -478,9 +476,7 @@ this yet: it builds a new `SKRuntimeEffectChildren` every frame.
    (`Image`, `ImageDoubleBuffered`, `GPU`, `ImageComposite`, `ImageCompositeGPU`)
    give their surface image; picture caches (`Operations`, `OperationsFull`)
    give their picture drawn into an image once per cache
-   (`CachedObject.GetPictureImage`). Up to 1.10.7.13 a picture cache gave
-   nothing, so the effect snapshotted the canvas, which held what was *behind*
-   the control, not the control. An uncached control has no cache image: the
+   (`CachedObject.GetPictureImage`). An uncached control has no cache image: the
    effect snapshots the canvas there (the control plus what is behind it).
 7. **Keep GPU textures off bake threads.** `ImageDoubleBuffered` bakes on a
    worker; GPU child caches are painted live inside the bake, but post renderers
