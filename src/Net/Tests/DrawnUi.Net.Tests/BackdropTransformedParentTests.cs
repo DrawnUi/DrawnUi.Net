@@ -100,4 +100,106 @@ public class BackdropTransformedParentTests
         _output.WriteLine($"scale={scale} tx={translateX} rot={rotation}: {wrong}/{total} pixels differ from the background behind");
         Assert.Equal(0, wrong);
     }
+
+    /// <summary>The BlockChampion popup: the backdrop sits in a SkiaShape (picture cache by default) inside a frame
+    /// that zooms 0.75 to 1. After the zoom the glass must show the screen behind it at its final place.</summary>
+    [Theory]
+    [InlineData(SkiaCacheType.Operations)]
+    [InlineData(SkiaCacheType.None)]
+    public void Backdrop_InShape_AfterParentZoom_CopiesTheScreenItCovers(SkiaCacheType shapeCache)
+    {
+        using var host = new HeadlessCanvasHost(400, 200, scale: 1f, background: Colors.Black);
+        var stripes = new SkiaRow { Spacing = 0, VerticalOptions = LayoutOptions.Fill };
+        foreach (var c in Stripes)
+            stripes.AddSubView(new SkiaShape { BackgroundColor = c, WidthRequest = 50, VerticalOptions = LayoutOptions.Fill });
+        foreach (var c in Stripes)
+            stripes.AddSubView(new SkiaShape { BackgroundColor = c, WidthRequest = 50, VerticalOptions = LayoutOptions.Fill });
+        SkiaLayer frame = null;
+        host.Canvas.Content = new SkiaLayer
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                stripes,
+                new SkiaLayer
+                {
+                    WidthRequest = 200, HeightRequest = 100,
+                    HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center,
+                    Scale = 0.75,
+                    Children =
+                    {
+                        new SkiaShape
+                        {
+                            UseCache = shapeCache,
+                            HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
+                            Children = { new SkiaBackdrop { Blur = 0, HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill } },
+                        },
+                    }
+                }.Assign(out frame),
+            }
+        };
+        host.AdvanceFrames(6);
+        frame.Scale = 1; // the zoom ends
+        host.AdvanceFrames(6);
+
+        using var image = host.Snapshot();
+        using var shot = SKBitmap.FromImage(image);
+        int wrong = 0, total = 0;
+        for (var x = 110; x < 290; x += 3)
+        for (var y = 60; y < 140; y += 5)
+        {
+            total++;
+            var expected = Stripes[(x / 50) % 4];
+            var a = shot.GetPixel(x, y);
+            if (Math.Abs(a.Red - expected.Red * 255) > 40 || Math.Abs(a.Green - expected.Green * 255) > 40 || Math.Abs(a.Blue - expected.Blue * 255) > 40)
+                wrong++;
+        }
+        _output.WriteLine($"shape cache {shapeCache}: {wrong}/{total} pixels differ after the zoom");
+        Assert.Equal(0, wrong);
+    }
+
+    /// <summary>The iPhone game-over popup: the backdrop sits in a SkiaShape with its default picture cache. The
+    /// picture was recorded once with the copy of the screen inside, then replayed frozen while the frame zoomed and
+    /// what was behind changed. The glass must follow what is behind it now.</summary>
+    [Theory]
+    [InlineData(SkiaCacheType.Operations)]
+    [InlineData(SkiaCacheType.OperationsFull)]
+    [InlineData(SkiaCacheType.None)]
+    public void Backdrop_InPictureCachedShape_FollowsWhatIsBehind(SkiaCacheType shapeCache)
+    {
+        using var host = new HeadlessCanvasHost(400, 200, scale: 1f, background: Colors.Black);
+        SkiaShape behind = null;
+        SkiaShape shape = null;
+        host.Canvas.Content = new SkiaLayer
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new SkiaShape { BackgroundColor = Colors.Red, HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill }.Assign(out behind),
+                new SkiaLayer
+                {
+                    WidthRequest = 200, HeightRequest = 100,
+                    HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center,
+                    Children =
+                    {
+                        new SkiaShape
+                        {
+                            UseCache = shapeCache,
+                            HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
+                            Children = { new SkiaBackdrop { Blur = 0, HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill } },
+                        }.Assign(out shape),
+                    }
+                },
+            }
+        };
+        host.AdvanceFrames(6);
+        behind.BackgroundColor = Colors.Blue; // what is behind the glass changes
+        host.AdvanceFrames(6);
+
+        using var image = host.Snapshot();
+        using var shot = SKBitmap.FromImage(image);
+        var center = shot.GetPixel(200, 100);
+        _output.WriteLine($"shape cache {shapeCache}: glass shows {center}, uses {shape.UsingCacheType}");
+        Assert.True(center.Blue > 200 && center.Red < 50, $"the glass shows a frozen copy: {center}");
+    }
 }

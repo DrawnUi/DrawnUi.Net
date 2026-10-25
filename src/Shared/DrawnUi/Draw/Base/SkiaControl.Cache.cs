@@ -750,58 +750,74 @@ public partial class SkiaControl
         get { return UsingCacheType == SkiaCacheType.GPU || UsingCacheType == SkiaCacheType.ImageCompositeGPU; }
     }
 
+    /// <summary>
+    /// Set when a <see cref="SkiaBackdrop"/> inside this control was about to be recorded into its picture cache
+    /// (Operations, OperationsFull). A backdrop copies what is under it on every frame, so a picture would freeze
+    /// that copy; such a control draws without its picture cache from then on.
+    /// </summary>
+    public bool HostsBackdrop { get; internal set; }
+
     public virtual SkiaCacheType UsingCacheType
     {
         get
         {
-            if (!AllowCaching || !Super.CacheEnabled)
-            {
+            var type = ResolveUsingCacheType();
+            // ponytail: stays set after the backdrop is removed (the control just keeps drawing live)
+            if (HostsBackdrop && (type == SkiaCacheType.Operations || type == SkiaCacheType.OperationsFull))
                 return SkiaCacheType.None;
-            }
-
-            if (CanUseCacheDoubleBuffering && Super.Multithreaded)
-            {
-                //if (Parent is SkiaControl)
-                {
-                    if (UseCache == SkiaCacheType.None)
-                        return SkiaCacheType.OperationsFull;
-                }
-
-                if (UseCache == SkiaCacheType.ImageDoubleBuffered || UseCache == SkiaCacheType.GPU)
-                    return SkiaCacheType.Image;
-
-                if (UseCache == SkiaCacheType.ImageComposite || UseCache == SkiaCacheType.ImageCompositeGPU)
-                    return SkiaCacheType.Operations;
-            }
-            // FIX: removed ImageDoubleBuffered->Image downgrade in the non-multithreaded else branch.
-            // It defeated async double-buffering (Super.Multithreaded is false by default) -> recycled cells
-            // rebaked synchronously on the render thread = scroll lag. (regression from "improvements for cells")
-            //else
-            //if (UseCache == SkiaCacheType.ImageDoubleBuffered)
-            //    return SkiaCacheType.Image;
-
-            if (UseCache == SkiaCacheType.ImageDoubleBuffered && !CanUseCacheDoubleBuffering)
-                return SkiaCacheType.Image;
-
-            if (UseCache == SkiaCacheType.Auto)
-                return SkiaCacheType.Image;
-
-            if (UseCache == SkiaCacheType.GPU && !Super.GpuCacheEnabled)
-                return SkiaCacheType.Image;
-
-            if (UseCache == SkiaCacheType.ImageCompositeGPU && !Super.GpuCacheEnabled)
-                return SkiaCacheType.ImageComposite;
-
-            //if (EffectPostRenderer != null 
-            //    && (UseCache == SkiaCacheType.None || UseCache == SkiaCacheType.Operations))
-            //    return SkiaCacheType.Image;
-
-            if (UseCache == SkiaCacheType.None && CanUseCacheDoubleBuffering && Super.Multithreaded &&
-                Parent is SkiaControl)
-                return SkiaCacheType.Operations;
-
-            return UseCache;
+            return type;
         }
+    }
+
+    SkiaCacheType ResolveUsingCacheType()
+    {
+        if (!AllowCaching || !Super.CacheEnabled)
+        {
+            return SkiaCacheType.None;
+        }
+
+        if (CanUseCacheDoubleBuffering && Super.Multithreaded)
+        {
+            //if (Parent is SkiaControl)
+            {
+                if (UseCache == SkiaCacheType.None)
+                    return SkiaCacheType.OperationsFull;
+            }
+
+            if (UseCache == SkiaCacheType.ImageDoubleBuffered || UseCache == SkiaCacheType.GPU)
+                return SkiaCacheType.Image;
+
+            if (UseCache == SkiaCacheType.ImageComposite || UseCache == SkiaCacheType.ImageCompositeGPU)
+                return SkiaCacheType.Operations;
+        }
+        // FIX: removed ImageDoubleBuffered->Image downgrade in the non-multithreaded else branch.
+        // It defeated async double-buffering (Super.Multithreaded is false by default) -> recycled cells
+        // rebaked synchronously on the render thread = scroll lag. (regression from "improvements for cells")
+        //else
+        //if (UseCache == SkiaCacheType.ImageDoubleBuffered)
+        //    return SkiaCacheType.Image;
+
+        if (UseCache == SkiaCacheType.ImageDoubleBuffered && !CanUseCacheDoubleBuffering)
+            return SkiaCacheType.Image;
+
+        if (UseCache == SkiaCacheType.Auto)
+            return SkiaCacheType.Image;
+
+        if (UseCache == SkiaCacheType.GPU && !Super.GpuCacheEnabled)
+            return SkiaCacheType.Image;
+
+        if (UseCache == SkiaCacheType.ImageCompositeGPU && !Super.GpuCacheEnabled)
+            return SkiaCacheType.ImageComposite;
+
+        //if (EffectPostRenderer != null 
+        //    && (UseCache == SkiaCacheType.None || UseCache == SkiaCacheType.Operations))
+        //    return SkiaCacheType.Image;
+
+        if (UseCache == SkiaCacheType.None && CanUseCacheDoubleBuffering && Super.Multithreaded &&
+            Parent is SkiaControl)
+            return SkiaCacheType.Operations;
+
+        return UseCache;
     }
 
     public bool IsCacheComposite

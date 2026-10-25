@@ -188,6 +188,10 @@ public class SkiaBackdrop : ContentLayout, ISkiaGestureListener
                         cache.Draw(ctx.Context.Surface.Canvas, destination, ImagePaint, FilterQuality.None);
                     }
                 }
+                else if (IsRecordedIntoPicture(ctx.Context))
+                {
+                    StopPictureCachesAbove();
+                }
                 else
                 {
                     SKImage snapshot;
@@ -255,6 +259,36 @@ public class SkiaBackdrop : ContentLayout, ISkiaGestureListener
     }
 
     protected SKImage Snapshot { get; set; }
+
+    /// <summary>
+    /// True when this draw goes into an ancestor's picture cache (Operations, OperationsFull) instead of a surface.
+    /// </summary>
+    protected static bool IsRecordedIntoPicture(SkiaDrawingContext context)
+    {
+        return context.IsVirtual && context.Surface != null && context.Canvas != null
+               && context.Canvas.Handle != context.Surface.Canvas.Handle;
+    }
+
+    /// <summary>
+    /// A copy of the screen recorded into a picture would be replayed frozen on every later frame. So instead of
+    /// drawing it, mark the picture-cached ancestors: they draw without their picture from the next frame on, and
+    /// this backdrop then copies what is under it every frame. Only this one recording frame shows no copy.
+    /// </summary>
+    protected virtual void StopPictureCachesAbove()
+    {
+        var parent = Parent as SkiaControl;
+        while (parent != null)
+        {
+            var type = parent.UsingCacheType;
+            if (type == SkiaCacheType.Operations || type == SkiaCacheType.OperationsFull)
+            {
+                parent.HostsBackdrop = true;
+                parent.InvalidateCache();
+            }
+            parent = parent.Parent as SkiaControl;
+        }
+        Update();
+    }
 
     public static readonly BindableProperty CacheSourceProperty = BindableProperty.Create(
         nameof(SkiaBackdrop),
