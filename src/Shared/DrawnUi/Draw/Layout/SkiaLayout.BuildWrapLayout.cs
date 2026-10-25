@@ -420,6 +420,13 @@ public partial class SkiaLayout
 
             _layout.StackStructureMeasured = structure;
 
+            // every item was measured: the scroll reads this for LoadMore and ScrollToIndex
+            if (_layout.IsTemplated)
+            {
+                _layout.FirstMeasuredIndexLocal = index >= 0 ? 0 : -1;
+                _layout.LastMeasuredIndexLocal = index;
+            }
+
             if (_layout.HorizontalOptions.Alignment == LayoutAlignment.Fill && _layout.WidthRequest < 0)
             {
                 stackWidth = float.IsFinite(rectForChildrenPixels.Width) ? rectForChildrenPixels.Width : stackWidth; // Fill inside an unbounded axis = content size, never infinity
