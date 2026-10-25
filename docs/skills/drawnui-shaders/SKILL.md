@@ -147,6 +147,7 @@ float valueNoise(float2 p) {
 
 - `SkiaBackdrop` + a `SkiaShaderEffect` in its `VisualEffects` shades whatever is drawn BEHIND it (it snapshots the canvas surface; on OpenTK that includes raw GL content). Set `SkiaBackdrop.Blur = 0` when the shader does its own blur.
 - Liquid glass panel: the backdrop as the first child inside the `SkiaShape`; no GPU cache on that shape (it would freeze the snapshot). Shader uniforms are in pixels: a corner radius in points goes in multiplied by `RenderingScale`.
+- A backdrop copies the screen area it really covers, also inside a scaled, moved, turned or 3D-turned parent (a zooming popup): the layout rect is mapped through the canvas matrix, copied and drawn back 1:1, clipped to the backdrop's own shape, so `Blur` stays the same on screen while the parent scales. Up to 1.10.7.14 it copied its layout rect, so in such a parent the frosted glass showed a misplaced, wrongly scaled part of the screen. Inside an Image / GPU cached ancestor it still copies only that cache's own content, not the screen behind: keep a backdrop's ancestors uncached (or Operations).
 - Inside a `SkiaShell` modal a backdrop snapshots the screen UNDER the modal, not the modal's own picture: when the picture behind the glass is your own content, put the effect on the cached layer that draws it (`UseBackground = Always` reads its own cache) and pass the panel rect as a uniform.
 
 ## 8. Shader slide transitions
