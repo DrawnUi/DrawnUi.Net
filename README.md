@@ -64,8 +64,8 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 
 ## What's New 1.10.7.15
 
-  * **Frosted glass in zooming and rotating popups.** A `SkiaBackdrop` inside a parent that is scaled, moved, rotated or turned in 3D (a popup that zooms in) copies the screen area it really covers and draws it back exactly there, so the glass lines up with what is behind it; the blur stays the same on screen. Before, it copied its layout rectangle and showed a shifted, wrongly scaled part of the screen.
-  * **Backdrops in cached shapes.** A backdrop inside a `SkiaShape` left at its default picture cache (`Operations`) freezes: the picture keeps its first copy of what is behind. DrawnUI now logs this once and names the fix, `UseCache = None` on that shape. See [SkiaBackdrop](https://drawnui.net/articles/controls/layouts.html#skiabackdrop).
+  * **Frosted glass that follows every transform.** A `SkiaBackdrop` inside a parent that is scaled, moved, rotated or turned in 3D (a popup that zooms in) shows exactly what is behind it, with the same blur on screen all the way through the animation.
+  * **Frosted glass panels made easy.** DrawnUI tells you once in the log when a backdrop sits inside a picture-cached `SkiaShape`, with the one-line setup for live glass: `UseCache = None` on that shape. See [SkiaBackdrop](https://drawnui.net/articles/controls/layouts.html#skiabackdrop).
 
 ### Previously
 
