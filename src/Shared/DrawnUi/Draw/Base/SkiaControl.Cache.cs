@@ -717,11 +717,11 @@ public partial class SkiaControl
             //check hardware context maybe changed
             if (IsCacheGPU && cache.Surface != null &&
                 cache.Surface.Context != null &&
-                context.Superview?.CanvasView is SkiaViewAccelerated hardware)
+                context.Superview != null)
             {
-                //hardware context might change if we returned from background..
-                if (hardware.GRContext == null || cache.Surface.Context == null
-                                               || hardware.GRContext.Handle != cache.Surface.Context.Handle)
+                //hardware context might change if we returned from background or the WebGL context was restored..
+                var gpu = context.Superview.GetGRContext();
+                if (gpu == null || gpu.Handle != cache.Surface.Context.Handle)
                 {
                     CacheValidity = CacheValidityType.GraphicContextMismatch;
                     return false;
