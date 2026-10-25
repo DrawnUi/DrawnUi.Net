@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using DrawnUi.Draw;
@@ -358,6 +359,120 @@ public class MasonryLayoutTests
                 Assert.Equal(expected[i].left, c.Destination.Left, 1);
                 Assert.Equal(expected[i].top, c.Destination.Top, 1);
             }
+        }
+    }
+
+    private static (HeadlessCanvasHost host, SkiaScroll scroll, SkiaLayout masonry, ObservableCollection<int> items, Func<int> fired)
+        Observable(int items, Action<ObservableCollection<int>> loadMore = null)
+    {
+        var host = new HeadlessCanvasHost(200, 200, scale: 1f, background: Colors.Black);
+        var source = new ObservableCollection<int>(Enumerable.Range(0, items).Select(i => Heights[i % Heights.Length]));
+        var count = 0;
+        SkiaLayout masonry = null;
+        var scroll = new SkiaScroll
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Bounces = false,
+            LoadMoreOffset = 50,
+            LoadMoreCommand = new Command(() => { count++; loadMore?.Invoke(source); }),
+            Content = new SkiaLayout
+            {
+                Type = LayoutType.Masonry,
+                Split = 2,
+                Spacing = 0,
+                HorizontalOptions = LayoutOptions.Fill,
+                RecyclingTemplate = RecyclingTemplate.Enabled,
+                ItemsSource = source,
+                ItemTemplate = new DataTemplate(() => new HeightCell()),
+            }.Assign(out masonry)
+        };
+        host.Canvas.Content = scroll;
+        host.AdvanceFrames(8);
+        return (host, scroll, masonry, source, () => count);
+    }
+
+    private void AssertPlacedAsFresh(SkiaLayout masonry, IReadOnlyList<int> heights)
+    {
+        var expected = Expected(heights, out var height);
+        _output.WriteLine($"content {masonry.MeasuredSize.Units.Height}, expected {height}, LastMeasuredIndex {masonry.LastMeasuredIndex}");
+        Assert.Equal(height, masonry.MeasuredSize.Units.Height, 1);
+        Assert.Equal(heights.Count - 1, masonry.LastMeasuredIndex);
+        var structure = masonry.GetStackStructure();
+        Assert.Equal(heights.Count, structure.GetCount());
+        for (var i = 0; i < heights.Count; i++)
+        {
+            var c = structure.GetForIndex(i);
+            Assert.Equal(expected[i].left, c.Destination.Left, 1);
+            Assert.Equal(expected[i].top, c.Destination.Top, 1);
+            Assert.Equal(heights[i], c.Destination.Height, 1);
+        }
+    }
+
+    [Fact]
+    public void Templated_Append_PlacesNewItemsUnderTheColumns()
+    {
+        var (host, scroll, masonry, items, _) = Observable(30);
+        using (host)
+        {
+            foreach (var h in new[] { 140, 20, 60, 90, 30, 110, 50, 20, 80, 40, 130, 70 })
+                items.Add(h); // one change per item, as ObservableCollection raises them
+            host.AdvanceFrames(8);
+            AssertPlacedAsFresh(masonry, items);
+            Assert.True(host.NonBackgroundFraction(Colors.Black) > 0.9, "cells were not drawn");
+        }
+    }
+
+    [Fact]
+    public void Templated_InsertAndRemove_LayOutFresh()
+    {
+        var (host, scroll, masonry, items, _) = Observable(30);
+        using (host)
+        {
+            items.Insert(5, 140);
+            host.AdvanceFrames(8);
+            AssertPlacedAsFresh(masonry, items);
+
+            items.RemoveAt(0);
+            items.Add(90); // a remove and an append before one measure
+            host.AdvanceFrames(8);
+            AssertPlacedAsFresh(masonry, items);
+        }
+    }
+
+    [Fact]
+    public void Templated_LoadMorePages_KeepTheLayout()
+    {
+        var page = 0;
+        var (host, scroll, masonry, items, fired) = Observable(30, source =>
+        {
+            page++;
+            for (var i = 0; i < 10; i++)
+                source.Add(Heights[(i + page) % Heights.Length] + 10 * page);
+        });
+        using (host)
+        {
+            for (var round = 0; round < 3; round++)
+            {
+                scroll.ViewportOffsetY = -(masonry.MeasuredSize.Units.Height - 200); // the end
+                host.AdvanceFrames(12);
+            }
+            _output.WriteLine($"fired {fired()}, items {items.Count}");
+            Assert.True(fired() >= 3, $"LoadMore fired {fired()} times");
+            AssertPlacedAsFresh(masonry, items);
+        }
+    }
+
+    [Fact]
+    public void Templated_BigSource_LaysOutEveryItem()
+    {
+        // past SkiaLayout.WindowSourceThreshold a Column works on a slice; a masonry needs every item above
+        var count = SkiaLayout.WindowSourceThreshold + 100;
+        var (host, scroll, masonry, items, _) = Observable(count);
+        using (host)
+        {
+            Assert.Null(masonry.ItemsWindow);
+            AssertPlacedAsFresh(masonry, items);
         }
     }
 }

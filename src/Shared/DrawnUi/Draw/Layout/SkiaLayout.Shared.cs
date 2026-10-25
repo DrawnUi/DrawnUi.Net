@@ -1487,7 +1487,8 @@ namespace DrawnUi.Draw
             var source = ItemsSource;
             if (_itemsWindow != null || source == null || WindowSourceThreshold <= 0
                 || (source.Count < WindowSourceThreshold && !ForceItemsWindow)
-                || ItemTemplate == null)
+                || ItemTemplate == null
+                || Type == LayoutType.Masonry) // places each item under all the items above it: no slice
                 return;
 
             _itemsWindow = new ItemsSourceWindow(this, source);
@@ -1515,7 +1516,8 @@ namespace DrawnUi.Draw
             var source = ItemsSource;
             if (_itemsWindow != null || source == null || WindowSourceThreshold <= 0
                 || source.Count < WindowSourceThreshold
-                || ItemTemplate == null)
+                || ItemTemplate == null
+                || Type == LayoutType.Masonry)
                 return false;
 
             // anchor on the current viewport — FRESH from structure + scroll offset (the draw-updated
@@ -1745,6 +1747,7 @@ namespace DrawnUi.Draw
         /// </summary>
         public virtual void ApplyItemsSource()
         {
+            _masonryAppendFrom = MasonryMeasureAll; // a new source is laid out from scratch
             //if (!string.IsNullOrEmpty(Tag))
             //    Debug.WriteLine($"OnItemSourceChanged {Tag} {IsTemplated} {IsMeasuring}");
             if (!IsTemplated ||
@@ -1776,7 +1779,8 @@ namespace DrawnUi.Draw
         protected virtual bool ShouldPreserveStructureOnCollectionChange(NotifyCollectionChangedEventArgs args)
         {
             if (args.Action == NotifyCollectionChangedAction.Reset || IsFullCollectionReplace(args)
-                || StackStructure == null || StackStructure.Length == 0)
+                || StackStructure == null || StackStructure.Length == 0
+                || Type == LayoutType.Masonry) // places every item from the ones above: see NoteMasonryChange
                 return false;
 
             // SPLIT GRID: structure-preserving mutation is split-aware for BOTH strategies as long as the
@@ -1909,6 +1913,9 @@ namespace DrawnUi.Draw
                     return;
                 }
 
+                if (Type == LayoutType.Masonry)
+                    NoteMasonryChange(args);
+
                 var fullReplace = IsFullCollectionReplace(args);
 
                 if (args.Action == NotifyCollectionChangedAction.Reset)
@@ -1922,7 +1929,7 @@ namespace DrawnUi.Draw
                     // below resolves to InitializeSoft (Action=Replace, same ItemsSource ref) — no rebuild.
                     ResetMeasurementForReplace();
                 }
-                else if (Split > 1)
+                else if (Split > 1 && Type != LayoutType.Masonry) // a masonry measures all again or appends
                 {
                     // SPLIT GRID add/remove (routed here by ShouldPreserveStructureOnCollectionChange):
                     // a bare Invalidate is NOT enough — the measure pass continues INCREMENTALLY from the

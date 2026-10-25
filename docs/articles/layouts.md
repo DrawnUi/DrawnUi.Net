@@ -84,6 +84,8 @@ Columns of equal width, like a Pinterest feed: every item goes to the bottom of 
 
 `Split` sets the number of columns (at least 1), `Spacing` the gap between columns and between items. Item order runs across the columns as far as the heights allow: the first item is at the top left. Works with children and with `ItemsSource` + `ItemTemplate` (recycled cells, `LoadMore`, `ScrollToIndex` inside a `SkiaScroll`). Every item is measured, whatever `MeasureItemsStrategy` says, because each column's height depends on all the items above. Vertical only: give the layout a width, and place it in a vertical `SkiaScroll` for long feeds.
 
+With `ItemsSource`, items added at the end (a `LoadMore` page) are the only ones measured, and an item that changes size (an image arrives, a text grows) is measured alone before the items are placed again. A masonry always lays out the whole `ItemsSource` (it never works on a slice of it as a long `Column` does), so the first layout and any other change, such as an insert in the middle, cost time in proportion to the number of items.
+
 **Usage:**
 ```xml
 <draw:SkiaScroll>
