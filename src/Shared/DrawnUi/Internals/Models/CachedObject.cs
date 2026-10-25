@@ -257,6 +257,37 @@ public class CachedObject : ISkiaDisposable
 
     public SKImage Image { get; set; }
 
+    /// <summary>
+    /// The picture of a picture-backed cache (Operations, OperationsFull) drawn into an image, made on the first
+    /// call and kept as long as this cache lives. Shader effects read it as their input texture, so on such a
+    /// control they work on its own content, as on an Image cache. Null for image-backed caches.
+    /// </summary>
+    /// <param name="context">GPU context to make the image on, null for a CPU image</param>
+    public SKImage GetPictureImage(GRContext context)
+    {
+        if (_pictureImage != null || Picture == null || IsDisposed)
+            return _pictureImage;
+
+        var width = (int)Math.Ceiling(Bounds.Width);
+        var height = (int)Math.Ceiling(Bounds.Height);
+        if (width <= 0 || height <= 0)
+            return null;
+
+        var info = new SKImageInfo(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
+        using var surface = (context != null ? SKSurface.Create(context, false, info) : null) ?? SKSurface.Create(info);
+        if (surface == null)
+            return null;
+
+        // drawn as Draw() would at a destination starting at 0,0: the image's origin is the control's top-left
+        var drawAt = CalculateDrawingOffset(new SKRect(0, 0, Bounds.Width, Bounds.Height));
+        surface.Canvas.Clear(SKColors.Transparent);
+        surface.Canvas.DrawPicture(Picture, drawAt.X, drawAt.Y);
+        _pictureImage = surface.Snapshot();
+        return _pictureImage;
+    }
+
+    private SKImage _pictureImage;
+
     public SKRect Bounds { get; set; }
 
     public SKRect RecordingArea { get; set; }
@@ -278,6 +309,8 @@ public class CachedObject : ISkiaDisposable
 
             Picture?.Dispose();
             Image?.Dispose(); // todo crash was here
+            _pictureImage?.Dispose();
+            _pictureImage = null;
  
             Surface = null;
             Picture = null;

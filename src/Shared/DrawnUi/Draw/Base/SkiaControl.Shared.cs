@@ -446,7 +446,9 @@ namespace DrawnUi.Draw
         /// Provides the cached texture if any, with the canvas rect it was rasterized over —
         /// image caches record with Translate(-Bounds) into a surface sized after
         /// <see cref="CachedObject.Bounds"/>, so that rect, not DrawingRect, is where the
-        /// texture starts. Override when the cached representation is not a CachedObject
+        /// texture starts. A picture cache (Operations, OperationsFull) provides its picture drawn
+        /// into an image (<see cref="CachedObject.GetPictureImage"/>), made once per cache.
+        /// Override when the cached representation is not a CachedObject
         /// (see <see cref="SkiaImage"/> and its rescaled source).
         /// </summary>
         public virtual CachedTexture CachedImage
@@ -454,7 +456,13 @@ namespace DrawnUi.Draw
             get
             {
                 var cache = RenderObject;
-                return cache != null ? new CachedTexture(cache.Image, cache.Bounds) : CachedTexture.None;
+                if (cache == null)
+                    return CachedTexture.None;
+
+                // a picture cache has no image: effects get the picture drawn into one, so they work on this
+                // control's content instead of a snapshot of what is behind it
+                var image = cache.Image ?? cache.GetPictureImage(Superview?.GetGRContext());
+                return new CachedTexture(image, cache.Bounds);
             }
         }
 

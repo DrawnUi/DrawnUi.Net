@@ -204,6 +204,7 @@ Compiler error line numbers count the template lines that precede the snippet.
 | `UseBackground` | `Always` | How `iImage1` is sourced (see below). |
 | `AutoCreateInputTexture` | `true` | Take a snapshot of the drawn area when no cache image is available. Set `false` for output-only shaders. |
 | `UseContext` | `true` | Snapshot from the current drawing context (which may be a parent's cache surface). `false` reads the canvas surface instead. |
+| `ShouldInvalidateParentCache` | `false` | `true`: animation ticks and `SetUniform` also rebuild the parent's cache, as before 1.10.7.14 (see [Uniform changes and the parent's cache](#uniform-changes-and-the-parents-cache)). |
 | `BlendMode` | `SrcOver` | Blend used to draw the shader output. `Plus` suits additive generative overlays. |
 | `FilterMode` / `MipmapMode` / `TileMode` | `Linear` / `None` / `Clamp` | Sampling of the `iImage1` texture. |
 | `MouseCurrent` / `MouseInitial` | `(0,0)` | Values written to `iMouse`. |
@@ -232,7 +233,11 @@ sourced:
   post-render effect, the engine skips its usual cache blit and runs the effects
   instead. The shader output is the only thing painted, so a pass-through shader
   must return the texture (`return iImage1.eval(...)`). Returning transparent
-  hides the control.
+  hides the control. `iImage1` is the control's own content for every cache
+  type: a picture cache (`Operations`, `OperationsFull`, the default of
+  `SkiaShape` and `SkiaLabel`) is drawn into an image once per cache for it.
+  Up to 1.10.7.13 a picture cache gave the effect a snapshot of what was behind
+  the control instead, so the control's own content was missing.
 - **On an uncached control**, the control paints normally and the effect draws
   its output on top of it with `BlendMode`.
 - **Every draw of the control runs the shader** and then flushes the canvas. The
@@ -268,6 +273,32 @@ sessions, keep your own time value wrapped to the animation period and pass it
 with `SetUniform`.
 
 `SetUniform` and `SkiaEffect.Update()` both request a redraw.
+
+### Uniform changes and the parent's cache
+
+The effect paints over the cache of the control that carries it, so a change
+that only the shader reads keeps that cache: animation ticks of an
+`AnimatedShaderEffect`, `SetUniform` and `UpdateUniforms()` only redraw the
+effect over the same cached content. A big cached layer under an animated
+effect is not re-rendered every frame. Call `UpdateUniforms()` after changing a
+value your own `CreateUniforms` reads (a progress you drive yourself); `Update()`
+is for changes to the shader itself and always rebuilds the cache.
+
+The cache still follows the control's content: a child that changes calls
+`Update()` on its own, which rebuilds it.
+
+Set `ShouldInvalidateParentCache = true` when the control's content refreshes
+only through the effect's redraws, for example a custom `Paint` that reads
+changing data without calling `Update()`. Every tick and uniform change then
+rebuilds the cache, as before 1.10.7.14.
+
+```csharp
+new AnimatedShaderEffect
+{
+    ShaderSource = "Shaders/glow.sksl",
+    ShouldInvalidateParentCache = true, // the gauge under it paints live data without calling Update()
+}
+```
 
 ### AnimatedShaderEffect
 
@@ -344,8 +375,13 @@ new SkiaShaderEffect { ShaderCode = mySksl }
 ```
 
 Overloads exist for `float`, `float2`, `float3` and `float4`. Call `SetUniform`
-again at any time (from a slider, for example); it requests a redraw. Names the
-shader does not declare are logged and skipped, not thrown.
+again at any time (from a slider, for example); it requests a redraw and keeps
+the parent's cache, unless `ShouldInvalidateParentCache` is on. Names the shader does not
+declare are logged and skipped, not thrown.
+
+Write every uniform the shader declares. A declared uniform that nothing sets is
+not 0: it holds whatever memory it got, so the shader can draw garbage, and
+differently from run to run.
 
 ### Subclass pattern
 

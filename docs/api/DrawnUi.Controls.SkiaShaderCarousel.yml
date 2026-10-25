@@ -7,6 +7,7 @@ items:
   children:
   - DrawnUi.Controls.SkiaShaderCarousel.#ctor
   - DrawnUi.Controls.SkiaShaderCarousel.AnimateVisibleChild(DrawnUi.Draw.SkiaControl,System.Numerics.Vector2)
+  - DrawnUi.Controls.SkiaShaderCarousel.CheckTransitionEnded
   - DrawnUi.Controls.SkiaShaderCarousel.CreateTransitionEffect
   - DrawnUi.Controls.SkiaShaderCarousel.FromToChanged
   - DrawnUi.Controls.SkiaShaderCarousel.InterruptedTransitionMs
@@ -16,7 +17,6 @@ items:
   - DrawnUi.Controls.SkiaShaderCarousel.OnFromToChanged
   - DrawnUi.Controls.SkiaShaderCarousel.OnMeasuring(System.Single,System.Single,System.Single)
   - DrawnUi.Controls.SkiaShaderCarousel.OnScrollProgressChanged
-  - DrawnUi.Controls.SkiaShaderCarousel.OnTransitionChanged
   - DrawnUi.Controls.SkiaShaderCarousel.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Controls.SkiaShaderCarousel.Render(DrawnUi.Draw.DrawingContext)
   - DrawnUi.Controls.SkiaShaderCarousel.ScrollToOffset(System.Numerics.Vector2,System.Numerics.Vector2,System.Boolean)
@@ -134,8 +134,8 @@ items:
   - DrawnUi.Controls.SkiaCarousel.OnItemSourceChanged
   - DrawnUi.Controls.SkiaCarousel.CalculateChildPosition(System.Numerics.Vector2,System.Int32,System.Int32)
   - DrawnUi.Controls.SkiaCarousel.FixPosition
+  - DrawnUi.Controls.SkiaCarousel.OnTransitionChanged
   - DrawnUi.Controls.SkiaCarousel.ApplyOptions(System.Boolean)
-  - DrawnUi.Controls.SkiaCarousel.CheckTransitionEnded
   - DrawnUi.Controls.SkiaCarousel.GetContentOffsetBounds
   - DrawnUi.Controls.SkiaCarousel.CheckConstraints
   - DrawnUi.Controls.SkiaCarousel.OnChildAdded(DrawnUi.Draw.SkiaControl)
@@ -1009,6 +1009,7 @@ items:
   - DrawnUi.Draw.SkiaControl.CustomizeLayerPaint
   - DrawnUi.Draw.SkiaControl.Helper3d
   - DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,System.Action{DrawnUi.Draw.DrawingContext})
+  - DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,{TState},System.Action{DrawnUi.Draw.DrawingContext,{TState}})
   - DrawnUi.Draw.SkiaControl.IsSimpleRectangle(SkiaSharp.SKPath)
   - DrawnUi.Draw.SkiaControl.ClipSmart(SkiaSharp.SKCanvas,SkiaSharp.SKPath,SkiaSharp.SKClipOperation)
   - DrawnUi.Draw.SkiaControl.ShouldClipAntialiased
@@ -1033,6 +1034,7 @@ items:
   - DrawnUi.Draw.SkiaControl.UseTranslationY
   - DrawnUi.Draw.SkiaControl.UseTranslationX
   - DrawnUi.Draw.SkiaControl.LinkTransforms
+  - DrawnUi.Draw.SkiaControl.WillDrawDistorted(DrawnUi.Draw.SkiaDrawingContext)
   - DrawnUi.Draw.SkiaControl.CreateHitRect
   - DrawnUi.Draw.SkiaControl._measuredStamp
   - DrawnUi.Draw.SkiaControl._builtRenderTreeStamp
@@ -2047,7 +2049,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnScrollProgressChanged
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaShaderCarousel.cs
-    startLine: 230
+    startLine: 231
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2075,7 +2077,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimateVisibleChild
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaShaderCarousel.cs
-    startLine: 317
+    startLine: 318
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2109,7 +2111,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsSlideHitTestable
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaShaderCarousel.cs
-    startLine: 325
+    startLine: 326
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2149,7 +2151,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaShaderCarousel.cs
-    startLine: 337
+    startLine: 338
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2184,7 +2186,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToOffset
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaShaderCarousel.cs
-    startLine: 377
+    startLine: 378
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2220,38 +2222,46 @@ items:
   nameWithType.vb: SkiaShaderCarousel.ScrollToOffset(Vector2, Vector2, Boolean)
   fullName.vb: DrawnUi.Controls.SkiaShaderCarousel.ScrollToOffset(System.Numerics.Vector2, System.Numerics.Vector2, Boolean)
   name.vb: ScrollToOffset(Vector2, Vector2, Boolean)
-- uid: DrawnUi.Controls.SkiaShaderCarousel.OnTransitionChanged
-  commentId: M:DrawnUi.Controls.SkiaShaderCarousel.OnTransitionChanged
-  id: OnTransitionChanged
+- uid: DrawnUi.Controls.SkiaShaderCarousel.CheckTransitionEnded
+  commentId: M:DrawnUi.Controls.SkiaShaderCarousel.CheckTransitionEnded
+  id: CheckTransitionEnded
   parent: DrawnUi.Controls.SkiaShaderCarousel
   langs:
   - csharp
   - vb
-  name: OnTransitionChanged()
-  nameWithType: SkiaShaderCarousel.OnTransitionChanged()
-  fullName: DrawnUi.Controls.SkiaShaderCarousel.OnTransitionChanged()
+  name: CheckTransitionEnded()
+  nameWithType: SkiaShaderCarousel.CheckTransitionEnded()
+  fullName: DrawnUi.Controls.SkiaShaderCarousel.CheckTransitionEnded()
   type: Method
   source:
     remote:
       path: src/Shared/DrawnUi/Controls/Layouts/SkiaShaderCarousel.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: OnTransitionChanged
+    id: CheckTransitionEnded
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaShaderCarousel.cs
-    startLine: 475
+    startLine: 489
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   summary: >-
-    Invokes TransitionChanged event. While in transition the content moves under the pointer, so hover is not
+    Phase 2 of an interrupted swipe starts here, the moment phase 1 arrives, so the carousel never reports a
 
-    tracked (<xref href="DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)" data-throw-if-not-resolved="false"></xref>); it is checked once when the transition ends.
+    stop between the two phases: InTransition stays true and <xref href="DrawnUi.Controls.SkiaCarousel.Stopped" data-throw-if-not-resolved="false"></xref> fires once, at
+
+    real rest. A Stopped in between let an app move its slides there (a windowed ItemsSource shifting on
+
+    Stopped), and the queued second half, a raw offset, then replayed in the new slides: the carousel swept
+
+    on by itself through about ten slides (FiltersCamera viewer, 2026-10-17).
   example: []
   syntax:
-    content: public override void OnTransitionChanged()
-    content.vb: Public Overrides Sub OnTransitionChanged()
-  overridden: DrawnUi.Controls.SkiaCarousel.OnTransitionChanged
-  overload: DrawnUi.Controls.SkiaShaderCarousel.OnTransitionChanged*
+    content: public override bool CheckTransitionEnded()
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function CheckTransitionEnded() As Boolean
+  overridden: DrawnUi.Controls.SkiaCarousel.CheckTransitionEnded
+  overload: DrawnUi.Controls.SkiaShaderCarousel.CheckTransitionEnded*
 references:
 - uid: DrawnUi.Controls.SkiaCarousel
   commentId: T:DrawnUi.Controls.SkiaCarousel
@@ -3220,6 +3230,25 @@ references:
     href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_FixPosition
   - name: (
   - name: )
+- uid: DrawnUi.Controls.SkiaCarousel.OnTransitionChanged
+  commentId: M:DrawnUi.Controls.SkiaCarousel.OnTransitionChanged
+  parent: DrawnUi.Controls.SkiaCarousel
+  href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_OnTransitionChanged
+  name: OnTransitionChanged()
+  nameWithType: SkiaCarousel.OnTransitionChanged()
+  fullName: DrawnUi.Controls.SkiaCarousel.OnTransitionChanged()
+  spec.csharp:
+  - uid: DrawnUi.Controls.SkiaCarousel.OnTransitionChanged
+    name: OnTransitionChanged
+    href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_OnTransitionChanged
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Controls.SkiaCarousel.OnTransitionChanged
+    name: OnTransitionChanged
+    href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_OnTransitionChanged
+  - name: (
+  - name: )
 - uid: DrawnUi.Controls.SkiaCarousel.ApplyOptions(System.Boolean)
   commentId: M:DrawnUi.Controls.SkiaCarousel.ApplyOptions(System.Boolean)
   parent: DrawnUi.Controls.SkiaCarousel
@@ -3250,25 +3279,6 @@ references:
     name: Boolean
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: )
-- uid: DrawnUi.Controls.SkiaCarousel.CheckTransitionEnded
-  commentId: M:DrawnUi.Controls.SkiaCarousel.CheckTransitionEnded
-  parent: DrawnUi.Controls.SkiaCarousel
-  href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_CheckTransitionEnded
-  name: CheckTransitionEnded()
-  nameWithType: SkiaCarousel.CheckTransitionEnded()
-  fullName: DrawnUi.Controls.SkiaCarousel.CheckTransitionEnded()
-  spec.csharp:
-  - uid: DrawnUi.Controls.SkiaCarousel.CheckTransitionEnded
-    name: CheckTransitionEnded
-    href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_CheckTransitionEnded
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Controls.SkiaCarousel.CheckTransitionEnded
-    name: CheckTransitionEnded
-    href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_CheckTransitionEnded
-  - name: (
   - name: )
 - uid: DrawnUi.Controls.SkiaCarousel.GetContentOffsetBounds
   commentId: M:DrawnUi.Controls.SkiaCarousel.GetContentOffsetBounds
@@ -21029,6 +21039,115 @@ references:
     href: DrawnUi.Draw.DrawingContext.html
   - name: )
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,{TState},System.Action{DrawnUi.Draw.DrawingContext,{TState}})
+  commentId: M:DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+  parent: DrawnUi.Draw.SkiaControl
+  definition: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DrawWithClipAndTransforms__1_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_System_Boolean_System_Boolean___0_System_Action_DrawnUi_Draw_DrawingContext___0__
+  name: DrawWithClipAndTransforms<TState>(DrawingContext, SKRect, bool, bool, TState, Action<DrawingContext, TState>)
+  nameWithType: SkiaControl.DrawWithClipAndTransforms<TState>(DrawingContext, SKRect, bool, bool, TState, Action<DrawingContext, TState>)
+  fullName: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms<TState>(DrawnUi.Draw.DrawingContext, SkiaSharp.SKRect, bool, bool, TState, System.Action<DrawnUi.Draw.DrawingContext, TState>)
+  nameWithType.vb: SkiaControl.DrawWithClipAndTransforms(Of TState)(DrawingContext, SKRect, Boolean, Boolean, TState, Action(Of DrawingContext, TState))
+  fullName.vb: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms(Of TState)(DrawnUi.Draw.DrawingContext, SkiaSharp.SKRect, Boolean, Boolean, TState, System.Action(Of DrawnUi.Draw.DrawingContext, TState))
+  name.vb: DrawWithClipAndTransforms(Of TState)(DrawingContext, SKRect, Boolean, Boolean, TState, Action(Of DrawingContext, TState))
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+    name: DrawWithClipAndTransforms
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DrawWithClipAndTransforms__1_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_System_Boolean_System_Boolean___0_System_Action_DrawnUi_Draw_DrawingContext___0__
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+    name: DrawWithClipAndTransforms
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DrawWithClipAndTransforms__1_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_System_Boolean_System_Boolean___0_System_Action_DrawnUi_Draw_DrawingContext___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.IsSimpleRectangle(SkiaSharp.SKPath)
   commentId: M:DrawnUi.Draw.SkiaControl.IsSimpleRectangle(SkiaSharp.SKPath)
   parent: DrawnUi.Draw.SkiaControl
@@ -21555,6 +21674,31 @@ references:
   name: LinkTransforms
   nameWithType: SkiaControl.LinkTransforms
   fullName: DrawnUi.Draw.SkiaControl.LinkTransforms
+- uid: DrawnUi.Draw.SkiaControl.WillDrawDistorted(DrawnUi.Draw.SkiaDrawingContext)
+  commentId: M:DrawnUi.Draw.SkiaControl.WillDrawDistorted(DrawnUi.Draw.SkiaDrawingContext)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WillDrawDistorted_DrawnUi_Draw_SkiaDrawingContext_
+  name: WillDrawDistorted(SkiaDrawingContext)
+  nameWithType: SkiaControl.WillDrawDistorted(SkiaDrawingContext)
+  fullName: DrawnUi.Draw.SkiaControl.WillDrawDistorted(DrawnUi.Draw.SkiaDrawingContext)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.WillDrawDistorted(DrawnUi.Draw.SkiaDrawingContext)
+    name: WillDrawDistorted
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WillDrawDistorted_DrawnUi_Draw_SkiaDrawingContext_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaDrawingContext
+    name: SkiaDrawingContext
+    href: DrawnUi.Draw.SkiaDrawingContext.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.WillDrawDistorted(DrawnUi.Draw.SkiaDrawingContext)
+    name: WillDrawDistorted
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WillDrawDistorted_DrawnUi_Draw_SkiaDrawingContext_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaDrawingContext
+    name: SkiaDrawingContext
+    href: DrawnUi.Draw.SkiaDrawingContext.html
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.CreateHitRect
   commentId: M:DrawnUi.Draw.SkiaControl.CreateHitRect
   parent: DrawnUi.Draw.SkiaControl
@@ -35898,6 +36042,114 @@ references:
     name: Collections
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections
+- uid: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+  commentId: M:DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DrawWithClipAndTransforms__1_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_System_Boolean_System_Boolean___0_System_Action_DrawnUi_Draw_DrawingContext___0__
+  name: DrawWithClipAndTransforms<TState>(DrawingContext, SKRect, bool, bool, TState, Action<DrawingContext, TState>)
+  nameWithType: SkiaControl.DrawWithClipAndTransforms<TState>(DrawingContext, SKRect, bool, bool, TState, Action<DrawingContext, TState>)
+  fullName: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms<TState>(DrawnUi.Draw.DrawingContext, SkiaSharp.SKRect, bool, bool, TState, System.Action<DrawnUi.Draw.DrawingContext, TState>)
+  nameWithType.vb: SkiaControl.DrawWithClipAndTransforms(Of TState)(DrawingContext, SKRect, Boolean, Boolean, TState, Action(Of DrawingContext, TState))
+  fullName.vb: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms(Of TState)(DrawnUi.Draw.DrawingContext, SkiaSharp.SKRect, Boolean, Boolean, TState, System.Action(Of DrawnUi.Draw.DrawingContext, TState))
+  name.vb: DrawWithClipAndTransforms(Of TState)(DrawingContext, SKRect, Boolean, Boolean, TState, Action(Of DrawingContext, TState))
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+    name: DrawWithClipAndTransforms
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DrawWithClipAndTransforms__1_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_System_Boolean_System_Boolean___0_System_Action_DrawnUi_Draw_DrawingContext___0__
+  - name: <
+  - name: TState
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.DrawWithClipAndTransforms``1(DrawnUi.Draw.DrawingContext,SkiaSharp.SKRect,System.Boolean,System.Boolean,``0,System.Action{DrawnUi.Draw.DrawingContext,``0})
+    name: DrawWithClipAndTransforms
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_DrawWithClipAndTransforms__1_DrawnUi_Draw_DrawingContext_SkiaSharp_SKRect_System_Boolean_System_Boolean___0_System_Action_DrawnUi_Draw_DrawingContext___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: ','
+  - name: " "
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.DrawingContext
+    name: DrawingContext
+    href: DrawnUi.Draw.DrawingContext.html
+  - name: ','
+  - name: " "
+  - name: TState
+  - name: )
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.Adapt``1(``0,System.Action{``0})
   commentId: M:DrawnUi.Draw.FluentExtensions.Adapt``1(``0,System.Action{``0})
   isExternal: true
@@ -43931,82 +44183,28 @@ references:
   name: ScrollToOffset
   nameWithType: SkiaShaderCarousel.ScrollToOffset
   fullName: DrawnUi.Controls.SkiaShaderCarousel.ScrollToOffset
-- uid: DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
-  commentId: M:DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
-  parent: DrawnUi.Views.DrawnView
-  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PauseHover_DrawnUi_Draw_SkiaControl_
-  name: PauseHover(SkiaControl)
-  nameWithType: DrawnView.PauseHover(SkiaControl)
-  fullName: DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
-  spec.csharp:
-  - uid: DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
-    name: PauseHover
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PauseHover_DrawnUi_Draw_SkiaControl_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaControl
-    name: SkiaControl
-    href: DrawnUi.Draw.SkiaControl.html
-  - name: )
-  spec.vb:
-  - uid: DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
-    name: PauseHover
-    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PauseHover_DrawnUi_Draw_SkiaControl_
-  - name: (
-  - uid: DrawnUi.Draw.SkiaControl
-    name: SkiaControl
-    href: DrawnUi.Draw.SkiaControl.html
-  - name: )
-- uid: DrawnUi.Controls.SkiaCarousel.OnTransitionChanged
-  commentId: M:DrawnUi.Controls.SkiaCarousel.OnTransitionChanged
+- uid: DrawnUi.Controls.SkiaCarousel.CheckTransitionEnded
+  commentId: M:DrawnUi.Controls.SkiaCarousel.CheckTransitionEnded
   parent: DrawnUi.Controls.SkiaCarousel
-  href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_OnTransitionChanged
-  name: OnTransitionChanged()
-  nameWithType: SkiaCarousel.OnTransitionChanged()
-  fullName: DrawnUi.Controls.SkiaCarousel.OnTransitionChanged()
+  href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_CheckTransitionEnded
+  name: CheckTransitionEnded()
+  nameWithType: SkiaCarousel.CheckTransitionEnded()
+  fullName: DrawnUi.Controls.SkiaCarousel.CheckTransitionEnded()
   spec.csharp:
-  - uid: DrawnUi.Controls.SkiaCarousel.OnTransitionChanged
-    name: OnTransitionChanged
-    href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_OnTransitionChanged
+  - uid: DrawnUi.Controls.SkiaCarousel.CheckTransitionEnded
+    name: CheckTransitionEnded
+    href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_CheckTransitionEnded
   - name: (
   - name: )
   spec.vb:
-  - uid: DrawnUi.Controls.SkiaCarousel.OnTransitionChanged
-    name: OnTransitionChanged
-    href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_OnTransitionChanged
+  - uid: DrawnUi.Controls.SkiaCarousel.CheckTransitionEnded
+    name: CheckTransitionEnded
+    href: DrawnUi.Controls.SkiaCarousel.html#DrawnUi_Controls_SkiaCarousel_CheckTransitionEnded
   - name: (
   - name: )
-- uid: DrawnUi.Controls.SkiaShaderCarousel.OnTransitionChanged*
-  commentId: Overload:DrawnUi.Controls.SkiaShaderCarousel.OnTransitionChanged
-  href: DrawnUi.Controls.SkiaShaderCarousel.html#DrawnUi_Controls_SkiaShaderCarousel_OnTransitionChanged
-  name: OnTransitionChanged
-  nameWithType: SkiaShaderCarousel.OnTransitionChanged
-  fullName: DrawnUi.Controls.SkiaShaderCarousel.OnTransitionChanged
-- uid: DrawnUi.Views.DrawnView
-  commentId: T:DrawnUi.Views.DrawnView
-  parent: DrawnUi.Views
-  href: DrawnUi.Views.DrawnView.html
-  name: DrawnView
-  nameWithType: DrawnView
-  fullName: DrawnUi.Views.DrawnView
-- uid: DrawnUi.Views
-  commentId: N:DrawnUi.Views
-  href: DrawnUi.html
-  name: DrawnUi.Views
-  nameWithType: DrawnUi.Views
-  fullName: DrawnUi.Views
-  spec.csharp:
-  - uid: DrawnUi
-    name: DrawnUi
-    href: DrawnUi.html
-  - name: .
-  - uid: DrawnUi.Views
-    name: Views
-    href: DrawnUi.Views.html
-  spec.vb:
-  - uid: DrawnUi
-    name: DrawnUi
-    href: DrawnUi.html
-  - name: .
-  - uid: DrawnUi.Views
-    name: Views
-    href: DrawnUi.Views.html
+- uid: DrawnUi.Controls.SkiaShaderCarousel.CheckTransitionEnded*
+  commentId: Overload:DrawnUi.Controls.SkiaShaderCarousel.CheckTransitionEnded
+  href: DrawnUi.Controls.SkiaShaderCarousel.html#DrawnUi_Controls_SkiaShaderCarousel_CheckTransitionEnded
+  name: CheckTransitionEnded
+  nameWithType: SkiaShaderCarousel.CheckTransitionEnded
+  fullName: DrawnUi.Controls.SkiaShaderCarousel.CheckTransitionEnded

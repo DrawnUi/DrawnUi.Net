@@ -5699,10 +5699,12 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetGRContext
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 1990
+    startLine: 1993
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
+  summary: The GPU context of the canvas view, null when it draws on the CPU. GPU caches are made on it.
+  example: []
   syntax:
     content: public GRContext GetGRContext()
     return:
@@ -5727,7 +5729,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateSurface
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2008
+    startLine: 2013
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5771,7 +5773,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnSurface
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2040
+    startLine: 2045
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5803,7 +5805,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposeObject
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2057
+    startLine: 2062
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5841,7 +5843,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposeManager
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2080
+    startLine: 2085
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5870,7 +5872,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SharedCache
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2088
+    startLine: 2093
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5904,7 +5906,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PostponeInvalidation
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2109
+    startLine: 2114
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5935,7 +5937,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidationActionsA
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2120
+    startLine: 2125
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5962,7 +5964,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidationActionsB
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2121
+    startLine: 2126
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5989,7 +5991,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetFrontInvalidations
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2123
+    startLine: 2128
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6017,7 +6019,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetBackInvalidations
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2131
+    startLine: 2136
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6045,7 +6047,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SwapInvalidations
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2139
+    startLine: 2144
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6071,7 +6073,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawingThreads
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2150
+    startLine: 2155
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6102,7 +6104,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DirtyChildrenTracker
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2152
+    startLine: 2157
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6129,7 +6131,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetChildAsDirty
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2154
+    startLine: 2159
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6158,7 +6160,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommitInvalidations
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2164
+    startLine: 2169
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6184,7 +6186,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockStartOffscreenQueue
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2178
+    startLine: 2183
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6211,7 +6213,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: semaphoreOffscreenProcess
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2185
+    startLine: 2190
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6238,7 +6240,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KickOffscreenCacheRendering
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2192
+    startLine: 2197
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6266,7 +6268,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushToOffscreenRendering
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2214
+    startLine: 2219
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6299,7 +6301,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessOffscreenCacheRenderingAsync
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2220
+    startLine: 2225
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6327,7 +6329,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2286
+    startLine: 2291
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6356,7 +6358,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderingScaleProperty
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2476
+    startLine: 2481
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6383,7 +6385,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedInvalidateCanvas
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2481
+    startLine: 2486
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6419,7 +6421,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDensityChanged
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2492
+    startLine: 2497
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6445,7 +6447,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderingScale
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2501
+    startLine: 2506
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6478,7 +6480,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderingModeProperty
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2539
+    startLine: 2544
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6505,7 +6507,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderingMode
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2549
+    startLine: 2554
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6536,7 +6538,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanRenderOffScreenProperty
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2555
+    startLine: 2560
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6563,7 +6565,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanRenderOffScreen
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2564
+    startLine: 2569
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6594,7 +6596,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanDraw
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2574
+    startLine: 2579
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6626,7 +6628,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TagProperty
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2583
+    startLine: 2588
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6653,7 +6655,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tag
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2588
+    startLine: 2593
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6685,7 +6687,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsHiddenInViewTree
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2616
+    startLine: 2621
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6719,7 +6721,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChangingtIsHiddenInViewTree
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2639
+    startLine: 2644
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6766,7 +6768,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedCheckParentVisibility
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2659
+    startLine: 2664
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6795,7 +6797,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StreamFromString
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2676
+    startLine: 2681
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6829,7 +6831,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintSystem
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2681
+    startLine: 2686
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6858,7 +6860,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Destination
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2682
+    startLine: 2687
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6890,7 +6892,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintTintBackground
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2684
+    startLine: 2689
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6919,7 +6921,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RedrawCanvas
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2699
+    startLine: 2704
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6955,7 +6957,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnBindingContextChanged
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2710
+    startLine: 2715
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -6985,7 +6987,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Views
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2722
+    startLine: 2727
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7018,7 +7020,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClearChildren
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2724
+    startLine: 2729
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7044,7 +7046,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetChildren
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2736
+    startLine: 2741
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7076,7 +7078,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddSubView
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2745
+    startLine: 2750
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7109,7 +7111,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReportHotreloadChildAdded
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2755
+    startLine: 2760
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7138,7 +7140,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildAdded
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2766
+    startLine: 2771
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7167,7 +7169,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildRemoved
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2771
+    startLine: 2776
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7196,7 +7198,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Children
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2784
+    startLine: 2789
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7225,7 +7227,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddOrRemoveView
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2829
+    startLine: 2834
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7259,7 +7261,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemoveSubView
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2847
+    startLine: 2852
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7295,7 +7297,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateModeProperty
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2886
+    startLine: 2891
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7322,7 +7324,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateMode
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2901
+    startLine: 2906
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7351,7 +7353,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClipEffectsProperty
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2907
+    startLine: 2912
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7378,7 +7380,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClipEffects
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2913
+    startLine: 2918
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7410,7 +7412,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value1Property
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2919
+    startLine: 2924
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7437,7 +7439,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value1
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2926
+    startLine: 2931
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7466,7 +7468,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value2Property
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2932
+    startLine: 2937
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7493,7 +7495,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value2
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2939
+    startLine: 2944
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7522,7 +7524,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value3Property
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2945
+    startLine: 2950
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7549,7 +7551,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value3
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2952
+    startLine: 2957
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7578,7 +7580,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value4Property
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2958
+    startLine: 2963
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7605,7 +7607,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value4
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2965
+    startLine: 2970
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7634,7 +7636,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusLocked
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2973
+    startLine: 2978
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7663,7 +7665,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusedItemChanged
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 2986
+    startLine: 2991
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7690,7 +7692,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReportFocus
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 3006
+    startLine: 3011
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7721,7 +7723,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResetFocusWithDelay
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 3057
+    startLine: 3062
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7753,7 +7755,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusedChild
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 3108
+    startLine: 3113
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7784,7 +7786,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateCanvas
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 3121
+    startLine: 3126
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7824,7 +7826,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnParentSet
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 3200
+    startLine: 3205
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7857,7 +7859,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetIsVisibleWithParent
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 3226
+    startLine: 3231
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7888,7 +7890,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckElementVisibility
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 3267
+    startLine: 3272
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7917,7 +7919,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSizeChanged
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 3272
+    startLine: 3277
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -7943,7 +7945,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClipSmart
     path: ../src/Shared/DrawnUi/Views/DrawnView.cs
-    startLine: 3277
+    startLine: 3282
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views

@@ -11,9 +11,11 @@ items:
   - DrawnUi.Draw.SkiaDrawingContext.CreateForRecordingOperations(SkiaSharp.SKPictureRecorder,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaDrawingContext.DeviceDensity
   - DrawnUi.Draw.SkiaDrawingContext.FrameTimeNanos
+  - DrawnUi.Draw.SkiaDrawingContext.HasImageBlits
   - DrawnUi.Draw.SkiaDrawingContext.Height
   - DrawnUi.Draw.SkiaDrawingContext.IsRecycled
   - DrawnUi.Draw.SkiaDrawingContext.IsVirtual
+  - DrawnUi.Draw.SkiaDrawingContext.PlaybackDistorted
   - DrawnUi.Draw.SkiaDrawingContext.Services
   - DrawnUi.Draw.SkiaDrawingContext.Superview
   - DrawnUi.Draw.SkiaDrawingContext.Surface
@@ -289,6 +291,74 @@ items:
       type: System.Boolean
     content.vb: Public Property IsRecycled As Boolean
   overload: DrawnUi.Draw.SkiaDrawingContext.IsRecycled*
+- uid: DrawnUi.Draw.SkiaDrawingContext.PlaybackDistorted
+  commentId: P:DrawnUi.Draw.SkiaDrawingContext.PlaybackDistorted
+  id: PlaybackDistorted
+  parent: DrawnUi.Draw.SkiaDrawingContext
+  langs:
+  - csharp
+  - vb
+  name: PlaybackDistorted
+  nameWithType: SkiaDrawingContext.PlaybackDistorted
+  fullName: DrawnUi.Draw.SkiaDrawingContext.PlaybackDistorted
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: PlaybackDistorted
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 197
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Recording a picture that will be drawn scaled, turned, skewed or projected (the recording control's own
+
+    transforms or an ancestor's): images blitted into it are recorded with smooth sampling.
+  example: []
+  syntax:
+    content: public bool PlaybackDistorted { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property PlaybackDistorted As Boolean
+  overload: DrawnUi.Draw.SkiaDrawingContext.PlaybackDistorted*
+- uid: DrawnUi.Draw.SkiaDrawingContext.HasImageBlits
+  commentId: P:DrawnUi.Draw.SkiaDrawingContext.HasImageBlits
+  id: HasImageBlits
+  parent: DrawnUi.Draw.SkiaDrawingContext
+  langs:
+  - csharp
+  - vb
+  name: HasImageBlits
+  nameWithType: SkiaDrawingContext.HasImageBlits
+  fullName: DrawnUi.Draw.SkiaDrawingContext.HasImageBlits
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: HasImageBlits
+    path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
+    startLine: 203
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    An image cache (or a picture holding one) was blitted here. A picture recorded with it is recorded again
+
+    when its playback changes between distorted and straight.
+  example: []
+  syntax:
+    content: public bool HasImageBlits { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property HasImageBlits As Boolean
+  overload: DrawnUi.Draw.SkiaDrawingContext.HasImageBlits*
 - uid: DrawnUi.Draw.SkiaDrawingContext.Clone
   commentId: M:DrawnUi.Draw.SkiaDrawingContext.Clone
   id: Clone
@@ -307,7 +377,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clone
     path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
-    startLine: 193
+    startLine: 205
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -335,7 +405,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateForRecordingImage
     path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
-    startLine: 206
+    startLine: 219
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -368,7 +438,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateForRecordingOperations
     path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
-    startLine: 220
+    startLine: 233
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -401,7 +471,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DeviceDensity
     path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
-    startLine: 234
+    startLine: 247
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -430,7 +500,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Services
     path: ../src/Shared/DrawnUi/Internals/Models/DrawingContext.cs
-    startLine: 242
+    startLine: 255
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -924,6 +994,18 @@ references:
   name: IsRecycled
   nameWithType: SkiaDrawingContext.IsRecycled
   fullName: DrawnUi.Draw.SkiaDrawingContext.IsRecycled
+- uid: DrawnUi.Draw.SkiaDrawingContext.PlaybackDistorted*
+  commentId: Overload:DrawnUi.Draw.SkiaDrawingContext.PlaybackDistorted
+  href: DrawnUi.Draw.SkiaDrawingContext.html#DrawnUi_Draw_SkiaDrawingContext_PlaybackDistorted
+  name: PlaybackDistorted
+  nameWithType: SkiaDrawingContext.PlaybackDistorted
+  fullName: DrawnUi.Draw.SkiaDrawingContext.PlaybackDistorted
+- uid: DrawnUi.Draw.SkiaDrawingContext.HasImageBlits*
+  commentId: Overload:DrawnUi.Draw.SkiaDrawingContext.HasImageBlits
+  href: DrawnUi.Draw.SkiaDrawingContext.html#DrawnUi_Draw_SkiaDrawingContext_HasImageBlits
+  name: HasImageBlits
+  nameWithType: SkiaDrawingContext.HasImageBlits
+  fullName: DrawnUi.Draw.SkiaDrawingContext.HasImageBlits
 - uid: DrawnUi.Draw.SkiaDrawingContext.Clone*
   commentId: Overload:DrawnUi.Draw.SkiaDrawingContext.Clone
   href: DrawnUi.Draw.SkiaDrawingContext.html#DrawnUi_Draw_SkiaDrawingContext_Clone

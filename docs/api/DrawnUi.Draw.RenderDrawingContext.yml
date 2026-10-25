@@ -38,6 +38,8 @@ items:
   - DrawnUi.Draw.SkiaDrawingContext.Superview
   - DrawnUi.Draw.SkiaDrawingContext.IsVirtual
   - DrawnUi.Draw.SkiaDrawingContext.IsRecycled
+  - DrawnUi.Draw.SkiaDrawingContext.PlaybackDistorted
+  - DrawnUi.Draw.SkiaDrawingContext.HasImageBlits
   - DrawnUi.Draw.SkiaDrawingContext.Clone
   - DrawnUi.Draw.SkiaDrawingContext.CreateForRecordingImage(SkiaSharp.SKSurface,SkiaSharp.SKSize)
   - DrawnUi.Draw.SkiaDrawingContext.CreateForRecordingOperations(SkiaSharp.SKPictureRecorder,SkiaSharp.SKRect)
@@ -149,6 +151,20 @@ references:
   name: IsRecycled
   nameWithType: SkiaDrawingContext.IsRecycled
   fullName: DrawnUi.Draw.SkiaDrawingContext.IsRecycled
+- uid: DrawnUi.Draw.SkiaDrawingContext.PlaybackDistorted
+  commentId: P:DrawnUi.Draw.SkiaDrawingContext.PlaybackDistorted
+  parent: DrawnUi.Draw.SkiaDrawingContext
+  href: DrawnUi.Draw.SkiaDrawingContext.html#DrawnUi_Draw_SkiaDrawingContext_PlaybackDistorted
+  name: PlaybackDistorted
+  nameWithType: SkiaDrawingContext.PlaybackDistorted
+  fullName: DrawnUi.Draw.SkiaDrawingContext.PlaybackDistorted
+- uid: DrawnUi.Draw.SkiaDrawingContext.HasImageBlits
+  commentId: P:DrawnUi.Draw.SkiaDrawingContext.HasImageBlits
+  parent: DrawnUi.Draw.SkiaDrawingContext
+  href: DrawnUi.Draw.SkiaDrawingContext.html#DrawnUi_Draw_SkiaDrawingContext_HasImageBlits
+  name: HasImageBlits
+  nameWithType: SkiaDrawingContext.HasImageBlits
+  fullName: DrawnUi.Draw.SkiaDrawingContext.HasImageBlits
 - uid: DrawnUi.Draw.SkiaDrawingContext.Clone
   commentId: M:DrawnUi.Draw.SkiaDrawingContext.Clone
   parent: DrawnUi.Draw.SkiaDrawingContext
