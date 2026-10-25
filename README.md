@@ -64,7 +64,7 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 
 ## What's New 1.10.7.13
 
-  * **WebAssembly: GPU caches really use the GPU.** On the browser-only head (`DrawnUi.Web`), `UseCache = GPU` silently made CPU surfaces, so every rebuild of such a cache and every shader effect on a cached layer ran on the CPU. They are now made on the canvas's WebGL context, as on MAUI, Blazor and WPF, and come back by themselves after the browser loses and restores WebGL. In a block puzzle game the worst frame of a combo went from about 200 ms to under 100 ms (Chrome, CPU slowed down 4x).
+  * **WebAssembly and OpenTK: GPU caches really use the GPU.** On the browser-only head (`DrawnUi.Web`) and on OpenTK, `UseCache = GPU` silently made CPU surfaces, so every rebuild of such a cache and every shader effect on a cached layer ran on the CPU. They are now made on the canvas's WebGL or OpenGL context, as on MAUI, Blazor and WPF, and in the browser they come back by themselves after it loses and restores WebGL. In a block puzzle game the worst frame of a combo went from about 200 ms to under 100 ms (Chrome, CPU slowed down 4x).
 
 ### Previously
 
