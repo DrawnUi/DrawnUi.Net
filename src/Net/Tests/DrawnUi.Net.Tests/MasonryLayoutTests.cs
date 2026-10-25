@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Windows.Input;
 using DrawnUi.Draw;
 using DrawnUi.Testing;
@@ -195,6 +196,168 @@ public class MasonryLayoutTests
             robot.Tap(50, 150); // left column, y 100..200 = item 4
             host.AdvanceFrames(6);
             Assert.Equal(4, tapped());
+        }
+    }
+
+    /// <summary>
+    /// Reference placement for any heights: two 100 pt columns, each item to the shortest one (the first on a tie).
+    /// </summary>
+    private static (float left, float top)[] Expected(IReadOnlyList<int> heights, out float height)
+    {
+        var bottoms = new float[2];
+        var result = new (float, float)[heights.Count];
+        for (var i = 0; i < heights.Count; i++)
+        {
+            var col = bottoms[1] < bottoms[0] ? 1 : 0;
+            result[i] = (col * 100, bottoms[col]);
+            bottoms[col] += heights[i];
+        }
+        height = bottoms.Max();
+        return result;
+    }
+
+    [Fact]
+    public void Children_ChildGrows_LayoutFollows()
+    {
+        using var host = new HeadlessCanvasHost(200, 400, scale: 1f, background: Colors.Black);
+        SkiaLayout masonry = null;
+        host.Canvas.Content = new SkiaLayer
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Children = { Children(LayoutType.Masonry).Assign(out masonry) }
+        };
+        host.AdvanceFrames(6);
+
+        var heights = Heights.ToArray();
+        heights[1] = 80;
+        masonry.Views[1].HeightRequest = 80;
+        host.AdvanceFrames(6);
+
+        var expected = Expected(heights, out var height);
+        _output.WriteLine($"masonry {masonry.MeasuredSize.Units.Height}, expected {height}");
+        Assert.Equal(height, masonry.MeasuredSize.Units.Height, 1);
+        for (var i = 0; i < heights.Length; i++)
+        {
+            var r = masonry.Views[i].DrawingRect;
+            Assert.Equal(expected[i].left, r.Left - masonry.DrawingRect.Left, 1);
+            Assert.Equal(expected[i].top, r.Top - masonry.DrawingRect.Top, 1);
+            Assert.Equal(heights[i], r.Height, 1);
+        }
+    }
+
+    private class Item : INotifyPropertyChanged
+    {
+        private int _height;
+        public int Height
+        {
+            get => _height;
+            set { _height = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Height))); }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+    }
+
+    /// <summary>A cell whose height follows its item, as a photo card does when its image arrives.</summary>
+    private class GrowingCell : SkiaShape
+    {
+        private Item _item;
+
+        public GrowingCell()
+        {
+            BackgroundColor = Colors.DarkSlateBlue;
+            HorizontalOptions = LayoutOptions.Fill;
+        }
+
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+            if (_item != null)
+                _item.PropertyChanged -= OnItemChanged;
+            _item = BindingContext as Item;
+            if (_item != null)
+            {
+                _item.PropertyChanged += OnItemChanged;
+                HeightRequest = _item.Height;
+            }
+        }
+
+        private void OnItemChanged(object sender, PropertyChangedEventArgs e) => HeightRequest = _item.Height;
+    }
+
+    [Fact]
+    public void Templated_CellGrows_ItemsArePlacedAgain()
+    {
+        using var host = new HeadlessCanvasHost(200, 400, scale: 1f, background: Colors.Black);
+        var items = Enumerable.Range(0, 12).Select(i => new Item { Height = Heights[i % Heights.Length] }).ToList();
+        SkiaLayout masonry = null;
+        host.Canvas.Content = new SkiaScroll
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaLayout
+            {
+                Type = LayoutType.Masonry,
+                Split = 2,
+                Spacing = 0,
+                HorizontalOptions = LayoutOptions.Fill,
+                RecyclingTemplate = RecyclingTemplate.Enabled,
+                ItemsSource = items,
+                ItemTemplate = new DataTemplate(() => new GrowingCell()),
+            }.Assign(out masonry)
+        };
+        host.AdvanceFrames(8);
+
+        var structure = masonry.GetStackStructure();
+        var before = Enumerable.Range(0, 12).Select(i => structure.GetForIndex(i).Destination).ToArray();
+        var contentBefore = masonry.MeasuredSize.Units.Height;
+
+        items[1].Height = 80; // right column, 20 -> 80
+        for (var frame = 0; frame < 8; frame++)
+        {
+            host.RenderFrame(16);
+            // no two drawn cells of one column overlap, on any frame
+            var cells = masonry.GetStackStructure().GetChildren().Where(c => c.WasMeasured).ToList();
+            foreach (var a in cells)
+            foreach (var b in cells)
+                if (a.ControlIndex < b.ControlIndex && a.Column == b.Column)
+                    Assert.True(a.Destination.Bottom <= b.Destination.Top + 0.5f,
+                        $"frame {frame}: cell {a.ControlIndex} {a.Destination} overlaps {b.ControlIndex} {b.Destination}");
+        }
+
+        // the same placement a fresh layout makes with the new heights
+        var heights = items.Select(i => i.Height).ToList();
+        var expected = Expected(heights, out var height);
+        structure = masonry.GetStackStructure();
+        for (var i = 0; i < 12; i++)
+        {
+            var c = structure.GetForIndex(i);
+            _output.WriteLine($"{i}: col {c.Column} {before[i]} -> {c.Destination}");
+            Assert.Equal(expected[i].left, c.Destination.Left, 1);
+            Assert.Equal(expected[i].top, c.Destination.Top, 1);
+            Assert.Equal(heights[i], c.Destination.Height, 1);
+        }
+        _output.WriteLine($"content {contentBefore} -> {masonry.MeasuredSize.Units.Height}");
+        Assert.Equal(height, masonry.MeasuredSize.Units.Height, 1);
+    }
+
+    [Fact]
+    public void Templated_NewItemsSourceOfSameCount_LaysOutFresh()
+    {
+        var (host, scroll, masonry, _, _) = Templated(30);
+        using (host)
+        {
+            var reversed = Enumerable.Range(0, 30).Select(i => Heights[(29 - i) % Heights.Length]).ToList();
+            masonry.ItemsSource = reversed;
+            host.AdvanceFrames(8);
+
+            var expected = Expected(reversed, out var height);
+            Assert.Equal(height, masonry.MeasuredSize.Units.Height, 1);
+            var structure = masonry.GetStackStructure();
+            for (var i = 0; i < 30; i++)
+            {
+                var c = structure.GetForIndex(i);
+                Assert.Equal(expected[i].left, c.Destination.Left, 1);
+                Assert.Equal(expected[i].top, c.Destination.Top, 1);
+            }
         }
     }
 }
