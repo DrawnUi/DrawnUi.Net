@@ -13,6 +13,7 @@ For convenience, DrawnUI provides alias classes that inherit from `SkiaLayout` w
 - `SkiaStack`: Alias for `SkiaLayout` with `Type="Column"` (vertical stack)
 - `SkiaRow`: Alias for `SkiaLayout` with `Type="Row"` (horizontal stack)  
 - `SkiaWrap`: Alias for `SkiaLayout` with `Type="Wrap"` (responsive wrapping)
+- `SkiaMasonry`: Alias for `SkiaLayout` with `Type="Masonry"` and `Split="2"` (columns without gaps)
 - `SkiaLayer`: Alias for `SkiaLayout` with `Type="Absolute"` (absolute positioning)
 - `SkiaGrid`: Alias for `SkiaLayout` with `Type="Grid"` (grid layout)
 
@@ -77,6 +78,37 @@ Responsive layout that wraps children to new lines when they exceed available wi
 
 **Additional Properties:**
 - `Split`: Number of columns to split items into (for data-bound content). Items are arranged left to right, top to bottom.
+
+### Masonry Layout
+Columns of equal width, like a Pinterest feed: every item goes to the bottom of the shortest column, so items of different heights leave no empty space under the shorter ones. A `Wrap` with `Split` places items in rows instead, and each row is as tall as its tallest item.
+
+`Split` sets the number of columns (at least 1), `Spacing` the gap between columns and between items. Item order runs across the columns as far as the heights allow: the first item is at the top left. Works with children and with `ItemsSource` + `ItemTemplate` (recycled cells, `LoadMore`, `ScrollToIndex` inside a `SkiaScroll`). Every item is measured, whatever `MeasureItemsStrategy` says, because each column's height depends on all the items above. Vertical only: give the layout a width, and place it in a vertical `SkiaScroll` for long feeds.
+
+**Usage:**
+```xml
+<draw:SkiaScroll>
+    <draw:SkiaMasonry
+        Split="2"
+        Spacing="8"
+        ItemsSource="{Binding Photos}"
+        ItemTemplate="{StaticResource PhotoCard}" />
+</draw:SkiaScroll>
+```
+
+```csharp
+new SkiaScroll
+{
+    Content = new SkiaMasonry
+    {
+        Split = 3,
+        Spacing = 8,
+        ItemsSource = Photos,
+        ItemTemplate = new DataTemplate(() => new PhotoCard()),
+    }
+}
+```
+
+**Convenience Class:** `SkiaMasonry` (inherits from `SkiaLayout` with `Type="Masonry"`, `Split="2"` and horizontal fill by default)
 
 ### Grid Layout
 Two-dimensional grid layout with rows and columns. When using `ItemsSource` supports `Split` property for an explicit number of columns.
@@ -149,7 +181,7 @@ All layouts inherit from `SkiaLayout` and support these common properties:
 - `UseCache`: Performance caching strategy (`Operations`, `Image`, `ImageComposite`)
 - `BackgroundColor`: Layout background
 - `LockChildrenGestures`: Which gestures reach child controls
-- `Split`: Number of columns for multi-column layouts (Column, Wrap, and Grid with ItemsSource)
+- `Split`: Number of columns for multi-column layouts (Column, Wrap, Masonry, and Grid with ItemsSource)
 
 For rounded corners, wrap the layout in a `SkiaShape` (`SkiaFrame`) — layouts themselves have no corner radius.
 

@@ -1024,6 +1024,7 @@ For convenience, some helpers come out of the box:
 * `SkiaStack` - Vertical stack, like MAUI VerticalStackLayout. This is a `SkiaLayout` type `Column` with horizontal Fill by default.
 * `SkiaRow` - Horizontal stack, like MAUI HorizontalStackLayout. This is a `SkiaLayout` type `Row`.
 * `SkiaWrap` - A powerful flexible control that arranges children in a responsive way according to available size. This is a `SkiaLayout` type `Wrap` with horizontal Fill by default.
+* `SkiaMasonry` - Columns without gaps: every child goes to the bottom of the shortest column (Pinterest-like feed). This is a `SkiaLayout` type `Masonry` with horizontal Fill and `Split = 2` by default.
 * `SkiaGrid` - MAUI Grid alternative to use rows and columns at will. If you are used to a MAUI grid with a single row/col just to position items one over the other, please use `SkiaLayer` instead!
 
 ## Best Practices

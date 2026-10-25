@@ -80,7 +80,7 @@ public class TextCell : SkiaDynamicDrawnCell
 
 /// <summary>
 /// Every SkiaLayout type: Absolute (SkiaLayer), Column (SkiaStack), Row (SkiaRow), Wrap (SkiaWrap),
-/// Grid (SkiaGrid), ImageComposite caching, ItemsSource on Wrap / Row / Grid with Split.
+/// Grid (SkiaGrid), Masonry (SkiaMasonry), ImageComposite caching, ItemsSource on Wrap / Row / Grid with Split.
 /// Ported from the React demo's LayoutsPage.tsx.
 /// </summary>
 public class LayoutsPage : SkiaLayer
@@ -334,6 +334,12 @@ public class LayoutsPage : SkiaLayer
                                     }).ToList(),
                             }),
 
+                        Heading("Masonry · SkiaMasonry", 20),
+                        Card("SkiaMasonry · Split=3 · Spacing 8 · every tile goes to the shortest column",
+                            new SkiaMasonry { Split = 3, Spacing = 8, Children = MasonryTiles() }),
+                        Card("The same tiles in a SkiaWrap · Split=3: each row is as tall as its tallest tile",
+                            new SkiaWrap { Split = 3, Spacing = 8, Children = MasonryTiles() }),
+
                         Heading("Caching · UseCache=ImageComposite", 20),
                         Card(null,
                             new SkiaLabel(CompositeTitle("…")) { FontSize = 12, TextColor = Color.Parse("#6EA8FE"), FontAttributes = FontAttributes.Bold, TextTransform = TextTransform.Uppercase }.Assign(out _compositeTitle),
@@ -533,6 +539,15 @@ public class LayoutsPage : SkiaLayer
             },
         },
     };
+
+    /// <summary>Tiles of different heights, for the masonry and wrap demo.</summary>
+    private static List<SkiaControl> MasonryTiles() => new[] { 120, 60, 90, 50, 140, 70, 100, 60, 80, 130, 50, 90 }
+        .Select((height, i) => (SkiaControl)new SkiaShape
+        {
+            Type = ShapeType.Rectangle, CornerRadius = 8, HeightRequest = height, HorizontalOptions = LayoutOptions.Fill,
+            BackgroundColor = Color.Parse(Palette[i % Palette.Length]),
+            Children = { Centered($"{i + 1}", 16, Colors.White) },
+        }).ToList();
 
     private static SkiaLabel Centered(string text, double size, Color color) => new(text)
     {

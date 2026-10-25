@@ -9,7 +9,7 @@ tags: [drawnui, csharp, fluent, code-behind, maui, blazor]
 
 ## Containers — use semantic aliases
 
-Compose with alias containers, not raw `SkiaLayout { Type = LayoutType.X }`: `SkiaStack` (vertical, Fill), `SkiaRow` (horizontal), `SkiaLayer` (absolute overlay, Fill), `SkiaWrap` (Fill), `SkiaGrid` (Fill). Aliases preset `Type` AND `HorizontalOptions=Fill` (except SkiaRow) — raw `SkiaLayout` defaults to `Type=Absolute` with NO fill, so it aligns differently. `SkiaFrame` = `SkiaShape` rectangle, not a layout.
+Compose with alias containers, not raw `SkiaLayout { Type = LayoutType.X }`: `SkiaStack` (vertical, Fill), `SkiaRow` (horizontal), `SkiaLayer` (absolute overlay, Fill), `SkiaWrap` (Fill), `SkiaMasonry` (Fill, 2 columns), `SkiaGrid` (Fill). Aliases preset `Type` AND `HorizontalOptions=Fill` (except SkiaRow) — raw `SkiaLayout` defaults to `Type=Absolute` with NO fill, so it aligns differently. `SkiaFrame` = `SkiaShape` rectangle, not a layout.
 
 Constructor shorthand is the documented idiom for text controls: `new SkiaLabel("text")`, `new SkiaRichLabel("**md**")`, `new SkiaButton("Caption")`.
 
@@ -686,7 +686,7 @@ public class PresetCell : SkiaDynamicDrawnCell
 Check platform availability first — some controls are MAUI-only on other heads (`SkiaMauiElement`, `SkiaCamera`; verify others by grepping the class in `src/Shared/DrawnUi/Shared.projitems` and the target head's csproj excludes).
 
 - Every `x:Name="Foo"` → `private ControlType Foo;` field + `.Assign(out Foo)` on the inline construction.
-- Layout type: prefer alias controls (`Type="Column"` → `SkiaStack`, `"Row"` → `SkiaRow`, `"Wrap"` → `SkiaWrap`, `"Grid"` → `SkiaGrid`, absolute → `SkiaLayer`) — but note base `SkiaLayout` doesn't Fill by default while most aliases do; preserve the original's effective alignment.
+- Layout type: prefer alias controls (`Type="Column"` → `SkiaStack`, `"Row"` → `SkiaRow`, `"Wrap"` → `SkiaWrap`, `"Masonry"` → `SkiaMasonry`, `"Grid"` → `SkiaGrid`, absolute → `SkiaLayer`) — but note base `SkiaLayout` doesn't Fill by default while most aliases do; preserve the original's effective alignment.
 - `{Binding Prop}` → `.ObserveProperty(...)`; `AddGestures.CommandTapped` → `.OnTapped(...)`; `Tapped="Handler"` → `.OnTapped(...)`.
 - `OnPlatform` overrides: single-target ports drop the irrelevant branches (e.g. Blazor = WASM only — drop `WinUI` override, keep the default value).
 

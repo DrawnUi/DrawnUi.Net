@@ -18,9 +18,10 @@ There are controls that are aliases for other controls, to make porting existing
 - SkiaLayer is for SkiaLayout type Absolute with default horizontal Fill, MAUI Grid with 1 col/row used for layering
 - SkiaGrid is for SkiaLayout type Grid with default horizontal Fill, MAUI Grid
 - SkiaWrap is for SkiaLayout type Wrap with default horizontal Fill, a bit similar to MAUI FlexLayout
+- SkiaMasonry is for SkiaLayout type Masonry with default horizontal Fill and 2 columns, a Pinterest-like feed
 
 ### Layout Controls
-- [SkiaLayout](layouts.md#skialayout): Base layout container. supported types: Absolute, Grid, Column, Row, Wrap. 
+- [SkiaLayout](layouts.md#skialayout): Base layout container. supported types: Absolute, Grid, Column, Row, Wrap, Masonry. 
 - SkiaScroll: Scrolling container with virtualization support
 - SnappingLayout: Base class for snap points
 - SkiaDrawer: Swipe-in/out panel, subclassed SnappingLayout,

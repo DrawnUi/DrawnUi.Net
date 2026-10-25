@@ -31,6 +31,7 @@ The `Type` property on `SkiaLayout` supports:
 - **Column**: Vertical stacking (like MAUI VerticalStackLayout)
 - **Row**: Horizontal stacking (like MAUI HorizontalStackLayout)
 - **Wrap**: Items wrap to new lines when space runs out (similar to WPF WrapPanel)
+- **Masonry**: `Split` columns, every item goes to the shortest column, no gaps between items of different heights (Pinterest-like feed); alias `SkiaMasonry`
 
 ```xml
 <draw:SkiaLayout Type="Wrap" Spacing="5">
