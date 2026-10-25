@@ -1895,6 +1895,7 @@ else
         {
             result = ScaledSize.Default;
             bool hasChanges = false;
+            bool allFound = true;
             var totalDeltaWidth = 0f;
             var totalDeltaHeight = 0f;
             var useOneTemplate = RecyclingTemplate != RecyclingTemplate.Disabled;
@@ -1907,7 +1908,11 @@ else
                 {
                     // Find the dirty child in current layout structure
                     var currentCell = FindCellByContextIndex(layoutStructure, dirtyChild.ContextIndex);
-                    if (currentCell == null) continue; // Child not found in layout
+                    if (currentCell == null)
+                    {
+                        allFound = false;
+                        continue; // Child not found in layout
+                    }
                     var oldSize = currentCell.Measured;
 
                     // Get the actual child view for re-measuring
@@ -1993,6 +1998,32 @@ else
                     ClearDirtyChildren();
 
                     return true; // Smart measuring succeeded!
+                }
+
+                if (allFound && (Type == LayoutType.Column || Type == LayoutType.Row))
+                {
+                    // Every dirty cell keeps the size its slot already has (a draw pass resized it and moved the
+                    // cells after it): the content is the extent of the cells, no item needs measuring again.
+                    var bottom = rectForChildrenPixels.Top;
+                    var right = rectForChildrenPixels.Left;
+                    foreach (var cell in layoutStructure.GetChildren())
+                    {
+                        if (cell.Destination.Bottom > bottom)
+                            bottom = cell.Destination.Bottom;
+                        if (cell.Destination.Right > right)
+                            right = cell.Destination.Right;
+                    }
+
+                    var contentWidth = Type == LayoutType.Row ? right - rectForChildrenPixels.Left : ContentSize.Pixels.Width;
+                    var contentHeight = Type == LayoutType.Column ? bottom - rectForChildrenPixels.Top : ContentSize.Pixels.Height;
+                    if (HorizontalOptions.Alignment == LayoutAlignment.Fill || SizeRequest.Width >= 0)
+                        contentWidth = rectForChildrenPixels.Width;
+                    if (VerticalOptions.Alignment == LayoutAlignment.Fill || SizeRequest.Height >= 0)
+                        contentHeight = rectForChildrenPixels.Height;
+
+                    result = ScaledSize.FromPixels(contentWidth, contentHeight, scale);
+                    ClearDirtyChildren();
+                    return true;
                 }
             }
             finally
@@ -2877,9 +2908,10 @@ else
                                 // recycled view, measured for its slot only on the template instance, is never
                                 // measured and never drawn
                                 || Type == LayoutType.Wrap && !CompareSize(child.MeasuredSize.Pixels, cell.Measured.Pixels, 1f)
-                                // a recycled masonry item that asks to be measured may have grown (its view no longer
-                                // tells the layout, IsParentIndependent): measured in its open slot, a new size goes
-                                // to MeasureMasonry below
+                                // a recycled cell that asks to be measured may have grown: after a few invalidations
+                                // its view no longer tells the layout (IsParentIndependent), so it is measured here, in
+                                // its slot, and a new size moves the cells after it (a masonry places them again below)
+                                || MeasureItemsStrategy == MeasuringStrategy.MeasureAll
                                 || Type == LayoutType.Masonry
                                 || InvalidatedChildrenInternal.Contains(child)
                                )
@@ -2942,6 +2974,15 @@ else
                                         // restack landed a frame later — the visible "wrong Top" flicker while a bubble
                                         // grows in realtime (streaming AI answer). Same call the smart-measure path uses.
                                         ShiftFollowersByGrow(structure, cell, child.MeasuredSize.Pixels, reservedSlot, durable: true);
+
+                                        // the content size follows: the next measure finds the cell as a dirty child
+                                        // and reads the extent from the shifted cells (TrySmartIncrementalMeasure)
+                                        if (IsTemplated && MeasureItemsStrategy == MeasuringStrategy.MeasureAll && !bakePass)
+                                        {
+                                            TrackChildAsDirty(child);
+                                            Invalidate();
+                                            Superview?.RequestNextFrame();
+                                        }
                                     }
                                 }
                             }
