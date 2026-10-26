@@ -981,9 +981,7 @@ else
                 // Use FastMeasurement property to conditionally skip multi-pass FILL calculations
                 if (true) //FastMeasurement)
                 {
-                    var measured = MeasureStackTemplatedFast(rectForChildrenPixels, scale, layoutStructure, template);
-                    PinWindowHeadChange(layoutStructure, scale);
-                    return measured;
+                    return MeasureStackTemplatedFast(rectForChildrenPixels, scale, layoutStructure, template);
                 }
                 else
                 {
