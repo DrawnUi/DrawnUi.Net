@@ -95,4 +95,73 @@ public class TemplatedStackGrowthTests
             Assert.Equal(top, column.MeasuredSize.Units.Height, 1);
         }
     }
+
+    /// <summary>A cell whose width follows its item.</summary>
+    private class WideningCell : SkiaShape
+    {
+        private Item _item;
+
+        public WideningCell()
+        {
+            BackgroundColor = Colors.DarkSlateBlue;
+            VerticalOptions = LayoutOptions.Fill;
+        }
+
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+            if (_item != null)
+                _item.PropertyChanged -= OnItemChanged;
+            _item = BindingContext as Item;
+            if (_item != null)
+            {
+                _item.PropertyChanged += OnItemChanged;
+                WidthRequest = _item.Height;
+            }
+        }
+
+        private void OnItemChanged(object sender, PropertyChangedEventArgs e) => WidthRequest = _item.Height;
+    }
+
+    [Fact]
+    public void Row_VisibleCellWidensAgainAndAgain_PushesTheCellsAfter()
+    {
+        using var host = new HeadlessCanvasHost(400, 200, scale: 1f, background: Colors.Black);
+        var items = Enumerable.Range(0, 12).Select(i => new Item { Height = 40 + (i % 3) * 10 }).ToList();
+        SkiaLayout row = null;
+        host.Canvas.Content = new SkiaScroll
+        {
+            Orientation = ScrollOrientation.Horizontal,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaLayout
+            {
+                Type = LayoutType.Row,
+                Spacing = 0,
+                VerticalOptions = LayoutOptions.Fill,
+                RecyclingTemplate = RecyclingTemplate.Enabled,
+                MeasureItemsStrategy = MeasuringStrategy.MeasureAll,
+                ItemsSource = items,
+                ItemTemplate = new DataTemplate(() => new WideningCell()),
+            }.Assign(out row)
+        };
+        host.AdvanceFrames(8);
+
+        for (var round = 0; round < 6; round++)
+        {
+            items[2].Height += 20; // on screen
+            host.AdvanceFrames(4);
+
+            var structure = row.GetStackStructure();
+            float left = 0;
+            for (var i = 0; i < items.Count; i++)
+            {
+                var c = structure.GetForIndex(i);
+                Assert.True(Math.Abs(left - c.Destination.Left) < 1 && Math.Abs(items[i].Height - c.Destination.Width) < 1,
+                    $"round {round}: #{i} at {c.Destination}, expected left {left} width {items[i].Height}");
+                left += items[i].Height;
+            }
+            Assert.Equal(left, row.MeasuredSize.Units.Width, 1);
+        }
+    }
 }

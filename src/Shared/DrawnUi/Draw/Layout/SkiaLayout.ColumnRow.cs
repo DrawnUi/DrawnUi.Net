@@ -1859,7 +1859,7 @@ else
             }
 
             // Performance guard: Only attempt smart measuring if conditions are optimal
-            if (!IsTemplated ||
+            if (!IsTemplated || _itemsChangedSinceMeasure ||
                 //MeasureItemsStrategy != MeasuringStrategy.MeasureAll ||
                 DirtyChildrenTracker.IsEmpty || !WasMeasured ||
                 Type == LayoutType.Wrap || Type == LayoutType.Masonry) // too complex for this optimization

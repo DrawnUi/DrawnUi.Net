@@ -978,6 +978,8 @@ namespace DrawnUi.Draw
                     WillMeasureFromFreshItemssSource = false;
                 }
 
+                _itemsChangedSinceMeasure = false;
+
                 return SetMeasuredAdaptToContentSize(constraints, request.Scale);
             }
         }
@@ -1488,7 +1490,8 @@ namespace DrawnUi.Draw
             if (_itemsWindow != null || source == null || WindowSourceThreshold <= 0
                 || (source.Count < WindowSourceThreshold && !ForceItemsWindow)
                 || ItemTemplate == null
-                || Type == LayoutType.Masonry) // places each item under all the items above it: no slice
+                || Type == LayoutType.Masonry // places each item under all the items above it: no slice
+                || Type == LayoutType.Row) // the window slides and pins the scroll vertically
                 return;
 
             _itemsWindow = new ItemsSourceWindow(this, source);
@@ -1517,7 +1520,8 @@ namespace DrawnUi.Draw
             if (_itemsWindow != null || source == null || WindowSourceThreshold <= 0
                 || source.Count < WindowSourceThreshold
                 || ItemTemplate == null
-                || Type == LayoutType.Masonry)
+                || Type == LayoutType.Masonry
+                || Type == LayoutType.Row)
                 return false;
 
             // anchor on the current viewport — FRESH from structure + scroll offset (the draw-updated
@@ -1600,6 +1604,10 @@ namespace DrawnUi.Draw
         // height that left or arrived at the top once that measure lands (PinWindowHeadChange).
         private float _windowHeadTrimPx;
         private int _windowHeadInsertCount;
+
+        // ItemsSource changed since the last full stack measure: the structure does not match the items, so a
+        // measure of only the dirty cells (TrySmartIncrementalMeasure) must not run on it
+        private bool _itemsChangedSinceMeasure;
 
         /// <summary>
         /// Records a window slide's change at the head of a MeasureAll Column: the height of the trimmed items
@@ -1820,6 +1828,7 @@ namespace DrawnUi.Draw
         public virtual void ApplyItemsSource()
         {
             _masonryAppendFrom = MasonryMeasureAll; // a new source is laid out from scratch
+            _itemsChangedSinceMeasure = true;
             //if (!string.IsNullOrEmpty(Tag))
             //    Debug.WriteLine($"OnItemSourceChanged {Tag} {IsTemplated} {IsMeasuring}");
             if (!IsTemplated ||
@@ -1852,7 +1861,8 @@ namespace DrawnUi.Draw
         {
             if (args.Action == NotifyCollectionChangedAction.Reset || IsFullCollectionReplace(args)
                 || StackStructure == null || StackStructure.Length == 0
-                || Type == LayoutType.Masonry) // places every item from the ones above: see NoteMasonryChange
+                || Type == LayoutType.Masonry // places every item from the ones above: see NoteMasonryChange
+                || Type == LayoutType.Row) // the structure-preserving paths shift and pin vertically
                 return false;
 
             // SPLIT GRID: structure-preserving mutation is split-aware for BOTH strategies as long as the
@@ -1985,6 +1995,9 @@ namespace DrawnUi.Draw
                     return;
                 }
 
+                // the structure no longer matches the items until a full measure lays them out again
+                _itemsChangedSinceMeasure = true;
+
                 if (Type == LayoutType.Masonry)
                     NoteMasonryChange(args);
                 else if (_itemsWindow != null && ReferenceEquals(sender, _itemsWindow.Items)
@@ -2004,7 +2017,8 @@ namespace DrawnUi.Draw
                     // below resolves to InitializeSoft (Action=Replace, same ItemsSource ref) — no rebuild.
                     ResetMeasurementForReplace();
                 }
-                else if (Split > 1 && Type != LayoutType.Masonry) // a masonry measures all again or appends
+                else if (Split > 1 && Type != LayoutType.Masonry // a masonry measures all again or appends
+                         && MeasureItemsStrategy != MeasuringStrategy.MeasureAll) // lays every item out again
                 {
                     // SPLIT GRID add/remove (routed here by ShouldPreserveStructureOnCollectionChange):
                     // a bare Invalidate is NOT enough — the measure pass continues INCREMENTALLY from the
@@ -2037,6 +2051,11 @@ namespace DrawnUi.Draw
                     {
                         Invalidate();
                     }
+
+                    // a window slide can arrive inside a draw, where the desktop heads drop an update: keep the
+                    // next frame, its measure lays the slice out and pins the offset
+                    if (_itemsWindow != null && ReferenceEquals(sender, _itemsWindow.Items))
+                        Superview?.RequestNextFrame();
 
                     PostDrawAction(OnItemsSourceChangesApplied);
                 });

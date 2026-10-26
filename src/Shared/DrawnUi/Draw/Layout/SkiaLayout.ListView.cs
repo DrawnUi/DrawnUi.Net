@@ -60,8 +60,10 @@ public partial class SkiaLayout
         if (structure == null)
             return false;
 
-        float vpTop = -offset.Pixels.Y;
-        float vpBottom = vpTop + viewport.Pixels.Height;
+        // a Row lies along X: its cells all span the viewport's height
+        var horizontal = Type == LayoutType.Row;
+        float vpTop = horizontal ? -offset.Pixels.X : -offset.Pixels.Y;
+        float vpBottom = vpTop + (horizontal ? viewport.Pixels.Width : viewport.Pixels.Height);
 
         int lastMeasured = -1;
         // INDEXED, not foreach: the public FirstVisibleIndex/LastVisibleIndex getters call this from
@@ -77,9 +79,9 @@ public partial class SkiaLayout
             if (cell == null || !cell.WasMeasured)
                 continue;
             lastMeasured = cell.ControlIndex;
-            if (cell.Destination.Bottom <= vpTop)
+            if ((horizontal ? cell.Destination.Right : cell.Destination.Bottom) <= vpTop)
                 continue;
-            if (cell.Destination.Top >= vpBottom)
+            if ((horizontal ? cell.Destination.Left : cell.Destination.Top) >= vpBottom)
                 break; // index-ordered: nothing below can intersect
 
             if (first < 0)
@@ -1414,8 +1416,9 @@ public partial class SkiaLayout
                 template = ChildrenFactory.GetTemplateInstance();
             }
 
-            var columnsCount = (Split > 0) ? Split : 1;
-            var columnWidth = ComputeColumnWidth(columnsCount);
+            var horizontal = Type == LayoutType.Row;
+            var columnsCount = horizontal ? int.MaxValue : (Split > 0) ? Split : 1;
+            var columnWidth = horizontal ? 0f : ComputeColumnWidth(columnsCount);
 
             // Initialize positioning variables from parameters (thread-safe)
             float currentX = startX;
@@ -1432,9 +1435,13 @@ public partial class SkiaLayout
             float availableWidth = columnWidth;
             float availableHeight = float.PositiveInfinity;
 
-            if (this.Type == LayoutType.Row)
+            if (horizontal)
             {
-                availableHeight = columnWidth;
+                // the line's height, as the cells measured in the foreground got it
+                var first = GetMeasuredCellForIndex(0);
+                availableHeight = first != null && float.IsFinite(first.Area.Height) && first.Area.Height > 0
+                    ? first.Area.Height
+                    : float.IsFinite(constraints.Height) ? constraints.Height : float.PositiveInfinity;
                 availableWidth = float.PositiveInfinity;
             }
 
@@ -1520,8 +1527,8 @@ public partial class SkiaLayout
                 }
                 else
                 {
-                    // Move to next column horizontally
-                    currentX += columnWidth + (float)(Spacing * scale);
+                    // Move to next column horizontally: a Row advances by what the cell measured
+                    currentX += (horizontal ? measured.Pixels.Width : columnWidth) + (float)(Spacing * scale);
                 }
 
                 //Debug.WriteLine($"[MeasureBatchInBackground] Measured item {itemIndex} at ({cell.Destination.Left:F1},{cell.Destination.Top:F1}): {measured.Pixels.Width:F1}x{measured.Pixels.Height:F1}");
@@ -1799,6 +1806,11 @@ public partial class SkiaLayout
                             // batches end mid-row: continue the partial last row, so structure rows stay
                             // the grid's rows (row lookups by index place the next batch from them)
                             StackStructure.AppendContinuing(allRows.SelectMany(r => r).ToList(), Split);
+                        }
+                        else if (Type == LayoutType.Row)
+                        {
+                            // a Row is one line: every batch continues it
+                            StackStructure.AppendContinuing(allRows.SelectMany(r => r).ToList(), int.MaxValue);
                         }
                         else
                         {
@@ -4547,6 +4559,16 @@ public partial class SkiaLayout
     /// </summary>
     private (float x, float y, int row, int col) GetPositionForIndexDirect(int itemIndex)
     {
+        if (Type == LayoutType.Row)
+        {
+            // a Row is one line along X: item i starts after item i - 1
+            var previous = GetMeasuredCellForIndex(itemIndex - 1);
+            if (previous == null)
+                return (0f, 0f, 0, itemIndex);
+            return (previous.Area.Left + previous.Measured.Pixels.Width + (float)(Spacing * RenderingScale),
+                previous.Area.Top, 0, itemIndex);
+        }
+
         int columnsCount = (Split > 0) ? Split : 1;
 
         // Calculate row/col directly from index - pure mathematical calculation
@@ -4593,6 +4615,23 @@ public partial class SkiaLayout
         }
 
         return (x, y, row, col);
+    }
+
+    /// <summary>
+    /// The measured cell of a local index: the structure keeps cells in index order, so the index is tried
+    /// directly before a search.
+    /// </summary>
+    private ControlInStack GetMeasuredCellForIndex(int index)
+    {
+        var structure = StackStructure;
+        if (index < 0 || structure == null)
+            return null;
+
+        var cell = structure[index];
+        if (cell?.ControlIndex == index)
+            return cell;
+
+        return structure.GetForIndex(index);
     }
 
     private float ComputeColumnWidth(int columnsCount)
