@@ -92,6 +92,7 @@ public partial class SkiaLayout
         var previous = StackStructure;
         StackStructure = incoming;
         StackStructureMeasured = null;
+        _unappliedHeadShift = 0; // laid out from the current slice
         if (previous != StackStructure)
             previous?.Clear();
     }

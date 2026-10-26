@@ -7,10 +7,9 @@ using Xunit.Abstractions;
 namespace DrawnUi.Net.Tests;
 
 /// <summary>
-/// A long templated Column measuring every item, or a Wrap of Split columns (past SkiaLayout.WindowSourceThreshold, so
+/// A long templated Column, Grid or Wrap of Split columns (past SkiaLayout.WindowSourceThreshold, so
 /// the built-in items window slides) scrolled down with the desktop wheel: every notch moves a few rows, through the
-/// window slides (the item drawn at the top edge: FirstVisibleIndex can read one slide off for the moment
-/// between the window's move and the structure's, before the next frame). The way
+/// window slides, both the item drawn at the top edge and FirstVisibleIndex. The way
 /// back up is checked in a real app: here MainThread runs inline, inside the draw, where a backward slide's
 /// invalidation is dropped.
 /// </summary>
@@ -43,6 +42,9 @@ public class WindowWheelScrollTests
     [InlineData(LayoutType.Column, 3, MeasuringStrategy.MeasureAll)]
     [InlineData(LayoutType.Wrap, 2, MeasuringStrategy.MeasureAll)]
     [InlineData(LayoutType.Wrap, 3, MeasuringStrategy.MeasureFirst)]
+    [InlineData(LayoutType.Column, 1, MeasuringStrategy.MeasureFirst)]
+    [InlineData(LayoutType.Column, 2, MeasuringStrategy.MeasureFirst)]
+    [InlineData(LayoutType.Grid, 2, MeasuringStrategy.MeasureAll)]
     public void WheelDown_ThroughWindowSlides_MovesAFewRowsPerNotch(LayoutType type, int split, MeasuringStrategy strategy)
     {
         using var host = new HeadlessCanvasHost(400, 800, scale: 1f, background: Colors.Black);
@@ -83,6 +85,8 @@ public class WindowWheelScrollTests
                 lastDrawn = drawnTop;
                 slid |= column.ItemsWindow?.WindowStart > 0;
                 Assert.True(first >= 0, $"notch {i}: nothing visible");
+                Assert.True(Math.Abs(first - last) <= 8 * split,
+                    $"notch {i} ({delta}): first visible {last} -> {first}, window {column.ItemsWindow?.WindowStart}..{column.ItemsWindow?.WindowEnd}");
                 last = first;
             }
             _output.WriteLine($"wheel {delta}: ended at {last}");

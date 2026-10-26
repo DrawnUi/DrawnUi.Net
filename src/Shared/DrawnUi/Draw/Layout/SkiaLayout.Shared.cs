@@ -933,6 +933,13 @@ namespace DrawnUi.Draw
                         case LayoutType.Grid:
 
                             ContentSize = MeasureGrid(constraints.Content, request.Scale);
+                            if (IsTemplated)
+                            {
+                                // every item was measured: LoadMore and the items window read this
+                                var items = ChildrenFactory.GetChildrenCount();
+                                FirstMeasuredIndexLocal = items > 0 ? 0 : -1;
+                                LastMeasuredIndexLocal = items - 1;
+                            }
                             break;
 
                         case LayoutType.Column:
@@ -1100,6 +1107,7 @@ namespace DrawnUi.Draw
             {
                 GridStructure = GridStructureMeasured;
                 GridStructureMeasured = null;
+                _unappliedHeadShift = 0; // laid out from the current slice
                 CheckAndSetupIfEmpty();
             }
 
@@ -1492,7 +1500,8 @@ namespace DrawnUi.Draw
                 || ItemTemplate == null
                 || Type == LayoutType.Masonry // places each item under all the items above it: no slice
                 || Type == LayoutType.Row // the window slides and pins the scroll vertically
-                || Type == LayoutType.Wrap && Split <= 0) // its lines re-flow when the slice's head changes
+                || Type == LayoutType.Wrap && Split <= 0 // its lines re-flow when the slice's head changes
+                || Type == LayoutType.Grid && Invert) // column-major: its items have no row order to slide
                 return;
 
             _itemsWindow = new ItemsSourceWindow(this, source);
@@ -1523,7 +1532,8 @@ namespace DrawnUi.Draw
                 || ItemTemplate == null
                 || Type == LayoutType.Masonry
                 || Type == LayoutType.Row
-                || Type == LayoutType.Wrap && Split <= 0)
+                || Type == LayoutType.Wrap && Split <= 0
+                || Type == LayoutType.Grid && Invert)
                 return false;
 
             // anchor on the current viewport — FRESH from structure + scroll offset (the draw-updated
@@ -1604,6 +1614,55 @@ namespace DrawnUi.Draw
         // ItemsSource changed since the last full stack measure: the structure does not match the items, so a
         // measure of only the dirty cells (TrySmartIncrementalMeasure) must not run on it
         private bool _itemsChangedSinceMeasure;
+
+        /// <summary>
+        /// A window slide of a templated Grid (item i in row i / Split): moves the scroll offset by the rows the slide
+        /// trims from or inserts at the head, in the slot where the grid takes the new slice; the grid lays the slice
+        /// out again in the measure of that same frame. Inserted rows are as tall as their tallest item, measured at
+        /// its column's width.
+        /// </summary>
+        private void PinGridWindowSlide(NotifyCollectionChangedEventArgs args)
+        {
+            var grid = GridStructure;
+            var scale = RenderingScale;
+            var split = Math.Max(1, Split);
+            if (grid == null || grid.Rows.Length == 0 || scale <= 0 || Invert)
+                return;
+
+            double deltaPoints = 0;
+            if (args.Action == NotifyCollectionChangedAction.Remove && args.OldStartingIndex == 0)
+            {
+                var rows = (args.OldItems?.Count ?? 0) / split;
+                if (rows <= 0 || rows >= grid.Rows.Length)
+                    return;
+                deltaPoints = grid.TopEdgeOfRow(rows);
+            }
+            else if (args.Action == NotifyCollectionChangedAction.Add && args.NewStartingIndex == 0)
+            {
+                var rows = (args.NewItems?.Count ?? 0) / split;
+                if (rows <= 0)
+                    return;
+
+                for (var r = 0; r < rows; r++)
+                {
+                    double rowHeight = 0;
+                    for (var c = 0; c < split; c++)
+                    {
+                        var view = ChildrenFactory.GetViewForIndex(r * split + c, null, 0, true);
+                        if (view == null)
+                            continue;
+                        var columnWidth = c < grid.Columns.Length ? grid.Columns[c].Size : grid.Columns[^1].Size;
+                        var measured = MeasureChild(view, (float)(columnWidth * scale), float.PositiveInfinity, scale);
+                        if (measured.Units.Height > rowHeight)
+                            rowHeight = measured.Units.Height;
+                    }
+                    deltaPoints -= rowHeight + grid.RowSpacing;
+                }
+            }
+
+            if (deltaPoints != 0)
+                PinParentScrollY(Parent as SkiaScroll, (float)(deltaPoints * scale), scale);
+        }
 
         /// <summary>
         /// A window slide of a Column measuring every item or of a Wrap of Split columns, applied to the structure right where the adapter takes
@@ -1750,15 +1809,10 @@ namespace DrawnUi.Draw
                 }
             }
 
-            if (offsetDelta != 0 && Parent is SkiaScroll scroll)
-            {
-                scroll.OffsetVisibleAnchorY(offsetDelta / scale);
+            _unappliedHeadShift = 0; // the structure holds the current slice
 
-                // FirstVisibleIndex / LastVisibleIndex read the structure with the last offset the scroll reported:
-                // move it with the structure, or they read the new cells at the old offset until the next report
-                _lastVisibilityOffset = ScaledPoint.FromPixels(_lastVisibilityOffset.Pixels.X,
-                    _lastVisibilityOffset.Pixels.Y + offsetDelta, scale);
-            }
+            if (offsetDelta != 0)
+                PinParentScrollY(Parent as SkiaScroll, offsetDelta, scale);
 
             static void Translate(ControlInStack c, float dy)
             {
@@ -1834,6 +1888,7 @@ namespace DrawnUi.Draw
                 LastMeasuredIndexLocal = kept[^1].ControlIndex; // measured region is contiguous from local 0
 
                 RebuildStructureFromCells(kept);
+                _unappliedHeadShift = 0;
             }
 
             // sync the adapter onto the slice (EffectiveItemsSource is now the window Items): rekey the
@@ -1845,7 +1900,7 @@ namespace DrawnUi.Draw
 
             // pin: the content shrank at the top by headPx, so raise the offset by the same amount to keep
             // the visible row on identical pixels (mirror of the head-insert commit's OffsetVisibleAnchorY)
-            scroll?.OffsetVisibleAnchorY(headPx / scale);
+            PinParentScrollY(scroll, headPx, scale);
 
             // NOT OnContentTranslatedVertically: that contract is "pure translation, no new pixels, re-anchor
             // your plane". It does not hold here — the content becomes a DIFFERENT slice, so re-anchoring
@@ -2097,6 +2152,9 @@ namespace DrawnUi.Draw
 
                 // a window slide that re-measures its slice: a Column measuring every item, or a Wrap of Split
                 // columns (it always measures every item); applied in place, see ApplyWindowSlideInPlace
+                if (_itemsWindow != null && ReferenceEquals(sender, _itemsWindow.Items))
+                    _unappliedHeadShift += HeadShiftOf(args);
+
                 var windowSlideInPlace = _itemsWindow != null && ReferenceEquals(sender, _itemsWindow.Items)
                                          && (Type == LayoutType.Column && MeasureItemsStrategy == MeasuringStrategy.MeasureAll
                                              || Type == LayoutType.Wrap && Split > 0);
@@ -2138,6 +2196,8 @@ namespace DrawnUi.Draw
                     // same slot as the adapter's new slice: the frame after it draws cells, items and offset together
                     if (windowSlideInPlace)
                         ApplyWindowSlideInPlace(args);
+                    else if (_itemsWindow != null && ReferenceEquals(sender, _itemsWindow.Items) && Type == LayoutType.Grid)
+                        PinGridWindowSlide(args);
 
                     if (args.Action == NotifyCollectionChangedAction.Reset)
                     {

@@ -56,6 +56,9 @@ public partial class SkiaLayout
         first = -1;
         last = -1;
 
+        if (Type == LayoutType.Grid)
+            return ComputeGridVisibleRange(offset, viewport, out first, out last);
+
         var structure = GetStackStructure();
         if (structure == null)
             return false;
@@ -102,6 +105,60 @@ public partial class SkiaLayout
         }
 
         return last >= 0;
+    }
+
+    /// <summary>
+    /// Visible range of a templated Grid (item i in row i / Split): the rows crossing the viewport, from the grid's
+    /// own row heights. A column-major grid (Invert) has no row order of its items: false.
+    /// </summary>
+    bool ComputeGridVisibleRange(ScaledPoint offset, ScaledRect viewport, out int first, out int last)
+    {
+        first = -1;
+        last = -1;
+
+        var grid = GridStructure;
+        var scale = RenderingScale;
+        var count = EffectiveItemsSource?.Count ?? 0;
+        if (!IsTemplated || Invert || grid == null || grid.Rows.Length == 0 || scale <= 0 || count == 0)
+            return false;
+
+        var split = Math.Max(1, Split);
+        var vpTop = -offset.Pixels.Y / scale;
+        var vpBottom = vpTop + viewport.Pixels.Height / scale;
+
+        double top = 0;
+        var firstRow = -1;
+        var lastRow = -1;
+        var rows = grid.Rows;
+        for (var r = 0; r < rows.Length; r++)
+        {
+            var bottom = top + rows[r].Size;
+            if (bottom > vpTop)
+            {
+                if (top >= vpBottom)
+                    break;
+                if (firstRow < 0)
+                    firstRow = r;
+                lastRow = r;
+            }
+            top = bottom + grid.RowSpacing;
+        }
+
+        if (lastRow < 0)
+        {
+            // the viewport rode past the rows: report the end, so the window keeps sliding
+            if (vpTop > 0 && rows.Length * split >= count)
+            {
+                first = count - 1;
+                last = count - 1;
+                return true;
+            }
+            return false;
+        }
+
+        first = Math.Min(count - 1, firstRow * split);
+        last = Math.Min(count - 1, lastRow * split + split - 1);
+        return true;
     }
 
     /// <summary>
@@ -276,8 +333,8 @@ public partial class SkiaLayout
         get
         {
             if (ComputeVisibleRangeFromStructure(_lastVisibilityOffset, ParentViewport, out var f, out _))
-                return f + (_itemsWindow?.WindowStart ?? 0);
-            return FirstVisibleIndexLocal < 0 ? FirstVisibleIndexLocal : FirstVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+                return f + StructureWindowStart;
+            return FirstVisibleIndexLocal < 0 ? FirstVisibleIndexLocal : FirstVisibleIndexLocal + StructureWindowStart;
         }
     }
 
@@ -287,8 +344,8 @@ public partial class SkiaLayout
         get
         {
             if (ComputeVisibleRangeFromStructure(_lastVisibilityOffset, ParentViewport, out _, out var l))
-                return l + (_itemsWindow?.WindowStart ?? 0);
-            return LastVisibleIndexLocal < 0 ? LastVisibleIndexLocal : LastVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+                return l + StructureWindowStart;
+            return LastVisibleIndexLocal < 0 ? LastVisibleIndexLocal : LastVisibleIndexLocal + StructureWindowStart;
         }
     }
 
@@ -300,19 +357,88 @@ public partial class SkiaLayout
     // were calibrated to these semantics — NOT what a user sees on screen (use *VisibleIndex).
     /// <summary>First index of the last DRAWN band (includes overscan), ItemsSource space.</summary>
     public int FirstVisibleIndexDrawn =>
-        FirstVisibleIndexLocal < 0 ? FirstVisibleIndexLocal : FirstVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+        FirstVisibleIndexLocal < 0 ? FirstVisibleIndexLocal : FirstVisibleIndexLocal + StructureWindowStart;
 
     /// <summary>Last index of the last DRAWN band (includes overscan), ItemsSource space.</summary>
     public int LastVisibleIndexDrawn =>
-        LastVisibleIndexLocal < 0 ? LastVisibleIndexLocal : LastVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+        LastVisibleIndexLocal < 0 ? LastVisibleIndexLocal : LastVisibleIndexLocal + StructureWindowStart;
 
     /// <summary>Highest measured index, in ItemsSource space.</summary>
     public int LastMeasuredIndex =>
-        LastMeasuredIndexLocal < 0 ? LastMeasuredIndexLocal : LastMeasuredIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+        LastMeasuredIndexLocal < 0 ? LastMeasuredIndexLocal : LastMeasuredIndexLocal + StructureWindowStart;
 
     /// <summary>Lowest measured index, in ItemsSource space.</summary>
     public int FirstMeasuredIndex =>
-        FirstMeasuredIndexLocal < 0 ? FirstMeasuredIndexLocal : FirstMeasuredIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+        FirstMeasuredIndexLocal < 0 ? FirstMeasuredIndexLocal : FirstMeasuredIndexLocal + StructureWindowStart;
+
+    // The local indices above are indices into the slice the current structure was built for. The window moves its
+    // WindowStart at the moment of a slide; the structure follows when the layout applies the change (a staged apply,
+    // the in-place step, the next measure). Until then the slide's new start would offset the old structure, so the
+    // start is taken back by the head shift of the changes not applied yet.
+    private int _unappliedHeadShift;
+
+    /// <summary>
+    /// Moves the parent scroll's offset by <paramref name="deltaPixels"/> to keep the visible rows on their pixels after
+    /// the content moved, and the offset FirstVisibleIndex / LastVisibleIndex read with it: they would read the moved
+    /// cells at the old offset until the scroll's next viewport report.
+    /// </summary>
+    protected void PinParentScrollY(SkiaScroll scroll, float deltaPixels, float scale)
+    {
+        if (scroll == null || scale <= 0)
+            return;
+        scroll.OffsetVisibleAnchorY(deltaPixels / scale);
+        _lastVisibilityOffset = ScaledPoint.FromPixels(_lastVisibilityOffset.Pixels.X,
+            _lastVisibilityOffset.Pixels.Y + deltaPixels, scale);
+    }
+
+    /// <summary>
+    /// WindowStart of the slice the current structure belongs to (0 without the built-in window): the window's start
+    /// minus the head shift of the changes the structure has not applied yet.
+    /// </summary>
+    protected int StructureWindowStart
+    {
+        get
+        {
+            if (_itemsWindow == null)
+                return 0;
+
+            var shift = _unappliedHeadShift;
+            lock (_structureChangesLock)
+            {
+                foreach (var change in _pendingStructureChanges)
+                    shift += HeadShiftOf(change.Type, change.StartIndex, change.Count);
+            }
+
+            return _itemsWindow.WindowStart - shift;
+        }
+    }
+
+    /// <summary>
+    /// How far a change moves the slice's start: a head remove of k items +k, a head insert -k, anything else 0.
+    /// </summary>
+    private static int HeadShiftOf(StructureChangeType type, int startIndex, int count)
+    {
+        if (startIndex != 0 || count <= 0)
+            return 0;
+        return type switch
+        {
+            StructureChangeType.Remove => count,
+            StructureChangeType.Add => -count,
+            _ => 0
+        };
+    }
+
+    private static int HeadShiftOf(NotifyCollectionChangedEventArgs args)
+    {
+        return args.Action switch
+        {
+            NotifyCollectionChangedAction.Remove => HeadShiftOf(StructureChangeType.Remove, args.OldStartingIndex,
+                args.OldItems?.Count ?? 0),
+            NotifyCollectionChangedAction.Add => HeadShiftOf(StructureChangeType.Add, args.NewStartingIndex,
+                args.NewItems?.Count ?? 0),
+            _ => 0
+        };
+    }
 
     /// <summary>
     /// Percentage of items that have been measured (0.0 to 1.0)
@@ -2712,7 +2838,7 @@ public partial class SkiaLayout
                 // Position-preserving pin for backward LoadMore in history. Suppressed when an explicit
                 // ScrollToIndex is pending (e.g. a just-sent message ordering ScrollToIndex(0)): pinning would
                 // fight that scroll in the same frame and produce a nondeterministic 1-frame blink.
-                scroll.OffsetVisibleAnchorY(-blockShift / scale);
+                PinParentScrollY(scroll, -blockShift, scale);
             }
 
             Debug.WriteLine(
@@ -2947,7 +3073,7 @@ public partial class SkiaLayout
 
             if (Parent is SkiaScroll scroll)
             {
-                scroll.OffsetVisibleAnchorY(blockShift / pending.Scale);
+                PinParentScrollY(scroll, blockShift, pending.Scale);
             }
 
             Debug.WriteLine($"[SkiaLayout] Head remove committed: reclaimed {blockShift:0.0}px");
