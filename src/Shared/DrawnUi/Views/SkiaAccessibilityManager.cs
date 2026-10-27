@@ -351,6 +351,13 @@ namespace DrawnUi.Views
             var vertical = axis != GroupAxis.Horizontal;
 
             int target, step;
+            if (group is SkiaLayout { Type: LayoutType.Masonry } masonry
+                && MasonryTarget(masonry, current, key, scroll) is var masonryTarget and >= 0)
+            {
+                target = masonryTarget;
+                step = key is InputKey.ArrowDown or InputKey.ArrowRight or InputKey.PageDown ? 1 : -1;
+            }
+            else
             switch (key)
             {
                 case InputKey.ArrowDown when axis == GroupAxis.Vertical:
@@ -409,6 +416,45 @@ namespace DrawnUi.Views
             // resolved at the end of the next frame, on the rendering side, together with the snapshot
             group.Superview?.Update();
             return true;
+        }
+
+        /// <summary>
+        /// Target of an arrow or page key in a Masonry group, from the placed items: its columns have uneven heights, so
+        /// the item Split places later is rarely under the focused one. Up / Down go to the previous / next item of the
+        /// same column, Left / Right to the item of the neighbour column nearest in height, PageUp / PageDown one viewport
+        /// along the column. <paramref name="current"/> when there is no item that way, -1 for other keys or no placement.
+        /// </summary>
+        private static int MasonryTarget(SkiaLayout masonry, int current, InputKey key, SkiaScroll? scroll)
+        {
+            if (key is not (InputKey.ArrowDown or InputKey.ArrowUp or InputKey.ArrowLeft or InputKey.ArrowRight
+                or InputKey.PageDown or InputKey.PageUp))
+                return -1;
+
+            var cells = masonry.GetStackStructure()?.GetChildren().Where(c => c != null && c.ControlIndex >= 0).ToList();
+            var focused = cells?.FirstOrDefault(c => c.ControlIndex == current);
+            if (focused == null)
+                return -1;
+
+            var rect = focused.Destination;
+            var column = cells.Where(c => c.Column == focused.Column).OrderBy(c => c.Destination.Top).ToList();
+            ControlInStack? found = key switch
+            {
+                InputKey.ArrowDown => column.FirstOrDefault(c => c.Destination.Top > rect.Top),
+                InputKey.ArrowUp => column.LastOrDefault(c => c.Destination.Top < rect.Top),
+                InputKey.ArrowRight or InputKey.ArrowLeft => cells
+                    .Where(c => c.Column == focused.Column + (key == InputKey.ArrowRight ? 1 : -1))
+                    .MinBy(c => Math.Abs(c.Destination.MidY - rect.MidY)),
+                InputKey.PageDown when scroll != null => column.LastOrDefault(c => c.Destination.Top > rect.Top
+                    && c.Destination.Top <= rect.Top + scroll.Viewport.Pixels.Height) ?? column.FirstOrDefault(c => c.Destination.Top > rect.Top),
+                InputKey.PageUp when scroll != null => column.FirstOrDefault(c => c.Destination.Top < rect.Top
+                    && c.Destination.Top >= rect.Top - scroll.Viewport.Pixels.Height) ?? column.LastOrDefault(c => c.Destination.Top < rect.Top),
+                _ => null,
+            };
+
+            if (found == null && key is InputKey.PageDown or InputKey.PageUp && scroll == null)
+                return -1;
+
+            return found?.ControlIndex ?? current;
         }
 
         private static SkiaScroll? FindScroll(SkiaControl group)

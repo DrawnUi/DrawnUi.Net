@@ -256,6 +256,100 @@ public class KeyboardListNavigationTests
         Assert.Equal("tile 2", FocusedLabel(host));
     }
 
+    // Masonry Split 2, heights 100,20,20,100,100,20: col0 = #0 (0..100), #4 (100..200); col1 = #1, #2, #3, #5 stacked
+    // (0..20, 20..40, 40..140, 140..160). Index + Split is rarely the tile underneath (#1 + 2 = #3 skips #2 below it).
+    private static readonly int[] MasonryHeights = { 100, 20, 20, 100, 100, 20 };
+
+    private class MasonryCell : SkiaShape
+    {
+        public MasonryCell()
+        {
+            BackgroundColor = Colors.DarkGray;
+            HorizontalOptions = LayoutOptions.Fill;
+            AccessibilityRole = Aria.RoleButton;
+            AccessibilityCanInteract = true;
+        }
+
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+            if (BindingContext is int i)
+            {
+                HeightRequest = MasonryHeights[i % MasonryHeights.Length];
+                AccessibilityLabel = $"tile {i}";
+            }
+        }
+    }
+
+    private static void WalkMasonry(HeadlessCanvasHost host, Func<int, ISkiaAccessibilityNode> tile)
+    {
+        Focus(host, tile(1));
+        Press(host, InputKey.ArrowDown);
+        Assert.Equal("tile 2", FocusedLabel(host)); // right below, not #3
+        Press(host, InputKey.ArrowDown);
+        Assert.Equal("tile 3", FocusedLabel(host));
+        Press(host, InputKey.ArrowLeft);
+        Assert.Equal("tile 0", FocusedLabel(host)); // middle 90: #0 (50) is nearer than #4 (150)
+        Press(host, InputKey.ArrowDown);
+        Assert.Equal("tile 4", FocusedLabel(host)); // index + Split would be #2, in the other column
+        Press(host, InputKey.ArrowRight);
+        Assert.Equal("tile 5", FocusedLabel(host)); // same middle, 150
+        Press(host, InputKey.ArrowUp);
+        Assert.Equal("tile 3", FocusedLabel(host));
+        Press(host, InputKey.ArrowRight); // no column on the right: the key is used, nothing moves
+        Assert.Equal("tile 3", FocusedLabel(host));
+    }
+
+    [Fact]
+    public void MasonryChildren_ArrowsMoveToTheTileOnScreenThatWay()
+    {
+        using var host = new HeadlessCanvasHost(200, 400, scale: 1f);
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
+        var tiles = new List<MasonryCell>();
+        host.Canvas.Content = new SkiaMasonry
+        {
+            AccessibilityRole = Aria.RoleGrid,
+            Spacing = 0,
+            Children = Enumerable.Range(0, 6).Select(i => (SkiaControl)new MasonryCell { BindingContext = i }.Adapt(t => tiles.Add(t))).ToList()
+        };
+        host.AdvanceFrames(4);
+
+        WalkMasonry(host, i => tiles[i]);
+    }
+
+    [Fact]
+    public void MasonryTemplated_ArrowsAndPageDownFollowTheColumn()
+    {
+        using var host = new HeadlessCanvasHost(200, 300, scale: 1f);
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
+        SkiaMasonry masonry = null;
+        host.Canvas.Content = new SkiaScroll
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaMasonry
+            {
+                AccessibilityRole = Aria.RoleGrid,
+                Spacing = 0,
+                RecyclingTemplate = RecyclingTemplate.Enabled,
+                ItemsSource = Enumerable.Range(0, 60).ToList(),
+                ItemTemplate = new DataTemplate(() => new MasonryCell()),
+            }.Assign(out masonry)
+        };
+        host.AdvanceFrames(4);
+
+        WalkMasonry(host, i => masonry.ChildrenFactory.GetCellInUseOrNull(i));
+
+        // PageDown from #3 (col1, top 40): the last tile of col1 starting within one 300 px viewport below it
+        var structure = masonry.GetStackStructure().GetChildren().Where(c => c != null).ToList();
+        var from = structure.First(c => c.ControlIndex == 3).Destination.Top;
+        var expected = structure.Where(c => c.Column == 1 && c.Destination.Top > from && c.Destination.Top <= from + 300)
+            .OrderBy(c => c.Destination.Top).Last().ControlIndex;
+        Press(host, InputKey.PageDown);
+        Assert.Equal($"tile {expected}", FocusedLabel(host));
+        AssertFocusedOnScreen(host);
+    }
+
     [Fact]
     public void ItemsThatCannotTakeInput_AreSkipped()
     {
