@@ -12,6 +12,7 @@ namespace DrawnUi.Net.Tests;
 /// With density 0 (a headless process that never initialized the engine) the grid used to measure
 /// every cell with scale 0 and come out 0x0 with NaN cell widths.
 /// </summary>
+[Collection("GlobalScreenDensity")]
 public class GridDetachedMeasureTests
 {
     static SkiaControl Box(float width, float height) => new SkiaControl
@@ -89,4 +90,13 @@ public class GridDetachedMeasureTests
             Super.Screen.Density = density;
         }
     }
+}
+
+/// <summary>
+/// Super.Screen.Density is process-wide: setting it resets the scale of every live canvas, so canvases of other
+/// classes running at the same time drew a frame at scale 0 (a drawer measured infinitely tall closed to infinity).
+/// </summary>
+[CollectionDefinition("GlobalScreenDensity", DisableParallelization = true)]
+public class GlobalScreenDensityCollection
+{
 }
