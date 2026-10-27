@@ -8289,6 +8289,11 @@ namespace DrawnUi.Draw
         /// </summary>
         protected bool WillDrawDistorted(SkiaDrawingContext context)
         {
+            // a background bake records for the frame that queued it: that frame's canvas belongs to the drawing
+            // thread (and can be gone), so the bake uses what the drawing thread read when it queued the bake
+            if (_recordingOffscreenBake && ReferenceEquals(context, _offscreenBakeFrameContext))
+                return _offscreenBakeDistorted;
+
             return IsDistorted || context.PlaybackDistorted || !SkiaSamplingOptions.IsMoveOnly(context.Canvas.TotalMatrix);
         }
 

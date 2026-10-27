@@ -12,7 +12,6 @@ namespace DrawnUi.Net.Tests;
 /// frame indexes, and seeking to the exact start time of a frame shows that frame.
 /// Every sheet frame is filled with its own color, the test reads back which frame is on screen.
 /// </summary>
-[Collection("SharedFrameInterpolator")]
 public class AnimatedFramesTimingTests
 {
     private const int FramePx = 4;
@@ -341,12 +340,3 @@ public class AnimatedFramesTimingTests
     }
 }
 
-/// <summary>
-/// Animators with UseInterpolator (frame players, SkiaScroll fling) all read the static FrameTimeInterpolator.Instance.
-/// Frame players ticking on another host's synthetic clock at the same time skew the frame delta a fling integrates
-/// (GestureRobotTests.Pan_SameFling_WhenTheMachineStalls failed about every second run), so these run alone.
-/// </summary>
-[CollectionDefinition("SharedFrameInterpolator", DisableParallelization = true)]
-public class SharedFrameInterpolatorCollection
-{
-}
