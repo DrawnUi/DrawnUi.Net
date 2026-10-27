@@ -146,7 +146,7 @@ public class LayoutsPage : SkiaLayer
                     Children = new List<SkiaControl>
                     {
                         Heading("SkiaLayout types", 24),
-                        new SkiaLabel("One class, five Type values; the aliases preset Type (+ HorizontalOptions=Fill for SkiaStack / SkiaLayer / SkiaWrap / SkiaGrid). Children position themselves with HorizontalOptions / VerticalOptions / Margin, the container adds Spacing and Padding.")
+                        new SkiaLabel("One class, six Type values; the aliases preset Type (+ HorizontalOptions=Fill for SkiaStack / SkiaLayer / SkiaWrap / SkiaGrid / SkiaMasonry). Children position themselves with HorizontalOptions / VerticalOptions / Margin, the container adds Spacing and Padding.")
                         {
                             FontSize = 13, TextColor = Colors.LightGray, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center,
                         },
