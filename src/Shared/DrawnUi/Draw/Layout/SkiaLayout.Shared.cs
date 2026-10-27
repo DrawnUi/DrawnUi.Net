@@ -933,6 +933,13 @@ namespace DrawnUi.Draw
                         case LayoutType.Grid:
 
                             ContentSize = MeasureGrid(constraints.Content, request.Scale);
+                            if (IsTemplated)
+                            {
+                                // every item was measured: LoadMore and the items window read this
+                                var items = ChildrenFactory.GetChildrenCount();
+                                FirstMeasuredIndexLocal = items > 0 ? 0 : -1;
+                                LastMeasuredIndexLocal = items - 1;
+                            }
                             break;
 
                         case LayoutType.Column:
@@ -958,6 +965,10 @@ namespace DrawnUi.Draw
                             ContentSize = MeasureWrap(constraints.Content, request.Scale);
                             break;
 
+                        case LayoutType.Masonry:
+                            ContentSize = MeasureMasonry(constraints.Content, request.Scale);
+                            break;
+
                         default:
                             ContentSize = ScaledSize.FromPixels(constraints.Content.Width, constraints.Content.Height,
                                 request.Scale);
@@ -973,6 +984,8 @@ namespace DrawnUi.Draw
                 {
                     WillMeasureFromFreshItemssSource = false;
                 }
+
+                _itemsChangedSinceMeasure = false;
 
                 return SetMeasuredAdaptToContentSize(constraints, request.Scale);
             }
@@ -1094,6 +1107,7 @@ namespace DrawnUi.Draw
             {
                 GridStructure = GridStructureMeasured;
                 GridStructureMeasured = null;
+                _unappliedHeadShift = 0; // laid out from the current slice
                 CheckAndSetupIfEmpty();
             }
 
@@ -1315,7 +1329,7 @@ namespace DrawnUi.Draw
         /// </summary>
         public bool IsStack
         {
-            get { return this.Type == LayoutType.Column || Type == LayoutType.Row || Type == LayoutType.Wrap; }
+            get { return this.Type == LayoutType.Column || Type == LayoutType.Row || Type == LayoutType.Wrap || Type == LayoutType.Masonry; }
         }
 
         public static readonly BindableProperty TypeProperty = BindableProperty.Create(nameof(Type), typeof(LayoutType),
@@ -1483,7 +1497,11 @@ namespace DrawnUi.Draw
             var source = ItemsSource;
             if (_itemsWindow != null || source == null || WindowSourceThreshold <= 0
                 || (source.Count < WindowSourceThreshold && !ForceItemsWindow)
-                || ItemTemplate == null)
+                || ItemTemplate == null
+                || Type == LayoutType.Masonry // places each item under all the items above it: no slice
+                || Type == LayoutType.Row // the window slides and pins the scroll vertically
+                || Type == LayoutType.Wrap && Split <= 0 // its lines re-flow when the slice's head changes
+                || Type == LayoutType.Grid && Invert) // column-major: its items have no row order to slide
                 return;
 
             _itemsWindow = new ItemsSourceWindow(this, source);
@@ -1511,7 +1529,11 @@ namespace DrawnUi.Draw
             var source = ItemsSource;
             if (_itemsWindow != null || source == null || WindowSourceThreshold <= 0
                 || source.Count < WindowSourceThreshold
-                || ItemTemplate == null)
+                || ItemTemplate == null
+                || Type == LayoutType.Masonry
+                || Type == LayoutType.Row
+                || Type == LayoutType.Wrap && Split <= 0
+                || Type == LayoutType.Grid && Invert)
                 return false;
 
             // anchor on the current viewport — FRESH from structure + scroll offset (the draw-updated
@@ -1589,6 +1611,217 @@ namespace DrawnUi.Draw
         {
         }
 
+        // ItemsSource changed since the last full stack measure: the structure does not match the items, so a
+        // measure of only the dirty cells (TrySmartIncrementalMeasure) must not run on it
+        private bool _itemsChangedSinceMeasure;
+
+        /// <summary>
+        /// A window slide of a templated Grid (item i in row i / Split): moves the scroll offset by the rows the slide
+        /// trims from or inserts at the head, in the slot where the grid takes the new slice; the grid lays the slice
+        /// out again in the measure of that same frame. Inserted rows are as tall as their tallest item, measured at
+        /// its column's width.
+        /// </summary>
+        private void PinGridWindowSlide(NotifyCollectionChangedEventArgs args)
+        {
+            var grid = GridStructure;
+            var scale = RenderingScale;
+            var split = Math.Max(1, Split);
+            if (grid == null || grid.Rows.Length == 0 || scale <= 0 || Invert)
+                return;
+
+            double deltaPoints = 0;
+            if (args.Action == NotifyCollectionChangedAction.Remove && args.OldStartingIndex == 0)
+            {
+                var rows = (args.OldItems?.Count ?? 0) / split;
+                if (rows <= 0 || rows >= grid.Rows.Length)
+                    return;
+                deltaPoints = grid.TopEdgeOfRow(rows);
+            }
+            else if (args.Action == NotifyCollectionChangedAction.Add && args.NewStartingIndex == 0)
+            {
+                var rows = (args.NewItems?.Count ?? 0) / split;
+                if (rows <= 0)
+                    return;
+
+                for (var r = 0; r < rows; r++)
+                {
+                    double rowHeight = 0;
+                    for (var c = 0; c < split; c++)
+                    {
+                        var view = ChildrenFactory.GetViewForIndex(r * split + c, null, 0, true);
+                        if (view == null)
+                            continue;
+                        var columnWidth = c < grid.Columns.Length ? grid.Columns[c].Size : grid.Columns[^1].Size;
+                        var measured = MeasureChild(view, (float)(columnWidth * scale), float.PositiveInfinity, scale);
+                        if (measured.Units.Height > rowHeight)
+                            rowHeight = measured.Units.Height;
+                    }
+                    deltaPoints -= rowHeight + grid.RowSpacing;
+                }
+            }
+
+            if (deltaPoints != 0)
+                PinParentScrollY(Parent as SkiaScroll, (float)(deltaPoints * scale), scale);
+        }
+
+        /// <summary>
+        /// A window slide of a Column measuring every item or of a Wrap of Split columns, applied to the structure right where the adapter takes
+        /// the new slice (before the next frame draws), so cells, item mapping and scroll offset change together:
+        /// a head trim drops its cells and moves the rest up, a head insert measures the new items and moves the
+        /// rest down, a tail trim drops its cells; the offset moves by the same height. The full measure that
+        /// follows lays the slice out with the same geometry. A tail append waits for that measure (off screen).
+        /// </summary>
+        private void ApplyWindowSlideInPlace(NotifyCollectionChangedEventArgs args)
+        {
+            var scale = RenderingScale;
+            var structure = StackStructure;
+            if (structure == null || structure.Length == 0 || scale <= 0)
+                return;
+
+            var columns = Math.Max(1, Split);
+            float offsetDelta = 0;
+
+            // the structure changes now while the new tail items are not laid out yet: the next measure must be a
+            // full one, even when a measure ran between the collection change and this step
+            _itemsChangedSinceMeasure = true;
+
+            lock (LockMeasure)
+            {
+                var cells = structure.GetChildren().Where(c => c != null && c.ControlIndex >= 0)
+                    .OrderBy(c => c.ControlIndex).ToList();
+                if (cells.Count == 0)
+                    return;
+
+                if (args.Action == NotifyCollectionChangedAction.Remove)
+                {
+                    var removed = args.OldItems?.Count ?? 0;
+                    if (removed <= 0)
+                        return;
+
+                    if (args.OldStartingIndex == 0)
+                    {
+                        var survivor = cells.FirstOrDefault(c => c.ControlIndex == removed);
+                        if (survivor == null)
+                            return; // not laid out yet: the full measure takes it from here
+
+                        var shift = survivor.Area.Top - cells[0].Area.Top;
+                        var kept = cells.Where(c => c.ControlIndex >= removed).ToList();
+                        foreach (var c in kept)
+                        {
+                            c.ControlIndex -= removed;
+                            Translate(c, -shift);
+                        }
+
+                        RebuildStructureFromCells(kept);
+                        LastMeasuredIndexLocal = kept[^1].ControlIndex;
+                        offsetDelta = shift;
+                    }
+                    else
+                    {
+                        // tail trim: the cells past the new end go
+                        var kept = cells.Where(c => c.ControlIndex < args.OldStartingIndex).ToList();
+                        if (kept.Count == cells.Count || kept.Count == 0)
+                            return;
+
+                        RebuildStructureFromCells(kept);
+                        LastMeasuredIndexLocal = kept[^1].ControlIndex;
+                    }
+                }
+                else if (args.Action == NotifyCollectionChangedAction.Add && args.NewStartingIndex == 0)
+                {
+                    var added = args.NewItems?.Count ?? 0;
+                    if (added <= 0 || added % columns != 0)
+                        return;
+
+                    // the slice's columns and row gap, as the cells laid out already have them
+                    var lefts = new float[columns];
+                    for (var col = 0; col < columns; col++)
+                        lefts[col] = cells[Math.Min(col, cells.Count - 1)].Area.Left;
+                    var width = cells[0].Area.Width;
+                    var bottom = cells[0].Area.Bottom; // open below in a scroll
+                    var gap = (float)Math.Round(Spacing * scale);
+                    var top = cells[0].Area.Top;
+
+                    var useOneTemplate = RecyclingTemplate != RecyclingTemplate.Disabled;
+                    var template = useOneTemplate ? ChildrenFactory.GetTemplateInstance() : null;
+                    var inserted = new List<ControlInStack>(added);
+                    var y = top;
+                    try
+                    {
+                        for (var row = 0; row < added / columns; row++)
+                        {
+                            float rowHeight = 0;
+                            for (var col = 0; col < columns; col++)
+                            {
+                                var index = row * columns + col;
+                                var view = ChildrenFactory.GetViewForIndex(index, template, 0, useOneTemplate);
+                                if (view == null)
+                                    return; // the full measure takes it from here
+
+                                var cell = new ControlInStack { ControlIndex = index, View = null };
+                                var area = new SKRect(lefts[col], y, lefts[col] + width,
+                                    float.IsFinite(bottom) ? y + (bottom - top) : float.PositiveInfinity);
+                                ScaledSize measured;
+                                if (MeasureItemsStrategy == MeasuringStrategy.MeasureFirst && useOneTemplate)
+                                {
+                                    // every cell takes the first one's size, as the full measure gives it
+                                    var proto = cells[0];
+                                    var arranged = proto.Destination;
+                                    arranged.Offset(area.Left - proto.Area.Left, area.Top - proto.Area.Top);
+                                    cell.Area = area;
+                                    cell.Measured = proto.Measured.Clone();
+                                    cell.Destination = arranged;
+                                    measured = cell.Measured;
+                                }
+                                else
+                                {
+                                    measured = MeasureAndArrangeCell(area, cell, view, area, scale);
+                                }
+                                cell.WasMeasured = true;
+                                if (measured.Pixels.Height > rowHeight)
+                                    rowHeight = measured.Pixels.Height;
+                                inserted.Add(cell);
+
+                                if (!useOneTemplate)
+                                    ChildrenFactory.ReleaseViewInUse(view);
+                            }
+
+                            y += rowHeight + gap;
+                        }
+                    }
+                    finally
+                    {
+                        if (template != null)
+                            ChildrenFactory.ReleaseTemplateInstance(template);
+                    }
+
+                    var shift = y - top; // the inserted rows and their gaps
+                    foreach (var c in cells)
+                    {
+                        c.ControlIndex += added;
+                        Translate(c, shift);
+                    }
+
+                    inserted.AddRange(cells);
+                    RebuildStructureFromCells(inserted);
+                    LastMeasuredIndexLocal = inserted[^1].ControlIndex;
+                    offsetDelta = -shift;
+                }
+            }
+
+            _unappliedHeadShift = 0; // the structure holds the current slice
+
+            if (offsetDelta != 0)
+                PinParentScrollY(Parent as SkiaScroll, offsetDelta, scale);
+
+            static void Translate(ControlInStack c, float dy)
+            {
+                c.Area = new SKRect(c.Area.Left, c.Area.Top + dy, c.Area.Right, c.Area.Bottom + dy);
+                c.Destination = new SKRect(c.Destination.Left, c.Destination.Top + dy,
+                    c.Destination.Right, c.Destination.Bottom + dy);
+            }
+        }
+
         /// <summary>
         /// Pixel-stable window engage: rebuilds the layout structure from the CURRENT (full-source) structure's
         /// already-measured cells that fall inside the freshly-created window slice — re-indexed to local and
@@ -1655,6 +1888,7 @@ namespace DrawnUi.Draw
                 LastMeasuredIndexLocal = kept[^1].ControlIndex; // measured region is contiguous from local 0
 
                 RebuildStructureFromCells(kept);
+                _unappliedHeadShift = 0;
             }
 
             // sync the adapter onto the slice (EffectiveItemsSource is now the window Items): rekey the
@@ -1666,7 +1900,7 @@ namespace DrawnUi.Draw
 
             // pin: the content shrank at the top by headPx, so raise the offset by the same amount to keep
             // the visible row on identical pixels (mirror of the head-insert commit's OffsetVisibleAnchorY)
-            scroll?.OffsetVisibleAnchorY(headPx / scale);
+            PinParentScrollY(scroll, headPx, scale);
 
             // NOT OnContentTranslatedVertically: that contract is "pure translation, no new pixels, re-anchor
             // your plane". It does not hold here — the content becomes a DIFFERENT slice, so re-anchoring
@@ -1741,6 +1975,8 @@ namespace DrawnUi.Draw
         /// </summary>
         public virtual void ApplyItemsSource()
         {
+            _masonryAppendFrom = MasonryMeasureAll; // a new source is laid out from scratch
+            _itemsChangedSinceMeasure = true;
             //if (!string.IsNullOrEmpty(Tag))
             //    Debug.WriteLine($"OnItemSourceChanged {Tag} {IsTemplated} {IsMeasuring}");
             if (!IsTemplated ||
@@ -1772,7 +2008,10 @@ namespace DrawnUi.Draw
         protected virtual bool ShouldPreserveStructureOnCollectionChange(NotifyCollectionChangedEventArgs args)
         {
             if (args.Action == NotifyCollectionChangedAction.Reset || IsFullCollectionReplace(args)
-                || StackStructure == null || StackStructure.Length == 0)
+                || StackStructure == null || StackStructure.Length == 0
+                || Type == LayoutType.Masonry // places every item from the ones above: see NoteMasonryChange
+                || Type == LayoutType.Row // the structure-preserving paths shift and pin vertically
+                || Type == LayoutType.Wrap) // lays every item out again (BuildWrapLayout), whatever the strategy
                 return false;
 
             // SPLIT GRID: structure-preserving mutation is split-aware for BOTH strategies as long as the
@@ -1905,6 +2144,21 @@ namespace DrawnUi.Draw
                     return;
                 }
 
+                // the structure no longer matches the items until a full measure lays them out again
+                _itemsChangedSinceMeasure = true;
+
+                if (Type == LayoutType.Masonry)
+                    NoteMasonryChange(args);
+
+                // a window slide that re-measures its slice: a Column measuring every item, or a Wrap of Split
+                // columns (it always measures every item); applied in place, see ApplyWindowSlideInPlace
+                if (_itemsWindow != null && ReferenceEquals(sender, _itemsWindow.Items))
+                    _unappliedHeadShift += HeadShiftOf(args);
+
+                var windowSlideInPlace = _itemsWindow != null && ReferenceEquals(sender, _itemsWindow.Items)
+                                         && (Type == LayoutType.Column && MeasureItemsStrategy == MeasuringStrategy.MeasureAll
+                                             || Type == LayoutType.Wrap && Split > 0);
+
                 var fullReplace = IsFullCollectionReplace(args);
 
                 if (args.Action == NotifyCollectionChangedAction.Reset)
@@ -1918,7 +2172,9 @@ namespace DrawnUi.Draw
                     // below resolves to InitializeSoft (Action=Replace, same ItemsSource ref) — no rebuild.
                     ResetMeasurementForReplace();
                 }
-                else if (Split > 1)
+                else if (Split > 1 && Type != LayoutType.Masonry // a masonry measures all again or appends
+                         && MeasureItemsStrategy != MeasuringStrategy.MeasureAll // lays every item out again
+                         && !windowSlideInPlace) // keeps its structure, changed in place
                 {
                     // SPLIT GRID add/remove (routed here by ShouldPreserveStructureOnCollectionChange):
                     // a bare Invalidate is NOT enough — the measure pass continues INCREMENTALLY from the
@@ -1937,6 +2193,12 @@ namespace DrawnUi.Draw
                         GetTemplatesPoolLimit(),
                         GetTemplatesPoolPrefill());
 
+                    // same slot as the adapter's new slice: the frame after it draws cells, items and offset together
+                    if (windowSlideInPlace)
+                        ApplyWindowSlideInPlace(args);
+                    else if (_itemsWindow != null && ReferenceEquals(sender, _itemsWindow.Items) && Type == LayoutType.Grid)
+                        PinGridWindowSlide(args);
+
                     if (args.Action == NotifyCollectionChangedAction.Reset)
                     {
                         ResetScroll();
@@ -1951,6 +2213,11 @@ namespace DrawnUi.Draw
                     {
                         Invalidate();
                     }
+
+                    // a window slide can arrive inside a draw, where the desktop heads drop an update: keep the
+                    // next frame, its measure lays the slice out and pins the offset
+                    if (_itemsWindow != null && ReferenceEquals(sender, _itemsWindow.Items))
+                        Superview?.RequestNextFrame();
 
                     PostDrawAction(OnItemsSourceChangesApplied);
                 });

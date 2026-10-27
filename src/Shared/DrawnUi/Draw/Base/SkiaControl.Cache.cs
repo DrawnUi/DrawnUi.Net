@@ -1037,9 +1037,18 @@ public partial class SkiaControl
     /// the control's rect when the bake was scheduled, as the in-frame path does: an OperationsFull record area is the
     /// canvas clip, and painting there filled the whole clip.
     /// </summary>
-    CachedObject RecordOffscreenBake(DrawingContext clone, SKRect recordArea, SKRect paintDestination)
+    // the frame context the bake running on this thread was queued with, and whether that frame draws distorted (read
+    // on the drawing thread at queue time: see WillDrawDistorted)
+    [ThreadStatic] private static SkiaDrawingContext _offscreenBakeFrameContext;
+    [ThreadStatic] private static bool _offscreenBakeDistorted;
+
+    CachedObject RecordOffscreenBake(DrawingContext clone, SKRect recordArea, SKRect paintDestination, bool distorted)
     {
         var was = _recordingOffscreenBake;
+        var wasFrameContext = _offscreenBakeFrameContext;
+        var wasDistorted = _offscreenBakeDistorted;
+        _offscreenBakeFrameContext = clone.Context;
+        _offscreenBakeDistorted = distorted;
         _recordingOffscreenBake = true;
         var canvas = Superview;
         canvas?.OffscreenBakeStarted();
@@ -1052,6 +1061,8 @@ public partial class SkiaControl
         {
             canvas?.OffscreenBakeEnded();
             _recordingOffscreenBake = was;
+            _offscreenBakeFrameContext = wasFrameContext;
+            _offscreenBakeDistorted = wasDistorted;
         }
     }
 
@@ -1227,12 +1238,13 @@ public partial class SkiaControl
         // publishes. Direct increment (no CancellationTokenSource alloc) keeps the 180ms streaming
         // path cheap.
         long bakeGeneration = BeginOffscreenBake();
+        var distorted = WillDrawDistorted(clone.Context); // drawing thread: the frame canvas is ours here
         PushToOffscreenRendering(() =>
         {
             try
             {
                 //will be executed on background thread in parallel
-                var prepared = RecordOffscreenBake(clone, recordArea, paintDestination);
+                var prepared = RecordOffscreenBake(clone, recordArea, paintDestination, distorted);
                 PublishOffscreenBake(prepared, bakeGeneration);
             }
             finally
@@ -1674,12 +1686,13 @@ public partial class SkiaControl
         //use cloned struct in another thread
         var paintDestination = DrawingRect;
         long bakeGeneration = BeginOffscreenBake();
+        var distorted = WillDrawDistorted(clone.Context); // drawing thread: the frame canvas is ours here
         PushToOffscreenRendering(() =>
         {
             try
             {
                 //will be executed on background thread in parallel
-                var prepared = RecordOffscreenBake(clone, recordArea, paintDestination);
+                var prepared = RecordOffscreenBake(clone, recordArea, paintDestination, distorted);
                 PublishOffscreenBake(prepared, bakeGeneration);
             }
             finally

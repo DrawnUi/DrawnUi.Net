@@ -56,12 +56,17 @@ public partial class SkiaLayout
         first = -1;
         last = -1;
 
+        if (Type == LayoutType.Grid)
+            return ComputeGridVisibleRange(offset, viewport, out first, out last);
+
         var structure = GetStackStructure();
         if (structure == null)
             return false;
 
-        float vpTop = -offset.Pixels.Y;
-        float vpBottom = vpTop + viewport.Pixels.Height;
+        // a Row lies along X: its cells all span the viewport's height
+        var horizontal = Type == LayoutType.Row;
+        float vpTop = horizontal ? -offset.Pixels.X : -offset.Pixels.Y;
+        float vpBottom = vpTop + (horizontal ? viewport.Pixels.Width : viewport.Pixels.Height);
 
         int lastMeasured = -1;
         // INDEXED, not foreach: the public FirstVisibleIndex/LastVisibleIndex getters call this from
@@ -77,9 +82,9 @@ public partial class SkiaLayout
             if (cell == null || !cell.WasMeasured)
                 continue;
             lastMeasured = cell.ControlIndex;
-            if (cell.Destination.Bottom <= vpTop)
+            if ((horizontal ? cell.Destination.Right : cell.Destination.Bottom) <= vpTop)
                 continue;
-            if (cell.Destination.Top >= vpBottom)
+            if ((horizontal ? cell.Destination.Left : cell.Destination.Top) >= vpBottom)
                 break; // index-ordered: nothing below can intersect
 
             if (first < 0)
@@ -100,6 +105,60 @@ public partial class SkiaLayout
         }
 
         return last >= 0;
+    }
+
+    /// <summary>
+    /// Visible range of a templated Grid (item i in row i / Split): the rows crossing the viewport, from the grid's
+    /// own row heights. A column-major grid (Invert) has no row order of its items: false.
+    /// </summary>
+    bool ComputeGridVisibleRange(ScaledPoint offset, ScaledRect viewport, out int first, out int last)
+    {
+        first = -1;
+        last = -1;
+
+        var grid = GridStructure;
+        var scale = RenderingScale;
+        var count = EffectiveItemsSource?.Count ?? 0;
+        if (!IsTemplated || Invert || grid == null || grid.Rows.Length == 0 || scale <= 0 || count == 0)
+            return false;
+
+        var split = Math.Max(1, Split);
+        var vpTop = -offset.Pixels.Y / scale;
+        var vpBottom = vpTop + viewport.Pixels.Height / scale;
+
+        double top = 0;
+        var firstRow = -1;
+        var lastRow = -1;
+        var rows = grid.Rows;
+        for (var r = 0; r < rows.Length; r++)
+        {
+            var bottom = top + rows[r].Size;
+            if (bottom > vpTop)
+            {
+                if (top >= vpBottom)
+                    break;
+                if (firstRow < 0)
+                    firstRow = r;
+                lastRow = r;
+            }
+            top = bottom + grid.RowSpacing;
+        }
+
+        if (lastRow < 0)
+        {
+            // the viewport rode past the rows: report the end, so the window keeps sliding
+            if (vpTop > 0 && rows.Length * split >= count)
+            {
+                first = count - 1;
+                last = count - 1;
+                return true;
+            }
+            return false;
+        }
+
+        first = Math.Min(count - 1, firstRow * split);
+        last = Math.Min(count - 1, lastRow * split + split - 1);
+        return true;
     }
 
     /// <summary>
@@ -274,8 +333,8 @@ public partial class SkiaLayout
         get
         {
             if (ComputeVisibleRangeFromStructure(_lastVisibilityOffset, ParentViewport, out var f, out _))
-                return f + (_itemsWindow?.WindowStart ?? 0);
-            return FirstVisibleIndexLocal < 0 ? FirstVisibleIndexLocal : FirstVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+                return f + StructureWindowStart;
+            return FirstVisibleIndexLocal < 0 ? FirstVisibleIndexLocal : FirstVisibleIndexLocal + StructureWindowStart;
         }
     }
 
@@ -285,8 +344,8 @@ public partial class SkiaLayout
         get
         {
             if (ComputeVisibleRangeFromStructure(_lastVisibilityOffset, ParentViewport, out _, out var l))
-                return l + (_itemsWindow?.WindowStart ?? 0);
-            return LastVisibleIndexLocal < 0 ? LastVisibleIndexLocal : LastVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+                return l + StructureWindowStart;
+            return LastVisibleIndexLocal < 0 ? LastVisibleIndexLocal : LastVisibleIndexLocal + StructureWindowStart;
         }
     }
 
@@ -298,19 +357,88 @@ public partial class SkiaLayout
     // were calibrated to these semantics — NOT what a user sees on screen (use *VisibleIndex).
     /// <summary>First index of the last DRAWN band (includes overscan), ItemsSource space.</summary>
     public int FirstVisibleIndexDrawn =>
-        FirstVisibleIndexLocal < 0 ? FirstVisibleIndexLocal : FirstVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+        FirstVisibleIndexLocal < 0 ? FirstVisibleIndexLocal : FirstVisibleIndexLocal + StructureWindowStart;
 
     /// <summary>Last index of the last DRAWN band (includes overscan), ItemsSource space.</summary>
     public int LastVisibleIndexDrawn =>
-        LastVisibleIndexLocal < 0 ? LastVisibleIndexLocal : LastVisibleIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+        LastVisibleIndexLocal < 0 ? LastVisibleIndexLocal : LastVisibleIndexLocal + StructureWindowStart;
 
     /// <summary>Highest measured index, in ItemsSource space.</summary>
     public int LastMeasuredIndex =>
-        LastMeasuredIndexLocal < 0 ? LastMeasuredIndexLocal : LastMeasuredIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+        LastMeasuredIndexLocal < 0 ? LastMeasuredIndexLocal : LastMeasuredIndexLocal + StructureWindowStart;
 
     /// <summary>Lowest measured index, in ItemsSource space.</summary>
     public int FirstMeasuredIndex =>
-        FirstMeasuredIndexLocal < 0 ? FirstMeasuredIndexLocal : FirstMeasuredIndexLocal + (_itemsWindow?.WindowStart ?? 0);
+        FirstMeasuredIndexLocal < 0 ? FirstMeasuredIndexLocal : FirstMeasuredIndexLocal + StructureWindowStart;
+
+    // The local indices above are indices into the slice the current structure was built for. The window moves its
+    // WindowStart at the moment of a slide; the structure follows when the layout applies the change (a staged apply,
+    // the in-place step, the next measure). Until then the slide's new start would offset the old structure, so the
+    // start is taken back by the head shift of the changes not applied yet.
+    private int _unappliedHeadShift;
+
+    /// <summary>
+    /// Moves the parent scroll's offset by <paramref name="deltaPixels"/> to keep the visible rows on their pixels after
+    /// the content moved, and the offset FirstVisibleIndex / LastVisibleIndex read with it: they would read the moved
+    /// cells at the old offset until the scroll's next viewport report.
+    /// </summary>
+    protected void PinParentScrollY(SkiaScroll scroll, float deltaPixels, float scale)
+    {
+        if (scroll == null || scale <= 0)
+            return;
+        scroll.OffsetVisibleAnchorY(deltaPixels / scale);
+        _lastVisibilityOffset = ScaledPoint.FromPixels(_lastVisibilityOffset.Pixels.X,
+            _lastVisibilityOffset.Pixels.Y + deltaPixels, scale);
+    }
+
+    /// <summary>
+    /// WindowStart of the slice the current structure belongs to (0 without the built-in window): the window's start
+    /// minus the head shift of the changes the structure has not applied yet.
+    /// </summary>
+    protected int StructureWindowStart
+    {
+        get
+        {
+            if (_itemsWindow == null)
+                return 0;
+
+            var shift = _unappliedHeadShift;
+            lock (_structureChangesLock)
+            {
+                foreach (var change in _pendingStructureChanges)
+                    shift += HeadShiftOf(change.Type, change.StartIndex, change.Count);
+            }
+
+            return _itemsWindow.WindowStart - shift;
+        }
+    }
+
+    /// <summary>
+    /// How far a change moves the slice's start: a head remove of k items +k, a head insert -k, anything else 0.
+    /// </summary>
+    private static int HeadShiftOf(StructureChangeType type, int startIndex, int count)
+    {
+        if (startIndex != 0 || count <= 0)
+            return 0;
+        return type switch
+        {
+            StructureChangeType.Remove => count,
+            StructureChangeType.Add => -count,
+            _ => 0
+        };
+    }
+
+    private static int HeadShiftOf(NotifyCollectionChangedEventArgs args)
+    {
+        return args.Action switch
+        {
+            NotifyCollectionChangedAction.Remove => HeadShiftOf(StructureChangeType.Remove, args.OldStartingIndex,
+                args.OldItems?.Count ?? 0),
+            NotifyCollectionChangedAction.Add => HeadShiftOf(StructureChangeType.Add, args.NewStartingIndex,
+                args.NewItems?.Count ?? 0),
+            _ => 0
+        };
+    }
 
     /// <summary>
     /// Percentage of items that have been measured (0.0 to 1.0)
@@ -1414,8 +1542,9 @@ public partial class SkiaLayout
                 template = ChildrenFactory.GetTemplateInstance();
             }
 
-            var columnsCount = (Split > 0) ? Split : 1;
-            var columnWidth = ComputeColumnWidth(columnsCount);
+            var horizontal = Type == LayoutType.Row;
+            var columnsCount = horizontal ? int.MaxValue : (Split > 0) ? Split : 1;
+            var columnWidth = horizontal ? 0f : ComputeColumnWidth(columnsCount);
 
             // Initialize positioning variables from parameters (thread-safe)
             float currentX = startX;
@@ -1432,9 +1561,13 @@ public partial class SkiaLayout
             float availableWidth = columnWidth;
             float availableHeight = float.PositiveInfinity;
 
-            if (this.Type == LayoutType.Row)
+            if (horizontal)
             {
-                availableHeight = columnWidth;
+                // the line's height, as the cells measured in the foreground got it
+                var first = GetMeasuredCellForIndex(0);
+                availableHeight = first != null && float.IsFinite(first.Area.Height) && first.Area.Height > 0
+                    ? first.Area.Height
+                    : float.IsFinite(constraints.Height) ? constraints.Height : float.PositiveInfinity;
                 availableWidth = float.PositiveInfinity;
             }
 
@@ -1520,8 +1653,8 @@ public partial class SkiaLayout
                 }
                 else
                 {
-                    // Move to next column horizontally
-                    currentX += columnWidth + (float)(Spacing * scale);
+                    // Move to next column horizontally: a Row advances by what the cell measured
+                    currentX += (horizontal ? measured.Pixels.Width : columnWidth) + (float)(Spacing * scale);
                 }
 
                 //Debug.WriteLine($"[MeasureBatchInBackground] Measured item {itemIndex} at ({cell.Destination.Left:F1},{cell.Destination.Top:F1}): {measured.Pixels.Width:F1}x{measured.Pixels.Height:F1}");
@@ -1799,6 +1932,11 @@ public partial class SkiaLayout
                             // batches end mid-row: continue the partial last row, so structure rows stay
                             // the grid's rows (row lookups by index place the next batch from them)
                             StackStructure.AppendContinuing(allRows.SelectMany(r => r).ToList(), Split);
+                        }
+                        else if (Type == LayoutType.Row)
+                        {
+                            // a Row is one line: every batch continues it
+                            StackStructure.AppendContinuing(allRows.SelectMany(r => r).ToList(), int.MaxValue);
                         }
                         else
                         {
@@ -2700,7 +2838,7 @@ public partial class SkiaLayout
                 // Position-preserving pin for backward LoadMore in history. Suppressed when an explicit
                 // ScrollToIndex is pending (e.g. a just-sent message ordering ScrollToIndex(0)): pinning would
                 // fight that scroll in the same frame and produce a nondeterministic 1-frame blink.
-                scroll.OffsetVisibleAnchorY(-blockShift / scale);
+                PinParentScrollY(scroll, -blockShift, scale);
             }
 
             Debug.WriteLine(
@@ -2935,7 +3073,7 @@ public partial class SkiaLayout
 
             if (Parent is SkiaScroll scroll)
             {
-                scroll.OffsetVisibleAnchorY(blockShift / pending.Scale);
+                PinParentScrollY(scroll, blockShift, pending.Scale);
             }
 
             Debug.WriteLine($"[SkiaLayout] Head remove committed: reclaimed {blockShift:0.0}px");
@@ -4547,6 +4685,16 @@ public partial class SkiaLayout
     /// </summary>
     private (float x, float y, int row, int col) GetPositionForIndexDirect(int itemIndex)
     {
+        if (Type == LayoutType.Row)
+        {
+            // a Row is one line along X: item i starts after item i - 1
+            var previous = GetMeasuredCellForIndex(itemIndex - 1);
+            if (previous == null)
+                return (0f, 0f, 0, itemIndex);
+            return (previous.Area.Left + previous.Measured.Pixels.Width + (float)(Spacing * RenderingScale),
+                previous.Area.Top, 0, itemIndex);
+        }
+
         int columnsCount = (Split > 0) ? Split : 1;
 
         // Calculate row/col directly from index - pure mathematical calculation
@@ -4593,6 +4741,23 @@ public partial class SkiaLayout
         }
 
         return (x, y, row, col);
+    }
+
+    /// <summary>
+    /// The measured cell of a local index: the structure keeps cells in index order, so the index is tried
+    /// directly before a search.
+    /// </summary>
+    private ControlInStack GetMeasuredCellForIndex(int index)
+    {
+        var structure = StackStructure;
+        if (index < 0 || structure == null)
+            return null;
+
+        var cell = structure[index];
+        if (cell?.ControlIndex == index)
+            return cell;
+
+        return structure.GetForIndex(index);
     }
 
     private float ComputeColumnWidth(int columnsCount)

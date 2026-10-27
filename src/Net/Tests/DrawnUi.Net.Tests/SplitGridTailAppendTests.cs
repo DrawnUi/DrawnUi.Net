@@ -28,11 +28,13 @@ public class SplitGridTailAppendTests
     sealed class Cell : SkiaShape
     {
         public static readonly List<int> Bound = new();
+        /// <summary>Grid of the running case: a grid of an earlier case can still bind from its background measurement.</summary>
+        public static object Current;
 
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
-            if (BindingContext is Item item)
+            if (BindingContext is Item item && Parent == Current)
                 lock (Bound) Bound.Add(item.Id);
         }
     }
@@ -72,6 +74,7 @@ public class SplitGridTailAppendTests
             VerticalOptions = LayoutOptions.Fill,
             Content = grid,
         };
+        Cell.Current = grid;
         Settle(host, grid, items.Count);
         return (host, grid, items);
     }

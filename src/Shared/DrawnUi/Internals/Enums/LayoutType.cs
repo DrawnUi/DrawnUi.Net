@@ -27,6 +27,9 @@ public enum LayoutType
     /// </summary>
     Grid,
 
-        // TODO
-    //Masonry,
+    /// <summary>
+    /// Split columns of equal width; every item goes to the bottom of the shortest column, so items of
+    /// different heights leave no gaps (Pinterest-like feed). Vertical, with ItemsSource or children.
+    /// </summary>
+    Masonry,
 }

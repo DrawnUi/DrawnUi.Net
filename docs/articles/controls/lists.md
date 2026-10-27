@@ -78,7 +78,9 @@ To check the plane is doing its job, read the stack's `DebugString`: it prints `
 
 ## Big data sources
 
-You can bind a huge in-memory list directly: when a templated `ItemsSource` exceeds `SkiaLayout.WindowSourceThreshold` (300 by default), the layout materializes only a bounded window of items and slides it internally as you scroll. Measurement, cell pools and structures all scale with the window, not with your list.
+You can bind a huge in-memory list directly: when a templated `ItemsSource` exceeds `SkiaLayout.WindowSourceThreshold` (300 by default), the layout materializes only a bounded window of items and slides it internally as you scroll. Measurement, cell pools and structures all scale with the window, not with your list. The visible rows stay on the same pixels while the window slides, under a finger, a fling, the mouse wheel or a touchpad.
+
+The window serves vertical lists: a templated `SkiaStack` (one column or a `Split` grid) and a `SkiaWrap` with `Split` columns. For a long grid of cells use a `SkiaStack` with `Split`: it recycles its cells, a templated `SkiaGrid` creates a view per item. A horizontal `SkiaRow`, a `SkiaMasonry` (each item goes under all the items above it) and a flowing `SkiaWrap` (`Split = 0`, its lines re-flow) lay out their whole `ItemsSource`; for very long horizontal or masonry lists prefer `MeasureItemsStrategy="MeasureVisible"` on a `SkiaRow`, or load pages with `LoadMoreCommand`.
 
 `LoadMoreCommand` keeps its meaning: it fires only when the user reaches the true end of your source data — "paging within already-available data" is internal, "fetch more from the API" is yours.
 

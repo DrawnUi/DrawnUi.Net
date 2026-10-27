@@ -141,10 +141,12 @@ public class SkiaValueAnimator : AnimatorBase
             if (UseInterpolator)
             {
 
+                // own instance: animators ticking in the same frame must not read each other's last frame time;
+                // delta in nanos, a float of seconds since boot loses milliseconds after a day of uptime
                 FrameTimeInterpolator ??= new FrameTimeInterpolator();
 
-                float currentFrameTimeSeconds = frameTimeNanos / 1_000_000_000.0f;
-                float interpolatedDeltaSeconds = FrameTimeInterpolator.Instance.GetDeltaTime(currentFrameTimeSeconds);
+                float interpolatedDeltaSeconds = FrameTimeInterpolator.GetDeltaTimeFromDelta(
+                    (frameTimeNanos - LastFrameTimeNanos) / 1_000_000_000.0f);
                 long interpolatedDeltaNanos = (long)(interpolatedDeltaSeconds * 1_000_000_000.0f);
 
                 deltaFromStart = (frameTimeNanos - StartFrameTimeNanos);

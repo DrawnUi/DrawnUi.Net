@@ -92,6 +92,7 @@ public partial class SkiaLayout
         var previous = StackStructure;
         StackStructure = incoming;
         StackStructureMeasured = null;
+        _unappliedHeadShift = 0; // laid out from the current slice
         if (previous != StackStructure)
             previous?.Clear();
     }
@@ -239,6 +240,13 @@ public partial class SkiaLayout
                     // used to float inside the leftover strip while the flow continued from its measured
                     // width (Center cell drawn far right, next cell placed over its slot).
                     area = new(area.Left, area.Top, area.Left + desiredWidth, area.Bottom);
+                }
+                else if (Type == LayoutType.Masonry
+                         && child.VerticalOptions.Alignment != LayoutAlignment.Start)
+                {
+                    // the slot runs to the bottom as in a Column: a Start item is arranged in it unbounded, so it
+                    // can measure itself taller later (an image arrived); Fill / Center / End take their own height
+                    area = new(area.Left, area.Top, area.Right, area.Top + desiredHeight);
                 }
 
                 // MAIN axis: a Center child sits in its own slot (measured size), never in whatever remains of
