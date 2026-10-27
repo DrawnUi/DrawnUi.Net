@@ -39,7 +39,7 @@ The goal is the same API surface as the .NET version: same control names, same P
 
 What you can use today:
 
-- **Layouts**: `SkiaLayout` in Absolute, Column, Row, Wrap and Grid, with the `SkiaStack`, `SkiaRow`, `SkiaLayer`, `SkiaWrap` and `SkiaGrid` aliases, and `SkiaDecoratedGrid`. Long lists recycle their cells.
+- **Layouts**: `SkiaLayout` in Absolute, Column, Row, Wrap, Grid and Masonry, with the `SkiaStack`, `SkiaRow`, `SkiaLayer`, `SkiaWrap`, `SkiaGrid` and `SkiaMasonry` aliases, and `SkiaDecoratedGrid`. Long lists recycle their cells.
 - **Scrolling**: `SkiaScroll` with headers, footers, `SkiaScrollBar`, pull to refresh (`RefreshIndicator`) and snapping.
 - **Text**: `SkiaLabel` with spans, `SkiaRichLabel` with markdown, and `SkiaEditor` for drawn text input.
 - **Shapes and images**: `SkiaShape`, `SkiaImage`, `SkiaImageTiles`, `SkiaSvg`, gradients, shadows and shader effects.
