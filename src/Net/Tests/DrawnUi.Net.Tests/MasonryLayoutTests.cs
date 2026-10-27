@@ -518,4 +518,87 @@ public class MasonryLayoutTests
             Assert.Equal(height, masonry.MeasuredSize.Units.Height, 1);
         }
     }
+
+    // Padding 10,20,30,40 and Spacing 4 in a 200 wide layout: columns of (200 - 10 - 30 - 4) / 2 = 78 at x 10 and 92,
+    // items start 20 down and 4 apart. col0: #0 20..120, #4 124..224; col1: #1 20..40, #2 44..64, #3 68..168, #5 172..192.
+    // Height: tallest column 204 + padding 20 + 40 = 264.
+    private static readonly (float left, float top)[] PaddedExpected =
+        { (10, 20), (92, 20), (92, 44), (92, 68), (10, 124), (92, 172) };
+
+    private static readonly Thickness PaddedPadding = new(10, 20, 30, 40);
+
+    private static void AssertPaddedPixels(HeadlessCanvasHost host, SkiaLayout masonry)
+    {
+        using var image = host.Snapshot();
+        using var bitmap = SkiaSharp.SKBitmap.FromImage(image);
+        var ox = masonry.DrawingRect.Left;
+        var oy = masonry.DrawingRect.Top;
+        bool Filled(float x, float y) => bitmap.GetPixel((int)(ox + x), (int)(oy + y)).Blue > 0x40;
+        for (var i = 0; i < PaddedExpected.Length; i++)
+        {
+            var (left, top) = PaddedExpected[i];
+            Assert.True(Filled(left + 39, top + Heights[i] / 2f), $"item {i} not drawn at {left},{top}");
+        }
+        Assert.False(Filled(5, 60), "left padding is drawn over");
+        Assert.False(Filled(40, 10), "top padding is drawn over");
+        Assert.False(Filled(90, 60), "spacing between the columns is drawn over");
+        Assert.False(Filled(185, 60), "right padding is drawn over");
+        Assert.False(Filled(40, 122), "spacing between items is drawn over");
+    }
+
+    [Fact]
+    public void Children_PaddingAndSpacing_PlaceItemsInsideThePadding()
+    {
+        using var host = new HeadlessCanvasHost(200, 400, scale: 1f, background: Colors.Black);
+        SkiaLayout masonry = null;
+        host.Canvas.Content = new SkiaLayer
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Children = { Children(LayoutType.Masonry).Assign(out masonry) }
+        };
+        masonry.Padding = PaddedPadding;
+        masonry.Spacing = 4;
+        host.AdvanceFrames(6);
+
+        _output.WriteLine($"masonry {masonry.MeasuredSize.Units.Height}");
+        Assert.Equal(264, masonry.MeasuredSize.Units.Height, 1);
+        for (var i = 0; i < PaddedExpected.Length; i++)
+        {
+            var r = masonry.Views[i].DrawingRect;
+            _output.WriteLine($"{i}: {r}");
+            Assert.Equal(PaddedExpected[i].left, r.Left - masonry.DrawingRect.Left, 1);
+            Assert.Equal(PaddedExpected[i].top, r.Top - masonry.DrawingRect.Top, 1);
+            Assert.Equal(78, r.Width, 1);
+            Assert.Equal(Heights[i], r.Height, 1);
+        }
+        AssertPaddedPixels(host, masonry);
+    }
+
+    [Fact]
+    public void Templated_PaddingAndSpacing_SameAsChildren()
+    {
+        using var host = new HeadlessCanvasHost(200, 400, scale: 1f, background: Colors.Black);
+        SkiaLayout masonry = null;
+        host.Canvas.Content = new SkiaScroll
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaLayout
+            {
+                Type = LayoutType.Masonry,
+                Split = 2,
+                Spacing = 4,
+                Padding = PaddedPadding,
+                HorizontalOptions = LayoutOptions.Fill,
+                RecyclingTemplate = RecyclingTemplate.Enabled,
+                ItemsSource = Heights.ToList(),
+                ItemTemplate = new DataTemplate(() => new HeightCell()),
+            }.Assign(out masonry)
+        };
+        host.AdvanceFrames(8);
+
+        _output.WriteLine($"masonry {masonry.MeasuredSize.Units.Height}");
+        Assert.Equal(264, masonry.MeasuredSize.Units.Height, 1);
+        AssertPaddedPixels(host, masonry);
+    }
 }

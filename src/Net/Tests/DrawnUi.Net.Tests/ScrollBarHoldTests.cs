@@ -61,6 +61,19 @@ public class ScrollBarHoldTests
         host.AdvanceFrames(20);
     }
 
+    // the countdown is a pool-thread timer: next to the other test classes running in parallel it can fire well after
+    // 200 ms, so wait for the hide with a deadline instead of a fixed sleep
+    private static void AssertHides(HeadlessCanvasHost host, SkiaScrollBar bar)
+    {
+        var deadline = Environment.TickCount64 + 3000;
+        while (bar.Opacity > 0.005 && Environment.TickCount64 < deadline)
+        {
+            Thread.Sleep(20);
+            host.AdvanceFrames(2);
+        }
+        Assert.Equal(0, bar.Opacity, 2);
+    }
+
     [Fact]
     public void Hover_KeepsBarVisible_UntilPointerLeaves()
     {
@@ -68,7 +81,7 @@ public class ScrollBarHoldTests
         using var _ = host;
 
         Settle(host);
-        Assert.Equal(0, bar.Opacity, 2); // auto-hidden after the first push
+        AssertHides(host, bar); // auto-hidden after the first push
 
         host.Canvas.HandleDesktopPointerMove(150, 150, false, 300, 300); // over the scroll content
         Settle(host);
@@ -83,7 +96,7 @@ public class ScrollBarHoldTests
         host.Canvas.HandleDesktopPointerMove(150, 280, false, 300, 300); // below the scroll, still on the canvas
         Settle(host);
         Assert.False(scroll.IsPointerOver);
-        Assert.Equal(0, bar.Opacity, 2);
+        AssertHides(host, bar);
 
         host.Canvas.HandleDesktopPointerMove(150, 150, false, 300, 300);
         Settle(host);
@@ -92,7 +105,7 @@ public class ScrollBarHoldTests
         host.Canvas.HandleDesktopPointerLeave(); // left the window
         Settle(host);
         Assert.False(scroll.IsPointerOver);
-        Assert.Equal(0, bar.Opacity, 2);
+        AssertHides(host, bar);
     }
 
     [Fact]
@@ -101,7 +114,7 @@ public class ScrollBarHoldTests
         var (host, scroll, bar, button) = Scene();
         using var _ = host;
         Settle(host);
-        Assert.Equal(0, bar.Opacity, 2);
+        AssertHides(host, bar);
 
         host.Canvas.KeyboardFocusNode = button;
         Settle(host);
@@ -109,7 +122,7 @@ public class ScrollBarHoldTests
 
         host.Canvas.KeyboardFocusNode = null;
         Settle(host);
-        Assert.Equal(0, bar.Opacity, 2);
+        AssertHides(host, bar);
 
         scroll.KeepScrollBarsVisible = true;
         Settle(host);
@@ -117,7 +130,7 @@ public class ScrollBarHoldTests
 
         scroll.KeepScrollBarsVisible = false;
         Settle(host);
-        Assert.Equal(0, bar.Opacity, 2);
+        AssertHides(host, bar);
     }
 
     [Fact]
@@ -130,6 +143,6 @@ public class ScrollBarHoldTests
 
         host.Canvas.HandleDesktopPointerMove(150, 150, false, 300, 300);
         Settle(host);
-        Assert.Equal(0, bar.Opacity, 2);
+        AssertHides(host, bar);
     }
 }
