@@ -159,8 +159,6 @@
     <ItemGroup Condition="$(TargetFramework.Contains('android')) == true">
         <!--fix android bad alignement-->
         <PackageReference Include="HarfBuzzSharp" Version="14.2.0" />
-        <!--native interop todo expose native source ? -->
-       <PackageReference Include="AppoMobi.Maui.Native.Android" Version="2.1.1.0-pre" />
     </ItemGroup>
 
     <ItemGroup>
