@@ -280,7 +280,7 @@ namespace DrawnUi.Views
             if (pressed.HasValue)
             {
                 info.Checkable = true;
-                info.Checked = pressed.Value;
+                SetChecked(info, pressed.Value);
             }
 
             // a control role that takes no input reads as disabled, as MAUI Windows (IsEnabledCore)
@@ -356,6 +356,21 @@ namespace DrawnUi.Views
             if (used)
                 InvalidateVirtualView(virtualViewId); // the new value is read back from the source at once
             return used;
+        }
+
+        private static IntPtr _setCheckedBoolean;
+
+        /// <summary>
+        /// Calls the Java <c>setChecked(boolean)</c>, which every AndroidX.Core version has. The C# binding of it changed:
+        /// up to 1.18 it is the bool <c>Checked</c> setter, from 1.19 <c>Checked</c> is an int (checked / unchecked / partial)
+        /// and the bool one is a method, so code compiled against either binding fails with MissingMethodException on the
+        /// other. An app gets 1.19 as soon as a package it uses asks for it (Firebase does).
+        /// </summary>
+        private static void SetChecked(AccessibilityNodeInfoCompat info, bool value)
+        {
+            if (_setCheckedBoolean == IntPtr.Zero)
+                _setCheckedBoolean = Android.Runtime.JNIEnv.GetMethodID(info.Class.Handle, "setChecked", "(Z)V");
+            Android.Runtime.JNIEnv.CallVoidMethod(info.Handle, _setCheckedBoolean, new Android.Runtime.JValue(value));
         }
 
         private static string ClassName(string role) => role switch
