@@ -68,8 +68,8 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
   * **Long lists scroll smoothly all the way.** Templated lists of any length follow the mouse wheel and the touchpad row by row, in columns, grids (`Split`) and `SkiaWrap` grids, down and back up. A cell that changes size after it is shown, any number of times, moves the cells below it.
   * **Horizontal lists and wraps.** A templated `SkiaRow` reports the items really on screen in `FirstVisibleIndex` / `LastVisibleIndex` and lays out with every `MeasureItemsStrategy`, `MeasureVisible` included. A templated `SkiaWrap` inside a scroll fires `LoadMore` at its end and arrives at `ScrollToIndex`.
   * **Steady animations and background caches.** A GIF or Lottie playing while a list flings keeps its speed and the fling keeps its own, and `ImageDoubleBuffered` caches render in the background without touching the frame being drawn.
-  * **Leaner Android package.** On Android, `DrawnUi.Maui` no longer brings the `AppoMobi.Maui.Native.Android` package; an app that uses its types references it directly.
   * **Screen readers on every AndroidX version.** On Android, the screen-reader bridge works with every `Xamarin.AndroidX.Core` version an app resolves, including 1.19.
+  * **Leaner Android package.** On Android, `DrawnUi.Maui` no longer brings the `AppoMobi.Maui.Native.Android` package; an app that uses its types references it directly.
 
 ### Previously
 
