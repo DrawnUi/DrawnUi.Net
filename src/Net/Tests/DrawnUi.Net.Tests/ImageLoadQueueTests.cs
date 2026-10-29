@@ -1,5 +1,6 @@
 using System.Net;
 using DrawnUi.Draw;
+using DrawnUi.Views;
 using SkiaSharp;
 using Xunit;
 
@@ -9,6 +10,8 @@ namespace DrawnUi.Net.Tests;
 /// The image load queue: at most MaxParallelLoads network loads at once, the rest wait by priority.
 /// SkiaImageManager exposes RunningCount / QueuedCount; a query on a local file name is ignored for the disk read.
 /// </summary>
+// the image manager is process-wide: its queue, and its loading lock that any fast fling in another class takes
+[Collection("Multithreaded")]
 public class ImageLoadQueueTests
 {
     [Fact]
@@ -115,6 +118,39 @@ public class ImageLoadQueueTests
         {
             File.Delete(file);
         }
+    }
+
+    /// <summary>
+    /// A fast fling locks image loading for the whole app while it runs. A page closed mid-fling must leave it unlocked:
+    /// the canvas drops a disposed control's animators without their stop, and every later load used to wait forever.
+    /// </summary>
+    [Fact]
+    public void ScrollDisposedMidFling_UnlocksImageLoading()
+    {
+        var host = new DrawnUi.Testing.HeadlessCanvasHost(300, 600, scale: 1f, background: Colors.Black);
+        host.Canvas.Content = new SkiaScroll
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaStack
+            {
+                Children = Enumerable.Range(0, 200).Select(i => (SkiaControl)new SkiaShape
+                {
+                    HeightRequest = 80,
+                    BackgroundColor = Colors.DarkSlateBlue,
+                    HorizontalOptions = LayoutOptions.Fill,
+                }).ToList()
+            }
+        };
+        host.AdvanceFrames(4);
+
+        new DrawnUi.Testing.GestureRobot(host).Pan(150, 560, 150, 60, durationMs: 60, steps: 6); // ~8000 pt/s
+        host.AdvanceFrames(2);
+        Assert.True(SkiaImageManager.Instance.IsLoadingLocked, "the fling did not lock image loading");
+
+        host.Dispose();
+
+        Assert.False(SkiaImageManager.Instance.IsLoadingLocked, "image loading stayed locked after the scroll was disposed");
     }
 
     private static byte[] SkiaPng()
