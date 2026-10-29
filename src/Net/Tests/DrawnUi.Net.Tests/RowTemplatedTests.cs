@@ -108,13 +108,23 @@ public class RowTemplatedTests
                 host.Canvas.HandleDesktopWheel(400, 100, -120, 800, 200, horizontal: true);
                 host.AdvanceFrames(4);
             }
-            host.AdvanceFrames(30);
+            // MeasureVisible measures on real threads: on a cold run 30 synthetic frames can come before its batches land,
+            // so settle against a real-time deadline (a range that never matches still fails below)
+            float start = 0;
+            int expectedFirst = -1, expectedLast = -1;
+            var deadline = Environment.TickCount64 + 5000;
+            do
+            {
+                host.AdvanceFrames(10);
+                Thread.Sleep(10);
+                start = (float)-scroll.ViewportOffsetX;
+                var cells = row.GetStackStructure().GetChildren().Where(c => c != null).ToList();
+                expectedFirst = cells.First(c => c.Destination.Right > start).ControlIndex;
+                expectedLast = cells.Last(c => c.Destination.Left < start + 800).ControlIndex;
+            } while ((row.FirstVisibleIndex != expectedFirst || row.LastVisibleIndex != expectedLast || host.NeedsFrame)
+                     && Environment.TickCount64 < deadline);
 
             // the items really visible: the cells crossing [-offset, -offset + 800)
-            var start = (float)-scroll.ViewportOffsetX;
-            var structure = row.GetStackStructure();
-            var expectedFirst = structure.GetChildren().First(c => c.Destination.Right > start).ControlIndex;
-            var expectedLast = structure.GetChildren().Last(c => c.Destination.Left < start + 800).ControlIndex;
             _output.WriteLine($"{strategy}: offset {scroll.ViewportOffsetX:0}, visible {row.FirstVisibleIndex}..{row.LastVisibleIndex}, expected {expectedFirst}..{expectedLast}");
             Assert.True(start > 3000, $"the wheel did not scroll the Row: offset {scroll.ViewportOffsetX}");
             Assert.Equal(expectedFirst, row.FirstVisibleIndex);

@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Numerics;
 using SkiaControl = DrawnUi.Draw.SkiaControl;
 
@@ -85,6 +85,32 @@ public class SkiaCarousel : SnappingLayout
     }
 
     public override Vector2 SelectNextAnchor(Vector2 origin, Vector2 velocity)
+        => LimitToNeighbours(SelectNextAnchorInternal(origin, velocity));
+
+    /// <summary>
+    /// A finger release moves at most one slide from the slide its gesture started on, as iOS paging and the Android
+    /// ViewPager do: a drag past the middle makes the next slide the nearest one, and the flick then went one further.
+    /// Code moves (ScrollTo, SelectedIndex) are not limited: <see cref="_releaseHome"/> is set only while a release snaps.
+    /// </summary>
+    private Vector2 LimitToNeighbours(Vector2 target)
+    {
+        if (_releaseHome is not { } home)
+            return target;
+
+        var from = SnapPoints.IndexOf(home);
+        var to = SnapPoints.IndexOf(target);
+        if (from < 0 || to < 0 || Math.Abs(to - from) <= 1)
+            return target; // a looped wrap goes to a virtual point next to the edge: one slide already
+
+        return SnapPoints[from + Math.Sign(to - from)];
+    }
+
+    /// <summary>The slide a finger gesture started on (the target when it caught a snap in flight), see <see cref="LimitToNeighbours"/>.</summary>
+    private Vector2 _gestureHome;
+
+    private Vector2? _releaseHome;
+
+    private Vector2 SelectNextAnchorInternal(Vector2 origin, Vector2 velocity)
     {
         // Non-looped: use base behavior exactly as-is
         if (!ApplyLoopedLogic)
@@ -1931,6 +1957,9 @@ public class SkiaCarousel : SnappingLayout
             // we will re-snap on Up.
             _snapIfNoPanOnUp = _isSnapping != null || InTransition;
 
+            // a swipe that catches a snap in flight starts from the slide that snap was going to
+            _gestureHome = _snapIfNoPanOnUp && SnapPoints.Contains(CurrentSnap) ? CurrentSnap : FindNearestAnchor(CurrentPosition);
+
             AnimatorRange.Stop();
             VectorAnimatorSpring?.Stop();
             VelocityAccumulator.Clear();
@@ -2027,7 +2056,15 @@ public class SkiaCarousel : SnappingLayout
 
                     Debug.WriteLine($"[SkiaCarousel] UP velocity {final:0}");
 
-                    ScrollToNearestAnchor(CurrentSnap, final);
+                    _releaseHome = _gestureHome;
+                    try
+                    {
+                        ScrollToNearestAnchor(CurrentSnap, final);
+                    }
+                    finally
+                    {
+                        _releaseHome = null;
+                    }
 
                     IsUserPanning = false;
                     IsUserFocused = false;

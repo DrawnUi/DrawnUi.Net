@@ -1,4 +1,4 @@
-﻿using DrawnUi.Infrastructure.Helpers;
+using DrawnUi.Infrastructure.Helpers;
 
 namespace DrawnUi.Draw
 {
@@ -23,6 +23,8 @@ namespace DrawnUi.Draw
 
         public override void OnWillDisposeWithChildren()
         {
+            UpdateLoadingLock(false); // a fling cut by dispose never runs its stop
+
             base.OnWillDisposeWithChildren();
 
             IndexChanged = null;
@@ -1129,9 +1131,24 @@ namespace DrawnUi.Draw
             //ViewportOffsetX = InternalViewportOffset.Units.X;
         }
 
+        /// <summary>Scrolls flinging fast right now: image loading stays locked while there is one.</summary>
+        private static int _imageLoadingLocks;
+
+        private bool _locksImageLoading;
+
+        /// <summary>
+        /// Locks image loading while this scroll flings fast, releasing only its own hold: another scroll still flinging
+        /// keeps the lock, and a lock this scroll did not take (set by the app) is left alone. Released on dispose too,
+        /// a page closed mid-fling never ran its fling's stop and left every image load in the app waiting.
+        /// </summary>
         void UpdateLoadingLock(bool state)
         {
-            SkiaImageManager.Instance.IsLoadingLocked = state;
+            if (state == _locksImageLoading)
+                return;
+
+            _locksImageLoading = state;
+            if (state ? Interlocked.Increment(ref _imageLoadingLocks) == 1 : Interlocked.Decrement(ref _imageLoadingLocks) == 0)
+                SkiaImageManager.Instance.IsLoadingLocked = state;
         }
 
         void UpdateLoadingLock(Vector2 velocity)
