@@ -93,7 +93,7 @@ public class TextPage : SkiaLayer
                                     new TextSpan { Text = ", " },
                                     new TextSpan { Text = "struck out", Strikeout = true },
                                     new TextSpan { Text = ", " },
-                                    new TextSpan { Text = " highlighted ", BackgroundColor = Color.Parse("#6610F2"), TextColor = Colors.White },
+                                    new TextSpan { Text = "highlighted", BackgroundColor = Color.Parse("#6610F2"), TextColor = Colors.White },
                                     new TextSpan { Text = " and a " },
                                     Link("tappable link ", () => _tapped.Text = $"Last span tap: link tapped at {DateTime.Now:T}"),
                                     // Its own span: a span has one typeface, so the arrow must not share one
@@ -121,7 +121,7 @@ public class TextPage : SkiaLayer
                                     new TextSpan { Text = "Use colored emojis " },
                                     new TextSpan { Text = "🌐🚒🙎🏽👻🤖", AutoFindFont = true },
                                     new TextSpan { Text = " Format text as " },
-                                    new TextSpan { Text = " BiG ", FontSize = 20, BackgroundColor = Colors.Yellow, TextColor = Colors.Black },
+                                    new TextSpan { Text = "BiG", FontSize = 20, BackgroundColor = Colors.Yellow, TextColor = Colors.Black },
                                     new TextSpan { Text = " and small! ", FontSize = 11, IsItalic = true },
                                     DemoLink("Add another tappable link!", Color.Parse("#20C997"), underline: true, size: 14),
                                     new TextSpan { Text = " ", FontSize = 14 },
