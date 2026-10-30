@@ -31,6 +31,13 @@ public class TextPage : SkiaLayer
     private const string Lorem =
         "DrawnUI draws every pixel itself: text is shaped and rasterized by Skia, so a label wraps by words, respects MaxLines with an ellipsis, aligns horizontally and vertically, and never leaves the canvas for a native view. This paragraph is long on purpose so it wraps across several lines at whatever width the layout gives it.";
 
+    // the DrawnUI .NET demo's markdown label and its right-to-left lines (MauiProgram.RTL)
+    private const string DemoMarkdown =
+        "~~Just put~~ a simple markdown string and this control will ***auto-split*** it into spans. It will recognize links _[a link](https://firstlink.app)_ rendered with ___SkiaMarkdownLabel___ Here it auto-created a span for 🚀🐴🤖👻 and switched back. _[More info..](https://moreinfo.app)_. Subclass this control or consume LinkTappedCommand property or LinkTapped event handler to react to taps.";
+
+    private const string Arabic =
+        "مرحبًا بكم في عصر العناصر البصرية المصممة\nحيث الدقة تلتقي بالإبداع في كل تفصيل\nنقدم لكم تجربة مستخدم فريدة ومتطورة\nاستمتع بالسلاسة والأداء العالي في التصميمات\nنحن نبتكر لنجعل تجربتكم أكثر تميزًا وسهولة";
+
     private static readonly Color Body = Color.Parse("#DEE2E6");
     private static readonly Color Muted = Color.Parse("#ADB5BD");
 
@@ -97,6 +104,54 @@ public class TextPage : SkiaLayer
                                 },
                             },
                             new SkiaLabel("Last span tap: nothing yet") { FontSize = 13, TextColor = Muted }.Assign(out _tapped)),
+
+                        // the three cards of the DrawnUI .NET demo (its MainPage), colors made readable on the dark page
+                        Card("Spans with colored emoji",
+                            new SkiaLabel
+                            {
+                                FontSize = 15,
+                                LineSpacing = 1.5,
+                                TextColor = Body,
+                                HorizontalOptions = LayoutOptions.Fill,
+                                Spans =
+                                {
+                                    new TextSpan { Text = "ANY ", FontSize = 17, IsBold = true, IsItalic = true, TextColor = Color.Parse("#FF6B6B") },
+                                    new TextSpan { Text = "span can be made " },
+                                    DemoLink("tappable ", Color.Parse("#A98EFF"), italic: true),
+                                    new TextSpan { Text = "! ", FontSize = 12, IsItalic = true },
+                                    new TextSpan { Text = "Use colored emojis " },
+                                    new TextSpan { Text = "🌐🚒🙎🏽👻🤖", AutoFindFont = true },
+                                    new TextSpan { Text = " Format text as " },
+                                    new TextSpan { Text = " BiG ", FontSize = 20, BackgroundColor = Colors.Yellow, TextColor = Colors.Black },
+                                    new TextSpan { Text = " and small! ", FontSize = 11, IsItalic = true },
+                                    DemoLink("Add another tappable link!", Color.Parse("#20C997"), underline: true, size: 14),
+                                    new TextSpan { Text = " ", FontSize = 14 },
+                                    new TextSpan { Text = "Still in development but..", FontSize = 14, Strikeout = true },
+                                    new TextSpan { Text = " ", FontSize = 14 },
+                                    new TextSpan { Text = "You can already use the nuget!", FontSize = 14, BackgroundColor = Color.Parse("#33FF0000") },
+                                },
+                            }),
+
+                        Card("SkiaRichLabel with an emoji run",
+                            new SkiaRichLabel(DemoMarkdown)
+                            {
+                                FontSize = 14,
+                                LineSpacing = 1.5,
+                                TextColor = Body,
+                                LinkColor = Color.Parse("#A98EFF"),
+                                StrikeoutColor = Color.Parse("#FF6B6B"),
+                                HorizontalOptions = LayoutOptions.Fill,
+                            }.Adapt(me => me.LinkTapped += (_, url) => _tapped.Text = $"Last span tap: link {url}")),
+
+                        Card("Right to left — Arabic",
+                            new SkiaRichLabel(Arabic)
+                            {
+                                FontSize = 15,
+                                LineSpacing = 1.3,
+                                TextColor = Body,
+                                HorizontalTextAlignment = DrawTextAlignment.End,
+                                HorizontalOptions = LayoutOptions.Fill,
+                            }),
 
                         Card("SkiaRichLabel — markdown in Text, rendered as spans",
                             new SkiaRichLabel(Markdown)
@@ -248,6 +303,14 @@ public class TextPage : SkiaLayer
     {
         var span = new TextSpan { Text = text, TextColor = Color.Parse("#6EA8FE"), Underline = true, FontFamily = fontFamily };
         span.Tapped += (_, _) => onTapped();
+        return span;
+    }
+
+    /// <summary>A tappable span of the demo card: reports its text in the "last span tap" line.</summary>
+    private TextSpan DemoLink(string text, Color color, bool italic = false, bool underline = false, double size = 15)
+    {
+        var span = new TextSpan { Text = text, TextColor = color, IsItalic = italic, Underline = underline, FontSize = size };
+        span.Tapped += (_, _) => _tapped.Text = $"Last span tap: \"{text.Trim()}\" at {DateTime.Now:T}";
         return span;
     }
 
