@@ -1,4 +1,4 @@
-# DrawnUI for .NET
+﻿# DrawnUI for .NET
 ![NuGet DrawnUi.Net](https://img.shields.io/nuget/v/DrawnUi.Net.svg)
 ![License](https://img.shields.io/github/license/DrawnUi/DrawnUi.Net.svg)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat)](https://github.com/DrawnUi/DrawnUi.Net/blob/main/CONTRIBUTING.md)
@@ -49,6 +49,8 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 * __Navigate__ on the canvas with shell-like techniques 
 
 😎 [Blazor sample in browser](https://drawnui.net/sandbox/) 👈
+
+Please star ⭐ if you like it!
 
 ## Addons
 
