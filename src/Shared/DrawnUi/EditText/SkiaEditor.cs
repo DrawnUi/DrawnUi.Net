@@ -436,7 +436,15 @@ namespace DrawnUi.Draw
         /// </summary>
         protected void InvalidateCaret()
         {
-            _caretDirty = true;
+            if (string.IsNullOrEmpty(Text) && Label != null && Cursor != null)
+            {
+                // no text, no glyphs to wait for: the label may not draw at all, so the caret is placed now
+                UpdateCursorVisibility();
+            }
+            else
+            {
+                _caretDirty = true;
+            }
             // from the layer holding the label and the caret: the scroll would blit its cached content otherwise
             if (_contentLayer != null)
                 _contentLayer.Update();
@@ -982,6 +990,17 @@ namespace DrawnUi.Draw
                 SelectionLength = 0;
                 _selectionDragMode = SelectionDragMode.None;
             }
+            else
+            {
+                // focused from code with no caret yet (-1) or one past the text: the caret goes to the end, as a tap
+                // after the text puts it, so it is drawn at once and typing appends; the native field follows below
+                var length = Text?.Length ?? 0;
+                if (CursorPosition < 0 || CursorPosition > length)
+                {
+                    SelectionLength = 0;
+                    CursorPosition = length;
+                }
+            }
 
 #if BROWSER
             var focusDelayMs = 50;
@@ -1072,10 +1091,16 @@ namespace DrawnUi.Draw
 
                     if (cursorIndex < 0)
                     {
-                        CursorPosition = 0;
-                        MoveCursorTo(0, 0);
-                        SetCursorVisible(IsFocused && CanShowCursor);
-                        return;
+                        // no caret yet: an unfocused editor keeps it unset (focusing puts it at the end, see
+                        // SetFocusInternal), a focused one takes the end of the text, as a tap after the text does
+                        if (!IsFocused)
+                        {
+                            SetCursorVisible(false);
+                            return;
+                        }
+
+                        CursorPosition = textLen;
+                        cursorIndex = textLen;
                     }
 
                     if (Label.Lines == null || Label.LinesCount <= 0 || string.IsNullOrEmpty(Text))
