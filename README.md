@@ -19,6 +19,10 @@ Supported hosts:
 * `DrawnUi.Wpf` - drawn controls inside WPF windows.
 * `DrawnUi.Net` - platform-agnostic console/server rendering scenarios.
 
+## MIT, everywhere
+
+DrawnUI is MIT licensed in every language and on every platform: desktop, mobile, web and embedded devices. Ship it in commercial products with no attribution badge, no about screen and no per-device royalty.
+
 ## React?
 
 DrawnUI for React just appeared as a standalone DrawnUI engine in TypeScript, running on [CanvasKit](https://skia.org/docs/user/modules/canvaskit/) (Skia compiled to WebAssembly) in the browser. It tends to use same API as the .NET version. 
@@ -62,7 +66,7 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.8.6
+## What's New 1.10.8.7
 
   * **Masonry layout.** `SkiaMasonry` (`LayoutType.Masonry`) lays items of different heights in columns without gaps: every item goes to the bottom of the shortest column, like a photo feed. Set `Split` for the number of columns. It works with children and with `ItemsSource`: recycled cells, `LoadMore` pages that measure only the new items, items that grow after they are shown (an image arrives), `ScrollToIndex`, taps, and keyboard arrows that move to the tile on screen that way. See [Layouts](https://drawnui.net/articles/layouts.html).
   * **Long lists scroll smoothly all the way.** Templated lists of any length follow the mouse wheel and the touchpad row by row, in columns, grids (`Split`) and `SkiaWrap` grids, down and back up. A cell that changes size after it is shown, any number of times, moves the cells below it.
@@ -71,6 +75,8 @@ DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS
   * **One slide per swipe.** A `SkiaCarousel` swipe lands on the next or the previous slide, however far the finger drags and however fast it flicks; `ScrollTo` and `SelectedIndex` still go anywhere.
   * **Images load after a fast fling.** A page closed while its list still flings fast leaves image loading running for the rest of the app.
   * **Caret at once.** An editor focused from code shows its caret at once, at the end of its text.
+  * **Emoji inside text.** A span with `AutoFindFont` takes the width of the font it draws with, so an emoji run sits in its own room, also inside a scroll.
+  * **Italic spacing.** Text after an italic span keeps normal word spacing, and an italic letter at the end of a line keeps room for its slant.
   * **Screen readers on every AndroidX version.** On Android, the screen-reader bridge works with every `Xamarin.AndroidX.Core` version an app resolves, including 1.19.
   * **Leaner Android package.** On Android, `DrawnUi.Maui` no longer brings the `AppoMobi.Maui.Native.Android` package; an app that uses its types references it directly.
 

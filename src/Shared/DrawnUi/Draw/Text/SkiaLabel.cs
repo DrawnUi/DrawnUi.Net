@@ -1226,14 +1226,18 @@ namespace DrawnUi.Draw
                                 continue;
 
                             span.DrawingOffset = offset;
-                            var paint = span.SetupPaint(scale, PaintDefault, FontDefault);
-                            var font = span.Font;
 
                             if (!(span is IDrawnTextSpan))
                             {
-                                // Only check glyph rendering if not drawn (since drawn might not need shaping)
+                                // Only check glyph rendering if not drawn (since drawn might not need shaping).
+                                // Before SetupPaint: AutoFindFont picks the span's typeface here, and the font must
+                                // measure with it now, not from the next measure on (an emoji run measured with the
+                                // text font was drawn wider than its slot, over the text after it)
                                 span.CheckGlyphsCanBeRendered();
                             }
+
+                            var paint = span.SetupPaint(scale, PaintDefault, FontDefault);
+                            var font = span.Font;
 
                             var lines = SplitLines(span.TextFiltered,
                                 paint,
@@ -1323,6 +1327,8 @@ namespace DrawnUi.Draw
                             Lines = mergedLines.ToArray();
                         }
                     }
+
+                    AddItalicOverhangAtLineEnds(Lines, (float)constraints.Content.Width);
 
                     GliphsInvalidated = false;
 
@@ -1477,6 +1483,40 @@ namespace DrawnUi.Draw
             return (total, null);
         }
 
+        /// <summary>
+        /// Synthetic italic slants the glyphs to the right past their advance. That room is added once, at the end of a
+        /// line whose last run is italic and ends with ink, so its last letter is not cut at the label's edge. Inside a
+        /// line the slant leans over the next run's leading space like any text engine draws it: adding it to every run
+        /// put a gap of a quarter of the font size after every italic span. Never makes a line wider than the width the
+        /// label was given.
+        /// </summary>
+        protected virtual void AddItalicOverhangAtLineEnds(TextLine[] lines, float maxWidth)
+        {
+            if (lines == null)
+                return;
+
+            foreach (var line in lines)
+            {
+                if (line?.Spans == null || line.Spans.Count == 0)
+                    continue;
+
+                var last = line.Spans[^1];
+                var font = last.Span?.Font ?? FontDefault;
+                if (font == null || font.SkewX == 0 || string.IsNullOrEmpty(last.Text) || char.IsWhiteSpace(last.Text[^1]))
+                    continue;
+
+                var room = Math.Abs(font.SkewX) * font.Size;
+                if (maxWidth > 0 && !float.IsInfinity(maxWidth))
+                    room = Math.Min(room, Math.Max(0, maxWidth - line.Width));
+                if (room <= 0)
+                    continue;
+
+                last.Size = new SKSize(last.Size.Width + room, last.Size.Height);
+                line.Spans[^1] = last;
+                line.Width += room;
+            }
+        }
+
         protected virtual (float Width, LineGlyph[] Glyphs) MeasureLineGlyphs(SKPaint paint, SKFont font, string text, bool needsShaping,
             float scale)
         {
@@ -1582,13 +1622,8 @@ namespace DrawnUi.Draw
             {
                 var spacingModifier = (float)(scale * (CharacterSpacing - 1));
                 var pos = 0;
-                var addAtIndex = -1;
 
-                if (font.SkewX != 0)
-                {
-                    addAtIndex = LastNonSpaceIndexOptimized(text.AsSpan());
-                }
-
+                // italic slant room is added once at the end of a line (AddItalicOverhangAtLineEnds), not per run
                 foreach (var g in glyphs)
                 {
                     // VS16/VS15 variation selectors are zero-width modifiers; some Windows fonts report non-zero advance
@@ -1600,11 +1635,6 @@ namespace DrawnUi.Draw
                     }
 
                     var thisWidth = SpanMeasurement.MeasureTextWidthWithAdvanceSpan(font, paint, g.GetGlyphText());
-                    if (pos == addAtIndex)
-                    {
-                        var additionalWidth = (int)Math.Round(Math.Abs(font.SkewX) * font.Size / 2f);
-                        thisWidth += additionalWidth;
-                    }
 
                     positions.Add(LineGlyph.FromGlyph(g, offsetX, thisWidth));
                     offsetX += thisWidth + spacingModifier;
@@ -1620,11 +1650,6 @@ namespace DrawnUi.Draw
             }
 
             var simpleValue = MeasureTextWidthWithAdvance(paint, font, text);
-            if (font.SkewX != 0)
-            {
-                float additionalWidth = Math.Abs(font.SkewX) * font.Size;
-                simpleValue += additionalWidth;
-            }
 
             GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, simpleValue, null);
             return (simpleValue, null);
@@ -1793,12 +1818,6 @@ namespace DrawnUi.Draw
                         var spanLineHeight =
                             (float)Math.Round((-spanMetrics.Ascent + spanMetrics.Descent) * LineHeight);
                         var heightBlock = spanLineHeight > LineHeightPixels ? spanLineHeight : LineHeightPixels;
-
-                        if (font.SkewX != 0)
-                        {
-                            float additionalWidth = Math.Abs(font.SkewX) * font.Size;
-                            widthBlock += additionalWidth; //notice passed by ref struct will be modified
-                        }
 
                         if (StrokeWidth > 0 && StrokeColor != TransparentColor)
                         {
