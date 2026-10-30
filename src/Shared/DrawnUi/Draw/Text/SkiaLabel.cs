@@ -757,6 +757,20 @@ namespace DrawnUi.Draw
                         }
                         else if (lineSpan.NeedsShaping)
                         {
+                            if (lineSpan.Span != null && lineSpan.Span.BackgroundColor != Colors.Transparent)
+                            {
+                                // the glyph path below draws it too: a highlighted Arabic or emoji span keeps its highlight
+                                float bgBottom = baselineY + FontMetrics.Descent;
+                                rectPrecalculatedSpanBounds = new SKRect(
+                                    alignedLineDrawingStartX + offsetX,
+                                    bgBottom - lineSpan.Size.Height,
+                                    alignedLineDrawingStartX + offsetX + lineSpan.Size.Width,
+                                    bgBottom);
+                                PaintDeco.Color = lineSpan.Span.BackgroundColor.ToSKColor();
+                                PaintDeco.Style = SKPaintStyle.StrokeAndFill;
+                                canvas.DrawRect(rectPrecalculatedSpanBounds, PaintDeco);
+                            }
+
                             DrawShapedText(canvas,
                                 lineSpan.Text,
                                 (float)Math.Round(alignedLineDrawingStartX + offsetX),
@@ -1199,6 +1213,11 @@ namespace DrawnUi.Draw
                             text = TextInternal;
                         }
 
+                        // shaping comes from the text, not only from AutoFont's first glyph: Arabic or Hebrew in a font
+                        // that has their glyphs was drawn unjoined and reversed
+                        if (!needsShaping && text != null)
+                            needsShaping = TextNeedsShaping(text);
+
                         Lines = SplitLines(text,
                             PaintDefault,
                             FontDefault,
@@ -1328,6 +1347,7 @@ namespace DrawnUi.Draw
                         }
                     }
 
+                    ApplyBidiToLines(Lines, scale);
                     AddItalicOverhangAtLineEnds(Lines, (float)constraints.Content.Width);
 
                     GliphsInvalidated = false;
@@ -1484,6 +1504,178 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Lines of a paragraph with right-to-left text are drawn in Unicode bidi order (<see cref="Bidi"/>): each line is
+        /// split into runs of one embedding level (inside a span, never across two), every run is measured and drawn shaped
+        /// in its own direction, and the runs are put in visual order (rule L2). Paragraphs without right-to-left letters
+        /// are left as they are, at no cost. Alignment does not follow the paragraph direction, as in the other engines.
+        /// </summary>
+        protected virtual void ApplyBidiToLines(TextLine[] lines, float scale)
+        {
+            if (lines == null || lines.Length == 0)
+                return;
+
+            var paragraphRtl = false;
+            var paragraphHasRtl = false;
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                var line = lines[i];
+                if (line == null)
+                    continue;
+
+                if (i == 0 || line.IsNewParagraph)
+                {
+                    // paragraph direction and whether it needs the pass at all, from all its lines
+                    var sb = new System.Text.StringBuilder();
+                    for (int k = i; k < lines.Length && (k == i || lines[k] == null || !lines[k].IsNewParagraph); k++)
+                        sb.Append(lines[k]?.Value);
+                    var paragraph = sb.ToString();
+                    paragraphHasRtl = Bidi.HasRightToLeft(paragraph);
+                    paragraphRtl = paragraphHasRtl && Bidi.IsRightToLeftParagraph(paragraph);
+                }
+
+                if (!paragraphHasRtl || line.Spans == null || line.Spans.Count == 0)
+                    continue;
+
+                ReorderLine(line, paragraphRtl, scale);
+            }
+        }
+
+        void ReorderLine(TextLine line, bool rightToLeft, float scale)
+        {
+            var text = new System.Text.StringBuilder();
+            foreach (var span in line.Spans)
+                text.Append(span.Text);
+            var levels = Bidi.GetLevels(text.ToString().AsSpan(), rightToLeft);
+            byte baseLevel = (byte)(rightToLeft ? 1 : 0);
+
+            var pieces = new List<LineSpan>();
+            var pieceLevels = new List<byte>();
+            var pieceStarts = new List<int>();
+            int pos = 0;
+            foreach (var span in line.Spans)
+            {
+                var spanText = span.Text ?? string.Empty;
+                if (span.Span is IDrawnTextSpan || spanText.Length == 0)
+                {
+                    pieces.Add(span);
+                    pieceLevels.Add(spanText.Length > 0 && pos < levels.Length ? levels[pos] : baseLevel);
+                    pieceStarts.Add(pos);
+                    pos += spanText.Length;
+                    continue;
+                }
+
+                var paint = PaintDefault;
+                var font = FontDefault;
+                if (span.Span != null)
+                {
+                    paint = span.Span.SetupPaint(scale, PaintDefault, FontDefault);
+                    font = span.Span.Font;
+                }
+
+                int start = 0;
+                while (start < spanText.Length)
+                {
+                    var level = levels[pos + start];
+                    int end = start + 1;
+                    while (end < spanText.Length && levels[pos + end] == level)
+                        end++;
+
+                    var piece = spanText.Substring(start, end - start);
+                    var measured = MeasureLineGlyphs(paint, font, piece, true, scale);
+                    pieces.Add(new LineSpan
+                    {
+                        Text = piece,
+                        Span = span.Span,
+                        NeedsShaping = true, // drawn shaped in its own direction, Latin pieces too
+                        Glyphs = measured.Glyphs,
+                        Size = new SKSize(measured.Width, span.Size.Height),
+                    });
+                    pieceLevels.Add(level);
+                    pieceStarts.Add(pos + start);
+                    start = end;
+                }
+
+                pos += spanText.Length;
+            }
+
+            var order = Bidi.VisualOrder(pieceLevels);
+            var carets = new LineCaret[pos];
+            line.Spans.Clear();
+            float width = 0;
+            foreach (var index in order)
+            {
+                var piece = pieces[index];
+                SetPieceCarets(carets, piece, pieceStarts[index], width, (pieceLevels[index] & 1) == 1);
+                line.Spans.Add(piece);
+                width += piece.Size.Width;
+            }
+            line.Width = width;
+            line.Carets = carets;
+            line.IsRightToLeft = rightToLeft;
+        }
+
+        /// <summary>
+        /// Fills the caret boxes of one visual run from its shaped glyphs: each cluster's box spans from its glyphs' left
+        /// edge to the next cluster's, the first code unit of a cluster gets it, the others sit at its trailing edge
+        /// with no advance.
+        /// </summary>
+        static void SetPieceCarets(LineCaret[] carets, LineSpan piece, int logicalStart, float offsetX, bool rightToLeft)
+        {
+            var length = piece.Text?.Length ?? 0;
+            if (length == 0)
+                return;
+
+            void Place(int unit, int units, float left, float right)
+            {
+                carets[logicalStart + unit] = new LineCaret(offsetX + left, right - left, rightToLeft);
+                var trailing = offsetX + (rightToLeft ? left : right);
+                for (var k = unit + 1; k < unit + units; k++)
+                    carets[logicalStart + k] = new LineCaret(trailing, 0, rightToLeft);
+            }
+
+            var glyphs = piece.Glyphs;
+            if (glyphs == null || glyphs.Length == 0)
+            {
+                Place(0, length, 0, piece.Size.Width);
+                return;
+            }
+
+            // visual groups of one cluster: left = its leftmost glyph pen, right = the next group's left
+            var groups = new List<(int Cluster, float Left)>();
+            for (var g = 0; g < glyphs.Length; g++)
+            {
+                if (groups.Count > 0 && groups[^1].Cluster == glyphs[g].StartIndex)
+                    groups[^1] = (groups[^1].Cluster, Math.Min(groups[^1].Left, glyphs[g].Position));
+                else
+                    groups.Add((glyphs[g].StartIndex, glyphs[g].Position));
+            }
+
+            var boxes = new Dictionary<int, (float Left, float Right)>();
+            var prevRight = 0f;
+            for (var k = 0; k < groups.Count; k++)
+            {
+                var left = Math.Max(groups[k].Left, prevRight);
+                var right = Math.Max(left, k + 1 < groups.Count ? groups[k + 1].Left : piece.Size.Width);
+                boxes[groups[k].Cluster] = boxes.TryGetValue(groups[k].Cluster, out var had)
+                    ? (Math.Min(had.Left, left), Math.Max(had.Right, right))
+                    : (left, right);
+                prevRight = right;
+            }
+
+            // a cluster covers its code units up to the next cluster in text order
+            var clusters = boxes.Keys.Where(c => c >= 0 && c < length).OrderBy(c => c).ToList();
+            if (clusters.Count == 0 || clusters[0] != 0)
+                clusters.Insert(0, 0);
+            for (var c = 0; c < clusters.Count; c++)
+            {
+                var box = boxes.TryGetValue(clusters[c], out var b) ? b : (0f, 0f);
+                var next = c + 1 < clusters.Count ? clusters[c + 1] : length;
+                Place(clusters[c], next - clusters[c], box.Item1, box.Item2);
+            }
+        }
+
+        /// <summary>
         /// Synthetic italic slants the glyphs to the right past their advance. That room is added once, at the end of a
         /// line whose last run is italic and ends with ink, so its last letter is not cut at the label's edge. Inside a
         /// line the slant leans over the next run's leading space like any text engine draws it: adding it to every run
@@ -1544,7 +1736,10 @@ namespace DrawnUi.Draw
             if (needsShaping)
             {
                 SetupShaper(paintTypeface);
-                var result = GetShapedText(Shaper, text, 0, 0, paint, font);
+                float[] pens = null;
+                var result = NeedsGlyphPositions
+                    ? GetShapedText(Shaper, text, font, out pens)
+                    : GetShapedText(Shaper, text, 0, 0, paint, font);
                 if (result == null)
                 {
                     GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, 0f, null);
@@ -1563,7 +1758,7 @@ namespace DrawnUi.Draw
                     return (measured.Width, null);
                 }
 
-                var shapedGlyphs = BuildGlyphsFromShaping(result, text);
+                var shapedGlyphs = BuildGlyphsFromShaping(result, text, pens);
                 GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, measured.Width, shapedGlyphs);
                 return (measured.Width, shapedGlyphs);
             }
@@ -2647,7 +2842,7 @@ namespace DrawnUi.Draw
         /// a glyph covering N code units (surrogate-pair emoji) is later expanded per code unit
         /// by the editor's GetLineGlyphs.
         /// </summary>
-        protected LineGlyph[] BuildGlyphsFromShaping(SKShaper.Result result, string text)
+        protected LineGlyph[] BuildGlyphsFromShaping(SKShaper.Result result, string text, float[] pens = null)
         {
             var count = result.Codepoints.Length;
             if (count == 0)
@@ -2668,8 +2863,10 @@ namespace DrawnUi.Draw
                 if (next < start) next = start; // guard against non-monotonic clusters
                 int len = Math.Max(1, next - start);
 
-                float x = result.Points[i].X;
-                float nextX = i + 1 < count ? result.Points[i + 1].X : result.Width;
+                // pen positions when known: a point includes the glyph's mark / GPOS x offset (the dots of an Arabic
+                // letter sit right of its pen), the caret goes at the pen
+                float x = pens != null ? pens[i] : result.Points[i].X;
+                float nextX = i + 1 < count ? (pens != null ? pens[i + 1] : result.Points[i + 1].X) : result.Width;
                 float width = Math.Max(0f, nextX - x);
 
                 int symbol = 0;
@@ -2745,6 +2942,39 @@ namespace DrawnUi.Draw
             float height = maxY - minY;
 
             return new SKSize(result.Width, height);
+        }
+
+        /// <summary>
+        /// Shapes <paramref name="text"/> as <see cref="SKShaper.Shape(string, float, float, SKFont)"/> does and also
+        /// returns each glyph's pen X (its point without the mark / GPOS x offset), where a caret goes. Null for empty
+        /// text or a shaper without a typeface.
+        /// </summary>
+        public static SKShaper.Result GetShapedText(SKShaper shaper, string text, SKFont font, out float[] pens)
+        {
+            pens = null;
+            if (string.IsNullOrEmpty(text) || shaper?.Typeface == null || font == null)
+                return null;
+
+            using var buffer = new HarfBuzzSharp.Buffer();
+            buffer.AddUtf8(text); // as SKShaper: clusters are UTF-8 byte offsets
+            buffer.GuessSegmentProperties();
+            var result = shaper.Shape(buffer, 0, 0, font);
+
+            var positions = buffer.GlyphPositions;
+            if (positions.Length != result.Points.Length)
+                return result;
+            long advances = 0;
+            foreach (var p in positions)
+                advances += p.XAdvance;
+            var k = advances != 0 ? result.Width / advances : 0f;
+            pens = new float[positions.Length];
+            long pen = 0;
+            for (var i = 0; i < positions.Length; i++)
+            {
+                pens[i] = pen * k;
+                pen += positions[i].XAdvance;
+            }
+            return result;
         }
 
         public static SKShaper.Result GetShapedText(SKShaper shaper, string text, float x, float y, SKPaint paint, SKFont font)
@@ -2836,6 +3066,33 @@ namespace DrawnUi.Draw
                 || glyphText == "\u2029";
         }
 
+        /// <summary>
+        /// True when any character of <paramref name="text"/> needs shaping (<see cref="UnicodeNeedsShaping"/>): complex
+        /// scripts that join or reorder, right-to-left scripts, emoji sequences. Decides shaping from the text itself, not
+        /// from font fallback: an Arabic or Hebrew text in a font that has its glyphs was drawn unshaped and reversed.
+        /// </summary>
+        public static bool TextNeedsShaping(ReadOnlySpan<char> text)
+        {
+            for (int i = 0; i < text.Length; i++)
+            {
+                int cp = text[i];
+                if (char.IsHighSurrogate(text[i]) && i + 1 < text.Length && char.IsLowSurrogate(text[i + 1]))
+                {
+                    cp = char.ConvertToUtf32(text[i], text[i + 1]);
+                    i++;
+                }
+                else if (cp < 0x0590)
+                {
+                    continue; // Latin, Greek, Cyrillic, Armenian: never shaped
+                }
+
+                if (UnicodeNeedsShaping(cp))
+                    return true;
+            }
+
+            return false;
+        }
+
         public static bool UnicodeNeedsShaping(int unicodeCharacter)
         {
             if (EmojiData.IsEmoji(unicodeCharacter))
@@ -2844,8 +3101,21 @@ namespace DrawnUi.Draw
             // Emoji skin tone modifiers (Fitzpatrick scale)
             if (unicodeCharacter >= 0x1F3FB && unicodeCharacter <= 0x1F3FF) return true;
 
+            // Hebrew: right to left, drawn in storage order (reversed) when not shaped
+            if (unicodeCharacter >= 0x0590 && unicodeCharacter <= 0x05FF) return true;
+
             // Arabic Unicode range
             if (unicodeCharacter >= 0x0600 && unicodeCharacter <= 0x06FF) return true;
+
+            // Arabic Supplement
+            if (unicodeCharacter >= 0x0750 && unicodeCharacter <= 0x077F) return true;
+
+            // NKo, Samaritan, Mandaic, Syriac Supplement, Arabic Extended (all right to left)
+            if (unicodeCharacter >= 0x07C0 && unicodeCharacter <= 0x08FF) return true;
+
+            // Hebrew and Arabic presentation forms A, Arabic presentation forms B
+            if (unicodeCharacter >= 0xFB1D && unicodeCharacter <= 0xFDFF) return true;
+            if (unicodeCharacter >= 0xFE70 && unicodeCharacter <= 0xFEFF) return true;
 
             // Syriac Unicode range
             if (unicodeCharacter >= 0x0700 && unicodeCharacter <= 0x074F) return true;
@@ -4604,7 +4874,7 @@ namespace DrawnUi.Draw
         /// X of the caret slot <paramref name="slot"/> in a line, relative to the line's left edge.
         /// </summary>
         static float SlotX(TextLine line, LineGlyph[] glyphs, int slot)
-            => slot < glyphs.Length ? glyphs[slot].Position : line.Width;
+            => line.Carets != null ? line.CaretX(slot) : slot < glyphs.Length ? glyphs[slot].Position : line.Width;
 
         /// <summary>
         /// Text index under a point given in the space the lines were drawn in.
@@ -4627,8 +4897,10 @@ namespace DrawnUi.Draw
             }
 
             var line = lines[lineIndex];
-            var glyphs = GetLineGlyphs(line);
             var x = point.X - line.Bounds.Left;
+            if (line.Carets != null)
+                return _lineStarts[lineIndex] + line.NearestStop(x);
+            var glyphs = GetLineGlyphs(line);
             var slots = Math.Min(glyphs.Length, (line.Value ?? string.Empty).Length);
             var best = 0;
             var bestDistance = float.MaxValue;
@@ -4794,12 +5066,30 @@ namespace DrawnUi.Draw
                 if (a > b || a == b && !continues)
                     continue;
 
-                var glyphs = GetLineGlyphs(line);
-                var x0 = SlotX(line, glyphs, a - lineStart);
-                var x1 = continues && b == lineEnd ? line.Width : SlotX(line, glyphs, b - lineStart);
-                var rect = new SKRect(line.Bounds.Left + x0, line.Bounds.Top, line.Bounds.Left + Math.Max(x1, x0 + ctx.Scale),
-                    line.Bounds.Bottom);
-                canvas.DrawRect(rect, _selectionPaint);
+                SKRect rect;
+                if (line.Carets != null)
+                {
+                    // right-to-left text: the selected characters' boxes, two blocks across a direction change
+                    rect = SKRect.Empty;
+                    foreach (var box in line.Boxes(a - lineStart, b - lineStart))
+                    {
+                        var block = new SKRect(line.Bounds.Left + box.Left, line.Bounds.Top, line.Bounds.Left + box.Right,
+                            line.Bounds.Bottom);
+                        canvas.DrawRect(block, _selectionPaint);
+                        rect = rect.IsEmpty ? block : SKRect.Union(rect, block);
+                    }
+                    if (rect.IsEmpty)
+                        continue;
+                }
+                else
+                {
+                    var glyphs = GetLineGlyphs(line);
+                    var x0 = SlotX(line, glyphs, a - lineStart);
+                    var x1 = continues && b == lineEnd ? line.Width : SlotX(line, glyphs, b - lineStart);
+                    rect = new SKRect(line.Bounds.Left + x0, line.Bounds.Top, line.Bounds.Left + Math.Max(x1, x0 + ctx.Scale),
+                        line.Bounds.Bottom);
+                    canvas.DrawRect(rect, _selectionPaint);
+                }
 
                 if (first.IsEmpty)
                     first = rect;
@@ -4849,6 +5139,27 @@ namespace DrawnUi.Draw
         {
             if (line?.Spans == null || line.Spans.Count == 0)
                 return Array.Empty<LineGlyph>();
+
+            if (line.Carets != null)
+            {
+                // spans are in visual order here: slots come from the logical caret boxes
+                var text = line.Value ?? string.Empty;
+                var slots = new LineGlyph[line.Carets.Length];
+                for (var i = 0; i < slots.Length; i++)
+                {
+                    slots[i] = new LineGlyph
+                    {
+                        Source = text,
+                        StartIndex = i,
+                        Length = 1,
+                        Symbol = i < text.Length ? text[i] : 0,
+                        IsAvailable = true,
+                        Position = line.Carets[i].Left,
+                        Width = line.Carets[i].Advance,
+                    };
+                }
+                return slots;
+            }
 
             if (line.Spans.Count == 1)
             {

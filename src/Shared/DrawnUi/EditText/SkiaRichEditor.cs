@@ -195,6 +195,7 @@ public class SkiaRichEditor : SkiaEditor
     protected override LineGlyph[] GetLineGlyphs(TextLine line)
     {
         if (line.Spans.Count == 0) return Array.Empty<LineGlyph>();
+        if (line.Carets != null) return SkiaLabel.GetLineGlyphs(line); // right-to-left text: logical slots
         if (line.Spans.Count == 1) return line.Spans[0].Glyphs ?? Array.Empty<LineGlyph>();
 
         var result = new List<LineGlyph>();

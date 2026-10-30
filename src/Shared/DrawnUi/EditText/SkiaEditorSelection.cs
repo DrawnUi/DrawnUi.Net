@@ -50,6 +50,8 @@ public class SkiaEditorSelection : SkiaControl
         {
             var glyphs = GetLineGlyphsOverride != null
                 ? GetLineGlyphsOverride(labelLine)
+                : labelLine.Carets != null
+                ? SkiaLabel.GetLineGlyphs(labelLine)
                 : (labelLine.Spans.Count > 0 ? (labelLine.Spans[0].Glyphs ?? Array.Empty<LineGlyph>()) : Array.Empty<LineGlyph>());
 
             var lineEnd = lineIndex + glyphs.Length;
@@ -65,15 +67,34 @@ public class SkiaEditorSelection : SkiaControl
                 var lineSelStart = Math.Max(start, lineIndex) - lineIndex;
                 var lineSelEnd = Math.Min(end, lineEnd) - lineIndex;
 
-                var left = glyphs.Length > 0
-                    ? labelLine.Bounds.Left + glyphs[lineSelStart].Position
-                    : labelLine.Bounds.Left;
+                float left, right;
+                if (labelLine.Carets != null)
+                {
+                    // right-to-left text: the selected characters' boxes, two blocks across a direction change
+                    left = float.MaxValue;
+                    right = float.MinValue;
+                    foreach (var box in labelLine.Boxes(lineSelStart, lineSelEnd))
+                    {
+                        canvas.DrawRect(new SKRect(labelLine.Bounds.Left + box.Left, labelLine.Bounds.Top,
+                            labelLine.Bounds.Left + box.Right, labelLine.Bounds.Bottom), _paint);
+                        left = Math.Min(left, labelLine.Bounds.Left + box.Left);
+                        right = Math.Max(right, labelLine.Bounds.Left + box.Right);
+                    }
+                    if (left > right)
+                        left = right = labelLine.Bounds.Left + labelLine.CaretX(lineSelStart);
+                }
+                else
+                {
+                    left = glyphs.Length > 0
+                        ? labelLine.Bounds.Left + glyphs[lineSelStart].Position
+                        : labelLine.Bounds.Left;
 
-                var right = lineSelEnd < glyphs.Length
-                    ? labelLine.Bounds.Left + glyphs[lineSelEnd].Position
-                    : labelLine.Bounds.Right;
+                    right = lineSelEnd < glyphs.Length
+                        ? labelLine.Bounds.Left + glyphs[lineSelEnd].Position
+                        : labelLine.Bounds.Right;
 
-                canvas.DrawRect(new SKRect(left, labelLine.Bounds.Top, right, labelLine.Bounds.Bottom), _paint);
+                    canvas.DrawRect(new SKRect(left, labelLine.Bounds.Top, right, labelLine.Bounds.Bottom), _paint);
+                }
 
                 if (firstSelectedLine)
                 {

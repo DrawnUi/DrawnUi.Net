@@ -760,6 +760,15 @@ namespace DrawnUi.Draw
                         if (lineGlyphs.Length == 0)
                             return Text?.Length ?? 0;
 
+                        if (labelLine.Carets != null)
+                        {
+                            // right-to-left text: the grapheme boundary whose caret is nearest
+                            var stop = firstPosInLine + labelLine.NearestStop(posX, (Text?.Length ?? 0) - firstPosInLine);
+                            if (Text != null && stop > firstPosInLine && stop - 1 < Text.Length && IsEditorBreak(Text[stop - 1]))
+                                stop--;
+                            return Math.Min(stop, Text?.Length ?? stop);
+                        }
+
                         var posInline = 0;
                         var prevX = 0f;
                         foreach (var charX in lineGlyphs)
@@ -1065,6 +1074,25 @@ namespace DrawnUi.Draw
         private object lockCursor = new();
 
         /// <summary>
+        /// Pixel X of the caret before the code unit <paramref name="index"/> of a line with right-to-left text
+        /// (<see cref="TextLine.Carets"/>); a right-to-left caret is drawn to the left of its X.
+        /// </summary>
+        float BidiCaretX(TextLine line, int index)
+        {
+            var x = line.Bounds.Left + line.CaretX(index);
+            if (line.CaretIsRightToLeft(index) && Cursor != null)
+                x -= (float)(Math.Max(0, Cursor.WidthRequest) * RenderingScale);
+            return x;
+        }
+
+        /// <summary>
+        /// Pixel X of the caret at the end of a line: its right edge, or for right-to-left text the caret after its
+        /// last character.
+        /// </summary>
+        float LineEndX(TextLine line)
+            => line.Carets != null ? BidiCaretX(line, line.Carets.Length) : line.Bounds.Right;
+
+        /// <summary>
         /// Positions cursor control where it should be using translation, and sets its visibility.
         /// </summary>
         public virtual void UpdateCursorVisibility()
@@ -1164,7 +1192,7 @@ namespace DrawnUi.Draw
                             }
                             else
                             {
-                                translateX = (labelLine.Bounds.Right - Label.DrawingRect.Left) / RenderingScale;
+                                translateX = (LineEndX(labelLine) - Label.DrawingRect.Left) / RenderingScale;
                                 translateY = (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale;
                             }
 
@@ -1178,7 +1206,9 @@ namespace DrawnUi.Draw
                             if (nextLine != null)
                             {
                                 var nextGlyphs = GetLineGlyphs(nextLine);
-                                var startX = nextLine.Bounds.Left + (nextGlyphs.Length > 0 ? nextGlyphs[0].Position : 0);
+                                var startX = nextLine.Carets != null
+                                    ? BidiCaretX(nextLine, 0)
+                                    : nextLine.Bounds.Left + (nextGlyphs.Length > 0 ? nextGlyphs[0].Position : 0);
                                 MoveCursorTo((startX - Label.DrawingRect.Left) / RenderingScale,
                                     (nextLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
                                 break;
@@ -1187,7 +1217,7 @@ namespace DrawnUi.Draw
 
                         if (cursorIndex == nextIndex - 1 && nextIndex > index + lineGlyphs.Length)
                         {
-                            MoveCursorTo((labelLine.Bounds.Right - Label.DrawingRect.Left) / RenderingScale,
+                            MoveCursorTo((LineEndX(labelLine) - Label.DrawingRect.Left) / RenderingScale,
                                 (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
                             break;
                         }
@@ -1204,7 +1234,9 @@ namespace DrawnUi.Draw
 
                                 if (isHardLineBreak)
                                 {
-                                    var startX = labelLine.Bounds.Left + (lineGlyphs.Length > 0 ? lineGlyphs[0].Position : 0);
+                                    var startX = labelLine.Carets != null
+                                        ? BidiCaretX(labelLine, 0)
+                                        : labelLine.Bounds.Left + (lineGlyphs.Length > 0 ? lineGlyphs[0].Position : 0);
                                     MoveCursorTo((startX - Label.DrawingRect.Left) / RenderingScale,
                                         (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
                                 }
@@ -1216,14 +1248,16 @@ namespace DrawnUi.Draw
                                 break;
                             }
 
-                            var x = labelLine.Bounds.Left + lineGlyphs[cursorIndex - index].Position;
+                            var x = labelLine.Carets != null
+                                ? BidiCaretX(labelLine, cursorIndex - index)
+                                : labelLine.Bounds.Left + lineGlyphs[cursorIndex - index].Position;
                             var y = labelLine.Bounds.Top;
 
                             MoveCursorTo((x - Label.DrawingRect.Left) / RenderingScale, (y - Label.DrawingRect.Top) / RenderingScale);
                             break;
                         }
 
-                        endX = labelLine.Bounds.Right;
+                        endX = LineEndX(labelLine);
                         lastY = labelLine.Bounds.Top;
                         line++;
                         index = nextIndex;
@@ -1348,6 +1382,99 @@ namespace DrawnUi.Draw
             return nextIndex;
         }
 
+        /// <summary>
+        /// The laid-out line that holds the caret index <paramref name="position"/> (the earlier line at a soft wrap,
+        /// where the caret is drawn) and the text index of its start.
+        /// </summary>
+        TextLine FindCaretLine(int position, out int lineStart)
+        {
+            lineStart = 0;
+            if (Label?.Lines == null)
+                return null;
+
+            var index = 0;
+            foreach (var line in Label.Lines)
+            {
+                var count = GetLineGlyphs(line).Length;
+                if (position >= index && position <= index + count)
+                {
+                    lineStart = index;
+                    return line;
+                }
+                index = AdvanceLineTextIndex(index, count);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Left / Right arrow target from <paramref name="from"/> on a line with right-to-left text: the grapheme
+        /// boundary of the line with the nearest caret X on that side (the logically nearest among equal X); at the
+        /// line's visual edge one grapheme in reading order when that reaches another line, otherwise
+        /// <paramref name="from"/> (the key does nothing). -1 when the line has no right-to-left text: the caret then
+        /// moves one step in text order.
+        /// </summary>
+        protected int VisualArrowTarget(int from, bool right)
+        {
+            var line = FindCaretLine(from, out var lineStart);
+            if (line?.Carets == null)
+                return -1;
+
+            var all = Text ?? string.Empty;
+            var text = line.Value ?? string.Empty;
+            if (all.Length - lineStart < text.Length) // the label's synthetic trailing space is no stop
+                text = text.Substring(0, Math.Max(0, all.Length - lineStart));
+            var local = Math.Clamp(from - lineStart, 0, text.Length);
+            var x = line.CaretX(local);
+            var best = -1;
+            var bestX = 0f;
+            const float same = 0.01f;
+            for (var i = 0; ; i += System.Globalization.StringInfo.GetNextTextElementLength(text, i))
+            {
+                var cx = line.CaretX(i);
+                if (i != local && (right ? cx > x + same : cx < x - same))
+                {
+                    if (best < 0
+                        || (right ? cx < bestX - same : cx > bestX + same)
+                        || Math.Abs(cx - bestX) <= same && Math.Abs(i - local) < Math.Abs(best - local))
+                    {
+                        best = i;
+                        bestX = cx;
+                    }
+                }
+                if (i >= text.Length)
+                    break;
+            }
+            if (best >= 0)
+                return lineStart + best;
+
+            // visual edge: Right goes forward in a left-to-right paragraph, back in a right-to-left one
+            var forward = right != line.IsRightToLeft;
+            if (forward && local >= text.Length && from < all.Length)
+                return from + CodeUnitsAfterCaret(all, from, 1);
+            if (!forward && local == 0 && from > 0)
+                return from - CodeUnitsBeforeCaret(all, from, 1);
+            return from;
+        }
+
+        /// <summary>
+        /// The edge of the selection [<paramref name="start"/>, <paramref name="end"/>] a plain Left / Right arrow
+        /// collapses it to when it touches right-to-left text: the one with the smaller (Left) or larger (Right) caret
+        /// X. -1 when neither edge is on such a line: the selection then collapses in text order.
+        /// </summary>
+        protected int SelectionEdgeByX(int start, int end, bool right)
+        {
+            var a = FindCaretLine(start, out var aStart);
+            var b = FindCaretLine(end, out var bStart);
+            if (a?.Carets == null && b?.Carets == null)
+                return -1;
+            if (a != b)
+                return right ? end : start;
+
+            var xa = a.CaretX(start - aStart);
+            var xb = a.CaretX(end - bStart);
+            return right == (xb >= xa) ? end : start;
+        }
+
         /// <summary>Returns the zero-based line index the cursor is currently on.</summary>
         public int GetCursorLine()
         {
@@ -1397,6 +1524,17 @@ namespace DrawnUi.Draw
             if (glyphs.Length == 0)
             {
                 CursorPosition = lineStart;
+                return;
+            }
+
+            var target = Label.Lines[targetLine];
+            if (target.Carets != null)
+            {
+                var stop = lineStart + target.NearestStop(cursorXPixels + Label.DrawingRect.Left - target.Bounds.Left,
+                    (Text?.Length ?? 0) - lineStart);
+                if (Text != null && stop > lineStart && stop - 1 < Text.Length && IsEditorBreak(Text[stop - 1]))
+                    stop--;
+                CursorPosition = Math.Min(stop, Text?.Length ?? stop);
                 return;
             }
 

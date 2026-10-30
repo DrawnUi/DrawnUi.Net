@@ -138,6 +138,35 @@ public partial class SkiaEditor
         _selectionMovingEdge = -1;
     }
 
+    /// <summary>
+    /// Left / Right arrow. On a line with right-to-left text the caret moves visually (<see cref="VisualArrowTarget"/>)
+    /// and a plain arrow collapses a selection to its left or right edge on screen; elsewhere one step in text order.
+    /// </summary>
+    public void StubArrow(bool right, bool extendSelection = false)
+    {
+        if (!extendSelection && HasSelection)
+        {
+            var edge = SelectionEdgeByX(CursorPosition, CursorPosition + SelectionLength, right);
+            if (edge < 0)
+            {
+                StubMoveCursor(right ? 1 : -1);
+                return;
+            }
+            CursorPosition = edge;
+            SelectionLength = 0;
+            _stubSelectionStop = -1;
+            _selectionMovingEdge = -1;
+            return;
+        }
+
+        var from = extendSelection && HasSelection && _selectionMovingEdge >= 0 ? _selectionMovingEdge : CursorPosition;
+        var target = VisualArrowTarget(from, right);
+        if (target < 0)
+            StubMoveCursor(right ? 1 : -1, extendSelection);
+        else if (target != from)
+            StubMoveCursor(target - from, extendSelection);
+    }
+
     public void StubSelectRange(int start, int length)
     {
         var textLength = Text?.Length ?? 0;

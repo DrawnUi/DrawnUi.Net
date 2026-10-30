@@ -288,7 +288,13 @@ public partial class Canvas
     public void DesktopEditorBackspace() => EditorAction(e => e.StubBackspace());
     public void DesktopEditorDelete() => EditorAction(e => e.StubDelete());
     public void DesktopEditorEnter(bool splitLine = false, bool shift = false) => EditorAction(e => e.StubPressEnter(splitLine, shift));
-    public void DesktopEditorMoveCursor(int delta, bool select) => EditorAction(e => e.StubMoveCursor(delta, select));
+    public void DesktopEditorMoveCursor(int delta, bool select) => EditorAction(e =>
+    {
+        if (delta == 1 || delta == -1)
+            e.StubArrow(delta > 0, select); // Left / Right keys: visual in right-to-left text
+        else
+            e.StubMoveCursor(delta, select);
+    });
     public void DesktopEditorMoveToStart(bool select) => EditorAction(e => e.StubMoveCursor(-e.CursorPosition, select));
     public void DesktopEditorMoveToEnd(bool select) => EditorAction(e => e.StubMoveCursor((e.Text?.Length ?? 0) - e.CursorPosition, select));
     public void DesktopEditorSelectAll() => EditorAction(e => e.StubSelectAll());

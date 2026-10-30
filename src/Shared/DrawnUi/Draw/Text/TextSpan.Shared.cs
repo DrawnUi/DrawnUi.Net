@@ -102,6 +102,11 @@ public partial class TextSpan : IDisposable
         TextFiltered = sb.ToString();
         // Return StringBuilder to pool
         SkiaLabel.ObjectPools.ReturnStringBuilder(sb);
+
+        // shaping comes from the text too, not only from a font AutoFindFont found: Arabic or Hebrew in a font that has
+        // their glyphs was drawn unjoined and reversed. Only ever turned on here, an app's own NeedShape stays.
+        if (!NeedShape && SkiaLabel.TextNeedsShaping(TextFiltered))
+            NeedShape = true;
     }
 
     public bool HasSetFont { get; set; }
