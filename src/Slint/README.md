@@ -42,9 +42,14 @@ Register fonts and styles with `Super.UseDrawnUi()`, as on the other .NET heads.
 
 ## How It Works
 
-The canvas draws into a raster surface when something changed, at most once a display frame, and the view shows the frame as an image.
-Since the view is an ordinary Slint image, it needs nothing of a particular Slint renderer.
-On an Apple Silicon Mac, a frame of 1168×403 pixels takes about 1.4 ms to draw and pass on.
+The canvas draws when something changed, at most once a display frame, and the view shows the frame as an image.
+
+- When the window's Slint renderer uses OpenGL, the canvas draws with Skia on that context, into a texture that the view shows without copying pixels.
+  Select such a renderer before creating the window: `new Slint.BackendSelector().RequireOpenGL().Select();`.
+- Otherwise, such as with Skia on Metal or with the software renderer, the canvas draws into a raster surface, whose pixels the view shows.
+
+`SlintCanvasHost.IsGpu` tells which path a view takes.
+On an Apple Silicon Mac, a frame of 1168×403 pixels takes about 1.5 ms of the CPU on the GPU path, and 1.8 ms on the raster path.
 
 Input:
 
@@ -60,4 +65,4 @@ Input:
 dotnet run --project src/Slint/Samples/HelloSlint
 ```
 
-`DRAWNUI_SELFTEST=<directory>` runs it as a test: it sends window events, as a user's mouse and keyboard would, saves frames as PNG files, and quits.
+`DRAWNUI_GPU=1` selects an OpenGL renderer, for the GPU path. `DRAWNUI_SELFTEST=<directory>` runs it as a test: it sends window events, as a user's mouse and keyboard would, saves frames as PNG files, and quits.

@@ -45,10 +45,15 @@ internal static class SelfTest
                 for (var i = 0; i < 3; i++) Type("");
                 Type("");
             }),
+            // On the GPU a frame is saved with the next frame that the window renders.
             (4000, () =>
             {
                 cards.SaveFrame(Path.Combine(outDir, "2-cards.png"));
                 keys.SaveFrame(Path.Combine(outDir, "3-keys.png"));
+            }),
+            (4300, () =>
+            {
+                Console.WriteLine($"GPU: cards {cards.IsGpu}, keys {keys.IsGpu}");
                 Console.WriteLine($"status: {window.Status}");
                 Console.WriteLine($"editor: {scene.Editor.Text}");
                 Console.WriteLine($"scroll offset: {scene.Scroll.ViewportOffsetY:F0}");

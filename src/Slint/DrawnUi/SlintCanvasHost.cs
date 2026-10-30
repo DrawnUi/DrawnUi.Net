@@ -15,7 +15,10 @@ namespace DrawnUi.Slint;
 /// Runs a DrawnUI <see cref="Views.Canvas"/> in a <c>DrawnUiView</c> of a Slint component, from <c>drawnui.slint</c>.
 /// </summary>
 /// <remarks>
-/// The canvas draws into a raster surface when something changed, and the view shows each frame as an image.
+/// The canvas draws when something changed, at most once a display frame, and the view shows each frame as an image.
+/// When the window's Slint renderer uses OpenGL, such as after <c>new BackendSelector().RequireOpenGL().Select()</c>,
+/// the canvas draws with Skia on that context into a texture that the view shows, without copying pixels; otherwise
+/// it draws into a raster surface, whose pixels the view shows.
 /// The view passes its size, pointer, wheel, and keyboard input back, in logical pixels, which the host scales by
 /// the window's scale factor. Use it on the Slint thread: DrawnUI's main thread is the Slint thread.
 /// </remarks>
@@ -56,6 +59,8 @@ public sealed class SlintCanvasHost : IDisposable
     private readonly SlintTimer _frameTimer = new();
     private readonly Stopwatch _clock = Stopwatch.StartNew();
     private SKSurface? _surface;
+    private SlintGpuRenderer.Target? _gpuTarget;
+    private string? _pendingSave;
     private int _width, _height;
     private float _logicalWidth, _logicalHeight;
     private bool _resizeScheduled;
@@ -74,7 +79,7 @@ public sealed class SlintCanvasHost : IDisposable
         // Animators and Update() mark the canvas dirty; it draws then, at most once a display frame.
         _frameTimer.Start(SlintTimerMode.Repeated, TimeSpan.FromSeconds(1 / refreshRate), () =>
         {
-            if (Canvas.IsDirty || !_drawable.HasDrawn)
+            if (NeedsFrame)
                 Render();
         });
     }
@@ -91,40 +96,105 @@ public sealed class SlintCanvasHost : IDisposable
     /// <summary>Raised after each frame with the time it took to draw and pass on, in milliseconds.</summary>
     public event Action<double>? FrameRendered;
 
-    /// <summary>Draws the canvas now, instead of at the next display frame.</summary>
+    /// <summary>Whether the canvas draws on the GPU, into a texture of Slint's OpenGL context.</summary>
+    public bool IsGpu => _views.Gpu != null;
+
+    private bool NeedsFrame => _width > 0 && (Canvas.IsDirty || !_drawable.HasDrawn || _pendingSave != null);
+
+    /// <summary>Draws the canvas now on the raster path, or with the next frame of the window on the GPU.</summary>
     public void Render()
     {
-        if (_surface == null)
+        if (_width <= 0)
+            return;
+        if (_views.Gpu != null)
+        {
+            _views.RequestRedraw();
+            return;
+        }
+        _gpuTarget = null;
+        if (_surface == null || _surface.Canvas.DeviceClipBounds.Width != _width || _surface.Canvas.DeviceClipBounds.Height != _height)
+        {
+            _surface?.Dispose();
+            _surface = SKSurface.Create(new SKImageInfo(_width, _height, SKColorType.Rgba8888, SKAlphaType.Premul));
+        }
+        var started = Stopwatch.GetTimestamp();
+        DrawInto(_surface);
+        _surface.Canvas.Flush();
+        using (var pixmap = _surface.PeekPixels())
+        {
+            var frame = SlintImage.FromPremultipliedRgba8(_width, _height, pixmap.GetPixelSpan());
+            _views.Show(ViewId, frame);
+            _frame?.Dispose();
+            _frame = frame;
+        }
+        SavePending(_surface);
+        FrameRendered?.Invoke(Stopwatch.GetElapsedTime(started).TotalMilliseconds);
+    }
+
+    /// <summary>Draws into the texture, from the window's rendering notifier, where the context is current.</summary>
+    internal void RenderGpu(SlintGpuRenderer gpu)
+    {
+        if (!NeedsFrame)
             return;
         var started = Stopwatch.GetTimestamp();
+        if (_gpuTarget == null || _gpuTarget.Width != _width || _gpuTarget.Height != _height)
+        {
+            _gpuTarget?.Dispose();
+            _gpuTarget = gpu.CreateTarget(_width, _height);
+            _views.Show(ViewId, _gpuTarget.Image);
+        }
+        var target = _gpuTarget;
+        gpu.Draw(() =>
+        {
+            DrawInto(target.Surface);
+            target.Surface.Flush();
+            SavePending(target.Surface);
+        });
+        FrameRendered?.Invoke(Stopwatch.GetElapsedTime(started).TotalMilliseconds);
+    }
+
+    /// <summary>The GPU context went away: the next frame draws on the raster path.</summary>
+    internal void ReleaseGpu()
+    {
+        _gpuTarget?.Dispose();
+        _gpuTarget = null;
+        _drawable.HasDrawn = false;
+    }
+
+    private void DrawInto(SKSurface surface)
+    {
         var nanos = _clock.Elapsed.Ticks * 100;
+        _drawable.Surface = surface;
         _drawable.SignalFrame(nanos);
         _drawable.IsDrawing = true;
         try
         {
-            Canvas.RenderExternalSurface(_surface, new SKRect(0, 0, _width, _height), nanos);
+            Canvas.RenderExternalSurface(surface, new SKRect(0, 0, _width, _height), nanos);
         }
         finally
         {
             _drawable.IsDrawing = false;
         }
         _drawable.HasDrawn = true;
-        _surface.Canvas.Flush();
-        using var pixmap = _surface.PeekPixels();
-        var frame = SlintImage.FromPremultipliedRgba8(_width, _height, pixmap.GetPixelSpan());
-        _views.Show(ViewId, frame);
-        _frame?.Dispose();
-        _frame = frame;
-        FrameRendered?.Invoke(Stopwatch.GetElapsedTime(started).TotalMilliseconds);
     }
 
-    /// <summary>Saves the latest frame as a PNG file, such as for tests.</summary>
+    /// <summary>
+    /// Saves the next frame as a PNG file, such as for tests; on the GPU, it's read back while the context is current.
+    /// </summary>
     public void SaveFrame(string path)
     {
-        if (_surface == null)
-            throw new InvalidOperationException("The view has no size yet.");
-        using var image = _surface.Snapshot();
-        using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+        _pendingSave = path;
+        Render();
+    }
+
+    private void SavePending(SKSurface surface)
+    {
+        if (_pendingSave is not { } path)
+            return;
+        _pendingSave = null;
+        using var image = surface.Snapshot();
+        using var raster = image.ToRasterImage();
+        using var data = raster.Encode(SKEncodedImageFormat.Png, 100);
         File.WriteAllBytes(path, data.ToArray());
     }
 
@@ -153,9 +223,6 @@ public sealed class SlintCanvasHost : IDisposable
             return;
         _width = width;
         _height = height;
-        _surface?.Dispose();
-        _surface = SKSurface.Create(new SKImageInfo(width, height, SKColorType.Rgba8888, SKAlphaType.Premul));
-        _drawable.Surface = _surface;
         _drawable.CanvasSize = new SKSize(width, height);
         Super.Screen.Density = scale;
         Canvas.RenderingScale = scale;
@@ -233,7 +300,7 @@ public sealed class SlintCanvasHost : IDisposable
         DeviceType = PointerDeviceType.Mouse,
     };
 
-    /// <summary>Stops drawing, and releases the canvas and its surface.</summary>
+    /// <summary>Stops drawing, and releases the canvas and its surfaces.</summary>
     public void Dispose()
     {
         _frameTimer.Dispose();
@@ -242,17 +309,36 @@ public sealed class SlintCanvasHost : IDisposable
         _surface?.Dispose();
         _surface = null;
         _frame?.Dispose();
+        // A texture belongs to the GPU context, which is current only in the rendering notifier, or gone.
+        _views.ReleaseLater(_gpuTarget);
+        _gpuTarget = null;
     }
 
-    /// <summary>The views of one component: the frames model of its <c>DrawnUiHost</c>, and its callbacks.</summary>
+    /// <summary>
+    /// The views of one component: the frames model of its <c>DrawnUiHost</c>, its callbacks, and the GPU renderer
+    /// of its window, while the window's Slint renderer uses OpenGL.
+    /// </summary>
     private sealed class ComponentViews
     {
+        private readonly SlintComponent _component;
         private readonly global::Slint.ListModel<SlintImage> _frames = new();
         private readonly Dictionary<int, SlintCanvasHost> _hosts = new();
+        private readonly List<SlintGpuRenderer.Target> _released = new();
+
+        public SlintGpuRenderer? Gpu { get; private set; }
 
         public ComponentViews(SlintComponent component)
         {
+            _component = component;
             const string Global = "DrawnUiHost";
+            try
+            {
+                component.Window.SetRenderingNotifier(OnRendering);
+            }
+            catch (NotSupportedException)
+            {
+                // A renderer without rendering notifiers, such as the software renderer: the raster path.
+            }
             component.SetGlobalProperty(Global, "frames", _frames);
             component.SetGlobalCallback(Global, "resized", args => Find(args)?.Resize(ToFloat(args[1]), ToFloat(args[2])));
             component.SetGlobalCallback(Global, "pointer", args =>
@@ -278,6 +364,42 @@ public sealed class SlintCanvasHost : IDisposable
         }
 
         public void Show(int viewId, SlintImage frame) => _frames[viewId] = frame;
+
+        public void RequestRedraw() => _component.Window.RequestRedraw();
+
+        public void ReleaseLater(SlintGpuRenderer.Target? target)
+        {
+            if (target != null)
+                _released.Add(target);
+        }
+
+        private void OnRendering(global::Slint.RenderingState state, global::Slint.GraphicsApi api)
+        {
+            switch (state)
+            {
+                case global::Slint.RenderingState.RenderingSetup when api.Kind == global::Slint.GraphicsApiKind.NativeOpenGL:
+                    Gpu = SlintGpuRenderer.Create(api);
+                    if (Gpu != null)
+                        RequestRedraw();
+                    break;
+                case global::Slint.RenderingState.BeforeRendering when Gpu != null:
+                    foreach (var target in _released)
+                        target.Dispose();
+                    _released.Clear();
+                    foreach (var host in _hosts.Values)
+                        host.RenderGpu(Gpu);
+                    break;
+                case global::Slint.RenderingState.RenderingTeardown:
+                    foreach (var target in _released)
+                        target.Dispose();
+                    _released.Clear();
+                    foreach (var host in _hosts.Values)
+                        host.ReleaseGpu();
+                    Gpu?.Dispose();
+                    Gpu = null;
+                    break;
+            }
+        }
 
         private SlintCanvasHost? Find(object?[] args) => _hosts.GetValueOrDefault(ToInt(args[0]));
 
