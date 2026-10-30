@@ -1226,14 +1226,18 @@ namespace DrawnUi.Draw
                                 continue;
 
                             span.DrawingOffset = offset;
-                            var paint = span.SetupPaint(scale, PaintDefault, FontDefault);
-                            var font = span.Font;
 
                             if (!(span is IDrawnTextSpan))
                             {
-                                // Only check glyph rendering if not drawn (since drawn might not need shaping)
+                                // Only check glyph rendering if not drawn (since drawn might not need shaping).
+                                // Before SetupPaint: AutoFindFont picks the span's typeface here, and the font must
+                                // measure with it now, not from the next measure on (an emoji run measured with the
+                                // text font was drawn wider than its slot, over the text after it)
                                 span.CheckGlyphsCanBeRendered();
                             }
+
+                            var paint = span.SetupPaint(scale, PaintDefault, FontDefault);
+                            var font = span.Font;
 
                             var lines = SplitLines(span.TextFiltered,
                                 paint,
