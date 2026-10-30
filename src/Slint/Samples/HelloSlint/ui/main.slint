@@ -1,0 +1,48 @@
+import { Button, HorizontalBox } from "std-widgets.slint";
+import { DrawnUiView } from "drawnui.slint";
+export { DrawnUiHost } from "drawnui.slint";
+
+export component MainWindow inherits Window {
+    title: "DrawnUI on Slint";
+    preferred-width: 900px;
+    preferred-height: 700px;
+    background: #20242c;
+
+    in property <string> status: "Tap the DrawnUI button, or reset it from Slint";
+    callback reset();
+    // Where the views are in the window, for the self-test, which sends window events.
+    out property <length> cards-x: cards.absolute-position.x;
+    out property <length> cards-y: cards.absolute-position.y;
+    out property <length> keys-x: keys.absolute-position.x;
+    out property <length> keys-y: keys.absolute-position.y;
+
+    VerticalLayout {
+        HorizontalBox {
+            vertical-stretch: 0;
+            Text {
+                text: root.status;
+                color: white;
+                vertical-alignment: center;
+            }
+            Button {
+                text: "Reset from Slint";
+                clicked => {
+                    root.reset();
+                }
+            }
+        }
+
+        HorizontalLayout {
+            padding: 8px;
+            spacing: 8px;
+            cards := DrawnUiView {
+                view-id: 0;
+                horizontal-stretch: 2;
+            }
+            keys := DrawnUiView {
+                view-id: 1;
+                horizontal-stretch: 1;
+            }
+        }
+    }
+}

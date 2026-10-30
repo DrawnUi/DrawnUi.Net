@@ -1,0 +1,75 @@
+// Shows DrawnUI canvases: each DrawnUiView shows the frames of the SlintCanvasHost attached
+// with its view-id, and passes its size and input to it. Export DrawnUiHost from the main file
+// of the app, so that SlintCanvasHost.Attach finds it:
+//
+//     import { DrawnUiView } from "drawnui.slint";
+//     export { DrawnUiHost } from "drawnui.slint";
+
+export global DrawnUiHost {
+    // The latest frame of each view, by view id.
+    in property <[image]> frames;
+    callback resized(view-id: int, width: length, height: length);
+    // kind: 0 down, 1 up, 2 move, 3 leave or cancel; button: 0 left, 1 middle, 2 right
+    callback pointer(view-id: int, kind: int, button: int, x: length, y: length);
+    callback wheel(view-id: int, x: length, y: length, delta-x: length, delta-y: length);
+    // Returns whether DrawnUI took the key.
+    callback key(view-id: int, pressed: bool, text: string, shift: bool, control: bool, alt: bool) -> bool;
+}
+
+export component DrawnUiView inherits Rectangle {
+    in property <int> view-id;
+    // Takes the room that a layout has, like a canvas does.
+    horizontal-stretch: 1;
+    vertical-stretch: 1;
+
+    init => {
+        DrawnUiHost.resized(root.view-id, root.width, root.height);
+    }
+    changed width => {
+        DrawnUiHost.resized(root.view-id, root.width, root.height);
+    }
+    changed height => {
+        DrawnUiHost.resized(root.view-id, root.width, root.height);
+    }
+
+    Image {
+        source: DrawnUiHost.frames[root.view-id];
+        width: parent.width;
+        height: parent.height;
+        // A frame has the view's size in physical pixels, which an image would otherwise ask the layout for.
+        preferred-width: 0px;
+        preferred-height: 0px;
+    }
+
+    focus := FocusScope {
+        key-pressed(event) => {
+            DrawnUiHost.key(root.view-id, true, event.text, event.modifiers.shift, event.modifiers.control, event.modifiers.alt) ? EventResult.accept : EventResult.reject
+        }
+        key-released(event) => {
+            DrawnUiHost.key(root.view-id, false, event.text, event.modifiers.shift, event.modifiers.control, event.modifiers.alt) ? EventResult.accept : EventResult.reject
+        }
+
+        TouchArea {
+            pointer-event(e) => {
+                if e.kind == PointerEventKind.down {
+                    focus.focus();
+                }
+                DrawnUiHost.pointer(
+                    root.view-id,
+                    e.kind == PointerEventKind.down ? 0 : e.kind == PointerEventKind.up ? 1 : e.kind == PointerEventKind.move ? 2 : 3,
+                    e.button == PointerEventButton.middle ? 1 : e.button == PointerEventButton.right ? 2 : 0,
+                    self.mouse-x,
+                    self.mouse-y);
+            }
+            changed has-hover => {
+                if !self.has-hover {
+                    DrawnUiHost.pointer(root.view-id, 3, 0, self.mouse-x, self.mouse-y);
+                }
+            }
+            scroll-event(e) => {
+                DrawnUiHost.wheel(root.view-id, self.mouse-x, self.mouse-y, e.delta-x, e.delta-y);
+                EventResult.accept
+            }
+        }
+    }
+}

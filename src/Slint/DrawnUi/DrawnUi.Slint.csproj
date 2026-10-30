@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Slint for .NET targets .NET 10. -->
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Title>DrawnUI for Slint</Title>
+    <PackageId>DrawnUi.Slint</PackageId>
+    <Description>Slint host for DrawnUI: DrawnUI canvases in the windows of a Slint for .NET app, on its desktop and mobile platforms.</Description>
+    <PackageTags>drawnui slint skia skiasharp desktop</PackageTags>
+    <PackageIcon>icon128.png</PackageIcon>
+    <CreatePackage>false</CreatePackage>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);SLINT;NET;DRAWNUI_NET</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\icon128.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <!-- The component that apps import, see SlintCanvasHost. -->
+    <None Include="drawnui.slint" Pack="true" PackagePath="slint\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AppoMobi.Gestures" Version="3.11.7" />
+    <PackageReference Include="AppoMobi.Specials" Version="10.0.2" />
+    <PackageReference Include="CommonMark.NET" Version="0.15.1" />
+    <PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="9.0.6" />
+    <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.148.0" />
+    <PackageReference Include="SkiaSharp.Skottie" Version="4.148.0" />
+    <PackageReference Include="Svg.Skia" Version="4.9.0" />
+    <PackageReference Include="yurkinh.slint.net" Version="1.19.0-preview.10" />
+  </ItemGroup>
+
+  <!-- Net platform source files (same files DrawnUi.Net.csproj compiles) -->
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\Net\DrawnUi\**\*.cs" Exclude="$(MSBuildThisFileDirectory)..\..\Net\DrawnUi\obj\**\*.cs" />
+  </ItemGroup>
+
+  <Import Project="..\..\Shared\DrawnUi\Shared.projitems" Label="Shared" />
+  <Import Project="..\..\SharedNet\SharedNet.projitems" Label="SharedNet" />
+
+  <ItemGroup>
+    <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Features\Pdf\Pdf.cs" />
+    <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\Draw\Base\VisualTreeHandler.cs" />
+  </ItemGroup>
+
+</Project>

@@ -30,6 +30,9 @@
   <Folder Name="/Lib/OpenTK/">
     <Project Path="OpenTk/DrawnUi/DrawnUi.OpenTk.csproj" />
   </Folder>
+  <Folder Name="/Lib/Slint/">
+    <Project Path="Slint/DrawnUi/DrawnUi.Slint.csproj" />
+  </Folder>
   <Folder Name="/Lib/WASM/">
     <Project Path="Wasm/DrawnUi/DrawnUi.Wasm.csproj" />
   </Folder>
@@ -68,6 +71,9 @@
     <Project Path="OpenTk/Samples/OpenTkOverlay/OpenTkOverlay.csproj" />
     <Project Path="OpenTk/Samples/HelloOpenTk/HelloOpenTk.csproj" />
     <Project Path="OpenTk/Samples/OpenTkPong/OpenTkPong.csproj" />
+  </Folder>
+  <Folder Name="/Samples/Slint/">
+    <Project Path="Slint/Samples/HelloSlint/HelloSlint.csproj" />
   </Folder>
   <Folder Name="/Samples/Shared/">
     <Project Path="Shared/Samples/Pong.Shared/Pong.Shared.shproj" />
