@@ -69,6 +69,11 @@ void main() {
   🤖 <strong style="color: white;">Teach your AI agent to use DrawnUI</strong> — see the <a href="articles/ai-skills.md" style="color: white; font-weight: 700; text-decoration: underline;">AI skills guide</a>.
 </div>
 
+<div style="margin: 14px 0 0 0; padding: 16px 20px; border: 1px solid rgba(37,99,235,0.22); border-radius: 10px; background: linear-gradient(180deg, rgba(37,99,235,0.06), rgba(37,99,235,0.02)); color: #dbeafe; text-align: center;">
+  <strong style="color: white;">MIT, everywhere</strong><br>
+  DrawnUI is MIT licensed in every language and on every platform: desktop, mobile, web and embedded devices. Ship it in commercial products with no attribution badge, no about screen and no per-device royalty.
+</div>
+
 <script id="fragShader" type="x-shader/x-fragment">
 precision mediump float;
 

@@ -19,6 +19,10 @@ Supported hosts:
 * `DrawnUi.Wpf` - drawn controls inside WPF windows.
 * `DrawnUi.Net` - platform-agnostic console/server rendering scenarios.
 
+## MIT, everywhere
+
+DrawnUI is MIT licensed in every language and on every platform: desktop, mobile, web and embedded devices. Ship it in commercial products with no attribution badge, no about screen and no per-device royalty.
+
 ## React?
 
 DrawnUI for React just appeared as a standalone DrawnUI engine in TypeScript, running on [CanvasKit](https://skia.org/docs/user/modules/canvaskit/) (Skia compiled to WebAssembly) in the browser. It tends to use same API as the .NET version. 
