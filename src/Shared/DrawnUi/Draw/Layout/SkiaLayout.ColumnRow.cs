@@ -1580,6 +1580,18 @@ else
         {
             var fillChildrenCount = 0;
 
+            // the fixed space only matters when a main-axis Fill child shares what is left: without one, measuring
+            // every child here would only repeat the main pass
+            var anyFill = false;
+            foreach (var c in nonTemplated)
+            {
+                if (c?.CanDraw == true && IsChildFill(c))
+                {
+                    anyFill = true;
+                    break;
+                }
+            }
+
             for (var row = 0; row < layoutStructure.MaxRows; row++)
             {
                 if (row > 0) spacingUsed += GetSpacingForIndex(row, scale);
@@ -1607,7 +1619,7 @@ else
                     {
                         fillChildrenCount++;
                     }
-                    else
+                    else if (anyFill)
                     {
                         fixedSpaceUsed += CalculateChildFixedSpace(child, rectForChildrenPixels, scale);
                     }
