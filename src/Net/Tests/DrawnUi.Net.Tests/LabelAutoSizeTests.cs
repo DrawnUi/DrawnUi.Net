@@ -50,7 +50,8 @@ public class LabelAutoSizeTests
     }
 
     /// <summary>
-    /// Results every mode gave on a fresh label before the FitHorizontal fix (200pt wide, FontSize 40).
+    /// Results every mode gave on a fresh label before the FitHorizontal fix (200pt wide, FontSize 40), the Fill sizes
+    /// taken again since text is measured with unrounded widths.
     /// heightRequest -1 = the 300pt canvas height.
     /// </summary>
     [Theory]
@@ -59,7 +60,7 @@ public class LabelAutoSizeTests
     [InlineData(AutoSizeType.None, ShortText, 50, 0, 40.0, 1)]
     [InlineData(AutoSizeType.FitFillHorizontal, LongText, 50, 0, 15.4, 1)]
     [InlineData(AutoSizeType.FitFillHorizontal, LongText, -1, 1, 15.4, 1)]
-    [InlineData(AutoSizeType.FitFillHorizontal, ShortText, 50, 0, 207.5, 1)]
+    [InlineData(AutoSizeType.FitFillHorizontal, ShortText, 50, 0, 206.9, 1)]
     [InlineData(AutoSizeType.FitFillVertical, LongText, 50, 0, 19.1, 2)]
     [InlineData(AutoSizeType.FitFillVertical, LongText, -1, 0, 45.3, 4)]
     [InlineData(AutoSizeType.FitFillVertical, ShortText, 50, 0, 40.0, 1)]
@@ -68,8 +69,8 @@ public class LabelAutoSizeTests
     [InlineData(AutoSizeType.FitHorizontal, LongText, -1, 1, 15.4, 1)]
     [InlineData(AutoSizeType.FitHorizontal, ShortText, 50, 0, 40.0, 1)]
     [InlineData(AutoSizeType.FillHorizontal, LongText, 50, 0, 42.65, 1)] // 42.6 or 42.7 depending on how many measures ran
-    [InlineData(AutoSizeType.FillHorizontal, LongText, -1, 0, 42.7, 3)]
-    [InlineData(AutoSizeType.FillHorizontal, ShortText, 50, 0, 207.5, 1)]
+    [InlineData(AutoSizeType.FillHorizontal, LongText, -1, 0, 42.6, 3)]
+    [InlineData(AutoSizeType.FillHorizontal, ShortText, 50, 0, 206.9, 1)]
     [InlineData(AutoSizeType.FitVertical, LongText, 50, 0, 19.1, 2)]
     [InlineData(AutoSizeType.FitVertical, LongText, 50, 1, 15.4, 1)]
     [InlineData(AutoSizeType.FitVertical, LongText, -1, 0, 40.0, 3)]
@@ -113,7 +114,7 @@ public class LabelAutoSizeTests
     /// FitFill modes restart from the last size on purpose (the faster mode for changing text): pinned too.
     /// </summary>
     [Theory]
-    [InlineData(AutoSizeType.FitFillHorizontal, 207.5, 15.4)]
+    [InlineData(AutoSizeType.FitFillHorizontal, 206.9, 15.4)]
     [InlineData(AutoSizeType.FitFillVertical, 40.0, 19.1)]
     public void FitFill_TextChange_KeepsPinnedResult(AutoSizeType mode, double shortFont, double longFont)
     {

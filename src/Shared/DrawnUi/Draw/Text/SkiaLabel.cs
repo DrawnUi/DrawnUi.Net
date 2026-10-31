@@ -381,7 +381,7 @@ namespace DrawnUi.Draw
 
             if (FontDefault == null)
             {
-                FontDefault = new SKFont();
+                FontDefault = new SKFont { LinearMetrics = true }; // unhinted advances: the same widths on every platform
                 _fontDefaultSize = -1f;
                 _fontDefaultTypeface = null;
                 _fontDefaultEmbolden = false;
@@ -482,7 +482,7 @@ namespace DrawnUi.Draw
                 {
                     if (FontStroke == null)
                     {
-                        FontStroke = new SKFont();
+                        FontStroke = new SKFont { LinearMetrics = true };
                         _fontStrokeSize = -1f;
                         _fontStrokeTypeface = null;
                         _fontStrokeSkewX = float.NaN;
@@ -506,7 +506,7 @@ namespace DrawnUi.Draw
                 {
                     if (FontShadow == null)
                     {
-                        FontShadow = new SKFont();
+                        FontShadow = new SKFont { LinearMetrics = true };
                         _fontShadowSize = -1f;
                         _fontShadowTypeface = null;
                         _fontShadowSkewX = float.NaN;
@@ -2008,7 +2008,7 @@ namespace DrawnUi.Draw
 
                         var smartMeasure = MeasureLineGlyphs(paint, font, adding, needsShaping, scale);
 
-                        var widthBlock = (float)Math.Round(smartMeasure.Width);
+                        var widthBlock = smartMeasure.Width; // unrounded: the same line widths as the other engines; drawing still snaps to pixels
                         var spanMetrics = font.Metrics;
                         var spanLineHeight =
                             (float)Math.Round((-spanMetrics.Ascent + spanMetrics.Descent) * LineHeight);
