@@ -1160,6 +1160,8 @@ else
         /// <summary>
         /// Core measurement logic shared between templated and non-templated scenarios
         /// </summary>
+        bool _measuringAtFinalCrossSize;
+
         protected virtual ScaledSize MeasureStack(SKRect rectForChildrenPixels, float scale,
             LayoutStructure layoutStructure,
             bool isTemplated, SkiaControl template, SkiaControl[] nonTemplated)
@@ -1199,6 +1201,8 @@ else
             var minStackHeightFromFill = 0.0f;
             var sawFillX = false;
             var sawFillY = false;
+            // widest / tallest a cross-axis Fill child was measured: when the stack ends up smaller, it is measured again
+            var fillMeasuredCross = 0.0f;
 
             // Subpixel accumulation
             double stackY = rectForChildrenPixels.Top;
@@ -1292,9 +1296,15 @@ else
                             if (!isTemplated)
                             {
                                 if (isColumn && child.NeedFillX)
+                                {
                                     sawFillX = true;
+                                    fillMeasuredCross = Math.Max(fillMeasuredCross, measured.Pixels.Width);
+                                }
                                 else if (!isColumn && child.NeedFillY)
+                                {
                                     sawFillY = true;
+                                    fillMeasuredCross = Math.Max(fillMeasuredCross, measured.Pixels.Height);
+                                }
 
                                 // Column layout: check Fill-X children for MinimumWidthRequest
                                 if (isColumn && child.NeedFillX && child.MinimumWidthRequest >= 0)
@@ -1433,6 +1443,35 @@ else
                 if (float.IsFinite(rectForChildrenPixels.Height) && VerticalOptions.Alignment == LayoutAlignment.Fill ||
                     SizeRequest.Height >= 0)
                     stackHeight = float.IsFinite(rectForChildrenPixels.Height) ? rectForChildrenPixels.Height : stackHeight;
+
+                // Cross-axis Fill children were measured wider (taller) than the stack ends up, its size coming from
+                // its other children: at arrange they would be measured again for the final size and wrap
+                // differently, while the rows stay placed for the first heights (lost spacing, overlap). Measure
+                // once more inside the final size, so rows and the stack size match what is drawn.
+                if (!isTemplated && !_measuringAtFinalCrossSize)
+                {
+                    var narrower = isColumn
+                        ? sawFillX && stackWidth > 0 && fillMeasuredCross > stackWidth + 0.5f
+                        : sawFillY && stackHeight > 0 && fillMeasuredCross > stackHeight + 0.5f;
+                    if (narrower)
+                    {
+                        var finalRect = rectForChildrenPixels;
+                        if (isColumn)
+                            finalRect.Right = finalRect.Left + stackWidth;
+                        else
+                            finalRect.Bottom = finalRect.Top + stackHeight;
+
+                        _measuringAtFinalCrossSize = true;
+                        try
+                        {
+                            return MeasureStack(finalRect, scale, layoutStructure, isTemplated, template, nonTemplated);
+                        }
+                        finally
+                        {
+                            _measuringAtFinalCrossSize = false;
+                        }
+                    }
+                }
 
                 if (needSecondPass)
                 {
