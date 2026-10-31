@@ -82,8 +82,10 @@ Please star ⭐ if you like it!
   * **One slide per swipe.** A `SkiaCarousel` swipe lands on the next or the previous slide, however far the finger drags and however fast it flicks; `ScrollTo` and `SelectedIndex` still go anywhere.
   * **Images load after a fast fling.** A page closed while its list still flings fast leaves image loading running for the rest of the app.
   * **Caret at once.** An editor focused from code shows its caret at once, at the end of its text.
+  * **Canvas back on screen.** A canvas that was hidden in the view tree, for example on a page under another page, starts drawing again by itself when it shows.
   * **Emoji inside text.** A span with `AutoFindFont` takes the width of the font it draws with, so an emoji run sits in its own room, also inside a scroll.
   * **Italic spacing.** Text after an italic span keeps normal word spacing, and an italic letter at the end of a line keeps room for its slant.
+  * **Android hardware buffers on Vulkan.** A Vulkan canvas on Android turns on the GPU's hardware buffer import when the device offers it, so a library such as the camera can draw Android hardware buffers straight on the canvas. `SkiaVulkanTextureView` gives read-only access to its Vulkan handles.
   * **Screen readers on every AndroidX version.** On Android, the screen-reader bridge works with every `Xamarin.AndroidX.Core` version an app resolves, including 1.19.
   * **Leaner Android package.** On Android, `DrawnUi.Maui` no longer brings the `AppoMobi.Maui.Native.Android` package; an app that uses its types references it directly.
 
