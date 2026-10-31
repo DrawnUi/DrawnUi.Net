@@ -142,13 +142,12 @@ public class TextPage : SkiaLayer
                                 HorizontalOptions = LayoutOptions.Fill,
                             }.Adapt(me => me.LinkTapped += (_, url) => _tapped.Text = $"Last span tap: link {url}")),
 
-                        Card("Right to left — Arabic",
+                        Card("Right to left — Arabic, shaped and in bidirectional order · starts at the right (HorizontalTextAlignment Start)",
                             new SkiaRichLabel(Arabic)
                             {
                                 FontSize = 15,
                                 LineSpacing = 1.3,
                                 TextColor = Body,
-                                HorizontalTextAlignment = DrawTextAlignment.End,
                                 HorizontalOptions = LayoutOptions.Fill,
                             }),
 
