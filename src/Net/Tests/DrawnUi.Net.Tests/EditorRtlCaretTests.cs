@@ -98,6 +98,16 @@ public class EditorRtlCaretTests
     }
 
     [Fact]
+    public void SingleLineEditor_ArabicStartsAtTheRight()
+    {
+        var (_, editor) = Host(Arabic);
+        var line = Line(editor);
+
+        Assert.True(line.Bounds.Left > editor.Label.DrawingRect.Left + 100, $"line at {line.Bounds.Left}, label from {editor.Label.DrawingRect.Left}");
+        Assert.Equal(editor.Label.DrawingRect.Right, line.Bounds.Right, 1);
+    }
+
+    [Fact]
     public void MultilineEditor_ArabicLineAtTheRight_CaretAndTapsFollow()
     {
         var host = new HeadlessCanvasHost(500, 300, scale: 1f, background: Colors.Black);
