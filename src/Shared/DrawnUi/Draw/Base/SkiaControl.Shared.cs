@@ -1643,7 +1643,8 @@ namespace DrawnUi.Draw
                 contentWidthPixels = 0;
             }
 
-            var sideConstraintsPixels = NeedAutoWidth
+            // content-sized (auto, or Fill on an unbounded axis): the padding is around the content, not inside a size
+            var sideConstraintsPixels = NeedAutoWidth || float.IsInfinity(constraints.Request.Width)
                 ? constraints.TotalMargins.HorizontalThickness
                 : constraints.Margins.HorizontalThickness;
 
@@ -1673,7 +1674,7 @@ namespace DrawnUi.Draw
                 contentHeightPixels = 0;
             }
 
-            var sideConstraintsPixels = NeedAutoHeight
+            var sideConstraintsPixels = NeedAutoHeight || float.IsInfinity(constraints.Request.Height)
                 ? constraints.TotalMargins.VerticalThickness
                 : constraints.Margins.VerticalThickness;
 

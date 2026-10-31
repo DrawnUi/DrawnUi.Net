@@ -1172,6 +1172,18 @@ namespace DrawnUi.Draw
                     SetupDefaultPaint(scale);
                     var constraints = GetMeasuringConstraints(request);
 
+                    // Lines laid out on an unbounded width fit any width at least as wide: nothing changed since, so
+                    // the same lines come out and only the size adapts to the new constraint (a stack measures a Fill
+                    // label for its content first, then at its final width).
+                    if (_linesFromUnboundedWidth && !NeedMeasure && !GliphsInvalidated && Lines != null
+                        && scale == _linesUnboundedScale
+                        && (constraints.Content.Height.Equals(_linesUnboundedHeight)
+                            || constraints.Content.Height >= ContentSize.Pixels.Height + LineHeightWithSpacing)
+                        && constraints.Content.Width >= ContentSize.Pixels.Width)
+                    {
+                        return SetMeasuredAdaptToContentSize(constraints, scale);
+                    }
+
                     float textWidthPixels = 0f;
                     float textHeightPixels = 0f;
 
@@ -1441,6 +1453,11 @@ namespace DrawnUi.Draw
                         ContentSize = ScaledSize.CreateEmpty(scale);
                         LinesCount = 0;
                     }
+
+                    _linesFromUnboundedWidth = float.IsPositiveInfinity(constraints.Content.Width)
+                                               && AutoSize == AutoSizeType.None;
+                    _linesUnboundedScale = scale;
+                    _linesUnboundedHeight = constraints.Content.Height;
 
                     return SetMeasuredAdaptToContentSize(constraints, scale);
                 }
@@ -3461,6 +3478,14 @@ namespace DrawnUi.Draw
         }
 
         protected bool GliphsInvalidated = true;
+
+        /// <summary>
+        /// The current lines were laid out on an unbounded width (no wrapping): reused for any later width at least
+        /// as wide while nothing changes (see OnMeasuring).
+        /// </summary>
+        bool _linesFromUnboundedWidth;
+        float _linesUnboundedScale;
+        float _linesUnboundedHeight;
 
         protected static object LockSetup = new();
 

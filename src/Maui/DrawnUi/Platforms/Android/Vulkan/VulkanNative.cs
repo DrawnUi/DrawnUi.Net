@@ -288,6 +288,9 @@ internal static unsafe class Vk
     [DllImport(Lib)] public static extern int vkEnumeratePhysicalDevices(IntPtr instance, ref uint count, IntPtr* devices);
     [DllImport(Lib)] public static extern void vkGetPhysicalDeviceProperties(IntPtr physicalDevice, byte* properties);
     [DllImport(Lib)] public static extern void vkGetPhysicalDeviceQueueFamilyProperties(IntPtr physicalDevice, ref uint count, QueueFamilyProperties* properties);
+    [DllImport(Lib)] public static extern int vkEnumerateDeviceExtensionProperties(IntPtr physicalDevice, IntPtr layerName, ref uint count, byte* properties);
+    /// <summary>VkExtensionProperties: extensionName (256 chars), then specVersion.</summary>
+    public const int ExtensionPropertiesSize = 260;
     [DllImport(Lib)] public static extern int vkCreateDevice(IntPtr physicalDevice, DeviceCreateInfo* createInfo, IntPtr allocator, out IntPtr device);
     [DllImport(Lib)] public static extern void vkDestroyDevice(IntPtr device, IntPtr allocator);
     [DllImport(Lib)] public static extern void vkGetDeviceQueue(IntPtr device, uint familyIndex, uint queueIndex, out IntPtr queue);

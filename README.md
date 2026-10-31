@@ -68,8 +68,10 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.8.10
+## What's New 1.10.8.13
 
+  * **Stacks fit their content.** A `SkiaStack` without a set width (`HorizontalOptions` Center, Start or End) is now as wide as its widest child, Fill children included, up to its `MaximumWidthRequest`. Cards and labels inside get their full text width instead of the width of the narrowest sibling, and wrapped text keeps the spacing below it. The same rule applies in DrawnUI for React and Rust.
+  * **Faster layout.** Stacks of cards and labels lay out about twice as fast: labels reuse their text layout when their width allows it, and stacks no longer measure their children twice. In our tests a page of cards went from 1.04 ms to 0.53 ms per layout.
   * **Right-to-left text.** Arabic, Hebrew and the other right-to-left scripts are shaped in every label, and a line that mixes directions reads in the right order: in "Hi مرحبا 123" the digits stay with the Arabic. In `SkiaEditor` the caret, taps, selection and the Left / Right keys follow the text on screen, as in DrawnUI for React and Rust. A right-to-left paragraph starts at the right edge of its label: `HorizontalTextAlignment` Start and End follow the reading direction of each paragraph.
   * **Same text width everywhere.** Text is measured with exact widths, so a label wraps the same way on every platform and in DrawnUI for React and Rust.
   * **Letters keep their edges.** The hook of a "j" and the slant of italic letters at the start or end of a line are drawn whole in every label, cached or not.
@@ -80,8 +82,10 @@ Please star ⭐ if you like it!
   * **One slide per swipe.** A `SkiaCarousel` swipe lands on the next or the previous slide, however far the finger drags and however fast it flicks; `ScrollTo` and `SelectedIndex` still go anywhere.
   * **Images load after a fast fling.** A page closed while its list still flings fast leaves image loading running for the rest of the app.
   * **Caret at once.** An editor focused from code shows its caret at once, at the end of its text.
+  * **Canvas back on screen.** A canvas that was hidden in the view tree, for example on a page under another page, starts drawing again by itself when it shows.
   * **Emoji inside text.** A span with `AutoFindFont` takes the width of the font it draws with, so an emoji run sits in its own room, also inside a scroll.
   * **Italic spacing.** Text after an italic span keeps normal word spacing, and an italic letter at the end of a line keeps room for its slant.
+  * **Android hardware buffers on Vulkan.** A Vulkan canvas on Android turns on the GPU's hardware buffer import when the device offers it, so a library such as the camera can draw Android hardware buffers straight on the canvas. `SkiaVulkanTextureView` gives read-only access to its Vulkan handles.
   * **Screen readers on every AndroidX version.** On Android, the screen-reader bridge works with every `Xamarin.AndroidX.Core` version an app resolves, including 1.19.
   * **Leaner Android package.** On Android, `DrawnUi.Maui` no longer brings the `AppoMobi.Maui.Native.Android` package; an app that uses its types references it directly.
 
