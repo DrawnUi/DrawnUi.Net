@@ -68,8 +68,10 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.8.10
+## What's New 1.10.8.13
 
+  * **Stacks fit their content.** A `SkiaStack` without a set width (`HorizontalOptions` Center, Start or End) is now as wide as its widest child, Fill children included, up to its `MaximumWidthRequest`. Cards and labels inside get their full text width instead of the width of the narrowest sibling, and wrapped text keeps the spacing below it. The same rule applies in DrawnUI for React and Rust.
+  * **Faster layout.** Stacks of cards and labels lay out about twice as fast: labels reuse their text layout when their width allows it, and stacks no longer measure their children twice. In our tests a page of cards went from 1.04 ms to 0.53 ms per layout.
   * **Right-to-left text.** Arabic, Hebrew and the other right-to-left scripts are shaped in every label, and a line that mixes directions reads in the right order: in "Hi مرحبا 123" the digits stay with the Arabic. In `SkiaEditor` the caret, taps, selection and the Left / Right keys follow the text on screen, as in DrawnUI for React and Rust. A right-to-left paragraph starts at the right edge of its label: `HorizontalTextAlignment` Start and End follow the reading direction of each paragraph.
   * **Same text width everywhere.** Text is measured with exact widths, so a label wraps the same way on every platform and in DrawnUI for React and Rust.
   * **Letters keep their edges.** The hook of a "j" and the slant of italic letters at the start or end of a line are drawn whole in every label, cached or not.
