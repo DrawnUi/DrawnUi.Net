@@ -1376,6 +1376,7 @@ namespace DrawnUi.Draw
 
                     ApplyBidiToLines(Lines, scale);
                     AddItalicOverhangAtLineEnds(Lines, (float)constraints.Content.Width);
+                    UpdateInkOverhang(Lines);
 
                     GliphsInvalidated = false;
 
@@ -3360,6 +3361,68 @@ namespace DrawnUi.Draw
         float _glyphOvershootTop;
         float _glyphOvershootBottom;
 
+        /// <summary>
+        /// Pixels of ink left of a line's first glyph origin (the hook of a "j", a synthetic italic descender) and right
+        /// of its last glyph's advance: past the label's box at its edges, reported through ComputeEffectsMargin so a
+        /// cached label keeps them. Measured on the edge characters of every line (see <see cref="UpdateInkOverhang"/>).
+        /// </summary>
+        float _inkOverhangLeft;
+        float _inkOverhangRight;
+
+        /// <summary>
+        /// Measures the ink of the first and last characters of each line's first and last runs past their advance
+        /// box, the largest on each side.
+        /// </summary>
+        void UpdateInkOverhang(TextLine[] lines)
+        {
+            float left = 0, right = 0;
+            if (lines != null)
+            {
+                foreach (var line in lines)
+                {
+                    if (line?.Spans == null || line.Spans.Count == 0)
+                        continue;
+                    InkOverhang(line.Spans[0], ref left, ref right, true);
+                    InkOverhang(line.Spans[^1], ref left, ref right, false);
+                }
+            }
+
+            if (left != _inkOverhangLeft || right != _inkOverhangRight)
+            {
+                _inkOverhangLeft = left;
+                _inkOverhangRight = right;
+                InvalidateEffectsMargin();
+            }
+        }
+
+        void InkOverhang(LineSpan run, ref float left, ref float right, bool atLineStart)
+        {
+            var text = run.Text;
+            if (string.IsNullOrEmpty(text) || run.Span is IDrawnTextSpan)
+                return;
+            var font = run.Span?.Font ?? FontDefault;
+            if (font == null)
+                return;
+
+            // both ends of the run: a right-to-left run shows its last character at the left
+            var firstLength = System.Globalization.StringInfo.GetNextTextElementLength(text, 0);
+            var lastStart = 0;
+            for (var i = 0; i < text.Length; i += System.Globalization.StringInfo.GetNextTextElementLength(text, i))
+                lastStart = i;
+            Edge(font, text.AsSpan(0, firstLength), atLineStart, ref left, ref right);
+            if (lastStart > 0)
+                Edge(font, text.AsSpan(lastStart), atLineStart, ref left, ref right);
+        }
+
+        static void Edge(SKFont font, ReadOnlySpan<char> piece, bool atLineStart, ref float left, ref float right)
+        {
+            var advance = font.MeasureText(piece, out var bounds);
+            if (atLineStart)
+                left = Math.Max(left, -bounds.Left);
+            else
+                right = Math.Max(right, bounds.Right - advance);
+        }
+
         void UpdateFontMetrics(SKPaint paint, SKFont font)
         {
             FontMetrics = font.Metrics;
@@ -4443,9 +4506,9 @@ namespace DrawnUi.Draw
             var margin = base.ComputeEffectsMargin(scale);
 
             // glyph ink beyond the ascent/descent line box (see UpdateFontMetrics), already in pixels
-            var left = margin.Left;
+            var left = Math.Max(margin.Left, Math.Ceiling(_inkOverhangLeft));
             var top = Math.Max(margin.Top, Math.Ceiling(_glyphOvershootTop));
-            var right = margin.Right;
+            var right = Math.Max(margin.Right, Math.Ceiling(_inkOverhangRight));
             var bottom = Math.Max(margin.Bottom, Math.Ceiling(_glyphOvershootBottom));
 
             if (DropShadowSize > 0 && DropShadowColor != null && DropShadowColor.Alpha != 0)
