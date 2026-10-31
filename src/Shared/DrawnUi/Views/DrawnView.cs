@@ -2600,6 +2600,19 @@ namespace DrawnUi.Views
         private void OnFrame(object sender, EventArgs e)
         {
 #if ONPLATFORM
+            // A canvas found hidden during a transition (parent not shown yet, detached) is re-checked only on layout
+            // or window events: when it becomes visible without one (it draws only its own surface) it would stay
+            // hidden. While hidden, re-check from the frame loop every 250 ms; a visible canvas pays one bool check.
+            if (IsHiddenInViewTree && !NeedCheckParentVisibility)
+            {
+                var now = Environment.TickCount64;
+                if (now - _lastHiddenCheckMs >= 250)
+                {
+                    _lastHiddenCheckMs = now;
+                    NeedCheckParentVisibility = true;
+                }
+            }
+
             if (NeedCheckParentVisibility)
             {
                 CheckElementVisibility(this);
@@ -2614,6 +2627,8 @@ namespace DrawnUi.Views
             }
 #endif
         }
+
+        long _lastHiddenCheckMs;
 
         /// <summary>
         /// Indicates that view is either hidden or offscreen.
