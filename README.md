@@ -68,10 +68,11 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.8.9
+## What's New 1.10.8.10
 
   * **Right-to-left text.** Arabic, Hebrew and the other right-to-left scripts are shaped in every label, and a line that mixes directions reads in the right order: in "Hi مرحبا 123" the digits stay with the Arabic. In `SkiaEditor` the caret, taps, selection and the Left / Right keys follow the text on screen, as in DrawnUI for React and Rust. A right-to-left paragraph starts at the right edge of its label: `HorizontalTextAlignment` Start and End follow the reading direction of each paragraph.
   * **Same text width everywhere.** Text is measured with exact widths, so a label wraps the same way on every platform and in DrawnUI for React and Rust.
+  * **Letters keep their edges.** The hook of a "j" and the slant of italic letters at the start or end of a line are drawn whole in every label, cached or not.
   * **Masonry layout.** `SkiaMasonry` (`LayoutType.Masonry`) lays items of different heights in columns without gaps: every item goes to the bottom of the shortest column, like a photo feed. Set `Split` for the number of columns. It works with children and with `ItemsSource`: recycled cells, `LoadMore` pages that measure only the new items, items that grow after they are shown (an image arrives), `ScrollToIndex`, taps, and keyboard arrows that move to the tile on screen that way. See [Layouts](https://drawnui.net/articles/layouts.html).
   * **Long lists scroll smoothly all the way.** Templated lists of any length follow the mouse wheel and the touchpad row by row, in columns, grids (`Split`) and `SkiaWrap` grids, down and back up. A cell that changes size after it is shown, any number of times, moves the cells below it.
   * **Horizontal lists and wraps.** A templated `SkiaRow` reports the items really on screen in `FirstVisibleIndex` / `LastVisibleIndex` and lays out with every `MeasureItemsStrategy`, `MeasureVisible` included. A templated `SkiaWrap` inside a scroll fires `LoadMore` at its end and arrives at `ScrollToIndex`.
