@@ -1162,6 +1162,12 @@ else
         /// </summary>
         bool _measuringAtFinalCrossSize;
 
+        /// <summary>
+        /// Above 0 while a stack measures a Fill child for its content size only: nested stacks skip the passes that
+        /// only place children inside the final size (the child is measured again at its final size afterwards).
+        /// </summary>
+        [ThreadStatic] static int _contentSizeMeasureDepth;
+
         protected virtual ScaledSize MeasureStack(SKRect rectForChildrenPixels, float scale,
             LayoutStructure layoutStructure,
             bool isTemplated, SkiaControl template, SkiaControl[] nonTemplated)
@@ -1215,6 +1221,7 @@ else
                 : SizeRequest.Height < 0 && (VerticalOptions.Alignment != LayoutAlignment.Fill
                                              || !float.IsFinite(rectForChildrenPixels.Height)));
             var fillFitContent = 0.0f;
+            var measuredForFinalPass = false; // a Fill child got only its content size: the final pass measures it
 
             // Subpixel accumulation
             double stackY = rectForChildrenPixels.Top;
@@ -1293,21 +1300,56 @@ else
                         var rectFitChild = CreateChildMeasureRect(rectForChild, widthPerColumn, cell,
                             hasFillHandling, spacePerFillChild, nonTemplated, rectForChildrenPixels);
 
-                        if (fitContentCross && !_measuringAtFinalCrossSize
-                            && (isColumn ? child.NeedFillX : child.NeedFillY))
+                        var crossFill = isColumn ? child.NeedFillX : child.NeedFillY;
+                        var crossRoom = isColumn ? rectForChildrenPixels.Width : rectForChildrenPixels.Height;
+
+                        ScaledSize measured;
+                        if (fitContentCross && !_measuringAtFinalCrossSize && crossFill && float.IsFinite(crossRoom))
                         {
-                            // content size first; the measure below at the available size stays the child's last one
-                            var content = isColumn
-                                ? MeasureChild(child, float.PositiveInfinity, rectFitChild.Height, scale).Pixels.Width
-                                : MeasureChild(child, rectFitChild.Width, float.PositiveInfinity, scale).Pixels.Height;
-                            var room = isColumn ? rectForChildrenPixels.Width : rectForChildrenPixels.Height;
+                            // content size only (the axis unbounded); the final pass measures it once at the final
+                            // size. On an unbounded axis the normal measure below is already the content size.
+                            _contentSizeMeasureDepth++;
+                            try
+                            {
+                                measured = isColumn
+                                    ? MeasureChild(child, float.PositiveInfinity, rectFitChild.Height, scale)
+                                    : MeasureChild(child, rectFitChild.Width, float.PositiveInfinity, scale);
+                            }
+                            finally
+                            {
+                                _contentSizeMeasureDepth--;
+                            }
+                            var content = isColumn ? measured.Pixels.Width : measured.Pixels.Height;
                             // whole pixels up: the content measured at its own exact width must not wrap again
                             if (float.IsFinite(content))
-                                fillFitContent = Math.Max(fillFitContent, Math.Min(MathF.Ceiling(content), room));
+                                fillFitContent = Math.Max(fillFitContent, Math.Min(MathF.Ceiling(content), crossRoom));
+                            measuredForFinalPass = true;
+                            cell.Area = rectFitChild;
+                            cell.Measured = measured;
+                            cell.WasMeasured = true;
+                        }
+                        else if (_measuringAtFinalCrossSize && !isTemplated && !crossFill && child.WasMeasured)
+                        {
+                            // final pass inside the size the first pass found: only cross-axis Fill children can
+                            // change, the others fit it already and keep their size
+                            cell.Area = rectFitChild;
+                            measured = child.MeasuredSize;
+                            cell.Measured = measured;
+                            cell.WasMeasured = true;
+                            LayoutCell(measured, cell, child, rectForChildrenPixels, scale);
+                        }
+                        else
+                        {
+                            measured = MeasureChildCell(rectFitChild, cell, child, rectForChildrenPixels, scale,
+                                isTemplated, needMeasureAll, ref firstCell);
                         }
 
-                        var measured = MeasureChildCell(rectFitChild, cell, child, rectForChildrenPixels, scale,
-                            isTemplated, needMeasureAll, ref firstCell);
+                        if (fitContentCross && !_measuringAtFinalCrossSize && crossFill && !float.IsFinite(crossRoom)
+                            && float.IsFinite(isColumn ? measured.Pixels.Width : measured.Pixels.Height))
+                        {
+                            fillFitContent = Math.Max(fillFitContent,
+                                MathF.Ceiling(isColumn ? measured.Pixels.Width : measured.Pixels.Height));
+                        }
 
                         // Track child as dirty for ImageComposite cache support
                         if (IsCacheComposite)
@@ -1486,11 +1528,11 @@ else
                 // its other children: at arrange they would be measured again for the final size and wrap
                 // differently, while the rows stay placed for the first heights (lost spacing, overlap). Measure
                 // once more inside the final size, so rows and the stack size match what is drawn.
-                if (!isTemplated && !_measuringAtFinalCrossSize)
+                if (!isTemplated && !_measuringAtFinalCrossSize && _contentSizeMeasureDepth == 0)
                 {
-                    var narrower = isColumn
+                    var narrower = measuredForFinalPass || (isColumn
                         ? sawFillX && stackWidth > 0 && fillMeasuredCross > stackWidth + 0.5f
-                        : sawFillY && stackHeight > 0 && fillMeasuredCross > stackHeight + 0.5f;
+                        : sawFillY && stackHeight > 0 && fillMeasuredCross > stackHeight + 0.5f);
                     if (narrower)
                     {
                         var finalRect = rectForChildrenPixels;
@@ -1511,7 +1553,7 @@ else
                     }
                 }
 
-                if (needSecondPass)
+                if (needSecondPass && _contentSizeMeasureDepth == 0)
                 {
                     ProcessSecondPass(rectForChildrenPixels, stackWidth, stackHeight);
                 }
