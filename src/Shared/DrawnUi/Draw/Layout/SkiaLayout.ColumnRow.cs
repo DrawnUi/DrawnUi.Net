@@ -1204,6 +1204,18 @@ else
             // widest / tallest a cross-axis Fill child was measured: when the stack ends up smaller, it is measured again
             var fillMeasuredCross = 0.0f;
 
+            // A stack sized by its content on its cross axis (a Column without width, a Row without height) is as wide
+            // (tall) as its widest child, Fill children included: each at its fit-content size, its content size
+            // (measured on an unbounded axis) capped by the room there is. A Fill child without content of its own
+            // (a divider) adds only its own requests. Same rule in every DrawnUI engine.
+            // (a Fill stack on an unbounded axis is content-sized too)
+            var fitContentCross = !isTemplated && (isColumn
+                ? SizeRequest.Width < 0 && (HorizontalOptions.Alignment != LayoutAlignment.Fill
+                                            || !float.IsFinite(rectForChildrenPixels.Width))
+                : SizeRequest.Height < 0 && (VerticalOptions.Alignment != LayoutAlignment.Fill
+                                             || !float.IsFinite(rectForChildrenPixels.Height)));
+            var fillFitContent = 0.0f;
+
             // Subpixel accumulation
             double stackY = rectForChildrenPixels.Top;
 
@@ -1280,6 +1292,19 @@ else
 
                         var rectFitChild = CreateChildMeasureRect(rectForChild, widthPerColumn, cell,
                             hasFillHandling, spacePerFillChild, nonTemplated, rectForChildrenPixels);
+
+                        if (fitContentCross && !_measuringAtFinalCrossSize
+                            && (isColumn ? child.NeedFillX : child.NeedFillY))
+                        {
+                            // content size first; the measure below at the available size stays the child's last one
+                            var content = isColumn
+                                ? MeasureChild(child, float.PositiveInfinity, rectFitChild.Height, scale).Pixels.Width
+                                : MeasureChild(child, rectFitChild.Width, float.PositiveInfinity, scale).Pixels.Height;
+                            var room = isColumn ? rectForChildrenPixels.Width : rectForChildrenPixels.Height;
+                            // whole pixels up: the content measured at its own exact width must not wrap again
+                            if (float.IsFinite(content))
+                                fillFitContent = Math.Max(fillFitContent, Math.Min(MathF.Ceiling(content), room));
+                        }
 
                         var measured = MeasureChildCell(rectFitChild, cell, child, rectForChildrenPixels, scale,
                             isTemplated, needMeasureAll, ref firstCell);
@@ -1419,6 +1444,19 @@ else
                     stackHeight += maxRowHeight + GetSpacingForIndex(row, scale);
 
                     stackY += maxRowHeight;
+                }
+
+                if (fitContentCross)
+                {
+                    // the final pass runs inside the size the first one found
+                    if (_measuringAtFinalCrossSize)
+                        fillFitContent = isColumn
+                            ? (sawFillX ? rectForChildrenPixels.Width : 0)
+                            : (sawFillY ? rectForChildrenPixels.Height : 0);
+                    if (isColumn && fillFitContent > stackWidth)
+                        stackWidth = fillFitContent;
+                    else if (!isColumn && fillFitContent > stackHeight)
+                        stackHeight = fillFitContent;
                 }
 
                 // Apply minimum dimensions from Fill children in perpendicular direction
