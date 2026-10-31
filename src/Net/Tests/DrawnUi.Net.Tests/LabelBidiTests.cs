@@ -80,6 +80,66 @@ public class LabelBidiTests
         Assert.Same(highlight, pieces.Single(s => s.Text == "DrawnUI").Span);
     }
 
+    [Fact]
+    public void LoneBracketInRightToLeftParagraph_IsMirrored()
+    {
+        var label = Render(new SkiaLabel("مرحبا بكم (End)"));
+
+        var pieces = Assert.Single(label.Lines).Spans;
+        Assert.Equal(new[] { ")", "End", "مرحبا بكم (" }, pieces.Select(s => s.Text));
+        var bracket = pieces[0];
+        Assert.True(bracket.ShapeRightToLeft);
+        var typeface = label.FontDefault.Typeface;
+        Assert.Equal(typeface.GetGlyph('('), Assert.Single(bracket.Glyphs).Id); // drawn as "(" at the left of "End"
+    }
+
+    static SkiaLabel Wide(string text, DrawTextAlignment alignment) =>
+        Render(new SkiaLabel(text) { HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = alignment });
+
+    [Fact]
+    public void RightToLeftParagraph_StartIsTheRightEdge()
+    {
+        var label = Wide("مرحبا بكم", DrawTextAlignment.Start);
+
+        var line = Assert.Single(label.Lines);
+        Assert.Equal(label.DrawingRect.Right, line.Bounds.Right, 1);
+    }
+
+    [Fact]
+    public void RightToLeftParagraph_EndIsTheLeftEdge()
+    {
+        var label = Wide("مرحبا بكم", DrawTextAlignment.End);
+
+        Assert.Equal(label.DrawingRect.Left, Assert.Single(label.Lines).Bounds.Left, 1);
+    }
+
+    [Fact]
+    public void Paragraphs_AlignedEachByItsOwnDirection()
+    {
+        var label = Wide("مرحبا بكم\nHello there", DrawTextAlignment.Start);
+
+        Assert.Equal(2, label.Lines.Length);
+        Assert.Equal(label.DrawingRect.Right, label.Lines[0].Bounds.Right, 1);
+        Assert.Equal(label.DrawingRect.Left, label.Lines[1].Bounds.Left, 1);
+    }
+
+    [Fact]
+    public void LeftToRightParagraphWithArabicInside_StaysLeft()
+    {
+        var label = Wide("Hi مرحبا 123", DrawTextAlignment.Start);
+
+        Assert.Equal(label.DrawingRect.Left, Assert.Single(label.Lines).Bounds.Left, 1);
+    }
+
+    [Fact]
+    public void Center_Unchanged()
+    {
+        var label = Wide("مرحبا بكم", DrawTextAlignment.Center);
+        var line = Assert.Single(label.Lines);
+
+        Assert.Equal(label.DrawingRect.MidX, line.Bounds.MidX, 1);
+    }
+
     [Theory]
     // levels per char, LTR paragraph: Latin 0, Arabic 1, digits after Arabic 2
     [InlineData("ab مر 12", false, "00011122")]

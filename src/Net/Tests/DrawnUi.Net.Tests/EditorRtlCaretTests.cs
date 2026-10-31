@@ -98,6 +98,26 @@ public class EditorRtlCaretTests
     }
 
     [Fact]
+    public void MultilineEditor_ArabicLineAtTheRight_CaretAndTapsFollow()
+    {
+        var host = new HeadlessCanvasHost(500, 300, scale: 1f, background: Colors.Black);
+        var editor = new Editor { WidthRequest = 400, HeightRequest = 120, MaxLines = -1, FontSize = 20, Text = Arabic };
+        host.Canvas.Content = new SkiaLayout { HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill, Children = { editor } };
+        host.AdvanceFrames(4);
+        editor.IsFocused = true;
+        editor.CursorPosition = 0;
+        host.AdvanceFrames(4);
+
+        var line = Line(editor);
+        Assert.True(line.Bounds.Left > editor.Label.DrawingRect.Left + 100, $"line at {line.Bounds.Left}, label from {editor.Label.DrawingRect.Left}");
+        var expected = (line.Bounds.Left + line.CaretX(0) - editor.Label.DrawingRect.Left) / editor.RenderingScale - editor.Cursor.WidthRequest;
+        Assert.Equal(expected, editor.Cursor.Left, 1);
+        var x = Carets(editor);
+        for (var k = 0; k < x.Length; k++)
+            Assert.Equal(k, editor.IndexAt(line.Bounds.Left + x[k], line.Bounds.MidY));
+    }
+
+    [Fact]
     public void Tap_RightHalfOfFirstArabicLetter_IsIndexZero()
     {
         var (_, editor) = Host(Arabic);

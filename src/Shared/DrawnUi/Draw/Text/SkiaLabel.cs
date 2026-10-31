@@ -632,19 +632,32 @@ namespace DrawnUi.Draw
                     var alignWidth = rectDraw.Width < MaxRealPixelSize ? rectDraw.Width
                         : ViewportConstraintWidth > 0 ? ViewportConstraintWidth : 0f;
 
-                    if (HorizontalTextAlignment == DrawTextAlignment.Center && alignWidth > 0)
+                    // Start and End follow the paragraph's direction: a right-to-left paragraph starts at the right edge,
+                    // and the line Fill does not stretch (its last one) sits there too
+                    var alignment = HorizontalTextAlignment;
+                    if (line.IsRightToLeft && line.Carets != null)
+                    {
+                        if (alignment == DrawTextAlignment.Start
+                            || (alignment == DrawTextAlignment.FillWords || alignment == DrawTextAlignment.FillCharacters)
+                            && line.IsLastInParagraph)
+                            alignment = DrawTextAlignment.End;
+                        else if (alignment == DrawTextAlignment.End)
+                            alignment = DrawTextAlignment.Start;
+                    }
+
+                    if (alignment == DrawTextAlignment.Center && alignWidth > 0)
                     {
                         alignedLineDrawingStartX += (alignWidth - line.Width) / 2.0f;
                     }
-                    else if (HorizontalTextAlignment == DrawTextAlignment.End && alignWidth > 0)
+                    else if (alignment == DrawTextAlignment.End && alignWidth > 0)
                     {
                         alignedLineDrawingStartX += alignWidth - line.Width;
                     }
                     else if (alignWidth > 0 &&
-                             ((HorizontalTextAlignment == DrawTextAlignment.FillWords
-                              || HorizontalTextAlignment == DrawTextAlignment.FillCharacters) && !line.IsLastInParagraph
-                             || HorizontalTextAlignment == DrawTextAlignment.FillWordsFull
-                             || HorizontalTextAlignment == DrawTextAlignment.FillCharactersFull))
+                             ((alignment == DrawTextAlignment.FillWords
+                              || alignment == DrawTextAlignment.FillCharacters) && !line.IsLastInParagraph
+                             || alignment == DrawTextAlignment.FillWordsFull
+                             || alignment == DrawTextAlignment.FillCharactersFull))
                     {
                         float emptySpace = alignWidth - line.Width;
                         if (lineNb == 1)
@@ -775,7 +788,7 @@ namespace DrawnUi.Draw
                                 lineSpan.Text,
                                 (float)Math.Round(alignedLineDrawingStartX + offsetX),
                                 (float)Math.Round(baselineY),
-                                paint, font);
+                                paint, font, lineSpan.ShapeRightToLeft);
                         }
                         else if (lineSpan.Glyphs != null)
                         {
@@ -1010,13 +1023,14 @@ namespace DrawnUi.Draw
             float x,
             float y,
             SKPaint paint,
-            SKFont font)
+            SKFont font,
+            bool rightToLeft = false)
         {
             if (string.IsNullOrEmpty(text) || Shaper == null || paint == null || font == null || font.Typeface == null)
                 return;
 
             SetupShaper(font.Typeface);
-            DrawShapedText(canvas, Shaper, text, x, y, paint, font);
+            DrawShapedText(canvas, Shaper, text, x, y, paint, font, rightToLeft);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1027,12 +1041,25 @@ namespace DrawnUi.Draw
             float x,
             float y,
             SKPaint paint,
-            SKFont font)
+            SKFont font,
+            bool rightToLeft = false)
         {
             if (string.IsNullOrEmpty(text) || shaper == null || paint == null || font == null || font.Typeface == null)
                 return;
 
-            SKShaper.Result result = shaper.Shape(text, x, y, font);
+            SKShaper.Result result;
+            if (rightToLeft)
+            {
+                using var buffer = new HarfBuzzSharp.Buffer();
+                buffer.AddUtf8(text);
+                buffer.GuessSegmentProperties();
+                buffer.Direction = HarfBuzzSharp.Direction.RightToLeft;
+                result = shaper.Shape(buffer, x, y, font);
+            }
+            else
+            {
+                result = shaper.Shape(text, x, y, font);
+            }
             using (SKTextBlobBuilder skTextBlobBuilder = new SKTextBlobBuilder())
             {
                 SKPositionedRunBuffer positionedRunBuffer =
@@ -1582,12 +1609,17 @@ namespace DrawnUi.Draw
                         end++;
 
                     var piece = spanText.Substring(start, end - start);
-                    var measured = MeasureLineGlyphs(paint, font, piece, true, scale);
+                    // a right-to-left run without a right-to-left letter (a lone bracket) would be shaped left to right
+                    var forceRightToLeft = (level & 1) == 1 && !Bidi.HasRightToLeft(piece);
+                    var measured = forceRightToLeft
+                        ? MeasureShapedRightToLeft(font, piece)
+                        : MeasureLineGlyphs(paint, font, piece, true, scale);
                     pieces.Add(new LineSpan
                     {
                         Text = piece,
                         Span = span.Span,
                         NeedsShaping = true, // drawn shaped in its own direction, Latin pieces too
+                        ShapeRightToLeft = forceRightToLeft,
                         Glyphs = measured.Glyphs,
                         Size = new SKSize(measured.Width, span.Size.Height),
                     });
@@ -1613,6 +1645,17 @@ namespace DrawnUi.Draw
             line.Width = width;
             line.Carets = carets;
             line.IsRightToLeft = rightToLeft;
+        }
+
+        /// <summary>
+        /// Width and caret glyphs of a run shaped right to left whatever its characters (see
+        /// <see cref="LineSpan.ShapeRightToLeft"/>).
+        /// </summary>
+        (float Width, LineGlyph[] Glyphs) MeasureShapedRightToLeft(SKFont font, string text)
+        {
+            SetupShaper(font.Typeface ?? SkiaFontManager.DefaultTypeface);
+            var result = GetShapedText(Shaper, text, font, out var pens, rightToLeft: true);
+            return result == null ? (0f, null) : (result.Width, BuildGlyphsFromShaping(result, text, pens));
         }
 
         /// <summary>
@@ -2949,7 +2992,8 @@ namespace DrawnUi.Draw
         /// returns each glyph's pen X (its point without the mark / GPOS x offset), where a caret goes. Null for empty
         /// text or a shaper without a typeface.
         /// </summary>
-        public static SKShaper.Result GetShapedText(SKShaper shaper, string text, SKFont font, out float[] pens)
+        public static SKShaper.Result GetShapedText(SKShaper shaper, string text, SKFont font, out float[] pens,
+            bool rightToLeft = false)
         {
             pens = null;
             if (string.IsNullOrEmpty(text) || shaper?.Typeface == null || font == null)
@@ -2958,6 +3002,8 @@ namespace DrawnUi.Draw
             using var buffer = new HarfBuzzSharp.Buffer();
             buffer.AddUtf8(text); // as SKShaper: clusters are UTF-8 byte offsets
             buffer.GuessSegmentProperties();
+            if (rightToLeft)
+                buffer.Direction = HarfBuzzSharp.Direction.RightToLeft;
             var result = shaper.Shape(buffer, 0, 0, font);
 
             var positions = buffer.GlyphPositions;
