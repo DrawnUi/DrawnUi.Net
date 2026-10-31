@@ -22,6 +22,22 @@ internal sealed unsafe class VulkanGpu : IDisposable
     private static readonly string[] InstanceExtensions = { "VK_KHR_surface", "VK_KHR_android_surface" };
     private static readonly string[] DeviceExtensions = { "VK_KHR_swapchain" };
 
+    /// <summary>
+    /// Importing Android hardware buffers (camera frames) as Vulkan images on this device, for libraries that hand
+    /// frames to the canvas without a CPU copy. Enabled only when the device lists all of them.
+    /// </summary>
+    private static readonly string[] HardwareBufferExtensions =
+    {
+        "VK_KHR_sampler_ycbcr_conversion", "VK_KHR_external_memory", "VK_KHR_dedicated_allocation",
+        "VK_EXT_queue_family_foreign", "VK_ANDROID_external_memory_android_hardware_buffer",
+    };
+
+    private static string[] _enabledDeviceExtensions;
+    private static bool _hardwareBuffers;
+
+    /// <summary>The devices are created with the Android hardware buffer import extensions.</summary>
+    public static bool CanImportHardwareBuffers => _hardwareBuffers;
+
     // Skia asks for every Vulkan function by name: instance-level through the instance, the rest through the device.
     private static readonly GRVkGetProcedureAddressDelegate GetProc = (name, instance, device) =>
         device != IntPtr.Zero ? Vk.vkGetDeviceProcAddr(device, name) : Vk.vkGetInstanceProcAddr(instance, name);
@@ -195,28 +211,31 @@ internal sealed unsafe class VulkanGpu : IDisposable
             queueCount = 1,
             pQueuePriorities = &priority,
         };
-        var extensions = AllocStrings(DeviceExtensions);
-        try
+        if (_enabledDeviceExtensions == null)
         {
-            var info = new Vk.DeviceCreateInfo
-            {
-                sType = Vk.STRUCTURE_TYPE_DEVICE_CREATE_INFO,
-                queueCreateInfoCount = 1,
-                pQueueCreateInfos = &queueInfo,
-                enabledExtensionCount = (uint)DeviceExtensions.Length,
-                ppEnabledExtensionNames = extensions,
-            };
-            if (Vk.vkCreateDevice(_physicalDevice, &info, IntPtr.Zero, out var device) != Vk.SUCCESS || device == IntPtr.Zero)
-                return false;
+            _hardwareBuffers = HasDeviceExtensions(HardwareBufferExtensions);
+            _enabledDeviceExtensions = _hardwareBuffers
+                ? DeviceExtensions.Concat(HardwareBufferExtensions).ToArray()
+                : DeviceExtensions;
+            if (_hardwareBuffers)
+                Super.Log("[Vulkan] Android hardware buffer import enabled");
+        }
 
-            Device = device;
-            Vk.vkGetDeviceQueue(device, _queueFamily, 0, out var queue);
-            Queue = queue;
-        }
-        finally
+        var device = CreateDevice(&queueInfo, _enabledDeviceExtensions);
+        if (device == IntPtr.Zero && _hardwareBuffers)
         {
-            FreeStrings(extensions, DeviceExtensions.Length);
+            // never lose the canvas over the extra extensions: the device as before
+            Super.Log("[Vulkan] device with hardware buffer import failed, created without it");
+            _hardwareBuffers = false;
+            _enabledDeviceExtensions = DeviceExtensions;
+            device = CreateDevice(&queueInfo, _enabledDeviceExtensions);
         }
+        if (device == IntPtr.Zero)
+            return false;
+
+        Device = device;
+        Vk.vkGetDeviceQueue(device, _queueFamily, 0, out var queue);
+        Queue = queue;
 
         _backend = new GRVkBackendContext
         {
@@ -227,11 +246,52 @@ internal sealed unsafe class VulkanGpu : IDisposable
             GraphicsQueueIndex = _queueFamily,
             MaxAPIVersion = _apiVersion,
             GetProcedureAddress = GetProc,
-            Extensions = GRVkExtensions.Create(GetProc, _instance, _physicalDevice, InstanceExtensions, DeviceExtensions),
+            Extensions = GRVkExtensions.Create(GetProc, _instance, _physicalDevice, InstanceExtensions, _enabledDeviceExtensions),
         };
 
         Context = GRContext.CreateVulkan(_backend);
         return Context != null;
+    }
+
+    private static IntPtr CreateDevice(Vk.DeviceQueueCreateInfo* queueInfo, string[] deviceExtensions)
+    {
+        var extensions = AllocStrings(deviceExtensions);
+        try
+        {
+            var info = new Vk.DeviceCreateInfo
+            {
+                sType = Vk.STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+                queueCreateInfoCount = 1,
+                pQueueCreateInfos = queueInfo,
+                enabledExtensionCount = (uint)deviceExtensions.Length,
+                ppEnabledExtensionNames = extensions,
+            };
+            return Vk.vkCreateDevice(_physicalDevice, &info, IntPtr.Zero, out var device) == Vk.SUCCESS ? device : IntPtr.Zero;
+        }
+        finally
+        {
+            FreeStrings(extensions, deviceExtensions.Length);
+        }
+    }
+
+    /// <summary>The physical device lists every one of these extensions.</summary>
+    private static bool HasDeviceExtensions(string[] wanted)
+    {
+        uint count = 0;
+        if (Vk.vkEnumerateDeviceExtensionProperties(_physicalDevice, IntPtr.Zero, ref count, null) != Vk.SUCCESS || count == 0)
+            return false;
+
+        var buffer = new byte[count * Vk.ExtensionPropertiesSize];
+        fixed (byte* properties = buffer)
+        {
+            if (Vk.vkEnumerateDeviceExtensionProperties(_physicalDevice, IntPtr.Zero, ref count, properties) != Vk.SUCCESS)
+                return false;
+
+            var listed = new HashSet<string>();
+            for (var i = 0; i < count; i++)
+                listed.Add(Marshal.PtrToStringAnsi((IntPtr)(properties + i * Vk.ExtensionPropertiesSize)));
+            return wanted.All(listed.Contains);
+        }
     }
 
     public void Dispose()

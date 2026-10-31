@@ -80,6 +80,32 @@ public unsafe class SkiaVulkanTextureView : TextureView, TextureView.ISurfaceTex
     /// <summary>The Skia context drawing on this view, null until the first frame.</summary>
     public GRContext GRContext => _gpu?.Context;
 
+    /// <summary>
+    /// The Vulkan handles <see cref="GRContext"/> draws with, for libraries that create their own images on the same
+    /// device (camera frames imported from Android hardware buffers). Read on the canvas render thread; zero until the
+    /// first frame. A new device (the surface or context recreated) gives new values: compare <see cref="VkDevice"/>.
+    /// </summary>
+    public IntPtr VkInstance => _gpu?.Instance ?? IntPtr.Zero;
+
+    /// <inheritdoc cref="VkInstance"/>
+    public IntPtr VkPhysicalDevice => _gpu?.PhysicalDevice ?? IntPtr.Zero;
+
+    /// <inheritdoc cref="VkInstance"/>
+    public IntPtr VkDevice => _gpu?.Device ?? IntPtr.Zero;
+
+    /// <inheritdoc cref="VkInstance"/>
+    public IntPtr VkQueue => _gpu?.Queue ?? IntPtr.Zero;
+
+    /// <inheritdoc cref="VkInstance"/>
+    public uint VkQueueFamily => _gpu?.QueueFamily ?? 0;
+
+    /// <summary>
+    /// The device was created with the Android hardware buffer import extensions
+    /// (VK_ANDROID_external_memory_android_hardware_buffer and its dependencies): importing them is allowed.
+    /// False while no device exists or when the GPU does not list them.
+    /// </summary>
+    public bool CanImportHardwareBuffers => _gpu != null && VulkanGpu.CanImportHardwareBuffers;
+
     /// <summary>Draws in device-independent units, the surface scaled by the screen density.</summary>
     public bool IgnorePixelScaling { get; set; }
 
