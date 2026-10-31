@@ -132,7 +132,8 @@ public partial class TextSpan : Element //we subclassed Element only to be able 
         {
             Font = new()
             {
-                Typeface = SkiaFontManager.DefaultTypeface
+                Typeface = SkiaFontManager.DefaultTypeface,
+                LinearMetrics = true, // unhinted advances, as the label's own font
             };
         }
 
@@ -236,7 +237,8 @@ public partial class TextSpan : Element //we subclassed Element only to be able 
 
         Font = new()
         {
-            Typeface = _typeFace
+            Typeface = _typeFace,
+            LinearMetrics = true,
         };
     }
 

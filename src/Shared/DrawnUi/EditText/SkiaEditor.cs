@@ -651,7 +651,10 @@ namespace DrawnUi.Draw
             if (Label != null && !IsMultiline)
             {
                 var minWidth = -1.0;
-                if (HorizontalTextAlignment != DrawTextAlignment.Start && float.IsFinite(widthConstraint) && widthConstraint > 0)
+                // right-to-left text with Start alignment starts at the right edge: the label needs the viewport too
+                var aligned = HorizontalTextAlignment != DrawTextAlignment.Start
+                              || !string.IsNullOrEmpty(Text) && SkiaLabel.Bidi.IsRightToLeftParagraph(Text);
+                if (aligned && float.IsFinite(widthConstraint) && widthConstraint > 0)
                 {
                     minWidth = Math.Max(0, widthConstraint / scale
                                            - Padding.HorizontalThickness - Margins.HorizontalThickness

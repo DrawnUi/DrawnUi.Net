@@ -15,6 +15,12 @@ public struct LineSpan
 
     public bool NeedsShaping { get; set; }
 
+    /// <summary>
+    /// A run of a right-to-left level made only of neutral characters (brackets, punctuation): shaped right to left
+    /// on purpose, so brackets mirror, since shaping would guess left to right from such text.
+    /// </summary>
+    public bool ShapeRightToLeft { get; set; }
+
     public SKSize Size { get; set; }
 
     //public SKRect DrawingRect { get; set; }
