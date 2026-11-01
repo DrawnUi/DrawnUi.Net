@@ -72,6 +72,7 @@ Please star ⭐ if you like it!
 
   * **Footer after the header.** A `SkiaScroll` with a `Header` places its `Footer` right after the content on every screen scale.
   * **Hot reload under dotnet watch.** Pages built in code (`BasePageReloadable`) redraw on every hot reload, with or without a debugger, once per change.
+  * **Smooth recycled lists.** A recycled list keeps scrolling smoothly while its new cells are created in the background, Debug builds included.
   * **Preview: DrawnUI Designer Agent.** Debug builds of your app carry the DrawnUI Designer agent: the Designer can attach to the running app, show its screens and controls, and edit them live. Release builds do not reference it.
   * **Stacks fit their content.** A `SkiaStack` without a set width (`HorizontalOptions` Center, Start or End) is now as wide as its widest child, Fill children included, up to its `MaximumWidthRequest`. Cards and labels inside get their full text width instead of the width of the narrowest sibling, and wrapped text keeps the spacing below it. The same rule applies in DrawnUI for React and Rust.
   * **Faster layout.** Stacks of cards and labels lay out about twice as fast: labels reuse their text layout when their width allows it, and stacks no longer measure their children twice. In our tests a page of cards went from 1.04 ms to 0.53 ms per layout.
