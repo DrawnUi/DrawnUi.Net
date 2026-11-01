@@ -157,6 +157,7 @@ Always use fluent extension methods — never `+=` events or commands wired outs
 | Tap with args | `.OnTapped((me, args) => { ... })` |
 | Long press | `.OnLongPressing(me => { ... })` |
 | Mouse hover | `.OnHovered((me, on) => { ... })` — turns `ReceivesHover` on; `on` = mouse over / left. A card and the button inside it are hovered together. Not tracked while content scrolls or slides (checked when it stops); touch never hovers |
+| Tooltip (desktop) | `.WithTooltip("Save")` — shows under the mouse after it rests 600 ms; closes on leave / press / wheel / key; never on touch. Style: `Super.TooltipStyle`; `Super.TooltipsFromAccessibility = true` uses the accessibility hint / icon label. |
 | Context menu (right click / long press / Menu key on the web heads) | `.OnContextMenu((me, e) => true)` — `true` = handled (browser menu suppressed), `false` = browser menu shows |
 | Editor text changed (`SkiaEditor`) | `.OnTextChanged(text => { ... })` |
 | Editor focus (`SkiaEditor`) | `.OnFocusChanged((me, focused) => { ... })` |

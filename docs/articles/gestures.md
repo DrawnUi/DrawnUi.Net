@@ -355,6 +355,44 @@ To know that the mouse is anywhere inside a container, call `CheckPointerOver(ar
 
 Touch never hovers. On MAUI Windows, WPF and OpenTK both end when the mouse leaves the canvas; on Blazor, the WebAssembly head, MAUI Mac Catalyst and Android they end at the next pointer move over the canvas.
 
+## Tooltips
+
+Give any control a `Tooltip` (or the fluent `.WithTooltip`) and the canvas shows it under the mouse after the mouse
+rests on the control:
+
+```csharp
+new SkiaSvg { SvgString = saveIcon, WidthRequest = 24, HeightRequest = 24 }
+    .WithTooltip("Save")
+    .OnTapped(me => Save());
+```
+
+- It shows after `ShowDelayMs` (600 ms). Moving straight to the next control with a tooltip shows that one at once.
+- It closes when the mouse leaves the control, on a press, the wheel, any key, or when content scrolls or slides
+  under the pointer. After a press it stays closed until the mouse moves to another control.
+- Touch never shows tooltips.
+- Hover is separate: a tooltip does not make a control take hover (`IsHovered`).
+- One text for tooltips and screen readers: with `Super.TooltipsFromAccessibility = true`, a control without a
+  `Tooltip` shows its `AccessibilityHint`, or, when it shows no text of its own (an icon button, an image), its
+  `AccessibilityLabel`.
+- Look and timing: `Super.TooltipStyle` for the whole app, `TooltipStyle` on a canvas for one canvas
+  (`BackgroundColor`, `TextColor`, `FontFamily`, `FontSize`, `CornerRadius`, `Padding`, `MaxWidth`, `ShowDelayMs`,
+  `FollowWindowMs`). `TooltipStyle.CreateTooltip` builds your own content for a text.
+
+Where tooltips show:
+
+| Head | Tooltips | Past the window edge |
+|---|---|---|
+| WPF | Yes | Yes, in a popup window |
+| MAUI Windows | Yes | Not yet: drawn inside the canvas |
+| MAUI Mac Catalyst | Yes | Not yet: drawn inside the canvas |
+| OpenTK | Yes | Not yet: drawn inside the canvas |
+| Blazor, WebAssembly | Yes | No: drawn inside the canvas |
+| MAUI Android (with a mouse) | Yes | No: drawn inside the canvas |
+| MAUI iOS | No | No |
+
+On Blazor, WebAssembly, Mac Catalyst and Android the canvas is not told when the mouse leaves it: a tooltip open at
+that moment closes at the next pointer move over the canvas, a press or a key.
+
 ## Gesture locking and propagation
 
 Use `LockChildrenGestures` when a parent layout should decide which gestures reach nested controls.

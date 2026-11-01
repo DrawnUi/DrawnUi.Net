@@ -442,6 +442,9 @@ namespace DrawnUi.Draw
         /// Closes on leave, press, scroll or a key. Look and delay: <see cref="Super.TooltipStyle"/>. With
         /// <see cref="Super.TooltipsFromAccessibility"/> a control without it uses its accessibility text.
         /// Fluent: <c>.WithTooltip("Save")</c>.
+        /// Heads: WPF shows it in a popup window that can pass the window edge; MAUI Windows, Mac Catalyst and Android
+        /// (with a mouse), OpenTK, Blazor and WebAssembly draw it inside the canvas (past the edge: not yet on MAUI
+        /// Windows, Mac Catalyst and OpenTK); none on iOS.
         /// </summary>
         public string Tooltip
         {
