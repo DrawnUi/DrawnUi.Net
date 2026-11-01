@@ -312,7 +312,7 @@ namespace DrawnUi.Draw
         }
 
         // Flat DrawnUI default palette, shared with the other default-styled controls.
-        private static readonly Color EditorDefaultAccent = Color.FromRgba(220, 20, 60, 255);  // Crimson #DC143C
+        private static readonly Color EditorDefaultAccent = DefaultStyle.Accent;  // blue #3B82F6
         private static readonly Color EditorDefaultBg = Color.FromRgba(242, 243, 245, 255);     // #F2F3F5
         private static readonly Color EditorPlaceholder = Color.FromRgba(154, 160, 166, 255);   // #9AA0A6
 

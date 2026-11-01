@@ -49,7 +49,7 @@ public class SkiaCheckbox : SkiaToggle
     }
     
     // Flat DrawnUI default palette (accent + neutral outline), shared with the other default controls.
-    private static readonly Color DefaultAccentColor = Color.FromRgba(220, 20, 60, 255); // Crimson #DC143C
+    private static readonly Color DefaultAccentColor = DefaultStyle.Accent; // blue #3B82F6
     private static readonly Color DefaultOutlineColor = Color.FromRgba(142, 149, 157, 255); // neutral #8E959D
 
     protected virtual void CreateDefaultStyleContent()
@@ -96,7 +96,7 @@ public class SkiaCheckbox : SkiaToggle
             }
         });
 
-        // style defaults, not plain sets: a plain set counts as the app's own, and a later ControlStyle kept the crimson
+        // style defaults, not plain sets: a plain set counts as the app's own, and a later ControlStyle kept the default accent
         SetStyleDefault(ColorFrameOffProperty, frameOff);
         SetStyleDefault(ColorFrameOnProperty, frameOn);
         SetStyleDefault(ColorCheckOnProperty, checkOn);

@@ -725,7 +725,7 @@ public class SkiaShell : SkiaLayer
                         {
                             // Not BackgroundColor: SkiaControl already defaults it to Transparent, so
                             // assigning Transparent raises no change, SkiaButton's backgroundColorChanged
-                            // stays false and it paints its crimson accent anyway. A non-null Background
+                            // stays false and it paints its default accent anyway. A non-null Background
                             // brush is the path the control actually honours (InitialBackground).
                             Background = new SolidColorBrush(Colors.Transparent),
                             TextColor = Color.Parse("#6EA8FE"),

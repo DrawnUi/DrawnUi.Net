@@ -188,7 +188,7 @@ public class SkiaSlider : SkiaLayout
     private bool _styleOwnsSliderHeight;
 
     // Flat DrawnUI default palette (shared across the default-styled controls).
-    private static readonly Color DefaultAccentColor = Color.FromRgba(220, 20, 60, 255); // Crimson #DC143C
+    private static readonly Color DefaultAccentColor = DefaultStyle.Accent; // blue #3B82F6
     private static readonly Color DefaultTrackColor = Color.FromRgba(215, 219, 224, 255); // neutral #D7DBE0
 
     protected virtual void CreateDefaultStyleContent()
