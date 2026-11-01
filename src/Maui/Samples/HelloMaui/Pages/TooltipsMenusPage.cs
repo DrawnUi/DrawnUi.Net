@@ -105,9 +105,6 @@ public class TooltipsMenusPage : SkiaLayer
                                 },
                             }),
 
-                        Card("Own text wins", "This button has an AccessibilityLabel but shows its own text, so it gets no tooltip from it.",
-                            TextButton("Export").Adapt(me => me.AccessibilityLabel = "Export the file")),
-
                         Card("Near the window edge", "Make the window narrow and rest on the icon at the right: the tooltip stays inside the window.",
                             new SkiaLayer
                             {
