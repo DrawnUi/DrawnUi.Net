@@ -27,9 +27,8 @@ public class RootPage : SkiaLayer
         new[] { "#0DCAF0", "#6EA8FE" },
     };
 
-    private readonly List<SkiaShape> _cards = new();
+    private SkiaMasonry _cards;
     private SkiaStack _content;
-    private double _cardWidth;
     private double _contentWidth;
 
     /// <summary>Raised when a sample card is tapped. Navigation arrives with the next module.</summary>
@@ -86,12 +85,13 @@ public class RootPage : SkiaLayer
                 HorizontalTextAlignment = DrawTextAlignment.Center,
                 Margin = new Thickness(0, -12, 0, 0),
             },
-            new SkiaWrap
+            new SkiaMasonry
             {
                 Spacing = Gap,
-                HorizontalOptions = LayoutOptions.Fill,
+                Split = 1, // two columns once there is room, see OnLayoutChanged
+                UseCache = SkiaCacheType.ImageComposite, // a hovered card re-records alone
                 Children = Catalog.Samples.Select(BuildCard).ToList(),
-            },
+            }.Assign(out _cards),
             BuildFooter(),
         };
 
@@ -105,6 +105,7 @@ public class RootPage : SkiaLayer
         return new SkiaShape
         {
             Type = ShapeType.Rectangle,
+            HorizontalOptions = LayoutOptions.Fill, // the masonry column's width
             CornerRadius = 12,
             BackgroundColor = Color.Parse("#2B3035"),
             StrokeColor = Color.Parse("#373B3E"),
@@ -161,7 +162,11 @@ public class RootPage : SkiaLayer
             if ((e.Parameters?.Event?.Pointer?.Button ?? MouseButton.Left) == MouseButton.Left)
                 SampleSelected?.Invoke(sample);
         })
-        .Adapt(me => _cards.Add(me));
+        .OnHovered((me, on) =>
+        {
+            me.BackgroundColor = Color.Parse(on ? "#343A40" : "#2B3035");
+            me.StrokeColor = Color.Parse(on ? "#495057" : "#373B3E");
+        });
     }
 
     private SkiaControl BuildFooter()
@@ -228,12 +233,8 @@ public class RootPage : SkiaLayer
             _content.WidthRequest = contentWidth;
         }
 
-        var cardWidth = inner >= TwoColumnThreshold ? (inner - Gap) / 2 : inner;
-        if (Math.Abs(cardWidth - _cardWidth) < 0.5)
-            return;
-
-        _cardWidth = cardWidth;
-        foreach (var card in _cards)
-            card.WidthRequest = cardWidth;
+        var columns = inner >= TwoColumnThreshold ? 2 : 1;
+        if (_cards.Split != columns)
+            _cards.Split = columns;
     }
 }
