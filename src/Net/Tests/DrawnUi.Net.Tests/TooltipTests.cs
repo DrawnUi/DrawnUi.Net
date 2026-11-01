@@ -91,6 +91,23 @@ public class TooltipTests
     }
 
     [Fact]
+    public void LongText_WrapsAtMaxWidth()
+    {
+        using var host = Scene(out var save, out _, out _);
+        save.Tooltip = string.Join(" ", Enumerable.Repeat("long tooltip text", 20));
+
+        MoveTo(host, 50, 50);
+        WaitShown(host, save.Tooltip);
+        host.RenderFrame();
+
+        var view = (SkiaControl)typeof(DrawnView).GetField("_tooltipView",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(host.Canvas);
+        var label = view.Views.OfType<SkiaLabel>().Single();
+        Assert.True(label.LinesCount > 1, $"lines {label.LinesCount}");
+        Assert.True(view.MeasuredSize.Units.Width <= 320.5, $"width {view.MeasuredSize.Units.Width}");
+    }
+
+    [Fact]
     public void PressCloses_UntilLeavingTheControl()
     {
         using var host = Scene(out _, out _, out _);

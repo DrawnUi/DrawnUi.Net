@@ -223,7 +223,9 @@ namespace DrawnUi.Views
 
                 previous?.Dispose();
 
-                var measured = _tooltipView.Measure(float.PositiveInfinity, float.PositiveInfinity, scale);
+                // a finite width lets long text wrap: MaxWidth, never wider than the canvas
+                var maxWidth = Math.Min(context.Destination.Width, (float)(style.MaxWidth * scale));
+                var measured = _tooltipView.Measure(maxWidth, float.PositiveInfinity, scale);
                 var width = measured.Pixels.Width;
                 var height = measured.Pixels.Height;
 
