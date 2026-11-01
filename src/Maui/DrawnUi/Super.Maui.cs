@@ -45,7 +45,7 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
-        /// Will be triggered only if debugger is attached
+        /// Raised once after every hot reload code update (under a debugger or dotnet watch), debounced by 1 s
         /// </summary>
         public static event Action<Type[]?>? HotReload;
 
