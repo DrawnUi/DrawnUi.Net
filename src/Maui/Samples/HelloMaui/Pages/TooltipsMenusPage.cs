@@ -139,7 +139,7 @@ public class TooltipsMenusPage : SkiaLayer
                                 HeightRequest = 44,
                                 Children = new List<SkiaControl>
                                 {
-                                    IconButton(IconInfo, null).EndX().WithTooltip("This tooltip opens near the right edge of the window and is long enough to reach it"),
+                                    IconButton(IconInfo, "Information").EndX().WithTooltip("This tooltip opens near the right edge of the window and is long enough to reach it"),
                                 },
                             }),
 
