@@ -2164,7 +2164,8 @@ namespace DrawnUi.Draw
             {
                 Source = source,
                 Local = GetOffsetInsideControlInPoints(
-                    new PointF(apply.MappedLocation.X, apply.MappedLocation.Y), apply.ChildOffset)
+                    new PointF(apply.MappedLocation.X, apply.MappedLocation.Y), apply.ChildOffset),
+                Location = new SKPoint(args.Event.Location.X / RenderingScale, args.Event.Location.Y / RenderingScale),
             };
 
             var handled = ContextMenu.Invoke(this, e);

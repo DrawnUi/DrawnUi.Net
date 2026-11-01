@@ -58,7 +58,7 @@ public class Canvas : DrawnView, IGestureListener
     /// </summary>
     protected virtual void SetContent(SkiaControl view)
     {
-        var oldContent = Views.FirstOrDefault();
+        var oldContent = Views.FirstOrDefault(v => v is not PopupLayer); // the popup windows' layer is not content
         if (view != oldContent)
         {
             if (oldContent != null)
