@@ -78,6 +78,36 @@ namespace DrawnUi.Views
                 _hoverLeaveElement.PointerExited -= OnPlatformPointerExited;
             _hoverLeaveElement = element;
             element.PointerExited += OnPlatformPointerExited;
+            AttachTooltipHost(element);
+        }
+
+        /// <summary>
+        /// Tooltips open in a layered popup window of their own, so they can go past the edge of the app window.
+        /// </summary>
+        private void AttachTooltipHost(FrameworkElement element)
+        {
+            (TooltipHost as IDisposable)?.Dispose();
+
+            nint TopWindow()
+            {
+                var window = Handler?.MauiContext?.GetPlatformWindow();
+                return window != null ? (nint)WindowNative.GetWindowHandle(window) : 0;
+            }
+
+            TooltipHost = new Win32TooltipHost(
+                () => TopWindow(),
+                () =>
+                {
+                    var hwnd = _bridgeHwnd != 0 ? _bridgeHwnd : TopWindow();
+                    var origin = hwnd != 0 ? MauiWindowsUiaProvider.GetClientScreenOrigin(hwnd) : (x: 0.0, y: 0.0);
+                    if (element.XamlRoot is { } root)
+                    {
+                        var pt = element.TransformToVisual(null).TransformPoint(new Windows.Foundation.Point(0, 0));
+                        return (origin.x + pt.X * root.RasterizationScale, origin.y + pt.Y * root.RasterizationScale);
+                    }
+                    return (origin.x, origin.y);
+                },
+                action => MainThread.BeginInvokeOnMainThread(action));
         }
 
         private void OnPlatformPointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)

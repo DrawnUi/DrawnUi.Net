@@ -383,9 +383,10 @@ Where tooltips show:
 | Head | Tooltips | Past the window edge |
 |---|---|---|
 | WPF | Yes | Yes, in a popup window |
-| MAUI Windows | Yes | Not yet: drawn inside the canvas |
+| MAUI Windows | Yes | Yes, in a popup window |
 | MAUI Mac Catalyst | Yes | Not yet: drawn inside the canvas |
-| OpenTK | Yes | Not yet: drawn inside the canvas |
+| OpenTK on Windows | Yes | Yes, in a popup window |
+| OpenTK on Linux and macOS | Yes | Not yet: drawn inside the canvas |
 | Blazor, WebAssembly | Yes | No: drawn inside the canvas |
 | MAUI Android (with a mouse) | Yes | No: drawn inside the canvas |
 | MAUI iOS | No | No |

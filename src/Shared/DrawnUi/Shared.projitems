@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\ViewsIterator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\RenderingSubTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platforms\Windows\WindowsUiaInterfaces.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platforms\Windows\Win32TooltipHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Button\SkiaButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Button\SkiaButton.Maui.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\PlayFrames\RefreshIndicator.cs" />

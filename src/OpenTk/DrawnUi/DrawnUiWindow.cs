@@ -113,6 +113,11 @@ public class DrawnUiWindow : GameWindow
                     _uiaProvider = new WindowsUiaProvider(
                         _hwnd, _canvas.AccessibilityManager, () => (float)_canvas.RenderingScale);
                     _canvas.AccessibilityManager.FocusChanged += node => _uiaProvider.NotifyFocusChanged(node);
+
+                    // tooltips open in a layered popup window, so they can go past the window edge
+                    var hwnd = _hwnd;
+                    _canvas.TooltipHost = new Win32TooltipHost(() => hwnd, () => WindowRootProvider.GetClientScreenOrigin(hwnd),
+                        MainThread.BeginInvokeOnMainThread);
                 }
             }
         }
