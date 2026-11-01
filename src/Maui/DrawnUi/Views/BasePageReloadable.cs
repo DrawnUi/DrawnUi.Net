@@ -38,11 +38,32 @@ public class BasePageReloadable : DrawnUiBasePage, IDisposable
     }
 
     /// <summary>
-    /// Hot reload can reach this app: under a debugger (as before) or when the runtime applies code updates, as under
-    /// dotnet watch (MetadataUpdater.IsSupported is false in Release builds).
+    /// Hot reload can reach this app: under a debugger, when the runtime reports code updates as supported, or when the
+    /// app is a Debug build (dotnet watch on Mac Catalyst and iOS applies updates while MetadataUpdater.IsSupported is
+    /// false). False in Release builds, so their pages never subscribe.
     /// </summary>
     protected static bool HotReloadPossible =>
-        Debugger.IsAttached || System.Reflection.Metadata.MetadataUpdater.IsSupported;
+        Debugger.IsAttached || System.Reflection.Metadata.MetadataUpdater.IsSupported || AppIsDebugBuild;
+
+    private static bool? _appIsDebugBuild;
+
+    /// <summary>The app's own assembly was compiled without optimizations (a Debug build). Read once.</summary>
+    private static bool AppIsDebugBuild
+    {
+        get
+        {
+            if (_appIsDebugBuild.HasValue)
+                return _appIsDebugBuild.Value;
+
+            var assembly = Application.Current?.GetType().Assembly ?? System.Reflection.Assembly.GetEntryAssembly();
+            if (assembly == null)
+                return false; // asked again later, once the app is known
+
+            var debuggable = (DebuggableAttribute)Attribute.GetCustomAttribute(assembly, typeof(DebuggableAttribute));
+            _appIsDebugBuild = debuggable != null && debuggable.IsJITOptimizerDisabled;
+            return _appIsDebugBuild.Value;
+        }
+    }
 
     private bool wasBuilt;
 
