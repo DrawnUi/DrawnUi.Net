@@ -326,6 +326,20 @@ Do not hand-write a new DrawnUI app's csproj/startup/host from memory: copy the 
 - DrawFiddle's **Export .NET** button produces these same templates with the snippet already spliced in.
 - React template: `npm install`, `npm run dev`; the UI is the default-exported React component in `src/MainPage.tsx` (the whole file sits between the `<fiddle:content>` markers) instead of a `CreateMainContent()` method; DrawFiddle's React export replaces that file with the TSX snippet. Same font aliases and bare-name assets as the .NET templates. Bump `drawnui-react` in `package.json` to the latest on npm. Load the `drawnui-react` skill for the React rules.
 
+### For the web: which engine downloads least (measured 2026-11-01)
+
+The same small app on its first visit, compressed bytes the browser downloads (DrawFiddle share pages, fonts not counted):
+
+| Engine | Download | What it is |
+|---|---|---|
+| DrawnUI for Rust (crate `drawnui`) | about 2.35 MB | one `.wasm` with the engine, Skia and the app (about 2.3 MB) + about 70 KB of JS; the whole 20-page HelloRust demo is 2.1 MB |
+| DrawnUi.React (npm `drawnui-react`) | about 3.3 MB | CanvasKit, which is Skia, (3.06 MB) + `drawnui-react` (about 0.25 MB), then React and the app |
+| .NET web (Blazor, `DrawnUi.Web`) | the most | the .NET runtime with Skia (`dotnet.native.wasm`, 2.8 MB) and `System.Private.CoreLib` (1.2 MB) alone are about 4 MB, before DrawnUi and the app's assemblies |
+
+- Smallest first load: Rust, about 1 MB (30 %) under React.
+- React suits an app that is already React / TypeScript, and every page of one site shares the same CanvasKit download. Each Rust app is its own `.wasm`, so two different Rust apps download twice.
+- .NET web suits an app that shares its C# with a MAUI or desktop app.
+
 ## Invalidation & Custom Controls
 
 - `Update()` = redraw + invalidate own cache; `Repaint()` = redraw WITHOUT destroying cache (position/transform changes); `InvalidateMeasure()` = size/layout recalc; if a parent refuses to refresh, `Parent?.Invalidate()`.
