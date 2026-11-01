@@ -137,6 +137,26 @@ public class TooltipTests
         System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(host.Canvas);
 
     [Fact]
+    public void SkiaButton_ShowsItsTooltip()
+    {
+        using var host = new HeadlessCanvasHost(W, H);
+        host.Canvas.TooltipStyle = new TooltipStyle { ShowDelayMs = Delay };
+        host.Canvas.Content = new SkiaLayer
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Children = new List<SkiaControl>
+            {
+                new SkiaButton("Publish") { WidthRequest = 120, HeightRequest = 44, Margin = new Thickness(20, 100, 0, 0) }
+                    .WithTooltip("Uploads the current version"),
+            },
+        };
+        host.AdvanceFrames(3);
+
+        MoveTo(host, 60, 120);
+        WaitShown(host, "Uploads the current version");
+    }
+
+    [Fact]
     public void PressCloses_UntilLeavingTheControl()
     {
         using var host = Scene(out _, out _, out _);

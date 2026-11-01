@@ -44,7 +44,7 @@ public class Canvas : DrawnView, IGestureListener
 
     protected override void OnChildAdded(SkiaControl child)
     {
-        if (Views.Count > 1)
+        if (Views.Count(v => v is not PopupLayer) > 1) // the popup windows' layer sits beside the content
         {
             throw new Exception(
                 "Canvas cannot have more than one subview due to rendering optimizations. Please use Content property and use SkiaLayout if you need to have many controls on canvas.");
@@ -279,6 +279,8 @@ public class Canvas : DrawnView, IGestureListener
                 {
                     child.OnBeforeMeasure(); //could set IsVisible or whatever inside
                     var willDraw = MeasureChild(child, rectForChild.Width, rectForChild.Height, RenderingScale);
+                    if (child is PopupLayer)
+                        continue; // popups never size the canvas
                     if (!willDraw.IsEmpty)
                     {
                         if (willDraw.Pixels.Width > maxWidth)

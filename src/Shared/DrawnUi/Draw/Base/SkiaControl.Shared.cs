@@ -2010,6 +2010,10 @@ namespace DrawnUi.Draw
                     }
                 }
 
+                // here, not in ProcessGestures: controls that override it without the base (SkiaButton) have tooltips too
+                if (args.Type == TouchActionResult.Pointer && MayHaveTooltip)
+                    Superview?.ReportTooltip(this);
+
                 var result = ProcessGestures(args, apply);
 
                 return result;
@@ -2660,11 +2664,6 @@ namespace DrawnUi.Draw
             if (ReceivesHover)
             {
                 CheckHovered(args);
-            }
-
-            if (args.Type == TouchActionResult.Pointer && MayHaveTooltip)
-            {
-                Superview?.ReportTooltip(this);
             }
 
             if (OnGestures != null)
