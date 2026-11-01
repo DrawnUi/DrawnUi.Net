@@ -1,4 +1,4 @@
-using DrawnUi.Controls;
+﻿using DrawnUi.Controls;
 using DrawnUi.Draw;
 using DrawnUi.Views;
 
@@ -366,7 +366,7 @@ public class TransformsPage : SkiaLayer
         Children = new List<SkiaControl>
         {
             new SkiaLabel(name) { FontSize = 13, TextColor = Color.Parse("#ADB5BD"), VerticalOptions = LayoutOptions.Center },
-            new SkiaSlider { AccessibilityLabel = name, Min = min, Max = max, Margin = new Thickness(104, 0, 0, 0), HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Center }
+            new SkiaSlider { AccessibilityLabel = name, Min = min, Max = max, TrackSelectedColor = Color.Parse("#0D6EFD"), TrackColor = Color.Parse("#495057"), ThumbColor = Colors.White, Margin = new Thickness(104, 0, 0, 0), HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Center }
                 .Assign(out slider)
                 .ObserveSelf((me, prop) =>
                 {
