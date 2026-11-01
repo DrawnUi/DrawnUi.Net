@@ -2581,13 +2581,14 @@ namespace DrawnUi.Draw
                     {
                         autosize = AutoSizeType.FitVertical;
                     }
+                    // Fill grows the font only toward a finite size: an unbounded axis always has room.
                     else if ((AutoSize == AutoSizeType.FillVertical || AutoSize == AutoSizeType.FitFillVertical)
-                             && decomposedText.HasMoreVerticalSpace >= 3)
+                             && float.IsFinite(maxHeight) && decomposedText.HasMoreVerticalSpace >= 3)
                     {
                         autosize = AutoSizeType.FillVertical;
                     }
                     else if ((AutoSize == AutoSizeType.FillHorizontal || AutoSize == AutoSizeType.FitFillHorizontal)
-                             && decomposedText.HasMoreHorizontalSpace >= 3)
+                             && float.IsFinite(maxWidth) && decomposedText.HasMoreHorizontalSpace >= 3)
                     {
                         autosize = AutoSizeType.FillHorizontal;
                     }
