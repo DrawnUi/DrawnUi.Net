@@ -79,6 +79,8 @@
         <!--testing unreleased gestures code: -p:UseGesturesSource=true builds the sibling checkout ..\AppoMobi.Maui.Gestures instead of the package-->
         <ProjectReference Include="..\..\..\..\AppoMobi.Maui.Gestures\src\AppoMobi.Maui.Gestures\AppoMobi.Maui.Gestures.csproj" Condition="'$(UseGesturesSource)' == 'true'" />
         <PackageReference Include="CommonMark.NET" Version="0.15.1" />
+        <!-- the DrawnUI Designer agent: flows to apps, its buildTransitive targets attach it to Debug builds only -->
+        <PackageReference Include="DrawnUi.Designer.Agent" Version="0.1.0-preview.2" />
         <PackageReference Include="Plugin.Maui.ApplePlatform" Version="1.0.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
