@@ -8,7 +8,8 @@ namespace DrawnUi.Views
         private readonly List<SkiaControl> _tooltipReporters = new();
         private SkiaControl _tooltipOwner, _tooltipSuppressed;
         private string _tooltipText, _tooltipShownText;
-        private SKPoint _tooltipPointer, _tooltipAnchor;
+        private SKPoint _tooltipPointer;
+        private SKRect _tooltipAnchor; // the control the tooltip belongs to, canvas pixels
         private long _tooltipClosedAt;
         private int _tooltipGeneration;
         private bool _tooltipKeysHooked;
@@ -99,7 +100,7 @@ namespace DrawnUi.Views
                 // moving from one tooltip to the next: no new wait
                 _tooltipGeneration++;
                 _tooltipShownText = text;
-                _tooltipAnchor = _tooltipPointer;
+                _tooltipAnchor = owner.HitBoxAuto;
                 return true;
             }
 
@@ -111,7 +112,7 @@ namespace DrawnUi.Views
                     if (generation != _tooltipGeneration || _tooltipOwner == null || IsDisposed)
                         return;
                     _tooltipShownText = _tooltipText;
-                    _tooltipAnchor = _tooltipPointer;
+                    _tooltipAnchor = _tooltipOwner.HitBoxAuto;
                 }
 
                 Update();
@@ -191,7 +192,7 @@ namespace DrawnUi.Views
         void DrawTooltip(DrawingContext context)
         {
             string text;
-            SKPoint anchor;
+            SKRect anchor;
             lock (_lockHover)
             {
                 text = _tooltipShownText;
@@ -230,22 +231,26 @@ namespace DrawnUi.Views
                 var width = measured.Pixels.Width;
                 var height = measured.Pixels.Height;
 
-                // above the pointer, to its right: the pointer and what is under it stay visible. The view's margin
-                // (room for a shadow) is not part of the visible box.
+                // attached to its control, centered above it (below it where there is no room): it stays put while
+                // the pointer moves over the control. The view's margin (room for a shadow) is not part of the box.
                 var margin = _tooltipView.Margin;
-                var left = anchor.X + (float)(12 - margin.Left) * scale;
-                var top = anchor.Y - height + (float)(margin.Bottom - 6) * scale;
+                var boxWidth = width - (float)margin.HorizontalThickness * scale;
+                var boxHeight = height - (float)margin.VerticalThickness * scale;
+                var gap = 6 * scale;
+                var boxLeft = anchor.MidX - boxWidth / 2;
+                var boxTop = anchor.Top - gap - boxHeight;
 
                 if (host == null)
                 {
                     var bounds = context.Destination;
-                    if (top < bounds.Top)
-                        top = anchor.Y + 20 * scale; // no room above: below the pointer
-                    if (left + width > bounds.Right)
-                        left = bounds.Right - width;
-                    left = Math.Max(bounds.Left, left);
-                    top = Math.Max(bounds.Top, Math.Min(top, bounds.Bottom - height));
+                    if (boxTop < bounds.Top)
+                        boxTop = anchor.Bottom + gap; // no room above: below the control
+                    boxLeft = Math.Max(bounds.Left, Math.Min(boxLeft, bounds.Right - boxWidth));
+                    boxTop = Math.Max(bounds.Top, Math.Min(boxTop, bounds.Bottom - boxHeight));
                 }
+
+                var left = boxLeft - (float)margin.Left * scale;
+                var top = boxTop - (float)margin.Top * scale;
 
                 _tooltipViewRect = new SKRect(left, top, left + width, top + height);
 

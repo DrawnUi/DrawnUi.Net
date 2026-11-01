@@ -80,12 +80,12 @@ public class TooltipTests
     }
 
     [Fact]
-    public void Drawn_AboveRightOfThePointer()
+    public void Drawn_NextToItsControl()
     {
         using var host = Scene(out _, out _, out _);
         var before = host.NonBackgroundFraction(Colors.Black);
 
-        MoveTo(host, 95, 95); // near the corner: the tooltip lands partly on the empty canvas at the right
+        MoveTo(host, 95, 95); // the tooltip opens below the control, on the empty canvas
         WaitShown(host, "Save");
         Assert.True(host.NonBackgroundFraction(Colors.Black) > before, "tooltip not drawn");
     }
@@ -107,6 +107,34 @@ public class TooltipTests
         var box = view.MeasuredSize.Units.Width - view.Margin.HorizontalThickness; // the margin holds the shadow
         Assert.True(box <= 320.5, $"width {box}");
     }
+
+    [Fact]
+    public void AttachedToItsControl_StaysWhileThePointerMoves()
+    {
+        using var host = Scene(out _, out var open, out _);
+
+        MoveTo(host, 140, 30);
+        WaitShown(host, "Open");
+        host.RenderFrame();
+        var rect = TooltipRect(host);
+
+        // centered on the control; no room above it at the top of the canvas: below it
+        var view = TooltipView(host);
+        var boxLeft = rect.Left + (float)view.Margin.Left;
+        var boxWidth = rect.Width - (float)view.Margin.HorizontalThickness;
+        Assert.Equal(open.HitBoxAuto.MidX, boxLeft + boxWidth / 2, 1.5);
+        Assert.Equal(open.HitBoxAuto.Bottom + 6, rect.Top + (float)view.Margin.Top, 1.5);
+
+        MoveTo(host, 200, 80); // still on the control
+        host.RenderFrame();
+        Assert.Equal(rect, TooltipRect(host));
+    }
+
+    static SkiaControl TooltipView(HeadlessCanvasHost host) => (SkiaControl)typeof(DrawnView).GetField("_tooltipView",
+        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(host.Canvas);
+
+    static SkiaSharp.SKRect TooltipRect(HeadlessCanvasHost host) => (SkiaSharp.SKRect)typeof(DrawnView).GetField("_tooltipViewRect",
+        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(host.Canvas);
 
     [Fact]
     public void PressCloses_UntilLeavingTheControl()

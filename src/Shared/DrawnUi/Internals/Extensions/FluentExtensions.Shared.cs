@@ -1523,7 +1523,7 @@ namespace DrawnUi.Draw
         /// <param name="action"></param>
         /// <returns></returns>
         /// <summary>
-        /// Sets <see cref="SkiaControl.Tooltip"/>: the text shown above the mouse pointer when it rests on the control
+        /// Sets <see cref="SkiaControl.Tooltip"/>: the text shown centered above the control when the mouse it rests on the control
         /// (desktop heads).
         /// </summary>
         public static T WithTooltip<T>(this T view, string text) where T : SkiaControl

@@ -438,7 +438,7 @@ namespace DrawnUi.Draw
         private string _tooltip;
 
         /// <summary>
-        /// Text shown in a small box above the mouse pointer, to its right, when it rests on this control (desktop heads, never on touch).
+        /// Text shown in a small box centered above this control (below it when there is no room) when the mouse rests on this control (desktop heads, never on touch).
         /// Closes on leave, press, scroll or a key. Look and delay: <see cref="Super.TooltipStyle"/>. With
         /// <see cref="Super.TooltipsFromAccessibility"/> a control without it uses its accessibility text.
         /// Fluent: <c>.WithTooltip("Save")</c>.
