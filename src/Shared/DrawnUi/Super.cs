@@ -34,6 +34,16 @@ public partial class Super
     public static bool PreloadRegisteredFonts = false;
 
     /// <summary>
+    /// When true, a control without a <see cref="SkiaControl.Tooltip"/> shows its <see cref="SkiaControl.AccessibilityHint"/>
+    /// as a tooltip, or, when it has no hint and shows no text of its own (an icon button, an image), its
+    /// <see cref="SkiaControl.AccessibilityLabel"/>: tooltips and screen readers share one text. Default false.
+    /// </summary>
+    public static bool TooltipsFromAccessibility { get; set; }
+
+    /// <summary>Look and timing of tooltips in every canvas that has no <c>TooltipStyle</c> of its own.</summary>
+    public static TooltipStyle TooltipStyle { get; set; } = new();
+
+    /// <summary>
     /// Puts text on the system clipboard, used to copy a selected <see cref="SkiaLabel"/> text. MAUI and Blazor set it
     /// themselves; the WPF, OpenTK and WebAssembly hosts set it when they start. Null (headless) = copying does nothing.
     /// Replace it to route copies elsewhere.

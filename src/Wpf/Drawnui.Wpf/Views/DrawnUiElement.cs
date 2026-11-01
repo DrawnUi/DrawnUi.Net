@@ -170,6 +170,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
 
         Canvas = createCanvas() ?? throw new InvalidOperationException("The canvas factory returned null");
         Canvas.Gestures = Gestures;
+        Canvas.TooltipHost = new WpfTooltipHost(this); // tooltips may go past the window edge
 
         // The canvas joins the WPF logical tree so DataContext flows into it the ordinary WPF way;
         // DrawnUI then propagates that context down its own tree (SkiaControl.ApplyBindingContext).
@@ -225,6 +226,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         {
             _window = window;
             _window.Closed += OnWindowClosed;
+            _window.Deactivated += OnWindowDeactivated;
             WpfStartup.ApplyToWindow(window); // DesktopWindow size + window-level keyboard, first window only
         }
 
@@ -418,10 +420,13 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         _running = false;
         AttachWindowMessages(false);
         CompositionTarget.Rendering -= OnCompositionRendering;
+        Canvas.CloseTooltipOnInput();
         ReleaseSurface();
     }
 
     private void OnWindowClosed(object sender, EventArgs e) => Dispose();
+
+    private void OnWindowDeactivated(object sender, EventArgs e) => Canvas.CloseTooltipOnInput();
 
     /// <summary>
     /// Stops rendering and releases the drawn tree, its animators and every GPU object. Called
@@ -444,6 +449,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         if (_window != null)
         {
             _window.Closed -= OnWindowClosed;
+            _window.Deactivated -= OnWindowDeactivated;
             _window = null;
         }
 

@@ -550,6 +550,7 @@ namespace DrawnUi.Views
         public void CommitHover(SkiaGesturesParameters pointer)
         {
             HoverChanges changes;
+            bool tooltipChanged;
             lock (_lockHover)
             {
                 _hoverPointer = pointer;
@@ -557,12 +558,16 @@ namespace DrawnUi.Views
                 {
                     _hoveredNext.Clear();
                     _hoverInnermostNext = null;
+                    _tooltipReporters.Clear();
                     return;
                 }
 
                 changes = ApplyHover();
+                tooltipChanged = CommitTooltipLocked(pointer);
             }
             changes.Notify(this);
+            if (tooltipChanged)
+                Update();
         }
 
         /// <summary>The pointer left the canvas: hover ends at once, also while content animates.</summary>
@@ -575,6 +580,7 @@ namespace DrawnUi.Views
                 _hoveredNext.Clear();
                 _hoverInnermostNext = null;
                 changes = ApplyHover();
+                ResetTooltipLocked();
             }
             changes.Notify(this);
         }
@@ -586,7 +592,10 @@ namespace DrawnUi.Views
         public void PauseHover(SkiaControl owner)
         {
             lock (_lockHover)
+            {
                 _hoverPausedBy.Add(owner);
+                ResetTooltipLocked(); // content moves under the pointer: the tooltip closes
+            }
         }
 
         /// <summary>The content of <paramref name="owner"/> stopped moving: when nothing else moves, one hover check at the last pointer position.</summary>
@@ -629,6 +638,9 @@ namespace DrawnUi.Views
                     _hoverInnermost = null;
                 if (_hoverInnermostNext == control)
                     _hoverInnermostNext = null;
+                _tooltipReporters.Remove(control);
+                if (_tooltipOwner == control)
+                    ResetTooltipLocked();
             }
         }
 
@@ -1906,6 +1918,12 @@ namespace DrawnUi.Views
         {
             _timerResetFocus?.Dispose();
 
+            lock (_lockHover)
+                HookTooltipKeys(false);
+            if (_tooltipNativeShown)
+                TooltipHost?.HideTooltip();
+            _tooltipView?.Dispose();
+
             if (_visibilityParent != null)
             {
                 //_visibilityParent.PropertyChanged -= OnParentVisibilityCheck;
@@ -2436,6 +2454,8 @@ namespace DrawnUi.Views
                         {
                             DrawKeyboardFocus(context);
                         }
+
+                        DrawTooltip(context);
 
                         //Kick to redraw if need animate
                         if (executed + postExecuted > 0)

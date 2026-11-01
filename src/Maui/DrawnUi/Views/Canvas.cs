@@ -573,6 +573,8 @@ public class Canvas : DrawnView, IGestureListener
             }
 
             _checkHover = args.Type == TouchActionResult.Pointer;
+            if (!_checkHover)
+                CloseTooltipOnInput(); // a press, the wheel: the tooltip closes
 
             ISkiaGestureListener consumed = null;
             ISkiaGestureListener alreadyConsumed = null;

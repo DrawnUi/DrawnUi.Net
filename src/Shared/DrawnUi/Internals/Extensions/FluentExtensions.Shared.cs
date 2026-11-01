@@ -1523,6 +1523,16 @@ namespace DrawnUi.Draw
         /// <param name="action"></param>
         /// <returns></returns>
         /// <summary>
+        /// Sets <see cref="SkiaControl.Tooltip"/>: the text shown under the mouse when it rests on the control
+        /// (desktop heads).
+        /// </summary>
+        public static T WithTooltip<T>(this T view, string text) where T : SkiaControl
+        {
+            view.Tooltip = text;
+            return view;
+        }
+
+        /// <summary>
         /// Mouse hover: <paramref name="action"/> runs with true when the mouse comes over the control and false when it
         /// leaves (<see cref="SkiaControl.HoverChanged"/>). Turns <see cref="SkiaControl.ReceivesHover"/> on. A card stays
         /// hovered while the mouse is over a button inside it. Hover is not tracked while content animates under the

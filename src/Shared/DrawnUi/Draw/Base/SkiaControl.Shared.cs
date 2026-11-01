@@ -423,6 +423,72 @@ namespace DrawnUi.Draw
         /// <summary>The value of <see cref="ReceivesHover"/> until it is set: false, true in the controls that always had hover.</summary>
         protected virtual bool ReceivesHoverByDefault => false;
 
+        public static readonly BindableProperty TooltipProperty = BindableProperty.Create(nameof(Tooltip),
+            typeof(string),
+            typeof(SkiaControl),
+            null,
+            propertyChanged: (bindable, value, newValue) =>
+            {
+                if (bindable is SkiaControl control)
+                {
+                    control._tooltip = (string)newValue;
+                }
+            });
+
+        private string _tooltip;
+
+        /// <summary>
+        /// Text shown in a small box under the mouse when it rests on this control (desktop heads, never on touch).
+        /// Closes on leave, press, scroll or a key. Look and delay: <see cref="Super.TooltipStyle"/>. With
+        /// <see cref="Super.TooltipsFromAccessibility"/> a control without it uses its accessibility text.
+        /// Fluent: <c>.WithTooltip("Save")</c>.
+        /// </summary>
+        public string Tooltip
+        {
+            get { return (string)GetValue(TooltipProperty); }
+            set { SetValue(TooltipProperty, value); }
+        }
+
+        /// <summary>True when this control may have tooltip text: cheap check made on every mouse move.</summary>
+        internal bool MayHaveTooltip =>
+            _tooltip != null || (Super.TooltipsFromAccessibility && (_accessibilityHint != null || _accessibilityLabel != null));
+
+        /// <summary>
+        /// The text of this control's tooltip, null for none: <see cref="Tooltip"/>, else with
+        /// <see cref="Super.TooltipsFromAccessibility"/> its <see cref="AccessibilityHint"/>, else its
+        /// <see cref="AccessibilityLabel"/> when it shows no text of its own.
+        /// </summary>
+        public virtual string GetTooltipText()
+        {
+            if (!string.IsNullOrEmpty(_tooltip))
+                return _tooltip;
+
+            if (!Super.TooltipsFromAccessibility)
+                return null;
+
+            if (!string.IsNullOrEmpty(_accessibilityHint))
+                return _accessibilityHint;
+
+            if (!string.IsNullOrEmpty(_accessibilityLabel) && !ShowsText(this))
+                return _accessibilityLabel;
+
+            return null;
+        }
+
+        static bool ShowsText(SkiaControl control)
+        {
+            if (control is SkiaLabel label && !string.IsNullOrEmpty(label.Text))
+                return true;
+
+            foreach (var child in control.Views)
+            {
+                if (ShowsText(child))
+                    return true;
+            }
+
+            return false;
+        }
+
         public VisualLayer? VisualLayer { get; set; }
 
         private void Init()
@@ -2590,6 +2656,11 @@ namespace DrawnUi.Draw
             if (ReceivesHover)
             {
                 CheckHovered(args);
+            }
+
+            if (args.Type == TouchActionResult.Pointer && MayHaveTooltip)
+            {
+                Superview?.ReportTooltip(this);
             }
 
             if (OnGestures != null)

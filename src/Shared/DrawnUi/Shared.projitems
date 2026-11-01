@@ -149,6 +149,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\TintEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\TintWithAlphaEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Keyboard\KeyboardManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Tooltips\TooltipStyle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Keyboard\MauiKeys.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Shaders\SKSL.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Enums\ControlLifecycleState.cs" />
@@ -404,6 +405,7 @@
     <!-- Views utilities -->
     <Compile Include="$(MSBuildThisFileDirectory)Views\CanvasRestoreScope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\DrawnView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\DrawnView.Tooltip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\SKAutoCanvasRestoreFixed.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\DisposableManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\CacheManager.cs" />
