@@ -148,12 +148,22 @@ public class TooltipsMenusPage : SkiaLayer
                             }),
 
                         Card("Menu bar", "Click a menu, or press Alt with its first letter (Alt+F, Alt+E, Alt+V, Alt+H). Left and Right open the next menu, Up and Down move through it, Enter picks, Escape closes. The shortcuts (Ctrl+N, Ctrl+S, F1...) work with the menus closed too.",
-                            new SkiaRow
+                            new SkiaShape
                             {
-                                Spacing = 2,
-                                AccessibilityRole = Aria.RoleMenuBar,
-                                AccessibilityLabel = "Menu bar",
-                                Children = Menus.Select((menu, index) => (SkiaControl)TopItem(menu.Title, index)).ToList(),
+                                HorizontalOptions = LayoutOptions.Fill,
+                                CornerRadius = 8,
+                                BackgroundColor = ButtonColor, // the bar in the buttons' color
+                                Padding = new Thickness(4),
+                                Children = new List<SkiaControl>
+                                {
+                                    new SkiaRow
+                                    {
+                                        Spacing = 2,
+                                        AccessibilityRole = Aria.RoleMenuBar,
+                                        AccessibilityLabel = "Menu bar",
+                                        Children = Menus.Select((menu, index) => (SkiaControl)TopItem(menu.Title, index)).ToList(),
+                                    },
+                                },
                             },
                             new SkiaLabel("Last command: none") { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RoleStatus, AccessibilityLive = Aria.LivePolite }
                                 .Assign(out _command)),
@@ -254,7 +264,7 @@ public class TooltipsMenusPage : SkiaLayer
     {
         var open = BarOpen ? _open : -1;
         for (var i = 0; i < _tops.Length; i++)
-            _tops[i].BackgroundColor = i == open ? Color.Parse("#3B4256") : (i == hovered && on ? ButtonHover : Colors.Transparent);
+            _tops[i].BackgroundColor = i == open ? Color.Parse("#5A6270") : (i == hovered && on ? ButtonHover : Colors.Transparent);
     }
 
     private void OpenMenu(int index, bool keyboard)
