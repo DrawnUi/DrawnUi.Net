@@ -48,10 +48,37 @@ public class TooltipsMenusPage : SkiaLayer
                     Children = new List<SkiaControl>
                     {
                         new SkiaLabel("Tooltips & Menus") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center, AccessibilityRole = Aria.RoleHeading },
-                        new SkiaLabel("Rest the mouse on a control. Move along a row: the next tooltip shows at once. Click, scroll, use the wheel or press a key: it closes. Right-click anywhere on the page for a context menu.")
+                        new SkiaLabel("A desktop menu bar, a context menu (right-click anywhere on the page) and a dropdown, then tooltips: rest the mouse on a control, move along a row and the next one shows at once; a click, the wheel or a key closes it.")
                         {
                             FontSize = 14, TextColor = Colors.LightGray, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center,
                         },
+
+                        Card("Menu bar", "Click a menu, or press Alt with its first letter (Alt+F, Alt+E, Alt+V, Alt+H). Left and Right open the next menu, Up and Down move through it, Enter picks, Escape closes. The shortcuts (Ctrl+N, Ctrl+S, F1...) work with the menus closed too.",
+                            new SkiaShape
+                            {
+                                HorizontalOptions = LayoutOptions.Fill,
+                                CornerRadius = 8,
+                                BackgroundColor = ButtonColor, // the bar in the buttons' color
+                                Padding = new Thickness(4),
+                                Children = new List<SkiaControl>
+                                {
+                                    new SkiaRow
+                                    {
+                                        Spacing = 2,
+                                        AccessibilityRole = Aria.RoleMenuBar,
+                                        AccessibilityLabel = "Menu bar",
+                                        Children = Menus.Select((menu, index) => (SkiaControl)TopItem(menu.Title, index)).ToList(),
+                                    },
+                                },
+                            },
+                            new SkiaLabel("Last command: none") { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RoleStatus, AccessibilityLive = Aria.LivePolite }
+                                .Assign(out _command)),
+
+                        Card("Context menu and dropdown", "Right-click anywhere on the page: the menu opens where you clicked. The button opens a list below it. A click outside or Escape closes them.",
+                            TextButton("Choose a fruit")
+                                .OnTapped(me => _menu = me.Superview.OpenPopupWindow(Menu("Fruits", "Apple", "Banana", "Cherry", "Grape", "Mango", "Orange", "Peach", "Pear"), me)),
+                            new SkiaLabel("Nothing picked yet") { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RoleStatus, AccessibilityLive = Aria.LivePolite }
+                                .Assign(out _picked)),
 
                         Card("Icon toolbar", "No Tooltip set: the text is each button's AccessibilityLabel (TooltipsFromAccessibility, switch below).",
                             new SkiaRow
@@ -146,33 +173,6 @@ public class TooltipsMenusPage : SkiaLayer
                                     },
                                 },
                             }),
-
-                        Card("Menu bar", "Click a menu, or press Alt with its first letter (Alt+F, Alt+E, Alt+V, Alt+H). Left and Right open the next menu, Up and Down move through it, Enter picks, Escape closes. The shortcuts (Ctrl+N, Ctrl+S, F1...) work with the menus closed too.",
-                            new SkiaShape
-                            {
-                                HorizontalOptions = LayoutOptions.Fill,
-                                CornerRadius = 8,
-                                BackgroundColor = ButtonColor, // the bar in the buttons' color
-                                Padding = new Thickness(4),
-                                Children = new List<SkiaControl>
-                                {
-                                    new SkiaRow
-                                    {
-                                        Spacing = 2,
-                                        AccessibilityRole = Aria.RoleMenuBar,
-                                        AccessibilityLabel = "Menu bar",
-                                        Children = Menus.Select((menu, index) => (SkiaControl)TopItem(menu.Title, index)).ToList(),
-                                    },
-                                },
-                            },
-                            new SkiaLabel("Last command: none") { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RoleStatus, AccessibilityLive = Aria.LivePolite }
-                                .Assign(out _command)),
-
-                        Card("Context menu and dropdown", "Right-click anywhere on the page: the menu opens where you clicked. The button opens a list below it. A click outside or Escape closes them.",
-                            TextButton("Choose a fruit")
-                                .OnTapped(me => _menu = me.Superview.OpenPopupWindow(Menu("Fruits", "Apple", "Banana", "Cherry", "Grape", "Mango", "Orange", "Peach", "Pear"), me)),
-                            new SkiaLabel("Nothing picked yet") { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RoleStatus, AccessibilityLive = Aria.LivePolite }
-                                .Assign(out _picked)),
                     },
                 },
             }.Fill(),
