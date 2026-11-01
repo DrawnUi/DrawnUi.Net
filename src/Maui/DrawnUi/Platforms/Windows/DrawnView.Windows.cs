@@ -84,6 +84,14 @@ namespace DrawnUi.Views
         /// <summary>
         /// Tooltips open in a layered popup window of their own, so they can go past the edge of the app window.
         /// </summary>
+        private Microsoft.UI.Xaml.Window _activationWindow;
+
+        private void OnPlatformWindowActivated(object sender, Microsoft.UI.Xaml.WindowActivatedEventArgs e)
+        {
+            if (e.WindowActivationState == Microsoft.UI.Xaml.WindowActivationState.Deactivated)
+                OnWindowDeactivated();
+        }
+
         private void AttachTooltipHost(FrameworkElement element)
         {
             (TooltipHost as IDisposable)?.Dispose();
@@ -92,6 +100,15 @@ namespace DrawnUi.Views
             {
                 var window = Handler?.MauiContext?.GetPlatformWindow();
                 return window != null ? (nint)WindowNative.GetWindowHandle(window) : 0;
+            }
+
+            // popups and the tooltip close when the app's window stops being the active one
+            if (Handler?.MauiContext?.GetPlatformWindow() is { } platformWindow && !ReferenceEquals(platformWindow, _activationWindow))
+            {
+                if (_activationWindow != null)
+                    _activationWindow.Activated -= OnPlatformWindowActivated;
+                _activationWindow = platformWindow;
+                platformWindow.Activated += OnPlatformWindowActivated;
             }
 
             TooltipHost = new Win32TooltipHost(

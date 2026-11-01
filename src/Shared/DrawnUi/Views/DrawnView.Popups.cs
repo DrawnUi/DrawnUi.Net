@@ -57,6 +57,33 @@ namespace DrawnUi.Views
             AfterPopupsChanged();
         }
 
+        /// <summary>
+        /// The app's window stopped being the active window: its popup windows and its tooltip close, as native menus
+        /// do. The desktop heads call it from their window's deactivation.
+        /// </summary>
+        public void OnWindowDeactivated()
+        {
+            ClosePopupWindows();
+            CloseTooltipOnInput();
+        }
+
+        /// <summary>
+        /// Heads call it for every input before routing it: the wheel outside the popup windows closes them (what
+        /// they opened from is about to move). Done here, before the gesture owner of a scroll can take the wheel.
+        /// </summary>
+        public void PreviewInputForPopups(SkiaGesturesParameters args)
+        {
+            if (args.Type != TouchActionResult.Wheel || _popupLayer == null || !_popupLayer.HasInteractive)
+                return;
+
+            var location = args.Event.Location;
+            if (_popupLayer.InsideInteractive(new SKPoint(location.X, location.Y)))
+                return;
+
+            _popupLayer.CloseAll(passiveToo: false);
+            AfterPopupsChanged();
+        }
+
         /// <summary>The popup window is still open.</summary>
         public bool IsPopupWindowOpen(PopupId id) => _popupLayer?.IsOpen(id) == true;
 
@@ -312,7 +339,7 @@ namespace DrawnUi.Views
             return new SKRect(left, top, left + MathF.Round(w), top + MathF.Round(h));
         }
 
-        private bool InsideInteractive(SKPoint point)
+        internal bool InsideInteractive(SKPoint point)
         {
             foreach (var popup in _popups)
             {

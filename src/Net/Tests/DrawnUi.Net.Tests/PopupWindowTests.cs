@@ -131,6 +131,54 @@ public class PopupWindowTests
     }
 
     [Fact]
+    public void WheelOutside_Closes()
+    {
+        using var host = Scene(out _, out _);
+        var id = host.Canvas.OpenPopupWindow(Menu(new List<string>(), "A", "B"), new SKPoint(150, 150));
+        host.AdvanceFrames(2);
+
+        host.Canvas.HandleDesktopWheel(50, 350, -120, W, H);
+        host.AdvanceFrames(2);
+        Assert.False(host.Canvas.IsPopupWindowOpen(id));
+    }
+
+    [Fact]
+    public void WheelOverAScrollThatWasScrolling_Closes()
+    {
+        using var host = new HeadlessCanvasHost(W, H);
+        host.Canvas.Content = new SkiaScroll
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaStack
+            {
+                Children = Enumerable.Range(0, 40).Select(i => (SkiaControl)new SkiaShape { HeightRequest = 50, HorizontalOptions = LayoutOptions.Fill, BackgroundColor = Colors.Gray }).ToList(),
+            },
+        };
+        host.AdvanceFrames(3);
+        host.Canvas.HandleDesktopWheel(200, 200, -120, W, H); // the scroll owns the wheel gesture now
+        host.AdvanceFrames(10);
+
+        var id = host.Canvas.OpenPopupWindow(Menu(new List<string>(), "A", "B"), new SKPoint(150, 150));
+        host.AdvanceFrames(2);
+        host.Canvas.HandleDesktopWheel(50, 350, -120, W, H);
+        host.AdvanceFrames(2);
+
+        Assert.False(host.Canvas.IsPopupWindowOpen(id));
+    }
+
+    [Fact]
+    public void WindowDeactivated_ClosesPopupsAndTooltip()
+    {
+        using var host = Scene(out _, out _);
+        var id = host.Canvas.OpenPopupWindow(Menu(new List<string>(), "A"), new SKPoint(150, 150));
+        host.AdvanceFrames(2);
+
+        host.Canvas.OnWindowDeactivated();
+        host.AdvanceFrames(2);
+        Assert.False(host.Canvas.IsPopupWindowOpen(id));
+    }
+
+    [Fact]
     public void ClosedFromCode()
     {
         using var host = Scene(out _, out _);

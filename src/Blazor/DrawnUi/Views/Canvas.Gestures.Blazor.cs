@@ -66,6 +66,7 @@ public partial class Canvas : IGestureListener
             _checkHover = args.Type == TouchActionResult.Pointer;
             if (!_checkHover)
                 CloseTooltipOnInput(); // a press, the wheel: the tooltip closes
+            PreviewInputForPopups(args);
             ISkiaGestureListener consumed = null;
             ISkiaGestureListener alreadyConsumed = null;
 

@@ -426,7 +426,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
 
     private void OnWindowClosed(object sender, EventArgs e) => Dispose();
 
-    private void OnWindowDeactivated(object sender, EventArgs e) => Canvas.CloseTooltipOnInput();
+    private void OnWindowDeactivated(object sender, EventArgs e) => Canvas.OnWindowDeactivated();
 
     /// <summary>
     /// Stops rendering and releases the drawn tree, its animators and every GPU object. Called

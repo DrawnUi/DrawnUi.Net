@@ -157,6 +157,49 @@ public class TooltipTests
     }
 
     [Fact]
+    public void RowsInsideAScroll_ShowTheirTooltips()
+    {
+        using var host = new HeadlessCanvasHost(W, H);
+        host.Canvas.TooltipStyle = new TooltipStyle { ShowDelayMs = Delay };
+        host.Canvas.Content = new SkiaLayer
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Children = new List<SkiaControl>
+            {
+                new SkiaShape
+                {
+                    HorizontalOptions = LayoutOptions.Fill,
+                    HeightRequest = 200,
+                    Margin = new Thickness(0, 100, 0, 0),
+                    IsClippedToBounds = true,
+                    Children = new List<SkiaControl>
+                    {
+                        new SkiaScroll
+                        {
+                            VerticalOptions = LayoutOptions.Fill,
+                            Content = new SkiaStack
+                            {
+                                Spacing = 1,
+                                Children = Enumerable.Range(1, 30).Select(i => (SkiaControl)new SkiaLayer
+                                {
+                                    HeightRequest = 36,
+                                    HorizontalOptions = LayoutOptions.Fill,
+                                    BackgroundColor = Colors.Gray,
+                                    Children = new List<SkiaControl> { new SkiaLabel($"Row {i}") },
+                                }.WithTooltip($"Details of row {i}")).ToList(),
+                            },
+                        },
+                    },
+                },
+            },
+        };
+        host.AdvanceFrames(3);
+
+        MoveTo(host, 100, 120);
+        WaitShown(host, "Details of row 1");
+    }
+
+    [Fact]
     public void PressCloses_UntilLeavingTheControl()
     {
         using var host = Scene(out _, out _, out _);
