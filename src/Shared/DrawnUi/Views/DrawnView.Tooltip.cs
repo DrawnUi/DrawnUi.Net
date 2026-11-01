@@ -34,6 +34,13 @@ namespace DrawnUi.Views
         /// <summary>The text of the tooltip shown now, null when none is shown.</summary>
         public string ShownTooltip => _tooltipShownText;
 
+        /// <summary>Where the control is on the canvas now, in pixels: through caches, scroll offsets and transforms.</summary>
+        static SKRect OnScreenRect(SkiaControl control)
+        {
+            var rect = control.GetAccessibilityPixelRect();
+            return rect.IsEmpty ? control.HitBoxAuto : rect;
+        }
+
         TooltipStyle TooltipStyleUsed => TooltipStyle ?? Super.TooltipStyle ?? new TooltipStyle();
 
         /// <summary>
@@ -100,7 +107,7 @@ namespace DrawnUi.Views
                 // moving from one tooltip to the next: no new wait
                 _tooltipGeneration++;
                 _tooltipShownText = text;
-                _tooltipAnchor = owner.HitBoxAuto;
+                _tooltipAnchor = OnScreenRect(owner);
                 return true;
             }
 
@@ -112,7 +119,7 @@ namespace DrawnUi.Views
                     if (generation != _tooltipGeneration || _tooltipOwner == null || IsDisposed)
                         return;
                     _tooltipShownText = _tooltipText;
-                    _tooltipAnchor = _tooltipOwner.HitBoxAuto;
+                    _tooltipAnchor = OnScreenRect(_tooltipOwner);
                 }
 
                 Update();

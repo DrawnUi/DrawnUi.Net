@@ -197,6 +197,97 @@ public class TooltipTests
 
         MoveTo(host, 100, 120);
         WaitShown(host, "Details of row 1");
+
+        // scrolled: the next row's tooltip sits at the row where it is now, not where it was laid out
+        host.Canvas.HandleDesktopPointerLeave();
+        host.Canvas.HandleDesktopWheel(100, 200, -120, W, H);
+        host.AdvanceFrames(60);
+        MoveTo(host, 100, 200);
+        WaitShown(host, host.Canvas.ShownTooltip ?? "Details of row");
+        var shown = host.Canvas.ShownTooltip;
+        Assert.NotNull(shown);
+        host.RenderFrame();
+        var rect = TooltipRect(host);
+        var view = TooltipView(host);
+        var boxBottom = rect.Bottom - (float)view.Margin.Bottom;
+        // its box sits 6 pt above the row under the pointer, so near the pointer, not far up where the row was laid out
+        Assert.InRange(boxBottom, 200 - 36 - 10, 200 + 1);
+    }
+
+    [Fact]
+    public void RowsInACachedCard_OnAScrolledPage_TooltipAtTheRow()
+    {
+        using var host = new HeadlessCanvasHost(W, H);
+        host.Canvas.TooltipStyle = new TooltipStyle { ShowDelayMs = Delay };
+        host.Canvas.Content = new SkiaScroll
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaStack
+            {
+                Spacing = 16,
+                Children = new List<SkiaControl>
+                {
+                    new SkiaShape { HeightRequest = 500, HorizontalOptions = LayoutOptions.Fill, BackgroundColor = Colors.DarkGray },
+                    new SkiaShape
+                    {
+                        HorizontalOptions = LayoutOptions.Fill,
+                        UseCache = SkiaCacheType.Operations, // a cached card, as in the Hello page
+                        Padding = new Thickness(10),
+                        Children = new List<SkiaControl>
+                        {
+                            new SkiaShape
+                            {
+                                HorizontalOptions = LayoutOptions.Fill,
+                                HeightRequest = 200,
+                                IsClippedToBounds = true,
+                                Children = new List<SkiaControl>
+                                {
+                                    new SkiaScroll
+                                    {
+                                        VerticalOptions = LayoutOptions.Fill,
+                                        Content = new SkiaStack
+                                        {
+                                            Spacing = 1,
+                                            Children = Enumerable.Range(1, 30).Select(i => (SkiaControl)new SkiaLayer
+                                            {
+                                                HeightRequest = 36,
+                                                HorizontalOptions = LayoutOptions.Fill,
+                                                BackgroundColor = Colors.Gray,
+                                                Children = new List<SkiaControl> { new SkiaLabel($"Row {i}") },
+                                            }.WithTooltip($"Details of row {i}")).ToList(),
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                    new SkiaShape { HeightRequest = 300, HorizontalOptions = LayoutOptions.Fill, BackgroundColor = Colors.DarkGray },
+                },
+            },
+        };
+        host.AdvanceFrames(3);
+
+        // scroll the page so the list is in view
+        for (var i = 0; i < 2; i++)
+        {
+            host.Canvas.HandleDesktopWheel(100, 50, -120, W, H);
+            host.AdvanceFrames(30);
+        }
+        host.AdvanceFrames(60);
+
+        // find a point over a row
+        MoveTo(host, 100, 300);
+        for (var i = 0; i < 100 && host.Canvas.ShownTooltip == null; i++)
+            Wait(host, 20);
+        Assert.NotNull(host.Canvas.ShownTooltip);
+        host.RenderFrame();
+
+        var rect = TooltipRect(host);
+        var view = TooltipView(host);
+        var boxTop = rect.Top + (float)view.Margin.Top;
+        var boxBottom = rect.Bottom - (float)view.Margin.Bottom;
+        // attached to the row under the pointer at y 300: just above it or just below it, never far away
+        Assert.True(Math.Abs(boxBottom - 300) < 60 || Math.Abs(boxTop - 300) < 60, $"tooltip box {boxTop}..{boxBottom}, pointer at 300");
     }
 
     [Fact]

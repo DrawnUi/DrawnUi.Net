@@ -84,6 +84,14 @@ namespace DrawnUi.Views
             AfterPopupsChanged();
         }
 
+        /// <summary>
+        /// A popup window closed: picked, a press outside it, Escape, the wheel, the app's window deactivated or
+        /// <see cref="ClosePopupWindow"/>. A menu bar uses it to unselect its title.
+        /// </summary>
+        public event EventHandler<PopupId> PopupWindowClosed;
+
+        internal void RaisePopupWindowClosed(PopupId id) => PopupWindowClosed?.Invoke(this, id);
+
         /// <summary>The popup window is still open.</summary>
         public bool IsPopupWindowOpen(PopupId id) => _popupLayer?.IsOpen(id) == true;
 
@@ -161,7 +169,10 @@ namespace DrawnUi.Views
         internal SKRect Pixels(float scale)
         {
             if (Control != null)
-                return Control.HitBoxAuto;
+            {
+                var rect = Control.GetAccessibilityPixelRect(); // on screen now: through caches and scroll offsets
+                return rect.IsEmpty ? Control.HitBoxAuto : rect;
+            }
             return new SKRect(Rect.Left * scale, Rect.Top * scale, Rect.Right * scale, Rect.Bottom * scale);
         }
     }
@@ -289,6 +300,7 @@ namespace DrawnUi.Views
             _canvas.DisposeObject(popup.Root);
             IsVisible = _popups.Count > 0 || _swallowPress;
             Invalidate();
+            _canvas.RaisePopupWindowClosed(popup.Id);
         }
 
         protected override void Paint(DrawingContext ctx)
