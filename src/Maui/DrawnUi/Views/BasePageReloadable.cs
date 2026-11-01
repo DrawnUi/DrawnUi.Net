@@ -12,6 +12,7 @@ public class BasePageReloadable : DrawnUiBasePage, IDisposable
     {
         if (Debugger.IsAttached)
         {
+            Super.HotReload -= ReloadUi; // never twice: OnHandlerChanged subscribes too
             Super.HotReload += ReloadUi;
         }
     }
@@ -26,6 +27,7 @@ public class BasePageReloadable : DrawnUiBasePage, IDisposable
 
             if (Debugger.IsAttached)
             {
+                Super.HotReload -= ReloadUi; // never twice: the constructor subscribes too
                 Super.HotReload += ReloadUi;
             }
         }
