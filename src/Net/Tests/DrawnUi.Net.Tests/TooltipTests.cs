@@ -378,6 +378,40 @@ public class TooltipTests
     }
 
     [Fact]
+    public async Task InsideASkiaShellPage_ShowsTooltips()
+    {
+        using var host = new HeadlessCanvasHost(W, H);
+        host.Canvas.TooltipStyle = new TooltipStyle { ShowDelayMs = Delay };
+        SkiaShape target = null;
+        var shell = new SkiaShell
+        {
+            Routes = new Dictionary<string, Func<ShellArguments, SkiaControl>>
+            {
+                ["page"] = _ => new SkiaLayer
+                {
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill,
+                    Children = new List<SkiaControl>
+                    {
+                        new SkiaShape { WidthRequest = 120, HeightRequest = 70, BackgroundColor = Colors.Blue }
+                            .Center().WithTooltip("In a shell page").Assign(out target),
+                    },
+                },
+            },
+            RootContent = new SkiaLayer { HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill },
+        };
+        host.Canvas.Content = shell;
+        host.RenderFrame(16);
+        await shell.GoToAsync("page", false);
+        host.AdvanceFrames(30, 16);
+
+        var rect = target.GetAccessibilityPixelRect();
+        Assert.False(rect.IsEmpty);
+        MoveTo(host, rect.MidX, rect.MidY);
+        WaitShown(host, "In a shell page");
+    }
+
+    [Fact]
     public void PressCloses_UntilLeavingTheControl()
     {
         using var host = Scene(out _, out _, out _);
