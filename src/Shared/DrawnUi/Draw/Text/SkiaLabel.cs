@@ -981,7 +981,8 @@ namespace DrawnUi.Draw
             float xStart, float xEnd, float y)
         {
             PaintDeco.Style = SkiaSharp.SKPaintStyle.Stroke;
-            PaintDeco.Color = span.TextColor.ToSKColor();
+            // the color the span's letters are drawn with: its own when set, else the label's
+            PaintDeco.Color = span.Paint?.Color ?? span.TextColor.ToSKColor();
             if (span.Underline)
             {
                 var moveY = span.Font.Metrics.UnderlinePosition.GetValueOrDefault();
