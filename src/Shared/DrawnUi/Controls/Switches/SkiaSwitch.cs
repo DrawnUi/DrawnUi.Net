@@ -47,8 +47,8 @@ public class SkiaSwitch : SkiaToggle
     protected virtual void CreateDefaultStyleContent()
     {
         // Flat DrawnUI look: accent track when on, neutral track when off, white thumb.
-        // Height 28 sits between Windows (22) and Cupertino (31).
-        SetDefaultContentSize(46, 28);
+        // 46 x 20, the DrawnUI Designer's switch: a low track that fits a settings row.
+        SetDefaultContentSize(46, 20);
 
         // style defaults, not plain sets: a plain set counts as the app's own, and a later ControlStyle kept the crimson
         SetStyleDefault(ColorFrameOnProperty, DefaultAccentColor);
