@@ -291,6 +291,43 @@ public class TooltipTests
     }
 
     [Fact]
+    public void TextInSpans_NoAccessibilityTooltip()
+    {
+        var was = Super.TooltipsFromAccessibility;
+        try
+        {
+            Super.TooltipsFromAccessibility = true;
+            using var host = new HeadlessCanvasHost(W, H);
+            host.Canvas.TooltipStyle = new TooltipStyle { ShowDelayMs = Delay };
+            host.Canvas.Content = new SkiaLayer
+            {
+                VerticalOptions = LayoutOptions.Fill,
+                Children = new List<SkiaControl>
+                {
+                    new SkiaShape
+                    {
+                        AccessibilityLabel = "File",
+                        Padding = new Thickness(10),
+                        Children = new List<SkiaControl>
+                        {
+                            new SkiaLabel { FontSize = 30, Spans = { new TextSpan { Text = "F", Underline = true }, new TextSpan { Text = "ile" } } },
+                        },
+                    },
+                },
+            };
+            host.AdvanceFrames(3);
+
+            MoveTo(host, 25, 25);
+            Wait(host, Delay * 3);
+            Assert.Null(host.Canvas.ShownTooltip);
+        }
+        finally
+        {
+            Super.TooltipsFromAccessibility = was;
+        }
+    }
+
+    [Fact]
     public void PressCloses_UntilLeavingTheControl()
     {
         using var host = Scene(out _, out _, out _);

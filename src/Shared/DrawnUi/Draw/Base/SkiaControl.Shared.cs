@@ -480,7 +480,8 @@ namespace DrawnUi.Draw
 
         static bool ShowsText(SkiaControl control)
         {
-            if (control is SkiaLabel label && !string.IsNullOrEmpty(label.Text))
+            if (control is SkiaLabel label
+                && (!string.IsNullOrEmpty(label.Text) || label.Spans.Any(span => !string.IsNullOrEmpty(span.Text))))
                 return true;
 
             foreach (var child in control.Views)
