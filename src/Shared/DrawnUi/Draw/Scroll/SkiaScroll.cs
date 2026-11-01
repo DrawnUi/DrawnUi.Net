@@ -3659,7 +3659,8 @@ namespace DrawnUi.Draw
                             Content.AddTranslationY = translateContent;
                         }
 
-                        offsetFooter += Header.MeasuredSize.Units.Height + (float)ContentOffset;
+                        // pixels, as the content size added below (the sum is divided by the scale once)
+                        offsetFooter += Header.MeasuredSize.Pixels.Height + (float)(ContentOffset * ctx.Scale);
 
                         if (drawHeaderBefore)
                         {
@@ -3723,7 +3724,8 @@ namespace DrawnUi.Draw
                             Content.AddTranslationX = translateContent;
                         }
 
-                        offsetFooter += Header.MeasuredSize.Units.Width + (float)ContentOffset;
+                        // pixels, as the content size added below (the sum is divided by the scale once)
+                        offsetFooter += Header.MeasuredSize.Pixels.Width + (float)(ContentOffset * ctx.Scale);
 
                         if (drawHeaderBefore)
                         {
