@@ -357,8 +357,8 @@ Touch never hovers. On MAUI Windows, WPF and OpenTK both end when the mouse leav
 
 ## Tooltips
 
-Give any control a `Tooltip` (or the fluent `.WithTooltip`) and the canvas shows it under the mouse after the mouse
-rests on the control:
+Give any control a `Tooltip` (or the fluent `.WithTooltip`) and the canvas shows it above the mouse pointer, to its right, after the mouse
+rests on the control (below it when there is no room above):
 
 ```csharp
 new SkiaSvg { SvgString = saveIcon, WidthRequest = 24, HeightRequest = 24 }

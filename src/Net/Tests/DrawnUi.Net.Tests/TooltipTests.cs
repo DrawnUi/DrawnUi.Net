@@ -80,12 +80,12 @@ public class TooltipTests
     }
 
     [Fact]
-    public void Drawn_UnderThePointer()
+    public void Drawn_AboveRightOfThePointer()
     {
         using var host = Scene(out _, out _, out _);
         var before = host.NonBackgroundFraction(Colors.Black);
 
-        MoveTo(host, 50, 95); // near the bottom: the tooltip lands below the control
+        MoveTo(host, 95, 95); // near the corner: the tooltip lands partly on the empty canvas at the right
         WaitShown(host, "Save");
         Assert.True(host.NonBackgroundFraction(Colors.Black) > before, "tooltip not drawn");
     }

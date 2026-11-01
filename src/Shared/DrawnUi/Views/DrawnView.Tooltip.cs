@@ -227,19 +227,19 @@ namespace DrawnUi.Views
                 var width = measured.Pixels.Width;
                 var height = measured.Pixels.Height;
 
-                // under the pointer, like the system tooltips
-                var left = anchor.X;
-                var top = anchor.Y + 18 * scale;
+                // above the pointer, to its right: the pointer and what is under it stay visible
+                var left = anchor.X + 12 * scale;
+                var top = anchor.Y - height - 6 * scale;
 
                 if (host == null)
                 {
                     var bounds = context.Destination;
+                    if (top < bounds.Top)
+                        top = anchor.Y + 20 * scale; // no room above: below the pointer
                     if (left + width > bounds.Right)
                         left = bounds.Right - width;
-                    if (top + height > bounds.Bottom)
-                        top = anchor.Y - height - 4 * scale;
                     left = Math.Max(bounds.Left, left);
-                    top = Math.Max(bounds.Top, top);
+                    top = Math.Max(bounds.Top, Math.Min(top, bounds.Bottom - height));
                 }
 
                 _tooltipViewRect = new SKRect(left, top, left + width, top + height);
