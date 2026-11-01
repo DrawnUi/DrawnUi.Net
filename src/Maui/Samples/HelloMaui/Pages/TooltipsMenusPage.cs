@@ -132,7 +132,7 @@ public class TooltipsMenusPage : SkiaLayer
                                 },
                             }),
 
-                        Card("Near the window edge", "Make the window narrow and rest on the icon at the right: the tooltip stays inside the window.",
+                        Card("Near the window edge", "Rest on the icon at the right. On Windows the tooltip opens in a window of its own and can go past the edge of the app window; on phones, tablets and in the browser it stays inside the app.",
                             new SkiaLayer
                             {
                                 HorizontalOptions = LayoutOptions.Fill,
@@ -192,6 +192,8 @@ public class TooltipsMenusPage : SkiaLayer
     public override void OnDisposing()
     {
         KeyboardManager.KeyDown -= OnKeyDown;
+        if (Superview != null)
+            Superview.PopupWindowClosed -= OnPopupWindowClosed;
         base.OnDisposing();
     }
 
@@ -243,7 +245,21 @@ public class TooltipsMenusPage : SkiaLayer
         AccessibilityRole = Aria.RoleMenuItem,
         AccessibilityCanInteract = true,
         AccessibilityLabel = title,
-        Children = new List<SkiaControl> { new SkiaLabel(title) { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RolePresentation } },
+        Children = new List<SkiaControl>
+        {
+            // the accelerator letter (Alt + it opens the menu) is underlined, as in desktop menu bars
+            new SkiaLabel
+            {
+                FontSize = 14,
+                TextColor = Colors.White,
+                AccessibilityRole = Aria.RolePresentation,
+                Spans =
+                {
+                    new TextSpan { Text = title[..1], Underline = true },
+                    new TextSpan { Text = title[1..] },
+                },
+            },
+        },
     }
     .Assign(out _tops[index])
     .OnHovered((me, on) =>
@@ -272,6 +288,10 @@ public class TooltipsMenusPage : SkiaLayer
         var canvas = Superview;
         if (canvas == null)
             return;
+
+        // a menu closed from outside (a click elsewhere, the wheel, the window losing focus) unselects its title
+        canvas.PopupWindowClosed -= OnPopupWindowClosed;
+        canvas.PopupWindowClosed += OnPopupWindowClosed;
 
         canvas.ClosePopupWindow(_barPopup);
         _items.Clear();
@@ -340,6 +360,16 @@ public class TooltipsMenusPage : SkiaLayer
     {
         for (var i = 0; i < _items.Count; i++)
             _items[i].View.BackgroundColor = i == _highlighted ? Color.Parse("#343B52") : Colors.Transparent;
+    }
+
+    private void OnPopupWindowClosed(object sender, PopupId id)
+    {
+        if (id != _barPopup || _open < 0)
+            return;
+
+        _open = -1;
+        _highlighted = -1;
+        PaintBar();
     }
 
     private void CloseMenu()
