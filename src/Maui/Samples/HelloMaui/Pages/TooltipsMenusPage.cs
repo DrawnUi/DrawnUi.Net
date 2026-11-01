@@ -48,7 +48,7 @@ public class TooltipsMenusPage : SkiaLayer
                     Children = new List<SkiaControl>
                     {
                         new SkiaLabel("Tooltips & Menus") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center, AccessibilityRole = Aria.RoleHeading },
-                        new SkiaLabel("Rest the mouse on a control. Move along a row: the next tooltip shows at once. Click, scroll, use the wheel or press a key: it closes. Right-click the last card for a context menu.")
+                        new SkiaLabel("Rest the mouse on a control. Move along a row: the next tooltip shows at once. Click, scroll, use the wheel or press a key: it closes. Right-click anywhere on the page for a context menu.")
                         {
                             FontSize = 14, TextColor = Colors.LightGray, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center,
                         },
@@ -150,21 +150,261 @@ public class TooltipsMenusPage : SkiaLayer
                                 },
                             }),
 
-                        Card("Context menu and dropdown", "Right-click anywhere in this card: the menu opens where you clicked. The button opens a list below it. A click outside or Escape closes them.",
+                        Card("Menu bar", "Click a menu, or press Alt with its first letter (Alt+F, Alt+E, Alt+V, Alt+H). Left and Right open the next menu, Up and Down move through it, Enter picks, Escape closes. The shortcuts (Ctrl+N, Ctrl+S, F1...) work with the menus closed too.",
+                            new SkiaRow
+                            {
+                                Spacing = 2,
+                                AccessibilityRole = Aria.RoleMenuBar,
+                                AccessibilityLabel = "Menu bar",
+                                Children = Menus.Select((menu, index) => (SkiaControl)TopItem(menu.Title, index)).ToList(),
+                            },
+                            new SkiaLabel("Last command: none") { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RoleStatus, AccessibilityLive = Aria.LivePolite }
+                                .Assign(out _command)),
+
+                        Card("Context menu and dropdown", "Right-click anywhere on the page: the menu opens where you clicked. The button opens a list below it. A click outside or Escape closes them.",
                             TextButton("Choose a fruit")
                                 .OnTapped(me => _menu = me.Superview.OpenPopupWindow(Menu("Fruits", "Apple", "Banana", "Cherry", "Grape", "Mango", "Orange", "Peach", "Pear"), me)),
                             new SkiaLabel("Nothing picked yet") { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RoleStatus, AccessibilityLive = Aria.LivePolite }
-                                .Assign(out _picked))
-                            .OnContextMenu((me, e) =>
-                            {
-                                _menu = me.Superview.OpenPopupWindow(Menu("Edit", "Cut", "Copy", "Paste", "Select all", "Settings…"), e.Location);
-                                return true;
-                            }),
+                                .Assign(out _picked)),
                     },
                 },
             }.Fill(),
         };
+
+        // right-click anywhere on the page
+        this.OnContextMenu((me, e) =>
+        {
+            _menu = me.Superview.OpenPopupWindow(Menu("Edit", "Cut", "Copy", "Paste", "Select all", "Settings…"), e.Location);
+            return true;
+        });
+
+        KeyboardManager.KeyDown += OnKeyDown;
     }
+
+    /// <inheritdoc/>
+    public override void OnDisposing()
+    {
+        KeyboardManager.KeyDown -= OnKeyDown;
+        base.OnDisposing();
+    }
+
+    #region Menu bar
+
+    /// <summary>One line of a menu bar menu; Text null = a separator.</summary>
+    private sealed record MenuEntry(string Text, string Shortcut = null, InputKey Key = InputKey.Unknown, bool Ctrl = true);
+
+    private sealed record BarMenu(string Title, InputKey Accelerator, MenuEntry[] Entries);
+
+    private static readonly BarMenu[] Menus =
+    {
+        new("File", InputKey.KeyF, new MenuEntry[]
+        {
+            new("New", "Ctrl+N", InputKey.KeyN), new("Open…", "Ctrl+O", InputKey.KeyO), new("Save", "Ctrl+S", InputKey.KeyS),
+            new(null), new("Close", "Ctrl+W", InputKey.KeyW),
+        }),
+        new("Edit", InputKey.KeyE, new MenuEntry[]
+        {
+            new("Undo", "Ctrl+Z", InputKey.KeyZ), new("Redo", "Ctrl+Y", InputKey.KeyY),
+            new(null), new("Cut", "Ctrl+X", InputKey.KeyX), new("Copy", "Ctrl+C", InputKey.KeyC), new("Paste", "Ctrl+V", InputKey.KeyV),
+        }),
+        new("View", InputKey.KeyV, new MenuEntry[]
+        {
+            new("Zoom in", "Ctrl+=", InputKey.Equal), new("Zoom out", "Ctrl+-", InputKey.Minus),
+            new(null), new("Full screen", "F11", InputKey.F11, false),
+        }),
+        new("Help", InputKey.KeyH, new MenuEntry[]
+        {
+            new("Documentation", "F1", InputKey.F1, false), new(null), new("About"),
+        }),
+    };
+
+    private readonly SkiaShape[] _tops = new SkiaShape[Menus.Length];
+    private readonly List<(SkiaShape View, MenuEntry Entry)> _items = new();
+    private SkiaLabel _command;
+    private PopupId _barPopup;
+    private int _open = -1;
+    private int _highlighted = -1;
+
+    private bool BarOpen => _open >= 0 && Superview?.IsPopupWindowOpen(_barPopup) == true;
+
+    /// <summary>A menu title of the bar: a click opens its menu; while a menu is open, the mouse over another title opens that one.</summary>
+    private SkiaShape TopItem(string title, int index) => new SkiaShape
+    {
+        CornerRadius = 6,
+        Padding = new Thickness(12, 6),
+        BackgroundColor = Colors.Transparent,
+        AccessibilityRole = Aria.RoleMenuItem,
+        AccessibilityCanInteract = true,
+        AccessibilityLabel = title,
+        Children = new List<SkiaControl> { new SkiaLabel(title) { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RolePresentation } },
+    }
+    .Assign(out _tops[index])
+    .OnHovered((me, on) =>
+    {
+        if (on && BarOpen && _open != index)
+            OpenMenu(index, keyboard: false);
+        PaintBar(index, on);
+    })
+    .OnTapped(me =>
+    {
+        if (BarOpen && _open == index)
+            CloseMenu();
+        else
+            OpenMenu(index, keyboard: false);
+    });
+
+    private void PaintBar(int hovered = -1, bool on = false)
+    {
+        var open = BarOpen ? _open : -1;
+        for (var i = 0; i < _tops.Length; i++)
+            _tops[i].BackgroundColor = i == open ? Color.Parse("#3B4256") : (i == hovered && on ? ButtonHover : Colors.Transparent);
+    }
+
+    private void OpenMenu(int index, bool keyboard)
+    {
+        var canvas = Superview;
+        if (canvas == null)
+            return;
+
+        canvas.ClosePopupWindow(_barPopup);
+        _items.Clear();
+        _open = index;
+
+        var menu = Menus[index];
+        _barPopup = canvas.OpenPopupWindow(new SkiaShape
+        {
+            CornerRadius = 8,
+            BackgroundColor = Color.Parse("#262B3B"),
+            StrokeColor = Color.Parse("#3B4256"),
+            StrokeWidth = 1.5,
+            WidthRequest = 240,
+            Padding = new Thickness(4),
+            AccessibilityRole = Aria.RoleMenu,
+            AccessibilityLabel = menu.Title,
+            Children = new List<SkiaControl>
+            {
+                new SkiaStack
+                {
+                    Spacing = 0,
+                    Children = menu.Entries.Select(entry => entry.Text == null
+                        ? new SkiaShape { HeightRequest = 1, HorizontalOptions = LayoutOptions.Fill, BackgroundColor = Color.Parse("#3B4256"), Margin = new Thickness(8, 4) }
+                        : (SkiaControl)BarItem(entry)).ToList(),
+                },
+            },
+        }, _tops[index]);
+
+        _highlighted = keyboard ? 0 : -1;
+        PaintItems();
+        PaintBar();
+    }
+
+    private SkiaShape BarItem(MenuEntry entry)
+    {
+        var index = _items.Count;
+        var view = new SkiaShape
+        {
+            CornerRadius = 6,
+            HorizontalOptions = LayoutOptions.Fill,
+            Padding = new Thickness(12, 7),
+            AccessibilityRole = Aria.RoleMenuItem,
+            AccessibilityCanInteract = true,
+            AccessibilityLabel = entry.Text,
+            Children = new List<SkiaControl>
+            {
+                new SkiaLabel(entry.Text) { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RolePresentation },
+                new SkiaLabel(entry.Shortcut ?? "") { FontSize = 13, TextColor = Muted, HorizontalOptions = LayoutOptions.End, AccessibilityRole = Aria.RolePresentation },
+            },
+        }
+        .OnHovered((me, on) =>
+        {
+            if (on)
+            {
+                _highlighted = index;
+                PaintItems();
+            }
+        })
+        .OnTapped(me => Run(entry));
+
+        _items.Add((view, entry));
+        return view;
+    }
+
+    private void PaintItems()
+    {
+        for (var i = 0; i < _items.Count; i++)
+            _items[i].View.BackgroundColor = i == _highlighted ? Color.Parse("#343B52") : Colors.Transparent;
+    }
+
+    private void CloseMenu()
+    {
+        Superview?.ClosePopupWindow(_barPopup);
+        _open = -1;
+        _highlighted = -1;
+        PaintBar();
+    }
+
+    private void Run(MenuEntry entry)
+    {
+        var menu = Menus.First(m => m.Entries.Contains(entry));
+        _command.Text = entry.Shortcut != null
+            ? $"Last command: {menu.Title} › {entry.Text} ({entry.Shortcut})"
+            : $"Last command: {menu.Title} › {entry.Text}";
+        CloseMenu();
+    }
+
+    private void OnKeyDown(object sender, InputKey key)
+    {
+        if (Superview == null || IsDisposed)
+            return;
+
+        // Alt + the first letter of a menu opens it, its first line ready for the arrows
+        if (KeyboardManager.IsAltPressed)
+        {
+            var index = Array.FindIndex(Menus, m => m.Accelerator == key);
+            if (index >= 0)
+                OpenMenu(index, keyboard: true);
+            return;
+        }
+
+        if (!BarOpen)
+        {
+            // the shortcuts work with the menus closed
+            var ctrl = KeyboardManager.IsControlPressed;
+            var entry = Menus.SelectMany(m => m.Entries)
+                .FirstOrDefault(e => e.Text != null && e.Key != InputKey.Unknown && e.Key == key && e.Ctrl == ctrl);
+            if (entry != null)
+                Run(entry);
+            return;
+        }
+
+        switch (key)
+        {
+            case InputKey.ArrowLeft:
+                OpenMenu((_open - 1 + Menus.Length) % Menus.Length, keyboard: true);
+                break;
+            case InputKey.ArrowRight:
+                OpenMenu((_open + 1) % Menus.Length, keyboard: true);
+                break;
+            case InputKey.ArrowDown:
+                _highlighted = (_highlighted + 1) % _items.Count;
+                PaintItems();
+                break;
+            case InputKey.ArrowUp:
+                _highlighted = _highlighted <= 0 ? _items.Count - 1 : _highlighted - 1;
+                PaintItems();
+                break;
+            case InputKey.Enter:
+            case InputKey.Space:
+                if (_highlighted >= 0)
+                    Run(_items[_highlighted].Entry);
+                break;
+            case InputKey.Escape:
+                CloseMenu();
+                break;
+        }
+    }
+
+    #endregion
 
     /// <summary>A menu as in DrawnUI for Rust's popups example: a rounded panel of items; picking one closes it.</summary>
     private SkiaControl Menu(string name, params string[] items) => new SkiaShape
