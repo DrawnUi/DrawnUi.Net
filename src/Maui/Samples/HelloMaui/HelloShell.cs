@@ -174,6 +174,9 @@ public class PageHost<T> : SkiaLayer where T : SkiaControl, new()
         VerticalOptions = LayoutOptions.Fill;
         BackgroundColor = HelloShell.PageBackground;
         BlockGesturesBelow = true;
+        // a tap on the page's empty space (or a card's) takes the focus, so a focused editor lets go of its caret;
+        // buttons keep it (drawnui-hello-app)
+        CanBeFocused = true;
 
         Children = new List<SkiaControl>
         {
