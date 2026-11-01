@@ -1,4 +1,4 @@
-using System.Windows.Threading;
+﻿using System.Windows.Threading;
 using DrawnUi.Models;
 using DrawnUi.Controls;
 using DrawnUi.Draw;
@@ -172,6 +172,8 @@ public class AccessibilityPage : SkiaLayer
                                 Children = Enumerable.Range(1, 12).Select(i => GroupItem(i.ToString(), 56)).ToList(),
                             }),
 
+                        TooltipsCard(),
+
                         Card("Labels — read by default, opted out per control",
                             new SkiaLabel("This label is announced: SkiaLabel.DefaultAccessibilityRole = Aria.RoleText was set once at startup.") { FontSize = 14, TextColor = Color.Parse("#DEE2E6"), HorizontalOptions = LayoutOptions.Fill },
                             new SkiaLabel("This one is visible but hidden from assistive technology (RolePresentation).") { FontSize = 14, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill, AccessibilityRole = Aria.RolePresentation },
@@ -254,6 +256,80 @@ public class AccessibilityPage : SkiaLayer
             new SkiaLabel(text) { FontSize = 14, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RolePresentation },
         },
     }.OnTapped(me => Activated(text));
+
+    private const string IconNew = "<svg viewBox='0 0 24 24'><path fill='#fff' d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm4 18H6V4h7v5h5zM11 11h2v3h3v2h-3v3h-2v-3H8v-2h3z'/></svg>";
+    private const string IconOpen = "<svg viewBox='0 0 24 24'><path fill='#fff' d='M20 6h-8l-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2m0 12H4V8h16z'/></svg>";
+    private const string IconSave = "<svg viewBox='0 0 24 24'><path fill='#fff' d='M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7zm2 16H5V5h11.17L19 7.83zM12 12a3 3 0 1 0 0 6 3 3 0 0 0 0-6M6 6h9v4H6z'/></svg>";
+    private const string IconSettings = "<svg viewBox='0 0 24 24'><path fill='#fff' d='M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.6 7.6 0 0 0 1.7 1L11 21h4l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7'/></svg>";
+
+    /// <summary>
+    /// Tooltips (desktop): icon buttons that show their accessibility label, a switch for
+    /// Super.TooltipsFromAccessibility, and buttons with their own Tooltip. Same card on every head.
+    /// </summary>
+    private SkiaControl TooltipsCard()
+    {
+        Super.TooltipsFromAccessibility = true;
+
+        return Card("Tooltips — rest the mouse on a control",
+            new SkiaLabel("Rest the mouse on a control: its tooltip opens above the pointer, and the next one shows at once. A click, the wheel or a key closes it. Never on touch.") { FontSize = 12, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill },
+            new SkiaRow
+            {
+                Spacing = 6,
+                AccessibilityRole = Aria.RoleToolbar,
+                AccessibilityLabel = "File tools",
+                Children = new List<SkiaControl>
+                {
+                    TooltipIcon(IconNew, "New file"),
+                    TooltipIcon(IconOpen, "Open"),
+                    TooltipIcon(IconSave, "Save"),
+                    TooltipIcon(IconSettings, "Settings"),
+                },
+            },
+            new SkiaRow
+            {
+                Spacing = 10,
+                Children = new List<SkiaControl>
+                {
+                    new SkiaSwitch { IsToggled = true, AccessibilityLabel = "Tooltips from accessibility text", VerticalOptions = LayoutOptions.Center }
+                        .ObserveSelf((me, prop) =>
+                        {
+                            if (prop == nameof(SkiaSwitch.IsToggled))
+                                Super.TooltipsFromAccessibility = me.IsToggled;
+                        }),
+                    new SkiaLabel("Tooltips from accessibility text: the icons above show their AccessibilityLabel") { FontSize = 13, TextColor = Color.Parse("#DEE2E6"), VerticalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RolePresentation },
+                },
+            },
+            new SkiaWrap
+            {
+                Spacing = 8,
+                Children = new List<SkiaControl>
+                {
+                    new SkiaButton("Publish") { BackgroundColor = Color.Parse("#0D6EFD") }.WithTooltip("Uploads the current version").OnTapped(me => Activated("Publish")),
+                    new SkiaButton("Preview") { BackgroundColor = Color.Parse("#0D6EFD") }.WithTooltip("Opens a live preview").OnTapped(me => Activated("Preview")),
+                    new SkiaButton("Long text") { BackgroundColor = Color.Parse("#495057") }.WithTooltip("A longer tooltip wraps at the maximum width of 320 points, so a few lines of help stay easy to read.").OnTapped(me => Activated("Long text")),
+                },
+            });
+    }
+
+    /// <summary>An icon button without text: its tooltip is its accessibility label.</summary>
+    private SkiaControl TooltipIcon(string svg, string label) => new SkiaShape
+    {
+        Type = ShapeType.Rectangle,
+        CornerRadius = 6,
+        BackgroundColor = Color.Parse("#373B3E"),
+        WidthRequest = 40,
+        HeightRequest = 40,
+        AnimationTapped = SkiaTouchAnimation.Ripple,
+        AccessibilityRole = Aria.RoleButton,
+        AccessibilityCanInteract = true,
+        AccessibilityLabel = label,
+        Children = new List<SkiaControl>
+        {
+            new SkiaSvg { SvgString = svg, WidthRequest = 20, HeightRequest = 20, TintColor = Colors.White, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+        },
+    }
+    .OnHovered((me, on) => me.BackgroundColor = Color.Parse(on ? "#495057" : "#373B3E"))
+    .OnTapped(me => Activated(label));
 
     private static SkiaControl Card(string title, params SkiaControl[] content) => new SkiaShape
     {
