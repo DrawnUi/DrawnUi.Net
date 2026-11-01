@@ -22,7 +22,7 @@ public class TooltipStyle
     public double CornerRadius { get; set; } = 6;
 
     /// <summary>Space around the text, in points.</summary>
-    public Thickness Padding { get; set; } = new(8, 5);
+    public Thickness Padding { get; set; } = new(12, 8);
 
     /// <summary>Longer text wraps at this width, in points.</summary>
     public double MaxWidth { get; set; } = 320;
