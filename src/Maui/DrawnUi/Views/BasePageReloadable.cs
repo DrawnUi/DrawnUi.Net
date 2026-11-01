@@ -10,7 +10,7 @@ public class BasePageReloadable : DrawnUiBasePage, IDisposable
 
     public BasePageReloadable()
     {
-        if (Debugger.IsAttached)
+        if (HotReloadPossible)
         {
             Super.HotReload -= ReloadUi; // never twice: OnHandlerChanged subscribes too
             Super.HotReload += ReloadUi;
@@ -25,7 +25,7 @@ public class BasePageReloadable : DrawnUiBasePage, IDisposable
         {
             Build();
 
-            if (Debugger.IsAttached)
+            if (HotReloadPossible)
             {
                 Super.HotReload -= ReloadUi; // never twice: the constructor subscribes too
                 Super.HotReload += ReloadUi;
@@ -36,6 +36,13 @@ public class BasePageReloadable : DrawnUiBasePage, IDisposable
             Super.HotReload -= ReloadUi;
         }
     }
+
+    /// <summary>
+    /// Hot reload can reach this app: under a debugger (as before) or when the runtime applies code updates, as under
+    /// dotnet watch (MetadataUpdater.IsSupported is false in Release builds).
+    /// </summary>
+    protected static bool HotReloadPossible =>
+        Debugger.IsAttached || System.Reflection.Metadata.MetadataUpdater.IsSupported;
 
     private bool wasBuilt;
 
