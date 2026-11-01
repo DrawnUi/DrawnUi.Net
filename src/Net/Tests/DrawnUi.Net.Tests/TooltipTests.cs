@@ -327,6 +327,56 @@ public class TooltipTests
         }
     }
 
+    static HeadlessCanvasHost OneControl(TooltipStyle style, out SkiaShape control)
+    {
+        var host = new HeadlessCanvasHost(W, H);
+        host.Canvas.TooltipStyle = style;
+        host.Canvas.Content = new SkiaLayer
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Children = new List<SkiaControl>
+            {
+                new SkiaShape { WidthRequest = 100, HeightRequest = 60, Margin = new Thickness(150, 200, 0, 0), BackgroundColor = Colors.Gray }
+                    .WithTooltip("Hello").Assign(out control),
+            },
+        };
+        host.AdvanceFrames(3);
+        return host;
+    }
+
+    static SkiaSharp.SKRect TooltipBox(HeadlessCanvasHost host)
+    {
+        var rect = TooltipRect(host);
+        var m = TooltipView(host).Margin;
+        return new SkiaSharp.SKRect(rect.Left + (float)m.Left, rect.Top + (float)m.Top, rect.Right - (float)m.Right, rect.Bottom - (float)m.Bottom);
+    }
+
+    [Fact]
+    public void Offsets_MoveTheTooltipFromItsControl()
+    {
+        using var host = OneControl(new TooltipStyle { ShowDelayMs = Delay, OffsetX = 10, OffsetY = -4 }, out var control);
+        MoveTo(host, 200, 230);
+        WaitShown(host, "Hello");
+        var box = TooltipBox(host);
+        Assert.Equal(control.HitBoxAuto.MidX + 10, box.MidX, 1.5);
+        Assert.Equal(control.HitBoxAuto.Top - 6 - 4, box.Bottom, 1.5); // 4 pt further up
+    }
+
+    [Fact]
+    public void AtCursor_BelowRightOfThePointer_StaysWhileItMoves()
+    {
+        using var host = OneControl(new TooltipStyle { ShowDelayMs = Delay, AtCursor = true }, out _);
+        MoveTo(host, 170, 210);
+        WaitShown(host, "Hello");
+        var box = TooltipBox(host);
+        Assert.Equal(170 + 4, box.Left, 1.5);
+        Assert.Equal(210 + 20, box.Top, 1.5);
+
+        MoveTo(host, 230, 250); // same control
+        host.RenderFrame();
+        Assert.Equal(box, TooltipBox(host));
+    }
+
     [Fact]
     public void PressCloses_UntilLeavingTheControl()
     {

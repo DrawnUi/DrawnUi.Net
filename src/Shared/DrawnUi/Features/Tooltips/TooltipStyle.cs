@@ -43,6 +43,23 @@ public class TooltipStyle
     public int FollowWindowMs { get; set; } = 500;
 
     /// <summary>
+    /// False (default): the tooltip is attached to its control, centered 6 pt above it (below it where there is no
+    /// room). True: it opens at the mouse, below and to the right of the pointer where it rested (above it where there
+    /// is no room), as the Windows and macOS tooltips do. Either way it stays put while the mouse moves over the control.
+    /// </summary>
+    public bool AtCursor { get; set; }
+
+    /// <summary>Moves the tooltip right (negative: left) from where it would go, in points.</summary>
+    public double OffsetX { get; set; }
+
+    /// <summary>
+    /// Moves the tooltip down (negative: up) from where it would go, in points. On the flipped side (below the control
+    /// when there is no room above, above the pointer when there is no room below) it moves the other way, so it keeps
+    /// its distance from the control or the pointer.
+    /// </summary>
+    public double OffsetY { get; set; }
+
+    /// <summary>
     /// Builds the tooltip content for a text instead of the default rounded label. The control is measured and drawn
     /// on its own, outside the visual tree: it takes no input and screen readers do not see it.
     /// </summary>

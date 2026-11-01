@@ -8,7 +8,7 @@ namespace DrawnUi.Views
         private readonly List<SkiaControl> _tooltipReporters = new();
         private SkiaControl _tooltipOwner, _tooltipSuppressed;
         private string _tooltipText, _tooltipShownText;
-        private SKPoint _tooltipPointer;
+        private SKPoint _tooltipPointer, _tooltipCursor; // the pointer now, and where it was when the tooltip showed
         private SKRect _tooltipAnchor; // the control the tooltip belongs to, canvas pixels
         private long _tooltipClosedAt;
         private int _tooltipGeneration;
@@ -108,6 +108,7 @@ namespace DrawnUi.Views
                 _tooltipGeneration++;
                 _tooltipShownText = text;
                 _tooltipAnchor = OnScreenRect(owner);
+                _tooltipCursor = _tooltipPointer;
                 return true;
             }
 
@@ -120,6 +121,7 @@ namespace DrawnUi.Views
                         return;
                     _tooltipShownText = _tooltipText;
                     _tooltipAnchor = OnScreenRect(_tooltipOwner);
+                    _tooltipCursor = _tooltipPointer;
                 }
 
                 Update();
@@ -200,10 +202,12 @@ namespace DrawnUi.Views
         {
             string text;
             SKRect anchor;
+            SKPoint cursor;
             lock (_lockHover)
             {
                 text = _tooltipShownText;
                 anchor = _tooltipAnchor;
+                cursor = _tooltipCursor;
             }
 
             if (text == null)
@@ -238,20 +242,36 @@ namespace DrawnUi.Views
                 var width = measured.Pixels.Width;
                 var height = measured.Pixels.Height;
 
-                // attached to its control, centered above it (below it where there is no room): it stays put while
-                // the pointer moves over the control. The view's margin (room for a shadow) is not part of the box.
+                // Attached to its control: centered above it, below it where there is no room. AtCursor: below and
+                // to the right of the pointer where it rested, above it where there is no room. Either way it stays put
+                // while the pointer moves over the control, and OffsetX / OffsetY shift it (the vertical offset is
+                // mirrored on the flipped side). The view's margin (room for a shadow) is not part of the box.
                 var margin = _tooltipView.Margin;
                 var boxWidth = width - (float)margin.HorizontalThickness * scale;
                 var boxHeight = height - (float)margin.VerticalThickness * scale;
                 var gap = 6 * scale;
-                var boxLeft = anchor.MidX - boxWidth / 2;
-                var boxTop = anchor.Top - gap - boxHeight;
+                var offsetX = (float)style.OffsetX * scale;
+                var offsetY = (float)style.OffsetY * scale;
+
+                float boxLeft, boxTop, flippedTop;
+                if (style.AtCursor)
+                {
+                    boxLeft = cursor.X + 4 * scale + offsetX;
+                    boxTop = cursor.Y + 20 * scale + offsetY; // clear of the pointer's arrow
+                    flippedTop = cursor.Y - gap - boxHeight - offsetY;
+                }
+                else
+                {
+                    boxLeft = anchor.MidX - boxWidth / 2 + offsetX;
+                    boxTop = anchor.Top - gap - boxHeight + offsetY;
+                    flippedTop = anchor.Bottom + gap - offsetY;
+                }
 
                 if (host == null)
                 {
                     var bounds = context.Destination;
-                    if (boxTop < bounds.Top)
-                        boxTop = anchor.Bottom + gap; // no room above: below the control
+                    if (style.AtCursor ? boxTop + boxHeight > bounds.Bottom : boxTop < bounds.Top)
+                        boxTop = flippedTop; // no room on its side: the other side
                     boxLeft = Math.Max(bounds.Left, Math.Min(boxLeft, bounds.Right - boxWidth));
                     boxTop = Math.Max(bounds.Top, Math.Min(boxTop, bounds.Bottom - boxHeight));
                 }
