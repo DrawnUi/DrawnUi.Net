@@ -68,7 +68,7 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.8.14
+## What's New 1.10.8.15
 
   * **Footer after the header.** A `SkiaScroll` with a `Header` places its `Footer` right after the content on every screen scale.
   * **Hot reload under dotnet watch.** Pages built in code (`BasePageReloadable`) redraw on every hot reload, with or without a debugger, once per change.
