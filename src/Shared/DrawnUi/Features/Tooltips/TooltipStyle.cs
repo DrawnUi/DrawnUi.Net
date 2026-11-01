@@ -6,11 +6,17 @@ namespace DrawnUi.Draw;
 /// </summary>
 public class TooltipStyle
 {
-    /// <summary>Background of the tooltip.</summary>
-    public Color BackgroundColor { get; set; } = Color.FromArgb("#F2202124");
+    /// <summary>Background of the tooltip: dark, a step lighter than dark app surfaces.</summary>
+    public Color BackgroundColor { get; set; } = Color.FromArgb("#2B2D31");
 
     /// <summary>Color of the tooltip text.</summary>
-    public Color TextColor { get; set; } = Colors.White;
+    public Color TextColor { get; set; } = Color.FromArgb("#F2F3F5");
+
+    /// <summary>Color of the 1 pt border, lifts the tooltip off dark surfaces. Null or transparent for none.</summary>
+    public Color BorderColor { get; set; } = Color.FromArgb("#24FFFFFF");
+
+    /// <summary>Color of the soft shadow under the tooltip. Null or transparent for none.</summary>
+    public Color ShadowColor { get; set; } = Color.FromArgb("#59000000");
 
     /// <summary>Font family of the tooltip text, null for the default font.</summary>
     public string FontFamily { get; set; }
@@ -45,11 +51,15 @@ public class TooltipStyle
     /// <summary>The default tooltip content: the text on a rounded background.</summary>
     public SkiaControl CreateDefault(string text)
     {
-        return new SkiaShape
+        var shadow = ShadowColor != null && ShadowColor.Alpha > 0;
+        var shape = new SkiaShape
         {
             CornerRadius = CornerRadius,
             BackgroundColor = BackgroundColor,
+            StrokeColor = BorderColor ?? Colors.Transparent,
+            StrokeWidth = BorderColor != null && BorderColor.Alpha > 0 ? 1 : 0,
             Padding = Padding,
+            Margin = shadow ? new Thickness(ShadowRoom) : new Thickness(0), // the shadow is drawn inside the measured size
             MaximumWidthRequest = MaxWidth,
             UseCache = SkiaCacheType.Image,
             Children =
@@ -62,7 +72,13 @@ public class TooltipStyle
                 }
             }
         };
+        if (shadow)
+            shape.Shadows.Add(new SkiaShadow { X = 0, Y = 2, Blur = 6, Opacity = 1, Color = ShadowColor });
+        return shape;
     }
+
+    /// <summary>Room left around the default tooltip for its shadow, in points.</summary>
+    const double ShadowRoom = 8;
 }
 
 /// <summary>

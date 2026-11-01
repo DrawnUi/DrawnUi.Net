@@ -104,7 +104,8 @@ public class TooltipTests
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(host.Canvas);
         var label = view.Views.OfType<SkiaLabel>().Single();
         Assert.True(label.LinesCount > 1, $"lines {label.LinesCount}");
-        Assert.True(view.MeasuredSize.Units.Width <= 320.5, $"width {view.MeasuredSize.Units.Width}");
+        var box = view.MeasuredSize.Units.Width - view.Margin.HorizontalThickness; // the margin holds the shadow
+        Assert.True(box <= 320.5, $"width {box}");
     }
 
     [Fact]

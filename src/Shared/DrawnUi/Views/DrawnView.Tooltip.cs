@@ -224,14 +224,17 @@ namespace DrawnUi.Views
                 previous?.Dispose();
 
                 // a finite width lets long text wrap: MaxWidth, never wider than the canvas
-                var maxWidth = Math.Min(context.Destination.Width, (float)(style.MaxWidth * scale));
+                var maxWidth = Math.Min(context.Destination.Width,
+                    (float)((style.MaxWidth + _tooltipView.Margin.HorizontalThickness) * scale));
                 var measured = _tooltipView.Measure(maxWidth, float.PositiveInfinity, scale);
                 var width = measured.Pixels.Width;
                 var height = measured.Pixels.Height;
 
-                // above the pointer, to its right: the pointer and what is under it stay visible
-                var left = anchor.X + 12 * scale;
-                var top = anchor.Y - height - 6 * scale;
+                // above the pointer, to its right: the pointer and what is under it stay visible. The view's margin
+                // (room for a shadow) is not part of the visible box.
+                var margin = _tooltipView.Margin;
+                var left = anchor.X + (float)(12 - margin.Left) * scale;
+                var top = anchor.Y - height + (float)(margin.Bottom - 6) * scale;
 
                 if (host == null)
                 {
