@@ -391,11 +391,13 @@ namespace DrawnUi.Draw
                 {
                     return _standalonePool.Pop();
                 }
-
-                var ret = CreateFromTemplate();
-                ret.IsParentIndependent = true;
-                return ret;
             }
+
+            // created outside _syncLock, see TryReserveCreateSlot
+            var ret = CreateFromTemplate();
+            if (ret != null)
+                ret.IsParentIndependent = true;
+            return ret;
         }
 
         public void ReturnStandalone(SkiaControl viewModel)
@@ -431,6 +433,15 @@ namespace DrawnUi.Draw
 
         public SkiaControl Get(float height = 0, object bindingContext = null)
         {
+            // A new cell is created after leaving _syncLock (see TryReserveCreateSlot): its ctor can take
+            // hundreds of ms, and other threads' Get / Return / Peek must not wait for it.
+            var create = false;
+            var view = GetLocked(height, bindingContext, ref create);
+            return create ? CreateReserved() : view;
+        }
+
+        SkiaControl GetLocked(float height, object bindingContext, ref bool create)
+        {
             lock (_syncLock)
             {
                 if (IsDisposing)
@@ -451,9 +462,7 @@ namespace DrawnUi.Draw
                     if (generic != null && !generic.IsDisposed)
                         return generic;
 
-                    if (CreatedCount < MaxSize)
-                        return CreateFromTemplate();
-
+                    create = TryReserveCreateSlot();
                     return null;
                 }
 
@@ -492,9 +501,10 @@ namespace DrawnUi.Draw
                     view = GenericPopAny();
 
                     //create new for size
-                    if (view == null && CreatedCount < MaxSize)
+                    if (view == null && TryReserveCreateSlot())
                     {
-                        view = CreateFromTemplate();
+                        create = true;
+                        return null;
                     }
                 }
 
@@ -560,6 +570,15 @@ namespace DrawnUi.Draw
             if (bindingContext == null)
                 return null;
 
+            // A new cell is created after leaving _syncLock (see TryReserveCreateSlot): holding the lock
+            // through the ctor stalled every frame of the render thread for the whole creation.
+            var create = false;
+            var view = GetForPreparationLocked(bindingContext, isTagEvictable, ref create);
+            return create ? CreateReserved() : view;
+        }
+
+        SkiaControl GetForPreparationLocked(object bindingContext, Func<object, bool> isTagEvictable, ref bool create)
+        {
             lock (_syncLock)
             {
                 if (IsDisposing)
@@ -576,8 +595,11 @@ namespace DrawnUi.Draw
                         return v;
                 }
 
-                if (CreatedCount < MaxSize)
-                    return CreateFromTemplate();
+                if (TryReserveCreateSlot())
+                {
+                    create = true;
+                    return null;
+                }
 
                 if (isTagEvictable != null)
                 {
