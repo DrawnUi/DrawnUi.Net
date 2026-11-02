@@ -78,8 +78,10 @@ public class TooltipsMenusPage : SkiaLayer
 
                         Card("Context menu and dropdown", "Right-click anywhere on the page: the menu opens where you clicked. The button opens a list below it. A click outside or Escape closes them.",
                             TextButton("Choose a fruit")
-                                .OnTapped(me =>
+                                .OnTapped((me, e) =>
                                 {
+                                    if (!Primary(e))
+                                        return;
                                     HookKeyboardFocus(me.Superview);
                                     _menu = me.Superview.OpenPopupWindow(Menu("Fruits", "Apple", "Banana", "Cherry", "Grape", "Mango", "Orange", "Peach", "Pear"), me);
                                 }),
@@ -278,8 +280,10 @@ public class TooltipsMenusPage : SkiaLayer
             OpenMenu(index, keyboard: false);
         PaintBar(index, on);
     })
-    .OnTapped(me =>
+    .OnTapped((me, e) =>
     {
+        if (!Primary(e))
+            return;
         if (BarOpen && _open == index)
             CloseMenu();
         else
@@ -361,13 +365,23 @@ public class TooltipsMenusPage : SkiaLayer
                 PaintItems();
             }
         })
-        .OnTapped(me => Run(entry));
+        .OnTapped((me, e) =>
+        {
+            if (Primary(e))
+                Run(entry);
+        });
 
         _items.Add((view, entry));
         return view;
     }
 
     private SkiaControl _focusLine;
+
+    /// <summary>
+    /// The left button, a touch or the keyboard: every mouse button taps, and a right click belongs to the context
+    /// menu, so it must not also open the dropdown or pick a line.
+    /// </summary>
+    private static bool Primary(ControlTappedEventArgs e) => (e.Parameters?.Event?.Pointer?.Button ?? AppoMobi.Gestures.MouseButton.Left) == AppoMobi.Gestures.MouseButton.Left;
 
     private void HookKeyboardFocus(DrawnView canvas)
     {
@@ -514,8 +528,10 @@ public class TooltipsMenusPage : SkiaLayer
                     Children = new List<SkiaControl> { new SkiaLabel(text) { FontSize = 15, TextColor = Colors.White, AccessibilityRole = Aria.RolePresentation } },
                 }
                 .OnHovered((me, on) => me.BackgroundColor = on ? Color.Parse("#343B52") : Colors.Transparent)
-                .OnTapped(me =>
+                .OnTapped((me, e) =>
                 {
+                    if (!Primary(e))
+                        return;
                     _picked.Text = $"Picked: {text}";
                     me.Superview?.ClosePopupWindow(_menu);
                 })).ToList(),
