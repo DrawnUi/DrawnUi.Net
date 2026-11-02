@@ -83,6 +83,7 @@ public class TooltipsMenusPage : SkiaLayer
                                     if (!Primary(e))
                                         return;
                                     HookKeyboardFocus(me.Superview);
+                                    me.Superview.ClosePopupWindow(_menu); // one of the two at a time: the context menu or the list
                                     _menu = me.Superview.OpenPopupWindow(Menu("Fruits", "Apple", "Banana", "Cherry", "Grape", "Mango", "Orange", "Peach", "Pear"), me);
                                 }),
                             new SkiaLabel("Nothing picked yet") { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RoleStatus, AccessibilityLive = Aria.LivePolite }
@@ -190,6 +191,7 @@ public class TooltipsMenusPage : SkiaLayer
         this.OnContextMenu((me, e) =>
         {
             HookKeyboardFocus(me.Superview);
+            me.Superview.ClosePopupWindow(_menu); // one of the two at a time: the context menu or the list
             _menu = me.Superview.OpenPopupWindow(Menu("Edit", "Cut", "Copy", "Paste", "Select all", "Settings…"), e.Location);
             return true;
         });
