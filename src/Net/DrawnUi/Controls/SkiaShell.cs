@@ -723,6 +723,7 @@ public class SkiaShell : SkiaLayer
                     {
                         new SkiaButton("‹  Back")
                         {
+                            AccessibilityLabel = "Back",
                             // Not BackgroundColor: SkiaControl already defaults it to Transparent, so
                             // assigning Transparent raises no change, SkiaButton's backgroundColorChanged
                             // stays false and it paints its default accent anyway. A non-null Background
