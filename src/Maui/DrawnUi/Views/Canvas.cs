@@ -801,7 +801,7 @@ public class Canvas : DrawnView, IGestureListener
 
     private SKPoint _PressedPosition;
 
-#if MACCATALYST || IOS
+#if MACCATALYST
     private long _lastSecondaryClick; // one context menu per secondary click, whichever way it was reported
 #endif
 
@@ -857,8 +857,8 @@ public class Canvas : DrawnView, IGestureListener
         }
 #endif
 
-#if MACCATALYST || IOS
-        // A right click or a two-finger click (Mac, iPad; an iPhone reports none): the gestures layer reports the
+#if MACCATALYST
+        // A right click, a two-finger click or a Control-click on a Mac: the gestures layer reports the
         // secondary button's release, as a pointer click (two-finger tap recognizer) or as the Up of a press; it opens
         // the context menu once, as on Windows and the web heads
         if (touchAction is TouchActionResult.Pointer or TouchActionResult.Up
