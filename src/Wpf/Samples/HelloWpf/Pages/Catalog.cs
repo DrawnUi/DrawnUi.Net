@@ -23,6 +23,7 @@ public static class Catalog
         new("snapping", "Carousel & Drawer", "SkiaCarousel (swipe, SidesOffset peek, SelectedIndex) and SkiaDrawer (drag from an edge, snap by velocity)"),
         new("animations", "Lottie & GIF", "SkiaLottie (Skottie: AutoPlay, Repeat, SpeedRatio, IsOn, ColorTint) and SkiaGif frames on the canvas frame loop"),
         new("shell", "Shell", "SkiaShell — page transitions, OpenPopupAsync, PushModalAsync (drawer), ShowToast"),
+        new("menus", "Tooltips & Menus", "Tooltip on any control, TooltipsFromAccessibility for icon buttons, a context menu and a dropdown in popup windows — OpenPopupWindow"),
         new("editor", "Editor", "SkiaEditor — drawn text input: caret, selection, placeholder, password, multiline, ControlStyle looks"),
         new("keyboard", "Keyboard Input", "KeyboardManager — window-level KeyDown / KeyUp / KeyChar with modifier state, the Blazor sandbox probe"),
         new("scroll", "SkiaScroll", "Header in flow / sticky / behind with parallax, Footer, scroll bars, pull to refresh, SnapToChildren, TrackIndexPosition"),
