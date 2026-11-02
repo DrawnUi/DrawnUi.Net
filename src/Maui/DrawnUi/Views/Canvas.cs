@@ -853,6 +853,28 @@ public class Canvas : DrawnView, IGestureListener
         }
 #endif
 
+#if MACCATALYST || IOS
+        // A right click or a two-finger click (Mac, iPad; an iPhone reports none): the gestures layer sends the
+        // secondary button as Pointer events, its release opens the context menu, as on Windows and the web heads
+        if (touchAction == TouchActionResult.Pointer
+            && args1.Pointer is { Button: MouseButton.Right, State: MouseButtonState.Released } secondary)
+        {
+            var menuArgs = new TouchActionEventArgs(args1.Id, TouchActionType.ContextMenu, args1.Location, null, (float)RenderingScale)
+            {
+                IsInsideView = true,
+                StartingLocation = args1.Location,
+                Pointer = new PointerData
+                {
+                    Button = MouseButton.Right,
+                    ButtonNumber = 2,
+                    State = MouseButtonState.Released,
+                    DeviceType = secondary.DeviceType,
+                },
+            };
+            OnGestureEvent(TouchActionType.ContextMenu, menuArgs, TouchActionResult.ContextMenu);
+        }
+#endif
+
         if (touchAction == TouchActionResult.Tapped)
         {
             Tapped?.Invoke(this, EventArgs.Empty);
