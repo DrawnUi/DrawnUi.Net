@@ -22,6 +22,12 @@ namespace DrawnUi.Draw
         /// Point inside the control, in points (DIPs), relative to its top-left.
         /// </summary>
         public SKPoint Local { get; set; }
+
+        /// <summary>
+        /// Where the request was on the canvas, in points: where a context menu opens
+        /// (<c>Superview.OpenPopupWindow(menu, e.Location)</c>).
+        /// </summary>
+        public SKPoint Location { get; set; }
     }
 
     /// <summary>

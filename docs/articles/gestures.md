@@ -355,6 +355,11 @@ To know that the mouse is anywhere inside a container, call `CheckPointerOver(ar
 
 Touch never hovers. On MAUI Windows, WPF and OpenTK both end when the mouse leaves the canvas; on Blazor, the WebAssembly head, MAUI Mac Catalyst and Android they end at the next pointer move over the canvas.
 
+## Tooltips and menus
+
+Tooltips on any control (`.WithTooltip("Save")`), context menus, dropdowns and menu bars in popup windows: see
+[Tooltips and Menus](controls/tooltips-menus.md).
+
 ## Gesture locking and propagation
 
 Use `LockChildrenGestures` when a parent layout should decide which gestures reach nested controls.

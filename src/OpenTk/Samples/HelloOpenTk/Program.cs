@@ -47,6 +47,14 @@ Super.UseDrawnUi()
 SkiaLabel.DefaultAccessibilityRole = Aria.RoleText;
 SkiaButton.DefaultAccessibilityRole = Aria.RoleButton;
 
+// tooltips in the app's popup palette (the menus' panel and edge), so they stand out on the #2B3035 cards
+Super.TooltipStyle = new TooltipStyle
+{
+    BackgroundColor = Color.Parse("#262B3B"),
+    BorderColor = Color.Parse("#3B4256"),
+    TextColor = Colors.White,
+};
+
 var canvas = new Canvas
 {
     BackgroundColor = Color.Parse("#212529"),

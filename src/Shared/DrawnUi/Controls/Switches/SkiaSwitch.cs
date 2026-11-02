@@ -41,16 +41,16 @@ public class SkiaSwitch : SkiaToggle
     }
 
     // Flat DrawnUI default palette, shared with the other default controls.
-    private static readonly Color DefaultAccentColor = Color.FromRgba(220, 20, 60, 255); // Crimson #DC143C
+    private static readonly Color DefaultAccentColor = DefaultStyle.Accent; // blue #3B82F6
     private static readonly Color DefaultTrackColor = Color.FromRgba(215, 219, 224, 255); // neutral #D7DBE0
 
     protected virtual void CreateDefaultStyleContent()
     {
         // Flat DrawnUI look: accent track when on, neutral track when off, white thumb.
-        // Height 28 sits between Windows (22) and Cupertino (31).
-        SetDefaultContentSize(46, 28);
+        // 46 x 22, the Agent Signals switch: a low track that fits a settings row.
+        SetDefaultContentSize(46, 22);
 
-        // style defaults, not plain sets: a plain set counts as the app's own, and a later ControlStyle kept the crimson
+        // style defaults, not plain sets: a plain set counts as the app's own, and a later ControlStyle kept the default accent
         SetStyleDefault(ColorFrameOnProperty, DefaultAccentColor);
         SetStyleDefault(ColorFrameOffProperty, DefaultTrackColor);
 

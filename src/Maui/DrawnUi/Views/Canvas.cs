@@ -44,7 +44,7 @@ public class Canvas : DrawnView, IGestureListener
 
     protected override void OnChildAdded(SkiaControl child)
     {
-        if (Views.Count > 1)
+        if (Views.Count(v => v is not PopupLayer) > 1) // the popup windows' layer sits beside the content
         {
             throw new Exception(
                 "Canvas cannot have more than one subview due to rendering optimizations. Please use Content property and use SkiaLayout if you need to have many controls on canvas.");
@@ -58,7 +58,7 @@ public class Canvas : DrawnView, IGestureListener
     /// </summary>
     protected virtual void SetContent(SkiaControl view)
     {
-        var oldContent = Views.FirstOrDefault();
+        var oldContent = Views.FirstOrDefault(v => v is not PopupLayer); // the popup windows' layer is not content
         if (view != oldContent)
         {
             if (oldContent != null)
@@ -279,6 +279,8 @@ public class Canvas : DrawnView, IGestureListener
                 {
                     child.OnBeforeMeasure(); //could set IsVisible or whatever inside
                     var willDraw = MeasureChild(child, rectForChild.Width, rectForChild.Height, RenderingScale);
+                    if (child is PopupLayer)
+                        continue; // popups never size the canvas
                     if (!willDraw.IsEmpty)
                     {
                         if (willDraw.Pixels.Width > maxWidth)
@@ -573,6 +575,9 @@ public class Canvas : DrawnView, IGestureListener
             }
 
             _checkHover = args.Type == TouchActionResult.Pointer;
+            if (!_checkHover)
+                CloseTooltipOnInput(); // a press, the wheel: the tooltip closes
+            PreviewInputForPopups(args);
 
             ISkiaGestureListener consumed = null;
             ISkiaGestureListener alreadyConsumed = null;
@@ -796,6 +801,10 @@ public class Canvas : DrawnView, IGestureListener
 
     private SKPoint _PressedPosition;
 
+#if MACCATALYST
+    private long _lastSecondaryClick; // one context menu per secondary click, whichever way it was reported
+#endif
+
     public event EventHandler Tapped;
 
 
@@ -845,6 +854,31 @@ public class Canvas : DrawnView, IGestureListener
             };
             type = TouchActionType.Wheel;
             touchAction = TouchActionResult.Wheel;
+        }
+#endif
+
+#if MACCATALYST
+        // A right click, a two-finger click or a Control-click on a Mac: the gestures layer reports the
+        // secondary button's release, as a pointer click (two-finger tap recognizer) or as the Up of a press; it opens
+        // the context menu once, as on Windows and the web heads
+        if (touchAction is TouchActionResult.Pointer or TouchActionResult.Up
+            && args1.Pointer is { Button: MouseButton.Right, State: MouseButtonState.Released } secondary
+            && Environment.TickCount64 - _lastSecondaryClick > 300)
+        {
+            _lastSecondaryClick = Environment.TickCount64;
+            var menuArgs = new TouchActionEventArgs(args1.Id, TouchActionType.ContextMenu, args1.Location, null, (float)RenderingScale)
+            {
+                IsInsideView = true,
+                StartingLocation = args1.Location,
+                Pointer = new PointerData
+                {
+                    Button = MouseButton.Right,
+                    ButtonNumber = 2,
+                    State = MouseButtonState.Released,
+                    DeviceType = secondary.DeviceType,
+                },
+            };
+            OnGestureEvent(TouchActionType.ContextMenu, menuArgs, TouchActionResult.ContextMenu);
         }
 #endif
 

@@ -99,7 +99,17 @@ internal sealed class WindowRootProvider
         return this;
     }
 
-    public IRawElementProviderFragment? GetFocus() => null;
+    /// <summary>The node keyboard navigation is on, so a screen reader asking where the focus is gets it.</summary>
+    public IRawElementProviderFragment? GetFocus()
+    {
+        var focused = Manager.FocusedNode;
+        if (focused == null)
+            return null;
+
+        var snap = Manager.Snapshot;
+        var index = Array.FindIndex(snap, n => ReferenceEquals(n.Source, focused));
+        return index < 0 ? null : MakeChild(snap[index], index);
+    }
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -214,6 +224,7 @@ internal sealed class VirtualElementProvider
         UiaPropertyId.ControlType          => AriaToControlType(_node.Role),
         UiaPropertyId.LocalizedControlType => _node.Role ?? "custom",
         UiaPropertyId.IsKeyboardFocusable  => _node.CanInteract,
+        UiaPropertyId.HasKeyboardFocus     => _node.Source != null && ReferenceEquals(_node.Source, _root.Manager.FocusedNode),
         UiaPropertyId.IsEnabled            => _node.CanInteract || !DrawnUi.Models.Aria.IsInteractiveRole(_node.Role),
         UiaPropertyId.IsControlElement     => true,
         UiaPropertyId.IsContentElement     => true,

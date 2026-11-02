@@ -210,6 +210,67 @@ namespace DrawnUi.Views
         private GroupFocusRequest? _groupRequest;
         private readonly object _groupRequestLock = new();
 
+        /// <summary>
+        /// While set, keyboard navigation stays inside this control: Tab and Shift+Tab stop only on its nodes. Set by the
+        /// canvas to the top popup window that takes input (a menu, a dropdown), null when none is open.
+        /// </summary>
+        public SkiaControl? KeyboardScope { get; internal set; }
+
+        private SkiaControl? _focusInside;
+        private long _focusInsideDeadline;
+        private ISkiaAccessibilityNode? _focusReturn;
+
+        /// <summary>A popup window opened from the keyboard: its first node takes the keyboard focus once it is drawn.</summary>
+        internal void RequestFocusInside(SkiaControl root)
+        {
+            _focusReturn = null;
+            _focusInsideDeadline = Environment.TickCount64 + 1000;
+            Volatile.Write(ref _focusInside, root);
+        }
+
+        /// <summary>A popup window that had the keyboard closed: the keyboard focus goes back to what opened it, at the frame end.</summary>
+        internal void RequestFocusReturn(ISkiaAccessibilityNode node)
+        {
+            // the reader's node is going away with the popup: a rebuild before the return lands must not send the
+            // reader (and the heads' focus with it) to the first node of the page
+            ReaderNode = node;
+            if (Volatile.Read(ref _focusInside) == null) // a menu opening next (Left / Right in a menu bar) wins
+                Volatile.Write(ref _focusReturn, node);
+        }
+
+        private void ProcessPendingFocus(float scale)
+        {
+            var inside = Volatile.Read(ref _focusInside);
+            if (inside != null)
+            {
+                if (inside.IsDisposed || Environment.TickCount64 > _focusInsideDeadline)
+                {
+                    _focusInside = null;
+                }
+                else
+                {
+                    Rebuild(scale);
+                    foreach (var n in Snapshot)
+                    {
+                        if (n.Source is SkiaControl { AccessibilityCanInteract: true } source && IsDescendantOrSelf(source, inside))
+                        {
+                            _focusInside = null;
+                            FocusFromKeyboard(source, scale);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            var back = Interlocked.Exchange(ref _focusReturn, null);
+            if (back is SkiaControl { IsDisposed: false, AccessibilityCanInteract: true })
+            {
+                Rebuild(scale); // the closed popup's nodes leave before the focus moves
+                if (IsInSnapshot((SkiaControl)back))
+                    FocusFromKeyboard(back, scale);
+            }
+        }
+
         // the ScrollToIndex order keyboard navigation issued last: dropped once the item has focus, or the scroll
         // keeps homing to it (re-issues on stall) and pulls the list back while focus already moved on
         private SkiaScroll? _orderScroll;
@@ -262,6 +323,10 @@ namespace DrawnUi.Views
         /// </summary>
         public bool IsTabStop(ISkiaAccessibilityNode? node)
         {
+            // an open popup window keeps the keyboard: Tab never leaves it, as with native menus
+            if (KeyboardScope is { } scope && (node == null || !IsDescendantOrSelf(node, scope)))
+                return false;
+
             if (node is not SkiaControl control || !TryFindGroup(control, out var group, out var item))
                 return true;
 
@@ -307,6 +372,8 @@ namespace DrawnUi.Views
             if (current < 0)
                 current = forward ? -1 : stops.Count;
             var next = forward ? current + 1 : current - 1;
+            if (KeyboardScope != null && stops.Count > 0)
+                next = (next + stops.Count) % stops.Count; // inside an open popup Tab goes round, it never leaves
             return next >= 0 && next < stops.Count ? stops[next] : null;
         }
 
@@ -708,6 +775,7 @@ namespace DrawnUi.Views
         /// </summary>
         internal void OnFrameEnd(float scale)
         {
+            ProcessPendingFocus(scale);
             ProcessGroupFocus(scale);
 
             if (!_dirty && _nodes.IsEmpty) return;

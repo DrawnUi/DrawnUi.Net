@@ -27,6 +27,14 @@ public partial class MainWindow : Window
 
         Drawn.Canvas.BackgroundColor = Color.Parse("#212529");
 
+        // tooltips in the app's popup palette (the menus' panel and edge), so they stand out on the #2B3035 cards
+        Super.TooltipStyle = new TooltipStyle
+        {
+            BackgroundColor = Color.Parse("#262B3B"),
+            BorderColor = Color.Parse("#3B4256"),
+            TextColor = DrawnUi.Draw.Colors.White,
+        };
+
         var shell = new SkiaShell();
         // Ported pages register here as each module lands. The shell page needs the shell itself, so
         // the routes are attached after construction.
@@ -43,6 +51,7 @@ public partial class MainWindow : Window
                 ["snapping"] = _ => new SnappingPage(),
                 ["animations"] = _ => new AnimationsPage(),
                 ["shell"] = _ => new ShellPage(shell),
+                ["menus"] = _ => new TooltipsMenusPage(),
                 ["editor"] = _ => new EditorPage(),
                 ["keyboard"] = _ => new KeyboardPage(),
                 ["scroll"] = _ => new ScrollPage(),
@@ -54,6 +63,20 @@ public partial class MainWindow : Window
                 ["a11y"] = _ => new AccessibilityPage(),
             };
         shell.Titles = Catalog.Samples.ToDictionary(s => s.Route, s => s.Title);
+
+        // A tap on a page's empty space (or a card's) takes the focus there, so a focused editor lets go of its caret;
+        // buttons keep it. The shell's page layer blocks taps below without taking the focus (drawnui-hello-app).
+        foreach (var route in shell.Routes.Keys.ToList())
+        {
+            var makePage = shell.Routes[route];
+            shell.Routes[route] = arguments =>
+            {
+                var page = makePage(arguments);
+                page.CanBeFocused = true;
+                page.BlockGesturesBelow = true;
+                return page;
+            };
+        }
 
         shell.RootContent = new RootPage
         {

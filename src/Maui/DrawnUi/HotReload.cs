@@ -27,13 +27,13 @@ namespace DrawnUi
             }
         }
 
+        /// <summary>
+        /// Called by the runtime after it applied a code update, under a debugger or dotnet watch alike.
+        /// </summary>
         public static void UpdateApplication(Type[]? types)
         {
-            if (Debugger.IsAttached)
-            {
-                Debug.WriteLine("[HOTRELOAD] UpdateApplication: " + (types?.Length ?? 0));
-                UpdateOnTimerOnly.Kick();
-            }
+            Debug.WriteLine("[HOTRELOAD] UpdateApplication: " + (types?.Length ?? 0));
+            UpdateOnTimerOnly.Kick();
         }
 
     }

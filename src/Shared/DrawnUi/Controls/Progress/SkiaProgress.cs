@@ -131,7 +131,7 @@ public class SkiaProgress : SkiaRangeBase
             PrebuiltControlStyle.Material => Color.FromRgba(33, 150, 243, 255), // Material blue (M2 family)
             PrebuiltControlStyle.Material3 => Color.FromRgba(103, 80, 164, 255), // M3 primary
             PrebuiltControlStyle.Windows => Color.FromRgba(0, 120, 212, 255), // Fluent accent
-            _ => Color.FromRgba(220, 20, 60, 255) // DrawnUI flat default accent Crimson #DC143C
+            _ => DefaultStyle.Accent // DrawnUI flat default accent blue #3B82F6
         };
 
     /// <summary>

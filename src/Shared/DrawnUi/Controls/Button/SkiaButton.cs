@@ -100,8 +100,8 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
         }
     }
 
-    // Flat DrawnUI default accent (Crimson #DC143C).
-    private static readonly Color DefaultAccentColor = Color.FromRgba(220, 20, 60, 255);
+    // Flat DrawnUI default accent (blue #3B82F6).
+    private static readonly Color DefaultAccentColor = DefaultStyle.Accent;
 
     protected virtual void CreateDefaultStyleContent()
     {

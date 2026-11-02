@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using DrawnUi.Controls;
 using DrawnUi.Views;
 using HelloMaui.Pages;
@@ -32,6 +32,7 @@ public class HelloShell : SkiaShell
         ["snapping"] = typeof(PageHost<SnappingPage>),
         ["animations"] = typeof(PageHost<AnimationsPage>),
         ["shell"] = typeof(PageHost<ShellPage>),
+        ["menus"] = typeof(PageHost<TooltipsMenusPage>),
         ["editor"] = typeof(PageHost<EditorPage>),
         ["keyboard"] = typeof(PageHost<KeyboardPage>),
         ["scroll"] = typeof(PageHost<ScrollPage>),
@@ -47,6 +48,14 @@ public class HelloShell : SkiaShell
     public HelloShell()
     {
         Instance = this;
+
+        // tooltips in the app's popup palette (the menus' panel and edge), so they stand out on the #2B3035 cards
+        Super.TooltipStyle = new TooltipStyle
+        {
+            BackgroundColor = Color.Parse("#262B3B"),
+            BorderColor = Color.Parse("#3B4256"),
+            TextColor = Colors.White,
+        };
         BackgroundColor = PageBackground;
         SafeAreaEdges = SafeAreaEdges.All; // keep the drawn nav bar clear of status bar / notch / home indicator
 
@@ -174,6 +183,9 @@ public class PageHost<T> : SkiaLayer where T : SkiaControl, new()
         VerticalOptions = LayoutOptions.Fill;
         BackgroundColor = HelloShell.PageBackground;
         BlockGesturesBelow = true;
+        // a tap on the page's empty space (or a card's) takes the focus, so a focused editor lets go of its caret;
+        // buttons keep it (drawnui-hello-app)
+        CanBeFocused = true;
 
         Children = new List<SkiaControl>
         {
@@ -192,6 +204,7 @@ public class PageHost<T> : SkiaLayer where T : SkiaControl, new()
                 {
                     new SkiaButton("‹  Back")
                     {
+                        AccessibilityLabel = "Back",
                         BackgroundColor = Colors.Transparent,
                         TextColor = Color.Parse("#6EA8FE"),
                         FontSize = 16,

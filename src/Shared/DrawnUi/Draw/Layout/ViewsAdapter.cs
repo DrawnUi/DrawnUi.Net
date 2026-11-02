@@ -424,17 +424,6 @@ namespace DrawnUi.Draw
                 // Clear standalone pool when template changes
                 kill?.ClearStandalonePool();
 
-                if (UsesGenericPool)
-                {
-                    // Warm only a SMALL batch synchronously so the FIRST frame already has cells. The rest of
-                    // the prefill (up to ItemTemplatePoolSize for RecyclingTemplate.Disabled) is created on a
-                    // BACKGROUND thread AFTER the visible measured cells are painted — kicked from
-                    // DrawStackVisibleChildren's first-fresh-draw hook. Filling the whole prefill synchronously
-                    // here blocked the first draw -> long blank startup.
-                    var mult = _parent.Split > 0 ? _parent.Split : 1;
-                    FillPool(Math.Min(reserve, mult * 3), dataContexts);
-                }
-
                 if (kill != null)
                 {
                     kill.IsDisposing = true;
@@ -445,6 +434,18 @@ namespace DrawnUi.Draw
                 TemplesInvalidating = false;
 
                 Monitor.PulseAll(_lockTemplates);
+            }
+
+            if (UsesGenericPool)
+            {
+                // Warm only a SMALL batch synchronously so the FIRST frame already has cells. The rest of
+                // the prefill (up to ItemTemplatePoolSize for RecyclingTemplate.Disabled) is created on a
+                // BACKGROUND thread AFTER the visible measured cells are painted — kicked from
+                // DrawStackVisibleChildren's first-fresh-draw hook. Filling the whole prefill synchronously
+                // here blocked the first draw -> long blank startup. Outside _lockTemplates: cell ctors
+                // must not hold the lock other threads take.
+                var mult = _parent.Split > 0 ? _parent.Split : 1;
+                FillPool(Math.Min(reserve, mult * 3), dataContexts);
             }
 
             if (measure)
@@ -1981,18 +1982,31 @@ namespace DrawnUi.Draw
 
         public SkiaControl GetTemplateInstance()
         {
-            lock (_lockTemplates)
+            // The cell is taken after leaving _lockTemplates: creating one can take hundreds of ms and the
+            // UI thread takes this lock on every collection change. A pool replaced meanwhile gives null: retry.
+            for (var attempt = 0; attempt < 2; attempt++)
             {
-                if (_templatedViewsPool == null || _dataContexts == null)
+                TemplatedViewsPool pool;
+                lock (_lockTemplates)
                 {
-                    throw new InvalidOperationException("Templates have not been initialized.");
+                    if (_templatedViewsPool == null || _dataContexts == null)
+                    {
+                        throw new InvalidOperationException("Templates have not been initialized.");
+                    }
+
+                    pool = _templatedViewsPool;
                 }
 
-                SkiaControl view = _templatedViewsPool.GetStandalone();
-                view.IsParentIndependent = true;
-                view.NeedMeasure = true;
-                return view;
+                SkiaControl view = pool.GetStandalone();
+                if (view != null)
+                {
+                    view.IsParentIndependent = true;
+                    view.NeedMeasure = true;
+                    return view;
+                }
             }
+
+            throw new InvalidOperationException("Templates have not been initialized.");
         }
 
         /// <summary>

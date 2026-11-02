@@ -39,6 +39,7 @@ public static class HelloApp
             ["snapping"] = _ => new SnappingPage(),
             ["animations"] = _ => new AnimationsPage(),
             ["shell"] = _ => new ShellPage(shell),
+            ["menus"] = _ => new TooltipsMenusPage(),
             ["editor"] = _ => new EditorPage(),
             ["keyboard"] = _ => new KeyboardPage(),
             ["scroll"] = _ => new ScrollPage(),
@@ -50,6 +51,20 @@ public static class HelloApp
             ["a11y"] = _ => new AccessibilityPage(),
         };
         shell.Titles = Catalog.Samples.ToDictionary(s => s.Route, s => s.Title);
+
+        // A tap on a page's empty space (or a card's) takes the focus there, so a focused editor lets go of its caret;
+        // buttons keep it. The shell's page layer blocks taps below without taking the focus (drawnui-hello-app).
+        foreach (var route in shell.Routes.Keys.ToList())
+        {
+            var makePage = shell.Routes[route];
+            shell.Routes[route] = arguments =>
+            {
+                var page = makePage(arguments);
+                page.CanBeFocused = true;
+                page.BlockGesturesBelow = true;
+                return page;
+            };
+        }
 
         shell.RootContent = new RootPage
         {
