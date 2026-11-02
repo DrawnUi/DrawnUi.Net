@@ -27,7 +27,7 @@ public class PopupWindowTests
             HeightRequest = 30,
             HorizontalOptions = LayoutOptions.Fill,
             Children = { new SkiaLabel(text) },
-        }.OnTapped(me => picked.Add(text))).ToList(),
+        }.OnHovered((me, on) => me.BackgroundColor = on ? Colors.Gray : Colors.Transparent).OnTapped(me => picked.Add(text))).ToList(),
     };
 
     static HeadlessCanvasHost Scene(out SkiaShape button, out List<string> tapped)
@@ -176,6 +176,57 @@ public class PopupWindowTests
         host.Canvas.OnWindowDeactivated();
         host.AdvanceFrames(2);
         Assert.False(host.Canvas.IsPopupWindowOpen(id));
+    }
+
+    sealed class FakeHost : IPopupWindowHost
+    {
+        public SKRect Screen = new(-200, -200, W + 600, H + 600);
+        public readonly List<(PopupId Id, SKRect Rect)> Shown = new();
+        public readonly List<PopupId> Hidden = new();
+        public SKRect ScreenBounds() => Screen;
+        public void ShowPopup(PopupId id, SKImage image, SKRect canvasRect) { image.Dispose(); Shown.Add((id, canvasRect)); }
+        public void HidePopup(PopupId id) => Hidden.Add(id);
+    }
+
+    [Fact]
+    public void OwnWindow_PastTheCanvasEdge_TakesClicks_RedrawsOnHover_HidesOnClose()
+    {
+        using var host = Scene(out _, out var tapped);
+        var windows = new FakeHost();
+        host.Canvas.PopupWindowHost = windows;
+        var picked = new List<string>();
+        SkiaControl first = null;
+        var menu = Menu(picked, "Cut", "Copy", "Paste");
+        var id = host.Canvas.OpenPopupWindow(menu, new SKPoint(350, 380));
+        host.AdvanceFrames(3);
+
+        // placed inside the screen, not the canvas: past its right and bottom edges
+        Assert.NotEmpty(windows.Shown);
+        var rect = windows.Shown[^1].Rect;
+        Assert.Equal(350, rect.Left, 1.5);
+        Assert.Equal(380, rect.Top, 1.5);
+        Assert.True(rect.Right > W && rect.Bottom > H);
+
+        // nothing changed: no new picture
+        var count = windows.Shown.Count;
+        host.AdvanceFrames(3);
+        Assert.Equal(count, windows.Shown.Count);
+
+        // the mouse over an item changes its look: the window gets a new picture
+        host.Canvas.HandleDesktopPointerMove(360, 380 + 15, false, W, H);
+        host.AdvanceFrames(3);
+        Assert.True(windows.Shown.Count > count, "no new picture after a hover change");
+
+        // a click in its window comes back at the canvas point, beyond the canvas
+        host.Canvas.HandleDesktopPointerDown(360, 380 + 45, W, H);
+        host.Canvas.HandleDesktopPointerUp(360, 380 + 45, W, H);
+        host.AdvanceFrames(3);
+        Assert.Equal(new[] { "Copy" }, picked);
+        Assert.Empty(tapped);
+
+        host.Canvas.ClosePopupWindow(id);
+        host.AdvanceFrames(2);
+        Assert.Contains(id, windows.Hidden);
     }
 
     [Fact]

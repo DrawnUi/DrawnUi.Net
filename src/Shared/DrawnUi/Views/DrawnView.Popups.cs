@@ -92,6 +92,12 @@ namespace DrawnUi.Views
 
         internal void RaisePopupWindowClosed(PopupId id) => PopupWindowClosed?.Invoke(this, id);
 
+        /// <summary>
+        /// Set by heads that show popup windows in windows of their own (WPF, MAUI Windows and OpenTK on Windows): they
+        /// can go past the edge of the app window. Null: popups are drawn inside the canvas.
+        /// </summary>
+        public IPopupWindowHost PopupWindowHost { get; set; }
+
         /// <summary>The popup window is still open.</summary>
         public bool IsPopupWindowOpen(PopupId id) => _popupLayer?.IsOpen(id) == true;
 
@@ -128,6 +134,23 @@ namespace DrawnUi.Views
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// A head that shows popup windows in windows of their own, so they can go past the edge of the app window. The
+    /// canvas lays the popup out, draws it into a picture whenever it changes and hands it over; the head feeds the
+    /// mouse over its window back into the canvas at the matching canvas point.
+    /// </summary>
+    public interface IPopupWindowHost
+    {
+        /// <summary>Where popups may go, in canvas pixels: the work area of the screen the app window is on.</summary>
+        SKRect ScreenBounds();
+
+        /// <summary>Shows or updates the popup's window with <paramref name="image"/> at <paramref name="canvasRect"/> (canvas pixels). The image belongs to the host.</summary>
+        void ShowPopup(PopupId id, SKImage image, SKRect canvasRect);
+
+        /// <summary>Closes the popup's window.</summary>
+        void HidePopup(PopupId id);
     }
 
     /// <summary>A popup window opened with <see cref="DrawnView.OpenPopupWindow"/>.</summary>
@@ -214,6 +237,9 @@ namespace DrawnUi.Views
 
         public PopupId Id { get; }
         public SkiaControl Root { get; }
+
+        /// <summary>Where its own window last showed it, canvas pixels; empty when not shown in a window.</summary>
+        public SKRect ShownAt { get; set; }
         public PopupAnchor Anchor { get; }
         public PopupWindowOptions Options { get; }
     }
@@ -296,6 +322,8 @@ namespace DrawnUi.Views
         private void Remove(PopupWindow popup)
         {
             _popups.Remove(popup);
+            if (!popup.ShownAt.IsEmpty)
+                _canvas.PopupWindowHost?.HidePopup(popup.Id);
             RemoveSubView(popup.Root);
             _canvas.DisposeObject(popup.Root);
             IsVisible = _popups.Count > 0 || _swallowPress;
@@ -303,32 +331,68 @@ namespace DrawnUi.Views
             _canvas.RaisePopupWindowClosed(popup.Id);
         }
 
+        bool InOwnWindow(PopupWindow popup) => _canvas.PopupWindowHost != null && !popup.Options.OnCanvas;
+
         protected override void Paint(DrawingContext ctx)
         {
-            // place each popup from its anchor and its measured size, in the canvas' pixels
-            var bounds = DrawingRect;
+            // place each popup from its anchor and its measured size, in the canvas' pixels: inside the canvas, or
+            // inside the screen for a popup in a window of its own
+            var canvasBounds = DrawingRect;
             var scale = ctx.Scale;
-            foreach (var popup in _popups)
+            var host = _canvas.PopupWindowHost;
+            var screenBounds = host?.ScreenBounds() ?? SKRect.Empty;
+
+            foreach (var popup in _popups.ToList())
             {
                 var root = popup.Root;
                 var size = root.MeasuredSize.Pixels;
                 if (size.Width <= 0 || size.Height <= 0)
                     continue;
 
+                var own = InOwnWindow(popup) && !screenBounds.IsEmpty;
                 var anchor = popup.Anchor.Pixels(scale);
-                var rect = Place(anchor, popup.Anchor.IsPoint, new SKSize(size.Width, size.Height), bounds);
-                var x = (rect.Left - bounds.Left) / scale;
-                var y = (rect.Top - bounds.Top) / scale;
-                if (Math.Abs(root.TranslationX - x) > 0.01 || Math.Abs(root.TranslationY - y) > 0.01)
+                var rect = Place(anchor, popup.Anchor.IsPoint, new SKSize(size.Width, size.Height), own ? screenBounds : canvasBounds);
+                var x = (rect.Left - canvasBounds.Left) / scale;
+                var y = (rect.Top - canvasBounds.Top) / scale;
+                var moved = Math.Abs(root.TranslationX - x) > 0.01 || Math.Abs(root.TranslationY - y) > 0.01;
+                if (moved)
                 {
                     root.TranslationX = x;
                     root.TranslationY = y;
                 }
                 if (root.Opacity < 1)
                     root.Opacity = 1;
-            }
 
-            base.Paint(ctx);
+                if (!own)
+                {
+                    root.Render(ctx.WithDestination(canvasBounds));
+                    continue;
+                }
+
+                // its own window: a picture of it, drawn again only when it changed (a hover, a highlight) or moved
+                if (!moved && !root.NeedUpdate && popup.ShownAt == rect)
+                    continue;
+
+                var width = (int)Math.Ceiling(rect.Width);
+                var height = (int)Math.Ceiling(rect.Height);
+                using var surface = SKSurface.Create(new SKImageInfo(width, height));
+                if (surface == null)
+                    continue;
+
+                surface.Canvas.Clear(SKColors.Transparent);
+                surface.Canvas.Translate(-rect.Left, -rect.Top); // laid out in canvas pixels, drawn from the picture's corner
+                var offscreen = ctx.CreateForRecordingImage(surface, new SKSize(width, height));
+                root.Render(offscreen.WithDestination(canvasBounds));
+                surface.Canvas.Flush();
+                host.ShowPopup(popup.Id, surface.Snapshot(), rect);
+                popup.ShownAt = rect;
+            }
+        }
+
+        /// <summary>Over the canvas, or over a popup shown in a window of its own beyond the canvas.</summary>
+        public override bool HitIsInside(float x, float y)
+        {
+            return base.HitIsInside(x, y) || InsideInteractive(new SKPoint(x, y));
         }
 
         /// <summary>

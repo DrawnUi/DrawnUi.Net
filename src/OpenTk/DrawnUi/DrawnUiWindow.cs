@@ -118,6 +118,22 @@ public class DrawnUiWindow : GameWindow
                     var hwnd = _hwnd;
                     _canvas.TooltipHost = new Win32TooltipHost(() => hwnd, () => WindowRootProvider.GetClientScreenOrigin(hwnd),
                         MainThread.BeginInvokeOnMainThread);
+
+                    // menus and dropdowns too, the mouse over them coming back into the canvas
+                    var popupPressed = false;
+                    _canvas.PopupWindowHost = new Win32PopupHost(() => hwnd, () => WindowRootProvider.GetClientScreenOrigin(hwnd),
+                        MainThread.BeginInvokeOnMainThread,
+                        (kind, at, wheel) =>
+                        {
+                            float w = ClientSize.X, h = ClientSize.Y;
+                            switch (kind)
+                            {
+                                case PopupPointerKind.Move: _canvas.HandleDesktopPointerMove(at.X, at.Y, popupPressed, w, h); break;
+                                case PopupPointerKind.Down: popupPressed = true; _canvas.HandleDesktopPointerDown(at.X, at.Y, w, h); break;
+                                case PopupPointerKind.Up: popupPressed = false; _canvas.HandleDesktopPointerUp(at.X, at.Y, w, h); break;
+                                case PopupPointerKind.Wheel: _canvas.HandleDesktopWheel(at.X, at.Y, (int)wheel, w, h); break;
+                            }
+                        });
                 }
             }
         }

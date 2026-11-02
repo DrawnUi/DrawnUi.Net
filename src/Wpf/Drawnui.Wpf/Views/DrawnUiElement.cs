@@ -227,6 +227,28 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             _window = window;
             _window.Closed += OnWindowClosed;
             _window.Deactivated += OnWindowDeactivated;
+
+            // menus and dropdowns in windows of their own, the mouse over them coming back into the canvas
+            var popupPressed = false;
+            var owner = new WindowInteropHelper(window).Handle;
+            Canvas.PopupWindowHost = new Win32PopupHost(
+                () => owner,
+                () =>
+                {
+                    var origin = PointToScreen(new WpfPoint(0, 0)); // physical pixels
+                    return (origin.X, origin.Y);
+                },
+                action => Dispatcher.BeginInvoke(action),
+                (kind, at, wheel) =>
+                {
+                    switch (kind)
+                    {
+                        case PopupPointerKind.Move: Canvas.HandleDesktopPointerMove(at.X, at.Y, popupPressed, ClientPixelWidth, ClientPixelHeight); break;
+                        case PopupPointerKind.Down: popupPressed = true; Canvas.HandleDesktopPointerDown(at.X, at.Y, ClientPixelWidth, ClientPixelHeight); break;
+                        case PopupPointerKind.Up: popupPressed = false; Canvas.HandleDesktopPointerUp(at.X, at.Y, ClientPixelWidth, ClientPixelHeight); break;
+                        case PopupPointerKind.Wheel: Canvas.HandleDesktopWheel(at.X, at.Y, (int)wheel, ClientPixelWidth, ClientPixelHeight); break;
+                    }
+                });
             WpfStartup.ApplyToWindow(window); // DesktopWindow size + window-level keyboard, first window only
         }
 

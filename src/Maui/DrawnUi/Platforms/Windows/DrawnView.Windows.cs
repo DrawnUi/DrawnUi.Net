@@ -111,20 +111,64 @@ namespace DrawnUi.Views
                 platformWindow.Activated += OnPlatformWindowActivated;
             }
 
-            TooltipHost = new Win32TooltipHost(
-                () => TopWindow(),
-                () =>
+            (double X, double Y) CanvasOrigin()
+            {
+                var hwnd = _bridgeHwnd != 0 ? _bridgeHwnd : TopWindow();
+                var origin = hwnd != 0 ? MauiWindowsUiaProvider.GetClientScreenOrigin(hwnd) : (x: 0.0, y: 0.0);
+                if (element.XamlRoot is { } root)
                 {
-                    var hwnd = _bridgeHwnd != 0 ? _bridgeHwnd : TopWindow();
-                    var origin = hwnd != 0 ? MauiWindowsUiaProvider.GetClientScreenOrigin(hwnd) : (x: 0.0, y: 0.0);
-                    if (element.XamlRoot is { } root)
-                    {
-                        var pt = element.TransformToVisual(null).TransformPoint(new Windows.Foundation.Point(0, 0));
-                        return (origin.x + pt.X * root.RasterizationScale, origin.y + pt.Y * root.RasterizationScale);
-                    }
-                    return (origin.x, origin.y);
-                },
-                action => MainThread.BeginInvokeOnMainThread(action));
+                    var pt = element.TransformToVisual(null).TransformPoint(new Windows.Foundation.Point(0, 0));
+                    return (origin.x + pt.X * root.RasterizationScale, origin.y + pt.Y * root.RasterizationScale);
+                }
+                return (origin.x, origin.y);
+            }
+
+            TooltipHost = new Win32TooltipHost(() => TopWindow(), CanvasOrigin, action => MainThread.BeginInvokeOnMainThread(action));
+
+            // menus and dropdowns in windows of their own, the mouse over them coming back into the canvas
+            (PopupWindowHost as IDisposable)?.Dispose();
+            PopupWindowHost = new Win32PopupHost(() => TopWindow(), CanvasOrigin, action => MainThread.BeginInvokeOnMainThread(action),
+                OnPopupWindowPointer);
+        }
+
+        private SKPoint _popupDownAt;
+
+        /// <summary>The mouse over a popup's own window, in canvas pixels: sent on as the canvas' own mouse input.</summary>
+        private void OnPopupWindowPointer(PopupPointerKind kind, SKPoint at, float wheel)
+        {
+            if (this is not Canvas canvas)
+                return;
+
+            AppoMobi.Gestures.TouchActionEventArgs Args(AppoMobi.Gestures.TouchActionType type)
+            {
+                return new AppoMobi.Gestures.TouchActionEventArgs(1, type, new System.Drawing.PointF(at.X, at.Y), null, (float)RenderingScale)
+                {
+                    NumberOfTouches = 1,
+                    IsInsideView = true,
+                    StartingLocation = new System.Drawing.PointF(_popupDownAt.X, _popupDownAt.Y),
+                };
+            }
+
+            switch (kind)
+            {
+                case PopupPointerKind.Move:
+                    canvas.OnGestureEvent(AppoMobi.Gestures.TouchActionType.Pointer, Args(AppoMobi.Gestures.TouchActionType.Pointer), AppoMobi.Gestures.TouchActionResult.Pointer);
+                    break;
+                case PopupPointerKind.Down:
+                    _popupDownAt = at;
+                    canvas.OnGestureEvent(AppoMobi.Gestures.TouchActionType.Pressed, Args(AppoMobi.Gestures.TouchActionType.Pressed), AppoMobi.Gestures.TouchActionResult.Down);
+                    break;
+                case PopupPointerKind.Up:
+                    canvas.OnGestureEvent(AppoMobi.Gestures.TouchActionType.Released, Args(AppoMobi.Gestures.TouchActionType.Released), AppoMobi.Gestures.TouchActionResult.Up);
+                    if (SKPoint.Distance(at, _popupDownAt) < 8 * RenderingScale)
+                        canvas.OnGestureEvent(AppoMobi.Gestures.TouchActionType.Released, Args(AppoMobi.Gestures.TouchActionType.Released), AppoMobi.Gestures.TouchActionResult.Tapped);
+                    break;
+                case PopupPointerKind.Wheel:
+                    var wheelArgs = Args(AppoMobi.Gestures.TouchActionType.Wheel);
+                    wheelArgs.Wheel = new AppoMobi.Gestures.WheelEventArgs { Delta = wheel / 400f, Scale = 1f, Center = new System.Drawing.PointF(at.X, at.Y) };
+                    canvas.OnGestureEvent(AppoMobi.Gestures.TouchActionType.Wheel, wheelArgs, AppoMobi.Gestures.TouchActionResult.Wheel);
+                    break;
+            }
         }
 
         private void OnPlatformPointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)

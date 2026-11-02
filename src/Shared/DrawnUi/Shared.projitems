@@ -23,6 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Models\RenderingSubTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platforms\Windows\WindowsUiaInterfaces.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Platforms\Windows\Win32TooltipHost.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Platforms\Windows\Win32PopupHost.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Button\SkiaButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\DefaultStyle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\Button\SkiaButton.Maui.cs" />
