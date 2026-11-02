@@ -98,11 +98,14 @@ canvas.IsPopupWindowOpen(menu);
 ```
 
 - **Anchor** (`PopupAnchor`): a point in canvas points (where a right click was): the popup's top-left corner is
-  there; or a control or a rect (a dropdown's button): the popup opens below it, left edges together. Where the canvas
-  ends it flips to the other side and stays inside. A control anchor follows the control where it is now, through
+  there; or a control or a rect (a dropdown's button): the popup opens below it, left edges together. Where there is
+  no room it flips to the other side and stays inside. A control anchor follows the control where it is now, through
   scrolling and caches.
+- **Where it shows**: on WPF, MAUI Windows and OpenTK on Windows a popup opens in a window of its own, so it can go
+  past the edge of the app window and stays inside the screen. On the other heads it is drawn inside the canvas and
+  stays inside it.
 - **Options** (`PopupWindowOptions`): `Size` (else the size its content measures to), `CloseOnPointerLeave`,
-  `OnCanvas`, `Cpu`, `Passive` (shows only, as a tooltip: takes no input).
+  `OnCanvas` (drawn inside the canvas on every head), `Cpu`, `Passive` (shows only, as a tooltip: takes no input).
 - **It closes** with a press outside it (that press goes nowhere, as with native menus), Escape, the wheel outside it,
   the app window losing the focus, and from code. `PopupWindowClosed` tells which one closed, whatever closed it.
 - **Input**: over the popup its controls take the mouse; nothing below it sees that input.
