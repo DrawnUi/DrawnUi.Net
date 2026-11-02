@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0-ios</TargetFramework>
+    <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>HelloSlint</RootNamespace>
+    <ApplicationId>com.companyname.drawnui.helloslint</ApplicationId>
+    <ApplicationTitle>DrawnUI on Slint</ApplicationTitle>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <SlintIncludePaths>$(MSBuildThisFileDirectory)../../DrawnUi</SlintIncludePaths>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SlintFile Include="../HelloSlint/ui/main.slint" />
+    <SlintFile Include="../../DrawnUi/drawnui.slint" Generate="false" />
+    <Compile Include="../HelloSlint/CardsScene.cs" />
+    <Compile Include="../HelloSlint/KeysScene.cs" />
+    <Compile Include="../HelloSlint/SelfTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../DrawnUi/DrawnUi.Slint.csproj" />
+    <PackageReference Include="yurkinh.slint.net" Version="1.19.0-preview.10" />
+  </ItemGroup>
+
+</Project>

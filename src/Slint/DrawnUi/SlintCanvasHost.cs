@@ -16,9 +16,9 @@ namespace DrawnUi.Slint;
 /// </summary>
 /// <remarks>
 /// The canvas draws when something changed, at most once a display frame, and the view shows each frame as an image.
-/// When the window's Slint renderer uses OpenGL, such as after <c>new BackendSelector().RequireOpenGL().Select()</c>,
-/// the canvas draws with Skia on that context into a texture that the view shows, without copying pixels; otherwise
-/// it draws into a raster surface, whose pixels the view shows.
+/// By default it draws into a raster surface, whose pixels the view shows, with any Slint renderer.
+/// With <see cref="UseGpu"/> and Slint's FemtoVG renderer on OpenGL, it draws with Skia on that context instead,
+/// into a texture that the view shows without copying pixels.
 /// The view passes its size, pointer, wheel, and keyboard input back, in logical pixels, which the host scales by
 /// the window's scale factor. Use it on the Slint thread: DrawnUI's main thread is the Slint thread.
 /// </remarks>
@@ -38,6 +38,14 @@ public sealed class SlintCanvasHost : IDisposable
         views.Add(host);
         return host;
     }
+
+    /// <summary>
+    /// Whether canvases draw on the GPU, on the OpenGL context of the window's Slint renderer; set it before attaching.
+    /// It needs Slint's FemtoVG renderer: <c>new BackendSelector().RendererName("femtovg").RequireOpenGL().Select()</c>.
+    /// Slint's Skia renderer, its default on the desktop and on Android, keeps its own Skia state of the context,
+    /// which a second Skia on that context breaks.
+    /// </summary>
+    public static bool UseGpu { get; set; }
 
     private static readonly ConditionalWeakTable<SlintComponent, ComponentViews> Views = new();
     private static bool _initialized;
@@ -176,6 +184,18 @@ public sealed class SlintCanvasHost : IDisposable
             _drawable.IsDrawing = false;
         }
         _drawable.HasDrawn = true;
+        // Gestures apply when the canvas draws, so a tap focuses an editor only now.
+        _views.SetEditing(ViewId, Canvas.FocusedChild is SkiaEditor);
+    }
+
+    /// <summary>
+    /// Saves the whole window, as Slint shows it with its next frame, as a PNG file, such as for tests.
+    /// It reads Slint's OpenGL framebuffer, so it needs a renderer that uses OpenGL.
+    /// </summary>
+    public void SaveWindow(string path)
+    {
+        _views.PendingWindowSave = path;
+        _views.RequestRedraw();
     }
 
     /// <summary>
@@ -233,8 +253,9 @@ public sealed class SlintCanvasHost : IDisposable
         Render();
     }
 
-    internal void Pointer(int kind, int button, float x, float y)
+    internal void Pointer(int kind, int button, bool touch, float x, float y)
     {
+        var device = touch ? PointerDeviceType.Touch : PointerDeviceType.Mouse;
         float px = x * Scale, py = y * Scale;
         // Slint reports a move without motion after a release or a wheel event, which DrawnUI would take for the
         // user moving the mouse, ending a wheel scroll that is still animating.
@@ -247,26 +268,26 @@ public sealed class SlintCanvasHost : IDisposable
                 if (_pressedButton != null)
                     return;
                 _pressedButton = button;
-                Canvas.HandleDesktopPointerDown(px, py, _width, _height, DescribePointer(button, AppoMobi.Gestures.MouseButtonState.Pressed));
+                Canvas.HandleDesktopPointerDown(px, py, _width, _height, DescribePointer(button, AppoMobi.Gestures.MouseButtonState.Pressed, device));
                 break;
             case 1:
                 if (_pressedButton != button)
                     return;
                 _pressedButton = null;
-                Canvas.HandleDesktopPointerUp(px, py, _width, _height, DescribePointer(button, AppoMobi.Gestures.MouseButtonState.Released));
+                Canvas.HandleDesktopPointerUp(px, py, _width, _height, DescribePointer(button, AppoMobi.Gestures.MouseButtonState.Released, device));
                 // The right button's release asks for the context menu, after its tap, as on the OpenTK head.
-                if (button == 2)
+                if (button == 2 && !touch)
                     Canvas.HandleDesktopContextMenu(px, py, _width, _height, PointerDeviceType.Mouse);
                 break;
             case 2:
-                var held = _pressedButton is { } b ? DescribePointer(b, AppoMobi.Gestures.MouseButtonState.Pressed) : null;
+                var held = _pressedButton is { } b ? DescribePointer(b, AppoMobi.Gestures.MouseButtonState.Pressed, device) : null;
                 Canvas.HandleDesktopPointerMove(px, py, _pressedButton != null, _width, _height, held);
                 break;
             default:
                 if (_pressedButton is { } pressed)
                 {
                     _pressedButton = null;
-                    Canvas.HandleDesktopPointerUp(px, py, _width, _height, DescribePointer(pressed, AppoMobi.Gestures.MouseButtonState.Released));
+                    Canvas.HandleDesktopPointerUp(px, py, _width, _height, DescribePointer(pressed, AppoMobi.Gestures.MouseButtonState.Released, device));
                 }
                 Canvas.HandleDesktopPointerLeave();
                 break;
@@ -287,7 +308,7 @@ public sealed class SlintCanvasHost : IDisposable
     internal bool Key(bool pressed, string text, bool shift, bool control, bool alt) =>
         pressed ? SlintKeys.Pressed(Canvas, text, shift, control, alt) : SlintKeys.Released(text);
 
-    private static PointerData DescribePointer(int button, AppoMobi.Gestures.MouseButtonState state) => new()
+    private static PointerData DescribePointer(int button, AppoMobi.Gestures.MouseButtonState state, PointerDeviceType device) => new()
     {
         Button = button switch
         {
@@ -297,7 +318,7 @@ public sealed class SlintCanvasHost : IDisposable
         },
         ButtonNumber = button,
         State = state,
-        DeviceType = PointerDeviceType.Mouse,
+        DeviceType = device,
     };
 
     /// <summary>Stops drawing, and releases the canvas and its surfaces.</summary>
@@ -322,10 +343,14 @@ public sealed class SlintCanvasHost : IDisposable
     {
         private readonly SlintComponent _component;
         private readonly global::Slint.ListModel<SlintImage> _frames = new();
+        private readonly global::Slint.ListModel<bool> _editing = new();
         private readonly Dictionary<int, SlintCanvasHost> _hosts = new();
         private readonly List<SlintGpuRenderer.Target> _released = new();
 
         public SlintGpuRenderer? Gpu { get; private set; }
+
+        public string? PendingWindowSave { get; set; }
+        private SlintGl? _windowGl;
 
         public ComponentViews(SlintComponent component)
         {
@@ -340,9 +365,11 @@ public sealed class SlintCanvasHost : IDisposable
                 // A renderer without rendering notifiers, such as the software renderer: the raster path.
             }
             component.SetGlobalProperty(Global, "frames", _frames);
+            component.SetGlobalProperty(Global, "editing", _editing);
+            component.SetGlobalCallback(Global, "text", args => Find(args)?.Canvas.HandleDesktopTextInput((string)args[1]!));
             component.SetGlobalCallback(Global, "resized", args => Find(args)?.Resize(ToFloat(args[1]), ToFloat(args[2])));
             component.SetGlobalCallback(Global, "pointer", args =>
-                Find(args)?.Pointer(ToInt(args[1]), ToInt(args[2]), ToFloat(args[3]), ToFloat(args[4])));
+                Find(args)?.Pointer(ToInt(args[1]), ToInt(args[2]), (bool)args[3]!, ToFloat(args[4]), ToFloat(args[5])));
             component.SetGlobalCallback(Global, "wheel", args =>
                 Find(args)?.Wheel(ToFloat(args[1]), ToFloat(args[2]), ToFloat(args[3]), ToFloat(args[4])));
             component.SetGlobalCallback(Global, "key", args =>
@@ -354,7 +381,10 @@ public sealed class SlintCanvasHost : IDisposable
             if (!_hosts.TryAdd(host.ViewId, host))
                 throw new InvalidOperationException($"A canvas is already attached to the view {host.ViewId}.");
             while (_frames.Count <= host.ViewId)
+            {
                 _frames.Add(new SlintImage());
+                _editing.Add(false);
+            }
         }
 
         public void Remove(SlintCanvasHost host)
@@ -364,6 +394,12 @@ public sealed class SlintCanvasHost : IDisposable
         }
 
         public void Show(int viewId, SlintImage frame) => _frames[viewId] = frame;
+
+        public void SetEditing(int viewId, bool editing)
+        {
+            if (_editing[viewId] != editing)
+                _editing[viewId] = editing;
+        }
 
         public void RequestRedraw() => _component.Window.RequestRedraw();
 
@@ -378,9 +414,23 @@ public sealed class SlintCanvasHost : IDisposable
             switch (state)
             {
                 case global::Slint.RenderingState.RenderingSetup when api.Kind == global::Slint.GraphicsApiKind.NativeOpenGL:
-                    Gpu = SlintGpuRenderer.Create(api);
-                    if (Gpu != null)
-                        RequestRedraw();
+                    _windowGl = new SlintGl(api);
+                    if (UseGpu)
+                    {
+                        Gpu = SlintGpuRenderer.Create(api);
+                        if (Gpu != null)
+                            RequestRedraw();
+                    }
+                    break;
+                case global::Slint.RenderingState.AfterRendering when PendingWindowSave is { } path && _windowGl != null:
+                    PendingWindowSave = null;
+                    var (width, height, pixels) = _windowGl.ReadWindow();
+                    using (var bitmap = new SKBitmap(new SKImageInfo(width, height, SKColorType.Rgba8888, SKAlphaType.Unpremul)))
+                    {
+                        System.Runtime.InteropServices.Marshal.Copy(pixels, 0, bitmap.GetPixels(), pixels.Length);
+                        using var data = bitmap.Encode(SKEncodedImageFormat.Png, 100);
+                        File.WriteAllBytes(path, data.ToArray());
+                    }
                     break;
                 case global::Slint.RenderingState.BeforeRendering when Gpu != null:
                     foreach (var target in _released)
@@ -390,6 +440,7 @@ public sealed class SlintCanvasHost : IDisposable
                         host.RenderGpu(Gpu);
                     break;
                 case global::Slint.RenderingState.RenderingTeardown:
+                    _windowGl = null;
                     foreach (var target in _released)
                         target.Dispose();
                     _released.Clear();

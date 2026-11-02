@@ -50,6 +50,8 @@ internal static class SelfTest
             {
                 cards.SaveFrame(Path.Combine(outDir, "2-cards.png"));
                 keys.SaveFrame(Path.Combine(outDir, "3-keys.png"));
+                if (Environment.GetEnvironmentVariable("DRAWNUI_GPU") is { Length: > 0 })
+                    cards.SaveWindow(Path.Combine(outDir, "4-window.png"));
             }),
             (4300, () =>
             {

@@ -36,6 +36,7 @@ internal sealed unsafe class SlintGl
     private readonly delegate* unmanaged<uint, uint, void> _bindBuffer;
     private readonly delegate* unmanaged<uint, void> _activeTexture;
     private readonly delegate* unmanaged<uint, int, void> _pixelStorei;
+    private readonly delegate* unmanaged<int, int, int, int, uint, uint, void*, void> _readPixels;
 
     public SlintGl(GraphicsApi api)
     {
@@ -58,6 +59,7 @@ internal sealed unsafe class SlintGl
         _bindBuffer = (delegate* unmanaged<uint, uint, void>)Load(api, "glBindBuffer");
         _activeTexture = (delegate* unmanaged<uint, void>)Load(api, "glActiveTexture");
         _pixelStorei = (delegate* unmanaged<uint, int, void>)Load(api, "glPixelStorei");
+        _readPixels = (delegate* unmanaged<int, int, int, int, uint, uint, void*, void>)Load(api, "glReadPixels");
     }
 
     private static nint Load(GraphicsApi api, string name)
@@ -84,6 +86,27 @@ internal sealed unsafe class SlintGl
     }
 
     public void DeleteTexture(uint texture) => _deleteTextures(1, &texture);
+
+    /// <summary>The window's framebuffer as RGBA rows from the top, as Slint rendered it.</summary>
+    public (int Width, int Height, byte[] Pixels) ReadWindow()
+    {
+        var viewport = stackalloc int[4];
+        _getIntegerv(ViewportParam, viewport);
+        int width = viewport[2], height = viewport[3];
+        var pixels = new byte[width * height * 4];
+        int oldAlignment;
+        _getIntegerv(0x0D05, &oldAlignment); // GL_PACK_ALIGNMENT
+        _pixelStorei(0x0D05, 1);
+        fixed (byte* p = pixels)
+            _readPixels(viewport[0], viewport[1], width, height, Rgba, UnsignedByte, p);
+        _pixelStorei(0x0D05, oldAlignment);
+        // OpenGL's rows start at the bottom.
+        var flipped = new byte[pixels.Length];
+        var row = width * 4;
+        for (var y = 0; y < height; y++)
+            Array.Copy(pixels, y * row, flipped, (height - 1 - y) * row, row);
+        return (width, height, flipped);
+    }
 
     /// <summary>The state that Skia changes and Slint's renderer relies on, since they share the context.</summary>
     public State Save()

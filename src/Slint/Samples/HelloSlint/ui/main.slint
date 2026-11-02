@@ -17,6 +17,11 @@ export component MainWindow inherits Window {
     out property <length> keys-y: keys.absolute-position.y;
 
     VerticalLayout {
+        // Clear of a phone's status bar and rounded corners; zero on the desktop.
+        padding-top: root.safe-area-insets.top;
+        padding-bottom: root.safe-area-insets.bottom;
+        padding-left: root.safe-area-insets.left;
+        padding-right: root.safe-area-insets.right;
         HorizontalBox {
             vertical-stretch: 0;
             Text {

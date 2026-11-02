@@ -8,12 +8,16 @@
 export global DrawnUiHost {
     // The latest frame of each view, by view id.
     in property <[image]> frames;
+    // Whether a DrawnUI editor has the focus in each view, by view id.
+    in property <[bool]> editing;
     callback resized(view-id: int, width: length, height: length);
-    // kind: 0 down, 1 up, 2 move, 3 leave or cancel; button: 0 left, 1 middle, 2 right
-    callback pointer(view-id: int, kind: int, button: int, x: length, y: length);
+    // kind: 0 down, 1 up, 2 move, 3 leave or cancel; button: 0 left, 1 middle, 2 right; touch: a finger, not a mouse
+    callback pointer(view-id: int, kind: int, button: int, touch: bool, x: length, y: length);
     callback wheel(view-id: int, x: length, y: length, delta-x: length, delta-y: length);
     // Returns whether DrawnUI took the key.
     callback key(view-id: int, pressed: bool, text: string, shift: bool, control: bool, alt: bool) -> bool;
+    // Text from an input method, such as a phone's on-screen keyboard.
+    callback text(view-id: int, text: string);
 }
 
 export component DrawnUiView inherits Rectangle {
@@ -21,6 +25,17 @@ export component DrawnUiView inherits Rectangle {
     // Takes the room that a layout has, like a canvas does.
     horizontal-stretch: 1;
     vertical-stretch: 1;
+
+    // An input method, such as a phone's on-screen keyboard, writes into a TextInput only, so a hidden one takes the
+    // focus while a DrawnUI editor has it; key presses still go to DrawnUI first, see capture-key-pressed.
+    property <bool> editing: root.view-id < DrawnUiHost.editing.length && DrawnUiHost.editing[root.view-id];
+    changed editing => {
+        if self.editing {
+            text-proxy.focus();
+        } else if text-proxy.has-focus {
+            focus.focus();
+        }
+    }
 
     init => {
         DrawnUiHost.resized(root.view-id, root.width, root.height);
@@ -42,6 +57,12 @@ export component DrawnUiView inherits Rectangle {
     }
 
     focus := FocusScope {
+        capture-key-pressed(event) => {
+            if !text-proxy.has-focus {
+                return EventResult.reject;
+            }
+            DrawnUiHost.key(root.view-id, true, event.text, event.modifiers.shift, event.modifiers.control, event.modifiers.alt) ? EventResult.accept : EventResult.reject
+        }
         key-pressed(event) => {
             DrawnUiHost.key(root.view-id, true, event.text, event.modifiers.shift, event.modifiers.control, event.modifiers.alt) ? EventResult.accept : EventResult.reject
         }
@@ -58,17 +79,32 @@ export component DrawnUiView inherits Rectangle {
                     root.view-id,
                     e.kind == PointerEventKind.down ? 0 : e.kind == PointerEventKind.up ? 1 : e.kind == PointerEventKind.move ? 2 : 3,
                     e.button == PointerEventButton.middle ? 1 : e.button == PointerEventButton.right ? 2 : 0,
+                    e.touch-finger-id != 0,
                     self.mouse-x,
                     self.mouse-y);
             }
             changed has-hover => {
                 if !self.has-hover {
-                    DrawnUiHost.pointer(root.view-id, 3, 0, self.mouse-x, self.mouse-y);
+                    DrawnUiHost.pointer(root.view-id, 3, 0, false, self.mouse-x, self.mouse-y);
                 }
             }
             scroll-event(e) => {
                 DrawnUiHost.wheel(root.view-id, self.mouse-x, self.mouse-y, e.delta-x, e.delta-y);
                 EventResult.accept
+            }
+        }
+
+        text-proxy := TextInput {
+            x: 0;
+            y: 0;
+            width: 1px;
+            height: 1px;
+            color: transparent;
+            edited => {
+                if self.text != "" {
+                    DrawnUiHost.text(root.view-id, self.text);
+                    self.text = "";
+                }
             }
         }
     }

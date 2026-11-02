@@ -9,8 +9,12 @@ internal static class Program
     private static void Main()
     {
         // The GPU path: DrawnUI draws with Skia on the OpenGL context of Slint's renderer.
+        // DRAWNUI_GPU=1: Slint's FemtoVG renderer on OpenGL, whose context DrawnUI draws on.
         if (Environment.GetEnvironmentVariable("DRAWNUI_GPU") == "1")
-            new Slint.BackendSelector().RequireOpenGL().Select();
+        {
+            new Slint.BackendSelector().RendererName("femtovg").RequireOpenGL().Select();
+            SlintCanvasHost.UseGpu = true;
+        }
 
         using var window = MainWindow.Create();
         using var cards = SlintCanvasHost.Attach(window.Instance, 0);
