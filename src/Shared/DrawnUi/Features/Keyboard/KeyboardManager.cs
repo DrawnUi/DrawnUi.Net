@@ -46,6 +46,7 @@ public partial class KeyboardManager
         CheckAndApplyModifiers(key, true);
 
         IsKeyForOtherElement = forOtherElement;
+        IsDispatchingKeyDown = true;
         try
         {
             KeyDown?.Invoke(null, key);
@@ -53,8 +54,15 @@ public partial class KeyboardManager
         finally
         {
             IsKeyForOtherElement = false;
+            IsDispatchingKeyDown = false;
         }
     }
+
+    /// <summary>
+    /// True while <see cref="KeyDown"/> handlers run: what they open or close was done with the keyboard (a popup
+    /// window opened by Alt+F takes the keyboard focus, one closed by Escape gives it back).
+    /// </summary>
+    internal static bool IsDispatchingKeyDown { get; private set; }
 
     public static void KeyboardReleased(InputKey key) => KeyboardReleased(key, false);
 

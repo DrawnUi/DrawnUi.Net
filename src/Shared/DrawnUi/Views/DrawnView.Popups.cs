@@ -30,6 +30,18 @@ namespace DrawnUi.Views
             }
 
             var popup = new PopupWindow(new PopupId(++_popupNextId), content, anchor, options);
+
+            // opened from the keyboard (Enter on a focused control, Alt+F): the popup takes the keyboard focus, as
+            // native menus do, and gives it back to what opened it when it closes
+            if (!options.Passive && (KeyboardFocusNode != null || KeyboardManager.IsDispatchingKeyDown))
+            {
+                // back to the control it opens from (a menu title, a button); opened at a point (a context menu): to
+                // where the keyboard was, unless that is inside a popup closing now (Left / Right in a menu bar)
+                popup.ReturnFocus = anchor.Control
+                                    ?? (KeyboardFocusNode is SkiaControl keyboard && !_popupLayer.Contains(keyboard) ? keyboard : null);
+                AccessibilityManager.RequestFocusInside(content);
+            }
+
             _popupLayer.Open(popup);
             HookPopupKeys(true);
 
@@ -238,6 +250,9 @@ namespace DrawnUi.Views
         public PopupId Id { get; }
         public SkiaControl Root { get; }
 
+        /// <summary>Opened from the keyboard: the node that gets the keyboard focus back when it closes with the focus inside.</summary>
+        public ISkiaAccessibilityNode ReturnFocus { get; set; }
+
         /// <summary>Where its own window last showed it, canvas pixels; empty when not shown in a window.</summary>
         public SKRect ShownAt { get; set; }
         public PopupAnchor Anchor { get; }
@@ -291,8 +306,14 @@ namespace DrawnUi.Views
             _popups.Add(popup);
             AddSubView(root);
             IsVisible = true;
+            UpdateKeyboardScope();
             Invalidate();
         }
+
+        private void UpdateKeyboardScope() => _canvas.AccessibilityManager.KeyboardScope = TopInteractive;
+
+        /// <summary>The control is inside one of the open popup windows.</summary>
+        public bool Contains(SkiaControl control) => _popups.Any(p => IsInside(control, p.Root));
 
         public void Close(PopupId id)
         {
@@ -321,14 +342,41 @@ namespace DrawnUi.Views
 
         private void Remove(PopupWindow popup)
         {
+            // closed with the keyboard in it (Escape, Enter on a line) or by a key: the focus goes back to its opener
+            var manager = _canvas.AccessibilityManager;
+            var focus = _canvas.KeyboardFocusNode ?? manager.FocusedNode;
+            var hadKeyboard = popup.ReturnFocus != null
+                              && (KeyboardManager.IsDispatchingKeyDown
+                                  || focus is SkiaControl focused && IsInside(focused, popup.Root));
+
             _popups.Remove(popup);
             if (!popup.ShownAt.IsEmpty)
                 _canvas.PopupWindowHost?.HidePopup(popup.Id);
             RemoveSubView(popup.Root);
             _canvas.DisposeObject(popup.Root);
             IsVisible = _popups.Count > 0 || _swallowPress;
+            UpdateKeyboardScope();
+
+            // its nodes leave screen readers and keyboard navigation in the next frame, not at the next timed rebuild
+            manager.ForceRebuildOnNextFrame();
+            if (hadKeyboard)
+                manager.RequestFocusReturn(popup.ReturnFocus);
+            _canvas.Update();
+
             Invalidate();
             _canvas.RaisePopupWindowClosed(popup.Id);
+        }
+
+        private static bool IsInside(SkiaControl control, SkiaControl root)
+        {
+            IDrawnBase current = control;
+            while (current is SkiaControl c)
+            {
+                if (ReferenceEquals(c, root))
+                    return true;
+                current = c.Parent;
+            }
+            return false;
         }
 
         bool InOwnWindow(PopupWindow popup) => _canvas.PopupWindowHost != null && !popup.Options.OnCanvas;

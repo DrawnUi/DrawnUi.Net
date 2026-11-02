@@ -1,4 +1,5 @@
 using DrawnUi.Draw;
+using DrawnUi.Models;
 using DrawnUi.Testing;
 using DrawnUi.Views;
 using SkiaSharp;
@@ -227,6 +228,119 @@ public class PopupWindowTests
         host.Canvas.ClosePopupWindow(id);
         host.AdvanceFrames(2);
         Assert.Contains(id, windows.Hidden);
+    }
+
+    /// <summary>A menu bar title that opens a menu (a panel whose stack holds the lines, role menu), as the Hello apps.</summary>
+    static HeadlessCanvasHost MenuScene(List<string> picked, out SkiaShape title, out SkiaShape after, Func<PopupId> opened = null)
+    {
+        var host = new HeadlessCanvasHost(W, H);
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
+        SkiaShape Line(string text) => new SkiaShape
+        {
+            HeightRequest = 30,
+            HorizontalOptions = LayoutOptions.Fill,
+            AccessibilityRole = Aria.RoleMenuItem,
+            AccessibilityCanInteract = true,
+            AccessibilityLabel = text,
+        }.OnTapped(me => { picked.Add(text); me.Superview?.ClosePopupWindows(); });
+
+        SkiaShape titleView = null;
+        host.Canvas.Content = new SkiaStack
+        {
+            Spacing = 10,
+            Children = new List<SkiaControl>
+            {
+                new SkiaShape
+                {
+                    WidthRequest = 80, HeightRequest = 30, AccessibilityRole = Aria.RoleMenuItem, AccessibilityCanInteract = true, AccessibilityLabel = "File",
+                }.Assign(out titleView).OnTapped(me => me.Superview.OpenPopupWindow(new SkiaShape
+                {
+                    WidthRequest = 120,
+                    Children = new List<SkiaControl>
+                    {
+                        new SkiaStack { Spacing = 0, AccessibilityRole = Aria.RoleMenu, Children = { Line("New"), Line("Open"), Line("Save") } },
+                    },
+                }, me)),
+                new SkiaShape { WidthRequest = 80, HeightRequest = 30, AccessibilityRole = Aria.RoleButton, AccessibilityCanInteract = true, AccessibilityLabel = "After" }
+                    .Assign(out var afterView),
+            },
+        };
+        title = titleView;
+        after = afterView;
+        host.AdvanceFrames(4);
+        return host;
+    }
+
+    static void Key(HeadlessCanvasHost host, InputKey key)
+    {
+        // as OpenTK and the other heads: the canvas navigation first, then KeyboardManager
+        host.Canvas.HandleKeyboardNavigation(key, false);
+        KeyboardManager.KeyboardPressed(key);
+        KeyboardManager.KeyboardReleased(key);
+        // as an app draws: only the frames asked for (OpenTK and WPF draw on demand)
+        for (var i = 0; i < 30 && host.NeedsFrame; i++)
+            host.RenderFrame(16);
+    }
+
+    static string Focused(HeadlessCanvasHost host) => (host.Canvas.KeyboardFocusNode as SkiaControl)?.AccessibilityLabel;
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Keyboard_MenuTakesFocus_ArrowsWalkIt_TabStaysInside_EscapeGivesItBack(bool ownWindow)
+    {
+        var picked = new List<string>();
+        using var host = MenuScene(picked, out var title, out _);
+        if (ownWindow)
+            host.Canvas.PopupWindowHost = new FakeHost();
+
+        Key(host, InputKey.Tab);
+        Assert.Equal("File", Focused(host));
+
+        Key(host, InputKey.Enter); // opens the menu: its first line takes the keyboard
+        Assert.True(host.Canvas.HasPopupWindows);
+        Assert.Equal("New", Focused(host));
+
+        Key(host, InputKey.ArrowDown);
+        Assert.Equal("Open", Focused(host));
+
+        Key(host, InputKey.Tab); // the menu is one stop: Tab goes round inside it, never to "After"
+        Assert.Equal("Open", Focused(host));
+
+        Key(host, InputKey.Escape); // closes, the keyboard goes back to the title
+        Assert.False(host.Canvas.HasPopupWindows);
+        Assert.Equal("File", Focused(host));
+        Assert.DoesNotContain(host.Canvas.AccessibilityManager.Snapshot, n => n.Label is "New" or "Open" or "Save");
+        Assert.Empty(picked);
+    }
+
+    [Fact]
+    public void Keyboard_EnterOnALinePicks_FocusBackToTheTitle()
+    {
+        var picked = new List<string>();
+        using var host = MenuScene(picked, out _, out _);
+
+        Key(host, InputKey.Tab);
+        Key(host, InputKey.Enter);
+        Key(host, InputKey.ArrowDown);
+        Key(host, InputKey.ArrowDown);
+        Key(host, InputKey.Enter);
+
+        Assert.Equal(new[] { "Save" }, picked);
+        Assert.False(host.Canvas.HasPopupWindows);
+        Assert.Equal("File", Focused(host));
+    }
+
+    [Fact]
+    public void Mouse_OpenedMenu_DoesNotTakeTheKeyboard()
+    {
+        var picked = new List<string>();
+        using var host = MenuScene(picked, out var title, out _);
+        var box = title.HitBoxAuto;
+        Tap(host, box.MidX, box.MidY);
+
+        Assert.True(host.Canvas.HasPopupWindows);
+        Assert.Null(host.Canvas.KeyboardFocusNode);
     }
 
     [Fact]

@@ -78,7 +78,11 @@ public class TooltipsMenusPage : SkiaLayer
 
                         Card("Context menu and dropdown", "Right-click anywhere on the page: the menu opens where you clicked. The button opens a list below it. A click outside or Escape closes them.",
                             TextButton("Choose a fruit")
-                                .OnTapped(me => _menu = me.Superview.OpenPopupWindow(Menu("Fruits", "Apple", "Banana", "Cherry", "Grape", "Mango", "Orange", "Peach", "Pear"), me)),
+                                .OnTapped(me =>
+                                {
+                                    HookKeyboardFocus(me.Superview);
+                                    _menu = me.Superview.OpenPopupWindow(Menu("Fruits", "Apple", "Banana", "Cherry", "Grape", "Mango", "Orange", "Peach", "Pear"), me);
+                                }),
                             new SkiaLabel("Nothing picked yet") { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RoleStatus, AccessibilityLive = Aria.LivePolite }
                                 .Assign(out _picked)),
 
@@ -183,6 +187,7 @@ public class TooltipsMenusPage : SkiaLayer
         // right-click anywhere on the page
         this.OnContextMenu((me, e) =>
         {
+            HookKeyboardFocus(me.Superview);
             _menu = me.Superview.OpenPopupWindow(Menu("Edit", "Cut", "Copy", "Paste", "Select all", "Settings…"), e.Location);
             return true;
         });
@@ -195,7 +200,10 @@ public class TooltipsMenusPage : SkiaLayer
     {
         KeyboardManager.KeyDown -= OnKeyDown;
         if (Superview != null)
+        {
             Superview.PopupWindowClosed -= OnPopupWindowClosed;
+            Superview.AccessibilityManager.FocusChanged -= OnKeyboardFocus;
+        }
         base.OnDisposing();
     }
 
@@ -294,6 +302,7 @@ public class TooltipsMenusPage : SkiaLayer
         // a menu closed from outside (a click elsewhere, the wheel, the window losing focus) unselects its title
         canvas.PopupWindowClosed -= OnPopupWindowClosed;
         canvas.PopupWindowClosed += OnPopupWindowClosed;
+        HookKeyboardFocus(canvas);
 
         canvas.ClosePopupWindow(_barPopup);
         _items.Clear();
@@ -308,13 +317,13 @@ public class TooltipsMenusPage : SkiaLayer
             StrokeWidth = 1.5,
             WidthRequest = 240,
             Padding = new Thickness(4),
-            AccessibilityRole = Aria.RoleMenu,
-            AccessibilityLabel = menu.Title,
             Children = new List<SkiaControl>
             {
                 new SkiaStack
                 {
                     Spacing = 0,
+                    AccessibilityRole = Aria.RoleMenu,
+                    AccessibilityLabel = menu.Title,
                     Children = menu.Entries.Select(entry => entry.Text == null
                         ? new SkiaShape { HeightRequest = 1, HorizontalOptions = LayoutOptions.Fill, BackgroundColor = Color.Parse("#3B4256"), Margin = new Thickness(8, 4) }
                         : (SkiaControl)BarItem(entry)).ToList(),
@@ -356,6 +365,32 @@ public class TooltipsMenusPage : SkiaLayer
 
         _items.Add((view, entry));
         return view;
+    }
+
+    private SkiaControl _focusLine;
+
+    private void HookKeyboardFocus(DrawnView canvas)
+    {
+        canvas.AccessibilityManager.FocusChanged -= OnKeyboardFocus;
+        canvas.AccessibilityManager.FocusChanged += OnKeyboardFocus;
+    }
+
+    /// <summary>The line of an open menu that has the keyboard focus is highlighted, as the line under the mouse.</summary>
+    private void OnKeyboardFocus(ISkiaAccessibilityNode node)
+    {
+        var index = _items.FindIndex(i => ReferenceEquals(i.View, node));
+        if (index >= 0)
+        {
+            _highlighted = index;
+            PaintItems();
+            return;
+        }
+
+        if (_focusLine != null && !ReferenceEquals(_focusLine, node))
+            _focusLine.BackgroundColor = Colors.Transparent;
+        _focusLine = node is SkiaControl { AccessibilityRole: "menuitem", Parent: SkiaControl { AccessibilityRole: "menu" } } line ? line : null;
+        if (_focusLine != null)
+            _focusLine.BackgroundColor = Color.Parse("#343B52");
     }
 
     private void PaintItems()
@@ -416,6 +451,13 @@ public class TooltipsMenusPage : SkiaLayer
             return;
         }
 
+        // the keyboard focus is on a line of the open menu (opened from the keyboard): Up, Down, Enter and Space move
+        // and pick through it, the highlight follows it (OnKeyboardFocus)
+        var focusInMenu = Superview.AccessibilityManager.FocusedNode is SkiaControl focused
+                          && _items.Any(i => ReferenceEquals(i.View, focused));
+        if (focusInMenu && key is InputKey.ArrowDown or InputKey.ArrowUp or InputKey.Enter or InputKey.Space)
+            return;
+
         switch (key)
         {
             case InputKey.ArrowLeft:
@@ -454,13 +496,13 @@ public class TooltipsMenusPage : SkiaLayer
         StrokeWidth = 1.5,
         WidthRequest = 200,
         Padding = new Thickness(4),
-        AccessibilityRole = Aria.RoleMenu,
-        AccessibilityLabel = name,
         Children = new List<SkiaControl>
         {
             new SkiaStack
             {
                 Spacing = 0,
+                AccessibilityRole = Aria.RoleMenu,
+                AccessibilityLabel = name,
                 Children = items.Select(text => (SkiaControl)new SkiaShape
                 {
                     CornerRadius = 6,

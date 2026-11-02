@@ -145,6 +145,7 @@ internal static class UiaPropertyId
     public const int ControlType          = 30003;
     public const int LocalizedControlType = 30004;
     public const int Name                 = 30005;
+    public const int HasKeyboardFocus     = 30008;
     public const int IsKeyboardFocusable  = 30009;
     public const int IsEnabled            = 30010;
     public const int HelpText             = 30013;
