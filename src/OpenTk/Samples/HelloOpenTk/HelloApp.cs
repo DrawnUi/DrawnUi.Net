@@ -39,6 +39,7 @@ public static class HelloApp
             ["snapping"] = _ => new SnappingPage(),
             ["animations"] = _ => new AnimationsPage(),
             ["shell"] = _ => new ShellPage(shell),
+            ["menus"] = _ => new TooltipsMenusPage(),
             ["editor"] = _ => new EditorPage(),
             ["keyboard"] = _ => new KeyboardPage(),
             ["scroll"] = _ => new ScrollPage(),
