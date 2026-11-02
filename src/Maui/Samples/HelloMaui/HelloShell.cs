@@ -204,6 +204,7 @@ public class PageHost<T> : SkiaLayer where T : SkiaControl, new()
                 {
                     new SkiaButton("‹  Back")
                     {
+                        AccessibilityLabel = "Back",
                         BackgroundColor = Colors.Transparent,
                         TextColor = Color.Parse("#6EA8FE"),
                         FontSize = 16,

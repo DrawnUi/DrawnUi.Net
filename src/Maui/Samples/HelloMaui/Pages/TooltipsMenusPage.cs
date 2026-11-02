@@ -533,6 +533,7 @@ public class TooltipsMenusPage : SkiaLayer
         AnimationTapped = SkiaTouchAnimation.Ripple,
         AccessibilityRole = Aria.RoleButton,
         AccessibilityCanInteract = true,
+        AccessibilityLabel = text,
         Children = new List<SkiaControl>
         {
             new SkiaLabel(text) { FontSize = 14, TextColor = Colors.White },
