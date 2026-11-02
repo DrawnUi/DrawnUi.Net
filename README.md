@@ -16,6 +16,7 @@ Supported hosts:
 * `DrawnUi.Blazor.Server` - server-backed DrawnUI surfaces served by Blazor Server.
 * `DrawnUi.Web` - pure browser WebAssembly, no Blazor required.
 * `DrawnUi.OpenTk` - Windows and Linux desktops.
+* `DrawnUi.Slint` - drawn controls inside the windows of a [Slint for .NET](https://github.com/yurkinh/slint/tree/dotnet_bindings/api/dotnet) app, on desktops, Android and iOS.
 * `DrawnUi.Wpf` - drawn controls inside WPF windows.
 * `DrawnUi.Net` - platform-agnostic console/server rendering scenarios.
 
@@ -54,7 +55,7 @@ Please star ⭐ if you like it!
 
 ## Addons
 
-* Create games: `DrawnUi.Maui.Game`, `DrawnUi.Blazor.Game`, `DrawnUi.Web.Game`, `DrawnUi.OpenTk.Game`, `DrawnUi.Wpf.Game`.
+* Create games: `DrawnUi.Maui.Game`, `DrawnUi.Blazor.Game`, `DrawnUi.Web.Game`, `DrawnUi.OpenTk.Game`, `DrawnUi.Slint.Game`, `DrawnUi.Wpf.Game`.
 * .NET MAUI only: `DrawnUi.MauiGraphics`
 * .NET MAUI only: `DrawnUi.Maui.MapsUi`
 * .NET MAUI only: `DrawnUi.Maui.Camera` - [Separate repo](https://github.com/taublast/DrawnUi.Maui.Camera).

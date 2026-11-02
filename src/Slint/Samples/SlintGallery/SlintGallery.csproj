@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- As in HelloOpenTk, whose pages this sample compiles. -->
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SlintFile Include="ui/main.slint" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../DrawnUi/DrawnUi.Slint.csproj" />
+    <!-- Slint's build files, which generate the classes, reach only direct references. -->
+    <PackageReference Include="yurkinh.slint.net" Version="1.19.0-preview.10" />
+  </ItemGroup>
+
+  <!--
+    The OpenTK Hello app's pages, unchanged, and its assets, which it links from HelloWpf.
+    Not its Pong page, which follows the OpenTK window; SlintPong hosts the game instead.
+  -->
+  <PropertyGroup>
+    <HelloOpenTk>../../../OpenTk/Samples/HelloOpenTk/</HelloOpenTk>
+    <HelloAssets>../../../Wpf/Samples/HelloWpf/</HelloAssets>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(HelloOpenTk)Pages/*.cs" Exclude="$(HelloOpenTk)Pages/PongPage.cs" Link="Pages/%(Filename)%(Extension)" />
+    <Compile Include="$(HelloOpenTk)UiTimer.cs" Link="UiTimer.cs" />
+    <Content Include="$(HelloAssets)fonts/**/*.*" Link="fonts/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="$(HelloAssets)images/**/*.*" Link="images/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="$(HelloAssets)shaders/**/*.*" Link="shaders/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="$(HelloAssets)anims/**/*.*" Link="anims/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="$(HelloAssets)lottie/**/*.*" Link="lottie/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- What a package reference to DrawnUi.Slint imports by itself: drawnui.slint for the app's imports. -->
+  <Import Project="../../DrawnUi/buildTransitive/DrawnUi.Slint.props" />
+  <Import Project="../../DrawnUi/buildTransitive/DrawnUi.Slint.targets" />
+
+</Project>

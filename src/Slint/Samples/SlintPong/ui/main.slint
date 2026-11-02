@@ -1,0 +1,18 @@
+import { DrawnUiView } from "drawnui.slint";
+export { DrawnUiHost } from "drawnui.slint";
+
+// The whole window is the game; it has the keyboard from the start.
+export component MainWindow inherits Window {
+    title: "Pong – DrawnUI on Slint";
+    // The game field, 360 by 640, at 1.33, as in the OpenTK sample.
+    preferred-width: 480px;
+    preferred-height: 852px;
+    background: #0A0F1E;
+    forward-focus: game;
+
+    game := DrawnUiView {
+        view-id: 0;
+        width: parent.width;
+        height: parent.height;
+    }
+}

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!--using Directory.Build.props-->
+    <PropertyGroup>
+        <Title>Game creation addon to DrawnUI for Slint</Title>
+        <PackageId>DrawnUi.Slint.Game</PackageId>
+        <Description>Base class for implementing a game with SkiaSharp in the windows of a Slint for .NET app</Description>
+        <PackageTags>slint drawnui skia skiasharp draw game desktop mobile</PackageTags>
+        <Packable>true</Packable>
+        <CreatePackage>false</CreatePackage>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);SLINT</DefineConstants>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <WarningsAsErrors>$(WarningsAsErrors);CS0108</WarningsAsErrors>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\DrawnUi\DrawnUi.Slint.csproj" />
+    </ItemGroup>
+    <Import Project="..\..\..\SharedGame\SharedGame.projitems" Label="Shared" />
+</Project>

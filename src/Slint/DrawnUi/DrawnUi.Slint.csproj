@@ -28,8 +28,9 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <!-- The component that apps import, see SlintCanvasHost. -->
-    <None Include="drawnui.slint" Pack="true" PackagePath="slint\" />
+    <!-- The component that apps import, and the build file that lets them, see SlintCanvasHost. -->
+    <None Include="slint/drawnui.slint" Pack="true" PackagePath="slint/" />
+    <None Include="buildTransitive/DrawnUi.Slint.props;buildTransitive/DrawnUi.Slint.targets" Pack="true" PackagePath="buildTransitive/" />
   </ItemGroup>
 
   <ItemGroup>

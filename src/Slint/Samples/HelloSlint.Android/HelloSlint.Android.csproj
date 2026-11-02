@@ -13,12 +13,10 @@
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <!-- The ABIs that Slint has libraries for: devices, and emulators on x86_64. -->
     <RuntimeIdentifiers>android-arm64;android-x64</RuntimeIdentifiers>
-    <SlintIncludePaths>$(MSBuildThisFileDirectory)../../DrawnUi</SlintIncludePaths>
   </PropertyGroup>
 
   <ItemGroup>
     <SlintFile Include="../HelloSlint/ui/main.slint" />
-    <SlintFile Include="../../DrawnUi/drawnui.slint" Generate="false" />
     <Compile Include="../HelloSlint/CardsScene.cs" />
     <Compile Include="../HelloSlint/KeysScene.cs" />
     <Compile Include="../HelloSlint/SelfTest.cs" />
@@ -28,5 +26,9 @@
     <ProjectReference Include="../../DrawnUi/DrawnUi.Slint.csproj" />
     <PackageReference Include="yurkinh.slint.net" Version="1.19.0-preview.10" />
   </ItemGroup>
+
+  <!-- What a package reference to DrawnUi.Slint imports by itself: drawnui.slint for the app's imports. -->
+  <Import Project="../../DrawnUi/buildTransitive/DrawnUi.Slint.props" />
+  <Import Project="../../DrawnUi/buildTransitive/DrawnUi.Slint.targets" />
 
 </Project>

@@ -25,16 +25,17 @@ namespace DrawnUi.Slint;
 public sealed class SlintCanvasHost : IDisposable
 {
     /// <summary>
-    /// Attaches a new canvas to the <c>DrawnUiView</c> with <paramref name="viewId"/> in <paramref name="component"/>,
+    /// Attaches a canvas to the <c>DrawnUiView</c> with <paramref name="viewId"/> in <paramref name="component"/>,
     /// whose main file exports <c>DrawnUiHost</c>.
+    /// Pass <paramref name="canvas"/> for a canvas of your own, such as a subclass; otherwise the host creates one.
     /// </summary>
-    public static SlintCanvasHost Attach(SlintComponent component, int viewId = 0)
+    public static SlintCanvasHost Attach(SlintComponent component, int viewId = 0, Canvas? canvas = null)
     {
         ArgumentNullException.ThrowIfNull(component);
         ArgumentOutOfRangeException.ThrowIfNegative(viewId);
         EnsureInitialized();
         var views = Views.GetValue(component, c => new ComponentViews(c));
-        var host = new SlintCanvasHost(component, viewId, views);
+        var host = new SlintCanvasHost(component, viewId, views, canvas ?? new Canvas());
         views.Add(host);
         return host;
     }
@@ -76,12 +77,12 @@ public sealed class SlintCanvasHost : IDisposable
     private (float X, float Y) _lastPointer = (float.NaN, float.NaN);
     private SlintImage? _frame;
 
-    private SlintCanvasHost(SlintComponent component, int viewId, ComponentViews views)
+    private SlintCanvasHost(SlintComponent component, int viewId, ComponentViews views, Canvas canvas)
     {
         _component = component;
         _views = views;
         ViewId = viewId;
-        Canvas = new Canvas();
+        Canvas = canvas;
         Canvas.ConnectDesktopDrawable(_drawable);
         var refreshRate = Super.RefreshRate > 0 ? Super.RefreshRate : 60;
         // Animators and Update() mark the canvas dirty; it draws then, at most once a display frame.

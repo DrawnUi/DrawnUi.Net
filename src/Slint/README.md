@@ -3,8 +3,21 @@
 `DrawnUi.Slint` hosts DrawnUI canvases in the windows of a [Slint for .NET](https://github.com/yurkinh/slint/tree/dotnet_bindings/api/dotnet) app.
 A Slint UI and DrawnUI controls share a window: a `DrawnUiView` element shows a canvas, and passes its size, mouse, wheel, and keyboard input to it.
 
+![The gallery: a Slint sidebar, and DrawnUI's shader page](screenshots/gallery.jpg)
+
 ## Use It
 
+Reference the package, and Slint for .NET, whose build files generate the classes of the app's `.slint` files:
+
+```xml
+<ItemGroup>
+  <PackageReference Include="DrawnUi.Slint" Version="..." />
+  <PackageReference Include="yurkinh.slint.net" Version="1.19.0-preview.10" />
+  <SlintFile Include="ui/main.slint" />
+</ItemGroup>
+```
+
+The package brings `drawnui.slint`: the app's `.slint` files import it by name, and the build copies it to the output.
 Import the view, and export its `DrawnUiHost` global from the main `.slint` file:
 
 ```slint
@@ -28,17 +41,11 @@ host.Canvas.Content = new SkiaStack
 window.Run();
 ```
 
-The app's project compiles `drawnui.slint` with its own files:
-
-```xml
-<SlintIncludePaths>path/to/src/Slint/DrawnUi</SlintIncludePaths>
-<ItemGroup>
-  <SlintFile Include="ui/main.slint" />
-  <SlintFile Include="path/to/src/Slint/DrawnUi/drawnui.slint" Generate="false" />
-</ItemGroup>
-```
-
+Pass a canvas of your own to `Attach`, such as Pong's `RescalingCanvas`, to use a `Canvas` subclass.
 Register fonts and styles with `Super.UseDrawnUi()`, as on the other .NET heads.
+
+The samples in this repository reference the library's project instead,
+and import `DrawnUi/buildTransitive/DrawnUi.Slint.props` and `.targets`, which a package reference imports by itself.
 
 ## How It Works
 
@@ -71,19 +78,34 @@ or in the `Main` that calls `Run` on iOS.
 - The mouse: every button, with the right button's release as the context-menu request, hover, and leaving the view.
 - Touch: a finger's taps and drags, such as to scroll a list.
 - The wheel, at 120 units a notch, horizontal on a touchpad's dominant axis.
-- The keyboard: text and the editor keys for a focused `SkiaEditor`, and `OnKeyDown` / `OnKeyUp` events, once a click or tap gave the view focus.
+- The keyboard: text and the editor keys for a focused `SkiaEditor`, `OnKeyDown` / `OnKeyUp` events, and `KeyboardManager`, while the view has the focus:
+  after a click or tap, `view.focus()` in Slint, or a window's `forward-focus: view` from the start.
 - An input method, such as a phone's on-screen keyboard, writes into a hidden Slint `TextInput` that takes the focus while a DrawnUI editor has it;
   key presses still go to DrawnUI first.
   On Android, the keyboard opens for the editor; its text reaching the editor is still to be checked by hand.
 
 `SlintCanvasHost.SaveWindow` saves the whole window, as Slint renders it, from the OpenGL framebuffer, for tests.
 
-## Sample
+## Samples
 
-`Samples/HelloSlint` shows two views next to a Slint header: a button whose taps reach the Slint UI, an editor, cards that light up on hover, and a ball that the arrow keys move.
+Run them from the repository's root.
+
+- `Samples/HelloSlint`: two views next to a Slint header: a button whose taps reach the Slint UI, an editor, cards that light up on hover, and a ball that the arrow keys move.
+  `HelloSlint.Android` and `HelloSlint.iOS` run the same scenes and `.slint` file on phones.
+- `Samples/SlintGallery`: a Slint sidebar that opens the pages of the OpenTK Hello app, compiled unchanged:
+  recycled cells, Lottie, shaders, the editor, the shell, and more.
+- `Samples/SlintPong`: the shared Pong game in a whole window, with the keyboard from the start.
 
 ```
-dotnet run --project src/Slint/Samples/HelloSlint
+dotnet run --project src/Slint/Samples/SlintGallery
 ```
 
-`DRAWNUI_GPU=1` selects an OpenGL renderer, for the GPU path. `DRAWNUI_SELFTEST=<directory>` runs it as a test: it sends window events, as a user's mouse and keyboard would, saves frames as PNG files, and quits.
+`DRAWNUI_GPU=1` selects Slint's FemtoVG renderer on OpenGL, for the GPU path.
+`DRAWNUI_SELFTEST=<directory>` runs a sample as a test: it sends window events, as a user's mouse and keyboard would, saves frames as PNG files, and quits.
+
+## Games
+
+`DrawnUi.Slint.Game` brings `DrawnGame`, the game base of the other heads, with its loop and keyboard input.
+A game can fill the window, or share it with a Slint UI.
+
+<img src="screenshots/pong.jpg" alt="Pong in a Slint window" width="240" />

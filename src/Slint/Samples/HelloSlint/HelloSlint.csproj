@@ -5,13 +5,10 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <!-- drawnui.slint, for imports, at compile time; at run time the files sit next to each other in the output. -->
-    <SlintIncludePaths>$(MSBuildThisFileDirectory)../../DrawnUi</SlintIncludePaths>
   </PropertyGroup>
 
   <ItemGroup>
     <SlintFile Include="ui/main.slint" />
-    <SlintFile Include="../../DrawnUi/drawnui.slint" Generate="false" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,5 +16,9 @@
     <!-- Slint's build files, which generate the classes, reach only direct references. -->
     <PackageReference Include="yurkinh.slint.net" Version="1.19.0-preview.10" />
   </ItemGroup>
+
+  <!-- What a package reference to DrawnUi.Slint imports by itself: drawnui.slint for the app's imports. -->
+  <Import Project="../../DrawnUi/buildTransitive/DrawnUi.Slint.props" />
+  <Import Project="../../DrawnUi/buildTransitive/DrawnUi.Slint.targets" />
 
 </Project>

@@ -1,0 +1,11 @@
+<Project>
+
+  <!--
+    Copies drawnui.slint to the output, where the generated code loads it at run time.
+    A .props file, since Slint's build files turn SlintFile items into copies while they're evaluated, after this file and before DrawnUi.Slint.targets.
+  -->
+  <ItemGroup>
+    <SlintFile Include="$(MSBuildThisFileDirectory)../slint/drawnui.slint" Generate="false" />
+  </ItemGroup>
+
+</Project>

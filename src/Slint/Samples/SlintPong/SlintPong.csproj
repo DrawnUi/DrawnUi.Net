@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SlintFile Include="ui/main.slint" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../Addons/DrawnUi.Slint.Game/DrawnUi.Slint.Game.csproj" />
+    <!-- Slint's build files, which generate the classes, reach only direct references. -->
+    <PackageReference Include="yurkinh.slint.net" Version="1.19.0-preview.10" />
+  </ItemGroup>
+
+  <!-- The shared game, the same code as every Pong sample, with the OpenTK sample's fonts and background. -->
+  <Import Project="../../../Shared/Samples/Pong.Shared/Pong.Shared.projitems" Label="Shared" />
+  <PropertyGroup>
+    <PongAssets>../../../OpenTk/Samples/OpenTkPong/</PongAssets>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="$(PongAssets)fonts/Orbitron-*.ttf;$(PongAssets)fonts/NotoColorEmoji-Regular.ttf" Link="fonts/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="$(PongAssets)Images/**" Link="Images/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- What a package reference to DrawnUi.Slint imports by itself: drawnui.slint for the app's imports. -->
+  <Import Project="../../DrawnUi/buildTransitive/DrawnUi.Slint.props" />
+  <Import Project="../../DrawnUi/buildTransitive/DrawnUi.Slint.targets" />
+
+</Project>

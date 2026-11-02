@@ -11,6 +11,7 @@
     <Project Path="Maui/Addons/DrawnUi.MauiGraphics/DrawnUi.MauiGraphics.csproj" />
     <Project Path="OpenTk/Addons/DrawnUi.OpenTk.Game/DrawnUi.OpenTk.Game.csproj" />
     <Project Path="SharedGame/SharedGame.shproj" />
+    <Project Path="Slint/Addons/DrawnUi.Slint.Game/DrawnUi.Slint.Game.csproj" />
     <Project Path="Wasm/Addons/DrawnUi.Wasm.Game/DrawnUi.Wasm.Game.csproj" />
   </Folder>
   <Folder Name="/Lib/" />
@@ -74,6 +75,8 @@
   </Folder>
   <Folder Name="/Samples/Slint/">
     <Project Path="Slint/Samples/HelloSlint/HelloSlint.csproj" />
+    <Project Path="Slint/Samples/SlintGallery/SlintGallery.csproj" />
+    <Project Path="Slint/Samples/SlintPong/SlintPong.csproj" />
   </Folder>
   <Folder Name="/Samples/Shared/">
     <Project Path="Shared/Samples/Pong.Shared/Pong.Shared.shproj" />

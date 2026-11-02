@@ -22,6 +22,8 @@ export global DrawnUiHost {
 
 export component DrawnUiView inherits Rectangle {
     in property <int> view-id;
+    // Keys reach DrawnUI while the view has the focus: after a click, or `view.focus()`, or a window's `forward-focus: view`.
+    forward-focus: focus;
     // Takes the room that a layout has, like a canvas does.
     horizontal-stretch: 1;
     vertical-stretch: 1;

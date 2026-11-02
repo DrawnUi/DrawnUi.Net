@@ -1,0 +1,12 @@
+<Project>
+
+  <!--
+    Makes drawnui.slint importable from the app's .slint files, as `import { DrawnUiView } from "drawnui.slint";`.
+    A .targets file, so it adds to the app's own SlintIncludePaths.
+    NuGet imports this file and DrawnUi.Slint.props into every project that references DrawnUi.Slint; the samples in this repository import them by path.
+  -->
+  <PropertyGroup>
+    <SlintIncludePaths>$(SlintIncludePaths);$(MSBuildThisFileDirectory)../slint</SlintIncludePaths>
+  </PropertyGroup>
+
+</Project>

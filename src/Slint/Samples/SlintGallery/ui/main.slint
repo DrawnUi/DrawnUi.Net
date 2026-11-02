@@ -1,0 +1,87 @@
+import { ListView } from "std-widgets.slint";
+import { DrawnUiView } from "drawnui.slint";
+export { DrawnUiHost } from "drawnui.slint";
+
+export struct Sample {
+    title: string,
+    text: string,
+}
+
+// A Slint sidebar picks the page that the DrawnUI view shows.
+export component MainWindow inherits Window {
+    title: "DrawnUI Gallery on Slint";
+    preferred-width: 1200px;
+    preferred-height: 800px;
+    background: #212529;
+
+    in property <[Sample]> samples;
+    in-out property <int> current: -1;
+    callback select(index: int);
+    // Where the view and the sidebar's first row are in the window, for the self-test, which sends window events.
+    out property <length> view-x: view.absolute-position.x;
+    out property <length> view-y: view.absolute-position.y;
+    out property <length> list-x: list.absolute-position.x;
+    out property <length> list-y: list.absolute-position.y;
+    out property <length> list-scroll: list.viewport-y;
+    out property <length> list-height: list.visible-height;
+    out property <length> row-height: 58px;
+
+    HorizontalLayout {
+        padding-top: root.safe-area-insets.top;
+        padding-bottom: root.safe-area-insets.bottom;
+        padding-left: root.safe-area-insets.left;
+        padding-right: root.safe-area-insets.right;
+
+        Rectangle {
+            width: 300px;
+            background: #16191d;
+            VerticalLayout {
+                padding: 12px;
+                spacing: 6px;
+                Text {
+                    text: "DrawnUI Gallery";
+                    font-size: 20px;
+                    font-weight: 700;
+                    color: white;
+                }
+                Text {
+                    text: "Slint on the left, DrawnUI on the right.";
+                    font-size: 12px;
+                    color: #9aa4b2;
+                }
+                list := ListView {
+                    for sample[index] in root.samples: Rectangle {
+                        height: root.row-height;
+                        border-radius: 6px;
+                        background: index == root.current ? #2b3a55 : touch.has-hover ? #22272e : transparent;
+                        VerticalLayout {
+                            padding: 8px;
+                            spacing: 2px;
+                            Text {
+                                text: sample.title;
+                                color: white;
+                                font-weight: 600;
+                            }
+                            Text {
+                                text: sample.text;
+                                color: #9aa4b2;
+                                font-size: 11px;
+                                overflow: elide;
+                            }
+                        }
+                        touch := TouchArea {
+                            clicked => {
+                                root.current = index;
+                                root.select(index);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        view := DrawnUiView {
+            view-id: 0;
+        }
+    }
+}
