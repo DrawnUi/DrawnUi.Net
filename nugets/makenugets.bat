@@ -10,6 +10,7 @@ dotnet pack  ..\src\Blazor\DrawnUi.Wasm\DrawnUi.Blazor.Wasm.csproj -c Release
 dotnet pack  ..\src\Wasm\DrawnUi\DrawnUi.Wasm.csproj -c Release
 dotnet pack  ..\src\Wpf\Drawnui.Wpf\DrawnUi.Wpf.csproj -c Release
 
+dotnet pack  ..\src\Net\Addons\DrawnUi.Net.Game\DrawnUi.Net.Game.csproj -c Release
 dotnet pack  ..\src\Blazor\Addons\DrawnUi.Blazor.Game\DrawnUi.Blazor.Game.csproj -c Release
 dotnet pack ..\src\OpenTk\Addons\DrawnUi.OpenTk.Game\DrawnUi.OpenTk.Game.csproj -c Release
 dotnet pack ..\src\Maui\Addons\DrawnUi.Maui.Game\DrawnUi.Maui.Game.csproj -c Release
