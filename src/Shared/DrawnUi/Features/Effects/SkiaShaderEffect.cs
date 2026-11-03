@@ -359,7 +359,7 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
                 {
                     _frozenSnapshotOwned = false;
 
-                    var snapshot = ParentCache(destination);
+                    var snapshot = Parent?.CachedImage ?? CachedTexture.None;
                     if (!snapshot.IsValid && AutoCreateInputTexture)
                     {
                         // a snapshot we take ourselves spans exactly the destination
@@ -375,34 +375,18 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
                 // moved since the capture, the frozen pixels must still land on the control, so
                 // the bounds follow the destination. A frozen PARENT CACHE keeps its own bounds.
                 if (Parent != null && ReferenceEquals(_frozenSnapshot.Image, Parent.CachedImage.Image))
-                    return new CachedTexture(_frozenSnapshot.Image, ParentCache(destination).Bounds);
+                    return _frozenSnapshot;
 
                 return new CachedTexture(_frozenSnapshot.Image, destination);
 
             default: // Always
-                var cached = ParentCache(destination);
+                var cached = Parent?.CachedImage ?? CachedTexture.None;
                 if (!cached.IsValid && AutoCreateInputTexture)
                 {
                     return new CachedTexture(CreateSnapshot(ctx, destination), destination);
                 }
                 return cached;
         }
-    }
-
-    /// <summary>
-    /// The parent's cache as the input texture, placed where it is drawn now. A cache keeps the bounds it was recorded at;
-    /// drawn again after its control moved (scrolled with its page), it lands at the control's current destination, and
-    /// the shader must sample it there, or its coordinates fall off the texture.
-    /// </summary>
-    protected CachedTexture ParentCache(SKRect destination)
-    {
-        var cached = Parent?.CachedImage ?? CachedTexture.None;
-        if (!cached.IsValid || Parent.RenderObject is not { } cache)
-            return cached;
-
-        var left = destination.Left + cache.Bounds.Left - cache.RecordingArea.Left;
-        var top = destination.Top + cache.Bounds.Top - cache.RecordingArea.Top;
-        return new CachedTexture(cached.Image, SKRect.Create(left, top, cache.Bounds.Width, cache.Bounds.Height));
     }
 
     // ─── Rendering ──────────────────────────────────────────────────────────
