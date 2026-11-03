@@ -101,6 +101,28 @@ public class AccessibilityModalTests
     }
 
     [Fact]
+    public async Task ShellPopup_KeepsReadersAndTabInside()
+    {
+        using var host = new HeadlessCanvasHost(400, 400);
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
+        var shell = new SkiaShell
+        {
+            RootContent = new SkiaStack { Spacing = 4, Children = { Button("Play"), Button("Settings") } },
+        };
+        host.Canvas.Content = shell;
+        host.AdvanceFrames(4);
+        Assert.Equal(new[] { "Play", "Settings" }, Labels(host));
+
+        var opening = shell.OpenPopupAsync(new SkiaStack { WidthRequest = 200, Children = { Button("Sound"), Button("Close") } }, animated: false);
+        for (var i = 0; i < 60 && !opening.IsCompleted; i++)
+            host.AdvanceFrames(1);
+        await opening;
+        host.AdvanceFrames(4);
+
+        Assert.Equal(new[] { "Sound", "Close" }, Labels(host));
+    }
+
+    [Fact]
     public void TwoModals_TheTopWins_ClosingItHandsOver()
     {
         using var host = Scene(out var page);

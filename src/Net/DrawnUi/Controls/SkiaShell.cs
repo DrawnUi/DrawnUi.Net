@@ -934,6 +934,7 @@ public class SkiaShell : SkiaLayer
             VerticalOptions = LayoutOptions.Fill,
             ZIndex = ZIndexPopups + _nextId++,
             BlockGesturesBelow = true,
+            AccessibilityModal = true, // screen readers and Tab stay in the popup while it is open
             Opacity = animated ? 0.1 : 1,
             Children = children,
         };
@@ -1065,6 +1066,7 @@ public class SkiaShell : SkiaLayer
             VerticalOptions = LayoutOptions.Fill,
             ZIndex = ZIndexModals + _nextId++,
             BlockGesturesBelow = true,
+            AccessibilityModal = true, // screen readers and Tab stay in the modal while it is open
             Children = children,
         };
         entry.Layer = layer;

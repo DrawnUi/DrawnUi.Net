@@ -21,6 +21,7 @@ public partial class SkiaShell
             if (backgroundColor == null)
                 backgroundColor = PopupBackgroundColor;
             _color = backgroundColor;
+            AccessibilityModal = true; // screen readers and Tab stay in the popup while it is open
         }
 
         protected override void SetContent(SkiaControl view)

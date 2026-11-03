@@ -5280,7 +5280,7 @@ namespace DrawnUi.Draw
         protected virtual string? DefaultAccessibilityLabel() => null;
 
         /// <summary>Interaction default when <see cref="AccessibilityCanInteract"/> is not set: has a Tapped handler.</summary>
-        protected virtual bool DefaultAccessibilityCanInteract() => Tapped != null;
+        protected virtual bool DefaultAccessibilityCanInteract() => Tapped != null && !_accessibilityModal; // a modal's own tap (outside closes) is no keyboard stop
 
         /// <summary>Toggle state default when <see cref="AccessibilityIsPressed"/> is not set (toggles report IsToggled).</summary>
         protected virtual bool? DefaultAccessibilityIsPressed() => null;
