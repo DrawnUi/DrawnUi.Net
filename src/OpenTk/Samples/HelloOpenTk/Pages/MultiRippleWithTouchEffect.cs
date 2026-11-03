@@ -79,7 +79,9 @@ public class MultiRippleWithTouchEffect : ShaderDoubleTexturesEffect, IStateEffe
         if (args.Type != TouchActionResult.Down || !LayoutReady)
             return null;
 
-        var ripple = new Ripple { Uid = Guid.NewGuid(), Origin = args.Event.Location, Time = Super.GetCurrentTimeNanos() };
+        // the shader takes the origin in pixels inside the image: the tap's mapped location (scroll and caches folded in)
+        var inside = Parent.GetOffsetInsideControlInPixels(new System.Drawing.PointF(apply.MappedLocation.X, apply.MappedLocation.Y), apply.ChildOffset);
+        var ripple = new Ripple { Uid = Guid.NewGuid(), Origin = new System.Drawing.PointF(inside.X, inside.Y), Time = Super.GetCurrentTimeNanos() };
         Ripples[ripple.Uid] = ripple;
 
         Task.Run(async () =>
