@@ -274,10 +274,23 @@ public class SkiaCarousel : SnappingLayout
         {
             if (SelectedIndex >= 0 && SelectedIndex < SnapPoints.Count)
             {
-                var snap = GetVirtualAnchor(CurrentPosition, Vector2.Zero);
-                var offset = CurrentPosition - snap.Location;
-
                 var snapPoint = SnapPoints[SelectedIndex];
+
+                // the offset is measured from the anchor that stands for the selected slide where the position is now:
+                // the slide itself or its virtual copy past an edge. Measured from the nearest anchor of another slide
+                // it moved a wrap in progress (last slide 3% toward the first) onto another pair (first toward second).
+                var last = SnapPoints.Count - 1;
+                var anchor = snapPoint;
+                foreach (var candidate in GetVirtualSnapPoints())
+                {
+                    var standsFor = candidate.Id == SelectedIndex
+                                    || candidate.Id == -1 && SelectedIndex == last
+                                    || candidate.Id == -2 && SelectedIndex == 0;
+                    if (standsFor && Vector2.Distance(candidate.Location, CurrentPosition) < Vector2.Distance(anchor, CurrentPosition))
+                        anchor = candidate.Location;
+                }
+
+                var offset = CurrentPosition - anchor;
 
                 CurrentSnap = snapPoint;
                 CurrentPosition = snapPoint + offset;

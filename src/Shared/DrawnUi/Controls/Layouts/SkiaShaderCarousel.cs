@@ -430,6 +430,15 @@ public class SkiaShaderCarousel : SkiaCarousel
 
         _wasInTransitionAtDown = false;
 
+        // a swipe back against the interrupted transition goes straight to its slide: wrapping that transition up
+        // first ran it on to its end and then back, a visible jump forward and back
+        var heading = IsVertical ? _gestureOrigin.Y - _gestureFrom.Y : _gestureOrigin.X - _gestureFrom.X;
+        var turn = IsVertical ? targetOffset.Y - _gestureOrigin.Y : targetOffset.X - _gestureOrigin.X;
+        if (heading != 0 && turn != 0 && Math.Sign(heading) != Math.Sign(turn))
+        {
+            return base.ScrollToOffset(targetOffset, velocity, animate);
+        }
+
         // the pan may have already carried the position PAST the interrupted transition's destination
         // toward the new target: wrapping it up would animate BACKWARD first (visible jump-back).
         // Only run phase 1 while that destination is still ahead in the direction of travel.
