@@ -436,7 +436,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, Microsoft.U
         "listitem"         => AutomationControlType.ListItem,
         "progressbar"      => AutomationControlType.ProgressBar,
         "tooltip"          => AutomationControlType.ToolTip,
-        "group"            => AutomationControlType.Group,
+        "group" or "radiogroup" => AutomationControlType.Group,
         "dialog"           => AutomationControlType.Pane,
         "alertdialog"      => AutomationControlType.Pane,
         "status"           => AutomationControlType.StatusBar,

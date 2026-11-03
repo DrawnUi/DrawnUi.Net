@@ -370,7 +370,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
         "img" => AutomationControlType.Image,
         "progressbar" => AutomationControlType.ProgressBar,
         "tooltip" => AutomationControlType.ToolTip,
-        "group" => AutomationControlType.Group,
+        "group" or "radiogroup" => AutomationControlType.Group,
         "status" => AutomationControlType.StatusBar,
         "separator" => AutomationControlType.Separator,
         "tabpanel" or "dialog" or "alertdialog" or "region" or "navigation" or "main" => AutomationControlType.Pane,

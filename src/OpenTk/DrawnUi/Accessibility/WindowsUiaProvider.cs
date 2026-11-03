@@ -317,7 +317,7 @@ internal sealed class VirtualElementProvider
         "listitem"         => UiaControlType.ListItem,
         "progressbar"      => UiaControlType.ProgressBar,
         "tooltip"          => UiaControlType.ToolTip,
-        "group"            => UiaControlType.Group,
+        "group" or "radiogroup" => UiaControlType.Group,
         "dialog"           => UiaControlType.Pane,
         "alertdialog"      => UiaControlType.Pane,
         "status"           => UiaControlType.StatusBar,
