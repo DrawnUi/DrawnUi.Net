@@ -75,10 +75,10 @@ Please star ⭐ if you like it!
   * Dialogs for screen readers: mark a drawn dialog with AccessibilityModal (or .WithAccessibilityModal()) and screen readers and the Tab key stay inside it while it's open. Shell popups and modals do this by themselves, and a dialog is announced by its name.
   * Keyboard: while a dialog is open, Enter and the arrow keys start inside it, never on the screen behind. An app can let the arrow keys start keyboard navigation too (ArrowsStartKeyboardNavigation). Arrow keys in a group skip hidden items.
   * The focus follows what's on screen: when its control goes away, the focus moves with the screen reader, or clears when none is running, so a game gets its keys back. The focus ring always sits on a control you can see.
-  * Windows screen readers read radio groups as groups, like browsers do.
+  * Windows screen readers read radio groups as groups, like browsers do. In the browser, an open drawn dialog is announced as a dialog by its name, with its controls inside it.
   * Screens you leave free their memory right away, also for people who use only the keyboard or a screen reader.
   * Shader effects stay in place on scrolled pages: wave, ripple and carousel transitions follow the content.
-  * Looped shader carousels: fast swipes stay smooth across the last-to-first slide, and swiping back mid-transition goes straight back.
+  * Looped carousels: a drag past the middle moves exactly one slide, also from the last slide to the first and back; on shader carousels fast swipes stay smooth across that wrap, and swiping back mid-transition goes straight back.
   * OnToggled, WithLuminosity and WithPoints work on WPF, OpenTK and DrawnUi.Net, as on MAUI and Blazor.
   * The tutorial pages clear the iPhone status bar.
 
