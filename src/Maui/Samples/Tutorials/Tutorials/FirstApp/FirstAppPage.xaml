@@ -7,63 +7,68 @@
              BackgroundColor="#f5f5f5"
              Title="First App Tutorial">
 
-    <draw:Canvas
-        BackgroundColor="#f5f5f5"
-        RenderingMode="Default"
-        Gestures="Enabled"
-        HorizontalOptions="Center"
-        VerticalOptions="Center">
+    <!-- a Grid as root: the page applies the iOS safe insets to it (the Canvas does not take them itself) -->
+    <Grid>
 
-        <draw:SkiaLayout
-            Type="Column"
+        <draw:Canvas
+            BackgroundColor="#f5f5f5"
+            RenderingMode="Default"
+            Gestures="Enabled"
             HorizontalOptions="Center"
-            Padding="40" Spacing="16"
-            UseCache="Operations"
             VerticalOptions="Center">
 
-            <draw:SkiaImage
-                UseCache="Image"
-                Aspect="AspectFit"
-                WidthRequest="200"
-                Source="Images\dotnetbotcar.png"
-                HorizontalOptions="Center" />
-
-            <draw:SkiaLabel
-                UseCache="Operations"
-                Text="DrawnUI for .NET MAUI"
-                FontSize="24"
-                FontAttributes="Bold"
-                TextColor="DarkSlateBlue"
-                HorizontalTextAlignment="Center"
-                HorizontalOptions="Center" />
-
-            <draw:SkiaRichLabel
-                UseCache="Operations"
-                Text="This text is drawn with SkiaSharp ✨"
-                HorizontalTextAlignment="Center"
-                FontSize="16"
-                TextColor="Gray"
-                HorizontalOptions="Center" />
-
-            <draw:SkiaButton
-                UseCache="Image"
-                x:Name="MyButton"
-                Text="Click Me!"
-                BackgroundColor="CornflowerBlue"
-                TextColor="White"
-                CornerRadius="8"
+            <draw:SkiaLayout
+                Type="Column"
                 HorizontalOptions="Center"
-                Tapped="OnButtonClicked" />
-
-            <draw:SkiaRichLabel
+                Padding="40" Spacing="16"
                 UseCache="Operations"
-                x:Name="ClickLabel"
-                Text="👆 Try clicking the button"
-                FontSize="14"
-                TextColor="Green"
-                HorizontalOptions="Center" />
+                VerticalOptions="Center">
 
-        </draw:SkiaLayout>
-    </draw:Canvas>
+                <draw:SkiaImage
+                    UseCache="Image"
+                    Aspect="AspectFit"
+                    WidthRequest="200"
+                    Source="Images\dotnetbotcar.png"
+                    HorizontalOptions="Center" />
+
+                <draw:SkiaLabel
+                    UseCache="Operations"
+                    Text="DrawnUI for .NET MAUI"
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    TextColor="DarkSlateBlue"
+                    HorizontalTextAlignment="Center"
+                    HorizontalOptions="Center" />
+
+                <draw:SkiaRichLabel
+                    UseCache="Operations"
+                    Text="This text is drawn with SkiaSharp ✨"
+                    HorizontalTextAlignment="Center"
+                    FontSize="16"
+                    TextColor="Gray"
+                    HorizontalOptions="Center" />
+
+                <draw:SkiaButton
+                    UseCache="Image"
+                    x:Name="MyButton"
+                    Text="Click Me!"
+                    BackgroundColor="CornflowerBlue"
+                    TextColor="White"
+                    CornerRadius="8"
+                    HorizontalOptions="Center"
+                    Tapped="OnButtonClicked" />
+
+                <draw:SkiaRichLabel
+                    UseCache="Operations"
+                    x:Name="ClickLabel"
+                    Text="👆 Try clicking the button"
+                    FontSize="14"
+                    TextColor="Green"
+                    HorizontalOptions="Center" />
+
+            </draw:SkiaLayout>
+        </draw:Canvas>
+
+    </Grid>
 
 </ContentPage>
