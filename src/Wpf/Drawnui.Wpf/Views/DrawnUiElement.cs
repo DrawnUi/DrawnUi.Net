@@ -499,7 +499,8 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
     {
         base.OnRenderSizeChanged(sizeInfo);
-        ReleaseSurface();
+        // The next frame makes the surface of the new size and draws it in the same tick, so WPF never shows an
+        // empty view between them; the last frame stays up until then.
         Canvas.Update();
     }
 
