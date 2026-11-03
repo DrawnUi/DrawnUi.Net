@@ -772,6 +772,8 @@ namespace DrawnUi.Views
         public bool HandleKeyboardNavigation(InputKey key, bool shift)
         {
             var current = KeyboardFocusNode ?? AccessibilityManager.FocusedNode;
+            if (AccessibilityManager.IsOutsideModal(current))
+                current = null; // a control behind a dialog (tapped before it opened): navigation starts in the dialog
 
             // nothing in focus yet: an arrow starts keyboard navigation as Tab does, when the app asked for it
             if (current == null && ArrowStartsNavigation(key) is { } forward)
@@ -833,6 +835,19 @@ namespace DrawnUi.Views
         /// forward (Down, Right), false backward (Up, Left); null for other keys or when it is off. The heads call it
         /// when no drawn node has keyboard focus.
         /// </summary>
+        /// <summary>
+        /// No drawn control has keyboard focus that navigation can use: none at all, or only one behind a modal overlay
+        /// that is shown. Then Tab, or an arrow with <see cref="ArrowsStartKeyboardNavigation"/>, starts navigation.
+        /// </summary>
+        public bool HasNoKeyboardFocus
+        {
+            get
+            {
+                var focus = KeyboardFocusNode ?? AccessibilityManager.FocusedNode;
+                return focus == null || AccessibilityManager.IsOutsideModal(focus);
+            }
+        }
+
         public bool? ArrowStartsNavigation(InputKey key) => !ArrowsStartKeyboardNavigation ? null : key switch
         {
             InputKey.ArrowDown or InputKey.ArrowRight => true,
@@ -1535,6 +1550,13 @@ namespace DrawnUi.Views
         public DrawnView()
         {
             Init();
+            // the focus went to nothing (its control left the screen, no screen reader running): the keyboard focus
+            // and its ring go with it, so the keys belong to the app again
+            AccessibilityManager.FocusChanged += node =>
+            {
+                if (node == null && _keyboardFocusNode != null)
+                    KeyboardFocusNode = null;
+            };
         }
 
         public Action<SKPath, SKRect> Clipping { get; set; }

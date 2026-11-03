@@ -85,6 +85,50 @@ public class AccessibilityModalTests
     }
 
     [Fact]
+    public void MouseOpenedDialog_ArrowStartsInside_NotAtTheControlBehind()
+    {
+        using var host = Scene(out var page);
+        host.Canvas.ArrowsStartKeyboardNavigation = true;
+        var settings = (SkiaControl)((SkiaStack)page.Views[0]).Views[1];
+        host.Canvas.AccessibilityManager.NotifyFocused(settings); // tapped with the mouse, which opened the dialog
+        page.AddSubView(Dialog("Sound", "Close"));
+        host.AdvanceFrames(4);
+        Assert.True(host.Canvas.HasNoKeyboardFocus);
+
+        Assert.True(host.Canvas.HandleKeyboardNavigation(InputKey.ArrowDown, false));
+        host.AdvanceFrames(3);
+        Assert.Equal("Sound", Focused(host));
+    }
+
+    [Fact]
+    public void FocusedControlLeaves_NoScreenReader_FocusGoesToNothing()
+    {
+        {
+            foreach (var reader in new[] { false, true })
+            {
+                using var host = Scene(out var page);
+                host.Canvas.AccessibilityManager.IsScreenReaderRunning = () => reader;
+                Tab(host);
+                Assert.Equal("Play", Focused(host));
+                host.Canvas.AccessibilityManager.NotifyReaderFocused(host.Canvas.KeyboardFocusNode); // as a head reports the reader's cursor
+
+                // the game screen replaces the menu: one gear button
+                page.ClearChildren();
+                page.AddSubView(Button("Gear"));
+                host.AdvanceFrames(6);
+
+                if (reader)
+                    Assert.Equal("Gear", (host.Canvas.AccessibilityManager.ReaderNode as SkiaControl)?.AccessibilityLabel);
+                else
+                {
+                    Assert.Null(host.Canvas.KeyboardFocusNode); // the keys belong to the game again
+                    Assert.True(host.Canvas.HasNoKeyboardFocus);
+                }
+            }
+        }
+    }
+
+    [Fact]
     public void Dialog_KeepsItsName_WhenItsTitleSaysItToo()
     {
         using var host = Scene(out var page);

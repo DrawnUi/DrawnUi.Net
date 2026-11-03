@@ -428,6 +428,10 @@ namespace DrawnUi.Views
             System.Diagnostics.Debug.WriteLine($"[A11y-KEY] OnCanvasKeyDown key={e.Key} sender={sender?.GetType().Name} peer={(peer == null ? "NULL" : "ok")} focusedPeer={(peer?.FocusedPeer == null ? "NULL" : peer.FocusedPeer.Role)}");
             if (peer == null) return;
 
+            // a control behind a dialog (tapped before it opened) is no focus: Tab, an arrow or Enter starts in the dialog
+            if (AccessibilityManager.IsOutsideModal(peer.FocusedPeer?.Source))
+                peer.ClearVirtualFocus();
+
             var key = e.Key;
             if (key == Windows.System.VirtualKey.Tab)
             {

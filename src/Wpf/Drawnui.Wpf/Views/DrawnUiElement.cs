@@ -390,6 +390,10 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         if (peer == null)
             return false;
 
+        // a control behind a dialog (tapped before it opened) is no focus: Tab, an arrow or Enter starts in the dialog
+        if (Canvas.AccessibilityManager.IsOutsideModal(peer.FocusedPeer?.Source))
+            peer.ClearVirtualFocus();
+
         switch (e.Key)
         {
             case Key.Tab:

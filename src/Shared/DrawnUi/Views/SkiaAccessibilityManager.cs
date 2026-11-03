@@ -302,6 +302,40 @@ namespace DrawnUi.Views
             return path;
         }
 
+        /// <summary>
+        /// Whether a screen reader is running. Decides what happens when the focused control leaves the screen: with a
+        /// reader, its cursor moves to the first node that says something; without one, the focus goes to nothing, as in
+        /// browsers, so an app's own keys work again. Windows reads the system flag that screen readers set
+        /// (Narrator, NVDA, JAWS); elsewhere it is assumed true. An app or a head can replace it.
+        /// </summary>
+        public Func<bool> IsScreenReaderRunning { get; set; } = DefaultIsScreenReaderRunning;
+
+        private static bool DefaultIsScreenReaderRunning()
+        {
+            if (!OperatingSystem.IsWindows())
+                return true;
+            try
+            {
+                var running = false;
+                return SystemParametersInfoW(0x0046 /* SPI_GETSCREENREADER */, 0, ref running, 0) ? running : true;
+            }
+            catch
+            {
+                return true;
+            }
+        }
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SystemParametersInfoW(uint action, uint param, ref bool value, uint winIni);
+
+        /// <summary>
+        /// The node is outside what keyboard navigation may reach now: a modal overlay is shown and the node is neither
+        /// in it nor in a popup window. A head treats such a focus as no focus, so Tab or an arrow starts in the modal.
+        /// </summary>
+        public bool IsOutsideModal(ISkiaAccessibilityNode? node) =>
+            node is SkiaControl control && ActiveModal is { } modal
+            && !IsDescendantOrSelf(control, modal) && !IsInPopupWindow(control);
+
         /// <summary>Inside a popup window (a menu, a dropdown), which stays readable over a modal it was opened from.</summary>
         private static bool IsInPopupWindow(SkiaControl control)
         {
@@ -999,6 +1033,20 @@ namespace DrawnUi.Views
 
             Snapshot = snapshot;
             Changed?.Invoke();
+
+            if (!IsScreenReaderRunning())
+            {
+                // no screen reader to strand: a focus whose control left goes to nothing, as in browsers, so the keys
+                // belong to the app again (a game screen) until the next Tab or arrow starts navigation
+                ReaderNode = null;
+                var focused = FocusedNode;
+                if (focused != null && Array.FindIndex(snapshot, n => ReferenceEquals(n.Source, focused)) < 0)
+                {
+                    FocusedNode = null;
+                    FocusChanged?.Invoke(null);
+                }
+                return;
+            }
 
             var reader = ReaderNode;
             if (reader != null && Array.FindIndex(snapshot, n => ReferenceEquals(n.Source, reader)) < 0)

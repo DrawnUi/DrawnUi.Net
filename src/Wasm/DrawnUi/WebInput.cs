@@ -242,8 +242,7 @@ public static partial class WebInput
         KeyboardManager.KeyboardPressed(key, forOtherElement);
 
         // nothing in focus yet: an arrow starts keyboard navigation as Tab does, when the app asked for it
-        if (!forOtherElement && TargetCanvas is { KeyboardFocusNode: null } canvas
-            && canvas.AccessibilityManager.FocusedNode == null && canvas.ArrowStartsNavigation(key) is { } forward)
+        if (!forOtherElement && TargetCanvas is { HasNoKeyboardFocus: true } canvas && canvas.ArrowStartsNavigation(key) is { } forward)
             canvas.AccessibilityManager.FocusFirstTabStop(forward, (float)canvas.RenderingScale);
     }
 

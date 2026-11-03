@@ -67,6 +67,7 @@ public class AccessibilityActionsTests
         using var host = new HeadlessCanvasHost(400, 400);
         var manager = host.Canvas.AccessibilityManager;
         manager.MinUpdateIntervalMs = 0;
+        manager.IsScreenReaderRunning = () => true; // the reader's cursor moves; without a reader the focus goes to nothing
 
         var first = new SkiaButton { Text = "First", WidthRequest = 120, HeightRequest = 40, AccessibilityRole = Aria.RoleButton };
         var back = new SkiaButton { Text = "Back", WidthRequest = 120, HeightRequest = 40, AccessibilityRole = Aria.RoleButton };
