@@ -63,6 +63,30 @@ public class SkiaCarousel : SnappingLayout
             velocity.Y = 0;
         }
 
+        if (ApplyLoopedLogic && _releaseHome is { } home && SnapPoints.Count > 1)
+        {
+            // A finger release on a looped carousel: one slide at most from the slide the gesture started on, counted
+            // along the strip, so across the edge it is the virtual slot next to it. A flick goes one slide its way, a
+            // slow drag to the nearest of that slide and its two neighbours. Measured from the slide nearest the
+            // release instead, a drag past the middle went one slide too far or the wrong way at the wrap.
+            var step = SnapPoints[1] - SnapPoints[0];
+            var stepAxis = IsVertical ? step.Y : step.X;
+            if (stepAxis != 0)
+            {
+                var vel = IsVertical ? velocity.Y : velocity.X;
+                var moved = IsVertical ? location.Y - home.Y : location.X - home.X;
+                var k = vel != 0
+                    ? Math.Sign(vel) * Math.Sign(stepAxis)
+                    : Math.Clamp((int)Math.Round(moved / stepAxis), -1, 1);
+                var target = home + step * k;
+                if (Vector2.Distance(location, target) >= 0.5)
+                    ScrollToOffset(target, velocity, CanAnimate);
+                else
+                    UpdateReportedPosition();
+                return;
+            }
+        }
+
         if (ApplyLoopedLogic)
         {
             // Use the nearest real snap as origin to avoid multi-step jumps

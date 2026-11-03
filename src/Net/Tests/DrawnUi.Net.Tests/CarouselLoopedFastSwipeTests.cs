@@ -106,4 +106,40 @@ public class CarouselLoopedFastSwipeTests
         }
         Assert.Equal(3, carousel.SelectedIndex);
     }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void SlowDragsPastHalf_MoveOneSlide_BothWaysAcrossTheWrap(bool shader)
+    {
+        using var host = new HeadlessCanvasHost(820, 300);
+        SkiaCarousel carousel = shader
+            ? new SkiaShaderCarousel { HeightRequest = 280, HorizontalOptions = LayoutOptions.Fill, IsLooped = true, LinearSpeedMs = 750, ItemsSource = Enumerable.Range(0, 4).ToList(), ItemTemplate = new DataTemplate(() => new Slide()) }
+            : new SkiaCarousel { HeightRequest = 280, HorizontalOptions = LayoutOptions.Fill, IsLooped = true, ItemsSource = Enumerable.Range(0, 4).ToList(), ItemTemplate = new DataTemplate(() => new Slide()) };
+        host.Canvas.Content = carousel;
+        host.AdvanceFrames(20);
+        var robot = new GestureRobot(host);
+
+        void Drag(float dx, double ms, double holdMs)
+        {
+            var from = dx < 0 ? 700f : 120f;
+            robot.Pan(new System.Drawing.PointF(from, 150), new System.Drawing.PointF(from + dx, 150), ms, 30, holdMs);
+            for (var f = 0; f < 120; f++)
+                host.RenderFrame(16);
+        }
+
+        // slow drags of 60% of a slide, released without a flick: one slide each, around the loop
+        var forward = new List<int>();
+        for (var s = 0; s < 5; s++) { Drag(-820 * 0.6f, 600, 300); forward.Add(carousel.SelectedIndex); }
+        Assert.Equal(new[] { 1, 2, 3, 0, 1 }, forward);
+        var back = new List<int>();
+        for (var s = 0; s < 5; s++) { Drag(820 * 0.6f, 600, 300); back.Add(carousel.SelectedIndex); }
+        Assert.Equal(new[] { 0, 3, 2, 1, 0 }, back);
+
+        // a short slow drag stays, a flick moves one slide
+        Drag(-820 * 0.2f, 600, 300);
+        Assert.Equal(0, carousel.SelectedIndex);
+        Drag(-820 * 0.3f, 60, 0);
+        Assert.Equal(1, carousel.SelectedIndex);
+    }
 }
