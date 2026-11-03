@@ -405,6 +405,12 @@ public class SkiaCarousel : SnappingLayout
     {
         var drawn = 0;
 
+        if (_viewportDirty)
+        {
+            _viewportDirty = false;
+            SetupViewport();
+        }
+
         if (CanRender)
         {
             double progressMax = 0;
@@ -1198,8 +1204,20 @@ public class SkiaCarousel : SnappingLayout
     {
         base.OnLayoutChanged();
 
-        SetupViewport();
+        if (DynamicSize)
+        {
+            SetupViewport(); // it sizes itself to the selected slide: at once, never a frame drawn at the old size
+            return;
+        }
+
+        // set up when the carousel draws, at its final size: a parent's measure pass can arrange it at a provisional size
+        // first (a stack measuring at an unbounded width), and setting up the slides for that size moved the position
+        // under a running animation, two slides flickering until it ended
+        _viewportDirty = true;
+        Update();
     }
+
+    private bool _viewportDirty;
 
     protected void SetupViewport()
     {
@@ -1223,12 +1241,18 @@ public class SkiaCarousel : SnappingLayout
 
                 ApplyDynamicSize(SelectedIndex);
             }
-            else
+            else if (!ChildrenInitialized || Width != _initializedSize.Width || Height != _initializedSize.Height
+                     || ChildrenFactory.GetChildrenCount() != ChildrenTotal)
             {
                 InitializeChildren();
             }
+            // else: arranged again at the same size with the same slides (a sibling's text changed the page layout): the
+            // snap points are the same, and rebuilding them put the position on the selected slide under a running
+            // animation, which wrote its own position back the next frame (two slides flickering at a looped wrap)
         }
     }
+
+    private SKSize _initializedSize;
 
 
     protected bool ChildrenInitialized;
@@ -1283,6 +1307,7 @@ public class SkiaCarousel : SnappingLayout
         float currentPosition = 0;
 
         var cellSize = new SKSize((float)Width, (float)Height);
+        _initializedSize = cellSize;
         var cellsToRelease = new List<SkiaControl>();
         try
         {

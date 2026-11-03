@@ -61,4 +61,49 @@ public class CarouselLoopedFastSwipeTests
             Assert.True(step < 0.5, $"frame {i}: {positions[i - 1]:0.00} -> {positions[i]:0.00}");
         }
     }
+
+    [Fact]
+    public void RelayoutAtTheSameSize_DuringATransition_DoesNotMoveIt()
+    {
+        using var host = new HeadlessCanvasHost(820, 330);
+        var title = new SkiaLabel("start");
+        var carousel = new SkiaShaderCarousel
+        {
+            HeightRequest = 280, HorizontalOptions = LayoutOptions.Fill, IsLooped = true, LinearSpeedMs = 750,
+            ItemsSource = Enumerable.Range(0, 4).ToList(),
+            ItemTemplate = new DataTemplate(() => new Slide()),
+        };
+        // as in the demo: a title above shows the pair, its text changes while the transition runs
+        carousel.FromToChanged += (_, _) => title.Text = $"{carousel.TransitionFromIndex} -> {carousel.TransitionToIndex}";
+        // the demo's page: a centered column in a scroll, a card around the title and the carousel
+        var page = new SkiaStack
+        {
+            HorizontalOptions = LayoutOptions.Center, MaximumWidthRequest = 720,
+            Children =
+            {
+                new SkiaShape
+                {
+                    HorizontalOptions = LayoutOptions.Fill,
+                    Children = { new SkiaStack { HorizontalOptions = LayoutOptions.Fill, Children = { title, carousel } } },
+                },
+            },
+        };
+        host.Canvas.Content = new SkiaScroll { VerticalOptions = LayoutOptions.Fill, Content = page };
+        host.AdvanceFrames(20);
+
+        var positions = new List<double>();
+        host.Canvas.WasDrawn += (_, _) => positions.Add(carousel.TransitionFromIndex + carousel.TransitionEffect.Progress);
+
+        carousel.SelectedIndex = 3; // 0 -> 3 backward across the wrap: one slide, through the virtual slot
+        for (var f = 0; f < 60; f++)
+            host.RenderFrame(16);
+
+        for (var i = 1; i < positions.Count; i++)
+        {
+            var step = Math.Abs(positions[i] - positions[i - 1]) % 4;
+            step = Math.Min(step, 4 - step);
+            Assert.True(step < 0.5, $"frame {i}: {positions[i - 1]:0.00} -> {positions[i]:0.00}");
+        }
+        Assert.Equal(3, carousel.SelectedIndex);
+    }
 }
