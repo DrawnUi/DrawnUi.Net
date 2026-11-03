@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!--using Directory.Build.props-->
+
+    <PropertyGroup>
+        <Title>Game creation addon to DrawnUI for .NET</Title>
+        <PackageId>DrawnUi.Net.Game</PackageId>
+        <Description>Base class for implementing a game with SkiaSharp on DrawnUI for .NET, for hosts built on DrawnUi.Net</Description>
+        <PackageTags>drawnui skia skiasharp draw game desktop</PackageTags>
+        <Packable>true</Packable>
+        <CreatePackage>false</CreatePackage>
+        <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);DRAWNUI_NET</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <WarningsAsErrors>$(WarningsAsErrors);CS0108</WarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\DrawnUi\DrawnUi.Net.csproj" />
+    </ItemGroup>
+
+    <Import Project="..\..\..\SharedGame\SharedGame.projitems" Label="Shared" />
+
+</Project>
