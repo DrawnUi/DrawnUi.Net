@@ -3267,6 +3267,8 @@ namespace DrawnUi.Draw
             Superview?.UnregisterGestureListener(this as ISkiaGestureListener);
             Superview?.UnregisterAllAnimatorsByParent(this);
             Superview?.AccessibilityManager.UnregisterSubtree(this);
+            if (_accessibilityModal)
+                SkiaAccessibilityManager.Modals.TryRemove(this, out _);
         }
 
         protected object lockPausingAnimators = new();
@@ -5260,7 +5262,7 @@ namespace DrawnUi.Draw
         /// </summary>
         public string? AccessibilityRole
         {
-            get => _accessibilityRole ?? GetDefaultAccessibilityRole();
+            get => _accessibilityRole ?? (_accessibilityModal ? DrawnUi.Models.Aria.RoleDialog : GetDefaultAccessibilityRole());
             set
             {
                 if (_accessibilityRole != value)
@@ -5403,6 +5405,32 @@ namespace DrawnUi.Draw
                     _accessibilityIsPressed = value;
                     AccessibilityChanged();
                 }
+            }
+        }
+
+        private bool _accessibilityModal;
+
+        /// <summary>
+        /// A modal overlay (aria-modal), such as a dialog drawn over the screen: while it is shown, screen readers and
+        /// Tab reach only its controls (and open popup windows); the content around it leaves accessibility until it
+        /// goes. With several, the one drawn on top wins. The keyboard moves into it when it appears while the
+        /// keyboard is in use, and back when it goes. Taps are not affected: blocking them is the backdrop's job.
+        /// Without a role of its own it reads as a dialog. Default false: nothing changes unless an app sets it.
+        /// </summary>
+        public bool AccessibilityModal
+        {
+            get => _accessibilityModal;
+            set
+            {
+                if (_accessibilityModal == value)
+                    return;
+
+                _accessibilityModal = value;
+                if (value)
+                    SkiaAccessibilityManager.Modals.TryAdd(this, 0);
+                else
+                    SkiaAccessibilityManager.Modals.TryRemove(this, out _);
+                AccessibilityChanged();
             }
         }
 

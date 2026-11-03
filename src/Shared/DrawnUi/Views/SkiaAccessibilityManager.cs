@@ -216,6 +216,105 @@ namespace DrawnUi.Views
         /// </summary>
         public SkiaControl? KeyboardScope { get; internal set; }
 
+        /// <summary>Controls with <see cref="SkiaControl.AccessibilityModal"/> set, on every canvas. Empty: no modal work at all.</summary>
+        internal static readonly System.Collections.Concurrent.ConcurrentDictionary<SkiaControl, byte> Modals = new();
+
+        /// <summary>
+        /// The modal overlay that accessibility is limited to (<see cref="SkiaControl.AccessibilityModal"/>): the topmost
+        /// flagged control that is visible and was drawn in the last frame. Null when none.
+        /// </summary>
+        public SkiaControl? ActiveModal { get; private set; }
+
+        // where the keyboard was when each modal became active, to go back there when it goes
+        private readonly Dictionary<SkiaControl, ISkiaAccessibilityNode> _modalReturns = new();
+
+        /// <summary>Frame end, only while some control is flagged modal or one was active: follows the top modal.</summary>
+        private void UpdateActiveModal()
+        {
+            SkiaControl? next = null;
+            foreach (var modal in Modals.Keys)
+            {
+                if (modal.IsDisposed || !modal.IsVisible || modal.Opacity <= 0 || IsHiddenByAncestor(modal)
+                    || !ReferenceEquals(modal.Superview?.AccessibilityManager, this) || !modal.WasInLastFrame())
+                    continue;
+                if (next == null || IsDrawnAbove(modal, next))
+                    next = modal;
+            }
+
+            var previous = ActiveModal;
+            if (ReferenceEquals(previous, next))
+                return;
+
+            ActiveModal = next;
+            ForceRebuildOnNextFrame(); // readers and Tab switch to the new scope in this frame
+
+            var canvas = (next ?? previous)?.Superview;
+            if (canvas == null)
+                return;
+
+            var keyboard = canvas.KeyboardFocusNode;
+            if (next != null && keyboard != null && !IsDescendantOrSelf(keyboard, next))
+            {
+                // the keyboard is in use: into the modal, and back here when it goes
+                _modalReturns[next] = keyboard;
+                RequestFocusInside(next);
+            }
+
+            if (previous != null && _modalReturns.Remove(previous, out var back)
+                && (keyboard == null || IsDescendantOrSelf(keyboard, previous)) // unless it went elsewhere meanwhile
+                && (next == null || IsDescendantOrSelf(back, next)))
+            {
+                RequestFocusReturn(back);
+            }
+        }
+
+        /// <summary>Drawing order: <paramref name="a"/> draws over <paramref name="b"/> (ZIndex, then tree order; a nested control over its ancestor).</summary>
+        private static bool IsDrawnAbove(SkiaControl a, SkiaControl b)
+        {
+            var pathA = PathFromRoot(a);
+            var pathB = PathFromRoot(b);
+            var i = 0;
+            while (i < pathA.Count && i < pathB.Count && ReferenceEquals(pathA[i], pathB[i]))
+                i++;
+
+            if (i == pathA.Count)
+                return false; // a contains b
+            if (i == pathB.Count)
+                return true; // b contains a
+
+            var sa = pathA[i];
+            var sb = pathB[i];
+            if (sa.ZIndex != sb.ZIndex)
+                return sa.ZIndex > sb.ZIndex;
+            return sa.Parent is SkiaControl parent && parent.Views.IndexOf(sa) > parent.Views.IndexOf(sb);
+        }
+
+        private static List<SkiaControl> PathFromRoot(SkiaControl control)
+        {
+            var path = new List<SkiaControl>();
+            IDrawnBase? current = control;
+            while (current is SkiaControl c)
+            {
+                path.Add(c);
+                current = c.Parent;
+            }
+            path.Reverse();
+            return path;
+        }
+
+        /// <summary>Inside a popup window (a menu, a dropdown), which stays readable over a modal it was opened from.</summary>
+        private static bool IsInPopupWindow(SkiaControl control)
+        {
+            IDrawnBase? current = control;
+            while (current is SkiaControl c)
+            {
+                if (c is PopupLayer)
+                    return true;
+                current = c.Parent;
+            }
+            return false;
+        }
+
         private SkiaControl? _focusInside;
         private long _focusInsideDeadline;
         private ISkiaAccessibilityNode? _focusReturn;
@@ -775,6 +874,8 @@ namespace DrawnUi.Views
         /// </summary>
         internal void OnFrameEnd(float scale)
         {
+            if (!Modals.IsEmpty || ActiveModal != null)
+                UpdateActiveModal();
             ProcessPendingFocus(scale);
             ProcessGroupFocus(scale);
 
@@ -827,9 +928,13 @@ namespace DrawnUi.Views
             _lastRebuildTick = Environment.TickCount64;
 
             _sortBuffer.Clear();
+            var modal = ActiveModal;
             foreach (var node in _nodes.Keys)
             {
                 if (node is not SkiaControl control || !control.IsVisible || control.IsDisposed)
+                    continue;
+                // a modal overlay is shown: only its own nodes, and those of popup windows opened over it
+                if (modal != null && !IsDescendantOrSelf(control, modal) && !IsInPopupWindow(control))
                     continue;
                 // not drawn: an ancestor is hidden (e.g. the root page kept mounted under a pushed page)
                 if (IsHiddenByAncestor(control))
