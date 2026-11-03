@@ -1551,11 +1551,12 @@ namespace DrawnUi.Views
         {
             Init();
             // the focus went to nothing (its control left the screen, no screen reader running): the keyboard focus
-            // and its ring go with it, so the keys belong to the app again
+            // and its ring go with it, so the keys belong to the app again. When a screen reader moved on from a control
+            // that left the screen, the keyboard focus follows it.
             AccessibilityManager.FocusChanged += node =>
             {
-                if (node == null && _keyboardFocusNode != null)
-                    KeyboardFocusNode = null;
+                if (_keyboardFocusNode != null && (node == null || !AccessibilityManager.IsInSnapshot(_keyboardFocusNode)))
+                    KeyboardFocusNode = node;
             };
         }
 

@@ -5357,10 +5357,14 @@ namespace DrawnUi.Draw
         /// <summary>
         /// True when the last canvas frame showed this control: every ancestor drew it in its latest pass over its
         /// children, live or into the cache it is blitted from. False for a control a layout stopped drawing
-        /// (scrolled out of a virtualized layout, hidden page), whose position properties keep the last drawn values.
+        /// (scrolled out of a virtualized layout, hidden page), whose position properties keep the last drawn values,
+        /// and for a disposed control or one that is on no canvas.
         /// </summary>
         public bool WasInLastFrame()
         {
+            if (IsDisposed)
+                return false;
+
             var control = this;
             while (control.Parent is SkiaControl parent)
             {
@@ -5370,8 +5374,8 @@ namespace DrawnUi.Draw
             }
 
             // the top control was rendered by the canvas in its latest frame (or the one in progress)
-            var frame = Superview?.FrameNumber ?? 0;
-            return control.RenderedFrame >= frame - 1;
+            var view = Superview;
+            return view != null && control.RenderedFrame >= view.FrameNumber - 1;
         }
 
         private bool? _accessibilityCanInteract;

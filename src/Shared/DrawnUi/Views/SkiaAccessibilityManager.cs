@@ -510,11 +510,12 @@ namespace DrawnUi.Views
             return next >= 0 && next < stops.Count ? stops[next] : null;
         }
 
-        private bool IsInSnapshot(SkiaControl control)
+        /// <summary>Whether <paramref name="node"/> is in the current <see cref="Snapshot"/>.</summary>
+        internal bool IsInSnapshot(ISkiaAccessibilityNode node)
         {
             foreach (var n in Snapshot)
             {
-                if (ReferenceEquals(n.Source, control))
+                if (ReferenceEquals(n.Source, node))
                     return true;
             }
 

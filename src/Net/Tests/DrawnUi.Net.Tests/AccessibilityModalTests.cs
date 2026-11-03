@@ -107,18 +107,27 @@ public class AccessibilityModalTests
             foreach (var reader in new[] { false, true })
             {
                 using var host = Scene(out var page);
-                host.Canvas.AccessibilityManager.IsScreenReaderRunning = () => reader;
+                var manager = host.Canvas.AccessibilityManager;
+                manager.IsScreenReaderRunning = () => reader;
+                // as the WPF and MAUI Windows heads do: the reader moves to the node, which takes the focus
+                manager.ReaderRefocusRequested += next => manager.NotifyFocused(page.Views.First(v => v.AccessibilityLabel == next.Label));
                 Tab(host);
                 Assert.Equal("Play", Focused(host));
-                host.Canvas.AccessibilityManager.NotifyReaderFocused(host.Canvas.KeyboardFocusNode); // as a head reports the reader's cursor
+                var play = (SkiaControl)host.Canvas.KeyboardFocusNode;
+                manager.NotifyReaderFocused(play); // as a head reports the reader's cursor
 
-                // the game screen replaces the menu: one gear button
+                // the game screen replaces the menu: one gear button, the menu is disposed
                 page.ClearChildren();
+                play.Dispose();
                 page.AddSubView(Button("Gear"));
                 host.AdvanceFrames(6);
 
+                Assert.True(play.GetAccessibilityPixelRect().IsEmpty); // a disposed control is on no screen: no ring around it
                 if (reader)
-                    Assert.Equal("Gear", (host.Canvas.AccessibilityManager.ReaderNode as SkiaControl)?.AccessibilityLabel);
+                {
+                    Assert.Equal("Gear", (manager.ReaderNode as SkiaControl)?.AccessibilityLabel);
+                    Assert.Equal("Gear", Focused(host)); // the keyboard focus and its ring follow the reader
+                }
                 else
                 {
                     Assert.Null(host.Canvas.KeyboardFocusNode); // the keys belong to the game again
