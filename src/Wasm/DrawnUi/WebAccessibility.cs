@@ -103,6 +103,11 @@ internal static partial class WebAccessibility
             if (node.IsPressed is { } pressed)
                 flags |= pressed ? 12 : 4;
 
+            // the active modal: the overlay itself becomes the dialog (role, name, aria-modal), so readers leave the page
+            // around the canvas alone; its controls are the overlay's other elements, all inside it
+            if (node.Source != null && ReferenceEquals(node.Source, manager.ActiveModal))
+                flags |= 128;
+
             var o = i * 7;
             nums[o] = node.Rect.Left;
             nums[o + 1] = node.Rect.Top;

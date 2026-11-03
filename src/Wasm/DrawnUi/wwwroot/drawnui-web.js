@@ -553,8 +553,18 @@ export function a11yUpdate(ints, nums, strs) {
         const count = ints.length / 2;
         const keep = new Set();
         let ref = a.overlay.firstChild;
+        let modal = false;
         for (let i = 0; i < count; i++) {
             const id = ints[i * 2];
+            if (ints[i * 2 + 1] & 128) {
+                // the active modal: the overlay is the dialog, its controls are the elements inside it (aria-modal on a
+                // separate element would hide them, as they are not its children)
+                modal = true;
+                a11ySet(a.overlay, 'role', strs[i * 6] || 'dialog');
+                a11ySet(a.overlay, 'aria-label', strs[i * 6 + 1]);
+                a11ySet(a.overlay, 'aria-modal', 'true');
+                continue;
+            }
             let el = a.map.get(id);
             if (!el) {
                 el = a11yCreate(id);
@@ -570,6 +580,11 @@ export function a11yUpdate(ints, nums, strs) {
                 el.remove();
                 a.map.delete(id);
             }
+        }
+        if (!modal) {
+            a.overlay.removeAttribute('role');
+            a.overlay.removeAttribute('aria-label');
+            a.overlay.removeAttribute('aria-modal');
         }
         // a moved element lost focus: give it back without telling C# (nothing changed for it)
         if (focused && focused.isConnected && document.activeElement !== focused) focused.focus({ preventScroll: true });
