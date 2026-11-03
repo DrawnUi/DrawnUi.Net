@@ -68,7 +68,9 @@ namespace DrawnUi.Views
 #if ONPLATFORM
             UpdatePlatform();
 #elif DRAWNUI_NET
-            if (!IsRendering)
+            // skipped only for updates the draw raises itself: another thread (a background bake publishing its
+            // pixels) may have changed what this frame already painted, so it gets the next frame
+            if (!IsDrawingOnCurrentThread)
                 UpdatePlatform();
 #endif
         }
@@ -1930,6 +1932,7 @@ namespace DrawnUi.Views
                 return false;
 
             TimeDrawingStarted = DateTime.Now;
+            _renderingThread = Environment.CurrentManagedThreadId;
             IsRendering = true;
 
             IsDirty = false; //any control can set to true after that
@@ -1937,6 +1940,14 @@ namespace DrawnUi.Views
 
             return true;
         }
+
+        private int _renderingThread;
+
+        /// <summary>
+        /// The caller runs inside the draw of the current frame. Updates raised there are part of that frame; an update
+        /// from another thread (a background bake publishing its pixels) may change what the frame already painted.
+        /// </summary>
+        public bool IsDrawingOnCurrentThread => IsRendering && Environment.CurrentManagedThreadId == _renderingThread;
 
         /// <summary>A frame started drawing; the heads that signal frame requests rearm here.</summary>
         partial void OnFrameStarted();

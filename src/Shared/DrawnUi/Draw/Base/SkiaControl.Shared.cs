@@ -8738,6 +8738,10 @@ namespace DrawnUi.Draw
                 if (UpdateLocks > 0)
                 {
                     _neededUpdate = true;
+                    // the unlock replays it inside the draw, where updates ask for no frame: an update from another
+                    // thread (a background bake) asks the canvas for the next frame now
+                    if (Superview is { } view && !view.IsDrawingOnCurrentThread)
+                        view.Update();
                     return;
                 }
 

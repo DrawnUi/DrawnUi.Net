@@ -37,4 +37,42 @@ public class FrameRequestedTests
         host.AdvanceFrames(3);
         Assert.Equal(settled, requests); // nothing changes: no requests
     }
+
+    [Fact]
+    public void UpdateFromAnotherThread_WhileAFrameDraws_GetsTheNextFrame()
+    {
+        // A background bake (ImageDoubleBuffered) publishes its pixels and updates while the UI thread draws:
+        // the frame being drawn may already have painted the placeholder, so the canvas must draw once more.
+        using var host = new HeadlessCanvasHost(200, 200);
+        SkiaShape box = null;
+        var fromOtherThread = false;
+        host.Canvas.Content = new SkiaLayer
+        {
+            Children =
+            {
+                new SkiaShape { WidthRequest = 50, HeightRequest = 50, BackgroundColor = Colors.Red }.Assign(out box),
+                new SkiaControl().Fill().WhenPaint((me, ctx) =>
+                {
+                    if (!fromOtherThread)
+                        return;
+                    fromOtherThread = false;
+                    var thread = new Thread(() => box.Update());
+                    thread.Start();
+                    thread.Join();
+                }),
+            }
+        };
+        for (var i = 0; i < 10 && host.NeedsFrame; i++)
+            host.RenderFrame(16);
+        Assert.False(host.NeedsFrame);
+
+        var requests = 0;
+        host.Canvas.FrameRequested += (_, _) => requests++;
+        fromOtherThread = true;
+        host.Canvas.Update();
+        host.RenderFrame(16);
+
+        Assert.True(host.NeedsFrame, "the update from the other thread was dropped");
+        Assert.Equal(2, requests);
+    }
 }
