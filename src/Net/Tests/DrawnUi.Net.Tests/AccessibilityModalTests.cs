@@ -73,9 +73,8 @@ public class AccessibilityModalTests
 
         Tab(host);
         Assert.Equal("Close", Focused(host));
-        Tab(host); // past the end: never back to the menu under the dialog
-        Assert.NotEqual("Play", Focused(host));
-        Assert.NotEqual("About", Focused(host));
+        Tab(host); // past the end: round to the dialog's first control, never to the menu under it
+        Assert.Equal("Sound", Focused(host));
 
         page.RemoveSubView(dialog);
         dialog.Dispose();

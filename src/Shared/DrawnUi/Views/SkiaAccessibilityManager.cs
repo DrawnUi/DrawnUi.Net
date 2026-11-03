@@ -471,7 +471,7 @@ namespace DrawnUi.Views
             if (current < 0)
                 current = forward ? -1 : stops.Count;
             var next = forward ? current + 1 : current - 1;
-            if (KeyboardScope != null && stops.Count > 0)
+            if ((KeyboardScope != null || ActiveModal != null) && stops.Count > 0)
                 next = (next + stops.Count) % stops.Count; // inside an open popup Tab goes round, it never leaves
             return next >= 0 && next < stops.Count ? stops[next] : null;
         }
