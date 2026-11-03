@@ -12,7 +12,14 @@ namespace DrawnUi.Views
         private readonly int _minRequestsForPooling = 1;
         private readonly int _maxPoolSize = 10;
         private readonly int _maxTrackedSizes = 100; // Limit dictionary growth
+        // Pixels kept for reuse, all sizes together: a resized window leaves its old sizes behind, each with pooled
+        // window-sized surfaces nobody asks for again, so the least recently requested sizes go first
+        private readonly long _maxPooledBytes = 128L * 1024 * 1024;
+        private long _pooledBytes;
         private readonly object _cleanupLock = new object();
+
+        /// <summary>Memory of the surfaces kept for reuse, all sizes together, in bytes.</summary>
+        public long PooledBytes => Interlocked.Read(ref _pooledBytes);
 
         public SurfaceCacheManager(IDisposeManager disposeManager)
         {
@@ -31,6 +38,7 @@ namespace DrawnUi.Views
             {
                 if (pool.TryTake(out var pooledSurface))
                 {
+                    Interlocked.Add(ref _pooledBytes, -key.Bytes);
                     //Debug.WriteLine($"Reused surface {key.Width}x{key.Height}");
                     return pooledSurface;
                 }
@@ -52,17 +60,54 @@ namespace DrawnUi.Views
             {
                 var pool = _pools.GetOrAdd(key, k => new SurfacePool(_maxPoolSize));
 
-                // Clear surface for reuse
-                surface.Canvas.Clear();
-
-                if (pool.TryAdd(surface))
+                if (FreeBudgetFor(key))
                 {
-                    return; // Successfully pooled
+                    // Clear surface for reuse
+                    surface.Canvas.Clear();
+
+                    if (pool.TryAdd(surface))
+                    {
+                        Interlocked.Add(ref _pooledBytes, key.Bytes);
+                        return; // Successfully pooled
+                    }
                 }
             }
 
             // Send to dispose manager if not pooled
             _disposeManager.DisposeObject(surface);
+        }
+
+        // Room for one more surface of this size within the budget, made by dropping the pools of the sizes requested
+        // longest ago. False when it can't fit.
+        private bool FreeBudgetFor(SurfaceKey key)
+        {
+            if (Interlocked.Read(ref _pooledBytes) + key.Bytes <= _maxPooledBytes)
+                return true;
+            if (key.Bytes > _maxPooledBytes)
+                return false;
+
+            lock (_cleanupLock)
+            {
+                var oldest = _pools
+                    .Where(kvp => !kvp.Key.Equals(key))
+                    .OrderBy(kvp => _statistics.TryGetValue(kvp.Key, out var stats) ? stats.LastRequested : DateTime.MinValue)
+                    .Select(kvp => kvp.Key)
+                    .ToList();
+                foreach (var size in oldest)
+                {
+                    if (Interlocked.Read(ref _pooledBytes) + key.Bytes <= _maxPooledBytes)
+                        break;
+                    if (_pools.TryRemove(size, out var pool))
+                        DisposePool(size, pool);
+                }
+            }
+            return Interlocked.Read(ref _pooledBytes) + key.Bytes <= _maxPooledBytes;
+        }
+
+        private void DisposePool(SurfaceKey key, SurfacePool pool)
+        {
+            var count = pool.Dispose(_disposeManager);
+            Interlocked.Add(ref _pooledBytes, -key.Bytes * count);
         }
 
         private bool UpdateStatisticsAndCheckPooling(SurfaceKey key)
@@ -115,7 +160,7 @@ namespace DrawnUi.Views
                     // Also remove the pool if it exists
                     if (_pools.TryRemove(key, out var pool))
                     {
-                        pool.Dispose(_disposeManager);
+                        DisposePool(key, pool);
                     }
                 }
             }
@@ -130,6 +175,7 @@ namespace DrawnUi.Views
             }
 
             _pools.Clear();
+            Interlocked.Exchange(ref _pooledBytes, 0);
             _statistics.Clear();
         }
     }
@@ -144,6 +190,9 @@ namespace DrawnUi.Views
             Width = width;
             Height = height;
         }
+
+        /// <summary>The memory of a surface this size, 4 bytes a pixel.</summary>
+        public long Bytes => 4L * Width * Height;
 
         public bool Equals(SurfaceKey other)
         {
@@ -202,13 +251,17 @@ namespace DrawnUi.Views
             return true;
         }
 
-        public void Dispose(IDisposeManager disposeManager)
+        /// <summary>Disposes the pooled surfaces and returns how many there were.</summary>
+        public int Dispose(IDisposeManager disposeManager)
         {
+            var count = 0;
             while (_surfaces.TryDequeue(out var surface))
             {
                 disposeManager.DisposeObject(surface);
+                count++;
             }
             _currentSize = 0;
+            return count;
         }
     }
 }
