@@ -228,5 +228,69 @@ namespace DrawnUi.Draw
 
         #endregion
 
+        /// <summary>
+        /// Sets the shape's <see cref="SkiaShape.Points"/> from a string such as "0,0; 1,0; 0.5,1": points separated by
+        /// ';', each with its X and Y separated by ',' or a space, invariant culture. Same as the MAUI build.
+        /// </summary>
+        /// <exception cref="FormatException">A point is not two numbers.</exception>
+        public static SkiaShape WithPoints(this SkiaShape shape, string points)
+        {
+            var list = new List<SkiaPoint>();
+            if (!string.IsNullOrWhiteSpace(points))
+            {
+                foreach (var part in points.Split(';', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var point = part.Trim();
+                    if (point.Length == 0)
+                        continue;
+
+                    var xy = point.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (xy.Length != 2)
+                        throw new FormatException($"Invalid point format: '{point}'");
+
+                    if (!double.TryParse(xy[0], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var x)
+                        || !double.TryParse(xy[1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var y))
+                        throw new FormatException($"Invalid coordinate values in point: '{point}'");
+
+                    list.Add(new SkiaPoint(x, y));
+                }
+            }
+
+            shape.Points = list;
+            return shape;
+        }
+
+#if !BROWSER && !WEB // the Blazor and pure Wasm builds have their own copies
+        /// <summary>
+        /// Runs <paramref name="action"/> with the new state every time the toggle (a switch, a checkbox) changes;
+        /// unsubscribed when the control is disposed. Same as the MAUI and Blazor builds.
+        /// </summary>
+        public static T OnToggled<T>(this T view, Action<T, bool> action) where T : SkiaToggle
+        {
+            void onToggled(object sender, bool isToggled) => action?.Invoke(view, isToggled);
+
+            view.Toggled += onToggled;
+            string subscriptionKey = $"toggled_{Guid.NewGuid()}";
+            view.ExecuteUponDisposal[subscriptionKey] = () => { view.Toggled -= onToggled; };
+
+            return view;
+        }
+
+        /// <summary>
+        /// The color with its brightest channel scaled to <paramref name="luminosity"/> (0 to 1), hue and alpha kept.
+        /// Same as the Blazor build.
+        /// </summary>
+        public static Color WithLuminosity(this Color color, float luminosity)
+        {
+            float target = Math.Clamp(luminosity, 0f, 1f);
+            float current = Math.Max(color.Red, Math.Max(color.Green, color.Blue));
+
+            if (current <= 0f)
+                return new Color(target, target, target, color.Alpha);
+
+            float scale = target / current;
+            return new Color(color.Red * scale, color.Green * scale, color.Blue * scale, color.Alpha);
+        }
+#endif
     }
 }

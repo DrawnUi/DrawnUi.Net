@@ -83,8 +83,8 @@ public class ShaderDoubleTexturesEffect : SkiaShaderEffect
     {
         if (ControlFrom != null)
         {
-            //that control knows where its own texture sits
-            return _controlFrom?.CachedImage ?? CachedTexture.None;
+            //that control spans the destination: its texture is placed where it is drawn now
+            return CacheAt(_controlFrom, destination);
         }
 
         if (PrimarySource != null)

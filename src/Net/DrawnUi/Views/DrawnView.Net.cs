@@ -18,7 +18,22 @@ namespace DrawnUi.Views
         protected void UpdatePlatform()
         {
             IsDirty = true;
+            // a plain read first: after the first request of a frame, further updates skip the atomic exchange
+            if (Volatile.Read(ref _frameRequested) == 0 && Interlocked.Exchange(ref _frameRequested, 1) == 0)
+                FrameRequested?.Invoke(this, EventArgs.Empty);
         }
+
+        private int _frameRequested;
+
+        /// <summary>
+        /// The canvas needs a frame: something changed since it last drew. Raised once until the next frame starts, on
+        /// the thread that asked for the update (it can be a background thread). A host that draws on demand subscribes
+        /// and schedules one frame on its UI thread, instead of checking <see cref="IsDirty"/> on a timer.
+        /// </summary>
+        public event EventHandler FrameRequested;
+
+        /// <summary>A frame started: the next update raises <see cref="FrameRequested"/> again.</summary>
+        partial void OnFrameStarted() => Volatile.Write(ref _frameRequested, 0);
 
         protected virtual void PlatformHardwareAccelerationChanged()
         {

@@ -216,6 +216,139 @@ namespace DrawnUi.Views
         /// </summary>
         public SkiaControl? KeyboardScope { get; internal set; }
 
+        /// <summary>Controls with <see cref="SkiaControl.AccessibilityModal"/> set, on every canvas. Empty: no modal work at all.</summary>
+        internal static readonly System.Collections.Concurrent.ConcurrentDictionary<SkiaControl, byte> Modals = new();
+
+        /// <summary>
+        /// The modal overlay that accessibility is limited to (<see cref="SkiaControl.AccessibilityModal"/>): the topmost
+        /// flagged control that is visible and was drawn in the last frame. Null when none.
+        /// </summary>
+        public SkiaControl? ActiveModal { get; private set; }
+
+        // where the keyboard was when each modal became active, to go back there when it goes
+        private readonly Dictionary<SkiaControl, ISkiaAccessibilityNode> _modalReturns = new();
+
+        /// <summary>Frame end, only while some control is flagged modal or one was active: follows the top modal.</summary>
+        private void UpdateActiveModal()
+        {
+            SkiaControl? next = null;
+            foreach (var modal in Modals.Keys)
+            {
+                if (modal.IsDisposed || !modal.IsVisible || modal.Opacity <= 0 || IsHiddenByAncestor(modal)
+                    || !ReferenceEquals(modal.Superview?.AccessibilityManager, this) || !modal.WasInLastFrame())
+                    continue;
+                if (next == null || IsDrawnAbove(modal, next))
+                    next = modal;
+            }
+
+            var previous = ActiveModal;
+            if (ReferenceEquals(previous, next))
+                return;
+
+            ActiveModal = next;
+            ForceRebuildOnNextFrame(); // readers and Tab switch to the new scope in this frame
+
+            var canvas = (next ?? previous)?.Superview;
+            if (canvas == null)
+                return;
+
+            var keyboard = canvas.KeyboardFocusNode;
+            if (next != null && keyboard != null && !IsDescendantOrSelf(keyboard, next))
+            {
+                // the keyboard is in use: into the modal, and back here when it goes
+                _modalReturns[next] = keyboard;
+                RequestFocusInside(next);
+            }
+
+            if (previous != null && _modalReturns.Remove(previous, out var back)
+                && (keyboard == null || IsDescendantOrSelf(keyboard, previous)) // unless it went elsewhere meanwhile
+                && (next == null || IsDescendantOrSelf(back, next)))
+            {
+                RequestFocusReturn(back);
+            }
+        }
+
+        /// <summary>Drawing order: <paramref name="a"/> draws over <paramref name="b"/> (ZIndex, then tree order; a nested control over its ancestor).</summary>
+        private static bool IsDrawnAbove(SkiaControl a, SkiaControl b)
+        {
+            var pathA = PathFromRoot(a);
+            var pathB = PathFromRoot(b);
+            var i = 0;
+            while (i < pathA.Count && i < pathB.Count && ReferenceEquals(pathA[i], pathB[i]))
+                i++;
+
+            if (i == pathA.Count)
+                return false; // a contains b
+            if (i == pathB.Count)
+                return true; // b contains a
+
+            var sa = pathA[i];
+            var sb = pathB[i];
+            if (sa.ZIndex != sb.ZIndex)
+                return sa.ZIndex > sb.ZIndex;
+            return sa.Parent is SkiaControl parent && parent.Views.IndexOf(sa) > parent.Views.IndexOf(sb);
+        }
+
+        private static List<SkiaControl> PathFromRoot(SkiaControl control)
+        {
+            var path = new List<SkiaControl>();
+            IDrawnBase? current = control;
+            while (current is SkiaControl c)
+            {
+                path.Add(c);
+                current = c.Parent;
+            }
+            path.Reverse();
+            return path;
+        }
+
+        /// <summary>
+        /// Whether a screen reader is running. Decides what happens when the focused control leaves the screen: with a
+        /// reader, its cursor moves to the first node that says something; without one, the focus goes to nothing, as in
+        /// browsers, so an app's own keys work again. Windows reads the system flag that screen readers set
+        /// (Narrator, NVDA, JAWS); elsewhere it is assumed true. An app or a head can replace it.
+        /// </summary>
+        public Func<bool> IsScreenReaderRunning { get; set; } = DefaultIsScreenReaderRunning;
+
+        private static bool DefaultIsScreenReaderRunning()
+        {
+            if (!OperatingSystem.IsWindows())
+                return true;
+            try
+            {
+                var running = false;
+                return SystemParametersInfoW(0x0046 /* SPI_GETSCREENREADER */, 0, ref running, 0) ? running : true;
+            }
+            catch
+            {
+                return true;
+            }
+        }
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SystemParametersInfoW(uint action, uint param, ref bool value, uint winIni);
+
+        /// <summary>
+        /// The node is outside what keyboard navigation may reach now: a modal overlay is shown and the node is neither
+        /// in it nor in a popup window. A head treats such a focus as no focus, so Tab or an arrow starts in the modal.
+        /// </summary>
+        public bool IsOutsideModal(ISkiaAccessibilityNode? node) =>
+            node is SkiaControl control && ActiveModal is { } modal
+            && !IsDescendantOrSelf(control, modal) && !IsInPopupWindow(control);
+
+        /// <summary>Inside a popup window (a menu, a dropdown), which stays readable over a modal it was opened from.</summary>
+        private static bool IsInPopupWindow(SkiaControl control)
+        {
+            IDrawnBase? current = control;
+            while (current is SkiaControl c)
+            {
+                if (c is PopupLayer)
+                    return true;
+                current = c.Parent;
+            }
+            return false;
+        }
+
         private SkiaControl? _focusInside;
         private long _focusInsideDeadline;
         private ISkiaAccessibilityNode? _focusReturn;
@@ -372,16 +505,17 @@ namespace DrawnUi.Views
             if (current < 0)
                 current = forward ? -1 : stops.Count;
             var next = forward ? current + 1 : current - 1;
-            if (KeyboardScope != null && stops.Count > 0)
+            if ((KeyboardScope != null || ActiveModal != null) && stops.Count > 0)
                 next = (next + stops.Count) % stops.Count; // inside an open popup Tab goes round, it never leaves
             return next >= 0 && next < stops.Count ? stops[next] : null;
         }
 
-        private bool IsInSnapshot(SkiaControl control)
+        /// <summary>Whether <paramref name="node"/> is in the current <see cref="Snapshot"/>.</summary>
+        internal bool IsInSnapshot(ISkiaAccessibilityNode node)
         {
             foreach (var n in Snapshot)
             {
-                if (ReferenceEquals(n.Source, control))
+                if (ReferenceEquals(n.Source, node))
                     return true;
             }
 
@@ -638,13 +772,21 @@ namespace DrawnUi.Views
             if (request == null)
                 return;
 
-            var cell = ItemAt(request.Group, request.Index);
-            if (cell != null && IndexOf(request.Group, cell) != request.Index)
-                cell = null; // a recycled cell still mapped to this slot while the list scrolls, but bound to another item
-
-            if (cell != null && cell.WasInLastFrame())
+            SkiaControl? CellAt(int index)
             {
-                var node = FindTarget(cell);
+                var item = ItemAt(request.Group, index);
+                // a recycled cell still mapped to this slot while the list scrolls, but bound to another item
+                return item != null && IndexOf(request.Group, item) == index ? item : null;
+            }
+
+            // a hidden item (IsVisible false, transparent) is never drawn: skip it at once like one that takes no input,
+            // instead of waiting for it to be drawn
+            static bool Hidden(SkiaControl item) => !item.IsVisible || item.Opacity <= 0;
+
+            var cell = CellAt(request.Index);
+            while (cell != null && (Hidden(cell) || cell.WasInLastFrame()))
+            {
+                var node = Hidden(cell) ? null : FindTarget(cell);
                 if (node != null)
                 {
                     ClearGroupRequest(request);
@@ -662,8 +804,10 @@ namespace DrawnUi.Views
 
                 request.Deadline = Environment.TickCount64 + 3000;
                 request.ScrollIssued = false;
+                cell = CellAt(request.Index);
             }
-            else if (Environment.TickCount64 > request.Deadline || request.Group.IsDisposed)
+
+            if (Environment.TickCount64 > request.Deadline || request.Group.IsDisposed)
             {
                 ClearGroupRequest(request);
                 return;
@@ -686,6 +830,21 @@ namespace DrawnUi.Views
                 if (ReferenceEquals(_groupRequest, request))
                     _groupRequest = null;
             }
+        }
+
+        /// <summary>
+        /// Starts keyboard navigation as the first Tab or Shift+Tab does: the keyboard focus goes to the first Tab
+        /// stop, or the last when <paramref name="forward"/> is false, and the heads follow (the web overlay moves the
+        /// browser focus there). Used by heads whose keys arrive through KeyboardManager, for
+        /// <see cref="DrawnView.ArrowsStartKeyboardNavigation"/>. False when there is no Tab stop.
+        /// </summary>
+        public bool FocusFirstTabStop(bool forward, float scale)
+        {
+            RefreshIfStale(scale);
+            if (NextTabStop(null, forward) is not { } first)
+                return false;
+            FocusFromKeyboard(first, scale);
+            return true;
         }
 
         private void FocusFromKeyboard(ISkiaAccessibilityNode node, float scale)
@@ -775,6 +934,8 @@ namespace DrawnUi.Views
         /// </summary>
         internal void OnFrameEnd(float scale)
         {
+            if (!Modals.IsEmpty || ActiveModal != null)
+                UpdateActiveModal();
             ProcessPendingFocus(scale);
             ProcessGroupFocus(scale);
 
@@ -827,9 +988,13 @@ namespace DrawnUi.Views
             _lastRebuildTick = Environment.TickCount64;
 
             _sortBuffer.Clear();
+            var modal = ActiveModal;
             foreach (var node in _nodes.Keys)
             {
                 if (node is not SkiaControl control || !control.IsVisible || control.IsDisposed)
+                    continue;
+                // a modal overlay is shown: only its own nodes, and those of popup windows opened over it
+                if (modal != null && !IsDescendantOrSelf(control, modal) && !IsInPopupWindow(control))
                     continue;
                 // not drawn: an ancestor is hidden (e.g. the root page kept mounted under a pushed page)
                 if (IsHiddenByAncestor(control))
@@ -869,6 +1034,20 @@ namespace DrawnUi.Views
 
             Snapshot = snapshot;
             Changed?.Invoke();
+
+            if (!IsScreenReaderRunning())
+            {
+                // no screen reader to strand: a focus whose control left goes to nothing, as in browsers, so the keys
+                // belong to the app again (a game screen) until the next Tab or arrow starts navigation
+                ReaderNode = null;
+                var focused = FocusedNode;
+                if (focused != null && Array.FindIndex(snapshot, n => ReferenceEquals(n.Source, focused)) < 0)
+                {
+                    FocusedNode = null;
+                    FocusChanged?.Invoke(null);
+                }
+                return;
+            }
 
             var reader = ReaderNode;
             if (reader != null && Array.FindIndex(snapshot, n => ReferenceEquals(n.Source, reader)) < 0)
@@ -910,7 +1089,10 @@ namespace DrawnUi.Views
                     continue;
 
                 var built = AccessibilityNode.From(node, _sortBuffer[i].Rect, scale);
-                if (!built.CanInteract && !string.IsNullOrEmpty(built.Label))
+                // a dialog keeps its name even when its title says it too (aria-labelledby): readers announce the
+                // dialog by name on entry, then read the title in its place
+                if (!built.CanInteract && !string.IsNullOrEmpty(built.Label)
+                    && built.Role != DrawnUi.Models.Aria.RoleDialog && built.Role != "alertdialog")
                 {
                     foreach (var pair in _parentBuffer)
                     {

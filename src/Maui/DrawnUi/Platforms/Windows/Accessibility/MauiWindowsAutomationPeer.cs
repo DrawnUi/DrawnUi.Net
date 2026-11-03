@@ -73,7 +73,7 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
 
         int current = FocusedPeer == null ? (forward ? -1 : focusable.Count) : focusable.IndexOf(FocusedPeer);
         int next    = forward ? current + 1 : current - 1;
-        if (manager?.KeyboardScope != null)
+        if (manager?.KeyboardScope != null || manager?.ActiveModal != null)
             next = (next + focusable.Count) % focusable.Count; // inside an open popup Tab goes round, it never leaves
 
         if (next < 0 || next >= focusable.Count)
@@ -436,7 +436,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, Microsoft.U
         "listitem"         => AutomationControlType.ListItem,
         "progressbar"      => AutomationControlType.ProgressBar,
         "tooltip"          => AutomationControlType.ToolTip,
-        "group"            => AutomationControlType.Group,
+        "group" or "radiogroup" => AutomationControlType.Group,
         "dialog"           => AutomationControlType.Pane,
         "alertdialog"      => AutomationControlType.Pane,
         "status"           => AutomationControlType.StatusBar,

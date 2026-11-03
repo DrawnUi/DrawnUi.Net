@@ -132,9 +132,19 @@
 
     @if (_accessibilityNodes.Length > 0)
     {
-        <div class="xaml-a11y-overlay">
+        @* the active modal: the overlay itself is the dialog (role, name, aria-modal), so readers leave the page around the
+           canvas alone; its controls are the overlay's elements, all inside it (aria-modal on a separate element would hide them) *@
+        var a11yModal = A11yModal();
+        <div class="xaml-a11y-overlay"
+             role="@(a11yModal == null ? null : a11yModal.Role ?? "dialog")"
+             aria-label="@a11yModal?.Label"
+             aria-modal="@(a11yModal == null ? null : "true")">
             @foreach (var node in _accessibilityNodes)
             {
+                @if (ReferenceEquals(node, a11yModal))
+                {
+                    continue;
+                }
                 @if (node.CanInteract)
                 {
                     <div @key="node.Id"
@@ -232,6 +242,13 @@
 
     private AccessibilityNode[] _accessibilityNodes = [];
 
+    // the node of the active modal, which the overlay itself stands for while it is shown
+    private AccessibilityNode? A11yModal()
+    {
+        var modal = AccessibilityManager.ActiveModal;
+        return modal == null ? null : Array.Find(_accessibilityNodes, n => ReferenceEquals(n.Source, modal));
+    }
+
     [Parameter]
     public SkiaControl? Content { get; set; }
 
@@ -305,6 +322,7 @@
             AccessibilityManager.Changed += OnA11yChanged;
             AccessibilityManager.KeyboardFocusRequested += OnA11yKeyboardFocusRequested;
             AccessibilityManager.ReaderRefocusRequested += OnA11yReaderRefocus;
+            KeyboardManager.KeyDown += OnArrowStartsNavigation;
         }
 
         if (_pendingA11yFocusId is { } focusId && _a11yElements.TryGetValue(focusId, out var element))
@@ -1050,8 +1068,17 @@
         AccessibilityManager.Changed -= OnA11yChanged;
         AccessibilityManager.KeyboardFocusRequested -= OnA11yKeyboardFocusRequested;
         AccessibilityManager.ReaderRefocusRequested -= OnA11yReaderRefocus;
+        KeyboardManager.KeyDown -= OnArrowStartsNavigation;
 
         OnDisposing();
+    }
+
+    // nothing in focus yet: an arrow starts keyboard navigation as Tab does, when the app asked for it
+    // (ArrowsStartKeyboardNavigation); the overlay then moves the browser focus to that node
+    private void OnArrowStartsNavigation(object? sender, InputKey key)
+    {
+        if (!KeyboardManager.IsKeyForOtherElement && HasNoKeyboardFocus && ArrowStartsNavigation(key) is { } forward)
+            AccessibilityManager.FocusFirstTabStop(forward, (float)RenderingScale);
     }
 
     private void OnA11yChanged()

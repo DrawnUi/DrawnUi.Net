@@ -92,6 +92,44 @@ public class KeyboardNavigationTests
     }
 
     [Fact]
+    public void Arrows_StartNavigation_OnlyWhenTheAppAsks()
+    {
+        var (host, buttons, _) = Build(_ => { });
+        using var _ = host;
+        var canvas = host.Canvas;
+
+        Assert.False(canvas.HandleKeyboardNavigation(InputKey.ArrowDown, false)); // off: a game keeps its arrows
+        Assert.Null(canvas.KeyboardFocusNode);
+
+        canvas.ArrowsStartKeyboardNavigation = true;
+        Press(host, InputKey.ArrowDown);
+        Assert.Same(buttons[0], canvas.KeyboardFocusNode); // as the first Tab
+
+        canvas.KeyboardFocusNode = null;
+        canvas.AccessibilityManager.NotifyFocused(null);
+        Press(host, InputKey.ArrowUp);
+        Assert.Same(buttons[1], canvas.KeyboardFocusNode); // as the first Shift+Tab
+    }
+
+    [Fact]
+    public void Arrows_SkipHiddenItems_InOnePress()
+    {
+        var (host, _, items) = Build(_ => { });
+        using var _ = host;
+        var canvas = host.Canvas;
+        items[1].IsVisible = false; // a feature switched off in a menu
+        host.AdvanceFrames(3);
+
+        Press(host, InputKey.Tab);
+        Press(host, InputKey.Tab);
+        Assert.Same(items[0], canvas.KeyboardFocusNode);
+        Press(host, InputKey.ArrowDown);
+        Assert.Same(items[2], canvas.KeyboardFocusNode);
+        Press(host, InputKey.ArrowUp);
+        Assert.Same(items[0], canvas.KeyboardFocusNode);
+    }
+
+    [Fact]
     public void Tab_WalksTheNewContent_WhenTheSnapshotRebuildWasSkipped()
     {
         var (host, buttons, _) = Build(_ => { });

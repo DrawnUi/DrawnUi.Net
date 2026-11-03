@@ -3267,6 +3267,8 @@ namespace DrawnUi.Draw
             Superview?.UnregisterGestureListener(this as ISkiaGestureListener);
             Superview?.UnregisterAllAnimatorsByParent(this);
             Superview?.AccessibilityManager.UnregisterSubtree(this);
+            if (_accessibilityModal)
+                SkiaAccessibilityManager.Modals.TryRemove(this, out _);
         }
 
         protected object lockPausingAnimators = new();
@@ -5260,7 +5262,7 @@ namespace DrawnUi.Draw
         /// </summary>
         public string? AccessibilityRole
         {
-            get => _accessibilityRole ?? GetDefaultAccessibilityRole();
+            get => _accessibilityRole ?? (_accessibilityModal ? DrawnUi.Models.Aria.RoleDialog : GetDefaultAccessibilityRole());
             set
             {
                 if (_accessibilityRole != value)
@@ -5278,7 +5280,7 @@ namespace DrawnUi.Draw
         protected virtual string? DefaultAccessibilityLabel() => null;
 
         /// <summary>Interaction default when <see cref="AccessibilityCanInteract"/> is not set: has a Tapped handler.</summary>
-        protected virtual bool DefaultAccessibilityCanInteract() => Tapped != null;
+        protected virtual bool DefaultAccessibilityCanInteract() => Tapped != null && !_accessibilityModal; // a modal's own tap (outside closes) is no keyboard stop
 
         /// <summary>Toggle state default when <see cref="AccessibilityIsPressed"/> is not set (toggles report IsToggled).</summary>
         protected virtual bool? DefaultAccessibilityIsPressed() => null;
@@ -5355,10 +5357,14 @@ namespace DrawnUi.Draw
         /// <summary>
         /// True when the last canvas frame showed this control: every ancestor drew it in its latest pass over its
         /// children, live or into the cache it is blitted from. False for a control a layout stopped drawing
-        /// (scrolled out of a virtualized layout, hidden page), whose position properties keep the last drawn values.
+        /// (scrolled out of a virtualized layout, hidden page), whose position properties keep the last drawn values,
+        /// and for a disposed control or one that is on no canvas.
         /// </summary>
         public bool WasInLastFrame()
         {
+            if (IsDisposed)
+                return false;
+
             var control = this;
             while (control.Parent is SkiaControl parent)
             {
@@ -5368,8 +5374,8 @@ namespace DrawnUi.Draw
             }
 
             // the top control was rendered by the canvas in its latest frame (or the one in progress)
-            var frame = Superview?.FrameNumber ?? 0;
-            return control.RenderedFrame >= frame - 1;
+            var view = Superview;
+            return view != null && control.RenderedFrame >= view.FrameNumber - 1;
         }
 
         private bool? _accessibilityCanInteract;
@@ -5403,6 +5409,32 @@ namespace DrawnUi.Draw
                     _accessibilityIsPressed = value;
                     AccessibilityChanged();
                 }
+            }
+        }
+
+        private bool _accessibilityModal;
+
+        /// <summary>
+        /// A modal overlay (aria-modal), such as a dialog drawn over the screen: while it is shown, screen readers and
+        /// Tab reach only its controls (and open popup windows); the content around it leaves accessibility until it
+        /// goes. With several, the one drawn on top wins. The keyboard moves into it when it appears while the
+        /// keyboard is in use, and back when it goes. Taps are not affected: blocking them is the backdrop's job.
+        /// Without a role of its own it reads as a dialog. Default false: nothing changes unless an app sets it.
+        /// </summary>
+        public bool AccessibilityModal
+        {
+            get => _accessibilityModal;
+            set
+            {
+                if (_accessibilityModal == value)
+                    return;
+
+                _accessibilityModal = value;
+                if (value)
+                    SkiaAccessibilityManager.Modals.TryAdd(this, 0);
+                else
+                    SkiaAccessibilityManager.Modals.TryRemove(this, out _);
+                AccessibilityChanged();
             }
         }
 
@@ -8706,6 +8738,10 @@ namespace DrawnUi.Draw
                 if (UpdateLocks > 0)
                 {
                     _neededUpdate = true;
+                    // the unlock replays it inside the draw, where updates ask for no frame: an update from another
+                    // thread (a background bake) asks the canvas for the next frame now
+                    if (Superview is { } view && !view.IsDrawingOnCurrentThread)
+                        view.Update();
                     return;
                 }
 

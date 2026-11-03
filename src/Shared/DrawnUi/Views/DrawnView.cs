@@ -68,7 +68,9 @@ namespace DrawnUi.Views
 #if ONPLATFORM
             UpdatePlatform();
 #elif DRAWNUI_NET
-            if (!IsRendering)
+            // skipped only for updates the draw raises itself: another thread (a background bake publishing its
+            // pixels) may have changed what this frame already painted, so it gets the next frame
+            if (!IsDrawingOnCurrentThread)
                 UpdatePlatform();
 #endif
         }
@@ -233,6 +235,15 @@ namespace DrawnUi.Views
 
             gestureListener.GestureListenerRegistrationTime = null;
             GestureListeners.Remove(gestureListener);
+            OnGestureListenerUnregistered(gestureListener);
+        }
+
+        /// <summary>
+        /// A control left the canvas (removed or disposed): the canvas drops every reference its gesture dispatch
+        /// still holds to it, so a control that took the last input does not keep its tree alive.
+        /// </summary>
+        protected virtual void OnGestureListenerUnregistered(ISkiaGestureListener gestureListener)
+        {
         }
 
         protected object LockIterateListeners = new();
@@ -772,6 +783,15 @@ namespace DrawnUi.Views
         public bool HandleKeyboardNavigation(InputKey key, bool shift)
         {
             var current = KeyboardFocusNode ?? AccessibilityManager.FocusedNode;
+            if (AccessibilityManager.IsOutsideModal(current))
+                current = null; // a control behind a dialog (tapped before it opened): navigation starts in the dialog
+
+            // nothing in focus yet: an arrow starts keyboard navigation as Tab does, when the app asked for it
+            if (current == null && ArrowStartsNavigation(key) is { } forward)
+            {
+                key = InputKey.Tab;
+                shift = !forward;
+            }
 
             if (key == InputKey.Tab)
             {
@@ -812,6 +832,39 @@ namespace DrawnUi.Views
             KeyboardFocusNode ??= current; // the keyboard is in use: the ring shows
             return true;
         }
+
+        /// <summary>
+        /// While nothing has keyboard focus, the arrow keys start keyboard navigation as the first Tab does: Down and
+        /// Right go to the first Tab stop, Up and Left to the last, and the key is used for that. Once a control has
+        /// focus, the arrows work as usual (inside a list or a menu). Off by default, since games use the arrows as
+        /// their own keys while nothing is focused: an app turns it on for its menu screens and off while playing.
+        /// </summary>
+        public bool ArrowsStartKeyboardNavigation { get; set; }
+
+        /// <summary>
+        /// With <see cref="ArrowsStartKeyboardNavigation"/> on, the direction an arrow key starts navigation in: true
+        /// forward (Down, Right), false backward (Up, Left); null for other keys or when it is off. The heads call it
+        /// when no drawn node has keyboard focus.
+        /// </summary>
+        /// <summary>
+        /// No drawn control has keyboard focus that navigation can use: none at all, or only one behind a modal overlay
+        /// that is shown. Then Tab, or an arrow with <see cref="ArrowsStartKeyboardNavigation"/>, starts navigation.
+        /// </summary>
+        public bool HasNoKeyboardFocus
+        {
+            get
+            {
+                var focus = KeyboardFocusNode ?? AccessibilityManager.FocusedNode;
+                return focus == null || AccessibilityManager.IsOutsideModal(focus);
+            }
+        }
+
+        public bool? ArrowStartsNavigation(InputKey key) => !ArrowsStartKeyboardNavigation ? null : key switch
+        {
+            InputKey.ArrowDown or InputKey.ArrowRight => true,
+            InputKey.ArrowUp or InputKey.ArrowLeft => false,
+            _ => null,
+        };
 
         private static void SetKeyboardFocusInScrolls(ISkiaAccessibilityNode node, bool inside)
         {
@@ -1508,6 +1561,14 @@ namespace DrawnUi.Views
         public DrawnView()
         {
             Init();
+            // the focus went to nothing (its control left the screen, no screen reader running): the keyboard focus
+            // and its ring go with it, so the keys belong to the app again. When a screen reader moved on from a control
+            // that left the screen, the keyboard focus follows it.
+            AccessibilityManager.FocusChanged += node =>
+            {
+                if (_keyboardFocusNode != null && (node == null || !AccessibilityManager.IsInSnapshot(_keyboardFocusNode)))
+                    KeyboardFocusNode = node;
+            };
         }
 
         public Action<SKPath, SKRect> Clipping { get; set; }
@@ -1871,12 +1932,25 @@ namespace DrawnUi.Views
                 return false;
 
             TimeDrawingStarted = DateTime.Now;
+            _renderingThread = Environment.CurrentManagedThreadId;
             IsRendering = true;
 
             IsDirty = false; //any control can set to true after that
+            OnFrameStarted();
 
             return true;
         }
+
+        private int _renderingThread;
+
+        /// <summary>
+        /// The caller runs inside the draw of the current frame. Updates raised there are part of that frame; an update
+        /// from another thread (a background bake publishing its pixels) may change what the frame already painted.
+        /// </summary>
+        public bool IsDrawingOnCurrentThread => IsRendering && Environment.CurrentManagedThreadId == _renderingThread;
+
+        /// <summary>A frame started drawing; the heads that signal frame requests rearm here.</summary>
+        partial void OnFrameStarted();
 
         public SkiaAccessibilityManager AccessibilityManager { get; } = new();
 

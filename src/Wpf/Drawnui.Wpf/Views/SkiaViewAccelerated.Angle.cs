@@ -247,13 +247,6 @@ public partial class SkiaViewAccelerated : FrameworkElement, ISkiaDrawable
 	}
 
 	/// <inheritdoc/>
-	protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-	{
-		base.OnRenderSizeChanged(sizeInfo);
-		ReleaseSurface();
-	}
-
-	/// <inheritdoc/>
 	protected override void OnRender(WpfDrawingContext drawingContext)
 	{
 		base.OnRender(drawingContext);

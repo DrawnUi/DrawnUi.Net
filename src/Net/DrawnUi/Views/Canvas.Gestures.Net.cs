@@ -37,6 +37,17 @@ public partial class Canvas
         _gestureOwner = consumed;
     }
 
+    /// <inheritdoc/>
+    protected override void OnGestureListenerUnregistered(ISkiaGestureListener gestureListener)
+    {
+        lock (LockIterateListeners)
+        {
+            HadInput.Remove(gestureListener.Uid);
+            if (ReferenceEquals(_gestureOwner, gestureListener))
+                _gestureOwner = null;
+        }
+    }
+
     /// <summary>
     /// Whether a control used the last processed gesture (consumed it and is not only a BlockGesturesBelow layer).
     /// The web head reads it to decide if the browser may still scroll the page with that wheel.

@@ -21,6 +21,7 @@ public partial class SkiaShell
             if (backgroundColor == null)
                 backgroundColor = PopupBackgroundColor;
             _color = backgroundColor;
+            AccessibilityModal = true; // screen readers and Tab stay in the modal while it is open
             _useGestures = useGestures;
         }
 

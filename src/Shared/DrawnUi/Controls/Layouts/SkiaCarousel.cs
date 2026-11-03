@@ -63,6 +63,30 @@ public class SkiaCarousel : SnappingLayout
             velocity.Y = 0;
         }
 
+        if (ApplyLoopedLogic && _releaseHome is { } home && SnapPoints.Count > 1)
+        {
+            // A finger release on a looped carousel: one slide at most from the slide the gesture started on, counted
+            // along the strip, so across the edge it is the virtual slot next to it. A flick goes one slide its way, a
+            // slow drag to the nearest of that slide and its two neighbours. Measured from the slide nearest the
+            // release instead, a drag past the middle went one slide too far or the wrong way at the wrap.
+            var step = SnapPoints[1] - SnapPoints[0];
+            var stepAxis = IsVertical ? step.Y : step.X;
+            if (stepAxis != 0)
+            {
+                var vel = IsVertical ? velocity.Y : velocity.X;
+                var moved = IsVertical ? location.Y - home.Y : location.X - home.X;
+                var k = vel != 0
+                    ? Math.Sign(vel) * Math.Sign(stepAxis)
+                    : Math.Clamp((int)Math.Round(moved / stepAxis), -1, 1);
+                var target = home + step * k;
+                if (Vector2.Distance(location, target) >= 0.5)
+                    ScrollToOffset(target, velocity, CanAnimate);
+                else
+                    UpdateReportedPosition();
+                return;
+            }
+        }
+
         if (ApplyLoopedLogic)
         {
             // Use the nearest real snap as origin to avoid multi-step jumps
@@ -274,10 +298,23 @@ public class SkiaCarousel : SnappingLayout
         {
             if (SelectedIndex >= 0 && SelectedIndex < SnapPoints.Count)
             {
-                var snap = GetVirtualAnchor(CurrentPosition, Vector2.Zero);
-                var offset = CurrentPosition - snap.Location;
-
                 var snapPoint = SnapPoints[SelectedIndex];
+
+                // the offset is measured from the anchor that stands for the selected slide where the position is now:
+                // the slide itself or its virtual copy past an edge. Measured from the nearest anchor of another slide
+                // it moved a wrap in progress (last slide 3% toward the first) onto another pair (first toward second).
+                var last = SnapPoints.Count - 1;
+                var anchor = snapPoint;
+                foreach (var candidate in GetVirtualSnapPoints())
+                {
+                    var standsFor = candidate.Id == SelectedIndex
+                                    || candidate.Id == -1 && SelectedIndex == last
+                                    || candidate.Id == -2 && SelectedIndex == 0;
+                    if (standsFor && Vector2.Distance(candidate.Location, CurrentPosition) < Vector2.Distance(anchor, CurrentPosition))
+                        anchor = candidate.Location;
+                }
+
+                var offset = CurrentPosition - anchor;
 
                 CurrentSnap = snapPoint;
                 CurrentPosition = snapPoint + offset;
@@ -391,6 +428,12 @@ public class SkiaCarousel : SnappingLayout
     protected override int RenderViewsList(DrawingContext context, IEnumerable<SkiaControl> skiaControls)
     {
         var drawn = 0;
+
+        if (_viewportDirty)
+        {
+            _viewportDirty = false;
+            SetupViewport();
+        }
 
         if (CanRender)
         {
@@ -1185,8 +1228,20 @@ public class SkiaCarousel : SnappingLayout
     {
         base.OnLayoutChanged();
 
-        SetupViewport();
+        if (DynamicSize)
+        {
+            SetupViewport(); // it sizes itself to the selected slide: at once, never a frame drawn at the old size
+            return;
+        }
+
+        // set up when the carousel draws, at its final size: a parent's measure pass can arrange it at a provisional size
+        // first (a stack measuring at an unbounded width), and setting up the slides for that size moved the position
+        // under a running animation, two slides flickering until it ended
+        _viewportDirty = true;
+        Update();
     }
+
+    private bool _viewportDirty;
 
     protected void SetupViewport()
     {
@@ -1210,12 +1265,18 @@ public class SkiaCarousel : SnappingLayout
 
                 ApplyDynamicSize(SelectedIndex);
             }
-            else
+            else if (!ChildrenInitialized || Width != _initializedSize.Width || Height != _initializedSize.Height
+                     || ChildrenFactory.GetChildrenCount() != ChildrenTotal)
             {
                 InitializeChildren();
             }
+            // else: arranged again at the same size with the same slides (a sibling's text changed the page layout): the
+            // snap points are the same, and rebuilding them put the position on the selected slide under a running
+            // animation, which wrote its own position back the next frame (two slides flickering at a looped wrap)
         }
     }
+
+    private SKSize _initializedSize;
 
 
     protected bool ChildrenInitialized;
@@ -1270,6 +1331,7 @@ public class SkiaCarousel : SnappingLayout
         float currentPosition = 0;
 
         var cellSize = new SKSize((float)Width, (float)Height);
+        _initializedSize = cellSize;
         var cellsToRelease = new List<SkiaControl>();
         try
         {

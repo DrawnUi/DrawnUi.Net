@@ -390,6 +390,10 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         if (peer == null)
             return false;
 
+        // a control behind a dialog (tapped before it opened) is no focus: Tab, an arrow or Enter starts in the dialog
+        if (Canvas.AccessibilityManager.IsOutsideModal(peer.FocusedPeer?.Source))
+            peer.ClearVirtualFocus();
+
         switch (e.Key)
         {
             case Key.Tab:
@@ -406,6 +410,15 @@ public class DrawnUiElement : FrameworkElement, IDisposable
                 peer.ClearVirtualFocus();
                 InvalidateFocusRing();
                 return true;
+        }
+
+        // nothing in focus yet: an arrow starts keyboard navigation as Tab does, when the app asked for it
+        if (peer.FocusedPeer == null && Canvas.ArrowStartsNavigation(KeyboardManager.MapKey(e.Key)) is { } forward)
+        {
+            _keyboardNavigating = true;
+            var started = peer.MoveFocus(forward);
+            InvalidateFocusRing();
+            return started;
         }
 
         // arrows / Home / End / PageUp / PageDown go to the node in focus (a slider steps its value), else move focus
@@ -486,7 +499,8 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
     {
         base.OnRenderSizeChanged(sizeInfo);
-        ReleaseSurface();
+        // The next frame makes the surface of the new size and draws it in the same tick, so WPF never shows an
+        // empty view between them; the last frame stays up until then.
         Canvas.Update();
     }
 
