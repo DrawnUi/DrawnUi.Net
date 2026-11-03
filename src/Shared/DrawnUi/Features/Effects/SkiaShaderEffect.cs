@@ -359,7 +359,7 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
                 {
                     _frozenSnapshotOwned = false;
 
-                    var snapshot = Parent?.CachedImage ?? CachedTexture.None;
+                    var snapshot = ParentCache(destination);
                     if (!snapshot.IsValid && AutoCreateInputTexture)
                     {
                         // a snapshot we take ourselves spans exactly the destination
@@ -375,18 +375,45 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
                 // moved since the capture, the frozen pixels must still land on the control, so
                 // the bounds follow the destination. A frozen PARENT CACHE keeps its own bounds.
                 if (Parent != null && ReferenceEquals(_frozenSnapshot.Image, Parent.CachedImage.Image))
-                    return _frozenSnapshot;
+                    return new CachedTexture(_frozenSnapshot.Image, ParentCache(destination).Bounds);
 
                 return new CachedTexture(_frozenSnapshot.Image, destination);
 
             default: // Always
-                var cached = Parent?.CachedImage ?? CachedTexture.None;
+                var cached = ParentCache(destination);
                 if (!cached.IsValid && AutoCreateInputTexture)
                 {
                     return new CachedTexture(CreateSnapshot(ctx, destination), destination);
                 }
                 return cached;
         }
+    }
+
+    /// <summary>The parent's cache as the input texture, placed where it is drawn now, see <see cref="CacheAt"/>.</summary>
+    protected CachedTexture ParentCache(SKRect destination) => CacheAt(Parent, destination);
+
+    /// <summary>
+    /// The cache of <paramref name="control"/>, a control that spans <paramref name="destination"/>, as a texture placed
+    /// where it is drawn now. A cache keeps the bounds it was recorded at; after its control moved (scrolled with its page)
+    /// the effect draws at the current destination, and the shader samples the texture from there (iOffset).
+    /// </summary>
+    protected static CachedTexture CacheAt(SkiaControl control, SKRect destination)
+    {
+        var cached = control?.CachedImage ?? CachedTexture.None;
+        if (!cached.IsValid || control.RenderObject is not { } cache)
+            return cached;
+
+        // an image cache can be larger than the control (shadows): its pixels start at Bounds - RecordingArea from the
+        // control's top-left; a picture's image starts at the control's top-left (CachedObject.GetPictureImage)
+        var left = destination.Left;
+        var top = destination.Top;
+        if (cache.Picture == null)
+        {
+            left += cache.Bounds.Left - cache.RecordingArea.Left;
+            top += cache.Bounds.Top - cache.RecordingArea.Top;
+        }
+
+        return new CachedTexture(cached.Image, SKRect.Create(left, top, cache.Bounds.Width, cache.Bounds.Height));
     }
 
     // ─── Rendering ──────────────────────────────────────────────────────────
