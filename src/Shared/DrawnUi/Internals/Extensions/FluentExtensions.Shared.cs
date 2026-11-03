@@ -91,6 +91,16 @@ namespace DrawnUi.Draw
             return control.WithAccessibility(role, label, label, canInteract);
         }
 
+        /// <summary>
+        /// Marks a dialog drawn over the screen as modal (<see cref="SkiaControl.AccessibilityModal"/>): while it is
+        /// shown, screen readers and Tab reach only its controls.
+        /// </summary>
+        public static T WithAccessibilityModal<T>(this T control, bool modal = true) where T : SkiaControl
+        {
+            control.AccessibilityModal = modal;
+            return control;
+        }
+
         public static T WithAccessibilityButton<T>(this T control,
             string label,
             string? hint = null) where T : SkiaControl
