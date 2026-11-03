@@ -382,8 +382,10 @@ public class DrawnUiWindow : GameWindow
             return;
         }
 
-        if (_canvas.FocusedChild is not SkiaEditor && _canvas.KeyboardFocusNode != null
-            && OpenTkKeyMapper.Map(e.Key) is { } key && _canvas.HandleKeyboardNavigation(key, shift))
+        // with nothing in keyboard focus only the arrows can start navigation, and only when the app asked for it
+        if (_canvas.FocusedChild is not SkiaEditor && OpenTkKeyMapper.Map(e.Key) is { } key
+            && (_canvas.KeyboardFocusNode != null || (_canvas.AccessibilityManager.FocusedNode == null && _canvas.ArrowStartsNavigation(key) != null))
+            && _canvas.HandleKeyboardNavigation(key, shift))
             return;
 
         switch (e.Key)

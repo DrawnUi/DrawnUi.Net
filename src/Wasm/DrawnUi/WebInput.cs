@@ -238,7 +238,13 @@ public static partial class WebInput
     [JSExport]
     public static void OnKeyDown(string code, bool forOtherElement)
     {
-        KeyboardManager.KeyboardPressed(MapCode(code), forOtherElement);
+        var key = MapCode(code);
+        KeyboardManager.KeyboardPressed(key, forOtherElement);
+
+        // nothing in focus yet: an arrow starts keyboard navigation as Tab does, when the app asked for it
+        if (!forOtherElement && TargetCanvas is { KeyboardFocusNode: null } canvas
+            && canvas.AccessibilityManager.FocusedNode == null && canvas.ArrowStartsNavigation(key) is { } forward)
+            canvas.AccessibilityManager.FocusFirstTabStop(forward, (float)canvas.RenderingScale);
     }
 
     /// <summary>

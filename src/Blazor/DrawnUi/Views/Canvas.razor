@@ -305,6 +305,7 @@
             AccessibilityManager.Changed += OnA11yChanged;
             AccessibilityManager.KeyboardFocusRequested += OnA11yKeyboardFocusRequested;
             AccessibilityManager.ReaderRefocusRequested += OnA11yReaderRefocus;
+            KeyboardManager.KeyDown += OnArrowStartsNavigation;
         }
 
         if (_pendingA11yFocusId is { } focusId && _a11yElements.TryGetValue(focusId, out var element))
@@ -1050,8 +1051,18 @@
         AccessibilityManager.Changed -= OnA11yChanged;
         AccessibilityManager.KeyboardFocusRequested -= OnA11yKeyboardFocusRequested;
         AccessibilityManager.ReaderRefocusRequested -= OnA11yReaderRefocus;
+        KeyboardManager.KeyDown -= OnArrowStartsNavigation;
 
         OnDisposing();
+    }
+
+    // nothing in focus yet: an arrow starts keyboard navigation as Tab does, when the app asked for it
+    // (ArrowsStartKeyboardNavigation); the overlay then moves the browser focus to that node
+    private void OnArrowStartsNavigation(object? sender, InputKey key)
+    {
+        if (!KeyboardManager.IsKeyForOtherElement && KeyboardFocusNode == null && AccessibilityManager.FocusedNode == null
+            && ArrowStartsNavigation(key) is { } forward)
+            AccessibilityManager.FocusFirstTabStop(forward, (float)RenderingScale);
     }
 
     private void OnA11yChanged()

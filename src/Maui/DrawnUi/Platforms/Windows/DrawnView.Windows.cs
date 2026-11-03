@@ -446,7 +446,15 @@ namespace DrawnUi.Views
             }
             else if (peer.FocusedPeer == null)
             {
-                // no drawn node holds keyboard focus: the key is not ours (the app still gets it from KeyboardManager)
+                // no drawn node holds keyboard focus: the key is not ours (the app still gets it from KeyboardManager),
+                // except an arrow that starts keyboard navigation as Tab does, when the app asked for it
+                if (ArrowStartsNavigation(KeyboardManager.MapToMaui(key)) is { } forward)
+                {
+                    var started = peer.MoveFocusToNext(forward);
+                    KeyboardFocusNode = peer.FocusedPeer?.Source;
+                    if (started)
+                        e.Handled = true;
+                }
             }
             else if (key == Windows.System.VirtualKey.Enter || key == Windows.System.VirtualKey.Space)
             {

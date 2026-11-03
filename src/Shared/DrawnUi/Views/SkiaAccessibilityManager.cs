@@ -797,6 +797,21 @@ namespace DrawnUi.Views
             }
         }
 
+        /// <summary>
+        /// Starts keyboard navigation as the first Tab or Shift+Tab does: the keyboard focus goes to the first Tab
+        /// stop, or the last when <paramref name="forward"/> is false, and the heads follow (the web overlay moves the
+        /// browser focus there). Used by heads whose keys arrive through KeyboardManager, for
+        /// <see cref="DrawnView.ArrowsStartKeyboardNavigation"/>. False when there is no Tab stop.
+        /// </summary>
+        public bool FocusFirstTabStop(bool forward, float scale)
+        {
+            RefreshIfStale(scale);
+            if (NextTabStop(null, forward) is not { } first)
+                return false;
+            FocusFromKeyboard(first, scale);
+            return true;
+        }
+
         private void FocusFromKeyboard(ISkiaAccessibilityNode node, float scale)
         {
             // the item is here: our scroll order is done, EnsureVisible below positions it

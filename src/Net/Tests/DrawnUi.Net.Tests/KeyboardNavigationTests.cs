@@ -92,6 +92,26 @@ public class KeyboardNavigationTests
     }
 
     [Fact]
+    public void Arrows_StartNavigation_OnlyWhenTheAppAsks()
+    {
+        var (host, buttons, _) = Build(_ => { });
+        using var _ = host;
+        var canvas = host.Canvas;
+
+        Assert.False(canvas.HandleKeyboardNavigation(InputKey.ArrowDown, false)); // off: a game keeps its arrows
+        Assert.Null(canvas.KeyboardFocusNode);
+
+        canvas.ArrowsStartKeyboardNavigation = true;
+        Press(host, InputKey.ArrowDown);
+        Assert.Same(buttons[0], canvas.KeyboardFocusNode); // as the first Tab
+
+        canvas.KeyboardFocusNode = null;
+        canvas.AccessibilityManager.NotifyFocused(null);
+        Press(host, InputKey.ArrowUp);
+        Assert.Same(buttons[1], canvas.KeyboardFocusNode); // as the first Shift+Tab
+    }
+
+    [Fact]
     public void Arrows_SkipHiddenItems_InOnePress()
     {
         var (host, _, items) = Build(_ => { });

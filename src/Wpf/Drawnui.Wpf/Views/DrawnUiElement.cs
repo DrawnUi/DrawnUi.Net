@@ -408,6 +408,15 @@ public class DrawnUiElement : FrameworkElement, IDisposable
                 return true;
         }
 
+        // nothing in focus yet: an arrow starts keyboard navigation as Tab does, when the app asked for it
+        if (peer.FocusedPeer == null && Canvas.ArrowStartsNavigation(KeyboardManager.MapKey(e.Key)) is { } forward)
+        {
+            _keyboardNavigating = true;
+            var started = peer.MoveFocus(forward);
+            InvalidateFocusRing();
+            return started;
+        }
+
         // arrows / Home / End / PageUp / PageDown go to the node in focus (a slider steps its value), else move focus
         // between the items of the list around it; the keyboard is in use, so the ring shows
         if (!SkiaAccessibilityManager.Key(peer.FocusedPeer?.Source, KeyboardManager.MapKey(e.Key)))

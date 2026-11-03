@@ -773,6 +773,13 @@ namespace DrawnUi.Views
         {
             var current = KeyboardFocusNode ?? AccessibilityManager.FocusedNode;
 
+            // nothing in focus yet: an arrow starts keyboard navigation as Tab does, when the app asked for it
+            if (current == null && ArrowStartsNavigation(key) is { } forward)
+            {
+                key = InputKey.Tab;
+                shift = !forward;
+            }
+
             if (key == InputKey.Tab)
             {
                 AccessibilityManager.RefreshIfStale(RenderingScale);
@@ -812,6 +819,26 @@ namespace DrawnUi.Views
             KeyboardFocusNode ??= current; // the keyboard is in use: the ring shows
             return true;
         }
+
+        /// <summary>
+        /// While nothing has keyboard focus, the arrow keys start keyboard navigation as the first Tab does: Down and
+        /// Right go to the first Tab stop, Up and Left to the last, and the key is used for that. Once a control has
+        /// focus, the arrows work as usual (inside a list or a menu). Off by default, since games use the arrows as
+        /// their own keys while nothing is focused: an app turns it on for its menu screens and off while playing.
+        /// </summary>
+        public bool ArrowsStartKeyboardNavigation { get; set; }
+
+        /// <summary>
+        /// With <see cref="ArrowsStartKeyboardNavigation"/> on, the direction an arrow key starts navigation in: true
+        /// forward (Down, Right), false backward (Up, Left); null for other keys or when it is off. The heads call it
+        /// when no drawn node has keyboard focus.
+        /// </summary>
+        public bool? ArrowStartsNavigation(InputKey key) => !ArrowsStartKeyboardNavigation ? null : key switch
+        {
+            InputKey.ArrowDown or InputKey.ArrowRight => true,
+            InputKey.ArrowUp or InputKey.ArrowLeft => false,
+            _ => null,
+        };
 
         private static void SetKeyboardFocusInScrolls(ISkiaAccessibilityNode node, bool inside)
         {
