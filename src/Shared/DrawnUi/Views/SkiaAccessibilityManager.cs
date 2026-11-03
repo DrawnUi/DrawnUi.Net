@@ -737,13 +737,21 @@ namespace DrawnUi.Views
             if (request == null)
                 return;
 
-            var cell = ItemAt(request.Group, request.Index);
-            if (cell != null && IndexOf(request.Group, cell) != request.Index)
-                cell = null; // a recycled cell still mapped to this slot while the list scrolls, but bound to another item
-
-            if (cell != null && cell.WasInLastFrame())
+            SkiaControl? CellAt(int index)
             {
-                var node = FindTarget(cell);
+                var item = ItemAt(request.Group, index);
+                // a recycled cell still mapped to this slot while the list scrolls, but bound to another item
+                return item != null && IndexOf(request.Group, item) == index ? item : null;
+            }
+
+            // a hidden item (IsVisible false, transparent) is never drawn: skip it at once like one that takes no input,
+            // instead of waiting for it to be drawn
+            static bool Hidden(SkiaControl item) => !item.IsVisible || item.Opacity <= 0;
+
+            var cell = CellAt(request.Index);
+            while (cell != null && (Hidden(cell) || cell.WasInLastFrame()))
+            {
+                var node = Hidden(cell) ? null : FindTarget(cell);
                 if (node != null)
                 {
                     ClearGroupRequest(request);
@@ -761,8 +769,10 @@ namespace DrawnUi.Views
 
                 request.Deadline = Environment.TickCount64 + 3000;
                 request.ScrollIssued = false;
+                cell = CellAt(request.Index);
             }
-            else if (Environment.TickCount64 > request.Deadline || request.Group.IsDisposed)
+
+            if (Environment.TickCount64 > request.Deadline || request.Group.IsDisposed)
             {
                 ClearGroupRequest(request);
                 return;

@@ -92,6 +92,24 @@ public class KeyboardNavigationTests
     }
 
     [Fact]
+    public void Arrows_SkipHiddenItems_InOnePress()
+    {
+        var (host, _, items) = Build(_ => { });
+        using var _ = host;
+        var canvas = host.Canvas;
+        items[1].IsVisible = false; // a feature switched off in a menu
+        host.AdvanceFrames(3);
+
+        Press(host, InputKey.Tab);
+        Press(host, InputKey.Tab);
+        Assert.Same(items[0], canvas.KeyboardFocusNode);
+        Press(host, InputKey.ArrowDown);
+        Assert.Same(items[2], canvas.KeyboardFocusNode);
+        Press(host, InputKey.ArrowUp);
+        Assert.Same(items[0], canvas.KeyboardFocusNode);
+    }
+
+    [Fact]
     public void Tab_WalksTheNewContent_WhenTheSnapshotRebuildWasSkipped()
     {
         var (host, buttons, _) = Build(_ => { });
