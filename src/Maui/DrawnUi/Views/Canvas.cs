@@ -556,6 +556,17 @@ public class Canvas : DrawnView, IGestureListener
         _gestureOwner = consumed;
     }
 
+    /// <inheritdoc/>
+    protected override void OnGestureListenerUnregistered(ISkiaGestureListener gestureListener)
+    {
+        lock (LockIterateListeners)
+        {
+            HadInput.Remove(gestureListener.Uid);
+            if (ReferenceEquals(_gestureOwner, gestureListener))
+                _gestureOwner = null;
+        }
+    }
+
     protected virtual void ProcessGestures(SkiaGesturesParameters args)
     {
         lock (LockIterateListeners)

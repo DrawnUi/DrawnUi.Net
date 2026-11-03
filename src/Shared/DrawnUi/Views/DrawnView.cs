@@ -233,6 +233,15 @@ namespace DrawnUi.Views
 
             gestureListener.GestureListenerRegistrationTime = null;
             GestureListeners.Remove(gestureListener);
+            OnGestureListenerUnregistered(gestureListener);
+        }
+
+        /// <summary>
+        /// A control left the canvas (removed or disposed): the canvas drops every reference its gesture dispatch
+        /// still holds to it, so a control that took the last input does not keep its tree alive.
+        /// </summary>
+        protected virtual void OnGestureListenerUnregistered(ISkiaGestureListener gestureListener)
+        {
         }
 
         protected object LockIterateListeners = new();

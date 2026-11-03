@@ -40,6 +40,17 @@ public partial class Canvas : IGestureListener
         _gestureOwner = consumed;
     }
 
+    /// <inheritdoc/>
+    protected override void OnGestureListenerUnregistered(ISkiaGestureListener gestureListener)
+    {
+        lock (LockIterateListeners)
+        {
+            HadInput.Remove(gestureListener.Uid);
+            if (ReferenceEquals(_gestureOwner, gestureListener))
+                _gestureOwner = null;
+        }
+    }
+
     /// <summary>The hover check: the last mouse position goes through the same pass as a real mouse move.</summary>
     protected override void OnHoverCheck(SkiaGesturesParameters pointer)
     {
