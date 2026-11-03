@@ -1874,9 +1874,13 @@ namespace DrawnUi.Views
             IsRendering = true;
 
             IsDirty = false; //any control can set to true after that
+            OnFrameStarted();
 
             return true;
         }
+
+        /// <summary>A frame started drawing; the heads that signal frame requests rearm here.</summary>
+        partial void OnFrameStarted();
 
         public SkiaAccessibilityManager AccessibilityManager { get; } = new();
 
