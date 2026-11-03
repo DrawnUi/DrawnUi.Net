@@ -1015,7 +1015,10 @@ namespace DrawnUi.Views
                     continue;
 
                 var built = AccessibilityNode.From(node, _sortBuffer[i].Rect, scale);
-                if (!built.CanInteract && !string.IsNullOrEmpty(built.Label))
+                // a dialog keeps its name even when its title says it too (aria-labelledby): readers announce the
+                // dialog by name on entry, then read the title in its place
+                if (!built.CanInteract && !string.IsNullOrEmpty(built.Label)
+                    && built.Role != DrawnUi.Models.Aria.RoleDialog && built.Role != "alertdialog")
                 {
                     foreach (var pair in _parentBuffer)
                     {

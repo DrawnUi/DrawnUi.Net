@@ -86,6 +86,21 @@ public class AccessibilityModalTests
     }
 
     [Fact]
+    public void Dialog_KeepsItsName_WhenItsTitleSaysItToo()
+    {
+        using var host = Scene(out var page);
+        var dialog = Dialog("Sound", "Close");
+        dialog.AccessibilityLabel = "Settings";
+        ((SkiaStack)dialog.Views[0]).Children.Insert(0, new SkiaLabel("Settings") { AccessibilityRole = Aria.RoleHeading });
+        page.AddSubView(dialog);
+        host.AdvanceFrames(4);
+
+        var snapshot = host.Canvas.AccessibilityManager.Snapshot;
+        Assert.Contains(snapshot, n => n.Role == Aria.RoleDialog && n.Label == "Settings" && !n.NamedByChild);
+        Assert.Contains(snapshot, n => n.Role == Aria.RoleHeading && n.Label == "Settings");
+    }
+
+    [Fact]
     public void TwoModals_TheTopWins_ClosingItHandsOver()
     {
         using var host = Scene(out var page);
