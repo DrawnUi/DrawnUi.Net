@@ -18,7 +18,8 @@ namespace DrawnUi.Views
         protected void UpdatePlatform()
         {
             IsDirty = true;
-            if (Interlocked.Exchange(ref _frameRequested, 1) == 0)
+            // a plain read first: after the first request of a frame, further updates skip the atomic exchange
+            if (Volatile.Read(ref _frameRequested) == 0 && Interlocked.Exchange(ref _frameRequested, 1) == 0)
                 FrameRequested?.Invoke(this, EventArgs.Empty);
         }
 
