@@ -1,4 +1,4 @@
-using DrawnUi.Draw;
+﻿using DrawnUi.Draw;
 using Microsoft.Maui.Controls;
 using SkiaSharp;
 using Xunit;
@@ -257,7 +257,7 @@ namespace UnitTests
             AssertRect(c.Destination, 0, 400, 300, 500);
         }
 
-        // ---- Auto stack whose only cross-axis children are Fill ----
+        // ---- Auto stack whose only cross-axis children are Fill: as wide as the widest child's content (fit-content) ----
 
         [Fact]
         public void Column_AutoWidth_OnlyFillXChildren_DoesNotCollapse()
@@ -269,8 +269,8 @@ namespace UnitTests
             stack.CommitInvalidations();
             stack.Measure(300, float.PositiveInfinity, 1);
 
-            Assert.Equal(300, stack.MeasuredSize.Pixels.Width); // was 0, children re-measured at width 0
-            Assert.Equal(300, a.MeasuredSize.Pixels.Width);
+            Assert.Equal(80, stack.MeasuredSize.Pixels.Width); // never 0: the Fill children's content sizes the stack
+            Assert.Equal(80, a.MeasuredSize.Pixels.Width);
         }
 
         [Fact]
@@ -283,7 +283,7 @@ namespace UnitTests
             stack.CommitInvalidations();
             stack.Measure(float.PositiveInfinity, 300, 1);
 
-            Assert.Equal(300, stack.MeasuredSize.Pixels.Height);
+            Assert.Equal(80, stack.MeasuredSize.Pixels.Height);
         }
 
         [Fact]

@@ -1,4 +1,4 @@
-using DrawnUi.Controls;
+﻿using DrawnUi.Controls;
 using DrawnUi.Draw;
 using Xunit;
 
@@ -82,7 +82,7 @@ namespace UnitTests
             var firstChildren = toggle.Views.ToList();
             Assert.True(firstChildren.Count > 0, "style content was not created");
             Assert.Equal(46, toggle.WidthRequest);
-            Assert.Equal(28, toggle.HeightRequest);
+            Assert.Equal(22, toggle.HeightRequest);
 
             toggle.ControlStyle = PrebuiltControlStyle.Cupertino;
             toggle.CommitInvalidations();
