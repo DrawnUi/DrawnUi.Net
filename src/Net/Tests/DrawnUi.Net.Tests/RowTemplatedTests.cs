@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using DrawnUi.Draw;
 using DrawnUi.Testing;
 using DrawnUi.Views;
@@ -64,7 +64,9 @@ public class RowTemplatedTests
     private static void Settle(HeadlessCanvasHost host, SkiaLayout row, int count)
     {
         host.AdvanceFrames(2); // the change is applied
-        for (var f = 0; f < 300; f++)
+        // background measuring runs on real threads: wait by time, a busy machine (the full test run) is slower
+        var waited = System.Diagnostics.Stopwatch.StartNew();
+        for (var f = 0; waited.ElapsedMilliseconds < 5000; f++)
         {
             if (row.GetStackStructure().GetCount() == count && row.LastMeasuredIndex == count - 1 && !row.IsBackgroundMeasuring)
                 break;
