@@ -842,6 +842,7 @@ namespace DrawnUi.Views
                     element.EffectiveViewportChanged += ElementOnEffectiveViewportChanged;
                     element.LayoutUpdated += ElementOnLayoutUpdated;
                 }
+                CompositionTarget.Rendering -= OnRendering; // a handler swap subscribes again
                 CompositionTarget.Rendering += OnRendering;
                 SetupWindowsAccessibility();
             }
@@ -849,6 +850,12 @@ namespace DrawnUi.Views
             {
                 TeardownWindowsAccessibility();
                 CompositionTarget.Rendering -= OnRendering;
+                // the app window lives on: its Activated event must not keep this canvas
+                if (_activationWindow != null)
+                {
+                    _activationWindow.Activated -= OnPlatformWindowActivated;
+                    _activationWindow = null;
+                }
                 if (Handler?.PlatformView is FrameworkElement element)
                 {
                     element.EffectiveViewportChanged -= ElementOnEffectiveViewportChanged;

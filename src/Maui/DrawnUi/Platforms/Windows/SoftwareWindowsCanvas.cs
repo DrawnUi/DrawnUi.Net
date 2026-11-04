@@ -40,6 +40,7 @@ namespace DrawnUi.Controls
             Loaded -= OnLoaded;
             Unloaded -= OnUnloaded;
             SizeChanged -= OnSizeChanged;
+            DetachXamlRoot();
             FreeBitmap();
         }
 
@@ -148,7 +149,8 @@ namespace DrawnUi.Controls
                 return;
 
 #if WINDOWS
-            XamlRoot.Changed += OnXamlRootChanged;
+            _xamlRoot = XamlRoot;
+            _xamlRoot.Changed += OnXamlRootChanged;
             OnXamlRootChanged();
 #else
 			var display = DisplayInformation.GetForCurrentView();
@@ -166,16 +168,26 @@ namespace DrawnUi.Controls
                 return;
 
 #if WINDOWS
-            if (XamlRoot != null)
-            {
-                XamlRoot.Changed -= OnXamlRootChanged;
-            }
+            DetachXamlRoot();
 #else
 			var display = DisplayInformation.GetForCurrentView();
 			display.DpiChanged -= OnDpiChanged;
 #endif
 
             FreeBitmap();
+        }
+
+        // the root this canvas listens to: XamlRoot is already null when a detached tree unloads, and the window's root
+        // would keep the canvas alive
+        private XamlRoot _xamlRoot;
+
+        private void DetachXamlRoot()
+        {
+            if (_xamlRoot != null)
+            {
+                _xamlRoot.Changed -= OnXamlRootChanged;
+                _xamlRoot = null;
+            }
         }
 
         public void Invalidate()
