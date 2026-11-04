@@ -307,7 +307,7 @@ public class SkiaShell : SkiaLayer
             return;
 
         _hotReloadHooked = true;
-        Super.HotReload += OnHotReload;
+        Super.AddHotReloadListener(this, OnHotReload);
     }
 
     private void OnHotReload(Type[] types) => MainThread.BeginInvokeOnMainThread(ReloadVisiblePage);
@@ -315,11 +315,11 @@ public class SkiaShell : SkiaLayer
     /// <inheritdoc/>
     public override void OnDisposing()
     {
-        // Super.HotReload is static: a shell left subscribed would never be collected
+        // stop reloading a shell that is gone
         if (_hotReloadHooked)
         {
             _hotReloadHooked = false;
-            Super.HotReload -= OnHotReload;
+            Super.RemoveHotReloadListener(this);
         }
 
         base.OnDisposing();
