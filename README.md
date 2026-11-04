@@ -70,7 +70,7 @@ Please star ⭐ if you like it!
 
 ## What's New 1.10.8.19
 
-  * A canvas, a WPF `DrawnUiElement` or a `SkiaShell` you drop without calling `Dispose` is freed together with everything it shows.
+  * A canvas, a WPF `DrawnUiElement` or a `SkiaShell` you drop without calling `Dispose` is freed together with everything it shows, radio buttons and dialogs included.
   * A live region's new text (`AccessibilityLive`) reaches screen readers on the next frame, in the browser too.
 
 ### Previously
