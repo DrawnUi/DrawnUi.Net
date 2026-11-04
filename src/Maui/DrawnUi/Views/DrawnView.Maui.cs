@@ -226,22 +226,25 @@ namespace DrawnUi.Views
             });
         }
 
+        // Canvases that hot reload reaches, held weakly: the static event must not keep a canvas that was dropped
+        // without Dispose (and its whole tree) alive.
+        private static readonly ConditionalWeakTable<DrawnView, object> HotReloadViews = new();
+
+        static DrawnView()
+        {
+            Super.HotReload += _ =>
+            {
+                foreach (var pair in HotReloadViews)
+                    pair.Key.OnHotReload();
+            };
+        }
+
         protected virtual void InitFramework(bool subscribe)
         {
             if (subscribe)
-            {
-                Super.HotReload -= SuperOnHotReload;
-                Super.HotReload += SuperOnHotReload;
-            }
+                HotReloadViews.AddOrUpdate(this, null);
             else
-            {
-                Super.HotReload -= SuperOnHotReload;
-            }
-        }
-
-        private void SuperOnHotReload(Type[] obj)
-        {
-            OnHotReload();
+                HotReloadViews.Remove(this);
         }
     }
 }

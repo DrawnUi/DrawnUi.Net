@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using DrawnUi.Controls;
 using DrawnUi.Draw;
 using DrawnUi.Testing;
@@ -151,6 +151,9 @@ public class VariableHeightPlanesTests
             for (int i = 0; i < 6; i++) { host.RenderFrame(16); System.Threading.Thread.Sleep(3); }
         }
         for (int i = 0; i < 40; i++) { host.RenderFrame(16); System.Threading.Thread.Sleep(4); }
+        // background measuring runs on real threads: let it finish so the rows do not move under the taps
+        var waited = System.Diagnostics.Stopwatch.StartNew();
+        while (list.IsBackgroundMeasuring && waited.ElapsedMilliseconds < 5000) { host.RenderFrame(16); System.Threading.Thread.Sleep(5); }
 
         float scale = host.Scale;
         float scrollTopPx = -(float)scroll.ViewportOffsetY * scale;

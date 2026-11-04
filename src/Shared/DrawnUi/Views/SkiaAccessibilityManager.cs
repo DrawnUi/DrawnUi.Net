@@ -893,9 +893,13 @@ namespace DrawnUi.Views
         {
             if (!_nodes.ContainsKey(node)) return;
             if (!_dirty) _dirty = true;
-            // Live regions bypass the snapshot rate-limit — announce value immediately.
+            // Live regions bypass the snapshot rate-limit: announce the value now and rebuild the snapshot (web overlays,
+            // what a reader reads when it walks there) on the next frame.
             if (!string.IsNullOrEmpty(node.AccessibilityLive))
+            {
+                ForceRebuildOnNextFrame();
                 LiveRegionUpdated?.Invoke(node);
+            }
         }
 
         public void ForceRebuildOnNextFrame()

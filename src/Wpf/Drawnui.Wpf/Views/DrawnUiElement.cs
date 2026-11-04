@@ -185,7 +185,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         Canvas.AccessibilityManager.RebuildSkipped += OnAccessibilityRebuildSkipped;
         Canvas.AccessibilityManager.ReaderRefocusRequested += OnAccessibilityReaderRefocus;
 
-        Super.HotReload += OnHotReload;
+        Super.AddHotReloadListener(this, OnHotReload);
 
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
@@ -475,7 +475,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
 
         _disposed = true;
         _running = false;
-        Super.HotReload -= OnHotReload;
+        Super.RemoveHotReloadListener(this);
         CompositionTarget.Rendering -= OnCompositionRendering;
         _a11yRefresh?.Stop();
         Canvas.AccessibilityManager.RebuildSkipped -= OnAccessibilityRebuildSkipped;
