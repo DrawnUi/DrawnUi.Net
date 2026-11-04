@@ -366,7 +366,8 @@ public class TransformsPage : SkiaLayer
         HorizontalOptions = LayoutOptions.Fill,
         Children = new List<SkiaControl>
         {
-            new SkiaLabel(name) { FontSize = 13, TextColor = Color.Parse("#ADB5BD"), VerticalOptions = LayoutOptions.Center },
+            // the slider beside it already says the name: read it once
+            new SkiaLabel(name) { FontSize = 13, TextColor = Color.Parse("#ADB5BD"), VerticalOptions = LayoutOptions.Center, AccessibilityRole = DrawnUi.Models.Aria.RolePresentation },
             new SkiaSlider { AccessibilityLabel = name, Min = min, Max = max, TrackSelectedColor = Color.Parse("#0D6EFD"), TrackColor = Color.Parse("#495057"), ThumbColor = Colors.White, Margin = new Thickness(104, 0, 0, 0), HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Center }
                 .Assign(out slider)
                 .ObserveSelf((me, prop) =>
