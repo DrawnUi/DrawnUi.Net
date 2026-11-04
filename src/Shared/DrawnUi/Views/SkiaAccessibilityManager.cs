@@ -217,7 +217,11 @@ namespace DrawnUi.Views
         public SkiaControl? KeyboardScope { get; internal set; }
 
         /// <summary>Controls with <see cref="SkiaControl.AccessibilityModal"/> set, on every canvas. Empty: no modal work at all.</summary>
-        internal static readonly System.Collections.Concurrent.ConcurrentDictionary<SkiaControl, byte> Modals = new();
+        /// Held weakly: a page dropped without Dispose must not stay alive through its flagged dialog.
+        internal static readonly System.Runtime.CompilerServices.ConditionalWeakTable<SkiaControl, object> Modals = new();
+
+        /// <summary>Set when a control is flagged modal; cleared by a walk of <see cref="Modals"/> that finds none.</summary>
+        internal static volatile bool ModalsMaybe;
 
         /// <summary>
         /// The modal overlay that accessibility is limited to (<see cref="SkiaControl.AccessibilityModal"/>): the topmost
@@ -232,14 +236,20 @@ namespace DrawnUi.Views
         private void UpdateActiveModal()
         {
             SkiaControl? next = null;
-            foreach (var modal in Modals.Keys)
+            var any = false;
+            foreach (var pair in Modals)
             {
+                var modal = pair.Key;
+                any = true;
                 if (modal.IsDisposed || !modal.IsVisible || modal.Opacity <= 0 || IsHiddenByAncestor(modal)
                     || !ReferenceEquals(modal.Superview?.AccessibilityManager, this) || !modal.WasInLastFrame())
                     continue;
                 if (next == null || IsDrawnAbove(modal, next))
                     next = modal;
             }
+
+            if (!any)
+                ModalsMaybe = false;
 
             var previous = ActiveModal;
             if (ReferenceEquals(previous, next))
@@ -938,7 +948,7 @@ namespace DrawnUi.Views
         /// </summary>
         internal void OnFrameEnd(float scale)
         {
-            if (!Modals.IsEmpty || ActiveModal != null)
+            if (ModalsMaybe || ActiveModal != null)
                 UpdateActiveModal();
             ProcessPendingFocus(scale);
             ProcessGroupFocus(scale);

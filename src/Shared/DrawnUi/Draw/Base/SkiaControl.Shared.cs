@@ -3268,7 +3268,7 @@ namespace DrawnUi.Draw
             Superview?.UnregisterAllAnimatorsByParent(this);
             Superview?.AccessibilityManager.UnregisterSubtree(this);
             if (_accessibilityModal)
-                SkiaAccessibilityManager.Modals.TryRemove(this, out _);
+                SkiaAccessibilityManager.Modals.Remove(this);
         }
 
         protected object lockPausingAnimators = new();
@@ -5431,9 +5431,12 @@ namespace DrawnUi.Draw
 
                 _accessibilityModal = value;
                 if (value)
-                    SkiaAccessibilityManager.Modals.TryAdd(this, 0);
+                {
+                    SkiaAccessibilityManager.Modals.AddOrUpdate(this, null);
+                    SkiaAccessibilityManager.ModalsMaybe = true;
+                }
                 else
-                    SkiaAccessibilityManager.Modals.TryRemove(this, out _);
+                    SkiaAccessibilityManager.Modals.Remove(this);
                 AccessibilityChanged();
             }
         }
