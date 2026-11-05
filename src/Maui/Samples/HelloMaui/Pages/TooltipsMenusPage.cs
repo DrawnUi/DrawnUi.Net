@@ -275,8 +275,6 @@ public class TooltipsMenusPage : SkiaLayer
     private bool _altAlone;
     private (float X, float Y)? _pointerAt;
     private int _pointerMoves, _keysMoves;
-    private long _activatedFrame = -1;
-    private long _giveBackUntil;
 
     private bool BarOpen => _open >= 0 && Superview?.IsPopupWindowOpen(_barPopup) == true;
 
@@ -289,12 +287,8 @@ public class TooltipsMenusPage : SkiaLayer
         AccessibilityRole = Aria.RoleMenuItem,
         AccessibilityCanInteract = true,
         AccessibilityLabel = title,
-        AccessibilityIsPressed = false, // its menu is open
-        Activated = () =>
-        {
-            if (!SamePress())
-                ActivateTitle(index);
-        },
+        AccessibilityIsExpanded = false, // its menu is open
+        Activated = () => ActivateTitle(index),
         Children = new List<SkiaControl>
         {
             // the accelerator letter (Alt + it opens the menu) is underlined, as in desktop menu bars
@@ -342,7 +336,7 @@ public class TooltipsMenusPage : SkiaLayer
             var strong = i == open || i == _title;
             var hover = !strong && !_keys && i == _hoveredTitle;
             _tops[i].BackgroundColor = strong ? Selected : hover ? ButtonHover : Colors.Transparent;
-            _tops[i].AccessibilityIsPressed = i == open;
+            _tops[i].AccessibilityIsExpanded = i == open;
         }
     }
 
@@ -409,11 +403,7 @@ public class TooltipsMenusPage : SkiaLayer
             AccessibilityRole = Aria.RoleMenuItem,
             AccessibilityCanInteract = true,
             AccessibilityLabel = entry.Text,
-            Activated = () =>
-            {
-                if (!SamePress())
-                    Run(entry);
-            },
+            Activated = () => Run(entry),
             Children = new List<SkiaControl>
             {
                 new SkiaLabel(entry.Text) { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RolePresentation },
@@ -456,15 +446,6 @@ public class TooltipsMenusPage : SkiaLayer
     /// <summary>The line of the context menu or the dropdown that has the keyboard focus is highlighted, as the line under the mouse.</summary>
     private void OnKeyboardFocus(ISkiaAccessibilityNode node)
     {
-        // ponytail: a menu closed with the keyboard in it sends the keyboard to its title at the frame end (the canvas'
-        // rule); when the bar has just let go, that return goes on to where the keyboard was before the bar took it
-        if (node is MenuNode title && Array.IndexOf(_tops, title) >= 0 && Environment.TickCount64 < _giveBackUntil)
-        {
-            _giveBackUntil = 0;
-            GiveBack();
-            return;
-        }
-
         if (_focusLine != null && !ReferenceEquals(_focusLine, node))
             _focusLine.BackgroundColor = Colors.Transparent;
         _focusLine = node is SkiaControl { AccessibilityRole: "menuitem", Parent: SkiaControl { AccessibilityRole: "menu" } } line and not MenuNode ? line : null;
@@ -532,19 +513,6 @@ public class TooltipsMenusPage : SkiaLayer
 
     private bool MouseTakesOver() => !_keys || _pointerMoves != _keysMoves;
 
-    /// <summary>
-    /// The canvas (keyboard navigation, a screen reader's Invoke) and KeyboardManager both report one Enter / Space, in an
-    /// order that depends on the head: reports within one frame are that same press.
-    /// </summary>
-    private bool SamePress()
-    {
-        var frame = Superview?.FrameNumber ?? -1;
-        if (frame == _activatedFrame)
-            return true;
-        _activatedFrame = frame;
-        return false;
-    }
-
     /// <summary>The keyboard comes to the bar: where the keyboard was is kept, to give it back.</summary>
     private void EnterBar()
     {
@@ -566,7 +534,6 @@ public class TooltipsMenusPage : SkiaLayer
         {
             _onBar = false;
             GiveBack();
-            _giveBackUntil = Environment.TickCount64 + 500;
         }
         PaintBar();
     }
@@ -576,7 +543,7 @@ public class TooltipsMenusPage : SkiaLayer
         var canvas = Superview;
         if (canvas == null)
             return;
-        canvas.SetAccessibilityFocus(_back); // null drops a move to a menu line still waiting for the frame end
+        canvas.SetAccessibilityFocus(_back); // wins over the canvas' return to the closed menu's title; null cancels it
         if (_back == null)
         {
             canvas.KeyboardFocusNode = null;
@@ -689,7 +656,7 @@ public class TooltipsMenusPage : SkiaLayer
                     return;
                 case InputKey.Enter:
                 case InputKey.Space:
-                    if (!SamePress())
+                    if (!KeyboardManager.IsKeyHandled) // the canvas activated the title already
                         OpenMenu(_title, keyboard: true);
                     return;
                 case InputKey.Escape:
@@ -721,7 +688,7 @@ public class TooltipsMenusPage : SkiaLayer
                 break;
             case InputKey.Enter:
             case InputKey.Space:
-                if (_highlighted >= 0 && !SamePress())
+                if (_highlighted >= 0 && !KeyboardManager.IsKeyHandled) // the canvas activated the line already
                     Run(_items[_highlighted].Entry);
                 break;
             case InputKey.Escape:

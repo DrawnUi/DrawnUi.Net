@@ -254,6 +254,7 @@ namespace DrawnUi.Views
             {
                 canvasElem.KeyDown  -= OnCanvasKeyDown;
                 canvasElem.KeyDown  += OnCanvasKeyDown;
+                KeyboardManager.RegisterCanvasElement(canvasElem);
                 canvasElem.GotFocus -= OnCanvasGotFocus;
                 canvasElem.GotFocus += OnCanvasGotFocus;
                 canvasElem.LostFocus -= OnCanvasLostFocus;
@@ -268,6 +269,7 @@ namespace DrawnUi.Views
             {
                 _outerElem.KeyDown   -= OnCanvasKeyDown;
                 _outerElem.KeyDown   += OnCanvasKeyDown;
+                KeyboardManager.RegisterCanvasElement(_outerElem);
                 _outerElem.GotFocus  -= OnOuterGotFocus;
                 _outerElem.GotFocus  += OnOuterGotFocus;
                 _outerElem.LostFocus -= OnOuterLostFocus;
@@ -424,9 +426,23 @@ namespace DrawnUi.Views
             if (e.OriginalSource is Microsoft.UI.Xaml.Controls.TextBox)
                 return;
 
+            // the element holding the key raises it once (it also bubbles to the outer wrapper): the canvas navigation
+            // first, then KeyDown, which tells the app whether navigation used it (IsKeyHandled), as on the other heads
+            if (!ReferenceEquals(sender, e.OriginalSource))
+                return;
+            var mapped = KeyboardManager.MapToMaui(e.Key);
+            if (NavigateWithCanvasKey(e))
+                KeyboardManager.MarkKeyHandled(mapped);
+            if (KeyboardManager.IsAttached)
+                KeyboardManager.KeyboardPressed(mapped);
+        }
+
+        /// <summary>Keyboard navigation of the drawn nodes with a key the canvas element holds. True when it used the key.</summary>
+        private bool NavigateWithCanvasKey(Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
             var peer = _a11yHost?.A11yPeer as DrawnUi.Draw.DrawnUiAutomationPeer;
-            System.Diagnostics.Debug.WriteLine($"[A11y-KEY] OnCanvasKeyDown key={e.Key} sender={sender?.GetType().Name} peer={(peer == null ? "NULL" : "ok")} focusedPeer={(peer?.FocusedPeer == null ? "NULL" : peer.FocusedPeer.Role)}");
-            if (peer == null) return;
+            System.Diagnostics.Debug.WriteLine($"[A11y-KEY] OnCanvasKeyDown key={e.Key} peer={(peer == null ? "NULL" : "ok")} focusedPeer={(peer?.FocusedPeer == null ? "NULL" : peer.FocusedPeer.Role)}");
+            if (peer == null) return false;
 
             // a control behind a dialog (tapped before it opened) is no focus: Tab, an arrow or Enter starts in the dialog
             if (AccessibilityManager.IsOutsideModal(peer.FocusedPeer?.Source))
@@ -481,6 +497,7 @@ namespace DrawnUi.Views
                 KeyboardFocusNode ??= peer.FocusedPeer.Source;
                 e.Handled = true;
             }
+            return e.Handled;
         }
 
         // True while canvas holds XAML keyboard focus (between GotFocus / LostFocus).

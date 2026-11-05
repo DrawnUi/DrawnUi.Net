@@ -12,9 +12,8 @@ namespace DrawnUi.Net.Tests;
 /// The menu bar of the Hello apps' Tooltips &amp; Menus page (HelloOpenTk's copy, the same in HelloWpf, HelloMaui and
 /// HelloSlintNet) from the keyboard alone: Alt alone puts the
 /// keyboard on the bar, Left and Right go round the titles, Down opens a menu on its first line, the arrows go round its
-/// lines, Escape closes one level, leaving gives the keyboard back. Keys reach the canvas navigation and KeyboardManager
-/// in both orders the heads use (OpenTK: the canvas first; WPF: KeyboardManager first), with the menus in windows of
-/// their own and drawn inside the canvas.
+/// lines, Escape closes one level, leaving gives the keyboard back. Keys reach the canvas navigation first, then
+/// KeyboardManager, as on every head, with the menus in windows of their own and drawn inside the canvas.
 /// </summary>
 [Collection("Tooltips")] // KeyboardManager and Super.TooltipsFromAccessibility are static
 public class HelloMenuBarTests
@@ -33,12 +32,10 @@ public class HelloMenuBarTests
     sealed class Bar : IDisposable
     {
         public readonly HeadlessCanvasHost Host = new(W, H);
-        public readonly bool CanvasFirst;
         public List<SkiaControl> Titles = null!;
 
-        public Bar(bool canvasFirst, bool ownWindows = true)
+        public Bar(bool ownWindows = true)
         {
-            CanvasFirst = canvasFirst;
             Host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
             if (ownWindows)
                 Host.Canvas.PopupWindowHost = new OwnWindows();
@@ -56,11 +53,8 @@ public class HelloMenuBarTests
 
         public void Press(InputKey key)
         {
-            if (CanvasFirst)
-                Host.Canvas.HandleKeyboardNavigation(key, false);
+            Host.Canvas.HandleKeyboardNavigation(key, false); // as every head: the canvas first, then KeyDown
             KeyboardManager.KeyboardPressed(key);
-            if (!CanvasFirst)
-                Host.Canvas.HandleKeyboardNavigation(key, false);
             KeyboardManager.KeyboardReleased(key);
             Settle();
         }
@@ -122,13 +116,11 @@ public class HelloMenuBarTests
     }
 
     [Theory]
-    [InlineData(true, true)]
-    [InlineData(false, true)]
-    [InlineData(true, false)]
-    [InlineData(false, false)]
-    public void The_menu_bar_works_from_the_keyboard_alone(bool canvasFirst, bool ownWindows)
+    [InlineData(true)]
+    [InlineData(false)]
+    public void The_menu_bar_works_from_the_keyboard_alone(bool ownWindows)
     {
-        using var bar = new Bar(canvasFirst, ownWindows);
+        using var bar = new Bar(ownWindows);
 
         // Alt alone: the keyboard on the bar, File lit, no menu open; the screen reader is on File
         bar.Alt();
@@ -224,13 +216,11 @@ public class HelloMenuBarTests
     }
 
     [Theory]
-    [InlineData(true, true)]
-    [InlineData(false, true)]
-    [InlineData(true, false)]
-    [InlineData(false, false)]
-    public void A_resting_mouse_never_takes_the_highlight_a_real_move_does(bool canvasFirst, bool ownWindows)
+    [InlineData(true)]
+    [InlineData(false)]
+    public void A_resting_mouse_never_takes_the_highlight_a_real_move_does(bool ownWindows)
     {
-        using var bar = new Bar(canvasFirst, ownWindows);
+        using var bar = new Bar(ownWindows);
 
         // the mouse rests on Edit; the keyboard goes round all four titles past it
         var edit = bar.Center(bar.Titles[1]);
@@ -282,15 +272,15 @@ public class HelloMenuBarTests
     [Fact]
     public void Screen_readers_read_the_bar_its_menu_and_their_states()
     {
-        using var bar = new Bar(canvasFirst: true);
+        using var bar = new Bar();
         bar.Alt(InputKey.KeyE);
         bar.Host.AdvanceFrames(3);
 
         var nodes = bar.Host.Canvas.AccessibilityManager.Snapshot;
         Assert.Contains(nodes, n => n.Role == Aria.RoleMenuBar && n.Label == "Menu bar");
         Assert.Contains(nodes, n => n.Role == Aria.RoleMenu && n.Label == "Edit");
-        Assert.Contains(nodes, n => n.Role == Aria.RoleMenuItem && n.Label == "Edit" && n.IsPressed == true); // its menu is open
-        Assert.Contains(nodes, n => n.Role == Aria.RoleMenuItem && n.Label == "File" && n.IsPressed == false);
+        Assert.Contains(nodes, n => n.Role == Aria.RoleMenuItem && n.Label == "Edit" && n.IsExpanded == true); // its menu is open
+        Assert.Contains(nodes, n => n.Role == Aria.RoleMenuItem && n.Label == "File" && n.IsExpanded == false);
         Assert.Contains(nodes, n => n.Role == Aria.RoleMenuItem && n.Label == "Paste");
         Assert.Equal("Undo", bar.Focus);
     }
