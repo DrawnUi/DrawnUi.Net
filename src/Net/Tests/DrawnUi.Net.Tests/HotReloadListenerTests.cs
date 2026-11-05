@@ -9,6 +9,7 @@ namespace DrawnUi.Net.Tests;
 /// Hot reload listeners (the WPF element, SkiaShell) are held weakly: a canvas or shell dropped without Dispose is
 /// collected, while a live one still reloads.
 /// </summary>
+[Collection("Multithreaded")] // forces full GCs: never in parallel with timing tests
 public class HotReloadListenerTests
 {
     private sealed class Owner

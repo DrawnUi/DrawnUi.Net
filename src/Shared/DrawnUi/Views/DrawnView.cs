@@ -1085,7 +1085,23 @@ namespace DrawnUi.Views
         public virtual void DisconnectedHandler()
         {
             HasHandler = false;
-            Super.NeedGlobalRefresh -= OnNeedUpdate;
+            GlobalRefreshViews.Remove(this);
+        }
+
+        // Canvases a global refresh reaches, held weakly: the static Super.NeedGlobalRefresh must not keep a canvas alive
+        // whose handler never disconnected (a dropped page, a headless host).
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<DrawnView, object> GlobalRefreshViews = new();
+
+        private static readonly bool GlobalRefreshHooked = HookGlobalRefresh();
+
+        private static bool HookGlobalRefresh()
+        {
+            Super.NeedGlobalRefresh += (sender, e) =>
+            {
+                foreach (var pair in GlobalRefreshViews)
+                    pair.Key.OnNeedUpdate(sender, e);
+            };
+            return true;
         }
 
         public long NeedGlobalRefreshCount { get; set; }
@@ -1125,8 +1141,8 @@ namespace DrawnUi.Views
         public virtual void ConnectedHandler()
         {
             HasHandler = true;
-            Super.NeedGlobalRefresh -= OnNeedUpdate;
-            Super.NeedGlobalRefresh += OnNeedUpdate;
+            _ = GlobalRefreshHooked;
+            GlobalRefreshViews.AddOrUpdate(this, null);
         }
 
 
@@ -1335,6 +1351,7 @@ namespace DrawnUi.Views
                     IsDisposing = true;
 
                     InitFramework(false);
+                    GlobalRefreshViews.Remove(this);
 
                     OnDisposing();
 

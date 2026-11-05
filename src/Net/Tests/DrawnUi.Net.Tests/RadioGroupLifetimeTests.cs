@@ -9,6 +9,7 @@ namespace DrawnUi.Net.Tests;
 /// Radio groups hold their buttons weakly: a page with radio buttons that is dropped (without Dispose) is collected,
 /// while the buttons of a live group still exclude each other.
 /// </summary>
+[Collection("Multithreaded")] // forces full GCs: never in parallel with timing tests
 public class RadioGroupLifetimeTests
 {
     [MethodImpl(MethodImplOptions.NoInlining)]

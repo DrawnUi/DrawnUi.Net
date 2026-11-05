@@ -9,7 +9,7 @@ namespace DrawnUi.Net.Tests;
 /// A control flagged AccessibilityModal is held weakly by the shared modal registry: a page with a dialog that is
 /// dropped without Dispose is collected.
 /// </summary>
-[Collection("Tooltips")] // the modal registry is shared by every canvas
+[Collection("Multithreaded")] // forces full GCs: never in parallel with timing tests
 public class ModalRegistryLifetimeTests
 {
     [MethodImpl(MethodImplOptions.NoInlining)]

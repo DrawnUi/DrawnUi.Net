@@ -32,8 +32,13 @@ public class DesktopLongPressTests
             // the entry points WPF and OpenTK call
             host.Canvas.HandleDesktopPointerDown(100, 100, 300, 300);
             host.AdvanceFrames(2);
-            Thread.Sleep(TouchEffect.LongPressTimeMsDefault + 300);
-            host.AdvanceFrames(3);
+            // the long press fires on a timer thread: wait for it by time, a busy full run is slower
+            var waited = System.Diagnostics.Stopwatch.StartNew();
+            while (longPresses() == 0 && waited.ElapsedMilliseconds < TouchEffect.LongPressTimeMsDefault + 5000)
+            {
+                Thread.Sleep(20);
+                host.AdvanceFrames(1);
+            }
             host.Canvas.HandleDesktopPointerUp(100, 100, 300, 300);
             host.AdvanceFrames(3);
 
