@@ -1,4 +1,7 @@
 ﻿# DrawnUI for .NET
+
+![DrawnUI for .NET: the Hello app in WPF windows and in .NET MAUI on Android phones](.github/images/banner.png)
+
 ![NuGet DrawnUi.Net](https://img.shields.io/nuget/v/DrawnUi.Net.svg)
 ![License](https://img.shields.io/github/license/DrawnUi/DrawnUi.Net.svg)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat)](https://github.com/DrawnUi/DrawnUi.Net/blob/main/CONTRIBUTING.md)
