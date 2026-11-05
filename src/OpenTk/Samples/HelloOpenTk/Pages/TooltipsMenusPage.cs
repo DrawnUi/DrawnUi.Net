@@ -55,7 +55,7 @@ public class TooltipsMenusPage : SkiaLayer
                             FontSize = 14, TextColor = Colors.LightGray, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center,
                         },
 
-                        Card("Menu bar", "Click a menu, or press Alt with its first letter (Alt+F, Alt+E, Alt+V, Alt+H). Left and Right open the next menu, Up and Down move through it, Enter picks, Escape closes. The shortcuts (Ctrl+N, Ctrl+S, F1...) work with the menus closed too.",
+                        Card("Menu bar", "Click a menu, or press Alt with its first letter (Alt+F, Alt+E, Alt+V, Alt+H). Alt alone puts the keyboard on the bar: Left and Right go round the menus, Down, Enter or Space opens one. In a menu Up and Down go round it, Left and Right open the menu before or after, Enter picks, Escape closes one level. The shortcuts (Ctrl+N, Ctrl+S, F1...) work with the menus closed too.",
                             new SkiaShape
                             {
                                 HorizontalOptions = LayoutOptions.Fill,
@@ -70,7 +70,7 @@ public class TooltipsMenusPage : SkiaLayer
                                         AccessibilityRole = Aria.RoleMenuBar,
                                         AccessibilityLabel = "Menu bar",
                                         Children = Menus.Select((menu, index) => (SkiaControl)TopItem(menu.Title, index)).ToList(),
-                                    },
+                                    }.WithKeyboardWrap(),
                                 },
                             },
                             new SkiaLabel("Last command: none") { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RoleStatus, AccessibilityLive = Aria.LivePolite }
@@ -196,13 +196,18 @@ public class TooltipsMenusPage : SkiaLayer
             return true;
         });
 
+        // real mouse moves over the page: a mouse resting on the bar never takes the highlight from the keyboard
+        this.WithGestures((me, args, apply) => NotePointer(args));
+
         KeyboardManager.KeyDown += OnKeyDown;
+        KeyboardManager.KeyUp += OnKeyUp;
     }
 
     /// <inheritdoc/>
     public override void OnDisposing()
     {
         KeyboardManager.KeyDown -= OnKeyDown;
+        KeyboardManager.KeyUp -= OnKeyUp;
         if (Superview != null)
         {
             Superview.PopupWindowClosed -= OnPopupWindowClosed;
@@ -241,17 +246,44 @@ public class TooltipsMenusPage : SkiaLayer
         }),
     };
 
-    private readonly SkiaShape[] _tops = new SkiaShape[Menus.Length];
-    private readonly List<(SkiaShape View, MenuEntry Entry)> _items = new();
+    /// <summary>Where the keyboard is (a title, the open menu's title, the lit line): the menus' selected look, in the accent color.</summary>
+    private static readonly Color Selected = Color.Parse("#0D6EFD");
+
+    /// <summary>A line under the mouse.</summary>
+    private static readonly Color LineHover = Color.Parse("#343B52");
+
+    /// <summary>
+    /// A menu bar title or a menu line. Enter / Space of keyboard navigation and a screen reader's Invoke come here, not as
+    /// a tap, so the page tells them from a click.
+    /// </summary>
+    private sealed class MenuNode : SkiaShape
+    {
+        public Action Activated { get; set; }
+
+        public override void OnAccessibilityActivated() => Activated?.Invoke();
+    }
+
+    private readonly MenuNode[] _tops = new MenuNode[Menus.Length];
+    private readonly List<(MenuNode View, SkiaLabel Shortcut, MenuEntry Entry)> _items = new();
     private SkiaLabel _command;
     private PopupId _barPopup;
     private int _open = -1;
+    private int _title = -1; // the keyboard is on the bar with no menu open: the title it is on
     private int _highlighted = -1;
+    private int _hoveredTitle = -1;
+    private bool _keys; // the keyboard drives the bar: its place reads selected, a mouse resting on the bar moves nothing
+    private bool _onBar; // the keyboard came to the bar from _back (null: from nowhere), and goes back there when it leaves
+    private SkiaControl _back;
+    private bool _altAlone;
+    private (float X, float Y)? _pointerAt;
+    private int _pointerMoves, _keysMoves;
+    private long _activatedFrame = -1;
+    private long _giveBackUntil;
 
     private bool BarOpen => _open >= 0 && Superview?.IsPopupWindowOpen(_barPopup) == true;
 
     /// <summary>A menu title of the bar: a click opens its menu; while a menu is open, the mouse over another title opens that one.</summary>
-    private SkiaShape TopItem(string title, int index) => new SkiaShape
+    private MenuNode TopItem(string title, int index) => new MenuNode
     {
         CornerRadius = 6,
         Padding = new Thickness(12, 6),
@@ -259,6 +291,12 @@ public class TooltipsMenusPage : SkiaLayer
         AccessibilityRole = Aria.RoleMenuItem,
         AccessibilityCanInteract = true,
         AccessibilityLabel = title,
+        AccessibilityIsPressed = false, // its menu is open
+        Activated = () =>
+        {
+            if (!SamePress())
+                ActivateTitle(index);
+        },
         Children = new List<SkiaControl>
         {
             // the accelerator letter (Alt + it opens the menu) is underlined, as in desktop menu bars
@@ -278,25 +316,36 @@ public class TooltipsMenusPage : SkiaLayer
     .Assign(out _tops[index])
     .OnHovered((me, on) =>
     {
-        if (on && BarOpen && _open != index)
+        _hoveredTitle = on ? index : _hoveredTitle == index ? -1 : _hoveredTitle;
+        if (on && BarOpen && _open != index && MouseTakesOver())
+        {
+            _keys = false;
             OpenMenu(index, keyboard: false);
-        PaintBar(index, on);
+        }
+        PaintBar();
     })
     .OnTapped((me, e) =>
     {
         if (!Primary(e))
             return;
+        _keys = false;
         if (BarOpen && _open == index)
-            CloseMenu();
+            LeaveBar();
         else
             OpenMenu(index, keyboard: false);
     });
 
-    private void PaintBar(int hovered = -1, bool on = false)
+    /// <summary>The selected look where the keyboard is and on the open menu's title, the lighter hover under the mouse.</summary>
+    private void PaintBar()
     {
         var open = BarOpen ? _open : -1;
         for (var i = 0; i < _tops.Length; i++)
-            _tops[i].BackgroundColor = i == open ? Color.Parse("#5A6270") : (i == hovered && on ? ButtonHover : Colors.Transparent);
+        {
+            var strong = i == open || i == _title;
+            var hover = !strong && !_keys && i == _hoveredTitle;
+            _tops[i].BackgroundColor = strong ? Selected : hover ? ButtonHover : Colors.Transparent;
+            _tops[i].AccessibilityIsPressed = i == open;
+        }
     }
 
     private void OpenMenu(int index, bool keyboard)
@@ -305,14 +354,15 @@ public class TooltipsMenusPage : SkiaLayer
         if (canvas == null)
             return;
 
-        // a menu closed from outside (a click elsewhere, the wheel, the window losing focus) unselects its title
+        // a menu closed from outside (a click elsewhere, the wheel, the window losing focus) lets the bar go
         canvas.PopupWindowClosed -= OnPopupWindowClosed;
         canvas.PopupWindowClosed += OnPopupWindowClosed;
         HookKeyboardFocus(canvas);
 
-        canvas.ClosePopupWindow(_barPopup);
+        CloseMenu();
         _items.Clear();
         _open = index;
+        _title = -1;
 
         var menu = Menus[index];
         _barPopup = canvas.OpenPopupWindow(new SkiaShape
@@ -333,19 +383,27 @@ public class TooltipsMenusPage : SkiaLayer
                     Children = menu.Entries.Select(entry => entry.Text == null
                         ? new SkiaShape { HeightRequest = 1, HorizontalOptions = LayoutOptions.Fill, BackgroundColor = Color.Parse("#3B4256"), Margin = new Thickness(8, 4) }
                         : (SkiaControl)BarItem(entry)).ToList(),
-                },
+                }
+                .WithKeyboardWrap()
+                .WithGestures((me, args, apply) => NotePointer(args)),
             },
         }, _tops[index]);
 
-        _highlighted = keyboard ? 0 : -1;
+        _highlighted = -1;
+        if (keyboard)
+        {
+            Keys();
+            Light(Step(-1, InputKey.Home)); // its first line ready for the arrows
+        }
         PaintItems();
         PaintBar();
     }
 
-    private SkiaShape BarItem(MenuEntry entry)
+    private MenuNode BarItem(MenuEntry entry)
     {
         var index = _items.Count;
-        var view = new SkiaShape
+        SkiaLabel shortcut = null;
+        var view = new MenuNode
         {
             CornerRadius = 6,
             HorizontalOptions = LayoutOptions.Fill,
@@ -353,19 +411,25 @@ public class TooltipsMenusPage : SkiaLayer
             AccessibilityRole = Aria.RoleMenuItem,
             AccessibilityCanInteract = true,
             AccessibilityLabel = entry.Text,
+            Activated = () =>
+            {
+                if (!SamePress())
+                    Run(entry);
+            },
             Children = new List<SkiaControl>
             {
                 new SkiaLabel(entry.Text) { FontSize = 14, TextColor = Colors.White, AccessibilityRole = Aria.RolePresentation },
-                new SkiaLabel(entry.Shortcut ?? "") { FontSize = 13, TextColor = Muted, HorizontalOptions = LayoutOptions.End, AccessibilityRole = Aria.RolePresentation },
+                new SkiaLabel(entry.Shortcut ?? "") { FontSize = 13, TextColor = Muted, HorizontalOptions = LayoutOptions.End, AccessibilityRole = Aria.RolePresentation }
+                    .Assign(out shortcut),
             },
         }
         .OnHovered((me, on) =>
         {
-            if (on)
-            {
-                _highlighted = index;
-                PaintItems();
-            }
+            // a menu opening under a resting mouse leaves the keyboard's line lit; a real move takes over
+            if (!on || !MouseTakesOver())
+                return;
+            _keys = false;
+            Light(index);
         })
         .OnTapped((me, e) =>
         {
@@ -373,7 +437,7 @@ public class TooltipsMenusPage : SkiaLayer
                 Run(entry);
         });
 
-        _items.Add((view, entry));
+        _items.Add((view, shortcut, entry));
         return view;
     }
 
@@ -391,28 +455,149 @@ public class TooltipsMenusPage : SkiaLayer
         canvas.AccessibilityManager.FocusChanged += OnKeyboardFocus;
     }
 
-    /// <summary>The line of an open menu that has the keyboard focus is highlighted, as the line under the mouse.</summary>
+    /// <summary>The line of the context menu or the dropdown that has the keyboard focus is highlighted, as the line under the mouse.</summary>
     private void OnKeyboardFocus(ISkiaAccessibilityNode node)
     {
-        var index = _items.FindIndex(i => ReferenceEquals(i.View, node));
-        if (index >= 0)
+        // ponytail: a menu closed with the keyboard in it sends the keyboard to its title at the frame end (the canvas'
+        // rule); when the bar has just let go, that return goes on to where the keyboard was before the bar took it
+        if (node is MenuNode title && Array.IndexOf(_tops, title) >= 0 && Environment.TickCount64 < _giveBackUntil)
         {
-            _highlighted = index;
-            PaintItems();
+            _giveBackUntil = 0;
+            GiveBack();
             return;
         }
 
         if (_focusLine != null && !ReferenceEquals(_focusLine, node))
             _focusLine.BackgroundColor = Colors.Transparent;
-        _focusLine = node is SkiaControl { AccessibilityRole: "menuitem", Parent: SkiaControl { AccessibilityRole: "menu" } } line ? line : null;
+        _focusLine = node is SkiaControl { AccessibilityRole: "menuitem", Parent: SkiaControl { AccessibilityRole: "menu" } } line and not MenuNode ? line : null;
         if (_focusLine != null)
-            _focusLine.BackgroundColor = Color.Parse("#343B52");
+            _focusLine.BackgroundColor = LineHover;
     }
 
+    /// <summary>Lights line <paramref name="index"/> of the open menu; the screen reader follows it.</summary>
+    private void Light(int index)
+    {
+        _highlighted = index;
+        PaintItems();
+        if (index >= 0)
+            Superview?.SetAccessibilityFocus(_items[index].View);
+    }
+
+    /// <summary>The line a key moves to from <paramref name="from"/>: the next or the one before, round past either end; Home and End the first and the last.</summary>
+    private int Step(int from, InputKey key)
+    {
+        var count = _items.Count;
+        if (count == 0)
+            return -1;
+        return key switch
+        {
+            InputKey.Home => 0,
+            InputKey.End => count - 1,
+            InputKey.ArrowDown => from < 0 ? 0 : (from + 1) % count,
+            _ => from < 0 ? count - 1 : (from - 1 + count) % count,
+        };
+    }
+
+    /// <summary>The line the keyboard lit: the selected look; the line under the mouse: the lighter hover.</summary>
     private void PaintItems()
     {
         for (var i = 0; i < _items.Count; i++)
-            _items[i].View.BackgroundColor = i == _highlighted ? Color.Parse("#343B52") : Colors.Transparent;
+        {
+            var lit = i == _highlighted;
+            var strong = lit && _keys;
+            _items[i].View.BackgroundColor = strong ? Selected : lit ? LineHover : Colors.Transparent;
+            _items[i].Shortcut.TextColor = strong ? Colors.White : Muted;
+        }
+    }
+
+    /// <summary>The keyboard drives the bar, until the mouse really moves.</summary>
+    private void Keys()
+    {
+        _keys = true;
+        _keysMoves = _pointerMoves;
+    }
+
+    /// <summary>Counts real moves of the mouse: a hover check under a resting mouse (a menu opened or closed) comes at the same place.</summary>
+    private ISkiaGestureListener NotePointer(SkiaGesturesParameters args)
+    {
+        if (args.Type == AppoMobi.Gestures.TouchActionResult.Pointer)
+        {
+            var at = (args.Event.Location.X, args.Event.Location.Y);
+            if (_pointerAt != at)
+            {
+                _pointerAt = at;
+                _pointerMoves++;
+            }
+        }
+        return null;
+    }
+
+    private bool MouseTakesOver() => !_keys || _pointerMoves != _keysMoves;
+
+    /// <summary>
+    /// The canvas (keyboard navigation, a screen reader's Invoke) and KeyboardManager both report one Enter / Space, in an
+    /// order that depends on the head: reports within one frame are that same press.
+    /// </summary>
+    private bool SamePress()
+    {
+        var frame = Superview?.FrameNumber ?? -1;
+        if (frame == _activatedFrame)
+            return true;
+        _activatedFrame = frame;
+        return false;
+    }
+
+    /// <summary>The keyboard comes to the bar: where the keyboard was is kept, to give it back.</summary>
+    private void EnterBar()
+    {
+        Keys();
+        if (_onBar || Superview == null)
+            return;
+        _onBar = true;
+        _back = Superview.KeyboardFocusNode as SkiaControl;
+        HookKeyboardFocus(Superview);
+    }
+
+    /// <summary>The bar lets go: menus closed, the keyboard back where it was.</summary>
+    private void LeaveBar()
+    {
+        CloseMenu();
+        _title = -1;
+        _keys = false;
+        if (_onBar)
+        {
+            _onBar = false;
+            GiveBack();
+            _giveBackUntil = Environment.TickCount64 + 500;
+        }
+        PaintBar();
+    }
+
+    private void GiveBack()
+    {
+        var canvas = Superview;
+        if (canvas == null)
+            return;
+        canvas.SetAccessibilityFocus(_back); // null drops a move to a menu line still waiting for the frame end
+        if (_back == null)
+        {
+            canvas.KeyboardFocusNode = null;
+            canvas.AccessibilityManager.NotifyFocused(null);
+        }
+    }
+
+    /// <summary>Enter / Space of keyboard navigation or a screen reader on a title: opens its menu, or closes it when open.</summary>
+    private void ActivateTitle(int index)
+    {
+        EnterBar();
+        if (BarOpen && _open == index)
+        {
+            CloseMenu();
+            _title = index;
+            PaintBar();
+        }
+        else
+            OpenMenu(index, keyboard: true);
     }
 
     private void OnPopupWindowClosed(object sender, PopupId id)
@@ -422,14 +607,16 @@ public class TooltipsMenusPage : SkiaLayer
 
         _open = -1;
         _highlighted = -1;
-        PaintBar();
+        LeaveBar();
     }
 
     private void CloseMenu()
     {
-        Superview?.ClosePopupWindow(_barPopup);
-        _open = -1;
+        var open = _open;
+        _open = -1; // first: a menu this page closes is no menu closed from outside (OnPopupWindowClosed)
         _highlighted = -1;
+        if (open >= 0)
+            Superview?.ClosePopupWindow(_barPopup);
         PaintBar();
     }
 
@@ -439,66 +626,136 @@ public class TooltipsMenusPage : SkiaLayer
         _command.Text = entry.Shortcut != null
             ? $"Last command: {menu.Title} › {entry.Text} ({entry.Shortcut})"
             : $"Last command: {menu.Title} › {entry.Text}";
-        CloseMenu();
+        LeaveBar();
     }
 
+    /// <summary>
+    /// The menu bar's keys, as in desktop menu bars. Alt with a title's letter opens its menu. On the bar: Left and Right
+    /// go round the titles, Down, Enter or Space open one. In a menu: Up, Down, Home and End move through its lines (round
+    /// at the ends), Left and Right open the menu before or after, Enter or Space runs the line, Escape closes it and
+    /// leaves the keyboard on its title; Escape on the bar lets the keyboard go.
+    /// </summary>
     private void OnKeyDown(object sender, InputKey key)
     {
         if (Superview == null || IsDisposed)
             return;
+
+        // Alt alone (pressed and let go with no other key) puts the keyboard on the bar; anything with it is no Alt alone
+        _altAlone = key is InputKey.AltLeft or InputKey.AltRight
+                    && !KeyboardManager.IsControlPressed && !KeyboardManager.IsShiftPressed && !KeyboardManager.IsMetaPressed;
 
         // Alt + the first letter of a menu opens it, its first line ready for the arrows
         if (KeyboardManager.IsAltPressed)
         {
             var index = Array.FindIndex(Menus, m => m.Accelerator == key);
             if (index >= 0)
+            {
+                EnterBar();
                 OpenMenu(index, keyboard: true);
+            }
             return;
         }
 
+        var n = Menus.Length;
         if (!BarOpen)
         {
-            // the shortcuts work with the menus closed
-            var ctrl = KeyboardManager.IsControlPressed;
-            var entry = Menus.SelectMany(m => m.Entries)
-                .FirstOrDefault(e => e.Text != null && e.Key != InputKey.Unknown && e.Key == key && e.Ctrl == ctrl);
-            if (entry != null)
-                Run(entry);
+            // keyboard navigation (Tab) brought the keyboard to a title: the keys move on the bar from there
+            if (_title < 0 && Superview.KeyboardFocusNode is MenuNode node && Array.IndexOf(_tops, node) is var at and >= 0
+                && key is InputKey.ArrowLeft or InputKey.ArrowRight or InputKey.ArrowDown or InputKey.Enter or InputKey.Space)
+            {
+                EnterBar();
+                _title = at;
+            }
+
+            if (_title < 0)
+            {
+                // the shortcuts work with the menus closed
+                var ctrl = KeyboardManager.IsControlPressed;
+                var entry = Menus.SelectMany(m => m.Entries)
+                    .FirstOrDefault(e => e.Text != null && e.Key != InputKey.Unknown && e.Key == key && e.Ctrl == ctrl);
+                if (entry != null)
+                    Run(entry);
+                return;
+            }
+
+            switch (key)
+            {
+                case InputKey.ArrowLeft:
+                    _title = (_title - 1 + n) % n;
+                    break;
+                case InputKey.ArrowRight:
+                    _title = (_title + 1) % n;
+                    break;
+                case InputKey.ArrowDown:
+                    OpenMenu(_title, keyboard: true);
+                    return;
+                case InputKey.Enter:
+                case InputKey.Space:
+                    if (!SamePress())
+                        OpenMenu(_title, keyboard: true);
+                    return;
+                case InputKey.Escape:
+                    LeaveBar();
+                    return;
+                default:
+                    return;
+            }
+
+            Keys();
+            Superview.SetAccessibilityFocus(_tops[_title]);
+            PaintBar();
             return;
         }
 
-        // the keyboard focus is on a line of the open menu (opened from the keyboard): Up, Down, Enter and Space move
-        // and pick through it, the highlight follows it (OnKeyboardFocus)
-        var focusInMenu = Superview.AccessibilityManager.FocusedNode is SkiaControl focused
-                          && _items.Any(i => ReferenceEquals(i.View, focused));
-        if (focusInMenu && key is InputKey.ArrowDown or InputKey.ArrowUp or InputKey.Enter or InputKey.Space)
+        if (key is not (InputKey.ArrowDown or InputKey.ArrowUp or InputKey.Home or InputKey.End or InputKey.ArrowLeft
+            or InputKey.ArrowRight or InputKey.Enter or InputKey.Space or InputKey.Escape))
             return;
 
+        // a menu the mouse opened: the keyboard comes along
+        EnterBar();
         switch (key)
         {
             case InputKey.ArrowLeft:
-                OpenMenu((_open - 1 + Menus.Length) % Menus.Length, keyboard: true);
+                OpenMenu((_open - 1 + n) % n, keyboard: true);
                 break;
             case InputKey.ArrowRight:
-                OpenMenu((_open + 1) % Menus.Length, keyboard: true);
-                break;
-            case InputKey.ArrowDown:
-                _highlighted = (_highlighted + 1) % _items.Count;
-                PaintItems();
-                break;
-            case InputKey.ArrowUp:
-                _highlighted = _highlighted <= 0 ? _items.Count - 1 : _highlighted - 1;
-                PaintItems();
+                OpenMenu((_open + 1) % n, keyboard: true);
                 break;
             case InputKey.Enter:
             case InputKey.Space:
-                if (_highlighted >= 0)
+                if (_highlighted >= 0 && !SamePress())
                     Run(_items[_highlighted].Entry);
                 break;
             case InputKey.Escape:
+                var open = _open;
                 CloseMenu();
+                _title = open;
+                Superview.SetAccessibilityFocus(_tops[open]);
+                PaintBar();
+                break;
+            default:
+                Light(Step(_highlighted, key));
                 break;
         }
+    }
+
+    /// <summary>Alt let go with nothing pressed with it: the keyboard goes onto the bar (its first title), or, when it is there, back where it was.</summary>
+    private void OnKeyUp(object sender, InputKey key)
+    {
+        if (Superview == null || IsDisposed || key is not (InputKey.AltLeft or InputKey.AltRight) || !_altAlone)
+            return;
+
+        _altAlone = false;
+        if (_open >= 0 || _title >= 0)
+        {
+            LeaveBar();
+            return;
+        }
+
+        EnterBar();
+        _title = 0;
+        Superview.SetAccessibilityFocus(_tops[0]);
+        PaintBar();
     }
 
     #endregion

@@ -19,6 +19,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <!-- the Hello apps' menu bar page, driven from the keyboard by HelloMenuBarTests -->
+        <Compile Include="..\..\..\OpenTk\Samples\HelloOpenTk\Pages\TooltipsMenusPage.cs" Link="Hello\TooltipsMenusPage.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
         <EmbeddedResource Include="Resources\green.png" />
         <None Update="Assets\**" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
