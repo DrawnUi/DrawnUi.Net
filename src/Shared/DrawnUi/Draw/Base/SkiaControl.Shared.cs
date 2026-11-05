@@ -9470,14 +9470,14 @@ namespace DrawnUi.Draw
                 {
                     case GradientType.Sweep:
 
-                        //float sweep = (float)Value3;//((float)this.Variable1 % (float)this.Variable2 / 100F) * 360.0F;
-
+                        // Value1 = start angle, Value2 = sweep angle; no sweep angle is the full circle (React, Rust)
+                        var sweepAngle = Value2 == 0 ? 360.0 : Value2;
                         return SKShader.CreateSweepGradient(
                             new SKPoint(destination.Left + destination.Width / 2.0f,
                                 destination.Top + destination.Height / 2.0f),
                             colors.ToArray(),
                             colorPositions,
-                            gradient.TileMode, (float)Value1, (float)(Value1 + Value2));
+                            gradient.TileMode, (float)Value1, (float)(Value1 + sweepAngle));
 
                     case GradientType.Circular:
                     case GradientType.Oval:
