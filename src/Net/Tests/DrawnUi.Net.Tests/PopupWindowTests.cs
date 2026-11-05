@@ -112,11 +112,24 @@ public class PopupWindowTests
         var id = host.Canvas.OpenPopupWindow(Menu(new List<string>(), "A"), new SKPoint(150, 150));
         host.AdvanceFrames(2);
 
-        KeyboardManager.KeyboardPressed(InputKey.Escape);
-        KeyboardManager.KeyboardReleased(InputKey.Escape);
-        host.AdvanceFrames(2);
+        var handled = new List<(bool Handled, bool Open)>();
+        void OnDown(object sender, InputKey key) => handled.Add((KeyboardManager.IsKeyHandled, host.Canvas.IsPopupWindowOpen(id)));
+        KeyboardManager.KeyDown += OnDown;
+        try
+        {
+            KeyboardManager.KeyboardPressed(InputKey.Escape); // closes it: the app's KeyDown hears a used key
+            KeyboardManager.KeyboardReleased(InputKey.Escape);
+            host.AdvanceFrames(2);
+            KeyboardManager.KeyboardPressed(InputKey.Escape); // nothing to close: the app's key
+            KeyboardManager.KeyboardReleased(InputKey.Escape);
+        }
+        finally
+        {
+            KeyboardManager.KeyDown -= OnDown;
+        }
 
         Assert.False(host.Canvas.IsPopupWindowOpen(id));
+        Assert.Equal(new[] { (true, false), (false, false) }, handled);
     }
 
     [Fact]

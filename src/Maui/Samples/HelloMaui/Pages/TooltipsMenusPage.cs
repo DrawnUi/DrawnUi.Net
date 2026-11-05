@@ -273,6 +273,7 @@ public class TooltipsMenusPage : SkiaLayer
     private bool _onBar; // the keyboard came to the bar from _back (null: from nowhere), and goes back there when it leaves
     private SkiaControl _back;
     private bool _altAlone;
+    private bool _closedByKey; // the key being handled closed the open menu
     private (float X, float Y)? _pointerAt;
     private int _pointerMoves, _keysMoves;
 
@@ -570,9 +571,19 @@ public class TooltipsMenusPage : SkiaLayer
         if (id != _barPopup || _open < 0)
             return;
 
+        var open = _open;
         _open = -1;
         _highlighted = -1;
-        LeaveBar();
+        if (KeyboardManager.IsDispatchingKeyDown)
+        {
+            // Escape: the canvas closed the menu, one level back, the keyboard stays on its title
+            _title = open;
+            _closedByKey = true;
+            Superview?.SetAccessibilityFocus(_tops[open]);
+            PaintBar();
+            return;
+        }
+        LeaveBar(); // closed from outside: a click elsewhere, the window deactivated
     }
 
     private void CloseMenu()
@@ -621,6 +632,12 @@ public class TooltipsMenusPage : SkiaLayer
             return;
         }
 
+        // the canvas used it: this Escape closed the open menu (back on its title), Enter / Space activated the focused item
+        var closedByKey = _closedByKey;
+        _closedByKey = false;
+        if (closedByKey && key == InputKey.Escape || KeyboardManager.IsKeyHandled && key is InputKey.Enter or InputKey.Space)
+            return;
+
         var n = Menus.Length;
         if (!BarOpen)
         {
@@ -656,8 +673,7 @@ public class TooltipsMenusPage : SkiaLayer
                     return;
                 case InputKey.Enter:
                 case InputKey.Space:
-                    if (!KeyboardManager.IsKeyHandled) // the canvas activated the title already
-                        OpenMenu(_title, keyboard: true);
+                    OpenMenu(_title, keyboard: true);
                     return;
                 case InputKey.Escape:
                     LeaveBar();
@@ -688,7 +704,7 @@ public class TooltipsMenusPage : SkiaLayer
                 break;
             case InputKey.Enter:
             case InputKey.Space:
-                if (_highlighted >= 0 && !KeyboardManager.IsKeyHandled) // the canvas activated the line already
+                if (_highlighted >= 0)
                     Run(_items[_highlighted].Entry);
                 break;
             case InputKey.Escape:

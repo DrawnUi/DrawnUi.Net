@@ -63,11 +63,12 @@ public partial class KeyboardManager
         CheckAndApplyModifiers(key, true);
 
         IsKeyForOtherElement = forOtherElement;
-        IsKeyHandled = key != InputKey.Unknown && _keyUsedByCanvas == key;
-        _keyUsedByCanvas = InputKey.Unknown;
         IsDispatchingKeyDown = true;
         try
         {
+            CanvasKeyDown?.Invoke(key); // the canvas's own keys first (Escape closes a popup window)
+            IsKeyHandled = key != InputKey.Unknown && _keyUsedByCanvas == key;
+            _keyUsedByCanvas = InputKey.Unknown;
             KeyDown?.Invoke(null, key);
         }
         finally
@@ -79,10 +80,17 @@ public partial class KeyboardManager
     }
 
     /// <summary>
-    /// True while <see cref="KeyDown"/> handlers run: what they open or close was done with the keyboard (a popup
-    /// window opened by Alt+F takes the keyboard focus, one closed by Escape gives it back).
+    /// True while a key press is handled, by the canvas and then by <see cref="KeyDown"/> handlers: what opens or closes
+    /// now was done with the keyboard (a popup window opened by Alt+F takes the keyboard focus, one closed by Escape
+    /// gives it back; a menu closed by Escape goes back one level).
     /// </summary>
-    internal static bool IsDispatchingKeyDown { get; private set; }
+    public static bool IsDispatchingKeyDown { get; private set; }
+
+    /// <summary>
+    /// The canvas's own key handling that comes before the app's <see cref="KeyDown"/> (Escape closing the top popup
+    /// window); a handler that uses the key calls <see cref="MarkKeyHandled"/>.
+    /// </summary>
+    internal static event Action<InputKey> CanvasKeyDown;
 
     public static void KeyboardReleased(InputKey key) => KeyboardReleased(key, false);
 
