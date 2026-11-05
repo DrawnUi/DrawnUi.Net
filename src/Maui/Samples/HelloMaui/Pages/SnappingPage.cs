@@ -111,7 +111,7 @@ public class SnappingPage : SkiaLayer
                     MaximumWidthRequest = 720,
                     Children = new List<SkiaControl>
                     {
-                        new SkiaLabel("Carousel & Drawer") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center },
+                        new SkiaLabel("Carousel & Drawer") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center, AccessibilityRole = DrawnUi.Models.Aria.RolePresentation },
 
                         Card("SkiaCarousel playground (Sandbox MainPageCarousels)",
                             new SkiaWrap

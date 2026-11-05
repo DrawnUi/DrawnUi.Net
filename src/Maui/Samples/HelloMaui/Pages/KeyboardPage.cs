@@ -39,7 +39,7 @@ public class KeyboardPage : SkiaLayer
                     MaximumWidthRequest = 720,
                     Children = new List<SkiaControl>
                     {
-                        new SkiaLabel("Keyboard Input") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center },
+                        new SkiaLabel("Keyboard Input") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center, AccessibilityRole = DrawnUi.Models.Aria.RolePresentation },
                         new SkiaLabel("KeyboardManager is fed by the MAUI window's key events on Windows and MacCatalyst (DrawnUiStartupSettings.UseDesktopKeyboard): shortcuts, game input. Press letters, arrows, modifiers or function keys.")
                         {
                             FontSize = 13, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center,

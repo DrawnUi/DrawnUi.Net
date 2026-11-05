@@ -41,7 +41,7 @@ public class LooksPage : SkiaLayer
                     MaximumWidthRequest = 720,
                     Children = new List<SkiaControl>
                     {
-                        new SkiaLabel("Common Controls") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center },
+                        new SkiaLabel("Common Controls") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center, AccessibilityRole = DrawnUi.Models.Aria.RolePresentation },
                         new SkiaLabel("SkiaSwitch, SkiaCheckbox, SkiaRadioButton, SkiaButton, SkiaProgress, SkiaSlider — the same tree per card, only ControlStyle changes (the Fiddle 'Looks' snippet).")
                         {
                             FontSize = 13, TextColor = Color.Parse("#ADB5BD"), HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center,

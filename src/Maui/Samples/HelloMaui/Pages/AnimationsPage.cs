@@ -41,7 +41,7 @@ public class AnimationsPage : SkiaLayer
                     MaximumWidthRequest = 720,
                     Children = new List<SkiaControl>
                     {
-                        new SkiaLabel("Lottie & GIF") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center },
+                        new SkiaLabel("Lottie & GIF") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center, AccessibilityRole = DrawnUi.Models.Aria.RolePresentation },
 
                         Card(Title("SkiaLottie — Source=\"lottie/shield.json\" Repeat=-1 · loading…").Assign(out _lottieTitle),
                             new SkiaWrap

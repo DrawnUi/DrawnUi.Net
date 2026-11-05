@@ -44,7 +44,7 @@ public class AccessibilityPage : SkiaLayer
                     MaximumWidthRequest = 720,
                     Children = new List<SkiaControl>
                     {
-                        new SkiaLabel("Accessibility") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center, AccessibilityRole = Aria.RoleHeading },
+                        new SkiaLabel("Accessibility") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center, AccessibilityRole = DrawnUi.Models.Aria.RolePresentation },
                         new SkiaLabel("Every drawn control can describe itself: role, label, hint, pressed state, live region. The engine keeps an accessibility snapshot of the arranged nodes (rebuilt at most once per second, so it follows scrolling); a head maps it to the platform's assistive tree.")
                         {
                             FontSize = 14, TextColor = Colors.LightGray, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center,
