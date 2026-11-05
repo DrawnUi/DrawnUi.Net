@@ -293,7 +293,7 @@ public class MyGame : DrawnUi.Gaming.DrawnGame   // alias: MauiGame = DrawnUi.Ga
 | `OnPaused()` / `OnResumed()` | Override for pause/resume logic |
 | `LastFrameTimeNanos` | Protected - last frame timestamp (nanos) |
 | `FrameInterpolatorDisabled` | Static - `true` = raw frame delta (frame-skip), `false` = delta smoothed by `FrameTimeInterpolator`. Default `true` on Android, OpenTK and browser builds (Blazor, pure Web), `false` elsewhere |
-| `OnKeyDown(InputKey)` / `OnKeyUp(InputKey)` | Override - keyboard wired by base |
+| `OnKeyDown(InputKey)` / `OnKeyUp(InputKey)` | Override - keyboard wired by base, while the game is on a canvas (a game removed from the screen gets no keys and is released) |
 | `ProcessGestures(...)` | Override - touch/gesture input |
 | `IgnoreChildrenInvalidations` | Set `true` after init - **critical for perf** |
 | `Update()` | Force one re-render |
