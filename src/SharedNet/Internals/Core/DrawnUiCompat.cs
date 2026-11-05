@@ -199,15 +199,19 @@ namespace DrawnUi.Draw
                 color.Alpha);
         }
 
+        /// <summary>
+        /// The color with its HSL lightness raised by <paramref name="percent"/> of itself, hue and saturation kept: the
+        /// same as .NET MAUI's <c>Color.AddLuminosity</c>, which the MAUI head uses, so a gradient's Light looks the same
+        /// on every head.
+        /// </summary>
         public static DrawnUi.Color MakeLighter(this DrawnUi.Color color, double percent)
         {
-            float Lerp(float channel) => channel + (1f - channel) * (float)Math.Clamp(percent / 100.0, 0.0, 1.0);
+            new SkiaSharp.SKColor((byte)Math.Round(color.Red * 255), (byte)Math.Round(color.Green * 255),
+                (byte)Math.Round(color.Blue * 255)).ToHsl(out var hue, out var saturation, out var lightness);
+            var lighter = SkiaSharp.SKColor.FromHsl(hue, saturation,
+                (float)Math.Clamp(lightness * (1 + percent / 100.0), 0, 100));
 
-            return new DrawnUi.Color(
-                Lerp(color.Red),
-                Lerp(color.Green),
-                Lerp(color.Blue),
-                color.Alpha);
+            return new DrawnUi.Color(lighter.Red / 255f, lighter.Green / 255f, lighter.Blue / 255f, color.Alpha);
         }
     }
 
