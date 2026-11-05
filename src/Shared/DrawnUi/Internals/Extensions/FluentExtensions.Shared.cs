@@ -162,6 +162,16 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// Sets the expanded state screen readers read for a control that opens something (a menu bar title, a dropdown):
+        /// true = open, false = closed, null = opens nothing (the default). Update it when the app opens or closes it.
+        /// </summary>
+        public static T WithAccessibilityExpanded<T>(this T control, bool? expanded) where T : SkiaControl
+        {
+            control.AccessibilityIsExpanded = expanded;
+            return control;
+        }
+
+        /// <summary>
         /// Marks a SkiaToggle as an accessible toggle button and keeps aria-pressed in sync with IsToggled automatically.
         /// Unsubscribes on control disposal via ExecuteUponDisposal.
         /// </summary>

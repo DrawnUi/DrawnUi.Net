@@ -29,6 +29,7 @@ Accessibility starts in shared code. A drawn control can expose:
 - a hint
 - whether it takes input
 - a pressed / toggle state
+- an expanded state, for a control that opens something (a menu bar title, a dropdown)
 - a value, for range controls such as sliders and progress bars
 - a live region setting, for text that changes
 
@@ -45,6 +46,7 @@ public record AccessibilityNode(
 {
     public int Id { get; }                       // stable id of the control
     public AccessibilityValue? Value { get; }    // range controls only
+    public bool? IsExpanded { get; }             // open / closed, null when it opens nothing
     public bool NamedByChild { get; }            // a title text inside says the name
 }
 
@@ -77,7 +79,7 @@ The manager rebuilds its snapshot at most once per `MinUpdateIntervalMs` (defaul
 Two cases do not wait for the interval:
 
 - **After a screen reader's action** (activate, adjust, set a value), the snapshot is rebuilt on the next frame, so the reader hears the new value or state at once.
-- **A live region** (`AccessibilityLive`) reports its new text immediately.
+- **A live region** (`AccessibilityLive`) reports its new text immediately, and the accessibility snapshot (what a screen reader reads when it walks there, the web overlay) has it on the next frame.
 
 When the node the screen reader is on leaves the snapshot (its page closed, a popup went away), the reader is moved to the first node in reading order that says something (has a name or takes input), so it never stays on an empty spot.
 
@@ -121,6 +123,7 @@ control.AccessibilityLabel = "Save";
 control.AccessibilityHint = "Saves the document";
 control.AccessibilityCanInteract = true;
 control.AccessibilityIsPressed = false;
+control.AccessibilityIsExpanded = false;
 control.AccessibilityLive = Aria.LivePolite;
 ```
 
@@ -129,6 +132,7 @@ control.AccessibilityLive = Aria.LivePolite;
 - `AccessibilityHint` gives extra context, read after the name.
 - `AccessibilityCanInteract` marks the node as interactive, while the pointer could use the control (see [Only controls the pointer can use](#keyboard-navigation)).
 - `AccessibilityIsPressed` is the toggle state when the control has one: switches and checkboxes read as checked / not checked, a button with a pressed state as a toggle button.
+- `AccessibilityIsExpanded` is the open state of a control that opens something, such as a menu bar title or a dropdown: `true` = expanded, `false` = collapsed, `null` (the default) = it opens nothing. Screen readers say "expanded" / "collapsed". The app opens and closes it on tap as usual and updates this value; a screen reader's expand / collapse taps the control.
 - `AccessibilityLive` (`Aria.LivePolite` or `Aria.LiveAssertive`) makes the control a live region: screen readers announce its new text when it changes, for example a status line or a counter.
 
 `SkiaLabel.AccessibilityTextSelectable` lets people select and copy a label's text with the mouse, touch and Ctrl+C, see [Selectable text](../controls/text.md#selectable-text).
@@ -156,6 +160,9 @@ The same metadata can be attached with fluent helpers.
 // Toggle state
 .WithAccessibilityPressed(bool? pressed)
 .WithAccessibilityToggle(string label, string? hint = null)
+
+// Expanded state (a menu bar title, a dropdown)
+.WithAccessibilityExpanded(bool? expanded)
 
 // Live region
 .WithAccessibilityLive(string live = "polite")
@@ -204,7 +211,7 @@ Screen readers can do more than read. These actions go through `SkiaAccessibilit
 
 | Action | What it does | Where |
 |---|---|---|
-| Activate | `Activate(node)`: a tap in the middle of the node (`OnAccessibilityActivated`), only while a tap could reach it | UIA Invoke / Toggle, TalkBack double tap, VoiceOver double tap, AT-SPI action "click", Enter / Space and click on the web overlay |
+| Activate | `Activate(node)`: a tap in the middle of the node (`OnAccessibilityActivated`), only while a tap could reach it | UIA Invoke / Toggle / ExpandCollapse, TalkBack double tap and expand / collapse, VoiceOver double tap, AT-SPI action "click", Enter / Space and click on the web overlay |
 | Increment / decrement | `Adjust(node, up)`: one arrow-key step of a range control | UIA RangeValue, TalkBack adjust, VoiceOver swipe up / down |
 | Set a value | `SetValue(node, value)`: `OnAccessibilitySetValue`, snapped to the step | UIA RangeValue.SetValue, TalkBack set progress, AT-SPI Value |
 | Bring into view | `ScrollIntoView(node)`: every `SkiaScroll` around the node scrolls it into view | UIA ScrollItem, TalkBack show on screen, VoiceOver focus, AT-SPI ScrollTo, web overlay focus |
@@ -229,7 +236,7 @@ On an OpenTK window, Enter, Space, Escape and the arrow keys go to the focused n
 
 **Focus ring.** It appears only after the keyboard was used, never at launch or after a click, like native Windows focus visuals. Desktop targets and WebAssembly draw it on the canvas on top of every frame (`DrawnView.KeyboardFocusNode`, color `DrawnView.KeyboardFocusColor`), so it follows the control while it scrolls. Blazor uses the CSS outline of its overlay element. Pointer input hides it. Every `SkiaScroll` around the focused control keeps its auto-hiding scroll bars visible while the focus is there.
 
-**Your own keys.** Keys the drawn nodes do not use (and Escape too) still reach `KeyboardManager.KeyDown`, for example to close a panel. On .NET MAUI enable it with `UseDesktopKeyboard = true` in `DrawnUiStartupSettings`. The manager listens to the window before the canvas, so it gets every key while the canvas has focus.
+**Your own keys.** Keys the drawn nodes do not use (and Escape too) still reach `KeyboardManager.KeyDown`, for example to close a panel. For handlers that belong to a control, use `.OnKeyDown(...)` / `.OnKeyUp(...)` or `KeyboardManager.Subscribe(control, keyDown, keyUp)`: they fire only while the control is on a canvas, and a page removed from the screen is released with its handlers. On .NET MAUI enable it with `UseDesktopKeyboard = true` in `DrawnUiStartupSettings`. The manager listens to the window before the canvas, so it gets every key while the canvas has focus.
 
 **Only controls the pointer can use.** Keyboard navigation follows the pointer's rules (`SkiaControl.CanReceiveGesture`). A node is a Tab stop, gets activated and takes keys only while a tap (a pan, for the arrow keys) would reach it. That means:
 
@@ -249,6 +256,8 @@ On an OpenTK window, Enter, Space, Escape and the arrow keys go to the focused n
 - Tab out of a field keeps the keyboard on the canvas: the next control has keyboard focus, and Enter or Space presses it right away.
 
 **Custom controls.** Override `OnAccessibilityKey(InputKey key)` and return true for the keys the control used. Override `OnAccessibilityActivated()` when a tap in the middle is not the right activation.
+
+**Moving the focus from code.** `canvas.SetAccessibilityFocus(control)` moves the keyboard and screen-reader focus to a control at the end of the next frame, for example the line a custom menu just highlighted, so screen readers follow it. A control that is not drawn yet gets it as soon as it is, within 3 seconds. The focus ring keeps its state: it shows only when the keyboard is in use.
 
 ### Arrow-key groups (lists)
 
@@ -278,6 +287,8 @@ new SkiaScroll
 
 **What Tab can reach.** Only nodes in the snapshot, that is controls drawn in the last frame. Content inside a cached container is drawn into its cache as a whole, so every node in it is reachable and scrolls into view. Without a cache, a virtualized layout draws only what is in the viewport, and a recycled templated list realizes only the cells near it. Give such a list a group role: the arrow keys then reach every item (see [Arrow-key groups](#arrow-key-groups-lists)).
 
+By default the arrows stop at the first and last item. Set `KeyboardWrap = true` (`.WithKeyboardWrap()`) on the group to make them go round, from the last item to the first and back, as in desktop menus.
+
 ## Implementation in depth
 
 ### Blazor and WebAssembly (ARIA overlay)
@@ -287,6 +298,7 @@ Blazor and the pure WebAssembly head (`DrawnUi.Web`) render the canvas as usual 
 - The visible canvas surface is marked `aria-hidden`.
 - A sibling overlay holds one absolutely positioned element per node, in reading order, with its `role`, `aria-label` and the hint as `title`.
 - A pressed state goes on the attribute its role is read from: `aria-checked` for switches, checkboxes and radios, `aria-selected` for options and tabs, `aria-pressed` for toggle buttons.
+- An expanded state carries `aria-expanded`; a menu item with one also carries `aria-haspopup="menu"`.
 - Range controls carry `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, `aria-valuetext` and `aria-orientation`.
 - A control role that takes no input carries `aria-disabled="true"`. Live regions carry `aria-live`.
 - Interactive nodes are focusable (`tabindex`). Inside an arrow-key group only the current item has `tabindex="0"`. Other nodes have `tabindex="-1"`: not Tab stops, but a screen reader can still be moved to them.
@@ -303,6 +315,7 @@ On WebAssembly the overlay is created by `drawnui-web.js` right after your `<can
 - control type, name, help text (the hint), bounding rectangle in screen coordinates, parent / sibling / child navigation;
 - `IsEnabled` false for a control role that takes no input;
 - **Invoke** (activate) and **Toggle** (pressed state) for nodes that take input;
+- **ExpandCollapse** (Expanded / Collapsed) for a node with an expanded state; Expand and Collapse activate it when its state differs;
 - **RangeValue** for range controls (read only for a progress bar and a slider that takes no input; `SetValue` snaps to the step), **Value** with the spoken text ("65%", "20 – 80"), and the orientation;
 - **ScrollItem** on every node;
 - `StructureChanged` when the snapshot is rebuilt, focus-changed events when keyboard focus moves, live-region events on .NET MAUI Windows and WPF.
@@ -320,6 +333,7 @@ The canvas view gets an AndroidX `ExploreByTouchHelper`. Every node is a virtual
 - Range controls have range info and a state description. An adjustable slider takes scroll forward / backward (TalkBack adjust) and set progress.
 - Every node offers "show on screen". The canvas offers scroll forward / backward for the scroll around TalkBack's node, only while it can move.
 - Live regions, disabled control roles, checkable state.
+- An expanded state is spoken as the state description ("expanded" / "collapsed"); the node offers expand or collapse, which activates it.
 
 Nothing runs while no accessibility service with touch exploration is on.
 
@@ -329,6 +343,7 @@ The canvas view becomes an accessibility container with one `UIAccessibilityElem
 
 - traits from the role (button, link, image, static text, header, adjustable, search field), not enabled for a control role without input, updates frequently for progress bars and live regions;
 - a toggle's state with the toggle-button trait (iOS 17 and later);
+- an expanded state as the value ("expanded" / "collapsed");
 - the label and value are read from the control when VoiceOver asks, so a slider says its new value right after an adjust;
 - double tap activates, swipe up / down adjusts a slider, a three-finger swipe pages the scroll around the node (no when nothing can move);
 - a node VoiceOver moves to is scrolled into view;
@@ -340,7 +355,7 @@ On iOS the elements exist only while VoiceOver or Switch Control runs. On Mac Ca
 
 An OpenTK window on Linux publishes the snapshot on the AT-SPI bus over D-Bus (package `Tmds.DBus.Protocol`). The tree is the application, one frame for the window, and the nodes in reading order.
 
-- **Accessible:** role, name, description (the hint), state set (focusable, focused, enabled, checkable, checked, pressed, orientation).
+- **Accessible:** role, name, description (the hint), state set (focusable, focused, enabled, checkable, checked, pressed, expandable, expanded, orientation).
 - **Component:** extents and focus.
 - **Action:** "click" activates.
 - **Value:** writing it sets the value.

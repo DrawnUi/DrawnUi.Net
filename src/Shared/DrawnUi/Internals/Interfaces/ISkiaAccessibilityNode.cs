@@ -32,6 +32,12 @@ public interface ISkiaAccessibilityNode
     bool? AccessibilityIsPressed { get; set; }
 
     /// <summary>
+    /// Maps to <c>aria-expanded</c>. Use for a control that opens something (a menu bar title, a dropdown): <c>true</c> =
+    /// open, <c>false</c> = closed, <c>null</c> = opens nothing (attribute omitted, the default).
+    /// </summary>
+    bool? AccessibilityIsExpanded => null;
+
+    /// <summary>
     /// Live region setting. When set, screen readers announce value changes automatically.
     /// Use <see cref="DrawnUi.Models.Aria.LivePolite"/> or <see cref="DrawnUi.Models.Aria.LiveAssertive"/>.
     /// null/empty = off (default).

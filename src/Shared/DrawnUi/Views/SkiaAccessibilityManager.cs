@@ -13,6 +13,9 @@ namespace DrawnUi.Views
         /// <summary>The value of a range control (slider, progress bar), null for other nodes.</summary>
         public AccessibilityValue? Value { get; init; }
 
+        /// <summary>A control that opens something (a menu title, a dropdown): open (true) or closed (false); null when it opens nothing.</summary>
+        public bool? IsExpanded { get; init; }
+
         /// <summary>
         /// A title text inside says this node's name (a card and its title), so the node is not named again: a head reads
         /// no name for it, also not the live <see cref="ISkiaAccessibilityNode.AccessibilityLabel"/>.
@@ -32,7 +35,8 @@ namespace DrawnUi.Views
             {
                 Source = node,
                 Id = node.AccessibilityId,
-                Value = node.GetAccessibilityValue()
+                Value = node.GetAccessibilityValue(),
+                IsExpanded = node.AccessibilityIsExpanded
             };
         }
     }
@@ -1188,7 +1192,7 @@ namespace DrawnUi.Views
                 var y = b[i];
                 if (!ReferenceEquals(x.Source, y.Source)
                     || x.Label != y.Label || x.Hint != y.Hint || x.Role != y.Role
-                    || x.CanInteract != y.CanInteract || x.IsPressed != y.IsPressed || x.Live != y.Live || x.Value != y.Value
+                    || x.CanInteract != y.CanInteract || x.IsPressed != y.IsPressed || x.IsExpanded != y.IsExpanded || x.Live != y.Live || x.Value != y.Value
                     || x.NamedByChild != y.NamedByChild
                     || Math.Abs(x.Rect.Left - y.Rect.Left) > 0.5f || Math.Abs(x.Rect.Top - y.Rect.Top) > 0.5f
                     || Math.Abs(x.Rect.Right - y.Rect.Right) > 0.5f || Math.Abs(x.Rect.Bottom - y.Rect.Bottom) > 0.5f)

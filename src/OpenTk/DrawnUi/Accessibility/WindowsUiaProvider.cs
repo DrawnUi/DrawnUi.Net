@@ -141,7 +141,7 @@ internal sealed class WindowRootProvider
 [ComVisible(true)]
 internal sealed class VirtualElementProvider
     : IRawElementProviderSimple, IRawElementProviderFragment, IInvokeProvider,
-      IUiaToggleProvider, IUiaRangeValueProvider, IUiaValueProvider, IUiaScrollItemProvider
+      IUiaToggleProvider, IUiaRangeValueProvider, IUiaValueProvider, IUiaScrollItemProvider, IUiaExpandCollapseProvider
 {
     private readonly AccessibilityNode _node;
     private readonly int _index;
@@ -171,6 +171,7 @@ internal sealed class VirtualElementProvider
     {
         UiaPatternId.Invoke when _node.CanInteract => this,
         UiaPatternId.Toggle when _node.CanInteract && (_node.Source?.AccessibilityIsPressed ?? _node.IsPressed).HasValue => this,
+        UiaPatternId.ExpandCollapse when IsExpanded.HasValue => this,
         UiaPatternId.RangeValue when _node.Value.HasValue => this, // also a read-only progress bar
         UiaPatternId.Value when !string.IsNullOrEmpty(_node.Value?.Text) => this,
         UiaPatternId.ScrollItem => this,
@@ -180,6 +181,12 @@ internal sealed class VirtualElementProvider
     // Toggle: a switch / checkbox's state, pressing it activates the node as Invoke does
     void IUiaToggleProvider.Toggle() => Invoke();
     int IUiaToggleProvider.ToggleState => (_node.Source?.AccessibilityIsPressed ?? _node.IsPressed) switch { true => 1, false => 0, _ => 2 };
+
+    // ExpandCollapse: open or closed only reports; Expand / Collapse tap the control, the app opens or closes it
+    private bool? IsExpanded => _node.Source?.AccessibilityIsExpanded ?? _node.IsExpanded;
+    void IUiaExpandCollapseProvider.Expand() { if (IsExpanded == false) Invoke(); }
+    void IUiaExpandCollapseProvider.Collapse() { if (IsExpanded == true) Invoke(); }
+    int IUiaExpandCollapseProvider.ExpandCollapseState => IsExpanded == true ? 1 : 0;
 
     // RangeValue: a slider / progress bar's value; read only for a progress bar and a slider that takes no input
     private AccessibilityValue RangeValue => _node.Source?.GetAccessibilityValue() ?? _node.Value ?? default;

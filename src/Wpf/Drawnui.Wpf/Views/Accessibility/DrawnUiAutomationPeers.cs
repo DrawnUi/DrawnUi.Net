@@ -194,7 +194,7 @@ internal sealed class DrawnUiElementAutomationPeer : FrameworkElementAutomationP
 
 /// <summary>One accessibility node of the drawn tree; has no backing UIElement.</summary>
 internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProvider, IToggleProvider,
-    IRangeValueProvider, IValueProvider, IScrollItemProvider
+    IRangeValueProvider, IValueProvider, IScrollItemProvider, IExpandCollapseProvider
 {
     private readonly DrawnUiElementAutomationPeer _parent;
     private AccessibilityNode _node;
@@ -215,8 +215,11 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
     internal void Update(AccessibilityNode node, int index)
     {
         var wasValue = _node.Value;
+        var wasExpanded = _node.IsExpanded;
         _node = node;
         _index = index;
+        if (wasExpanded != node.IsExpanded && wasExpanded.HasValue && node.IsExpanded.HasValue)
+            RaisePropertyChangedEvent(ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty, ToExpandState(wasExpanded), ToExpandState(node.IsExpanded));
         if (wasValue is { } before && node.Value is { } now && before.Now != now.Now)
             RaisePropertyChangedEvent(RangeValuePatternIdentifiers.ValueProperty, before.Now, now.Now);
     }
@@ -277,6 +280,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
     {
         PatternInterface.Invoke when _node.CanInteract => this,
         PatternInterface.Toggle when _node.CanInteract && (Source?.AccessibilityIsPressed ?? _node.IsPressed).HasValue => this,
+        PatternInterface.ExpandCollapse when IsExpanded.HasValue => this,
         PatternInterface.RangeValue when _node.Value.HasValue => this, // also a read-only progress bar
         PatternInterface.Value when !string.IsNullOrEmpty(_node.Value?.Text) => this,
         PatternInterface.ScrollItem => this,
@@ -347,6 +351,30 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, IInvokeProv
         false => ToggleState.Off,
         _ => ToggleState.Indeterminate,
     };
+
+    // IExpandCollapseProvider: the state only reports; Expand / Collapse tap the control, the app opens or closes it
+
+    private bool? IsExpanded => Source?.AccessibilityIsExpanded ?? _node.IsExpanded;
+
+    /// <inheritdoc/>
+    public ExpandCollapseState ExpandCollapseState => ToExpandState(IsExpanded);
+
+    /// <inheritdoc/>
+    public void Expand()
+    {
+        if (IsExpanded == false)
+            Invoke();
+    }
+
+    /// <inheritdoc/>
+    public void Collapse()
+    {
+        if (IsExpanded == true)
+            Invoke();
+    }
+
+    private static ExpandCollapseState ToExpandState(bool? expanded) =>
+        expanded == true ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed;
 
     private static AutomationControlType AriaToControlType(string role) => role switch
     {

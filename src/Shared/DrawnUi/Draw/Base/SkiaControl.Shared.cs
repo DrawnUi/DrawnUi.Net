@@ -5413,6 +5413,26 @@ namespace DrawnUi.Draw
             }
         }
 
+        private bool? _accessibilityIsExpanded;
+
+        /// <summary>
+        /// A control that opens something, such as a menu bar title or a dropdown: whether it is open now (true =
+        /// expanded, false = collapsed), read by screen readers as its expanded state (aria-expanded, UI Automation
+        /// ExpandCollapse). Default null: the control opens nothing. Opening and closing stay the app's job; this only reports.
+        /// </summary>
+        public bool? AccessibilityIsExpanded
+        {
+            get => _accessibilityIsExpanded;
+            set
+            {
+                if (_accessibilityIsExpanded != value)
+                {
+                    _accessibilityIsExpanded = value;
+                    AccessibilityChanged();
+                }
+            }
+        }
+
         private bool _accessibilityModal;
 
         /// <summary>

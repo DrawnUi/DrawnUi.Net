@@ -155,6 +155,8 @@
                          aria-checked="@PressedState(node, "aria-checked")"
                          aria-selected="@PressedState(node, "aria-selected")"
                          aria-pressed="@PressedState(node, "aria-pressed")"
+                         aria-expanded="@Expanded(node)"
+                         aria-haspopup="@HasPopup(node)"
                          aria-live="@node.Live"
                          aria-valuenow="@ValueNow(node)"
                          aria-valuemin="@ValueMin(node)"
@@ -184,6 +186,8 @@
                          aria-checked="@PressedState(node, "aria-checked")"
                          aria-selected="@PressedState(node, "aria-selected")"
                          aria-pressed="@PressedState(node, "aria-pressed")"
+                         aria-expanded="@Expanded(node)"
+                         aria-haspopup="@HasPopup(node)"
                          aria-live="@node.Live"
                          aria-valuenow="@ValueNow(node)"
                          aria-valuemin="@ValueMin(node)"
@@ -1122,6 +1126,10 @@
     // a pressed state goes on the attribute its role is read from: aria-checked for a switch, aria-pressed for a button
     private static string? PressedState(AccessibilityNode node, string attribute) =>
         node.IsPressed is { } pressed && DrawnUi.Models.Aria.PressedStateAttribute(node.Role) == attribute ? pressed ? "true" : "false" : null;
+
+    // a control that opens something (a menu title, a dropdown): open or closed; a menu title also says it opens a menu
+    private static string? Expanded(AccessibilityNode node) => node.IsExpanded is { } expanded ? expanded ? "true" : "false" : null;
+    private static string? HasPopup(AccessibilityNode node) => node.IsExpanded.HasValue && node.Role == DrawnUi.Models.Aria.RoleMenuItem ? "menu" : null;
 
     // the focused overlay element is the canvas keyboard focus: scroll bars around it stay visible
     private void OnA11yFocus(AccessibilityNode node)

@@ -24,6 +24,39 @@ public class AccessibilitySnapshotTests
     };
 
     [Fact]
+    public void ExpandedState_ReachesSnapshot_AndUpdates()
+    {
+        using var host = new HeadlessCanvasHost(400, 400);
+        var manager = host.Canvas.AccessibilityManager;
+        manager.MinUpdateIntervalMs = 0;
+
+        var plain = Button("Plain");
+        var menu = Button("File").WithAccessibilityExpanded(false);
+        var open = Button("Edit").WithAccessibilityExpanded(true);
+
+        var root = new SkiaLayout { Type = LayoutType.Column, HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill };
+        root.AddSubView(plain);
+        root.AddSubView(menu);
+        root.AddSubView(open);
+        host.Canvas.Content = root;
+        host.AdvanceFrames(3);
+
+        Assert.Null(Assert.Single(manager.Snapshot, n => n.Label == "Plain").IsExpanded);
+        Assert.False(Assert.Single(manager.Snapshot, n => n.Label == "File").IsExpanded);
+        Assert.True(Assert.Single(manager.Snapshot, n => n.Label == "Edit").IsExpanded);
+
+        var changed = 0;
+        manager.Changed += () => changed++;
+        menu.AccessibilityIsExpanded = true;
+        open.AccessibilityIsExpanded = null;
+        host.AdvanceFrames(2);
+
+        Assert.True(changed > 0, "Changed not raised after the expanded state changed");
+        Assert.True(Assert.Single(manager.Snapshot, n => n.Label == "File").IsExpanded);
+        Assert.Null(Assert.Single(manager.Snapshot, n => n.Label == "Edit").IsExpanded);
+    }
+
+    [Fact]
     public void HiddenAncestor_PrunesNodes_And_ChangedFiresOnlyOnRealChange()
     {
         using var host = new HeadlessCanvasHost(400, 400);

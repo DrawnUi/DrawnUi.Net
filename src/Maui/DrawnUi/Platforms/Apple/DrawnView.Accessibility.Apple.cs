@@ -241,7 +241,8 @@ namespace DrawnUi.Views
             set { }
         }
 
-        // a toggle's state ("1" / "0" with the toggle trait), else a range control's spoken text or its number
+        // a toggle's state ("1" / "0" with the toggle trait), else "expanded" / "collapsed" for a control that opens
+        // something (UIKit has no expanded trait), else a range control's spoken text or its number
         public override string AccessibilityValue
         {
             get
@@ -253,6 +254,10 @@ namespace DrawnUi.Views
                 var pressed = node.Source?.AccessibilityIsPressed ?? node.IsPressed;
                 if (pressed.HasValue)
                     return pressed.Value ? "1" : "0";
+
+                var expanded = node.Source?.AccessibilityIsExpanded ?? node.IsExpanded;
+                if (expanded.HasValue)
+                    return expanded.Value ? "expanded" : "collapsed";
 
                 if (node.Value is { } snapshotValue)
                 {
