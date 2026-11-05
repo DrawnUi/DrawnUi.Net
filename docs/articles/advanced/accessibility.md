@@ -238,7 +238,7 @@ On an OpenTK window, Enter, Space, Escape and the arrow keys go to the focused n
 
 **Your own keys.** Keys the drawn nodes do not use (and Escape too) still reach `KeyboardManager.KeyDown`, for example to close a panel. For handlers that belong to a control, use `.OnKeyDown(...)` / `.OnKeyUp(...)` or `KeyboardManager.Subscribe(control, keyDown, keyUp)`: they fire only while the control is on a canvas, and a page removed from the screen is released with its handlers. On .NET MAUI enable it with `UseDesktopKeyboard = true` in `DrawnUiStartupSettings`. Every key reaches `KeyDown`, also while the canvas has focus.
 
-**Keys the canvas already used.** On every head the canvas's keyboard navigation sees a key first, then `KeyDown` is raised. While it runs, `KeyboardManager.IsKeyHandled` is true when navigation used that key: Tab moved the focus, Enter or Space activated the focused control, an arrow moved inside a list or a menu or stepped a slider, Escape let the drawn controls go. A handler that would do the same thing skips it, so one press does one thing:
+**Keys the canvas already used.** On every head the canvas's keyboard navigation sees a key first, then `KeyDown` is raised. While it runs, `KeyboardManager.IsKeyHandled` is true when navigation used that key: Tab moved the focus, Enter or Space activated the focused control, an arrow moved inside a list or a menu or stepped a slider, Escape closed a popup window or let the drawn controls go. A handler that would do the same thing skips it, so one press does one thing:
 
 ```csharp
 KeyboardManager.KeyDown += (_, key) =>
