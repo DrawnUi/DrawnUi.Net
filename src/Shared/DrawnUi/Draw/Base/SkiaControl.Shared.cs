@@ -5415,6 +5415,13 @@ namespace DrawnUi.Draw
         private bool _accessibilityModal;
 
         /// <summary>
+        /// On an arrow-key group (a container with a composite role such as <c>Aria.RoleMenu</c> or <c>Aria.RoleList</c>):
+        /// the arrows go round, from the last item to the first and back, instead of stopping at the ends, as in desktop
+        /// menus. Default false.
+        /// </summary>
+        public bool KeyboardWrap { get; set; }
+
+        /// <summary>
         /// A modal overlay (aria-modal), such as a dialog drawn over the screen: while it is shown, screen readers and
         /// Tab reach only its controls (and open popup windows); the content around it leaves accessibility until it
         /// goes. With several, the one drawn on top wins. The keyboard moves into it when it appears while the

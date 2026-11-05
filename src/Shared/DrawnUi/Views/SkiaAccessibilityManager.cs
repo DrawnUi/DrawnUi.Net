@@ -381,8 +381,49 @@ namespace DrawnUi.Views
                 Volatile.Write(ref _focusReturn, node);
         }
 
+        private SkiaControl? _accessibilityFocusTarget;
+        private long _accessibilityFocusDeadline;
+
+        /// <summary>
+        /// Moves the keyboard and screen-reader focus to <paramref name="control"/> at the end of the next frame, for app
+        /// code such as a custom menu that moves its highlight and tells screen readers where it is. A control not drawn
+        /// yet gets it once it is, within 3 seconds. The focus ring keeps its state: it shows only if the keyboard is in use.
+        /// </summary>
+        public void RequestAccessibilityFocus(SkiaControl control)
+        {
+            _accessibilityFocusDeadline = Environment.TickCount64 + 3000;
+            Volatile.Write(ref _accessibilityFocusTarget, control);
+            control?.Superview?.Update();
+        }
+
         private void ProcessPendingFocus(float scale)
         {
+            var wanted = Volatile.Read(ref _accessibilityFocusTarget);
+            if (wanted != null)
+            {
+                if (wanted.IsDisposed || Environment.TickCount64 > _accessibilityFocusDeadline)
+                {
+                    _accessibilityFocusTarget = null;
+                }
+                else
+                {
+                    Rebuild(scale);
+                    if (IsInSnapshot(wanted))
+                    {
+                        _accessibilityFocusTarget = null;
+                        var canvas = wanted.Superview;
+                        var ring = canvas?.KeyboardFocusNode != null;
+                        FocusFromKeyboard(wanted, scale);
+                        if (!ring && canvas != null)
+                            canvas.KeyboardFocusNode = null; // the reader moved, the ring stays hidden
+                    }
+                    else
+                    {
+                        wanted.Superview?.Update(); // not drawn yet: look again next frame
+                    }
+                }
+            }
+
             var inside = Volatile.Read(ref _focusInside);
             if (inside != null)
             {
@@ -608,6 +649,11 @@ namespace DrawnUi.Views
                 default:
                     return false;
             }
+
+            // KeyboardWrap on the group: the arrows go round, the last item to the first and back
+            if (group.KeyboardWrap && key is InputKey.ArrowDown or InputKey.ArrowUp or InputKey.ArrowLeft or InputKey.ArrowRight
+                && (target < 0 || target >= count))
+                target = target < 0 ? count - 1 : 0;
 
             if (target < 0 || target >= count || target == current)
                 return true; // at the end of the group nothing happens, the key still belongs to it

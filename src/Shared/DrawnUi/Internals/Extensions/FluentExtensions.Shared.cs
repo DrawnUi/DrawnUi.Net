@@ -101,6 +101,16 @@ namespace DrawnUi.Draw
             return control;
         }
 
+        /// <summary>
+        /// Sets <see cref="SkiaControl.KeyboardWrap"/>: on an arrow-key group the arrows go round, the last item to the
+        /// first and back.
+        /// </summary>
+        public static T WithKeyboardWrap<T>(this T control, bool wrap = true) where T : SkiaControl
+        {
+            control.KeyboardWrap = wrap;
+            return control;
+        }
+
         public static T WithAccessibilityButton<T>(this T control,
             string label,
             string? hint = null) where T : SkiaControl

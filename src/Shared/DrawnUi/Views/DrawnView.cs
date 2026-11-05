@@ -756,6 +756,13 @@ namespace DrawnUi.Views
         /// override <see cref="DrawKeyboardFocus"/>), and every <see cref="SkiaScroll"/> around it keeps its scroll bars
         /// visible. Null hides both. Pointer input clears it, keyboard focus itself stays with the accessibility layer.
         /// </summary>
+        /// <summary>
+        /// Moves the keyboard and screen-reader focus to <paramref name="control"/> at the end of the next frame, for app
+        /// code such as a custom menu that moves its highlight. A control not drawn yet gets it once it is, within 3
+        /// seconds. The focus ring keeps its state: it shows only if the keyboard is in use.
+        /// </summary>
+        public void SetAccessibilityFocus(SkiaControl control) => AccessibilityManager.RequestAccessibilityFocus(control);
+
         public ISkiaAccessibilityNode KeyboardFocusNode
         {
             get => _keyboardFocusNode;
