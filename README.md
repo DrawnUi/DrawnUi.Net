@@ -3,52 +3,67 @@
 ![License](https://img.shields.io/github/license/DrawnUi/DrawnUi.Net.svg)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat)](https://github.com/DrawnUi/DrawnUi.Net/blob/main/CONTRIBUTING.md)
 
-👉 [Official Site](https://drawnui.net)   
+Build rich, fluid UI by drawing it. Every control is painted on one hardware-accelerated canvas by DrawnUI, a
+rendering engine on [SkiaSharp](https://github.com/mono/SkiaSharp) that works along your framework: .NET MAUI,
+Blazor, WebAssembly, WPF and OpenTK. Compose it in C# code, XAML or Razor, the way you already work.
 
-DrawnUI is a rendering and UI composition engine for .NET, powered by [SkiaSharp](https://github.com/mono/SkiaSharp) with gestures, layouts, effects and animations running with hardware acceleration.
+Docs: [drawnui.net](https://drawnui.net) · Playground: [drawfiddle.com](https://drawfiddle.com) · Blazor demo: [drawnui.net/sandbox](https://drawnui.net/sandbox/)
 
-🤩 [Fiddle in browser](https://drawfiddle.com) 👈
+```csharp
+Content = new Canvas
+{
+    RenderingMode = RenderingModeType.Accelerated,
+    Gestures = GesturesMode.Enabled,
+    Content = new SkiaStack
+    {
+        Spacing = 8,
+        VerticalOptions = LayoutOptions.Center,
+        Children =
+        {
+            new SkiaLabel("Hello World") { FontSize = 32, HorizontalOptions = LayoutOptions.Center },
+            new SkiaButton("Tap me") { HorizontalOptions = LayoutOptions.Center }
+                .OnTapped(me => me.Text = "Tapped!"),
+        }
+    }
+};
+```
 
-Supported hosts:
+## Packages
 
-* `DrawnUi.Maui` - Android, iOS, MacCatalyst, and Windows.
-* `DrawnUi.Blazor.Wasm` - browser WebAssembly rendering.
-* `DrawnUi.Blazor.Server` - server-backed DrawnUI surfaces served by Blazor Server.
-* `DrawnUi.Web` - pure browser WebAssembly, no Blazor required.
-* `DrawnUi.OpenTk` - Windows and Linux desktops.
+* `DrawnUi.Maui` - Android, iOS, Mac Catalyst and Windows.
+* `DrawnUi.Blazor.Wasm` - Blazor WebAssembly in the browser.
+* `DrawnUi.Blazor.Server` - drawn surfaces served by Blazor Server.
+* `DrawnUi.Web` - pure WebAssembly in the browser, no Blazor needed.
 * `DrawnUi.Wpf` - drawn controls inside WPF windows.
-* `DrawnUi.Net` - platform-agnostic console/server rendering scenarios.
+* `DrawnUi.OpenTk` - Windows and Linux desktops.
+* `DrawnUi.Net` - rendering on any .NET host: console, server, tests.
+
+## One family
+
+DrawnUI for .NET is the same engine as [DrawnUI for React](https://github.com/DrawnUi/DrawnUi.React) (TypeScript on
+CanvasKit in the browser) and [DrawnUI for Rust](https://github.com/DrawnUi/DrawnUi.Rust) (Windows, macOS, Linux,
+iOS, Android and the web): the same controls, property names, layout and drawing rules. What you learn here works
+there, and screens move between them.
+
+## What you get, all drawn on one canvas
+
+* **Layouts:** stacks, rows, grids, wrap and masonry, layers with any alignment.
+* **Lists that stay smooth:** recycled cells over huge collections, items of different heights, load more at both ends.
+* **Animations:** a frame loop for anything, Lottie and GIF, spritesheets, at the display's full frame rate.
+* **Transforms in 2D and 3D:** rotate, scale, skew, perspective and depth; taps still land on the right control.
+* **Gestures:** tap, long press, pan, pinch, swipe, drag to reorder, mouse hover, right-click menus.
+* **Effects and shaders:** filters, shadows, blur and glass, SkSL shaders on any control, shader transitions.
+* **Navigation:** shell with pages, popups, modals, toasts, carousel and drawer.
+* **Text:** rich spans, markdown, right-to-left scripts, emoji and symbols, a drawn text editor.
+* **Keyboard:** Tab, arrows, Enter and Escape move through every control, list, menu and dialog.
+* **Accessibility:** screen readers read your drawn UI on every platform (Narrator, NVDA, VoiceOver, TalkBack, Orca, browser readers).
+* **Fast:** caching, drawing only what is on screen, an idle canvas that uses no CPU.
+* **Games:** a game loop and sprites.
+* **AI-ready:** [skill files](https://drawnui.net/llms.txt) teach coding agents to build with it.
 
 ## MIT, everywhere
 
 DrawnUI is MIT licensed in every language and on every platform: desktop, mobile, web and embedded devices. Ship it in commercial products with no attribution badge, no about screen and no per-device royalty.
-
-## React?
-
-DrawnUI for React just appeared as a standalone DrawnUI engine in TypeScript, running on [CanvasKit](https://skia.org/docs/user/modules/canvaskit/) (Skia compiled to WebAssembly) in the browser. It tends to use same API as the .NET version. 
-Under active development, more info [on our site](https://drawnui.net/articles/react).
-
-## How About Rust?
-
-DrawnUI for Rust is the same engine in Rust, drawing with Skia on Windows, macOS, Linux, iOS, Android and in the browser. Same controls and rules as the .NET version, one crate to add (`drawnui` on crates.io), in preview. Try the demo at [hellorust.drawnui.net](https://hellorust.drawnui.net), more info [on our site](https://drawnui.net/articles/rust).
-
-## Features 
-
-* __Imagine your  UI__ - a toolbox for creating drawn controls
-* __Harness the Canvas__ - engine handles everything
-* __Port existing native to drawn__ - easy port, bindings support
-* __Design in XAML, Razor + Canvas, or code-behind__
-* __2D and 3D Transforms__
-* __Visual effects__ for every control, filters and shaders
-* __Animations__ targeting max FPS
-* __Caching system__ for faster re-drawing
-* __Optimized for performance__, rendering only visible elements, recycling templates etc
-* __Gestures__ support for anything, panning, scrolling, zooming etc
-* __Keyboard support__, track any key
-* __Accessibility__: screen readers (Narrator, TalkBack, VoiceOver, Orca, browser readers) and keyboard navigation on every platform
-* __Navigate__ on the canvas with shell-like techniques 
-
-😎 [Blazor sample in browser](https://drawnui.net/sandbox/) 👈
 
 Please star ⭐ if you like it!
 
