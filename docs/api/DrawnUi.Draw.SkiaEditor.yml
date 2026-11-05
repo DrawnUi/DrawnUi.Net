@@ -115,6 +115,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.SelectWord(System.Int32)
   - DrawnUi.Draw.SkiaEditor.SelectionColor
   - DrawnUi.Draw.SkiaEditor.SelectionColorProperty
+  - DrawnUi.Draw.SkiaEditor.SelectionEdgeByX(System.Int32,System.Int32,System.Boolean)
   - DrawnUi.Draw.SkiaEditor.SelectionLength
   - DrawnUi.Draw.SkiaEditor.SelectionLengthProperty
   - DrawnUi.Draw.SkiaEditor.SetCursorFromNative(System.Int32,System.Int32)
@@ -146,6 +147,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.UseUnicodeProperty
   - DrawnUi.Draw.SkiaEditor.VerticalTextAlignment
   - DrawnUi.Draw.SkiaEditor.VerticalTextAlignmentProperty
+  - DrawnUi.Draw.SkiaEditor.VisualArrowTarget(System.Int32,System.Boolean)
   - DrawnUi.Draw.SkiaEditor.WillClipBounds
   - DrawnUi.Draw.SkiaEditor._contentLayer
   - DrawnUi.Draw.SkiaEditor._placeholderLabel
@@ -483,6 +485,8 @@ items:
   - DrawnUi.Draw.SkiaLayout.LastVisibleIndexDrawn
   - DrawnUi.Draw.SkiaLayout.LastMeasuredIndex
   - DrawnUi.Draw.SkiaLayout.FirstMeasuredIndex
+  - DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaLayout.StructureWindowStart
   - DrawnUi.Draw.SkiaLayout.MeasuredItemsPercentage
   - DrawnUi.Draw.SkiaLayout.BackgroundMeasurementBatchSize
   - DrawnUi.Draw.SkiaLayout.DebugBackgroundMeasureDelayMs
@@ -522,6 +526,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.BuildPlaneWindowStructure(System.Double,System.Double,System.Single,System.Single)
   - DrawnUi.Draw.SkiaLayout.MeasureWrap(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.PropagateVisibilityChanged(System.Boolean)
+  - DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.GetStackStructure
   - DrawnUi.Draw.SkiaLayout.GetStackStructureForMeasuring
   - DrawnUi.Draw.SkiaLayout.StackStructure
@@ -656,6 +661,9 @@ items:
   - DrawnUi.Draw.SkiaControl.HoverChanged
   - DrawnUi.Draw.SkiaControl.ReceivesHover
   - DrawnUi.Draw.SkiaControl.ReceivesHoverByDefault
+  - DrawnUi.Draw.SkiaControl.TooltipProperty
+  - DrawnUi.Draw.SkiaControl.Tooltip
+  - DrawnUi.Draw.SkiaControl.GetTooltipText
   - DrawnUi.Draw.SkiaControl.VisualLayer
   - DrawnUi.Draw.SkiaControl.CachedImage
   - DrawnUi.Draw.SkiaControl.LeftProperty
@@ -955,6 +963,9 @@ items:
   - DrawnUi.Draw.SkiaControl.WasInLastFrame
   - DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   - DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  - DrawnUi.Draw.SkiaControl.AccessibilityIsExpanded
+  - DrawnUi.Draw.SkiaControl.KeyboardWrap
+  - DrawnUi.Draw.SkiaControl.AccessibilityModal
   - DrawnUi.Draw.SkiaControl.AccessibilityLive
   - DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
   - DrawnUi.Draw.SkiaControl.GetAccessibilityValue
@@ -1428,7 +1439,9 @@ items:
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WhenPainted``1(System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(System.Nullable{System.Boolean})
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(System.String)
+  - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(System.Boolean)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
@@ -1443,6 +1456,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithHeight``1(System.Double)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithHorizontalOptions``1(Microsoft.Maui.Controls.LayoutOptions)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithItemsSource``1(System.Collections.IList)
+  - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(System.Boolean)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithMargin``1(Microsoft.Maui.Thickness)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithMargin``1(System.Double)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithMargin``1(System.Double,System.Double)
@@ -1460,6 +1474,7 @@ items:
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithShapeType``1(DrawnUi.Draw.ShapeType)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithSpacing``1(System.Double)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithTag``1(System.String)
+  - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithTooltip``1(System.String)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithType``1(DrawnUi.Draw.LayoutType)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithVerticalOptions``1(Microsoft.Maui.Controls.LayoutOptions)
   - DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithVisibility``1(System.Boolean)
@@ -2378,7 +2393,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Paint
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 467
+    startLine: 475
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2416,7 +2431,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NormalizeEditorLineBreaks
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 503
+    startLine: 511
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2450,7 +2465,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetEditorBreakText
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 511
+    startLine: 519
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2484,7 +2499,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsEditorBreak
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 514
+    startLine: 522
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2518,7 +2533,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsTrailingEditorBreak
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 517
+    startLine: 525
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2552,7 +2567,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReplaceEditorBreaksWithSpaces
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 520
+    startLine: 528
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2586,7 +2601,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMeasuring
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 637
+    startLine: 645
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2631,7 +2646,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetContentSizeForAutosizeInPixels
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 661
+    startLine: 672
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2663,7 +2678,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Submit
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 678
+    startLine: 689
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2691,7 +2706,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExecuteSubmit
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 691
+    startLine: 702
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2723,7 +2738,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsMultiline
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 700
+    startLine: 711
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2752,7 +2767,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFrameworkFocus
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 708
+    startLine: 719
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2796,7 +2811,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetLineGlyphs
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 727
+    startLine: 738
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2844,7 +2859,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCursorPosition
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 735
+    startLine: 746
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2885,7 +2900,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _spuriousDownBlockUntilMs
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 802
+    startLine: 822
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2912,7 +2927,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 804
+    startLine: 824
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2947,7 +2962,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFocusInternal
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 976
+    startLine: 996
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2979,7 +2994,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MoveInternalCursor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1017
+    startLine: 1048
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3010,7 +3025,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectAll
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1037
+    startLine: 1068
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3036,7 +3051,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateCursorVisibility
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1050
+    startLine: 1100
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3064,7 +3079,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCursorVisible
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1221
+    startLine: 1283
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3096,7 +3111,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MoveCursorTo
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1241
+    startLine: 1303
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3134,7 +3149,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCursorMoved
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1303
+    startLine: 1365
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3144,6 +3159,98 @@ items:
     content: protected virtual void OnCursorMoved()
     content.vb: Protected Overridable Sub OnCursorMoved()
   overload: DrawnUi.Draw.SkiaEditor.OnCursorMoved*
+- uid: DrawnUi.Draw.SkiaEditor.VisualArrowTarget(System.Int32,System.Boolean)
+  commentId: M:DrawnUi.Draw.SkiaEditor.VisualArrowTarget(System.Int32,System.Boolean)
+  id: VisualArrowTarget(System.Int32,System.Boolean)
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: VisualArrowTarget(int, bool)
+  nameWithType: SkiaEditor.VisualArrowTarget(int, bool)
+  fullName: DrawnUi.Draw.SkiaEditor.VisualArrowTarget(int, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: VisualArrowTarget
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1418
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Left / Right arrow target from <code class="paramref">from</code> on a line with right-to-left text: the grapheme
+
+    boundary of the line with the nearest caret X on that side (the logically nearest among equal X); at the
+
+    line's visual edge one grapheme in reading order when that reaches another line, otherwise
+
+    <code class="paramref">from</code> (the key does nothing). -1 when the line has no right-to-left text: the caret then
+
+    moves one step in text order.
+  example: []
+  syntax:
+    content: protected int VisualArrowTarget(int from, bool right)
+    parameters:
+    - id: from
+      type: System.Int32
+    - id: right
+      type: System.Boolean
+    return:
+      type: System.Int32
+    content.vb: Protected Function VisualArrowTarget(from As Integer, right As Boolean) As Integer
+  overload: DrawnUi.Draw.SkiaEditor.VisualArrowTarget*
+  nameWithType.vb: SkiaEditor.VisualArrowTarget(Integer, Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaEditor.VisualArrowTarget(Integer, Boolean)
+  name.vb: VisualArrowTarget(Integer, Boolean)
+- uid: DrawnUi.Draw.SkiaEditor.SelectionEdgeByX(System.Int32,System.Int32,System.Boolean)
+  commentId: M:DrawnUi.Draw.SkiaEditor.SelectionEdgeByX(System.Int32,System.Int32,System.Boolean)
+  id: SelectionEdgeByX(System.Int32,System.Int32,System.Boolean)
+  parent: DrawnUi.Draw.SkiaEditor
+  langs:
+  - csharp
+  - vb
+  name: SelectionEdgeByX(int, int, bool)
+  nameWithType: SkiaEditor.SelectionEdgeByX(int, int, bool)
+  fullName: DrawnUi.Draw.SkiaEditor.SelectionEdgeByX(int, int, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SelectionEdgeByX
+    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    startLine: 1466
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The edge of the selection [<code class="paramref">start</code>, <code class="paramref">end</code>] a plain Left / Right arrow
+
+    collapses it to when it touches right-to-left text: the one with the smaller (Left) or larger (Right) caret
+
+    X. -1 when neither edge is on such a line: the selection then collapses in text order.
+  example: []
+  syntax:
+    content: protected int SelectionEdgeByX(int start, int end, bool right)
+    parameters:
+    - id: start
+      type: System.Int32
+    - id: end
+      type: System.Int32
+    - id: right
+      type: System.Boolean
+    return:
+      type: System.Int32
+    content.vb: Protected Function SelectionEdgeByX(start As Integer, [end] As Integer, right As Boolean) As Integer
+  overload: DrawnUi.Draw.SkiaEditor.SelectionEdgeByX*
+  nameWithType.vb: SkiaEditor.SelectionEdgeByX(Integer, Integer, Boolean)
+  fullName.vb: DrawnUi.Draw.SkiaEditor.SelectionEdgeByX(Integer, Integer, Boolean)
+  name.vb: SelectionEdgeByX(Integer, Integer, Boolean)
 - uid: DrawnUi.Draw.SkiaEditor.GetCursorLine
   commentId: M:DrawnUi.Draw.SkiaEditor.GetCursorLine
   id: GetCursorLine
@@ -3162,7 +3269,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCursorLine
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1326
+    startLine: 1481
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3192,7 +3299,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HandleVerticalArrow
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1355
+    startLine: 1510
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3224,7 +3331,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnControlCreated
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1395
+    startLine: 1561
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3250,7 +3357,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorPositionProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1400
+    startLine: 1566
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3277,7 +3384,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorPosition
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1414
+    startLine: 1580
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3306,7 +3413,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCursorFromNative
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1431
+    startLine: 1597
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3351,7 +3458,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetSelection
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1449
+    startLine: 1615
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3385,7 +3492,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetWordBoundaries
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1457
+    startLine: 1623
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3419,7 +3526,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectWord
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1477
+    startLine: 1643
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3451,7 +3558,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSelectedText
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1488
+    startLine: 1654
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3479,7 +3586,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CodeUnitsBeforeCaret
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1503
+    startLine: 1669
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3526,7 +3633,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CodeUnitsAfterCaret
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1530
+    startLine: 1696
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3569,7 +3676,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DeleteSelection
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1543
+    startLine: 1709
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3595,7 +3702,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InsertAtCursor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1556
+    startLine: 1722
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3627,7 +3734,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CutSelection
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1571
+    startLine: 1737
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3653,7 +3760,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CopySelection
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1591
+    startLine: 1757
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3679,7 +3786,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PasteFromClipboard
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1598
+    startLine: 1764
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3705,7 +3812,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1619
+    startLine: 1785
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3734,7 +3841,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1626
+    startLine: 1792
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3763,7 +3870,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnTypeProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1659
+    startLine: 1825
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3790,7 +3897,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnType
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1677
+    startLine: 1843
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3828,7 +3935,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShouldSubmitOnEnter
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1687
+    startLine: 1853
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3862,7 +3969,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardTypeProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1689
+    startLine: 1855
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3889,7 +3996,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardType
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1696
+    startLine: 1862
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3918,7 +4025,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPasswordProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1702
+    startLine: 1868
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3945,7 +4052,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPassword
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1716
+    startLine: 1882
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3974,7 +4081,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsSpellCheckEnabledProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1722
+    startLine: 1888
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4001,7 +4108,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsSpellCheckEnabled
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1737
+    startLine: 1903
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4043,7 +4150,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnSubmitProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1743
+    startLine: 1909
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4070,7 +4177,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnSubmit
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1749
+    startLine: 1915
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4099,7 +4206,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnFocusChangedProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1755
+    startLine: 1921
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4126,7 +4233,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnFocusChanged
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1761
+    startLine: 1927
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4155,7 +4262,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnTextChangedProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1767
+    startLine: 1933
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4182,7 +4289,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnTextChanged
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1773
+    startLine: 1939
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4211,7 +4318,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseMarkdownProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1779
+    startLine: 1945
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4238,7 +4345,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseMarkdown
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1795
+    startLine: 1961
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4267,7 +4374,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseUnicodeProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1801
+    startLine: 1967
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4294,7 +4401,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseUnicode
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1814
+    startLine: 1980
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4332,7 +4439,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanShowCursorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1821
+    startLine: 1987
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4359,7 +4466,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanShowCursor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1827
+    startLine: 1993
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4388,7 +4495,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsFocusedProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1833
+    startLine: 1999
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4415,7 +4522,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsFocused
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1873
+    startLine: 2039
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4444,7 +4551,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1887
+    startLine: 2053
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4471,7 +4578,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Text
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1896
+    startLine: 2062
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4500,7 +4607,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityRole
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1902
+    startLine: 2068
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4529,7 +4636,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetDefaultAccessibilityRole
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1904
+    startLine: 2070
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4560,7 +4667,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityLabel
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1906
+    startLine: 2072
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4591,7 +4698,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityCanInteract
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1910
+    startLine: 2076
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4622,7 +4729,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAccessibilityFocused
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1916
+    startLine: 2082
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4660,7 +4767,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAccessibilityActivated
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1934
+    startLine: 2100
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4692,7 +4799,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAccessibilityKey
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1941
+    startLine: 2107
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4726,7 +4833,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSizeProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1965
+    startLine: 2131
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4753,7 +4860,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSize
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1969
+    startLine: 2135
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4782,7 +4889,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalTextAlignmentProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1975
+    startLine: 2141
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4809,7 +4916,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalTextAlignment
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1982
+    startLine: 2148
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4838,7 +4945,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalTextAlignmentProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1988
+    startLine: 2154
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4865,7 +4972,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalTextAlignment
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 1995
+    startLine: 2161
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4894,7 +5001,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeightProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2002
+    startLine: 2168
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4921,7 +5028,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeight
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2009
+    startLine: 2175
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4950,7 +5057,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2015
+    startLine: 2181
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4977,7 +5084,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamily
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2017
+    startLine: 2183
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5006,7 +5113,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2023
+    startLine: 2189
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5033,7 +5140,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2027
+    startLine: 2193
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5062,7 +5169,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeightProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2033
+    startLine: 2199
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5089,7 +5196,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeight
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2040
+    startLine: 2206
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5118,7 +5225,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextGradientProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2047
+    startLine: 2213
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5145,7 +5252,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextGradient
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2054
+    startLine: 2220
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5174,7 +5281,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2060
+    startLine: 2226
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5201,7 +5308,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorColor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2067
+    startLine: 2233
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5230,7 +5337,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorGradientProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2074
+    startLine: 2240
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5257,7 +5364,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorGradient
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2082
+    startLine: 2248
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5286,7 +5393,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionLengthProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2089
+    startLine: 2255
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5313,7 +5420,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionLength
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2104
+    startLine: 2270
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5342,7 +5449,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2110
+    startLine: 2276
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5369,7 +5476,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionColor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2117
+    startLine: 2283
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5398,7 +5505,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderTextProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2123
+    startLine: 2289
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5425,7 +5532,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderText
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2130
+    startLine: 2296
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5454,7 +5561,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderColorProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2136
+    startLine: 2302
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5481,7 +5588,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderColor
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2143
+    startLine: 2309
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5510,7 +5617,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderHorizontalAlignmentProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2149
+    startLine: 2315
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5537,7 +5644,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderHorizontalAlignment
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2156
+    startLine: 2322
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5566,7 +5673,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLinesProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2178
+    startLine: 2344
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5593,7 +5700,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLines
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2180
+    startLine: 2346
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5622,7 +5729,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoHeightProperty
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2186
+    startLine: 2352
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5649,7 +5756,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoHeight
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2194
+    startLine: 2360
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5685,7 +5792,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionGo
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2206
+    startLine: 2372
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5712,7 +5819,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionNext
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2207
+    startLine: 2373
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5739,7 +5846,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionSend
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2208
+    startLine: 2374
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5766,7 +5873,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionSearch
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2209
+    startLine: 2375
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5793,7 +5900,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionDone
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2210
+    startLine: 2376
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5820,7 +5927,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCursorPositionNative
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2217
+    startLine: 2383
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5854,7 +5961,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposePlatform
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2222
+    startLine: 2388
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5880,7 +5987,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFocusNative
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2227
+    startLine: 2393
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5912,7 +6019,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateNativePosition
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2232
+    startLine: 2398
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -5938,7 +6045,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyKeyboardType
     path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
-    startLine: 2237
+    startLine: 2403
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -11743,6 +11850,66 @@ references:
   name: FirstMeasuredIndex
   nameWithType: SkiaLayout.FirstMeasuredIndex
   fullName: DrawnUi.Draw.SkiaLayout.FirstMeasuredIndex
+- uid: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PinParentScrollY_DrawnUi_Draw_SkiaScroll_System_Single_System_Single_
+  name: PinParentScrollY(SkiaScroll, float, float)
+  nameWithType: SkiaLayout.PinParentScrollY(SkiaScroll, float, float)
+  fullName: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll, float, float)
+  nameWithType.vb: SkiaLayout.PinParentScrollY(SkiaScroll, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll, Single, Single)
+  name.vb: PinParentScrollY(SkiaScroll, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+    name: PinParentScrollY
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PinParentScrollY_DrawnUi_Draw_SkiaScroll_System_Single_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+    name: PinParentScrollY
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PinParentScrollY_DrawnUi_Draw_SkiaScroll_System_Single_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.StructureWindowStart
+  commentId: P:DrawnUi.Draw.SkiaLayout.StructureWindowStart
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_StructureWindowStart
+  name: StructureWindowStart
+  nameWithType: SkiaLayout.StructureWindowStart
+  fullName: DrawnUi.Draw.SkiaLayout.StructureWindowStart
 - uid: DrawnUi.Draw.SkiaLayout.MeasuredItemsPercentage
   commentId: P:DrawnUi.Draw.SkiaLayout.MeasuredItemsPercentage
   parent: DrawnUi.Draw.SkiaLayout
@@ -12641,6 +12808,49 @@ references:
     name: Boolean
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_MeasureMasonry_SkiaSharp_SKRect_System_Single_
+  name: MeasureMasonry(SKRect, float)
+  nameWithType: SkiaLayout.MeasureMasonry(SKRect, float)
+  fullName: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect, float)
+  nameWithType.vb: SkiaLayout.MeasureMasonry(SKRect, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect, Single)
+  name.vb: MeasureMasonry(SKRect, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
+    name: MeasureMasonry
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_MeasureMasonry_SkiaSharp_SKRect_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
+    name: MeasureMasonry
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_MeasureMasonry_SkiaSharp_SKRect_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.GetStackStructure
   commentId: M:DrawnUi.Draw.SkiaLayout.GetStackStructure
@@ -15586,6 +15796,39 @@ references:
   name: ReceivesHoverByDefault
   nameWithType: SkiaControl.ReceivesHoverByDefault
   fullName: DrawnUi.Draw.SkiaControl.ReceivesHoverByDefault
+- uid: DrawnUi.Draw.SkiaControl.TooltipProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.TooltipProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TooltipProperty
+  name: TooltipProperty
+  nameWithType: SkiaControl.TooltipProperty
+  fullName: DrawnUi.Draw.SkiaControl.TooltipProperty
+- uid: DrawnUi.Draw.SkiaControl.Tooltip
+  commentId: P:DrawnUi.Draw.SkiaControl.Tooltip
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Tooltip
+  name: Tooltip
+  nameWithType: SkiaControl.Tooltip
+  fullName: DrawnUi.Draw.SkiaControl.Tooltip
+- uid: DrawnUi.Draw.SkiaControl.GetTooltipText
+  commentId: M:DrawnUi.Draw.SkiaControl.GetTooltipText
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetTooltipText
+  name: GetTooltipText()
+  nameWithType: SkiaControl.GetTooltipText()
+  fullName: DrawnUi.Draw.SkiaControl.GetTooltipText()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetTooltipText
+    name: GetTooltipText
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetTooltipText
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetTooltipText
+    name: GetTooltipText
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetTooltipText
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.VisualLayer
   commentId: P:DrawnUi.Draw.SkiaControl.VisualLayer
   parent: DrawnUi.Draw.SkiaControl
@@ -21408,6 +21651,27 @@ references:
   name: AccessibilityIsPressed
   nameWithType: SkiaControl.AccessibilityIsPressed
   fullName: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityIsExpanded
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityIsExpanded
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityIsExpanded
+  name: AccessibilityIsExpanded
+  nameWithType: SkiaControl.AccessibilityIsExpanded
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityIsExpanded
+- uid: DrawnUi.Draw.SkiaControl.KeyboardWrap
+  commentId: P:DrawnUi.Draw.SkiaControl.KeyboardWrap
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_KeyboardWrap
+  name: KeyboardWrap
+  nameWithType: SkiaControl.KeyboardWrap
+  fullName: DrawnUi.Draw.SkiaControl.KeyboardWrap
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityModal
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityModal
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityModal
+  name: AccessibilityModal
+  nameWithType: SkiaControl.AccessibilityModal
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityModal
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityLive
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLive
   parent: DrawnUi.Draw.SkiaControl
@@ -36595,6 +36859,61 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityExpanded<SkiaEditor>(SkiaEditor, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityExpanded<SkiaEditor>(SkiaEditor, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded<DrawnUi.Draw.SkiaEditor>(DrawnUi.Draw.SkiaEditor, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityExpanded(Of SkiaEditor)(SkiaEditor, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded(Of DrawnUi.Draw.SkiaEditor)(DrawnUi.Draw.SkiaEditor, Boolean?)
+  name.vb: WithAccessibilityExpanded(Of SkiaEditor)(SkiaEditor, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(DrawnUi.Draw.SkiaEditor,System.Nullable{System.Boolean})
+    name: WithAccessibilityExpanded
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(DrawnUi.Draw.SkiaEditor,System.Nullable{System.Boolean})
+    name: WithAccessibilityExpanded
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
 - uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(System.String)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(``0,System.String)
   parent: DrawnUi.Draw.FluentExtensions
@@ -36647,6 +36966,59 @@ references:
     name: String
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  name: WithAccessibilityModal<SkiaEditor>(SkiaEditor, bool)
+  nameWithType: FluentExtensions.WithAccessibilityModal<SkiaEditor>(SkiaEditor, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal<DrawnUi.Draw.SkiaEditor>(DrawnUi.Draw.SkiaEditor, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibilityModal(Of SkiaEditor)(SkiaEditor, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal(Of DrawnUi.Draw.SkiaEditor)(DrawnUi.Draw.SkiaEditor, Boolean)
+  name.vb: WithAccessibilityModal(Of SkiaEditor)(SkiaEditor, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(DrawnUi.Draw.SkiaEditor,System.Boolean)
+    name: WithAccessibilityModal
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(DrawnUi.Draw.SkiaEditor,System.Boolean)
+    name: WithAccessibilityModal
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
 - uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
@@ -37497,6 +37869,59 @@ references:
     name: IList
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.ilist
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  name: WithKeyboardWrap<SkiaEditor>(SkiaEditor, bool)
+  nameWithType: FluentExtensions.WithKeyboardWrap<SkiaEditor>(SkiaEditor, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap<DrawnUi.Draw.SkiaEditor>(DrawnUi.Draw.SkiaEditor, bool)
+  nameWithType.vb: FluentExtensions.WithKeyboardWrap(Of SkiaEditor)(SkiaEditor, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap(Of DrawnUi.Draw.SkiaEditor)(DrawnUi.Draw.SkiaEditor, Boolean)
+  name.vb: WithKeyboardWrap(Of SkiaEditor)(SkiaEditor, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(DrawnUi.Draw.SkiaEditor,System.Boolean)
+    name: WithKeyboardWrap
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(DrawnUi.Draw.SkiaEditor,System.Boolean)
+    name: WithKeyboardWrap
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
 - uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithMargin``1(Microsoft.Maui.Thickness)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithMargin``1(``0,Microsoft.Maui.Thickness)
@@ -38485,6 +38910,59 @@ references:
   - uid: DrawnUi.Draw.FluentExtensions.WithTag``1(DrawnUi.Draw.SkiaEditor,System.String)
     name: WithTag
     href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTag__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.SkiaEditor.DrawnUi.Draw.FluentExtensions.WithTooltip``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
+  name: WithTooltip<SkiaEditor>(SkiaEditor, string)
+  nameWithType: FluentExtensions.WithTooltip<SkiaEditor>(SkiaEditor, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithTooltip<DrawnUi.Draw.SkiaEditor>(DrawnUi.Draw.SkiaEditor, string)
+  nameWithType.vb: FluentExtensions.WithTooltip(Of SkiaEditor)(SkiaEditor, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithTooltip(Of DrawnUi.Draw.SkiaEditor)(DrawnUi.Draw.SkiaEditor, String)
+  name.vb: WithTooltip(Of SkiaEditor)(SkiaEditor, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(DrawnUi.Draw.SkiaEditor,System.String)
+    name: WithTooltip
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Draw.SkiaEditor
+    name: SkiaEditor
+    href: DrawnUi.Draw.SkiaEditor.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(DrawnUi.Draw.SkiaEditor,System.String)
+    name: WithTooltip
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
   - name: (
   - name: Of
   - name: " "
@@ -44963,6 +45441,52 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityExpanded<T>(T, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityExpanded<T>(T, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded<T>(T, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityExpanded(Of T)(T, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded(Of T)(T, Boolean?)
+  name.vb: WithAccessibilityExpanded(Of T)(T, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityExpanded
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityExpanded
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(``0,System.String)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(``0,System.String)
   isExternal: true
@@ -45006,6 +45530,50 @@ references:
     name: String
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  name: WithAccessibilityModal<T>(T, bool)
+  nameWithType: FluentExtensions.WithAccessibilityModal<T>(T, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal<T>(T, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibilityModal(Of T)(T, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal(Of T)(T, Boolean)
+  name.vb: WithAccessibilityModal(Of T)(T, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+    name: WithAccessibilityModal
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+    name: WithAccessibilityModal
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
@@ -45724,6 +46292,50 @@ references:
     name: IList
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.ilist
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  name: WithKeyboardWrap<T>(T, bool)
+  nameWithType: FluentExtensions.WithKeyboardWrap<T>(T, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap<T>(T, bool)
+  nameWithType.vb: FluentExtensions.WithKeyboardWrap(Of T)(T, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap(Of T)(T, Boolean)
+  name.vb: WithKeyboardWrap(Of T)(T, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+    name: WithKeyboardWrap
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+    name: WithKeyboardWrap
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithMargin``1(``0,Microsoft.Maui.Thickness)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithMargin``1(``0,Microsoft.Maui.Thickness)
@@ -46561,6 +47173,50 @@ references:
   - uid: DrawnUi.Draw.FluentExtensions.WithTag``1(``0,System.String)
     name: WithTag
     href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTag__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
+  name: WithTooltip<T>(T, string)
+  nameWithType: FluentExtensions.WithTooltip<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithTooltip<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithTooltip(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithTooltip(Of T)(T, String)
+  name.vb: WithTooltip(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+    name: WithTooltip
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+    name: WithTooltip
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
   - name: (
   - name: Of
   - name: " "
@@ -48116,6 +48772,18 @@ references:
   name: OnCursorMoved
   nameWithType: SkiaEditor.OnCursorMoved
   fullName: DrawnUi.Draw.SkiaEditor.OnCursorMoved
+- uid: DrawnUi.Draw.SkiaEditor.VisualArrowTarget*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.VisualArrowTarget
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_VisualArrowTarget_System_Int32_System_Boolean_
+  name: VisualArrowTarget
+  nameWithType: SkiaEditor.VisualArrowTarget
+  fullName: DrawnUi.Draw.SkiaEditor.VisualArrowTarget
+- uid: DrawnUi.Draw.SkiaEditor.SelectionEdgeByX*
+  commentId: Overload:DrawnUi.Draw.SkiaEditor.SelectionEdgeByX
+  href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_SelectionEdgeByX_System_Int32_System_Int32_System_Boolean_
+  name: SelectionEdgeByX
+  nameWithType: SkiaEditor.SelectionEdgeByX
+  fullName: DrawnUi.Draw.SkiaEditor.SelectionEdgeByX
 - uid: DrawnUi.Draw.SkiaEditor.GetCursorLine*
   commentId: Overload:DrawnUi.Draw.SkiaEditor.GetCursorLine
   href: DrawnUi.Draw.SkiaEditor.html#DrawnUi_Draw_SkiaEditor_GetCursorLine

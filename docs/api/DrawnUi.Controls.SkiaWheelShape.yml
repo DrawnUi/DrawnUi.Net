@@ -348,6 +348,8 @@ items:
   - DrawnUi.Draw.SkiaLayout.LastVisibleIndexDrawn
   - DrawnUi.Draw.SkiaLayout.LastMeasuredIndex
   - DrawnUi.Draw.SkiaLayout.FirstMeasuredIndex
+  - DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaLayout.StructureWindowStart
   - DrawnUi.Draw.SkiaLayout.MeasuredItemsPercentage
   - DrawnUi.Draw.SkiaLayout.BackgroundMeasurementBatchSize
   - DrawnUi.Draw.SkiaLayout.DebugBackgroundMeasureDelayMs
@@ -387,6 +389,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.BuildPlaneWindowStructure(System.Double,System.Double,System.Single,System.Single)
   - DrawnUi.Draw.SkiaLayout.MeasureWrap(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.PropagateVisibilityChanged(System.Boolean)
+  - DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.GetStackStructure
   - DrawnUi.Draw.SkiaLayout.GetStackStructureForMeasuring
   - DrawnUi.Draw.SkiaLayout.StackStructure
@@ -522,6 +525,9 @@ items:
   - DrawnUi.Draw.SkiaControl.HoverChanged
   - DrawnUi.Draw.SkiaControl.ReceivesHover
   - DrawnUi.Draw.SkiaControl.ReceivesHoverByDefault
+  - DrawnUi.Draw.SkiaControl.TooltipProperty
+  - DrawnUi.Draw.SkiaControl.Tooltip
+  - DrawnUi.Draw.SkiaControl.GetTooltipText
   - DrawnUi.Draw.SkiaControl.VisualLayer
   - DrawnUi.Draw.SkiaControl.CachedImage
   - DrawnUi.Draw.SkiaControl.LeftProperty
@@ -826,6 +832,9 @@ items:
   - DrawnUi.Draw.SkiaControl.WasInLastFrame
   - DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   - DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  - DrawnUi.Draw.SkiaControl.AccessibilityIsExpanded
+  - DrawnUi.Draw.SkiaControl.KeyboardWrap
+  - DrawnUi.Draw.SkiaControl.AccessibilityModal
   - DrawnUi.Draw.SkiaControl.AccessibilityLive
   - DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
   - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
@@ -1293,7 +1302,9 @@ items:
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WhenPainted``1(System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(System.Nullable{System.Boolean})
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(System.String)
+  - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(System.Boolean)
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
@@ -1308,6 +1319,7 @@ items:
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithHeight``1(System.Double)
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithHorizontalOptions``1(Microsoft.Maui.Controls.LayoutOptions)
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithItemsSource``1(System.Collections.IList)
+  - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(System.Boolean)
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithMargin``1(Microsoft.Maui.Thickness)
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithMargin``1(System.Double)
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithMargin``1(System.Double,System.Double)
@@ -1325,6 +1337,7 @@ items:
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithShapeType``1(DrawnUi.Draw.ShapeType)
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithSpacing``1(System.Double)
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithTag``1(System.String)
+  - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithTooltip``1(System.String)
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithType``1(DrawnUi.Draw.LayoutType)
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithVerticalOptions``1(Microsoft.Maui.Controls.LayoutOptions)
   - DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithVisibility``1(System.Boolean)
@@ -7596,6 +7609,66 @@ references:
   name: FirstMeasuredIndex
   nameWithType: SkiaLayout.FirstMeasuredIndex
   fullName: DrawnUi.Draw.SkiaLayout.FirstMeasuredIndex
+- uid: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PinParentScrollY_DrawnUi_Draw_SkiaScroll_System_Single_System_Single_
+  name: PinParentScrollY(SkiaScroll, float, float)
+  nameWithType: SkiaLayout.PinParentScrollY(SkiaScroll, float, float)
+  fullName: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll, float, float)
+  nameWithType.vb: SkiaLayout.PinParentScrollY(SkiaScroll, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll, Single, Single)
+  name.vb: PinParentScrollY(SkiaScroll, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+    name: PinParentScrollY
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PinParentScrollY_DrawnUi_Draw_SkiaScroll_System_Single_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+    name: PinParentScrollY
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PinParentScrollY_DrawnUi_Draw_SkiaScroll_System_Single_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.StructureWindowStart
+  commentId: P:DrawnUi.Draw.SkiaLayout.StructureWindowStart
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_StructureWindowStart
+  name: StructureWindowStart
+  nameWithType: SkiaLayout.StructureWindowStart
+  fullName: DrawnUi.Draw.SkiaLayout.StructureWindowStart
 - uid: DrawnUi.Draw.SkiaLayout.MeasuredItemsPercentage
   commentId: P:DrawnUi.Draw.SkiaLayout.MeasuredItemsPercentage
   parent: DrawnUi.Draw.SkiaLayout
@@ -8494,6 +8567,49 @@ references:
     name: Boolean
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_MeasureMasonry_SkiaSharp_SKRect_System_Single_
+  name: MeasureMasonry(SKRect, float)
+  nameWithType: SkiaLayout.MeasureMasonry(SKRect, float)
+  fullName: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect, float)
+  nameWithType.vb: SkiaLayout.MeasureMasonry(SKRect, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect, Single)
+  name.vb: MeasureMasonry(SKRect, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
+    name: MeasureMasonry
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_MeasureMasonry_SkiaSharp_SKRect_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
+    name: MeasureMasonry
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_MeasureMasonry_SkiaSharp_SKRect_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.GetStackStructure
   commentId: M:DrawnUi.Draw.SkiaLayout.GetStackStructure
@@ -11470,6 +11586,39 @@ references:
   name: ReceivesHoverByDefault
   nameWithType: SkiaControl.ReceivesHoverByDefault
   fullName: DrawnUi.Draw.SkiaControl.ReceivesHoverByDefault
+- uid: DrawnUi.Draw.SkiaControl.TooltipProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.TooltipProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TooltipProperty
+  name: TooltipProperty
+  nameWithType: SkiaControl.TooltipProperty
+  fullName: DrawnUi.Draw.SkiaControl.TooltipProperty
+- uid: DrawnUi.Draw.SkiaControl.Tooltip
+  commentId: P:DrawnUi.Draw.SkiaControl.Tooltip
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Tooltip
+  name: Tooltip
+  nameWithType: SkiaControl.Tooltip
+  fullName: DrawnUi.Draw.SkiaControl.Tooltip
+- uid: DrawnUi.Draw.SkiaControl.GetTooltipText
+  commentId: M:DrawnUi.Draw.SkiaControl.GetTooltipText
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetTooltipText
+  name: GetTooltipText()
+  nameWithType: SkiaControl.GetTooltipText()
+  fullName: DrawnUi.Draw.SkiaControl.GetTooltipText()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetTooltipText
+    name: GetTooltipText
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetTooltipText
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetTooltipText
+    name: GetTooltipText
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetTooltipText
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.VisualLayer
   commentId: P:DrawnUi.Draw.SkiaControl.VisualLayer
   parent: DrawnUi.Draw.SkiaControl
@@ -17403,6 +17552,27 @@ references:
   name: AccessibilityIsPressed
   nameWithType: SkiaControl.AccessibilityIsPressed
   fullName: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityIsExpanded
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityIsExpanded
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityIsExpanded
+  name: AccessibilityIsExpanded
+  nameWithType: SkiaControl.AccessibilityIsExpanded
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityIsExpanded
+- uid: DrawnUi.Draw.SkiaControl.KeyboardWrap
+  commentId: P:DrawnUi.Draw.SkiaControl.KeyboardWrap
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_KeyboardWrap
+  name: KeyboardWrap
+  nameWithType: SkiaControl.KeyboardWrap
+  fullName: DrawnUi.Draw.SkiaControl.KeyboardWrap
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityModal
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityModal
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityModal
+  name: AccessibilityModal
+  nameWithType: SkiaControl.AccessibilityModal
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityModal
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityLive
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLive
   parent: DrawnUi.Draw.SkiaControl
@@ -31918,6 +32088,61 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityExpanded<SkiaWheelShape>(SkiaWheelShape, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityExpanded<SkiaWheelShape>(SkiaWheelShape, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded<DrawnUi.Controls.SkiaWheelShape>(DrawnUi.Controls.SkiaWheelShape, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityExpanded(Of SkiaWheelShape)(SkiaWheelShape, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded(Of DrawnUi.Controls.SkiaWheelShape)(DrawnUi.Controls.SkiaWheelShape, Boolean?)
+  name.vb: WithAccessibilityExpanded(Of SkiaWheelShape)(SkiaWheelShape, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(DrawnUi.Controls.SkiaWheelShape,System.Nullable{System.Boolean})
+    name: WithAccessibilityExpanded
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(DrawnUi.Controls.SkiaWheelShape,System.Nullable{System.Boolean})
+    name: WithAccessibilityExpanded
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
 - uid: DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(System.String)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(``0,System.String)
   parent: DrawnUi.Draw.FluentExtensions
@@ -31970,6 +32195,59 @@ references:
     name: String
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  name: WithAccessibilityModal<SkiaWheelShape>(SkiaWheelShape, bool)
+  nameWithType: FluentExtensions.WithAccessibilityModal<SkiaWheelShape>(SkiaWheelShape, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal<DrawnUi.Controls.SkiaWheelShape>(DrawnUi.Controls.SkiaWheelShape, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibilityModal(Of SkiaWheelShape)(SkiaWheelShape, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal(Of DrawnUi.Controls.SkiaWheelShape)(DrawnUi.Controls.SkiaWheelShape, Boolean)
+  name.vb: WithAccessibilityModal(Of SkiaWheelShape)(SkiaWheelShape, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(DrawnUi.Controls.SkiaWheelShape,System.Boolean)
+    name: WithAccessibilityModal
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(DrawnUi.Controls.SkiaWheelShape,System.Boolean)
+    name: WithAccessibilityModal
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
 - uid: DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
@@ -32820,6 +33098,59 @@ references:
     name: IList
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.ilist
+  - name: )
+- uid: DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  name: WithKeyboardWrap<SkiaWheelShape>(SkiaWheelShape, bool)
+  nameWithType: FluentExtensions.WithKeyboardWrap<SkiaWheelShape>(SkiaWheelShape, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap<DrawnUi.Controls.SkiaWheelShape>(DrawnUi.Controls.SkiaWheelShape, bool)
+  nameWithType.vb: FluentExtensions.WithKeyboardWrap(Of SkiaWheelShape)(SkiaWheelShape, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap(Of DrawnUi.Controls.SkiaWheelShape)(DrawnUi.Controls.SkiaWheelShape, Boolean)
+  name.vb: WithKeyboardWrap(Of SkiaWheelShape)(SkiaWheelShape, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(DrawnUi.Controls.SkiaWheelShape,System.Boolean)
+    name: WithKeyboardWrap
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(DrawnUi.Controls.SkiaWheelShape,System.Boolean)
+    name: WithKeyboardWrap
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
 - uid: DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithMargin``1(Microsoft.Maui.Thickness)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithMargin``1(``0,Microsoft.Maui.Thickness)
@@ -33808,6 +34139,59 @@ references:
   - uid: DrawnUi.Draw.FluentExtensions.WithTag``1(DrawnUi.Controls.SkiaWheelShape,System.String)
     name: WithTag
     href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTag__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Controls.SkiaWheelShape.DrawnUi.Draw.FluentExtensions.WithTooltip``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
+  name: WithTooltip<SkiaWheelShape>(SkiaWheelShape, string)
+  nameWithType: FluentExtensions.WithTooltip<SkiaWheelShape>(SkiaWheelShape, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithTooltip<DrawnUi.Controls.SkiaWheelShape>(DrawnUi.Controls.SkiaWheelShape, string)
+  nameWithType.vb: FluentExtensions.WithTooltip(Of SkiaWheelShape)(SkiaWheelShape, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithTooltip(Of DrawnUi.Controls.SkiaWheelShape)(DrawnUi.Controls.SkiaWheelShape, String)
+  name.vb: WithTooltip(Of SkiaWheelShape)(SkiaWheelShape, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(DrawnUi.Controls.SkiaWheelShape,System.String)
+    name: WithTooltip
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaWheelShape
+    name: SkiaWheelShape
+    href: DrawnUi.Controls.SkiaWheelShape.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(DrawnUi.Controls.SkiaWheelShape,System.String)
+    name: WithTooltip
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
   - name: (
   - name: Of
   - name: " "
@@ -40176,6 +40560,52 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityExpanded<T>(T, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityExpanded<T>(T, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded<T>(T, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityExpanded(Of T)(T, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded(Of T)(T, Boolean?)
+  name.vb: WithAccessibilityExpanded(Of T)(T, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityExpanded
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityExpanded
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(``0,System.String)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(``0,System.String)
   isExternal: true
@@ -40219,6 +40649,50 @@ references:
     name: String
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  name: WithAccessibilityModal<T>(T, bool)
+  nameWithType: FluentExtensions.WithAccessibilityModal<T>(T, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal<T>(T, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibilityModal(Of T)(T, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal(Of T)(T, Boolean)
+  name.vb: WithAccessibilityModal(Of T)(T, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+    name: WithAccessibilityModal
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+    name: WithAccessibilityModal
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
@@ -40937,6 +41411,50 @@ references:
     name: IList
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.ilist
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  name: WithKeyboardWrap<T>(T, bool)
+  nameWithType: FluentExtensions.WithKeyboardWrap<T>(T, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap<T>(T, bool)
+  nameWithType.vb: FluentExtensions.WithKeyboardWrap(Of T)(T, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap(Of T)(T, Boolean)
+  name.vb: WithKeyboardWrap(Of T)(T, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+    name: WithKeyboardWrap
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+    name: WithKeyboardWrap
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithMargin``1(``0,Microsoft.Maui.Thickness)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithMargin``1(``0,Microsoft.Maui.Thickness)
@@ -41774,6 +42292,50 @@ references:
   - uid: DrawnUi.Draw.FluentExtensions.WithTag``1(``0,System.String)
     name: WithTag
     href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTag__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
+  name: WithTooltip<T>(T, string)
+  nameWithType: FluentExtensions.WithTooltip<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithTooltip<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithTooltip(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithTooltip(Of T)(T, String)
+  name.vb: WithTooltip(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+    name: WithTooltip
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+    name: WithTooltip
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
   - name: (
   - name: Of
   - name: " "

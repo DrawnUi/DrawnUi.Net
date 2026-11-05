@@ -8,6 +8,7 @@ items:
   - DrawnUi.Views.SurfaceCacheManager.#ctor(DrawnUi.Views.IDisposeManager)
   - DrawnUi.Views.SurfaceCacheManager.Dispose
   - DrawnUi.Views.SurfaceCacheManager.GetSurface(System.Int32,System.Int32)
+  - DrawnUi.Views.SurfaceCacheManager.PooledBytes
   - DrawnUi.Views.SurfaceCacheManager.ReturnSurface(SkiaSharp.SKSurface)
   langs:
   - csharp
@@ -42,6 +43,37 @@ items:
   - System.Object.ToString
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Views.SurfaceCacheManager.PooledBytes
+  commentId: P:DrawnUi.Views.SurfaceCacheManager.PooledBytes
+  id: PooledBytes
+  parent: DrawnUi.Views.SurfaceCacheManager
+  langs:
+  - csharp
+  - vb
+  name: PooledBytes
+  nameWithType: SurfaceCacheManager.PooledBytes
+  fullName: DrawnUi.Views.SurfaceCacheManager.PooledBytes
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: PooledBytes
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
+    startLine: 21
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: Memory of the surfaces kept for reuse, all sizes together, in bytes.
+  example: []
+  syntax:
+    content: public long PooledBytes { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property PooledBytes As Long
+  overload: DrawnUi.Views.SurfaceCacheManager.PooledBytes*
 - uid: DrawnUi.Views.SurfaceCacheManager.#ctor(DrawnUi.Views.IDisposeManager)
   commentId: M:DrawnUi.Views.SurfaceCacheManager.#ctor(DrawnUi.Views.IDisposeManager)
   id: '#ctor(DrawnUi.Views.IDisposeManager)'
@@ -60,7 +92,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 16
+    startLine: 23
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -92,7 +124,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSurface
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 21
+    startLine: 28
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -128,7 +160,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnSurface
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 43
+    startLine: 51
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -157,7 +189,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 123
+    startLine: 168
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -515,6 +547,23 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
+- uid: DrawnUi.Views.SurfaceCacheManager.PooledBytes*
+  commentId: Overload:DrawnUi.Views.SurfaceCacheManager.PooledBytes
+  href: DrawnUi.Views.SurfaceCacheManager.html#DrawnUi_Views_SurfaceCacheManager_PooledBytes
+  name: PooledBytes
+  nameWithType: SurfaceCacheManager.PooledBytes
+  fullName: DrawnUi.Views.SurfaceCacheManager.PooledBytes
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
 - uid: DrawnUi.Views.SurfaceCacheManager.#ctor*
   commentId: Overload:DrawnUi.Views.SurfaceCacheManager.#ctor
   href: DrawnUi.Views.SurfaceCacheManager.html#DrawnUi_Views_SurfaceCacheManager__ctor_DrawnUi_Views_IDisposeManager_

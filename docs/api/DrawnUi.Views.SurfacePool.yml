@@ -23,7 +23,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SurfacePool
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 169
+    startLine: 218
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -60,7 +60,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 175
+    startLine: 224
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -92,7 +92,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TryTake
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 180
+    startLine: 229
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -126,7 +126,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TryAdd
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 192
+    startLine: 241
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -157,16 +157,20 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 204
+    startLine: 254
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
+  summary: Disposes the pooled surfaces and returns how many there were.
+  example: []
   syntax:
-    content: public void Dispose(IDisposeManager disposeManager)
+    content: public int Dispose(IDisposeManager disposeManager)
     parameters:
     - id: disposeManager
       type: DrawnUi.Views.IDisposeManager
-    content.vb: Public Sub Dispose(disposeManager As IDisposeManager)
+    return:
+      type: System.Int32
+    content.vb: Public Function Dispose(disposeManager As IDisposeManager) As Integer
   overload: DrawnUi.Views.SurfacePool.Dispose*
 references:
 - uid: DrawnUi.Views

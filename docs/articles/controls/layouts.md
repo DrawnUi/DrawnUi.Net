@@ -117,8 +117,10 @@ Supports snap points for controlled scrolling, ideal for carousels or paginated 
 On every frame it copies the screen area it covers, applies `Blur` and its other effects, and draws the result in its place. Things to know:
 
 - **Transformed parents.** Inside a parent that is scaled, moved, rotated or turned in 3D (a popup that zooms in, for example), it copies the area it really covers on screen and draws it back exactly there, so the glass lines up with what is behind it. `Blur` stays the same on screen while the parent scales.
-- **Cached parents.** A backdrop must draw live on every frame, so none of its parents may keep an old copy:
-  - A picture cache (`Operations`, `OperationsFull`, the default of `SkiaShape`) records the backdrop's copy once and replays it, so the glass would not follow what is behind it. Set `UseCache = None` on every picture-cached parent of a backdrop, a `SkiaShape` holding it included. DrawnUI logs a reminder once when a backdrop is recorded into a picture; your caches are always left as you set them.
+- **Cached parents.** A cached parent keeps the backdrop's copy of what is behind it until that cache is recorded again. Decide by what shows through the glass:
+  - A picture cache (`Operations`, `OperationsFull`, the default of `SkiaShape`) records the backdrop's copy and replays it. When what is behind the glass does not change after the cache is recorded (a still background that has already loaded), keep the cache: the glass looks the same and costs nothing per frame. A parent whose own content redraws all the time (a live readout inside the panel) is recorded again on those changes, so its glass stays fresh as well.
+  - Set `UseCache = None` on the picture-cached parents, a `SkiaShape` holding the backdrop included, only when what shows through must change after the cache was recorded: content moving or animating behind the glass, a panel moving over other content, or a picture behind still loading when the panel first draws. The glass then copies the screen and runs its effects on every frame.
+  - DrawnUI logs a reminder once when a backdrop is recorded into a picture; your caches are always left as you set them.
   - Inside an `Image` or `GPU` cache the backdrop copies that cache's own surface, not the screen behind it, and the copy is redrawn only when that cache is. That is right when what should show through the glass is inside the same cache (a cached card whose picture lies under its glass panel). When the glass should show content outside it, keep such caches off its parents.
 - **Frosted glass panel:** put the backdrop as the first child of a `SkiaShape` (for its corners and stroke), then the panel's content after it:
 
@@ -126,7 +128,7 @@ On every frame it copies the screen area it covers, applies `Blur` and its other
 new SkiaShape
 {
     CornerRadius = 24,
-    UseCache = SkiaCacheType.None, // SkiaShape defaults to Operations, which would freeze the backdrop
+    UseCache = SkiaCacheType.None, // content behind this panel moves: live glass. Keep the default Operations over a still background
     StrokeColor = Colors.White.WithAlpha(0.3f),
     StrokeWidth = 1,
     Children =

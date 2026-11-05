@@ -1,0 +1,842 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Views.PopupAnchor
+  commentId: T:DrawnUi.Views.PopupAnchor
+  id: PopupAnchor
+  parent: DrawnUi.Views
+  children:
+  - DrawnUi.Views.PopupAnchor.AtControl(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Views.PopupAnchor.AtPoint(SkiaSharp.SKPoint)
+  - DrawnUi.Views.PopupAnchor.AtRect(SkiaSharp.SKRect)
+  - DrawnUi.Views.PopupAnchor.Control
+  - DrawnUi.Views.PopupAnchor.IsPoint
+  - DrawnUi.Views.PopupAnchor.Rect
+  - DrawnUi.Views.PopupAnchor.op_Implicit(DrawnUi.Draw.SkiaControl)~DrawnUi.Views.PopupAnchor
+  - DrawnUi.Views.PopupAnchor.op_Implicit(SkiaSharp.SKPoint)~DrawnUi.Views.PopupAnchor
+  - DrawnUi.Views.PopupAnchor.op_Implicit(SkiaSharp.SKRect)~DrawnUi.Views.PopupAnchor
+  langs:
+  - csharp
+  - vb
+  name: PopupAnchor
+  nameWithType: PopupAnchor
+  fullName: DrawnUi.Views.PopupAnchor
+  type: Struct
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: PopupAnchor
+    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    startLine: 174
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: Where a popup window opens from (<xref href="DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl%2cDrawnUi.Views.PopupAnchor%2cDrawnUi.Views.PopupWindowOptions)" data-throw-if-not-resolved="false"></xref>), in canvas points.
+  example: []
+  syntax:
+    content: public readonly struct PopupAnchor
+    content.vb: Public Structure PopupAnchor
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Views.PopupAnchor.Rect
+  commentId: P:DrawnUi.Views.PopupAnchor.Rect
+  id: Rect
+  parent: DrawnUi.Views.PopupAnchor
+  langs:
+  - csharp
+  - vb
+  name: Rect
+  nameWithType: PopupAnchor.Rect
+  fullName: DrawnUi.Views.PopupAnchor.Rect
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Rect
+    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    startLine: 184
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: The point or the rect, in canvas points (empty for a control).
+  example: []
+  syntax:
+    content: public SKRect Rect { get; }
+    parameters: []
+    return:
+      type: SkiaSharp.SKRect
+    content.vb: Public ReadOnly Property Rect As SKRect
+  overload: DrawnUi.Views.PopupAnchor.Rect*
+- uid: DrawnUi.Views.PopupAnchor.IsPoint
+  commentId: P:DrawnUi.Views.PopupAnchor.IsPoint
+  id: IsPoint
+  parent: DrawnUi.Views.PopupAnchor
+  langs:
+  - csharp
+  - vb
+  name: IsPoint
+  nameWithType: PopupAnchor.IsPoint
+  fullName: DrawnUi.Views.PopupAnchor.IsPoint
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsPoint
+    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    startLine: 187
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: "A point: the popup's top-left corner is there; where the canvas ends it opens to the left of the point, or above it."
+  example: []
+  syntax:
+    content: public bool IsPoint { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsPoint As Boolean
+  overload: DrawnUi.Views.PopupAnchor.IsPoint*
+- uid: DrawnUi.Views.PopupAnchor.Control
+  commentId: P:DrawnUi.Views.PopupAnchor.Control
+  id: Control
+  parent: DrawnUi.Views.PopupAnchor
+  langs:
+  - csharp
+  - vb
+  name: Control
+  nameWithType: PopupAnchor.Control
+  fullName: DrawnUi.Views.PopupAnchor.Control
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Control
+    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    startLine: 190
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: 'A control: the popup opens below the rect the control was last drawn at, as for a rect.'
+  example: []
+  syntax:
+    content: public SkiaControl Control { get; }
+    parameters: []
+    return:
+      type: DrawnUi.Draw.SkiaControl
+    content.vb: Public ReadOnly Property Control As SkiaControl
+  overload: DrawnUi.Views.PopupAnchor.Control*
+- uid: DrawnUi.Views.PopupAnchor.AtPoint(SkiaSharp.SKPoint)
+  commentId: M:DrawnUi.Views.PopupAnchor.AtPoint(SkiaSharp.SKPoint)
+  id: AtPoint(SkiaSharp.SKPoint)
+  parent: DrawnUi.Views.PopupAnchor
+  langs:
+  - csharp
+  - vb
+  name: AtPoint(SKPoint)
+  nameWithType: PopupAnchor.AtPoint(SKPoint)
+  fullName: DrawnUi.Views.PopupAnchor.AtPoint(SkiaSharp.SKPoint)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AtPoint
+    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    startLine: 193
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: A point (where a right click was), in canvas points.
+  example: []
+  syntax:
+    content: public static PopupAnchor AtPoint(SKPoint point)
+    parameters:
+    - id: point
+      type: SkiaSharp.SKPoint
+    return:
+      type: DrawnUi.Views.PopupAnchor
+    content.vb: Public Shared Function AtPoint(point As SKPoint) As PopupAnchor
+  overload: DrawnUi.Views.PopupAnchor.AtPoint*
+- uid: DrawnUi.Views.PopupAnchor.AtRect(SkiaSharp.SKRect)
+  commentId: M:DrawnUi.Views.PopupAnchor.AtRect(SkiaSharp.SKRect)
+  id: AtRect(SkiaSharp.SKRect)
+  parent: DrawnUi.Views.PopupAnchor
+  langs:
+  - csharp
+  - vb
+  name: AtRect(SKRect)
+  nameWithType: PopupAnchor.AtRect(SKRect)
+  fullName: DrawnUi.Views.PopupAnchor.AtRect(SkiaSharp.SKRect)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AtRect
+    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    startLine: 196
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: 'A rect (the button a dropdown belongs to), in canvas points: the popup opens below it, left edges together; where the canvas ends, above it or right edges together.'
+  example: []
+  syntax:
+    content: public static PopupAnchor AtRect(SKRect rect)
+    parameters:
+    - id: rect
+      type: SkiaSharp.SKRect
+    return:
+      type: DrawnUi.Views.PopupAnchor
+    content.vb: Public Shared Function AtRect(rect As SKRect) As PopupAnchor
+  overload: DrawnUi.Views.PopupAnchor.AtRect*
+- uid: DrawnUi.Views.PopupAnchor.AtControl(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Views.PopupAnchor.AtControl(DrawnUi.Draw.SkiaControl)
+  id: AtControl(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Views.PopupAnchor
+  langs:
+  - csharp
+  - vb
+  name: AtControl(SkiaControl)
+  nameWithType: PopupAnchor.AtControl(SkiaControl)
+  fullName: DrawnUi.Views.PopupAnchor.AtControl(DrawnUi.Draw.SkiaControl)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AtControl
+    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    startLine: 199
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: 'A control: as a rect, with the rect it was last drawn at (moved, scaled, scrolled).'
+  example: []
+  syntax:
+    content: public static PopupAnchor AtControl(SkiaControl control)
+    parameters:
+    - id: control
+      type: DrawnUi.Draw.SkiaControl
+    return:
+      type: DrawnUi.Views.PopupAnchor
+    content.vb: Public Shared Function AtControl(control As SkiaControl) As PopupAnchor
+  overload: DrawnUi.Views.PopupAnchor.AtControl*
+- uid: DrawnUi.Views.PopupAnchor.op_Implicit(SkiaSharp.SKPoint)~DrawnUi.Views.PopupAnchor
+  commentId: M:DrawnUi.Views.PopupAnchor.op_Implicit(SkiaSharp.SKPoint)~DrawnUi.Views.PopupAnchor
+  id: op_Implicit(SkiaSharp.SKPoint)~DrawnUi.Views.PopupAnchor
+  parent: DrawnUi.Views.PopupAnchor
+  langs:
+  - csharp
+  - vb
+  name: implicit operator PopupAnchor(SKPoint)
+  nameWithType: PopupAnchor.implicit operator PopupAnchor(SKPoint)
+  fullName: DrawnUi.Views.PopupAnchor.implicit operator DrawnUi.Views.PopupAnchor(SkiaSharp.SKPoint)
+  type: Operator
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: op_Implicit
+    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    startLine: 201
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  syntax:
+    content: public static implicit operator PopupAnchor(SKPoint point)
+    parameters:
+    - id: point
+      type: SkiaSharp.SKPoint
+    return:
+      type: DrawnUi.Views.PopupAnchor
+    content.vb: Public Shared Widening Operator CType(point As SKPoint) As PopupAnchor
+  overload: DrawnUi.Views.PopupAnchor.op_Implicit*
+  nameWithType.vb: PopupAnchor.CType(SKPoint)
+  fullName.vb: DrawnUi.Views.PopupAnchor.CType(SkiaSharp.SKPoint)
+  name.vb: CType(SKPoint)
+- uid: DrawnUi.Views.PopupAnchor.op_Implicit(SkiaSharp.SKRect)~DrawnUi.Views.PopupAnchor
+  commentId: M:DrawnUi.Views.PopupAnchor.op_Implicit(SkiaSharp.SKRect)~DrawnUi.Views.PopupAnchor
+  id: op_Implicit(SkiaSharp.SKRect)~DrawnUi.Views.PopupAnchor
+  parent: DrawnUi.Views.PopupAnchor
+  langs:
+  - csharp
+  - vb
+  name: implicit operator PopupAnchor(SKRect)
+  nameWithType: PopupAnchor.implicit operator PopupAnchor(SKRect)
+  fullName: DrawnUi.Views.PopupAnchor.implicit operator DrawnUi.Views.PopupAnchor(SkiaSharp.SKRect)
+  type: Operator
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: op_Implicit
+    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    startLine: 202
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  syntax:
+    content: public static implicit operator PopupAnchor(SKRect rect)
+    parameters:
+    - id: rect
+      type: SkiaSharp.SKRect
+    return:
+      type: DrawnUi.Views.PopupAnchor
+    content.vb: Public Shared Widening Operator CType(rect As SKRect) As PopupAnchor
+  overload: DrawnUi.Views.PopupAnchor.op_Implicit*
+  nameWithType.vb: PopupAnchor.CType(SKRect)
+  fullName.vb: DrawnUi.Views.PopupAnchor.CType(SkiaSharp.SKRect)
+  name.vb: CType(SKRect)
+- uid: DrawnUi.Views.PopupAnchor.op_Implicit(DrawnUi.Draw.SkiaControl)~DrawnUi.Views.PopupAnchor
+  commentId: M:DrawnUi.Views.PopupAnchor.op_Implicit(DrawnUi.Draw.SkiaControl)~DrawnUi.Views.PopupAnchor
+  id: op_Implicit(DrawnUi.Draw.SkiaControl)~DrawnUi.Views.PopupAnchor
+  parent: DrawnUi.Views.PopupAnchor
+  langs:
+  - csharp
+  - vb
+  name: implicit operator PopupAnchor(SkiaControl)
+  nameWithType: PopupAnchor.implicit operator PopupAnchor(SkiaControl)
+  fullName: DrawnUi.Views.PopupAnchor.implicit operator DrawnUi.Views.PopupAnchor(DrawnUi.Draw.SkiaControl)
+  type: Operator
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: op_Implicit
+    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    startLine: 203
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  syntax:
+    content: public static implicit operator PopupAnchor(SkiaControl control)
+    parameters:
+    - id: control
+      type: DrawnUi.Draw.SkiaControl
+    return:
+      type: DrawnUi.Views.PopupAnchor
+    content.vb: Public Shared Widening Operator CType(control As SkiaControl) As PopupAnchor
+  overload: DrawnUi.Views.PopupAnchor.op_Implicit*
+  nameWithType.vb: PopupAnchor.CType(SkiaControl)
+  fullName.vb: DrawnUi.Views.PopupAnchor.CType(DrawnUi.Draw.SkiaControl)
+  name.vb: CType(SkiaControl)
+references:
+- uid: DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl,DrawnUi.Views.PopupAnchor,DrawnUi.Views.PopupWindowOptions)
+  commentId: M:DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl,DrawnUi.Views.PopupAnchor,DrawnUi.Views.PopupWindowOptions)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OpenPopupWindow_DrawnUi_Draw_SkiaControl_DrawnUi_Views_PopupAnchor_DrawnUi_Views_PopupWindowOptions_
+  name: OpenPopupWindow(SkiaControl, PopupAnchor, PopupWindowOptions)
+  nameWithType: DrawnView.OpenPopupWindow(SkiaControl, PopupAnchor, PopupWindowOptions)
+  fullName: DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl, DrawnUi.Views.PopupAnchor, DrawnUi.Views.PopupWindowOptions)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl,DrawnUi.Views.PopupAnchor,DrawnUi.Views.PopupWindowOptions)
+    name: OpenPopupWindow
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OpenPopupWindow_DrawnUi_Draw_SkiaControl_DrawnUi_Views_PopupAnchor_DrawnUi_Views_PopupWindowOptions_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Views.PopupAnchor
+    name: PopupAnchor
+    href: DrawnUi.Views.PopupAnchor.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Views.PopupWindowOptions
+    name: PopupWindowOptions
+    href: DrawnUi.Views.PopupWindowOptions.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl,DrawnUi.Views.PopupAnchor,DrawnUi.Views.PopupWindowOptions)
+    name: OpenPopupWindow
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OpenPopupWindow_DrawnUi_Draw_SkiaControl_DrawnUi_Views_PopupAnchor_DrawnUi_Views_PopupWindowOptions_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Views.PopupAnchor
+    name: PopupAnchor
+    href: DrawnUi.Views.PopupAnchor.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Views.PopupWindowOptions
+    name: PopupWindowOptions
+    href: DrawnUi.Views.PopupWindowOptions.html
+  - name: )
+- uid: DrawnUi.Views
+  commentId: N:DrawnUi.Views
+  href: DrawnUi.html
+  name: DrawnUi.Views
+  nameWithType: DrawnUi.Views
+  fullName: DrawnUi.Views
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Views
+    name: Views
+    href: DrawnUi.Views.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Views
+    name: Views
+    href: DrawnUi.Views.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Views.DrawnView
+  commentId: T:DrawnUi.Views.DrawnView
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.DrawnView.html
+  name: DrawnView
+  nameWithType: DrawnView
+  fullName: DrawnUi.Views.DrawnView
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Views.PopupAnchor.Rect*
+  commentId: Overload:DrawnUi.Views.PopupAnchor.Rect
+  href: DrawnUi.Views.PopupAnchor.html#DrawnUi_Views_PopupAnchor_Rect
+  name: Rect
+  nameWithType: PopupAnchor.Rect
+  fullName: DrawnUi.Views.PopupAnchor.Rect
+- uid: SkiaSharp.SKRect
+  commentId: T:SkiaSharp.SKRect
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  name: SKRect
+  nameWithType: SKRect
+  fullName: SkiaSharp.SKRect
+- uid: SkiaSharp
+  commentId: N:SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp
+  name: SkiaSharp
+  nameWithType: SkiaSharp
+  fullName: SkiaSharp
+- uid: DrawnUi.Views.PopupAnchor.IsPoint*
+  commentId: Overload:DrawnUi.Views.PopupAnchor.IsPoint
+  href: DrawnUi.Views.PopupAnchor.html#DrawnUi_Views_PopupAnchor_IsPoint
+  name: IsPoint
+  nameWithType: PopupAnchor.IsPoint
+  fullName: DrawnUi.Views.PopupAnchor.IsPoint
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: DrawnUi.Views.PopupAnchor.Control*
+  commentId: Overload:DrawnUi.Views.PopupAnchor.Control
+  href: DrawnUi.Views.PopupAnchor.html#DrawnUi_Views_PopupAnchor_Control
+  name: Control
+  nameWithType: PopupAnchor.Control
+  fullName: DrawnUi.Views.PopupAnchor.Control
+- uid: DrawnUi.Draw.SkiaControl
+  commentId: T:DrawnUi.Draw.SkiaControl
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaControl.html
+  name: SkiaControl
+  nameWithType: SkiaControl
+  fullName: DrawnUi.Draw.SkiaControl
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: DrawnUi.Views.PopupAnchor.AtPoint*
+  commentId: Overload:DrawnUi.Views.PopupAnchor.AtPoint
+  href: DrawnUi.Views.PopupAnchor.html#DrawnUi_Views_PopupAnchor_AtPoint_SkiaSharp_SKPoint_
+  name: AtPoint
+  nameWithType: PopupAnchor.AtPoint
+  fullName: DrawnUi.Views.PopupAnchor.AtPoint
+- uid: SkiaSharp.SKPoint
+  commentId: T:SkiaSharp.SKPoint
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skpoint
+  name: SKPoint
+  nameWithType: SKPoint
+  fullName: SkiaSharp.SKPoint
+- uid: DrawnUi.Views.PopupAnchor
+  commentId: T:DrawnUi.Views.PopupAnchor
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.PopupAnchor.html
+  name: PopupAnchor
+  nameWithType: PopupAnchor
+  fullName: DrawnUi.Views.PopupAnchor
+- uid: DrawnUi.Views.PopupAnchor.AtRect*
+  commentId: Overload:DrawnUi.Views.PopupAnchor.AtRect
+  href: DrawnUi.Views.PopupAnchor.html#DrawnUi_Views_PopupAnchor_AtRect_SkiaSharp_SKRect_
+  name: AtRect
+  nameWithType: PopupAnchor.AtRect
+  fullName: DrawnUi.Views.PopupAnchor.AtRect
+- uid: DrawnUi.Views.PopupAnchor.AtControl*
+  commentId: Overload:DrawnUi.Views.PopupAnchor.AtControl
+  href: DrawnUi.Views.PopupAnchor.html#DrawnUi_Views_PopupAnchor_AtControl_DrawnUi_Draw_SkiaControl_
+  name: AtControl
+  nameWithType: PopupAnchor.AtControl
+  fullName: DrawnUi.Views.PopupAnchor.AtControl
+- uid: DrawnUi.Views.PopupAnchor.op_Implicit*
+  commentId: Overload:DrawnUi.Views.PopupAnchor.op_Implicit
+  name: implicit operator
+  nameWithType: PopupAnchor.implicit operator
+  fullName: DrawnUi.Views.PopupAnchor.implicit operator
+  nameWithType.vb: PopupAnchor.CType
+  fullName.vb: DrawnUi.Views.PopupAnchor.CType
+  name.vb: CType
+  spec.csharp:
+  - name: implicit
+  - name: " "
+  - name: operator

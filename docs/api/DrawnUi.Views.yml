@@ -17,6 +17,10 @@ items:
   - DrawnUi.Views.DrawnView.OffscreenCommand
   - DrawnUi.Views.DrawnView.TimedDisposable
   - DrawnUi.Views.IDisposeManager
+  - DrawnUi.Views.IPopupWindowHost
+  - DrawnUi.Views.PopupAnchor
+  - DrawnUi.Views.PopupId
+  - DrawnUi.Views.PopupWindowOptions
   - DrawnUi.Views.SKAutoCanvasRestoreFixed
   - DrawnUi.Views.SkiaAccessibilityManager
   - DrawnUi.Views.SkiaView
@@ -170,6 +174,34 @@ references:
   name: CanvasRestoreScope
   nameWithType: CanvasRestoreScope
   fullName: DrawnUi.Views.CanvasRestoreScope
+- uid: DrawnUi.Views.IPopupWindowHost
+  commentId: T:DrawnUi.Views.IPopupWindowHost
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.IPopupWindowHost.html
+  name: IPopupWindowHost
+  nameWithType: IPopupWindowHost
+  fullName: DrawnUi.Views.IPopupWindowHost
+- uid: DrawnUi.Views.PopupId
+  commentId: T:DrawnUi.Views.PopupId
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.PopupId.html
+  name: PopupId
+  nameWithType: PopupId
+  fullName: DrawnUi.Views.PopupId
+- uid: DrawnUi.Views.PopupAnchor
+  commentId: T:DrawnUi.Views.PopupAnchor
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.PopupAnchor.html
+  name: PopupAnchor
+  nameWithType: PopupAnchor
+  fullName: DrawnUi.Views.PopupAnchor
+- uid: DrawnUi.Views.PopupWindowOptions
+  commentId: T:DrawnUi.Views.PopupWindowOptions
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.PopupWindowOptions.html
+  name: PopupWindowOptions
+  nameWithType: PopupWindowOptions
+  fullName: DrawnUi.Views.PopupWindowOptions
 - uid: DrawnUi.Views.SKAutoCanvasRestoreFixed
   commentId: T:DrawnUi.Views.SKAutoCanvasRestoreFixed
   href: DrawnUi.Views.SKAutoCanvasRestoreFixed.html

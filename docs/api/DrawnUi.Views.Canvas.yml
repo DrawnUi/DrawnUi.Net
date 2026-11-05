@@ -48,6 +48,7 @@ items:
   - DrawnUi.Views.Canvas.OnDestroyingVew
   - DrawnUi.Views.Canvas.OnDisposing
   - DrawnUi.Views.Canvas.OnGestureEvent(AppoMobi.Gestures.TouchActionType,AppoMobi.Gestures.TouchActionEventArgs,AppoMobi.Gestures.TouchActionResult)
+  - DrawnUi.Views.Canvas.OnGestureListenerUnregistered(DrawnUi.Draw.ISkiaGestureListener)
   - DrawnUi.Views.Canvas.OnGesturesAttachChanged
   - DrawnUi.Views.Canvas.OnHandlerChanged
   - DrawnUi.Views.Canvas.OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs)
@@ -215,8 +216,12 @@ items:
   - DrawnUi.Views.DrawnView.RequestHoverCheck
   - DrawnUi.Views.DrawnView.ForgetHover(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Views.DrawnView.HasHoveredControls
+  - DrawnUi.Views.DrawnView.SetAccessibilityFocus(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Views.DrawnView.KeyboardFocusNode
   - DrawnUi.Views.DrawnView.HandleKeyboardNavigation(DrawnUi.Draw.InputKey,System.Boolean)
+  - DrawnUi.Views.DrawnView.ArrowsStartKeyboardNavigation
+  - DrawnUi.Views.DrawnView.HasNoKeyboardFocus
+  - DrawnUi.Views.DrawnView.ArrowStartsNavigation(DrawnUi.Draw.InputKey)
   - DrawnUi.Views.DrawnView.KeyboardFocusColor
   - DrawnUi.Views.DrawnView.WheelDeltaPerNotch
   - DrawnUi.Views.DrawnView.DrawKeyboardFocus(DrawnUi.Draw.DrawingContext)
@@ -288,6 +293,7 @@ items:
   - DrawnUi.Views.DrawnView.OnDrawSurface(SkiaSharp.SKSurface,SkiaSharp.SKRect)
   - DrawnUi.Views.DrawnView.CanRender
   - DrawnUi.Views.DrawnView.OnStartRendering(SkiaSharp.SKCanvas)
+  - DrawnUi.Views.DrawnView.IsDrawingOnCurrentThread
   - DrawnUi.Views.DrawnView.AccessibilityManager
   - DrawnUi.Views.DrawnView.OnFinalizeRendering
   - DrawnUi.Views.DrawnView.AvailableDestination
@@ -371,6 +377,21 @@ items:
   - DrawnUi.Views.DrawnView.GetIsVisibleWithParent(Microsoft.Maui.Controls.VisualElement)
   - DrawnUi.Views.DrawnView.CheckElementVisibility(Microsoft.Maui.Controls.VisualElement)
   - DrawnUi.Views.DrawnView.ClipSmart(SkiaSharp.SKCanvas,SkiaSharp.SKPath,SkiaSharp.SKClipOperation)
+  - DrawnUi.Views.DrawnView.TooltipStyle
+  - DrawnUi.Views.DrawnView.TooltipHost
+  - DrawnUi.Views.DrawnView.ShownTooltip
+  - DrawnUi.Views.DrawnView.ReportTooltip(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Views.DrawnView.CloseTooltipOnInput
+  - DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl,DrawnUi.Views.PopupAnchor,DrawnUi.Views.PopupWindowOptions)
+  - DrawnUi.Views.DrawnView.ClosePopupWindow(DrawnUi.Views.PopupId)
+  - DrawnUi.Views.DrawnView.ClosePopupWindows
+  - DrawnUi.Views.DrawnView.OnWindowDeactivated
+  - DrawnUi.Views.DrawnView.PreviewInputForPopups(DrawnUi.Draw.SkiaGesturesParameters)
+  - DrawnUi.Views.DrawnView.PopupWindowClosed
+  - DrawnUi.Views.DrawnView.PopupWindowHost
+  - DrawnUi.Views.DrawnView.IsPopupWindowOpen(DrawnUi.Views.PopupId)
+  - DrawnUi.Views.DrawnView.HasPopupWindows
+  - DrawnUi.Views.DrawnView.TopPopupWindow
   - Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
   - Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
   - Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
@@ -1063,7 +1084,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetMeasuringRectForChildren
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 311
+    startLine: 313
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1107,7 +1128,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptWidthContraintToContentRequest
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 326
+    startLine: 328
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1145,7 +1166,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptHeightContraintToContentRequest
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 339
+    startLine: 341
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1183,7 +1204,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptSizeRequestToContent
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 358
+    startLine: 360
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1224,7 +1245,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentSize
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 376
+    startLine: 378
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1253,7 +1274,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureChild
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 397
+    startLine: 399
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1300,7 +1321,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHandlerChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 410
+    startLine: 412
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1330,7 +1351,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHandlerChanging
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 424
+    startLine: 426
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1364,7 +1385,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DetachGestures
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 441
+    startLine: 443
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1390,7 +1411,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDestroyingVew
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 448
+    startLine: 450
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1418,7 +1439,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnGesturesAttachChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 455
+    startLine: 457
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1444,7 +1465,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AttachedTouchEffect
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 482
+    startLine: 484
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1473,7 +1494,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDebugPointer
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 484
+    startLine: 486
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1501,7 +1522,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DebugPointer
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 497
+    startLine: 499
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1530,7 +1551,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 499
+    startLine: 501
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1558,7 +1579,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Context
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 510
+    startLine: 512
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1585,7 +1606,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReceivedInput
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 515
+    startLine: 517
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1616,7 +1637,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HadInput
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 520
+    startLine: 522
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1647,7 +1668,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsSavedGesture
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 527
+    startLine: 529
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1664,6 +1685,41 @@ items:
       description: ''
     content.vb: Protected Function IsSavedGesture(type As TouchActionResult) As Boolean
   overload: DrawnUi.Views.Canvas.IsSavedGesture*
+- uid: DrawnUi.Views.Canvas.OnGestureListenerUnregistered(DrawnUi.Draw.ISkiaGestureListener)
+  commentId: M:DrawnUi.Views.Canvas.OnGestureListenerUnregistered(DrawnUi.Draw.ISkiaGestureListener)
+  id: OnGestureListenerUnregistered(DrawnUi.Draw.ISkiaGestureListener)
+  parent: DrawnUi.Views.Canvas
+  langs:
+  - csharp
+  - vb
+  name: OnGestureListenerUnregistered(ISkiaGestureListener)
+  nameWithType: Canvas.OnGestureListenerUnregistered(ISkiaGestureListener)
+  fullName: DrawnUi.Views.Canvas.OnGestureListenerUnregistered(DrawnUi.Draw.ISkiaGestureListener)
+  type: Method
+  source:
+    remote:
+      path: src/Maui/DrawnUi/Views/Canvas.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnGestureListenerUnregistered
+    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    startLine: 559
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    A control left the canvas (removed or disposed): the canvas drops every reference its gesture dispatch
+
+    still holds to it, so a control that took the last input does not keep its tree alive.
+  example: []
+  syntax:
+    content: protected override void OnGestureListenerUnregistered(ISkiaGestureListener gestureListener)
+    parameters:
+    - id: gestureListener
+      type: DrawnUi.Draw.ISkiaGestureListener
+    content.vb: Protected Overrides Sub OnGestureListenerUnregistered(gestureListener As ISkiaGestureListener)
+  overridden: DrawnUi.Views.DrawnView.OnGestureListenerUnregistered(DrawnUi.Draw.ISkiaGestureListener)
+  overload: DrawnUi.Views.Canvas.OnGestureListenerUnregistered*
 - uid: DrawnUi.Views.Canvas.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters)
   commentId: M:DrawnUi.Views.Canvas.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters)
   id: ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters)
@@ -1682,7 +1738,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 556
+    startLine: 569
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1711,7 +1767,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHoverCheck
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 775
+    startLine: 791
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1743,7 +1799,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SignalInput
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 783
+    startLine: 799
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1778,7 +1834,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tapped
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 798
+    startLine: 818
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1805,7 +1861,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnGestureEvent
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 815
+    startLine: 835
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1846,7 +1902,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BreakLine
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 917
+    startLine: 962
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1872,7 +1928,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineBreaks
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 922
+    startLine: 967
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1899,7 +1955,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 924
+    startLine: 969
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1928,7 +1984,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlayRippleAnimation
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 929
+    startLine: 974
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1966,7 +2022,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlayShimmerAnimation
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 935
+    startLine: 980
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2006,7 +2062,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TimeLastGC
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 948
+    startLine: 993
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2035,7 +2091,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DelayNanosBetweenGC
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 949
+    startLine: 994
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2064,7 +2120,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CollectGarbage
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 951
+    startLine: 996
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2096,7 +2152,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 968
+    startLine: 1013
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2132,7 +2188,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesDebugColorProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 981
+    startLine: 1026
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2159,7 +2215,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesDebugColor
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 987
+    startLine: 1032
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2188,7 +2244,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReserveSpaceAroundProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 993
+    startLine: 1038
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2215,7 +2271,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReserveSpaceAround
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 999
+    startLine: 1044
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2244,7 +2300,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1013
+    startLine: 1058
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2271,7 +2327,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Gestures
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1019
+    startLine: 1064
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2300,7 +2356,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentProperty
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1027
+    startLine: 1072
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2327,7 +2383,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Content
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1043
+    startLine: 1088
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2356,7 +2412,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnParentChanged
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1053
+    startLine: 1098
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2386,7 +2442,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnableUpdates
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1063
+    startLine: 1108
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2414,7 +2470,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisableUpdates
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1073
+    startLine: 1118
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2442,7 +2498,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1078
+    startLine: 1123
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2473,7 +2529,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetGesturePositionInsideControl
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1183
+    startLine: 1228
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2520,7 +2576,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindViewCoordinatesRecursive
     path: ../src/Maui/DrawnUi/Views/Canvas.cs
-    startLine: 1228
+    startLine: 1273
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -4488,6 +4544,31 @@ references:
   name: HasHoveredControls
   nameWithType: DrawnView.HasHoveredControls
   fullName: DrawnUi.Views.DrawnView.HasHoveredControls
+- uid: DrawnUi.Views.DrawnView.SetAccessibilityFocus(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Views.DrawnView.SetAccessibilityFocus(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SetAccessibilityFocus_DrawnUi_Draw_SkiaControl_
+  name: SetAccessibilityFocus(SkiaControl)
+  nameWithType: DrawnView.SetAccessibilityFocus(SkiaControl)
+  fullName: DrawnUi.Views.DrawnView.SetAccessibilityFocus(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.SetAccessibilityFocus(DrawnUi.Draw.SkiaControl)
+    name: SetAccessibilityFocus
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SetAccessibilityFocus_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.SetAccessibilityFocus(DrawnUi.Draw.SkiaControl)
+    name: SetAccessibilityFocus
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SetAccessibilityFocus_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
 - uid: DrawnUi.Views.DrawnView.KeyboardFocusNode
   commentId: P:DrawnUi.Views.DrawnView.KeyboardFocusNode
   parent: DrawnUi.Views.DrawnView
@@ -4535,6 +4616,45 @@ references:
     name: Boolean
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Views.DrawnView.ArrowsStartKeyboardNavigation
+  commentId: P:DrawnUi.Views.DrawnView.ArrowsStartKeyboardNavigation
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ArrowsStartKeyboardNavigation
+  name: ArrowsStartKeyboardNavigation
+  nameWithType: DrawnView.ArrowsStartKeyboardNavigation
+  fullName: DrawnUi.Views.DrawnView.ArrowsStartKeyboardNavigation
+- uid: DrawnUi.Views.DrawnView.HasNoKeyboardFocus
+  commentId: P:DrawnUi.Views.DrawnView.HasNoKeyboardFocus
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_HasNoKeyboardFocus
+  name: HasNoKeyboardFocus
+  nameWithType: DrawnView.HasNoKeyboardFocus
+  fullName: DrawnUi.Views.DrawnView.HasNoKeyboardFocus
+- uid: DrawnUi.Views.DrawnView.ArrowStartsNavigation(DrawnUi.Draw.InputKey)
+  commentId: M:DrawnUi.Views.DrawnView.ArrowStartsNavigation(DrawnUi.Draw.InputKey)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ArrowStartsNavigation_DrawnUi_Draw_InputKey_
+  name: ArrowStartsNavigation(InputKey)
+  nameWithType: DrawnView.ArrowStartsNavigation(InputKey)
+  fullName: DrawnUi.Views.DrawnView.ArrowStartsNavigation(DrawnUi.Draw.InputKey)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.ArrowStartsNavigation(DrawnUi.Draw.InputKey)
+    name: ArrowStartsNavigation
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ArrowStartsNavigation_DrawnUi_Draw_InputKey_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.ArrowStartsNavigation(DrawnUi.Draw.InputKey)
+    name: ArrowStartsNavigation
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ArrowStartsNavigation_DrawnUi_Draw_InputKey_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
   - name: )
 - uid: DrawnUi.Views.DrawnView.KeyboardFocusColor
   commentId: F:DrawnUi.Views.DrawnView.KeyboardFocusColor
@@ -5672,6 +5792,13 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skcanvas
   - name: )
+- uid: DrawnUi.Views.DrawnView.IsDrawingOnCurrentThread
+  commentId: P:DrawnUi.Views.DrawnView.IsDrawingOnCurrentThread
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsDrawingOnCurrentThread
+  name: IsDrawingOnCurrentThread
+  nameWithType: DrawnView.IsDrawingOnCurrentThread
+  fullName: DrawnUi.Views.DrawnView.IsDrawingOnCurrentThread
 - uid: DrawnUi.Views.DrawnView.AccessibilityManager
   commentId: P:DrawnUi.Views.DrawnView.AccessibilityManager
   parent: DrawnUi.Views.DrawnView
@@ -7028,6 +7155,257 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/skiasharp.skclipoperation
   - name: )
+- uid: DrawnUi.Views.DrawnView.TooltipStyle
+  commentId: P:DrawnUi.Views.DrawnView.TooltipStyle
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_TooltipStyle
+  name: TooltipStyle
+  nameWithType: DrawnView.TooltipStyle
+  fullName: DrawnUi.Views.DrawnView.TooltipStyle
+- uid: DrawnUi.Views.DrawnView.TooltipHost
+  commentId: P:DrawnUi.Views.DrawnView.TooltipHost
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_TooltipHost
+  name: TooltipHost
+  nameWithType: DrawnView.TooltipHost
+  fullName: DrawnUi.Views.DrawnView.TooltipHost
+- uid: DrawnUi.Views.DrawnView.ShownTooltip
+  commentId: P:DrawnUi.Views.DrawnView.ShownTooltip
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ShownTooltip
+  name: ShownTooltip
+  nameWithType: DrawnView.ShownTooltip
+  fullName: DrawnUi.Views.DrawnView.ShownTooltip
+- uid: DrawnUi.Views.DrawnView.ReportTooltip(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Views.DrawnView.ReportTooltip(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportTooltip_DrawnUi_Draw_SkiaControl_
+  name: ReportTooltip(SkiaControl)
+  nameWithType: DrawnView.ReportTooltip(SkiaControl)
+  fullName: DrawnUi.Views.DrawnView.ReportTooltip(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.ReportTooltip(DrawnUi.Draw.SkiaControl)
+    name: ReportTooltip
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportTooltip_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.ReportTooltip(DrawnUi.Draw.SkiaControl)
+    name: ReportTooltip
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReportTooltip_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: DrawnUi.Views.DrawnView.CloseTooltipOnInput
+  commentId: M:DrawnUi.Views.DrawnView.CloseTooltipOnInput
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CloseTooltipOnInput
+  name: CloseTooltipOnInput()
+  nameWithType: DrawnView.CloseTooltipOnInput()
+  fullName: DrawnUi.Views.DrawnView.CloseTooltipOnInput()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.CloseTooltipOnInput
+    name: CloseTooltipOnInput
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CloseTooltipOnInput
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.CloseTooltipOnInput
+    name: CloseTooltipOnInput
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_CloseTooltipOnInput
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl,DrawnUi.Views.PopupAnchor,DrawnUi.Views.PopupWindowOptions)
+  commentId: M:DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl,DrawnUi.Views.PopupAnchor,DrawnUi.Views.PopupWindowOptions)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OpenPopupWindow_DrawnUi_Draw_SkiaControl_DrawnUi_Views_PopupAnchor_DrawnUi_Views_PopupWindowOptions_
+  name: OpenPopupWindow(SkiaControl, PopupAnchor, PopupWindowOptions)
+  nameWithType: DrawnView.OpenPopupWindow(SkiaControl, PopupAnchor, PopupWindowOptions)
+  fullName: DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl, DrawnUi.Views.PopupAnchor, DrawnUi.Views.PopupWindowOptions)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl,DrawnUi.Views.PopupAnchor,DrawnUi.Views.PopupWindowOptions)
+    name: OpenPopupWindow
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OpenPopupWindow_DrawnUi_Draw_SkiaControl_DrawnUi_Views_PopupAnchor_DrawnUi_Views_PopupWindowOptions_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Views.PopupAnchor
+    name: PopupAnchor
+    href: DrawnUi.Views.PopupAnchor.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Views.PopupWindowOptions
+    name: PopupWindowOptions
+    href: DrawnUi.Views.PopupWindowOptions.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl,DrawnUi.Views.PopupAnchor,DrawnUi.Views.PopupWindowOptions)
+    name: OpenPopupWindow
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OpenPopupWindow_DrawnUi_Draw_SkiaControl_DrawnUi_Views_PopupAnchor_DrawnUi_Views_PopupWindowOptions_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Views.PopupAnchor
+    name: PopupAnchor
+    href: DrawnUi.Views.PopupAnchor.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Views.PopupWindowOptions
+    name: PopupWindowOptions
+    href: DrawnUi.Views.PopupWindowOptions.html
+  - name: )
+- uid: DrawnUi.Views.DrawnView.ClosePopupWindow(DrawnUi.Views.PopupId)
+  commentId: M:DrawnUi.Views.DrawnView.ClosePopupWindow(DrawnUi.Views.PopupId)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClosePopupWindow_DrawnUi_Views_PopupId_
+  name: ClosePopupWindow(PopupId)
+  nameWithType: DrawnView.ClosePopupWindow(PopupId)
+  fullName: DrawnUi.Views.DrawnView.ClosePopupWindow(DrawnUi.Views.PopupId)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.ClosePopupWindow(DrawnUi.Views.PopupId)
+    name: ClosePopupWindow
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClosePopupWindow_DrawnUi_Views_PopupId_
+  - name: (
+  - uid: DrawnUi.Views.PopupId
+    name: PopupId
+    href: DrawnUi.Views.PopupId.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.ClosePopupWindow(DrawnUi.Views.PopupId)
+    name: ClosePopupWindow
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClosePopupWindow_DrawnUi_Views_PopupId_
+  - name: (
+  - uid: DrawnUi.Views.PopupId
+    name: PopupId
+    href: DrawnUi.Views.PopupId.html
+  - name: )
+- uid: DrawnUi.Views.DrawnView.ClosePopupWindows
+  commentId: M:DrawnUi.Views.DrawnView.ClosePopupWindows
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClosePopupWindows
+  name: ClosePopupWindows()
+  nameWithType: DrawnView.ClosePopupWindows()
+  fullName: DrawnUi.Views.DrawnView.ClosePopupWindows()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.ClosePopupWindows
+    name: ClosePopupWindows
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClosePopupWindows
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.ClosePopupWindows
+    name: ClosePopupWindows
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ClosePopupWindows
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.OnWindowDeactivated
+  commentId: M:DrawnUi.Views.DrawnView.OnWindowDeactivated
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnWindowDeactivated
+  name: OnWindowDeactivated()
+  nameWithType: DrawnView.OnWindowDeactivated()
+  fullName: DrawnUi.Views.DrawnView.OnWindowDeactivated()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.OnWindowDeactivated
+    name: OnWindowDeactivated
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnWindowDeactivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.OnWindowDeactivated
+    name: OnWindowDeactivated
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnWindowDeactivated
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.PreviewInputForPopups(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Views.DrawnView.PreviewInputForPopups(DrawnUi.Draw.SkiaGesturesParameters)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PreviewInputForPopups_DrawnUi_Draw_SkiaGesturesParameters_
+  name: PreviewInputForPopups(SkiaGesturesParameters)
+  nameWithType: DrawnView.PreviewInputForPopups(SkiaGesturesParameters)
+  fullName: DrawnUi.Views.DrawnView.PreviewInputForPopups(DrawnUi.Draw.SkiaGesturesParameters)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.PreviewInputForPopups(DrawnUi.Draw.SkiaGesturesParameters)
+    name: PreviewInputForPopups
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PreviewInputForPopups_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.PreviewInputForPopups(DrawnUi.Draw.SkiaGesturesParameters)
+    name: PreviewInputForPopups
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PreviewInputForPopups_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+- uid: DrawnUi.Views.DrawnView.PopupWindowClosed
+  commentId: E:DrawnUi.Views.DrawnView.PopupWindowClosed
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PopupWindowClosed
+  name: PopupWindowClosed
+  nameWithType: DrawnView.PopupWindowClosed
+  fullName: DrawnUi.Views.DrawnView.PopupWindowClosed
+- uid: DrawnUi.Views.DrawnView.PopupWindowHost
+  commentId: P:DrawnUi.Views.DrawnView.PopupWindowHost
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_PopupWindowHost
+  name: PopupWindowHost
+  nameWithType: DrawnView.PopupWindowHost
+  fullName: DrawnUi.Views.DrawnView.PopupWindowHost
+- uid: DrawnUi.Views.DrawnView.IsPopupWindowOpen(DrawnUi.Views.PopupId)
+  commentId: M:DrawnUi.Views.DrawnView.IsPopupWindowOpen(DrawnUi.Views.PopupId)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsPopupWindowOpen_DrawnUi_Views_PopupId_
+  name: IsPopupWindowOpen(PopupId)
+  nameWithType: DrawnView.IsPopupWindowOpen(PopupId)
+  fullName: DrawnUi.Views.DrawnView.IsPopupWindowOpen(DrawnUi.Views.PopupId)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.IsPopupWindowOpen(DrawnUi.Views.PopupId)
+    name: IsPopupWindowOpen
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsPopupWindowOpen_DrawnUi_Views_PopupId_
+  - name: (
+  - uid: DrawnUi.Views.PopupId
+    name: PopupId
+    href: DrawnUi.Views.PopupId.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.IsPopupWindowOpen(DrawnUi.Views.PopupId)
+    name: IsPopupWindowOpen
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsPopupWindowOpen_DrawnUi_Views_PopupId_
+  - name: (
+  - uid: DrawnUi.Views.PopupId
+    name: PopupId
+    href: DrawnUi.Views.PopupId.html
+  - name: )
+- uid: DrawnUi.Views.DrawnView.HasPopupWindows
+  commentId: P:DrawnUi.Views.DrawnView.HasPopupWindows
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_HasPopupWindows
+  name: HasPopupWindows
+  nameWithType: DrawnView.HasPopupWindows
+  fullName: DrawnUi.Views.DrawnView.HasPopupWindows
+- uid: DrawnUi.Views.DrawnView.TopPopupWindow
+  commentId: P:DrawnUi.Views.DrawnView.TopPopupWindow
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_TopPopupWindow
+  name: TopPopupWindow
+  nameWithType: DrawnView.TopPopupWindow
+  fullName: DrawnUi.Views.DrawnView.TopPopupWindow
 - uid: Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
   commentId: F:Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
   parent: Microsoft.Maui.Controls.TemplatedView
@@ -12452,6 +12830,44 @@ references:
   name: TouchActionResult
   nameWithType: TouchActionResult
   fullName: AppoMobi.Gestures.TouchActionResult
+- uid: DrawnUi.Views.DrawnView.OnGestureListenerUnregistered(DrawnUi.Draw.ISkiaGestureListener)
+  commentId: M:DrawnUi.Views.DrawnView.OnGestureListenerUnregistered(DrawnUi.Draw.ISkiaGestureListener)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnGestureListenerUnregistered_DrawnUi_Draw_ISkiaGestureListener_
+  name: OnGestureListenerUnregistered(ISkiaGestureListener)
+  nameWithType: DrawnView.OnGestureListenerUnregistered(ISkiaGestureListener)
+  fullName: DrawnUi.Views.DrawnView.OnGestureListenerUnregistered(DrawnUi.Draw.ISkiaGestureListener)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.OnGestureListenerUnregistered(DrawnUi.Draw.ISkiaGestureListener)
+    name: OnGestureListenerUnregistered
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnGestureListenerUnregistered_DrawnUi_Draw_ISkiaGestureListener_
+  - name: (
+  - uid: DrawnUi.Draw.ISkiaGestureListener
+    name: ISkiaGestureListener
+    href: DrawnUi.Draw.ISkiaGestureListener.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.OnGestureListenerUnregistered(DrawnUi.Draw.ISkiaGestureListener)
+    name: OnGestureListenerUnregistered
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnGestureListenerUnregistered_DrawnUi_Draw_ISkiaGestureListener_
+  - name: (
+  - uid: DrawnUi.Draw.ISkiaGestureListener
+    name: ISkiaGestureListener
+    href: DrawnUi.Draw.ISkiaGestureListener.html
+  - name: )
+- uid: DrawnUi.Views.Canvas.OnGestureListenerUnregistered*
+  commentId: Overload:DrawnUi.Views.Canvas.OnGestureListenerUnregistered
+  href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_OnGestureListenerUnregistered_DrawnUi_Draw_ISkiaGestureListener_
+  name: OnGestureListenerUnregistered
+  nameWithType: Canvas.OnGestureListenerUnregistered
+  fullName: DrawnUi.Views.Canvas.OnGestureListenerUnregistered
+- uid: DrawnUi.Draw.ISkiaGestureListener
+  commentId: T:DrawnUi.Draw.ISkiaGestureListener
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ISkiaGestureListener.html
+  name: ISkiaGestureListener
+  nameWithType: ISkiaGestureListener
+  fullName: DrawnUi.Draw.ISkiaGestureListener
 - uid: DrawnUi.Views.Canvas.ProcessGestures*
   commentId: Overload:DrawnUi.Views.Canvas.ProcessGestures
   href: DrawnUi.Views.Canvas.html#DrawnUi_Views_Canvas_ProcessGestures_DrawnUi_Draw_SkiaGesturesParameters_
@@ -12502,13 +12918,6 @@ references:
   name: SignalInput
   nameWithType: Canvas.SignalInput
   fullName: DrawnUi.Views.Canvas.SignalInput
-- uid: DrawnUi.Draw.ISkiaGestureListener
-  commentId: T:DrawnUi.Draw.ISkiaGestureListener
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.ISkiaGestureListener.html
-  name: ISkiaGestureListener
-  nameWithType: ISkiaGestureListener
-  fullName: DrawnUi.Draw.ISkiaGestureListener
 - uid: System.EventHandler
   commentId: T:System.EventHandler
   parent: System

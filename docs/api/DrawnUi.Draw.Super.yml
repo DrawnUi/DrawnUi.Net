@@ -71,6 +71,8 @@ items:
   - DrawnUi.Draw.Super.StopRenderingInBackground
   - DrawnUi.Draw.Super.ThermalState
   - DrawnUi.Draw.Super.ThermalStateChanged
+  - DrawnUi.Draw.Super.TooltipStyle
+  - DrawnUi.Draw.Super.TooltipsFromAccessibility
   - DrawnUi.Draw.Super.UseFrozenVisualLayers
   - DrawnUi.Draw.Super.UserAgent
   - DrawnUi.Draw.Super.VsyncFrameTimeNanos
@@ -129,7 +131,7 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: Will be triggered only if debugger is attached
+  summary: Raised once after every hot reload code update (under a debugger or dotnet watch), debounced by 1 s
   example: []
   syntax:
     content: public static event Action<Type[]?>? HotReload
@@ -584,6 +586,73 @@ items:
     return:
       type: System.Boolean
     content.vb: Public Shared PreloadRegisteredFonts As Boolean
+- uid: DrawnUi.Draw.Super.TooltipsFromAccessibility
+  commentId: P:DrawnUi.Draw.Super.TooltipsFromAccessibility
+  id: TooltipsFromAccessibility
+  parent: DrawnUi.Draw.Super
+  langs:
+  - csharp
+  - vb
+  name: TooltipsFromAccessibility
+  nameWithType: Super.TooltipsFromAccessibility
+  fullName: DrawnUi.Draw.Super.TooltipsFromAccessibility
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Super.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: TooltipsFromAccessibility
+    path: ../src/Shared/DrawnUi/Super.cs
+    startLine: 40
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    When true, a control without a <xref href="DrawnUi.Draw.SkiaControl.Tooltip" data-throw-if-not-resolved="false"></xref> shows its <xref href="DrawnUi.Draw.SkiaControl.AccessibilityHint" data-throw-if-not-resolved="false"></xref>
+
+    as a tooltip, or, when it has no hint and shows no text of its own (an icon button, an image), its
+
+    <xref href="DrawnUi.Draw.SkiaControl.AccessibilityLabel" data-throw-if-not-resolved="false"></xref>: tooltips and screen readers share one text. Default false.
+  example: []
+  syntax:
+    content: public static bool TooltipsFromAccessibility { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property TooltipsFromAccessibility As Boolean
+  overload: DrawnUi.Draw.Super.TooltipsFromAccessibility*
+- uid: DrawnUi.Draw.Super.TooltipStyle
+  commentId: P:DrawnUi.Draw.Super.TooltipStyle
+  id: TooltipStyle
+  parent: DrawnUi.Draw.Super
+  langs:
+  - csharp
+  - vb
+  name: TooltipStyle
+  nameWithType: Super.TooltipStyle
+  fullName: DrawnUi.Draw.Super.TooltipStyle
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Super.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: TooltipStyle
+    path: ../src/Shared/DrawnUi/Super.cs
+    startLine: 43
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Look and timing of tooltips in every canvas that has no <code>TooltipStyle</code> of its own.
+  example: []
+  syntax:
+    content: public static TooltipStyle TooltipStyle { get; set; }
+    parameters: []
+    return:
+      type: DrawnUi.Draw.TooltipStyle
+    content.vb: Public Shared Property TooltipStyle As TooltipStyle
+  overload: DrawnUi.Draw.Super.TooltipStyle*
 - uid: DrawnUi.Draw.Super.SetClipboardText
   commentId: P:DrawnUi.Draw.Super.SetClipboardText
   id: SetClipboardText
@@ -602,7 +671,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetClipboardText
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 40
+    startLine: 50
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -638,7 +707,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OffscreenRenderingAtCanvasLevel
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 58
+    startLine: 68
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -672,7 +741,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupFrameLooper
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 62
+    startLine: 72
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -698,7 +767,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxFps
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 77
+    startLine: 87
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -736,7 +805,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapFps
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 97
+    startLine: 107
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -787,7 +856,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VsyncFrameTimeNanos
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 140
+    startLine: 150
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -825,7 +894,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdjustTruncatedRate
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 149
+    startLine: 159
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -870,7 +939,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanUseHardwareAcceleration
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 174
+    startLine: 184
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -899,7 +968,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPrerenderingEnabled
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 181
+    startLine: 191
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -933,7 +1002,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Log
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 188
+    startLine: 198
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -971,7 +1040,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetLocale
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 210
+    startLine: 220
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1003,7 +1072,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Initialized
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 218
+    startLine: 228
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1032,7 +1101,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitShared
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 228
+    startLine: 238
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1058,7 +1127,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnableRendering
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 238
+    startLine: 248
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1087,7 +1156,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsRtl
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 253
+    startLine: 263
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1118,7 +1187,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSubPixelRendering
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 270
+    startLine: 280
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1149,7 +1218,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InsetsChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 289
+    startLine: 299
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1178,7 +1247,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Screen
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 295
+    startLine: 305
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1207,7 +1276,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CapMicroSecs
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 308
+    startLine: 318
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1236,7 +1305,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCurrentTimeMs
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 310
+    startLine: 320
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1264,7 +1333,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCurrentTimeNanos
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 317
+    startLine: 327
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1292,7 +1361,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavBarHeight
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 327
+    startLine: 337
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1323,7 +1392,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StatusBarHeight
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 332
+    startLine: 342
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1354,7 +1423,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationBarHeight
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 337
+    startLine: 347
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1385,7 +1454,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BottomTabsHeight
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 342
+    startLine: 352
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1416,7 +1485,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxFrameLengthMs
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 346
+    startLine: 356
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1445,7 +1514,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ThermalState
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 348
+    startLine: 358
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1474,7 +1543,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ThermalStateChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 350
+    startLine: 360
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1501,7 +1570,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNativeAppCreated
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 366
+    startLine: 376
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1530,7 +1599,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNativeAppPaused
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 368
+    startLine: 378
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1557,7 +1626,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNativeAppResumed
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 370
+    startLine: 380
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1584,7 +1653,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNativeAppDestroyed
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 372
+    startLine: 382
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1611,7 +1680,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitialWindowSize
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 374
+    startLine: 384
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1638,7 +1707,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCreated
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 380
+    startLine: 390
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1664,7 +1733,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWentBackground
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 387
+    startLine: 397
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1690,7 +1759,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWentForeground
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 393
+    startLine: 403
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1716,7 +1785,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMauiAppCreated
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 403
+    startLine: 413
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1745,7 +1814,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedGlobalRefresh
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 409
+    startLine: 419
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1774,7 +1843,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedGlobalUpdate
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 415
+    startLine: 425
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1802,7 +1871,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InBackground
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 426
+    startLine: 436
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1831,7 +1900,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StopRenderingInBackground
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 466
+    startLine: 476
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1860,7 +1929,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RunOnMainThreadAndWait
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 489
+    startLine: 499
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1891,7 +1960,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RunOnMainThreadAndWaitAsync
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 513
+    startLine: 523
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1927,7 +1996,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CacheEnabled
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 551
+    startLine: 561
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1956,7 +2025,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GpuCacheEnabled
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 553
+    startLine: 563
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1985,7 +2054,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UserAgent
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 555
+    startLine: 565
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2014,7 +2083,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaGeneration
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 557
+    startLine: 567
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2041,7 +2110,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnqueueBackgroundTask
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 564
+    startLine: 574
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2073,7 +2142,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessBackgroundQueue
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 569
+    startLine: 579
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2101,7 +2170,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RotationChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 589
+    startLine: 599
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2128,7 +2197,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DeviceRotation
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 594
+    startLine: 604
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2159,7 +2228,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrientationChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 607
+    startLine: 617
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2186,7 +2255,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DeviceOrientation
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 609
+    startLine: 619
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2215,7 +2284,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DeviceRotationSnap
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 623
+    startLine: 633
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3007,6 +3076,53 @@ references:
   - name: " "
   - name: TResult
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.Tooltip
+  commentId: P:DrawnUi.Draw.SkiaControl.Tooltip
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Tooltip
+  name: Tooltip
+  nameWithType: SkiaControl.Tooltip
+  fullName: DrawnUi.Draw.SkiaControl.Tooltip
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityHint
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityHint
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityHint
+  name: AccessibilityHint
+  nameWithType: SkiaControl.AccessibilityHint
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityHint
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLabel
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityLabel
+  name: AccessibilityLabel
+  nameWithType: SkiaControl.AccessibilityLabel
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityLabel
+- uid: DrawnUi.Draw.Super.TooltipsFromAccessibility*
+  commentId: Overload:DrawnUi.Draw.Super.TooltipsFromAccessibility
+  href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_TooltipsFromAccessibility
+  name: TooltipsFromAccessibility
+  nameWithType: Super.TooltipsFromAccessibility
+  fullName: DrawnUi.Draw.Super.TooltipsFromAccessibility
+- uid: DrawnUi.Draw.SkiaControl
+  commentId: T:DrawnUi.Draw.SkiaControl
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaControl.html
+  name: SkiaControl
+  nameWithType: SkiaControl
+  fullName: DrawnUi.Draw.SkiaControl
+- uid: DrawnUi.Draw.Super.TooltipStyle*
+  commentId: Overload:DrawnUi.Draw.Super.TooltipStyle
+  href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_TooltipStyle
+  name: TooltipStyle
+  nameWithType: Super.TooltipStyle
+  fullName: DrawnUi.Draw.Super.TooltipStyle
+- uid: DrawnUi.Draw.TooltipStyle
+  commentId: T:DrawnUi.Draw.TooltipStyle
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.TooltipStyle.html
+  name: TooltipStyle
+  nameWithType: TooltipStyle
+  fullName: DrawnUi.Draw.TooltipStyle
 - uid: DrawnUi.Draw.SkiaLabel
   commentId: T:DrawnUi.Draw.SkiaLabel
   parent: DrawnUi.Draw

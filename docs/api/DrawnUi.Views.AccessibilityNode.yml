@@ -9,6 +9,7 @@ items:
   - DrawnUi.Views.AccessibilityNode.CanInteract
   - DrawnUi.Views.AccessibilityNode.Hint
   - DrawnUi.Views.AccessibilityNode.Id
+  - DrawnUi.Views.AccessibilityNode.IsExpanded
   - DrawnUi.Views.AccessibilityNode.IsPressed
   - DrawnUi.Views.AccessibilityNode.Label
   - DrawnUi.Views.AccessibilityNode.Live
@@ -360,6 +361,37 @@ items:
       type: System.Nullable{DrawnUi.Draw.AccessibilityValue}
     content.vb: Public Property Value As AccessibilityValue?
   overload: DrawnUi.Views.AccessibilityNode.Value*
+- uid: DrawnUi.Views.AccessibilityNode.IsExpanded
+  commentId: P:DrawnUi.Views.AccessibilityNode.IsExpanded
+  id: IsExpanded
+  parent: DrawnUi.Views.AccessibilityNode
+  langs:
+  - csharp
+  - vb
+  name: IsExpanded
+  nameWithType: AccessibilityNode.IsExpanded
+  fullName: DrawnUi.Views.AccessibilityNode.IsExpanded
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsExpanded
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 16
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: 'A control that opens something (a menu title, a dropdown): open (true) or closed (false); null when it opens nothing.'
+  example: []
+  syntax:
+    content: public bool? IsExpanded { get; init; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Boolean}
+    content.vb: Public Property IsExpanded As Boolean?
+  overload: DrawnUi.Views.AccessibilityNode.IsExpanded*
 - uid: DrawnUi.Views.AccessibilityNode.NamedByChild
   commentId: P:DrawnUi.Views.AccessibilityNode.NamedByChild
   id: NamedByChild
@@ -378,7 +410,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NamedByChild
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 19
+    startLine: 22
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1021,6 +1053,12 @@ references:
     name: AccessibilityValue
     href: DrawnUi.Draw.AccessibilityValue.html
   - name: '?'
+- uid: DrawnUi.Views.AccessibilityNode.IsExpanded*
+  commentId: Overload:DrawnUi.Views.AccessibilityNode.IsExpanded
+  href: DrawnUi.Views.AccessibilityNode.html#DrawnUi_Views_AccessibilityNode_IsExpanded
+  name: IsExpanded
+  nameWithType: AccessibilityNode.IsExpanded
+  fullName: DrawnUi.Views.AccessibilityNode.IsExpanded
 - uid: DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
   commentId: P:DrawnUi.Draw.ISkiaAccessibilityNode.AccessibilityLabel
   parent: DrawnUi.Draw.ISkiaAccessibilityNode

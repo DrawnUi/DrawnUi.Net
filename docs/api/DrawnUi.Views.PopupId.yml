@@ -1,0 +1,575 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Views.PopupId
+  commentId: T:DrawnUi.Views.PopupId
+  id: PopupId
+  parent: DrawnUi.Views
+  children:
+  - DrawnUi.Views.PopupId.#ctor(System.Int32)
+  - DrawnUi.Views.PopupId.Value
+  langs:
+  - csharp
+  - vb
+  name: PopupId
+  nameWithType: PopupId
+  fullName: DrawnUi.Views.PopupId
+  type: Struct
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: PopupId
+    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    startLine: 171
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: A popup window opened with <xref href="DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl%2cDrawnUi.Views.PopupAnchor%2cDrawnUi.Views.PopupWindowOptions)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: 'public readonly record struct PopupId : IEquatable<PopupId>'
+    content.vb: Public Structure PopupId Implements IEquatable(Of PopupId)
+  implements:
+  - System.IEquatable{DrawnUi.Views.PopupId}
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Views.PopupId.#ctor(System.Int32)
+  commentId: M:DrawnUi.Views.PopupId.#ctor(System.Int32)
+  id: '#ctor(System.Int32)'
+  parent: DrawnUi.Views.PopupId
+  langs:
+  - csharp
+  - vb
+  name: PopupId(int)
+  nameWithType: PopupId.PopupId(int)
+  fullName: DrawnUi.Views.PopupId.PopupId(int)
+  type: Constructor
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: .ctor
+    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    startLine: 171
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: A popup window opened with <xref href="DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl%2cDrawnUi.Views.PopupAnchor%2cDrawnUi.Views.PopupWindowOptions)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public PopupId(int Value)
+    parameters:
+    - id: Value
+      type: System.Int32
+    content.vb: Public Sub New(Value As Integer)
+  overload: DrawnUi.Views.PopupId.#ctor*
+  nameWithType.vb: PopupId.New(Integer)
+  fullName.vb: DrawnUi.Views.PopupId.New(Integer)
+  name.vb: New(Integer)
+- uid: DrawnUi.Views.PopupId.Value
+  commentId: P:DrawnUi.Views.PopupId.Value
+  id: Value
+  parent: DrawnUi.Views.PopupId
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: PopupId.Value
+  fullName: DrawnUi.Views.PopupId.Value
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Value
+    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    startLine: 171
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  syntax:
+    content: public int Value { get; init; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Value As Integer
+  overload: DrawnUi.Views.PopupId.Value*
+references:
+- uid: DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl,DrawnUi.Views.PopupAnchor,DrawnUi.Views.PopupWindowOptions)
+  commentId: M:DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl,DrawnUi.Views.PopupAnchor,DrawnUi.Views.PopupWindowOptions)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OpenPopupWindow_DrawnUi_Draw_SkiaControl_DrawnUi_Views_PopupAnchor_DrawnUi_Views_PopupWindowOptions_
+  name: OpenPopupWindow(SkiaControl, PopupAnchor, PopupWindowOptions)
+  nameWithType: DrawnView.OpenPopupWindow(SkiaControl, PopupAnchor, PopupWindowOptions)
+  fullName: DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl, DrawnUi.Views.PopupAnchor, DrawnUi.Views.PopupWindowOptions)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl,DrawnUi.Views.PopupAnchor,DrawnUi.Views.PopupWindowOptions)
+    name: OpenPopupWindow
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OpenPopupWindow_DrawnUi_Draw_SkiaControl_DrawnUi_Views_PopupAnchor_DrawnUi_Views_PopupWindowOptions_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Views.PopupAnchor
+    name: PopupAnchor
+    href: DrawnUi.Views.PopupAnchor.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Views.PopupWindowOptions
+    name: PopupWindowOptions
+    href: DrawnUi.Views.PopupWindowOptions.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl,DrawnUi.Views.PopupAnchor,DrawnUi.Views.PopupWindowOptions)
+    name: OpenPopupWindow
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OpenPopupWindow_DrawnUi_Draw_SkiaControl_DrawnUi_Views_PopupAnchor_DrawnUi_Views_PopupWindowOptions_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Views.PopupAnchor
+    name: PopupAnchor
+    href: DrawnUi.Views.PopupAnchor.html
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Views.PopupWindowOptions
+    name: PopupWindowOptions
+    href: DrawnUi.Views.PopupWindowOptions.html
+  - name: )
+- uid: DrawnUi.Views
+  commentId: N:DrawnUi.Views
+  href: DrawnUi.html
+  name: DrawnUi.Views
+  nameWithType: DrawnUi.Views
+  fullName: DrawnUi.Views
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Views
+    name: Views
+    href: DrawnUi.Views.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Views
+    name: Views
+    href: DrawnUi.Views.html
+- uid: System.IEquatable{DrawnUi.Views.PopupId}
+  commentId: T:System.IEquatable{DrawnUi.Views.PopupId}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<PopupId>
+  nameWithType: IEquatable<PopupId>
+  fullName: System.IEquatable<DrawnUi.Views.PopupId>
+  nameWithType.vb: IEquatable(Of PopupId)
+  fullName.vb: System.IEquatable(Of DrawnUi.Views.PopupId)
+  name.vb: IEquatable(Of PopupId)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: DrawnUi.Views.PopupId
+    name: PopupId
+    href: DrawnUi.Views.PopupId.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Views.PopupId
+    name: PopupId
+    href: DrawnUi.Views.PopupId.html
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Views.DrawnView
+  commentId: T:DrawnUi.Views.DrawnView
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.DrawnView.html
+  name: DrawnView
+  nameWithType: DrawnView
+  fullName: DrawnUi.Views.DrawnView
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Views.PopupId.#ctor*
+  commentId: Overload:DrawnUi.Views.PopupId.#ctor
+  href: DrawnUi.Views.PopupId.html#DrawnUi_Views_PopupId__ctor_System_Int32_
+  name: PopupId
+  nameWithType: PopupId.PopupId
+  fullName: DrawnUi.Views.PopupId.PopupId
+  nameWithType.vb: PopupId.New
+  fullName.vb: DrawnUi.Views.PopupId.New
+  name.vb: New
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: DrawnUi.Views.PopupId.Value*
+  commentId: Overload:DrawnUi.Views.PopupId.Value
+  href: DrawnUi.Views.PopupId.html#DrawnUi_Views_PopupId_Value
+  name: Value
+  nameWithType: PopupId.Value
+  fullName: DrawnUi.Views.PopupId.Value

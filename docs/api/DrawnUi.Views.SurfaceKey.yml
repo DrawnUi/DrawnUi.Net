@@ -6,6 +6,7 @@ items:
   parent: DrawnUi.Views
   children:
   - DrawnUi.Views.SurfaceKey.#ctor(System.Int32,System.Int32)
+  - DrawnUi.Views.SurfaceKey.Bytes
   - DrawnUi.Views.SurfaceKey.Equals(DrawnUi.Views.SurfaceKey)
   - DrawnUi.Views.SurfaceKey.Equals(System.Object)
   - DrawnUi.Views.SurfaceKey.GetHashCode
@@ -25,7 +26,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SurfaceKey
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 136
+    startLine: 182
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -59,7 +60,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Width
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 138
+    startLine: 184
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -86,7 +87,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Height
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 139
+    startLine: 185
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -113,7 +114,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 141
+    startLine: 187
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -129,6 +130,37 @@ items:
   nameWithType.vb: SurfaceKey.New(Integer, Integer)
   fullName.vb: DrawnUi.Views.SurfaceKey.New(Integer, Integer)
   name.vb: New(Integer, Integer)
+- uid: DrawnUi.Views.SurfaceKey.Bytes
+  commentId: P:DrawnUi.Views.SurfaceKey.Bytes
+  id: Bytes
+  parent: DrawnUi.Views.SurfaceKey
+  langs:
+  - csharp
+  - vb
+  name: Bytes
+  nameWithType: SurfaceKey.Bytes
+  fullName: DrawnUi.Views.SurfaceKey.Bytes
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Bytes
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
+    startLine: 194
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: The memory of a surface this size, 4 bytes a pixel.
+  example: []
+  syntax:
+    content: public long Bytes { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property Bytes As Long
+  overload: DrawnUi.Views.SurfaceKey.Bytes*
 - uid: DrawnUi.Views.SurfaceKey.Equals(DrawnUi.Views.SurfaceKey)
   commentId: M:DrawnUi.Views.SurfaceKey.Equals(DrawnUi.Views.SurfaceKey)
   id: Equals(DrawnUi.Views.SurfaceKey)
@@ -147,7 +179,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Equals
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 147
+    startLine: 196
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -184,7 +216,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Equals
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 152
+    startLine: 201
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -223,7 +255,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetHashCode
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 157
+    startLine: 206
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -593,6 +625,23 @@ references:
   nameWithType.vb: SurfaceKey.New
   fullName.vb: DrawnUi.Views.SurfaceKey.New
   name.vb: New
+- uid: DrawnUi.Views.SurfaceKey.Bytes*
+  commentId: Overload:DrawnUi.Views.SurfaceKey.Bytes
+  href: DrawnUi.Views.SurfaceKey.html#DrawnUi_Views_SurfaceKey_Bytes
+  name: Bytes
+  nameWithType: SurfaceKey.Bytes
+  fullName: DrawnUi.Views.SurfaceKey.Bytes
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
 - uid: DrawnUi.Views.SurfaceKey.Equals*
   commentId: Overload:DrawnUi.Views.SurfaceKey.Equals
   href: DrawnUi.Views.SurfaceKey.html#DrawnUi_Views_SurfaceKey_Equals_DrawnUi_Views_SurfaceKey_

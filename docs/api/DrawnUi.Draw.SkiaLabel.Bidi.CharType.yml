@@ -1,0 +1,554 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  commentId: T:DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  id: SkiaLabel.Bidi.CharType
+  parent: DrawnUi.Draw
+  children:
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.AL
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.AN
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.B
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.BN
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.CS
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.EN
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.ES
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.ET
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.L
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.NSM
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.ON
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.R
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.S
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType.WS
+  langs:
+  - csharp
+  - vb
+  name: SkiaLabel.Bidi.CharType
+  nameWithType: SkiaLabel.Bidi.CharType
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  type: Enum
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CharType
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Bidi character types used by the implicit algorithm.
+  example: []
+  syntax:
+    content: 'public enum SkiaLabel.Bidi.CharType : byte'
+    content.vb: Public Enum SkiaLabel.Bidi.CharType As Byte
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.L
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.L
+  id: L
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: L
+  nameWithType: SkiaLabel.Bidi.CharType.L
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.L
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: L
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: L = 0
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.R
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.R
+  id: R
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: R
+  nameWithType: SkiaLabel.Bidi.CharType.R
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.R
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: R
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: R = 1
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.AL
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.AL
+  id: AL
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: AL
+  nameWithType: SkiaLabel.Bidi.CharType.AL
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.AL
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AL
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: AL = 2
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.EN
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.EN
+  id: EN
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: EN
+  nameWithType: SkiaLabel.Bidi.CharType.EN
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.EN
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: EN
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: EN = 3
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.AN
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.AN
+  id: AN
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: AN
+  nameWithType: SkiaLabel.Bidi.CharType.AN
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.AN
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: AN
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: AN = 4
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.ES
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.ES
+  id: ES
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: ES
+  nameWithType: SkiaLabel.Bidi.CharType.ES
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.ES
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ES
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: ES = 5
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.ET
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.ET
+  id: ET
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: ET
+  nameWithType: SkiaLabel.Bidi.CharType.ET
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.ET
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ET
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: ET = 6
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.CS
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.CS
+  id: CS
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: CS
+  nameWithType: SkiaLabel.Bidi.CharType.CS
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.CS
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CS
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: CS = 7
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.NSM
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.NSM
+  id: NSM
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: NSM
+  nameWithType: SkiaLabel.Bidi.CharType.NSM
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.NSM
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: NSM
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: NSM = 8
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.BN
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.BN
+  id: BN
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: BN
+  nameWithType: SkiaLabel.Bidi.CharType.BN
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.BN
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: BN
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: BN = 9
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.B
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.B
+  id: B
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: B
+  nameWithType: SkiaLabel.Bidi.CharType.B
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.B
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: B
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: B = 10
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.S
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.S
+  id: S
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: S
+  nameWithType: SkiaLabel.Bidi.CharType.S
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.S
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: S
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: S = 11
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.WS
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.WS
+  id: WS
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: WS
+  nameWithType: SkiaLabel.Bidi.CharType.WS
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.WS
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: WS
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: WS = 12
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType.ON
+  commentId: F:DrawnUi.Draw.SkiaLabel.Bidi.CharType.ON
+  id: ON
+  parent: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  langs:
+  - csharp
+  - vb
+  name: ON
+  nameWithType: SkiaLabel.Bidi.CharType.ON
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType.ON
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ON
+    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Bidi.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: ON = 13
+    return:
+      type: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+references:
+- uid: DrawnUi.Draw
+  commentId: N:DrawnUi.Draw
+  href: DrawnUi.html
+  name: DrawnUi.Draw
+  nameWithType: DrawnUi.Draw
+  fullName: DrawnUi.Draw
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  commentId: T:DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaLabel.html
+  name: SkiaLabel.Bidi.CharType
+  nameWithType: SkiaLabel.Bidi.CharType
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLabel
+    name: SkiaLabel
+    href: DrawnUi.Draw.SkiaLabel.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaLabel.Bidi
+    name: Bidi
+    href: DrawnUi.Draw.SkiaLabel.Bidi.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+    name: CharType
+    href: DrawnUi.Draw.SkiaLabel.Bidi.CharType.html
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLabel
+    name: SkiaLabel
+    href: DrawnUi.Draw.SkiaLabel.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaLabel.Bidi
+    name: Bidi
+    href: DrawnUi.Draw.SkiaLabel.Bidi.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+    name: CharType
+    href: DrawnUi.Draw.SkiaLabel.Bidi.CharType.html

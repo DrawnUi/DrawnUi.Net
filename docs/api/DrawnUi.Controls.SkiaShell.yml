@@ -209,6 +209,7 @@ items:
   - Microsoft.Maui.IReplaceableView
   - System.IDisposable
   inheritedMembers:
+  - DrawnUi.Views.BasePageReloadable.HotReloadPossible
   - DrawnUi.Views.BasePageReloadable.CountReloads
   - DrawnUi.Views.BasePageReloadable.ReloadUi(System.Type[])
   - DrawnUi.Views.BasePageReloadable.Build
@@ -5375,6 +5376,13 @@ references:
   name: IDisposable
   nameWithType: IDisposable
   fullName: System.IDisposable
+- uid: DrawnUi.Views.BasePageReloadable.HotReloadPossible
+  commentId: P:DrawnUi.Views.BasePageReloadable.HotReloadPossible
+  parent: DrawnUi.Views.BasePageReloadable
+  href: DrawnUi.Views.BasePageReloadable.html#DrawnUi_Views_BasePageReloadable_HotReloadPossible
+  name: HotReloadPossible
+  nameWithType: BasePageReloadable.HotReloadPossible
+  fullName: DrawnUi.Views.BasePageReloadable.HotReloadPossible
 - uid: DrawnUi.Views.BasePageReloadable.CountReloads
   commentId: P:DrawnUi.Views.BasePageReloadable.CountReloads
   parent: DrawnUi.Views.BasePageReloadable

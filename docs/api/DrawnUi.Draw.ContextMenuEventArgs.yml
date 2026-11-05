@@ -7,6 +7,7 @@ items:
   children:
   - DrawnUi.Draw.ContextMenuEventArgs.#ctor(System.Object,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
   - DrawnUi.Draw.ContextMenuEventArgs.Local
+  - DrawnUi.Draw.ContextMenuEventArgs.Location
   - DrawnUi.Draw.ContextMenuEventArgs.Source
   langs:
   - csharp
@@ -154,6 +155,40 @@ items:
       type: SkiaSharp.SKPoint
     content.vb: Public Property Local As SKPoint
   overload: DrawnUi.Draw.ContextMenuEventArgs.Local*
+- uid: DrawnUi.Draw.ContextMenuEventArgs.Location
+  commentId: P:DrawnUi.Draw.ContextMenuEventArgs.Location
+  id: Location
+  parent: DrawnUi.Draw.ContextMenuEventArgs
+  langs:
+  - csharp
+  - vb
+  name: Location
+  nameWithType: ContextMenuEventArgs.Location
+  fullName: DrawnUi.Draw.ContextMenuEventArgs.Location
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Base/ContextMenuEventArgs.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Location
+    path: ../src/Shared/DrawnUi/Draw/Base/ContextMenuEventArgs.cs
+    startLine: 29
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Where the request was on the canvas, in points: where a context menu opens
+
+    (<code>Superview.OpenPopupWindow(menu, e.Location)</code>).
+  example: []
+  syntax:
+    content: public SKPoint Location { get; set; }
+    parameters: []
+    return:
+      type: SkiaSharp.SKPoint
+    content.vb: Public Property Location As SKPoint
+  overload: DrawnUi.Draw.ContextMenuEventArgs.Location*
 references:
 - uid: DrawnUi.Draw.SkiaControl.ContextMenu
   commentId: P:DrawnUi.Draw.SkiaControl.ContextMenu
@@ -619,3 +654,9 @@ references:
   name: SkiaSharp
   nameWithType: SkiaSharp
   fullName: SkiaSharp
+- uid: DrawnUi.Draw.ContextMenuEventArgs.Location*
+  commentId: Overload:DrawnUi.Draw.ContextMenuEventArgs.Location
+  href: DrawnUi.Draw.ContextMenuEventArgs.html#DrawnUi_Draw_ContextMenuEventArgs_Location
+  name: Location
+  nameWithType: ContextMenuEventArgs.Location
+  fullName: DrawnUi.Draw.ContextMenuEventArgs.Location

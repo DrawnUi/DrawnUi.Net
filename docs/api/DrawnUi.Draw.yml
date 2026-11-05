@@ -130,6 +130,8 @@ items:
   - DrawnUi.Draw.IThemeProvider
   - DrawnUi.Draw.ITimingParameters
   - DrawnUi.Draw.ITimingVectorParameters
+  - DrawnUi.Draw.ITooltipHost
+  - DrawnUi.Draw.IUiaExpandCollapseProvider
   - DrawnUi.Draw.IUiaRangeValueProvider
   - DrawnUi.Draw.IUiaScrollItemProvider
   - DrawnUi.Draw.IUiaToggleProvider
@@ -146,6 +148,7 @@ items:
   - DrawnUi.Draw.KeyedActionQueue`1
   - DrawnUi.Draw.LayoutStructure
   - DrawnUi.Draw.LayoutType
+  - DrawnUi.Draw.LineCaret
   - DrawnUi.Draw.LineGlyph
   - DrawnUi.Draw.LineSpan
   - DrawnUi.Draw.LinearDirectionType
@@ -256,6 +259,8 @@ items:
   - DrawnUi.Draw.SkiaImageManager.QueueItem
   - DrawnUi.Draw.SkiaImageTiles
   - DrawnUi.Draw.SkiaLabel
+  - DrawnUi.Draw.SkiaLabel.Bidi
+  - DrawnUi.Draw.SkiaLabel.Bidi.CharType
   - DrawnUi.Draw.SkiaLabel.DecomposedText
   - DrawnUi.Draw.SkiaLabel.EmojiData
   - DrawnUi.Draw.SkiaLabel.ObjectPools
@@ -268,6 +273,7 @@ items:
   - DrawnUi.Draw.SkiaLayout
   - DrawnUi.Draw.SkiaLayout.BackgroundMeasurementContext
   - DrawnUi.Draw.SkiaLayout.BackgroundMeasurementStartingPosition
+  - DrawnUi.Draw.SkiaLayout.BuildMasonryLayout
   - DrawnUi.Draw.SkiaLayout.BuildWrapLayout
   - DrawnUi.Draw.SkiaLayout.Cell
   - DrawnUi.Draw.SkiaLayout.MeasuredItemInfo
@@ -276,6 +282,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.StructureChange
   - DrawnUi.Draw.SkiaLayout.StructureChangeType
   - DrawnUi.Draw.SkiaMarkdownLabel
+  - DrawnUi.Draw.SkiaMasonry
   - DrawnUi.Draw.SkiaMauiElement
   - DrawnUi.Draw.SkiaPoint
   - DrawnUi.Draw.SkiaProgress
@@ -336,6 +343,7 @@ items:
   - DrawnUi.Draw.TintEffect
   - DrawnUi.Draw.TintWithAlphaEffect
   - DrawnUi.Draw.ToggleAnimator
+  - DrawnUi.Draw.TooltipStyle
   - DrawnUi.Draw.TrackedObject`1
   - DrawnUi.Draw.TransformAspect
   - DrawnUi.Draw.UiaNavigateDirection
@@ -682,6 +690,28 @@ references:
   - uid: DrawnUi.Draw.SkiaLayout.MeasuredItemInfo
     name: MeasuredItemInfo
     href: DrawnUi.Draw.SkiaLayout.MeasuredItemInfo.html
+- uid: DrawnUi.Draw.SkiaLayout.BuildMasonryLayout
+  commentId: T:DrawnUi.Draw.SkiaLayout.BuildMasonryLayout
+  href: DrawnUi.Draw.SkiaLayout.html
+  name: SkiaLayout.BuildMasonryLayout
+  nameWithType: SkiaLayout.BuildMasonryLayout
+  fullName: DrawnUi.Draw.SkiaLayout.BuildMasonryLayout
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaLayout.BuildMasonryLayout
+    name: BuildMasonryLayout
+    href: DrawnUi.Draw.SkiaLayout.BuildMasonryLayout.html
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout
+    name: SkiaLayout
+    href: DrawnUi.Draw.SkiaLayout.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaLayout.BuildMasonryLayout
+    name: BuildMasonryLayout
+    href: DrawnUi.Draw.SkiaLayout.BuildMasonryLayout.html
 - uid: DrawnUi.Draw.SkiaShape
   commentId: T:DrawnUi.Draw.SkiaShape
   parent: DrawnUi.Draw
@@ -741,6 +771,59 @@ references:
   - uid: DrawnUi.Draw.SkiaLabel.SpanCollection
     name: SpanCollection
     href: DrawnUi.Draw.SkiaLabel.SpanCollection.html
+- uid: DrawnUi.Draw.SkiaLabel.Bidi
+  commentId: T:DrawnUi.Draw.SkiaLabel.Bidi
+  href: DrawnUi.Draw.SkiaLabel.html
+  name: SkiaLabel.Bidi
+  nameWithType: SkiaLabel.Bidi
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLabel
+    name: SkiaLabel
+    href: DrawnUi.Draw.SkiaLabel.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaLabel.Bidi
+    name: Bidi
+    href: DrawnUi.Draw.SkiaLabel.Bidi.html
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLabel
+    name: SkiaLabel
+    href: DrawnUi.Draw.SkiaLabel.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaLabel.Bidi
+    name: Bidi
+    href: DrawnUi.Draw.SkiaLabel.Bidi.html
+- uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  commentId: T:DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaLabel.html
+  name: SkiaLabel.Bidi.CharType
+  nameWithType: SkiaLabel.Bidi.CharType
+  fullName: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLabel
+    name: SkiaLabel
+    href: DrawnUi.Draw.SkiaLabel.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaLabel.Bidi
+    name: Bidi
+    href: DrawnUi.Draw.SkiaLabel.Bidi.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+    name: CharType
+    href: DrawnUi.Draw.SkiaLabel.Bidi.CharType.html
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLabel
+    name: SkiaLabel
+    href: DrawnUi.Draw.SkiaLabel.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaLabel.Bidi
+    name: Bidi
+    href: DrawnUi.Draw.SkiaLabel.Bidi.html
+  - name: .
+  - uid: DrawnUi.Draw.SkiaLabel.Bidi.CharType
+    name: CharType
+    href: DrawnUi.Draw.SkiaLabel.Bidi.CharType.html
 - uid: DrawnUi.Draw.SkiaLabel.EmojiData
   commentId: T:DrawnUi.Draw.SkiaLabel.EmojiData
   href: DrawnUi.Draw.SkiaLabel.html
@@ -1212,6 +1295,12 @@ references:
   name: IUiaToggleProvider
   nameWithType: IUiaToggleProvider
   fullName: DrawnUi.Draw.IUiaToggleProvider
+- uid: DrawnUi.Draw.IUiaExpandCollapseProvider
+  commentId: T:DrawnUi.Draw.IUiaExpandCollapseProvider
+  href: DrawnUi.Draw.IUiaExpandCollapseProvider.html
+  name: IUiaExpandCollapseProvider
+  nameWithType: IUiaExpandCollapseProvider
+  fullName: DrawnUi.Draw.IUiaExpandCollapseProvider
 - uid: DrawnUi.Draw.SkiaButton
   commentId: T:DrawnUi.Draw.SkiaButton
   parent: DrawnUi.Draw
@@ -1915,6 +2004,20 @@ references:
   name: KeyboardManager
   nameWithType: KeyboardManager
   fullName: DrawnUi.Draw.KeyboardManager
+- uid: DrawnUi.Draw.TooltipStyle
+  commentId: T:DrawnUi.Draw.TooltipStyle
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.TooltipStyle.html
+  name: TooltipStyle
+  nameWithType: TooltipStyle
+  fullName: DrawnUi.Draw.TooltipStyle
+- uid: DrawnUi.Draw.ITooltipHost
+  commentId: T:DrawnUi.Draw.ITooltipHost
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.ITooltipHost.html
+  name: ITooltipHost
+  nameWithType: ITooltipHost
+  fullName: DrawnUi.Draw.ITooltipHost
 - uid: DrawnUi.Draw.InputKey
   commentId: T:DrawnUi.Draw.InputKey
   parent: DrawnUi.Draw
@@ -2980,6 +3083,12 @@ references:
   name: SkiaWrap
   nameWithType: SkiaWrap
   fullName: DrawnUi.Draw.SkiaWrap
+- uid: DrawnUi.Draw.SkiaMasonry
+  commentId: T:DrawnUi.Draw.SkiaMasonry
+  href: DrawnUi.Draw.SkiaMasonry.html
+  name: SkiaMasonry
+  nameWithType: SkiaMasonry
+  fullName: DrawnUi.Draw.SkiaMasonry
 - uid: DrawnUi.Draw.Sk3dView
   commentId: T:DrawnUi.Draw.Sk3dView
   parent: DrawnUi.Draw
@@ -3137,6 +3246,12 @@ references:
   name: TextLine
   nameWithType: TextLine
   fullName: DrawnUi.Draw.TextLine
+- uid: DrawnUi.Draw.LineCaret
+  commentId: T:DrawnUi.Draw.LineCaret
+  href: DrawnUi.Draw.LineCaret.html
+  name: LineCaret
+  nameWithType: LineCaret
+  fullName: DrawnUi.Draw.LineCaret
 - uid: DrawnUi.Draw.LayoutStructure
   commentId: T:DrawnUi.Draw.LayoutStructure
   parent: DrawnUi.Draw

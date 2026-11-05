@@ -400,6 +400,8 @@ items:
   - DrawnUi.Draw.SkiaLayout.LastVisibleIndexDrawn
   - DrawnUi.Draw.SkiaLayout.LastMeasuredIndex
   - DrawnUi.Draw.SkiaLayout.FirstMeasuredIndex
+  - DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+  - DrawnUi.Draw.SkiaLayout.StructureWindowStart
   - DrawnUi.Draw.SkiaLayout.MeasuredItemsPercentage
   - DrawnUi.Draw.SkiaLayout.BackgroundMeasurementBatchSize
   - DrawnUi.Draw.SkiaLayout.DebugBackgroundMeasureDelayMs
@@ -439,6 +441,7 @@ items:
   - DrawnUi.Draw.SkiaLayout.BuildPlaneWindowStructure(System.Double,System.Double,System.Single,System.Single)
   - DrawnUi.Draw.SkiaLayout.MeasureWrap(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.PropagateVisibilityChanged(System.Boolean)
+  - DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaLayout.GetStackStructure
   - DrawnUi.Draw.SkiaLayout.GetStackStructureForMeasuring
   - DrawnUi.Draw.SkiaLayout.StackStructure
@@ -574,6 +577,9 @@ items:
   - DrawnUi.Draw.SkiaControl.IsHovered
   - DrawnUi.Draw.SkiaControl.HoverChanged
   - DrawnUi.Draw.SkiaControl.ReceivesHover
+  - DrawnUi.Draw.SkiaControl.TooltipProperty
+  - DrawnUi.Draw.SkiaControl.Tooltip
+  - DrawnUi.Draw.SkiaControl.GetTooltipText
   - DrawnUi.Draw.SkiaControl.VisualLayer
   - DrawnUi.Draw.SkiaControl.CachedImage
   - DrawnUi.Draw.SkiaControl.LeftProperty
@@ -877,6 +883,9 @@ items:
   - DrawnUi.Draw.SkiaControl.WasInLastFrame
   - DrawnUi.Draw.SkiaControl.AccessibilityCanInteract
   - DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+  - DrawnUi.Draw.SkiaControl.AccessibilityIsExpanded
+  - DrawnUi.Draw.SkiaControl.KeyboardWrap
+  - DrawnUi.Draw.SkiaControl.AccessibilityModal
   - DrawnUi.Draw.SkiaControl.AccessibilityLive
   - DrawnUi.Draw.SkiaControl.OnAccessibilityUnregistered
   - DrawnUi.Draw.SkiaControl.OnAccessibilityActivated
@@ -1344,7 +1353,9 @@ items:
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WhenPainted``1(System.Func{DrawnUi.Draw.DrawingContext,DrawnUi.Draw.IDrawnBase,System.Boolean})
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String)
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithAccessibilityButton``1(System.String,System.String)
+  - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(System.Nullable{System.Boolean})
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(System.String)
+  - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(System.Boolean)
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithAccessibilityText``1(System.String)
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithAccessibility``1(System.String,System.String,System.Boolean)
@@ -1359,6 +1370,7 @@ items:
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithHeight``1(System.Double)
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithHorizontalOptions``1(Microsoft.Maui.Controls.LayoutOptions)
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithItemsSource``1(System.Collections.IList)
+  - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(System.Boolean)
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithMargin``1(Microsoft.Maui.Thickness)
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithMargin``1(System.Double)
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithMargin``1(System.Double,System.Double)
@@ -1375,6 +1387,7 @@ items:
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithScale``1(System.Double,System.Double)
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithSpacing``1(System.Double)
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithTag``1(System.String)
+  - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithTooltip``1(System.String)
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithType``1(DrawnUi.Draw.LayoutType)
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithVerticalOptions``1(Microsoft.Maui.Controls.LayoutOptions)
   - DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithVisibility``1(System.Boolean)
@@ -1573,7 +1586,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectNextAnchor
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 86
+    startLine: 110
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1612,7 +1625,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 175
+    startLine: 225
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1641,7 +1654,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexChanged
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 187
+    startLine: 237
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1668,7 +1681,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ItemAppearing
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 189
+    startLine: 239
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1695,7 +1708,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ItemDisappearing
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 191
+    startLine: 241
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1722,7 +1735,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Stopped
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 194
+    startLine: 244
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1749,7 +1762,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ItemsVisibility
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 196
+    startLine: 246
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1778,7 +1791,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyPosition
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 237
+    startLine: 287
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1811,7 +1824,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FixIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 244
+    startLine: 294
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1837,7 +1850,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 262
+    startLine: 325
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1869,7 +1882,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateReportedPosition
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 291
+    startLine: 354
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1897,7 +1910,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTemplatesAvailable
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 331
+    startLine: 394
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1926,7 +1939,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanRender
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 338
+    startLine: 401
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1955,7 +1968,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenReady
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 349
+    startLine: 412
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -1984,7 +1997,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnScrollProgressChanged
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 360
+    startLine: 423
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2010,7 +2023,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderViewsList
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 364
+    startLine: 427
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2054,7 +2067,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollAmount
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 516
+    startLine: 585
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2085,7 +2098,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollProgress
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 537
+    startLine: 606
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2121,7 +2134,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastScrollProgress
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 552
+    startLine: 621
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2150,7 +2163,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TransitionProgress
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 554
+    startLine: 623
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2179,7 +2192,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptTemplate
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 577
+    startLine: 646
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2208,7 +2221,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateContentFromTemplate
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 609
+    startLine: 678
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2238,7 +2251,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnItemSourceChanged
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 653
+    startLine: 722
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2266,7 +2279,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsSlideHitTestable
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 681
+    startLine: 750
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2307,7 +2320,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateChildPosition
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 683
+    startLine: 752
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2345,7 +2358,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FixPosition
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 785
+    startLine: 854
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2373,7 +2386,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTransitionChanged
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 799
+    startLine: 868
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2405,7 +2418,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToOffset
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 813
+    startLine: 882
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2447,7 +2460,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyOptions
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1003
+    startLine: 1072
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2481,7 +2494,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckTransitionEnded
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1020
+    startLine: 1089
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2511,7 +2524,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetContentOffsetBounds
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1081
+    startLine: 1150
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2542,7 +2555,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckConstraints
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1137
+    startLine: 1206
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2568,7 +2581,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildAdded
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1147
+    startLine: 1216
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2599,7 +2612,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1157
+    startLine: 1226
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2628,7 +2641,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupViewport
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1164
+    startLine: 1245
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2654,7 +2667,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenInitialized
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1194
+    startLine: 1281
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2681,7 +2694,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1198
+    startLine: 1285
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2710,7 +2723,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitializeChildren
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1220
+    startLine: 1307
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2738,7 +2751,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildrenInitialized
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1311
+    startLine: 1399
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2764,7 +2777,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CellSize
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1317
+    startLine: 1405
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2793,7 +2806,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptChildren
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1322
+    startLine: 1410
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2821,7 +2834,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenCount
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1347
+    startLine: 1435
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2850,7 +2863,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTemplatesPoolLimit
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1361
+    startLine: 1449
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2880,7 +2893,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTemplatesPoolPrefill
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1377
+    startLine: 1465
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2910,7 +2923,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetVirtualSnapPoints
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1411
+    startLine: 1499
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2938,7 +2951,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetVirtualAnchor
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1434
+    startLine: 1522
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -2971,7 +2984,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindNearestAnchorInternal
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1440
+    startLine: 1528
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3006,7 +3019,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapPointsVirtual
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1463
+    startLine: 1551
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3035,7 +3048,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SwipeSpeedProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1469
+    startLine: 1557
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3062,7 +3075,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SwipeSpeed
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1478
+    startLine: 1566
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3093,7 +3106,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreloadNeighboorsProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1484
+    startLine: 1572
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3120,7 +3133,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreloadNeighboors
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1493
+    startLine: 1581
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3151,7 +3164,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DynamicSizeProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1499
+    startLine: 1587
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3178,7 +3191,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DynamicSize
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1510
+    startLine: 1598
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3214,7 +3227,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsLoopedProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1517
+    startLine: 1605
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3241,7 +3254,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsLooped
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1526
+    startLine: 1614
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3272,7 +3285,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsVerticalProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1533
+    startLine: 1621
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3299,7 +3312,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsVertical
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1542
+    startLine: 1630
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3330,7 +3343,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyDynamicSize
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1549
+    startLine: 1637
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3362,7 +3375,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SafeIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1589
+    startLine: 1677
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3396,7 +3409,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InterruptSnapping
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1604
+    startLine: 1692
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3439,7 +3452,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoNext
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1630
+    startLine: 1718
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3465,7 +3478,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollTo
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1649
+    startLine: 1737
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3506,7 +3519,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoPrev
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1673
+    startLine: 1761
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3532,7 +3545,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAtStart
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1687
+    startLine: 1775
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3561,7 +3574,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAtEnd
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1692
+    startLine: 1780
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3590,7 +3603,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSelectedIndexChanged
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1697
+    startLine: 1785
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3622,7 +3635,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinearSpeedMsProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1731
+    startLine: 1819
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3649,7 +3662,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinearSpeedMs
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1742
+    startLine: 1830
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3685,7 +3698,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1750
+    startLine: 1838
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3714,7 +3727,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1764
+    startLine: 1852
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3741,7 +3754,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndex
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1782
+    startLine: 1870
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3772,7 +3785,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenTotal
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1792
+    startLine: 1880
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3803,7 +3816,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenTotalProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1798
+    startLine: 1886
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3830,7 +3843,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsRightToLeftProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1805
+    startLine: 1893
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3857,7 +3870,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsRightToLeft
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1814
+    startLine: 1902
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3888,7 +3901,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SidesOffsetProperty
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1820
+    startLine: 1908
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3915,7 +3928,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SidesOffset
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1829
+    startLine: 1917
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3946,7 +3959,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUserFocused
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1848
+    startLine: 1936
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -3975,7 +3988,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUserPanning
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1849
+    startLine: 1937
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4004,7 +4017,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _panningOffset
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1855
+    startLine: 1943
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4031,7 +4044,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _panningStartOffset
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1856
+    startLine: 1944
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4058,7 +4071,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VelocityAccumulator
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1859
+    startLine: 1947
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4087,7 +4100,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReceivesHoverByDefault
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1862
+    startLine: 1950
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -4119,7 +4132,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
     path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-    startLine: 1864
+    startLine: 1952
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -9000,6 +9013,66 @@ references:
   name: FirstMeasuredIndex
   nameWithType: SkiaLayout.FirstMeasuredIndex
   fullName: DrawnUi.Draw.SkiaLayout.FirstMeasuredIndex
+- uid: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PinParentScrollY_DrawnUi_Draw_SkiaScroll_System_Single_System_Single_
+  name: PinParentScrollY(SkiaScroll, float, float)
+  nameWithType: SkiaLayout.PinParentScrollY(SkiaScroll, float, float)
+  fullName: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll, float, float)
+  nameWithType.vb: SkiaLayout.PinParentScrollY(SkiaScroll, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll, Single, Single)
+  name.vb: PinParentScrollY(SkiaScroll, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+    name: PinParentScrollY
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PinParentScrollY_DrawnUi_Draw_SkiaScroll_System_Single_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.PinParentScrollY(DrawnUi.Draw.SkiaScroll,System.Single,System.Single)
+    name: PinParentScrollY
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_PinParentScrollY_DrawnUi_Draw_SkiaScroll_System_Single_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaScroll
+    name: SkiaScroll
+    href: DrawnUi.Draw.SkiaScroll.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.StructureWindowStart
+  commentId: P:DrawnUi.Draw.SkiaLayout.StructureWindowStart
+  parent: DrawnUi.Draw.SkiaLayout
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_StructureWindowStart
+  name: StructureWindowStart
+  nameWithType: SkiaLayout.StructureWindowStart
+  fullName: DrawnUi.Draw.SkiaLayout.StructureWindowStart
 - uid: DrawnUi.Draw.SkiaLayout.MeasuredItemsPercentage
   commentId: P:DrawnUi.Draw.SkiaLayout.MeasuredItemsPercentage
   parent: DrawnUi.Draw.SkiaLayout
@@ -9898,6 +9971,49 @@ references:
     name: Boolean
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
+  parent: DrawnUi.Draw.SkiaLayout
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_MeasureMasonry_SkiaSharp_SKRect_System_Single_
+  name: MeasureMasonry(SKRect, float)
+  nameWithType: SkiaLayout.MeasureMasonry(SKRect, float)
+  fullName: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect, float)
+  nameWithType.vb: SkiaLayout.MeasureMasonry(SKRect, Single)
+  fullName.vb: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect, Single)
+  name.vb: MeasureMasonry(SKRect, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
+    name: MeasureMasonry
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_MeasureMasonry_SkiaSharp_SKRect_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLayout.MeasureMasonry(SkiaSharp.SKRect,System.Single)
+    name: MeasureMasonry
+    href: DrawnUi.Draw.SkiaLayout.html#DrawnUi_Draw_SkiaLayout_MeasureMasonry_SkiaSharp_SKRect_System_Single_
+  - name: (
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
   - name: )
 - uid: DrawnUi.Draw.SkiaLayout.GetStackStructure
   commentId: M:DrawnUi.Draw.SkiaLayout.GetStackStructure
@@ -12898,6 +13014,39 @@ references:
   name: ReceivesHover
   nameWithType: SkiaControl.ReceivesHover
   fullName: DrawnUi.Draw.SkiaControl.ReceivesHover
+- uid: DrawnUi.Draw.SkiaControl.TooltipProperty
+  commentId: F:DrawnUi.Draw.SkiaControl.TooltipProperty
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TooltipProperty
+  name: TooltipProperty
+  nameWithType: SkiaControl.TooltipProperty
+  fullName: DrawnUi.Draw.SkiaControl.TooltipProperty
+- uid: DrawnUi.Draw.SkiaControl.Tooltip
+  commentId: P:DrawnUi.Draw.SkiaControl.Tooltip
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_Tooltip
+  name: Tooltip
+  nameWithType: SkiaControl.Tooltip
+  fullName: DrawnUi.Draw.SkiaControl.Tooltip
+- uid: DrawnUi.Draw.SkiaControl.GetTooltipText
+  commentId: M:DrawnUi.Draw.SkiaControl.GetTooltipText
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetTooltipText
+  name: GetTooltipText()
+  nameWithType: SkiaControl.GetTooltipText()
+  fullName: DrawnUi.Draw.SkiaControl.GetTooltipText()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.GetTooltipText
+    name: GetTooltipText
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetTooltipText
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.GetTooltipText
+    name: GetTooltipText
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_GetTooltipText
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.VisualLayer
   commentId: P:DrawnUi.Draw.SkiaControl.VisualLayer
   parent: DrawnUi.Draw.SkiaControl
@@ -18796,6 +18945,27 @@ references:
   name: AccessibilityIsPressed
   nameWithType: SkiaControl.AccessibilityIsPressed
   fullName: DrawnUi.Draw.SkiaControl.AccessibilityIsPressed
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityIsExpanded
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityIsExpanded
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityIsExpanded
+  name: AccessibilityIsExpanded
+  nameWithType: SkiaControl.AccessibilityIsExpanded
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityIsExpanded
+- uid: DrawnUi.Draw.SkiaControl.KeyboardWrap
+  commentId: P:DrawnUi.Draw.SkiaControl.KeyboardWrap
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_KeyboardWrap
+  name: KeyboardWrap
+  nameWithType: SkiaControl.KeyboardWrap
+  fullName: DrawnUi.Draw.SkiaControl.KeyboardWrap
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityModal
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityModal
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityModal
+  name: AccessibilityModal
+  nameWithType: SkiaControl.AccessibilityModal
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityModal
 - uid: DrawnUi.Draw.SkiaControl.AccessibilityLive
   commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityLive
   parent: DrawnUi.Draw.SkiaControl
@@ -33424,6 +33594,61 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityExpanded<SkiaCarousel>(SkiaCarousel, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityExpanded<SkiaCarousel>(SkiaCarousel, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded<DrawnUi.Controls.SkiaCarousel>(DrawnUi.Controls.SkiaCarousel, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityExpanded(Of SkiaCarousel)(SkiaCarousel, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded(Of DrawnUi.Controls.SkiaCarousel)(DrawnUi.Controls.SkiaCarousel, Boolean?)
+  name.vb: WithAccessibilityExpanded(Of SkiaCarousel)(SkiaCarousel, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(DrawnUi.Controls.SkiaCarousel,System.Nullable{System.Boolean})
+    name: WithAccessibilityExpanded
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(DrawnUi.Controls.SkiaCarousel,System.Nullable{System.Boolean})
+    name: WithAccessibilityExpanded
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
 - uid: DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(System.String)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(``0,System.String)
   parent: DrawnUi.Draw.FluentExtensions
@@ -33476,6 +33701,59 @@ references:
     name: String
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  name: WithAccessibilityModal<SkiaCarousel>(SkiaCarousel, bool)
+  nameWithType: FluentExtensions.WithAccessibilityModal<SkiaCarousel>(SkiaCarousel, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal<DrawnUi.Controls.SkiaCarousel>(DrawnUi.Controls.SkiaCarousel, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibilityModal(Of SkiaCarousel)(SkiaCarousel, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal(Of DrawnUi.Controls.SkiaCarousel)(DrawnUi.Controls.SkiaCarousel, Boolean)
+  name.vb: WithAccessibilityModal(Of SkiaCarousel)(SkiaCarousel, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(DrawnUi.Controls.SkiaCarousel,System.Boolean)
+    name: WithAccessibilityModal
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(DrawnUi.Controls.SkiaCarousel,System.Boolean)
+    name: WithAccessibilityModal
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
 - uid: DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(System.Nullable{System.Boolean})
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
@@ -34326,6 +34604,59 @@ references:
     name: IList
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.ilist
+  - name: )
+- uid: DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  name: WithKeyboardWrap<SkiaCarousel>(SkiaCarousel, bool)
+  nameWithType: FluentExtensions.WithKeyboardWrap<SkiaCarousel>(SkiaCarousel, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap<DrawnUi.Controls.SkiaCarousel>(DrawnUi.Controls.SkiaCarousel, bool)
+  nameWithType.vb: FluentExtensions.WithKeyboardWrap(Of SkiaCarousel)(SkiaCarousel, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap(Of DrawnUi.Controls.SkiaCarousel)(DrawnUi.Controls.SkiaCarousel, Boolean)
+  name.vb: WithKeyboardWrap(Of SkiaCarousel)(SkiaCarousel, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(DrawnUi.Controls.SkiaCarousel,System.Boolean)
+    name: WithKeyboardWrap
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  - name: <
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(DrawnUi.Controls.SkiaCarousel,System.Boolean)
+    name: WithKeyboardWrap
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
 - uid: DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithMargin``1(Microsoft.Maui.Thickness)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithMargin``1(``0,Microsoft.Maui.Thickness)
@@ -35263,6 +35594,59 @@ references:
   - uid: DrawnUi.Draw.FluentExtensions.WithTag``1(DrawnUi.Controls.SkiaCarousel,System.String)
     name: WithTag
     href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTag__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: )
+  - name: (
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Controls.SkiaCarousel.DrawnUi.Draw.FluentExtensions.WithTooltip``1(System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+  parent: DrawnUi.Draw.FluentExtensions
+  definition: DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
+  name: WithTooltip<SkiaCarousel>(SkiaCarousel, string)
+  nameWithType: FluentExtensions.WithTooltip<SkiaCarousel>(SkiaCarousel, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithTooltip<DrawnUi.Controls.SkiaCarousel>(DrawnUi.Controls.SkiaCarousel, string)
+  nameWithType.vb: FluentExtensions.WithTooltip(Of SkiaCarousel)(SkiaCarousel, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithTooltip(Of DrawnUi.Controls.SkiaCarousel)(DrawnUi.Controls.SkiaCarousel, String)
+  name.vb: WithTooltip(Of SkiaCarousel)(SkiaCarousel, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(DrawnUi.Controls.SkiaCarousel,System.String)
+    name: WithTooltip
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
+  - name: <
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: '>'
+  - name: (
+  - uid: DrawnUi.Controls.SkiaCarousel
+    name: SkiaCarousel
+    href: DrawnUi.Controls.SkiaCarousel.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(DrawnUi.Controls.SkiaCarousel,System.String)
+    name: WithTooltip
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
   - name: (
   - name: Of
   - name: " "
@@ -41549,6 +41933,52 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
   - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  name: WithAccessibilityExpanded<T>(T, bool?)
+  nameWithType: FluentExtensions.WithAccessibilityExpanded<T>(T, bool?)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded<T>(T, bool?)
+  nameWithType.vb: FluentExtensions.WithAccessibilityExpanded(Of T)(T, Boolean?)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded(Of T)(T, Boolean?)
+  name.vb: WithAccessibilityExpanded(Of T)(T, Boolean?)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityExpanded
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityExpanded``1(``0,System.Nullable{System.Boolean})
+    name: WithAccessibilityExpanded
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityExpanded__1___0_System_Nullable_System_Boolean__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(``0,System.String)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityLive``1(``0,System.String)
   isExternal: true
@@ -41592,6 +42022,50 @@ references:
     name: String
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  name: WithAccessibilityModal<T>(T, bool)
+  nameWithType: FluentExtensions.WithAccessibilityModal<T>(T, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal<T>(T, bool)
+  nameWithType.vb: FluentExtensions.WithAccessibilityModal(Of T)(T, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal(Of T)(T, Boolean)
+  name.vb: WithAccessibilityModal(Of T)(T, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+    name: WithAccessibilityModal
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityModal``1(``0,System.Boolean)
+    name: WithAccessibilityModal
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithAccessibilityModal__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
   commentId: M:DrawnUi.Draw.FluentExtensions.WithAccessibilityPressed``1(``0,System.Nullable{System.Boolean})
@@ -42310,6 +42784,50 @@ references:
     name: IList
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.collections.ilist
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  name: WithKeyboardWrap<T>(T, bool)
+  nameWithType: FluentExtensions.WithKeyboardWrap<T>(T, bool)
+  fullName: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap<T>(T, bool)
+  nameWithType.vb: FluentExtensions.WithKeyboardWrap(Of T)(T, Boolean)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap(Of T)(T, Boolean)
+  name.vb: WithKeyboardWrap(Of T)(T, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+    name: WithKeyboardWrap
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithKeyboardWrap``1(``0,System.Boolean)
+    name: WithKeyboardWrap
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithKeyboardWrap__1___0_System_Boolean_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
 - uid: DrawnUi.Draw.FluentExtensions.WithMargin``1(``0,Microsoft.Maui.Thickness)
   commentId: M:DrawnUi.Draw.FluentExtensions.WithMargin``1(``0,Microsoft.Maui.Thickness)
@@ -43106,6 +43624,50 @@ references:
   - uid: DrawnUi.Draw.FluentExtensions.WithTag``1(``0,System.String)
     name: WithTag
     href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTag__1___0_System_String_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+  commentId: M:DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+  isExternal: true
+  href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
+  name: WithTooltip<T>(T, string)
+  nameWithType: FluentExtensions.WithTooltip<T>(T, string)
+  fullName: DrawnUi.Draw.FluentExtensions.WithTooltip<T>(T, string)
+  nameWithType.vb: FluentExtensions.WithTooltip(Of T)(T, String)
+  fullName.vb: DrawnUi.Draw.FluentExtensions.WithTooltip(Of T)(T, String)
+  name.vb: WithTooltip(Of T)(T, String)
+  spec.csharp:
+  - uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+    name: WithTooltip
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.FluentExtensions.WithTooltip``1(``0,System.String)
+    name: WithTooltip
+    href: DrawnUi.Draw.FluentExtensions.html#DrawnUi_Draw_FluentExtensions_WithTooltip__1___0_System_String_
   - name: (
   - name: Of
   - name: " "
