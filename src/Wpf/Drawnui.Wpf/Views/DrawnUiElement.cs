@@ -951,13 +951,23 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     {
         base.OnPreviewKeyUp(e);
         KeyboardManager.KeyboardReleased(KeyboardManager.MapKey(e.Key == Key.System ? e.SystemKey : e.Key));
+
+        // Alt pressed and let go alone: Windows would enter the window's Alt menu mode and take the next arrows, Enter
+        // and Escape for a native menu. The canvas keeps its keys, as on MAUI Windows (Alt alone is the app's, e.g. a
+        // drawn menu bar); Alt+Space still opens the window's system menu.
+        if (_altAlone && e.Key == Key.System && e.SystemKey is Key.LeftAlt or Key.RightAlt)
+            e.Handled = true;
+        _altAlone = false;
     }
+
+    private bool _altAlone;
 
     /// <inheritdoc/>
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
         base.OnPreviewKeyDown(e);
 
+        _altAlone = e.Key == Key.System && e.SystemKey is Key.LeftAlt or Key.RightAlt;
         var mapped = KeyboardManager.MapKey(e.Key == Key.System ? e.SystemKey : e.Key);
 
         // Editing keys belong to a focused drawn editor only. Without one they stay with WPF, so
