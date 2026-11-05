@@ -88,7 +88,11 @@ Please star ⭐ if you like it!
 
 ## What's New 1.10.8.20
 
-  * Pages with radio buttons, a dialog marked `AccessibilityModal` or gestures added with `AddGestures` are freed when you leave them, also without calling `Dispose`.
+  * **Keyboard:** on every head a key goes to the canvas first (Tab stops, Enter / Space on the focused control, arrows in lists and menus, Escape closing a popup), then to `KeyboardManager.KeyDown`, where `KeyboardManager.IsKeyHandled` tells whether the canvas already used it: one press does one thing. `KeyboardWrap` (`.WithKeyboardWrap()`) makes the arrows go round a menu or list, and `canvas.SetAccessibilityFocus(control)` moves the keyboard and screen-reader focus from your code. On WPF, Alt pressed alone stays with your app, so a drawn menu bar takes the arrows after it. Guide: [Accessibility](https://drawnui.net/articles/advanced/accessibility.html).
+  * **Accessibility:** `AccessibilityIsExpanded` (`.WithAccessibilityExpanded(...)`) tells screen readers that a control's menu or list is open or closed, on every head.
+  * **Memory:** a page you leave is freed with everything on it, also without `Dispose`: radio groups, dialogs marked `AccessibilityModal`, `AddGestures`, Mapsui maps, canvases on MAUI Windows and their background bakes. A control removed from the canvas lets go of it: its animations pause and go on when it is added back, and its `.OnKeyDown` / `KeyboardManager.Subscribe` handlers (and a `DrawnGame`'s keys) fire only while it is on a canvas.
+  * **Gradients:** a label's `FillGradient` paints its text, or its background when the label has one; a sweep gradient without an angle covers the full circle; `Light` above 1 gives the same colors on every head, as on .NET MAUI.
+  * **Mouse:** on WPF and OpenTK a long press is not followed by a tap.
 
 ### Previously
 
