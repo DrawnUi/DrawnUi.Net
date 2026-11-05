@@ -230,6 +230,53 @@ public class PopupWindowTests
         Assert.Contains(id, windows.Hidden);
     }
 
+    [Fact]
+    public void Keyboard_KeyDownReportsTheKeysTheCanvasUsed()
+    {
+        using var host = MenuScene(new List<string>(), out _, out _);
+        var seen = new List<(InputKey Key, bool Handled)>();
+        void OnDown(object sender, InputKey key) => seen.Add((key, KeyboardManager.IsKeyHandled));
+        KeyboardManager.KeyDown += OnDown;
+        try
+        {
+            Key(host, InputKey.KeyA); // nothing used it
+            Key(host, InputKey.Tab); // moved the focus to the title
+            Key(host, InputKey.Enter); // opened its menu
+            Key(host, InputKey.ArrowDown); // moved inside the menu
+
+            // used and released before its KeyDown came: the next press of that key is not reported as used
+            host.Canvas.HandleKeyboardNavigation(InputKey.ArrowDown, false);
+            KeyboardManager.KeyboardReleased(InputKey.ArrowDown);
+            KeyboardManager.KeyboardPressed(InputKey.ArrowDown);
+            KeyboardManager.KeyboardReleased(InputKey.ArrowDown);
+        }
+        finally
+        {
+            KeyboardManager.KeyDown -= OnDown;
+        }
+
+        Assert.Equal(new[]
+        {
+            (InputKey.KeyA, false), (InputKey.Tab, true), (InputKey.Enter, true), (InputKey.ArrowDown, true), (InputKey.ArrowDown, false),
+        }, seen);
+        Assert.False(KeyboardManager.IsKeyHandled);
+    }
+
+    [Fact]
+    public void Keyboard_AppFocusWhenAMenuCloses_WinsOverTheReturnToItsTitle()
+    {
+        using var host = MenuScene(new List<string>(), out _, out var after);
+        host.Canvas.PopupWindowClosed += (_, _) => host.Canvas.SetAccessibilityFocus(after);
+
+        Key(host, InputKey.Tab);
+        Key(host, InputKey.Enter);
+        Assert.True(host.Canvas.HasPopupWindows);
+
+        Key(host, InputKey.Escape);
+        Assert.False(host.Canvas.HasPopupWindows);
+        Assert.Equal("After", (host.Canvas.AccessibilityManager.FocusedNode as SkiaControl)?.AccessibilityLabel);
+    }
+
     /// <summary>A menu bar title that opens a menu (a panel whose stack holds the lines, role menu), as the Hello apps.</summary>
     static HeadlessCanvasHost MenuScene(List<string> picked, out SkiaShape title, out SkiaShape after, Func<PopupId> opened = null)
     {

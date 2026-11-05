@@ -20,6 +20,23 @@ public partial class KeyboardManager
     /// </summary>
     public static bool IsKeyForOtherElement { get; private set; }
 
+    /// <summary>
+    /// True while <see cref="KeyDown"/> is raised for a key the canvas's keyboard navigation has already used: Tab moved
+    /// the focus, Enter / Space activated the focused control, an arrow moved inside a list or a menu or stepped a
+    /// slider, Escape let the drawn controls go. An app handler that would act on the same key (a menu that opens on
+    /// Enter) skips it, so one press does one thing. The canvas handles the key first, then KeyDown is raised.
+    /// </summary>
+    public static bool IsKeyHandled { get; private set; }
+
+    private static InputKey _keyUsedByCanvas = InputKey.Unknown;
+
+    /// <summary>
+    /// For heads: the canvas's keyboard navigation used <paramref name="key"/>, so the <see cref="KeyDown"/> raised next for
+    /// that key reports <see cref="IsKeyHandled"/>. Call it before <see cref="KeyboardPressed(InputKey, bool)"/>; the key's
+    /// release forgets it.
+    /// </summary>
+    public static void MarkKeyHandled(InputKey key) => _keyUsedByCanvas = key;
+
     public static void KeyboardChar(string ch) => KeyboardChar(ch, false);
 
     /// <param name="ch">The typed text.</param>
@@ -46,6 +63,8 @@ public partial class KeyboardManager
         CheckAndApplyModifiers(key, true);
 
         IsKeyForOtherElement = forOtherElement;
+        IsKeyHandled = key != InputKey.Unknown && _keyUsedByCanvas == key;
+        _keyUsedByCanvas = InputKey.Unknown;
         IsDispatchingKeyDown = true;
         try
         {
@@ -54,6 +73,7 @@ public partial class KeyboardManager
         finally
         {
             IsKeyForOtherElement = false;
+            IsKeyHandled = false;
             IsDispatchingKeyDown = false;
         }
     }
@@ -71,6 +91,8 @@ public partial class KeyboardManager
     public static void KeyboardReleased(InputKey key, bool forOtherElement)
     {
         CheckAndApplyModifiers(key, false);
+        if (_keyUsedByCanvas == key)
+            _keyUsedByCanvas = InputKey.Unknown;
 
         IsKeyForOtherElement = forOtherElement;
         try

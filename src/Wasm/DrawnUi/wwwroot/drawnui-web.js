@@ -489,8 +489,10 @@ function a11yCreate(id) {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault(); // Space would scroll the page
             if (!e.repeat) a.onActivate(id);
+            a11yUsedKey = e.code;
         } else if (A11Y_KEYS.has(e.key) && a.onKey(id, e.key)) {
             e.preventDefault(); // a slider stepped, or focus moved inside the group
+            a11yUsedKey = e.code;
         }
     });
     el.addEventListener('focus', () => { if (_a11y && !_a11y.updating) _a11y.onFocus(id); });
@@ -499,6 +501,7 @@ function a11yCreate(id) {
 }
 
 const A11Y_STATES = ['aria-checked', 'aria-selected', 'aria-pressed'];
+let a11yUsedKey = null; // the key a node of the overlay just used: the window's keydown reports it handled
 const A11Y_KEYS = new Set(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown']);
 
 function a11ySet(el, name, value) {
@@ -695,10 +698,12 @@ function setupKeyboardHandlers() {
     keyboardAttached = true;
     // Window-level: the WebGL canvas can't hold focus for key events.
     window.addEventListener('keydown', e => {
+        const used = a11yUsedKey === e.code;
+        a11yUsedKey = null;
         if (e.repeat) return;
         const forDrawnUi = keyIsForDrawnUi(e);
         if (PREVENT_DEFAULT_KEYS.has(e.code) && forDrawnUi) e.preventDefault();
-        onKeyDown?.(e.code, !forDrawnUi);
+        onKeyDown?.(e.code, !forDrawnUi, used);
     });
     window.addEventListener('keyup', e => {
         const forDrawnUi = keyIsForDrawnUi(e);

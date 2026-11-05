@@ -381,20 +381,26 @@ namespace DrawnUi.Views
             // the reader's node is going away with the popup: a rebuild before the return lands must not send the
             // reader (and the heads' focus with it) to the first node of the page
             ReaderNode = node;
-            if (Volatile.Read(ref _focusInside) == null) // a menu opening next (Left / Right in a menu bar) wins
+            if (Volatile.Read(ref _focusInside) == null // a menu opening next (Left / Right in a menu bar) wins
+                && !_appFocusRequested) // and so does the app's own SetAccessibilityFocus in this frame
                 Volatile.Write(ref _focusReturn, node);
         }
 
         private SkiaControl? _accessibilityFocusTarget;
         private long _accessibilityFocusDeadline;
+        private bool _appFocusRequested; // until the frame end: the app said where the focus goes, a popup's return gives way
 
         /// <summary>
         /// Moves the keyboard and screen-reader focus to <paramref name="control"/> at the end of the next frame, for app
         /// code such as a custom menu that moves its highlight and tells screen readers where it is. A control not drawn
         /// yet gets it once it is, within 3 seconds. The focus ring keeps its state: it shows only if the keyboard is in use.
+        /// It wins over the library's own move in the same frame: a popup window closed with the keyboard in it gives the
+        /// focus back to its opener unless the app asked for another place. Null cancels a move still waiting.
         /// </summary>
         public void RequestAccessibilityFocus(SkiaControl control)
         {
+            _appFocusRequested = true;
+            Volatile.Write(ref _focusReturn, null);
             _accessibilityFocusDeadline = Environment.TickCount64 + 3000;
             Volatile.Write(ref _accessibilityFocusTarget, control);
             control?.Superview?.Update();
@@ -402,6 +408,7 @@ namespace DrawnUi.Views
 
         private void ProcessPendingFocus(float scale)
         {
+            _appFocusRequested = false;
             var wanted = Volatile.Read(ref _accessibilityFocusTarget);
             if (wanted != null)
             {

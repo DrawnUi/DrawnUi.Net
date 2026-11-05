@@ -785,9 +785,18 @@ namespace DrawnUi.Views
         /// Keyboard navigation for a head with no accessibility layer of its own (MAUI Mac Catalyst), with the rules of
         /// the MAUI Windows and WPF layers: Tab / Shift+Tab walk the Tab stops (<see cref="SkiaAccessibilityManager.NextTabStop"/>)
         /// from the node in focus (the keyboard's, else the last one tapped), Enter / Space activate it, Escape leaves the
-        /// drawn nodes, arrows / Home / End / PageUp / PageDown go to the node, else to its group. True when the key was used.
+        /// drawn nodes, arrows / Home / End / PageUp / PageDown go to the node, else to its group. True when the key was used;
+        /// the KeyDown raised next for it then reports <see cref="KeyboardManager.IsKeyHandled"/>.
         /// </summary>
         public bool HandleKeyboardNavigation(InputKey key, bool shift)
+        {
+            var used = NavigateWithKey(key, shift);
+            if (used)
+                KeyboardManager.MarkKeyHandled(key);
+            return used;
+        }
+
+        private bool NavigateWithKey(InputKey key, bool shift)
         {
             var current = KeyboardFocusNode ?? AccessibilityManager.FocusedNode;
             if (AccessibilityManager.IsOutsideModal(current))

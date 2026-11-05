@@ -234,16 +234,21 @@ public static partial class WebInput
     /// Called by JS on keydown. <paramref name="code"/> is the DOM <c>KeyboardEvent.code</c>
     /// (e.g. "ArrowLeft", "Space", "Enter"), parsed into <see cref="InputKey"/>. <paramref name="forOtherElement"/>:
     /// a page element outside the canvas has the key, see <see cref="KeyboardManager.IsKeyForOtherElement"/>.
+    /// <paramref name="usedByCanvas"/>: a node of the accessibility overlay used it first (activated, stepped, moved
+    /// focus in its group), see <see cref="KeyboardManager.IsKeyHandled"/>.
     /// </summary>
     [JSExport]
-    public static void OnKeyDown(string code, bool forOtherElement)
+    public static void OnKeyDown(string code, bool forOtherElement, bool usedByCanvas)
     {
         var key = MapCode(code);
-        KeyboardManager.KeyboardPressed(key, forOtherElement);
 
         // nothing in focus yet: an arrow starts keyboard navigation as Tab does, when the app asked for it
         if (!forOtherElement && TargetCanvas is { HasNoKeyboardFocus: true } canvas && canvas.ArrowStartsNavigation(key) is { } forward)
-            canvas.AccessibilityManager.FocusFirstTabStop(forward, (float)canvas.RenderingScale);
+            usedByCanvas = canvas.AccessibilityManager.FocusFirstTabStop(forward, (float)canvas.RenderingScale);
+
+        if (usedByCanvas)
+            KeyboardManager.MarkKeyHandled(key);
+        KeyboardManager.KeyboardPressed(key, forOtherElement);
     }
 
     /// <summary>
