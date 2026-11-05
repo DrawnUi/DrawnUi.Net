@@ -88,11 +88,11 @@ Please star ⭐ if you like it!
 
 ## What's New 1.10.8.20
 
-  * **Keyboard:** on every head a key goes to the canvas first (Tab stops, Enter / Space on the focused control, arrows in lists and menus, Escape closing a popup), then to `KeyboardManager.KeyDown`, where `KeyboardManager.IsKeyHandled` tells whether the canvas already used it: one press does one thing. `KeyboardWrap` (`.WithKeyboardWrap()`) makes the arrows go round a menu or list, and `canvas.SetAccessibilityFocus(control)` moves the keyboard and screen-reader focus from your code. On WPF, Alt pressed alone stays with your app, so a drawn menu bar takes the arrows after it. Guide: [Accessibility](https://drawnui.net/articles/advanced/accessibility.html).
-  * **Accessibility:** `AccessibilityIsExpanded` (`.WithAccessibilityExpanded(...)`) tells screen readers that a control's menu or list is open or closed, on every head.
-  * **Memory:** a page you leave is freed with everything on it, also without `Dispose`: radio groups, dialogs marked `AccessibilityModal`, `AddGestures`, Mapsui maps, canvases on MAUI Windows and their background bakes. A control removed from the canvas lets go of it: its animations pause and go on when it is added back, and its `.OnKeyDown` / `KeyboardManager.Subscribe` handlers (and a `DrawnGame`'s keys) fire only while it is on a canvas.
-  * **Gradients:** a label's `FillGradient` paints its text, or its background when the label has one; a sweep gradient without an angle covers the full circle; `Light` above 1 gives the same colors on every head, as on .NET MAUI.
-  * **Mouse:** on WPF and OpenTK a long press is not followed by a tap.
+  * **A keyboard that just works.** Tab, Enter, Space, the arrow keys and Escape work the same in menus, lists and popups on every platform, and one key press does one thing. Your app still gets every key and knows which ones the screen already used. Arrow keys can go round a menu or list, your code can move the focus, and on WPF a drawn menu bar works with Alt and the arrows.
+  * **Screen readers know when a menu is open.** Menus and dropdown lists tell screen readers whether they are open or closed.
+  * **Less memory.** A page you leave is freed with everything on it, even when it isn't disposed. A control you take off the screen pauses its animations and stops listening to keys until you put it back.
+  * **Gradients look the same everywhere.** Gradient text and backgrounds show the same colors on every platform, and a round gradient fills the whole circle by default.
+  * **Long press on desktop.** On WPF and OpenTK a long press is just a long press, never also a tap.
 
 ### Previously
 
