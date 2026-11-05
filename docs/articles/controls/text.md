@@ -161,6 +161,17 @@ Use the following properties for shadow effects:
     FillGradient="{StaticResource MyGradient}" />
 ```
 
+`FillGradient` on a label goes to one place. Without a background it colors the text. When the label also paints a background (`BackgroundColor`, or a solid `Background`), the gradient fills that background and the text keeps its `TextColor`:
+
+```xml
+<draw:SkiaLabel
+    Text="On a gradient"
+    TextColor="White"
+    BackgroundColor="Black"
+    Padding="12,8"
+    FillGradient="{StaticResource MyGradient}" />
+```
+
 ### Auto-sizing Text
 
 `AutoSize` changes the font size so the text fits or fills the label's box. The label needs a size on that axis: a `WidthRequest` / `HeightRequest`, or a width or height given by its parent.
