@@ -68,4 +68,22 @@ public class LabelGradientTargetTests
         Assert.True(WhitePixels(host) < 5, "the text kept its own color instead of the gradient");
         Assert.True(host.NonBackgroundFraction(Colors.Black) > 0.01, "nothing was drawn");
     }
+
+    [Fact]
+    public void A_transparent_background_counts_as_none_the_gradient_colors_the_text()
+    {
+        using var host = new HeadlessCanvasHost(300, 120, scale: 1f, background: Colors.Black);
+        host.Canvas.Content = new SkiaLabel("IIIIIIIIII")
+        {
+            FontSize = 40,
+            TextColor = Colors.White,
+            BackgroundColor = Colors.Transparent,
+            GradientByLines = false,
+            FillGradient = PurpleToCyan(),
+        };
+        host.AdvanceFrames(3);
+
+        Assert.True(WhitePixels(host) < 5, "a transparent background took the gradient and left white text");
+        Assert.True(host.NonBackgroundFraction(Colors.Black) > 0.005, "nothing was drawn");
+    }
 }
