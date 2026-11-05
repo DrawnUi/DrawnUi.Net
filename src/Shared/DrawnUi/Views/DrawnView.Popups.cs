@@ -133,16 +133,19 @@ namespace DrawnUi.Views
 
             _popupKeysHooked = on;
             if (on)
-                KeyboardManager.KeyDown += OnPopupKeyDown;
+                KeyboardManager.CanvasKeyDown += OnPopupKeyDown;
             else
-                KeyboardManager.KeyDown -= OnPopupKeyDown;
+                KeyboardManager.CanvasKeyDown -= OnPopupKeyDown;
         }
 
-        void OnPopupKeyDown(object sender, InputKey key)
+        void OnPopupKeyDown(InputKey key)
         {
-            // Escape closes the top popup window (native menus)
+            // Escape closes the top popup window (native menus), before the app's KeyDown, which reports it handled
             if (key == InputKey.Escape && _popupLayer?.CloseTop() == true)
+            {
+                KeyboardManager.MarkKeyHandled(key);
                 AfterPopupsChanged();
+            }
         }
 
         #endregion

@@ -525,7 +525,7 @@ namespace DrawnUi.Draw
 
                 if (!GradientByLines)
                 {
-                    SetupGradient(paintDefault, FillGradient, rectDraw);
+                    SetupGradient(paintDefault, TextFillGradient, rectDraw);
                     if (paintStroke != null)
                     {
                         SetupGradient(paintStroke, StrokeGradient, rectDraw);
@@ -704,7 +704,7 @@ namespace DrawnUi.Draw
 
                     if (GradientByLines)
                     {
-                        SetupGradient(paintDefault, FillGradient, line.Bounds);
+                        SetupGradient(paintDefault, TextFillGradient, line.Bounds);
                         if (paintStroke != null)
                         {
                             SetupGradient(paintStroke, StrokeGradient, line.Bounds);
@@ -4661,6 +4661,24 @@ namespace DrawnUi.Draw
 
 
         #region GRADIENT
+
+        /// <summary>
+        /// The gradient the glyphs are painted with. <see cref="SkiaControl.FillGradient"/> goes to one place: the text of a
+        /// label without a background, the background of a label that paints one (<see cref="SkiaControl.BackgroundColor"/>
+        /// or a solid <see cref="SkiaControl.Background"/>), whose text then keeps <see cref="TextColor"/>.
+        /// </summary>
+        protected SkiaGradient TextFillGradient
+        {
+            get
+            {
+                var gradient = FillGradient;
+                if (gradient == null)
+                    return null;
+
+                var color = Background is SolidColorBrush { Color: not null } solid ? solid.Color : BackgroundColor;
+                return color != null && color.Alpha > 0 ? null : gradient;
+            }
+        }
 
         public static readonly BindableProperty GradientByLinesProperty = BindableProperty.Create(
             nameof(GradientByLines),

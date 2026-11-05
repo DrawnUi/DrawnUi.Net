@@ -8,8 +8,23 @@ namespace DrawnUi.Draw;
 public partial class KeyboardManager
 {
 
+    // the elements of drawn canvases: a key they hold reaches KeyboardManager from the canvas, after its navigation
+    static readonly System.Runtime.CompilerServices.ConditionalWeakTable<object, object> CanvasElements = new();
+
+    /// <summary>True once <see cref="AttachToKeyboard"/> runs: the app gets keys through KeyboardManager.</summary>
+    internal static bool IsAttached { get; private set; }
+
+    /// <summary>
+    /// A drawn canvas' element raises its keys itself (DrawnView.Windows), after the canvas navigation, so KeyDown tells
+    /// whether navigation used the key (<see cref="IsKeyHandled"/>); the window hook skips them.
+    /// </summary>
+    internal static void RegisterCanvasElement(object element) => CanvasElements.AddOrUpdate(element, null);
+
+    internal static bool IsCanvasElement(object element) => element != null && CanvasElements.TryGetValue(element, out _);
+
     public static void AttachToKeyboard(UIElement window)
     {
+        IsAttached = true;
         window.PreviewKeyUp += (sender, args) =>
         {
             var mapped = MapToMaui(args.Key);
@@ -19,6 +34,8 @@ public partial class KeyboardManager
         };
         window.PreviewKeyDown += (sender, args) =>
         {
+            if (IsCanvasElement(args.OriginalSource))
+                return;
             var mapped = MapToMaui(args.Key);
             KeyboardPressed(mapped, IsTextField(args.OriginalSource));
         };

@@ -3266,9 +3266,10 @@ namespace DrawnUi.Draw
             Superview?.ForgetHover(this);
             Superview?.UnregisterGestureListener(this as ISkiaGestureListener);
             Superview?.UnregisterAllAnimatorsByParent(this);
+            _parkedAnimators = null;
             Superview?.AccessibilityManager.UnregisterSubtree(this);
             if (_accessibilityModal)
-                SkiaAccessibilityManager.Modals.TryRemove(this, out _);
+                SkiaAccessibilityManager.Modals.Remove(this);
         }
 
         protected object lockPausingAnimators = new();
@@ -5412,7 +5413,34 @@ namespace DrawnUi.Draw
             }
         }
 
+        private bool? _accessibilityIsExpanded;
+
+        /// <summary>
+        /// A control that opens something, such as a menu bar title or a dropdown: whether it is open now (true =
+        /// expanded, false = collapsed), read by screen readers as its expanded state (aria-expanded, UI Automation
+        /// ExpandCollapse). Default null: the control opens nothing. Opening and closing stay the app's job; this only reports.
+        /// </summary>
+        public bool? AccessibilityIsExpanded
+        {
+            get => _accessibilityIsExpanded;
+            set
+            {
+                if (_accessibilityIsExpanded != value)
+                {
+                    _accessibilityIsExpanded = value;
+                    AccessibilityChanged();
+                }
+            }
+        }
+
         private bool _accessibilityModal;
+
+        /// <summary>
+        /// On an arrow-key group (a container with a composite role such as <c>Aria.RoleMenu</c> or <c>Aria.RoleList</c>):
+        /// the arrows go round, from the last item to the first and back, instead of stopping at the ends, as in desktop
+        /// menus. Default false.
+        /// </summary>
+        public bool KeyboardWrap { get; set; }
 
         /// <summary>
         /// A modal overlay (aria-modal), such as a dialog drawn over the screen: while it is shown, screen readers and
@@ -5431,9 +5459,12 @@ namespace DrawnUi.Draw
 
                 _accessibilityModal = value;
                 if (value)
-                    SkiaAccessibilityManager.Modals.TryAdd(this, 0);
+                {
+                    SkiaAccessibilityManager.Modals.AddOrUpdate(this, null);
+                    SkiaAccessibilityManager.ModalsMaybe = true;
+                }
                 else
-                    SkiaAccessibilityManager.Modals.TryRemove(this, out _);
+                    SkiaAccessibilityManager.Modals.Remove(this);
                 AccessibilityChanged();
             }
         }
@@ -9315,6 +9346,7 @@ namespace DrawnUi.Draw
 
                 bool needKick = false;
                 _lastAnimatorManager = Superview;
+                ResumeParkedAnimators();
                 while (PendingUnattachedAnimators.TryTake(out var animator))
                 {
                     Superview.AddAnimator(animator);
@@ -9332,6 +9364,50 @@ namespace DrawnUi.Draw
         }
 
         protected ConcurrentBag<ISkiaAnimator> PendingUnattachedAnimators = new();
+
+        // animators of this subtree taken off the canvas while it is removed; they go back when it is attached again
+        private List<ISkiaAnimator>? _parkedAnimators;
+
+        /// <summary>
+        /// This control was removed from its parent: the canvas lets go of every animator of its subtree (running or
+        /// paused), which wait on this control until it is attached again.
+        /// </summary>
+        private void ParkSubtreeAnimators(DrawnView canvas)
+        {
+            foreach (var pair in canvas.AnimatingControls)
+            {
+                if (pair.Value.Parent is not SkiaControl owner || !IsSelfOrAncestorOf(owner))
+                    continue;
+                if (canvas.AnimatingControls.TryRemove(pair.Key, out var animator))
+                    (_parkedAnimators ??= new()).Add(animator);
+            }
+        }
+
+        private bool IsSelfOrAncestorOf(SkiaControl control)
+        {
+            for (IDrawnBase? current = control; current != null; current = (current as SkiaControl)?.Parent)
+            {
+                if (ReferenceEquals(current, this))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>Attached again: the animators parked when this subtree was removed go back to the canvas.</summary>
+        private void ResumeParkedAnimators()
+        {
+            if (_parkedAnimators == null || IsDisposed || Parent == null || Superview is not { } canvas)
+                return;
+
+            var parked = _parkedAnimators;
+            _parkedAnimators = null;
+            foreach (var animator in parked)
+            {
+                // a control taken out of this subtree meanwhile, or disposed, does not come back with it
+                if (animator.Parent is SkiaControl { IsDisposed: false } owner && IsSelfOrAncestorOf(owner))
+                    canvas.AddAnimator(animator);
+            }
+        }
 
         #region Animation
 
@@ -9467,14 +9543,14 @@ namespace DrawnUi.Draw
                 {
                     case GradientType.Sweep:
 
-                        //float sweep = (float)Value3;//((float)this.Variable1 % (float)this.Variable2 / 100F) * 360.0F;
-
+                        // Value1 = start angle, Value2 = sweep angle; no sweep angle is the full circle (React, Rust)
+                        var sweepAngle = Value2 == 0 ? 360.0 : Value2;
                         return SKShader.CreateSweepGradient(
                             new SKPoint(destination.Left + destination.Width / 2.0f,
                                 destination.Top + destination.Height / 2.0f),
                             colors.ToArray(),
                             colorPositions,
-                            gradient.TileMode, (float)Value1, (float)(Value1 + Value2));
+                            gradient.TileMode, (float)Value1, (float)(Value1 + sweepAngle));
 
                     case GradientType.Circular:
                     case GradientType.Oval:
@@ -9877,8 +9953,10 @@ namespace DrawnUi.Draw
                         Superview?.AccessibilityManager.UnregisterSubtree(iAmAccessibilityNode);
                     }
 
-                    //fill animations
-                    Superview?.UnregisterAllAnimatorsByParent(this);
+                    // the animations of this subtree pause while it is off the canvas, and resume when it comes back:
+                    // the canvas keeps no animator of a removed page (it would keep the page alive and tick for nothing)
+                    if (Superview is { } canvas)
+                        ParkSubtreeAnimators(canvas);
 
                     oldParent.Views.Remove(this);
 
@@ -9914,6 +9992,7 @@ namespace DrawnUi.Draw
                 }
 
                 InvalidateInternal();
+                ResumeParkedAnimators();
             }
         }
 

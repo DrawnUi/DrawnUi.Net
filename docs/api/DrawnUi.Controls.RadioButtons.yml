@@ -172,7 +172,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSelected
     path: ../src/Shared/DrawnUi/Controls/RadioButtons/RadioButtons.cs
-    startLine: 50
+    startLine: 44
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -210,7 +210,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSelectedIndex
     path: ../src/Shared/DrawnUi/Controls/RadioButtons/RadioButtons.cs
-    startLine: 66
+    startLine: 54
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -245,7 +245,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSelectedIndex
     path: ../src/Shared/DrawnUi/Controls/RadioButtons/RadioButtons.cs
-    startLine: 81
+    startLine: 65
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -283,7 +283,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Select
     path: ../src/Shared/DrawnUi/Controls/RadioButtons/RadioButtons.cs
-    startLine: 110
+    startLine: 90
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -321,17 +321,31 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GroupsByName
     path: ../src/Shared/DrawnUi/Controls/RadioButtons/RadioButtons.cs
-    startLine: 124
+    startLine: 146
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
+  summary: A snapshot of the named groups and their live members; changing it changes nothing.
+  example: []
   syntax:
-    content: protected Dictionary<string, List<ISkiaRadioButton>> GroupsByName { get; }
+    content: >-
+      [Obsolete("A read-only snapshot: groups hold their members weakly.")]
+
+      protected Dictionary<string, List<ISkiaRadioButton>> GroupsByName { get; }
     parameters: []
     return:
       type: System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{DrawnUi.Controls.ISkiaRadioButton}}
-    content.vb: Protected Property GroupsByName As Dictionary(Of String, List(Of ISkiaRadioButton))
+    content.vb: >-
+      <Obsolete("A read-only snapshot: groups hold their members weakly.")>
+
+      Protected ReadOnly Property GroupsByName As Dictionary(Of String, List(Of ISkiaRadioButton))
   overload: DrawnUi.Controls.RadioButtons.GroupsByName*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: 'A read-only snapshot: groups hold their members weakly.'
 - uid: DrawnUi.Controls.RadioButtons.GroupsByParent
   commentId: P:DrawnUi.Controls.RadioButtons.GroupsByParent
   id: GroupsByParent
@@ -350,17 +364,31 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GroupsByParent
     path: ../src/Shared/DrawnUi/Controls/RadioButtons/RadioButtons.cs
-    startLine: 125
+    startLine: 151
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
+  summary: A snapshot of the parent-based groups and their live members; changing it changes nothing.
+  example: []
   syntax:
-    content: protected Dictionary<SkiaControl, List<ISkiaRadioButton>> GroupsByParent { get; }
+    content: >-
+      [Obsolete("A read-only snapshot: groups hold their members weakly.")]
+
+      protected Dictionary<SkiaControl, List<ISkiaRadioButton>> GroupsByParent { get; }
     parameters: []
     return:
       type: System.Collections.Generic.Dictionary{DrawnUi.Draw.SkiaControl,System.Collections.Generic.List{DrawnUi.Controls.ISkiaRadioButton}}
-    content.vb: Protected Property GroupsByParent As Dictionary(Of SkiaControl, List(Of ISkiaRadioButton))
+    content.vb: >-
+      <Obsolete("A read-only snapshot: groups hold their members weakly.")>
+
+      Protected ReadOnly Property GroupsByParent As Dictionary(Of SkiaControl, List(Of ISkiaRadioButton))
   overload: DrawnUi.Controls.RadioButtons.GroupsByParent*
+  attributes:
+  - type: System.ObsoleteAttribute
+    ctor: System.ObsoleteAttribute.#ctor(System.String)
+    arguments:
+    - type: System.String
+      value: 'A read-only snapshot: groups hold their members weakly.'
 - uid: DrawnUi.Controls.RadioButtons.#ctor
   commentId: M:DrawnUi.Controls.RadioButtons.#ctor
   id: '#ctor'
@@ -379,7 +407,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Controls/RadioButtons/RadioButtons.cs
-    startLine: 130
+    startLine: 158
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -410,7 +438,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddToGroup
     path: ../src/Shared/DrawnUi/Controls/RadioButtons/RadioButtons.cs
-    startLine: 141
+    startLine: 167
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -448,7 +476,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddToGroup
     path: ../src/Shared/DrawnUi/Controls/RadioButtons/RadioButtons.cs
-    startLine: 163
+    startLine: 181
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -483,7 +511,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemoveFromGroup
     path: ../src/Shared/DrawnUi/Controls/RadioButtons/RadioButtons.cs
-    startLine: 185
+    startLine: 193
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -521,7 +549,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemoveFromGroup
     path: ../src/Shared/DrawnUi/Controls/RadioButtons/RadioButtons.cs
-    startLine: 201
+    startLine: 204
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -556,7 +584,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemoveFromGroups
     path: ../src/Shared/DrawnUi/Controls/RadioButtons/RadioButtons.cs
-    startLine: 216
+    startLine: 214
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
@@ -588,7 +616,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReportValueChange
     path: ../src/Shared/DrawnUi/Controls/RadioButtons/RadioButtons.cs
-    startLine: 284
+    startLine: 290
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls

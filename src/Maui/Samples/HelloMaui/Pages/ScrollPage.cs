@@ -37,7 +37,7 @@ public class ScrollPage : SkiaLayer
                     UseCache = SkiaCacheType.Operations,
                     Children = new List<SkiaControl>
                     {
-                        new SkiaLabel("SkiaScroll") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center },
+                        new SkiaLabel("SkiaScroll") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center, AccessibilityRole = DrawnUi.Models.Aria.RolePresentation },
 
                         Card(Title("Header + Footer in the flow · Header / Footer properties scroll with the content"),
                             new SkiaScroll

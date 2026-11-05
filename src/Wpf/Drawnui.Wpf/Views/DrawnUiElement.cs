@@ -951,25 +951,43 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     {
         base.OnPreviewKeyUp(e);
         KeyboardManager.KeyboardReleased(KeyboardManager.MapKey(e.Key == Key.System ? e.SystemKey : e.Key));
+
+        // Alt pressed and let go alone: Windows would enter the window's Alt menu mode and take the next arrows, Enter
+        // and Escape for a native menu. The canvas keeps its keys, as on MAUI Windows (Alt alone is the app's, e.g. a
+        // drawn menu bar); Alt+Space still opens the window's system menu.
+        if (_altAlone && e.Key == Key.System && e.SystemKey is Key.LeftAlt or Key.RightAlt)
+            e.Handled = true;
+        _altAlone = false;
     }
+
+    private bool _altAlone;
 
     /// <inheritdoc/>
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
         base.OnPreviewKeyDown(e);
 
-        // Every key reaches the shared KeyboardManager (KeyDown / modifier state) first.
-        if (!e.IsRepeat)
-            KeyboardManager.KeyboardPressed(KeyboardManager.MapKey(e.Key == Key.System ? e.SystemKey : e.Key));
+        _altAlone = e.Key == Key.System && e.SystemKey is Key.LeftAlt or Key.RightAlt;
+        var mapped = KeyboardManager.MapKey(e.Key == Key.System ? e.SystemKey : e.Key);
 
         // Editing keys belong to a focused drawn editor only. Without one they stay with WPF, so
         // Tab keeps cycling focus through the window and arrows keep scrolling a host ScrollViewer.
+        // The canvas navigation sees the key first, then KeyboardManager raises KeyDown, telling the app
+        // whether navigation used it (IsKeyHandled), as on the other heads.
         if (Canvas.FocusedChild is not SkiaEditor editor)
         {
             if (HandleAccessibilityKey(e))
+            {
                 e.Handled = true;
+                KeyboardManager.MarkKeyHandled(mapped);
+            }
+            if (!e.IsRepeat)
+                KeyboardManager.KeyboardPressed(mapped);
             return;
         }
+
+        if (!e.IsRepeat)
+            KeyboardManager.KeyboardPressed(mapped);
 
         var shift = Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
         var ctrl = Keyboard.Modifiers.HasFlag(ModifierKeys.Control);

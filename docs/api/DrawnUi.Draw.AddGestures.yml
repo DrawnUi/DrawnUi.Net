@@ -117,15 +117,20 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AttachedListeners
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 178
+    startLine: 182
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    The gesture listener of every control that uses these attached properties, held weakly: a page dropped without
+
+    Dispose is not kept alive by it.
+  example: []
   syntax:
-    content: public static Dictionary<SkiaControl, AddGestures.GestureListener> AttachedListeners
+    content: public static readonly ConditionalWeakTable<SkiaControl, AddGestures.GestureListener> AttachedListeners
     return:
-      type: System.Collections.Generic.Dictionary{DrawnUi.Draw.SkiaControl,DrawnUi.Draw.AddGestures.GestureListener}
-    content.vb: Public Shared AttachedListeners As Dictionary(Of SkiaControl, AddGestures.GestureListener)
+      type: System.Runtime.CompilerServices.ConditionalWeakTable{DrawnUi.Draw.SkiaControl,DrawnUi.Draw.AddGestures.GestureListener}
+    content.vb: Public Shared ReadOnly AttachedListeners As ConditionalWeakTable(Of SkiaControl, AddGestures.GestureListener)
 - uid: DrawnUi.Draw.AddGestures.ManageRegistration(DrawnUi.Draw.SkiaControl)
   commentId: M:DrawnUi.Draw.AddGestures.ManageRegistration(DrawnUi.Draw.SkiaControl)
   id: ManageRegistration(DrawnUi.Draw.SkiaControl)
@@ -144,7 +149,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ManageRegistration
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 223
+    startLine: 227
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -173,7 +178,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsActive
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 250
+    startLine: 254
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -204,7 +209,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedProperty
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 268
+    startLine: 272
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -231,7 +236,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCommandTapped
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 276
+    startLine: 280
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -262,7 +267,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCommandTapped
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 281
+    startLine: 285
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -293,7 +298,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameterProperty
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 288
+    startLine: 292
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -320,7 +325,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCommandTappedParameter
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 295
+    startLine: 299
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -351,7 +356,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCommandTappedParameter
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 300
+    startLine: 304
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -385,7 +390,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingProperty
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 307
+    startLine: 311
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -412,7 +417,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCommandLongPressing
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 315
+    startLine: 319
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -443,7 +448,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCommandLongPressing
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 320
+    startLine: 324
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -474,7 +479,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingParameterProperty
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 326
+    startLine: 330
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -501,7 +506,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCommandLongPressingParameter
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 333
+    startLine: 337
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -532,7 +537,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCommandLongPressingParameter
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 338
+    startLine: 342
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -566,7 +571,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TransformViewProperty
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 343
+    startLine: 347
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -593,7 +598,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTransformView
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 350
+    startLine: 354
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -624,7 +629,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetTransformView
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 355
+    startLine: 359
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -658,7 +663,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimationTappedProperty
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 362
+    startLine: 366
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -685,7 +690,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetAnimationTapped
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 370
+    startLine: 374
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -716,7 +721,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetAnimationTapped
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 381
+    startLine: 385
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -747,7 +752,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandPressedProperty
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 388
+    startLine: 392
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -774,7 +779,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCommandPressed
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 396
+    startLine: 400
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -805,7 +810,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCommandPressed
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 401
+    startLine: 405
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -836,7 +841,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimationPressedProperty
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 408
+    startLine: 412
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -863,7 +868,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetAnimationPressed
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 416
+    startLine: 420
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -894,7 +899,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetAnimationPressed
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 421
+    startLine: 425
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -925,7 +930,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TouchEffectColorProperty
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 426
+    startLine: 430
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -952,7 +957,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTouchEffectColor
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 433
+    startLine: 437
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -983,7 +988,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetTouchEffectColor
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 445
+    startLine: 449
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1014,7 +1019,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockPanningProperty
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 451
+    startLine: 455
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1041,7 +1046,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetLockPanning
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 459
+    startLine: 463
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1072,7 +1077,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetLockPanning
     path: ../src/Maui/DrawnUi/Features/Gestures/AddGestures.cs
-    startLine: 464
+    startLine: 468
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1359,22 +1364,22 @@ references:
   nameWithType.vb: Integer
   fullName.vb: Integer
   name.vb: Integer
-- uid: System.Collections.Generic.Dictionary{DrawnUi.Draw.SkiaControl,DrawnUi.Draw.AddGestures.GestureListener}
-  commentId: T:System.Collections.Generic.Dictionary{DrawnUi.Draw.SkiaControl,DrawnUi.Draw.AddGestures.GestureListener}
-  parent: System.Collections.Generic
-  definition: System.Collections.Generic.Dictionary`2
-  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
-  name: Dictionary<SkiaControl, AddGestures.GestureListener>
-  nameWithType: Dictionary<SkiaControl, AddGestures.GestureListener>
-  fullName: System.Collections.Generic.Dictionary<DrawnUi.Draw.SkiaControl, DrawnUi.Draw.AddGestures.GestureListener>
-  nameWithType.vb: Dictionary(Of SkiaControl, AddGestures.GestureListener)
-  fullName.vb: System.Collections.Generic.Dictionary(Of DrawnUi.Draw.SkiaControl, DrawnUi.Draw.AddGestures.GestureListener)
-  name.vb: Dictionary(Of SkiaControl, AddGestures.GestureListener)
+- uid: System.Runtime.CompilerServices.ConditionalWeakTable{DrawnUi.Draw.SkiaControl,DrawnUi.Draw.AddGestures.GestureListener}
+  commentId: T:System.Runtime.CompilerServices.ConditionalWeakTable{DrawnUi.Draw.SkiaControl,DrawnUi.Draw.AddGestures.GestureListener}
+  parent: System.Runtime.CompilerServices
+  definition: System.Runtime.CompilerServices.ConditionalWeakTable`2
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.compilerservices.conditionalweaktable-2
+  name: ConditionalWeakTable<SkiaControl, AddGestures.GestureListener>
+  nameWithType: ConditionalWeakTable<SkiaControl, AddGestures.GestureListener>
+  fullName: System.Runtime.CompilerServices.ConditionalWeakTable<DrawnUi.Draw.SkiaControl, DrawnUi.Draw.AddGestures.GestureListener>
+  nameWithType.vb: ConditionalWeakTable(Of SkiaControl, AddGestures.GestureListener)
+  fullName.vb: System.Runtime.CompilerServices.ConditionalWeakTable(Of DrawnUi.Draw.SkiaControl, DrawnUi.Draw.AddGestures.GestureListener)
+  name.vb: ConditionalWeakTable(Of SkiaControl, AddGestures.GestureListener)
   spec.csharp:
-  - uid: System.Collections.Generic.Dictionary`2
-    name: Dictionary
+  - uid: System.Runtime.CompilerServices.ConditionalWeakTable`2
+    name: ConditionalWeakTable
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.compilerservices.conditionalweaktable-2
   - name: <
   - uid: DrawnUi.Draw.SkiaControl
     name: SkiaControl
@@ -1390,10 +1395,10 @@ references:
     href: DrawnUi.Draw.AddGestures.GestureListener.html
   - name: '>'
   spec.vb:
-  - uid: System.Collections.Generic.Dictionary`2
-    name: Dictionary
+  - uid: System.Runtime.CompilerServices.ConditionalWeakTable`2
+    name: ConditionalWeakTable
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.compilerservices.conditionalweaktable-2
   - name: (
   - name: Of
   - name: " "
@@ -1410,21 +1415,21 @@ references:
     name: GestureListener
     href: DrawnUi.Draw.AddGestures.GestureListener.html
   - name: )
-- uid: System.Collections.Generic.Dictionary`2
-  commentId: T:System.Collections.Generic.Dictionary`2
+- uid: System.Runtime.CompilerServices.ConditionalWeakTable`2
+  commentId: T:System.Runtime.CompilerServices.ConditionalWeakTable`2
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
-  name: Dictionary<TKey, TValue>
-  nameWithType: Dictionary<TKey, TValue>
-  fullName: System.Collections.Generic.Dictionary<TKey, TValue>
-  nameWithType.vb: Dictionary(Of TKey, TValue)
-  fullName.vb: System.Collections.Generic.Dictionary(Of TKey, TValue)
-  name.vb: Dictionary(Of TKey, TValue)
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.compilerservices.conditionalweaktable-2
+  name: ConditionalWeakTable<TKey, TValue>
+  nameWithType: ConditionalWeakTable<TKey, TValue>
+  fullName: System.Runtime.CompilerServices.ConditionalWeakTable<TKey, TValue>
+  nameWithType.vb: ConditionalWeakTable(Of TKey, TValue)
+  fullName.vb: System.Runtime.CompilerServices.ConditionalWeakTable(Of TKey, TValue)
+  name.vb: ConditionalWeakTable(Of TKey, TValue)
   spec.csharp:
-  - uid: System.Collections.Generic.Dictionary`2
-    name: Dictionary
+  - uid: System.Runtime.CompilerServices.ConditionalWeakTable`2
+    name: ConditionalWeakTable
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.compilerservices.conditionalweaktable-2
   - name: <
   - name: TKey
   - name: ','
@@ -1432,10 +1437,10 @@ references:
   - name: TValue
   - name: '>'
   spec.vb:
-  - uid: System.Collections.Generic.Dictionary`2
-    name: Dictionary
+  - uid: System.Runtime.CompilerServices.ConditionalWeakTable`2
+    name: ConditionalWeakTable
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.dictionary-2
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.compilerservices.conditionalweaktable-2
   - name: (
   - name: Of
   - name: " "
@@ -1444,43 +1449,43 @@ references:
   - name: " "
   - name: TValue
   - name: )
-- uid: System.Collections.Generic
-  commentId: N:System.Collections.Generic
+- uid: System.Runtime.CompilerServices
+  commentId: N:System.Runtime.CompilerServices
   isExternal: true
   href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Collections.Generic
-  nameWithType: System.Collections.Generic
-  fullName: System.Collections.Generic
+  name: System.Runtime.CompilerServices
+  nameWithType: System.Runtime.CompilerServices
+  fullName: System.Runtime.CompilerServices
   spec.csharp:
   - uid: System
     name: System
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system
   - name: .
-  - uid: System.Collections
-    name: Collections
+  - uid: System.Runtime
+    name: Runtime
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
+    href: https://learn.microsoft.com/dotnet/api/system.runtime
   - name: .
-  - uid: System.Collections.Generic
-    name: Generic
+  - uid: System.Runtime.CompilerServices
+    name: CompilerServices
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.compilerservices
   spec.vb:
   - uid: System
     name: System
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system
   - name: .
-  - uid: System.Collections
-    name: Collections
+  - uid: System.Runtime
+    name: Runtime
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections
+    href: https://learn.microsoft.com/dotnet/api/system.runtime
   - name: .
-  - uid: System.Collections.Generic
-    name: Generic
+  - uid: System.Runtime.CompilerServices
+    name: CompilerServices
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.compilerservices
 - uid: DrawnUi.Draw.AddGestures.ManageRegistration*
   commentId: Overload:DrawnUi.Draw.AddGestures.ManageRegistration
   href: DrawnUi.Draw.AddGestures.html#DrawnUi_Draw_AddGestures_ManageRegistration_DrawnUi_Draw_SkiaControl_

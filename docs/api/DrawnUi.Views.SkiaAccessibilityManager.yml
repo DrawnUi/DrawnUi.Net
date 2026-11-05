@@ -6,14 +6,19 @@ items:
   parent: DrawnUi.Views
   children:
   - DrawnUi.Views.SkiaAccessibilityManager.Activate(DrawnUi.Draw.ISkiaAccessibilityNode)
+  - DrawnUi.Views.SkiaAccessibilityManager.ActiveModal
   - DrawnUi.Views.SkiaAccessibilityManager.Adjust(DrawnUi.Draw.ISkiaAccessibilityNode,System.Boolean)
   - DrawnUi.Views.SkiaAccessibilityManager.Changed
   - DrawnUi.Views.SkiaAccessibilityManager.FocusChanged
+  - DrawnUi.Views.SkiaAccessibilityManager.FocusFirstTabStop(System.Boolean,System.Single)
   - DrawnUi.Views.SkiaAccessibilityManager.FocusedNode
   - DrawnUi.Views.SkiaAccessibilityManager.ForceRebuildOnNextFrame
+  - DrawnUi.Views.SkiaAccessibilityManager.IsOutsideModal(DrawnUi.Draw.ISkiaAccessibilityNode)
+  - DrawnUi.Views.SkiaAccessibilityManager.IsScreenReaderRunning
   - DrawnUi.Views.SkiaAccessibilityManager.IsTabStop(DrawnUi.Draw.ISkiaAccessibilityNode)
   - DrawnUi.Views.SkiaAccessibilityManager.Key(DrawnUi.Draw.ISkiaAccessibilityNode,DrawnUi.Draw.InputKey)
   - DrawnUi.Views.SkiaAccessibilityManager.KeyboardFocusRequested
+  - DrawnUi.Views.SkiaAccessibilityManager.KeyboardScope
   - DrawnUi.Views.SkiaAccessibilityManager.LiveRegionUpdated
   - DrawnUi.Views.SkiaAccessibilityManager.MinUpdateIntervalMs
   - DrawnUi.Views.SkiaAccessibilityManager.MoveInGroup(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.InputKey)
@@ -27,6 +32,7 @@ items:
   - DrawnUi.Views.SkiaAccessibilityManager.RebuildSkipped
   - DrawnUi.Views.SkiaAccessibilityManager.RefreshIfStale(System.Single)
   - DrawnUi.Views.SkiaAccessibilityManager.Register(DrawnUi.Draw.ISkiaAccessibilityNode)
+  - DrawnUi.Views.SkiaAccessibilityManager.RequestAccessibilityFocus(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Views.SkiaAccessibilityManager.ScrollIntoView(DrawnUi.Draw.ISkiaAccessibilityNode)
   - DrawnUi.Views.SkiaAccessibilityManager.SetValue(DrawnUi.Draw.ISkiaAccessibilityNode,System.Double)
   - DrawnUi.Views.SkiaAccessibilityManager.Snapshot
@@ -47,7 +53,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaAccessibilityManager
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 39
+    startLine: 43
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -84,7 +90,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MinUpdateIntervalMs
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 50
+    startLine: 54
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -115,7 +121,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Snapshot
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 52
+    startLine: 56
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -144,7 +150,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Changed
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 54
+    startLine: 58
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -171,7 +177,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RebuildSkipped
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 63
+    startLine: 67
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -209,7 +215,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusChanged
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 64
+    startLine: 68
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -236,7 +242,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LiveRegionUpdated
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 70
+    startLine: 74
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -268,7 +274,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusedNode
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 72
+    startLine: 76
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -297,7 +303,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReaderNode
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 78
+    startLine: 82
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -331,7 +337,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReaderRefocusRequested
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 85
+    startLine: 89
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -365,7 +371,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyReaderFocused
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 88
+    startLine: 92
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -399,7 +405,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Activate
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 94
+    startLine: 98
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -438,7 +444,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Adjust
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 109
+    startLine: 113
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -481,7 +487,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetValue
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 120
+    startLine: 124
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -519,7 +525,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollIntoView
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 133
+    startLine: 137
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -556,7 +562,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Page
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 143
+    startLine: 147
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -601,7 +607,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Key
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 175
+    startLine: 179
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -644,7 +650,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardFocusRequested
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 197
+    startLine: 201
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -658,6 +664,191 @@ items:
     return:
       type: System.Action{DrawnUi.Draw.ISkiaAccessibilityNode}
     content.vb: Public Event KeyboardFocusRequested As Action(Of ISkiaAccessibilityNode)
+- uid: DrawnUi.Views.SkiaAccessibilityManager.KeyboardScope
+  commentId: P:DrawnUi.Views.SkiaAccessibilityManager.KeyboardScope
+  id: KeyboardScope
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: KeyboardScope
+  nameWithType: SkiaAccessibilityManager.KeyboardScope
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.KeyboardScope
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: KeyboardScope
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 220
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    While set, keyboard navigation stays inside this control: Tab and Shift+Tab stop only on its nodes. Set by the
+
+    canvas to the top popup window that takes input (a menu, a dropdown), null when none is open.
+  example: []
+  syntax:
+    content: public SkiaControl? KeyboardScope { get; }
+    parameters: []
+    return:
+      type: DrawnUi.Draw.SkiaControl
+    content.vb: Public Property KeyboardScope As SkiaControl
+  overload: DrawnUi.Views.SkiaAccessibilityManager.KeyboardScope*
+- uid: DrawnUi.Views.SkiaAccessibilityManager.ActiveModal
+  commentId: P:DrawnUi.Views.SkiaAccessibilityManager.ActiveModal
+  id: ActiveModal
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: ActiveModal
+  nameWithType: SkiaAccessibilityManager.ActiveModal
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.ActiveModal
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ActiveModal
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 233
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    The modal overlay that accessibility is limited to (<xref href="DrawnUi.Draw.SkiaControl.AccessibilityModal" data-throw-if-not-resolved="false"></xref>): the topmost
+
+    flagged control that is visible and was drawn in the last frame. Null when none.
+  example: []
+  syntax:
+    content: public SkiaControl? ActiveModal { get; }
+    parameters: []
+    return:
+      type: DrawnUi.Draw.SkiaControl
+    content.vb: Public Property ActiveModal As SkiaControl
+  overload: DrawnUi.Views.SkiaAccessibilityManager.ActiveModal*
+- uid: DrawnUi.Views.SkiaAccessibilityManager.IsScreenReaderRunning
+  commentId: P:DrawnUi.Views.SkiaAccessibilityManager.IsScreenReaderRunning
+  id: IsScreenReaderRunning
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: IsScreenReaderRunning
+  nameWithType: SkiaAccessibilityManager.IsScreenReaderRunning
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.IsScreenReaderRunning
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsScreenReaderRunning
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 324
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    Whether a screen reader is running. Decides what happens when the focused control leaves the screen: with a
+
+    reader, its cursor moves to the first node that says something; without one, the focus goes to nothing, as in
+
+    browsers, so an app's own keys work again. Windows reads the system flag that screen readers set
+
+    (Narrator, NVDA, JAWS); elsewhere it is assumed true. An app or a head can replace it.
+  example: []
+  syntax:
+    content: public Func<bool> IsScreenReaderRunning { get; set; }
+    parameters: []
+    return:
+      type: System.Func{System.Boolean}
+    content.vb: Public Property IsScreenReaderRunning As Func(Of Boolean)
+  overload: DrawnUi.Views.SkiaAccessibilityManager.IsScreenReaderRunning*
+- uid: DrawnUi.Views.SkiaAccessibilityManager.IsOutsideModal(DrawnUi.Draw.ISkiaAccessibilityNode)
+  commentId: M:DrawnUi.Views.SkiaAccessibilityManager.IsOutsideModal(DrawnUi.Draw.ISkiaAccessibilityNode)
+  id: IsOutsideModal(DrawnUi.Draw.ISkiaAccessibilityNode)
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: IsOutsideModal(ISkiaAccessibilityNode?)
+  nameWithType: SkiaAccessibilityManager.IsOutsideModal(ISkiaAccessibilityNode?)
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.IsOutsideModal(DrawnUi.Draw.ISkiaAccessibilityNode?)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsOutsideModal
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 348
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    The node is outside what keyboard navigation may reach now: a modal overlay is shown and the node is neither
+
+    in it nor in a popup window. A head treats such a focus as no focus, so Tab or an arrow starts in the modal.
+  example: []
+  syntax:
+    content: public bool IsOutsideModal(ISkiaAccessibilityNode? node)
+    parameters:
+    - id: node
+      type: DrawnUi.Draw.ISkiaAccessibilityNode
+    return:
+      type: System.Boolean
+    content.vb: Public Function IsOutsideModal(node As ISkiaAccessibilityNode) As Boolean
+  overload: DrawnUi.Views.SkiaAccessibilityManager.IsOutsideModal*
+  nameWithType.vb: SkiaAccessibilityManager.IsOutsideModal(ISkiaAccessibilityNode)
+  fullName.vb: DrawnUi.Views.SkiaAccessibilityManager.IsOutsideModal(DrawnUi.Draw.ISkiaAccessibilityNode)
+  name.vb: IsOutsideModal(ISkiaAccessibilityNode)
+- uid: DrawnUi.Views.SkiaAccessibilityManager.RequestAccessibilityFocus(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Views.SkiaAccessibilityManager.RequestAccessibilityFocus(DrawnUi.Draw.SkiaControl)
+  id: RequestAccessibilityFocus(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: RequestAccessibilityFocus(SkiaControl)
+  nameWithType: SkiaAccessibilityManager.RequestAccessibilityFocus(SkiaControl)
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.RequestAccessibilityFocus(DrawnUi.Draw.SkiaControl)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: RequestAccessibilityFocus
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 399
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    Moves the keyboard and screen-reader focus to <code class="paramref">control</code> at the end of the next frame, for app
+
+    code such as a custom menu that moves its highlight and tells screen readers where it is. A control not drawn
+
+    yet gets it once it is, within 3 seconds. The focus ring keeps its state: it shows only if the keyboard is in use.
+
+    It wins over the library's own move in the same frame: a popup window closed with the keyboard in it gives the
+
+    focus back to its opener unless the app asked for another place. Null cancels a move still waiting.
+  example: []
+  syntax:
+    content: public void RequestAccessibilityFocus(SkiaControl control)
+    parameters:
+    - id: control
+      type: DrawnUi.Draw.SkiaControl
+    content.vb: Public Sub RequestAccessibilityFocus(control As SkiaControl)
+  overload: DrawnUi.Views.SkiaAccessibilityManager.RequestAccessibilityFocus*
 - uid: DrawnUi.Views.SkiaAccessibilityManager.TryFindGroup(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl@,DrawnUi.Draw.SkiaControl@)
   commentId: M:DrawnUi.Views.SkiaAccessibilityManager.TryFindGroup(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl@,DrawnUi.Draw.SkiaControl@)
   id: TryFindGroup(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl@,DrawnUi.Draw.SkiaControl@)
@@ -676,7 +867,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TryFindGroup
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 227
+    startLine: 483
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -721,7 +912,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsTabStop
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 262
+    startLine: 518
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -764,7 +955,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NextTabStop
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 296
+    startLine: 556
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -809,7 +1000,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MoveInGroup
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 332
+    startLine: 595
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -839,6 +1030,51 @@ items:
       type: System.Boolean
     content.vb: Public Function MoveInGroup(focused As SkiaControl, key As InputKey) As Boolean
   overload: DrawnUi.Views.SkiaAccessibilityManager.MoveInGroup*
+- uid: DrawnUi.Views.SkiaAccessibilityManager.FocusFirstTabStop(System.Boolean,System.Single)
+  commentId: M:DrawnUi.Views.SkiaAccessibilityManager.FocusFirstTabStop(System.Boolean,System.Single)
+  id: FocusFirstTabStop(System.Boolean,System.Single)
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: FocusFirstTabStop(bool, float)
+  nameWithType: SkiaAccessibilityManager.FocusFirstTabStop(bool, float)
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.FocusFirstTabStop(bool, float)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: FocusFirstTabStop
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 907
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    Starts keyboard navigation as the first Tab or Shift+Tab does: the keyboard focus goes to the first Tab
+
+    stop, or the last when <code class="paramref">forward</code> is false, and the heads follow (the web overlay moves the
+
+    browser focus there). Used by heads whose keys arrive through KeyboardManager, for
+
+    <xref href="DrawnUi.Views.DrawnView.ArrowsStartKeyboardNavigation" data-throw-if-not-resolved="false"></xref>. False when there is no Tab stop.
+  example: []
+  syntax:
+    content: public bool FocusFirstTabStop(bool forward, float scale)
+    parameters:
+    - id: forward
+      type: System.Boolean
+    - id: scale
+      type: System.Single
+    return:
+      type: System.Boolean
+    content.vb: Public Function FocusFirstTabStop(forward As Boolean, scale As Single) As Boolean
+  overload: DrawnUi.Views.SkiaAccessibilityManager.FocusFirstTabStop*
+  nameWithType.vb: SkiaAccessibilityManager.FocusFirstTabStop(Boolean, Single)
+  fullName.vb: DrawnUi.Views.SkiaAccessibilityManager.FocusFirstTabStop(Boolean, Single)
+  name.vb: FocusFirstTabStop(Boolean, Single)
 - uid: DrawnUi.Views.SkiaAccessibilityManager.NotifyFocused(DrawnUi.Draw.ISkiaAccessibilityNode)
   commentId: M:DrawnUi.Views.SkiaAccessibilityManager.NotifyFocused(DrawnUi.Draw.ISkiaAccessibilityNode)
   id: NotifyFocused(DrawnUi.Draw.ISkiaAccessibilityNode)
@@ -857,7 +1093,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyFocused
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 605
+    startLine: 944
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -889,7 +1125,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Register
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 613
+    startLine: 952
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -918,7 +1154,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyUpdated
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 619
+    startLine: 958
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -947,7 +1183,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ForceRebuildOnNextFrame
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 628
+    startLine: 971
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -973,7 +1209,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Unregister
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 634
+    startLine: 977
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1002,7 +1238,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnregisterSubtree
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 643
+    startLine: 986
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1031,7 +1267,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RefreshIfStale
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 689
+    startLine: 1035
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1928,6 +2164,106 @@ references:
   name: FocusChanged
   nameWithType: SkiaAccessibilityManager.FocusChanged
   fullName: DrawnUi.Views.SkiaAccessibilityManager.FocusChanged
+- uid: DrawnUi.Views.SkiaAccessibilityManager.KeyboardScope*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.KeyboardScope
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_KeyboardScope
+  name: KeyboardScope
+  nameWithType: SkiaAccessibilityManager.KeyboardScope
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.KeyboardScope
+- uid: DrawnUi.Draw.SkiaControl.AccessibilityModal
+  commentId: P:DrawnUi.Draw.SkiaControl.AccessibilityModal
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_AccessibilityModal
+  name: AccessibilityModal
+  nameWithType: SkiaControl.AccessibilityModal
+  fullName: DrawnUi.Draw.SkiaControl.AccessibilityModal
+- uid: DrawnUi.Views.SkiaAccessibilityManager.ActiveModal*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.ActiveModal
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_ActiveModal
+  name: ActiveModal
+  nameWithType: SkiaAccessibilityManager.ActiveModal
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.ActiveModal
+- uid: DrawnUi.Views.SkiaAccessibilityManager.IsScreenReaderRunning*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.IsScreenReaderRunning
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_IsScreenReaderRunning
+  name: IsScreenReaderRunning
+  nameWithType: SkiaAccessibilityManager.IsScreenReaderRunning
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.IsScreenReaderRunning
+- uid: System.Func{System.Boolean}
+  commentId: T:System.Func{System.Boolean}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<bool>
+  nameWithType: Func<bool>
+  fullName: System.Func<bool>
+  nameWithType.vb: Func(Of Boolean)
+  fullName.vb: System.Func(Of Boolean)
+  name.vb: Func(Of Boolean)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: DrawnUi.Views.SkiaAccessibilityManager.IsOutsideModal*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.IsOutsideModal
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_IsOutsideModal_DrawnUi_Draw_ISkiaAccessibilityNode_
+  name: IsOutsideModal
+  nameWithType: SkiaAccessibilityManager.IsOutsideModal
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.IsOutsideModal
+- uid: DrawnUi.Views.SkiaAccessibilityManager.RequestAccessibilityFocus*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.RequestAccessibilityFocus
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_RequestAccessibilityFocus_DrawnUi_Draw_SkiaControl_
+  name: RequestAccessibilityFocus
+  nameWithType: SkiaAccessibilityManager.RequestAccessibilityFocus
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.RequestAccessibilityFocus
 - uid: DrawnUi.Models.Aria.IsCompositeRole(System.String)
   commentId: M:DrawnUi.Models.Aria.IsCompositeRole(System.String)
   isExternal: true
@@ -2057,6 +2393,37 @@ references:
   name: MoveInGroup
   nameWithType: SkiaAccessibilityManager.MoveInGroup
   fullName: DrawnUi.Views.SkiaAccessibilityManager.MoveInGroup
+- uid: DrawnUi.Views.DrawnView.ArrowsStartKeyboardNavigation
+  commentId: P:DrawnUi.Views.DrawnView.ArrowsStartKeyboardNavigation
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ArrowsStartKeyboardNavigation
+  name: ArrowsStartKeyboardNavigation
+  nameWithType: DrawnView.ArrowsStartKeyboardNavigation
+  fullName: DrawnUi.Views.DrawnView.ArrowsStartKeyboardNavigation
+- uid: DrawnUi.Views.SkiaAccessibilityManager.FocusFirstTabStop*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.FocusFirstTabStop
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_FocusFirstTabStop_System_Boolean_System_Single_
+  name: FocusFirstTabStop
+  nameWithType: SkiaAccessibilityManager.FocusFirstTabStop
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.FocusFirstTabStop
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: DrawnUi.Views.DrawnView
+  commentId: T:DrawnUi.Views.DrawnView
+  parent: DrawnUi.Views
+  href: DrawnUi.Views.DrawnView.html
+  name: DrawnView
+  nameWithType: DrawnView
+  fullName: DrawnUi.Views.DrawnView
 - uid: DrawnUi.Views.SkiaAccessibilityManager.NotifyFocused*
   commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.NotifyFocused
   href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_NotifyFocused_DrawnUi_Draw_ISkiaAccessibilityNode_
@@ -2105,14 +2472,3 @@ references:
   name: RefreshIfStale
   nameWithType: SkiaAccessibilityManager.RefreshIfStale
   fullName: DrawnUi.Views.SkiaAccessibilityManager.RefreshIfStale
-- uid: System.Single
-  commentId: T:System.Single
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.single
-  name: float
-  nameWithType: float
-  fullName: float
-  nameWithType.vb: Single
-  fullName.vb: Single
-  name.vb: Single

@@ -36,7 +36,7 @@ internal sealed class LinuxAtSpiProvider : IDisposable
 
     // AT-SPI roles (atspi-common Role) and state bits (StateSet: bit n of the 64-bit set)
     private const uint RoleApplication = 75, RoleFrame = 23, RoleToggleButton = 62, RoleButton = 43;
-    private const int StActive = 1, StChecked = 4, StEditable = 7, StEnabled = 8, StFocusable = 11, StFocused = 12,
+    private const int StActive = 1, StChecked = 4, StEditable = 7, StEnabled = 8, StExpandable = 9, StExpanded = 10, StFocusable = 11, StFocused = 12,
         StHorizontal = 14, StPressed = 20, StSensitive = 24, StShowing = 25, StSingleLine = 26, StVertical = 29,
         StVisible = 30, StCheckable = 41;
 
@@ -278,7 +278,7 @@ internal sealed class LinuxAtSpiProvider : IDisposable
         }
     }
 
-    // what a screen reader reads again on a node it already knows: its name, value and checked / pressed / enabled state
+    // what a screen reader reads again on a node it already knows: its name, value and checked / pressed / expanded / enabled state
     private void AnnounceChanges(AccessibilityNode was, AccessibilityNode now)
     {
         var path = NodePath(now.Id);
@@ -291,6 +291,9 @@ internal sealed class LinuxAtSpiProvider : IDisposable
 
         if (was.IsPressed != now.IsPressed && now.IsPressed is { } pressed)
             EmitObject(path, "StateChanged", Role(now) == RoleToggleButton ? "pressed" : "checked", pressed ? 1 : 0, 0, WriteNoData);
+
+        if (was.IsExpanded != now.IsExpanded && now.IsExpanded is { } expanded)
+            EmitObject(path, "StateChanged", "expanded", expanded ? 1 : 0, 0, WriteNoData);
 
         var enabled = IsEnabled(now);
         if (IsEnabled(was) != enabled)
@@ -491,6 +494,10 @@ internal sealed class LinuxAtSpiProvider : IDisposable
                     state |= Bit(StChecked);
             }
         }
+
+        // a control that opens something (a menu title, a dropdown): expandable, and expanded while open
+        if (node.IsExpanded is { } expanded)
+            state |= expanded ? Bit(StExpandable) | Bit(StExpanded) : Bit(StExpandable);
 
         if (node.Value is { } value)
             state |= Bit(value.Vertical ? StVertical : StHorizontal);

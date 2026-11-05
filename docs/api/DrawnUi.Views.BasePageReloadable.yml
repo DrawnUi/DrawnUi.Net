@@ -10,6 +10,7 @@ items:
   - DrawnUi.Views.BasePageReloadable.CountReloads
   - DrawnUi.Views.BasePageReloadable.Dispose
   - DrawnUi.Views.BasePageReloadable.Dispose(System.Boolean)
+  - DrawnUi.Views.BasePageReloadable.HotReloadPossible
   - DrawnUi.Views.BasePageReloadable.IsDisposed
   - DrawnUi.Views.BasePageReloadable.OnHandlerChanged
   - DrawnUi.Views.BasePageReloadable.ReloadUi(System.Type[])
@@ -356,7 +357,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHandlerChanged
     path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
-    startLine: 18
+    startLine: 19
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -368,6 +369,42 @@ items:
     content.vb: Protected Overrides Sub OnHandlerChanged()
   overridden: Microsoft.Maui.Controls.Element.OnHandlerChanged
   overload: DrawnUi.Views.BasePageReloadable.OnHandlerChanged*
+- uid: DrawnUi.Views.BasePageReloadable.HotReloadPossible
+  commentId: P:DrawnUi.Views.BasePageReloadable.HotReloadPossible
+  id: HotReloadPossible
+  parent: DrawnUi.Views.BasePageReloadable
+  langs:
+  - csharp
+  - vb
+  name: HotReloadPossible
+  nameWithType: BasePageReloadable.HotReloadPossible
+  fullName: DrawnUi.Views.BasePageReloadable.HotReloadPossible
+  type: Property
+  source:
+    remote:
+      path: src/Maui/DrawnUi/Views/BasePageReloadable.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: HotReloadPossible
+    path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
+    startLine: 44
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    Hot reload can reach this app: under a debugger, when the runtime reports code updates as supported, or when the
+
+    app is a Debug build (dotnet watch on Mac Catalyst and iOS applies updates while MetadataUpdater.IsSupported is
+
+    false). False in Release builds, so their pages never subscribe.
+  example: []
+  syntax:
+    content: protected static bool HotReloadPossible { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Protected Shared ReadOnly Property HotReloadPossible As Boolean
+  overload: DrawnUi.Views.BasePageReloadable.HotReloadPossible*
 - uid: DrawnUi.Views.BasePageReloadable.CountReloads
   commentId: P:DrawnUi.Views.BasePageReloadable.CountReloads
   id: CountReloads
@@ -386,7 +423,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CountReloads
     path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
-    startLine: 39
+    startLine: 69
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -415,7 +452,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReloadUi
     path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
-    startLine: 45
+    startLine: 75
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -450,7 +487,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Build
     path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
-    startLine: 57
+    startLine: 87
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -478,7 +515,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
-    startLine: 62
+    startLine: 92
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -508,7 +545,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisposed
     path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
-    startLine: 68
+    startLine: 98
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -537,7 +574,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
-    startLine: 70
+    startLine: 100
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -5919,6 +5956,23 @@ references:
   name: OnHandlerChanged
   nameWithType: BasePageReloadable.OnHandlerChanged
   fullName: DrawnUi.Views.BasePageReloadable.OnHandlerChanged
+- uid: DrawnUi.Views.BasePageReloadable.HotReloadPossible*
+  commentId: Overload:DrawnUi.Views.BasePageReloadable.HotReloadPossible
+  href: DrawnUi.Views.BasePageReloadable.html#DrawnUi_Views_BasePageReloadable_HotReloadPossible
+  name: HotReloadPossible
+  nameWithType: BasePageReloadable.HotReloadPossible
+  fullName: DrawnUi.Views.BasePageReloadable.HotReloadPossible
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
 - uid: DrawnUi.Views.BasePageReloadable.CountReloads*
   commentId: Overload:DrawnUi.Views.BasePageReloadable.CountReloads
   href: DrawnUi.Views.BasePageReloadable.html#DrawnUi_Views_BasePageReloadable_CountReloads
@@ -6005,14 +6059,3 @@ references:
   name: IsDisposed
   nameWithType: BasePageReloadable.IsDisposed
   fullName: DrawnUi.Views.BasePageReloadable.IsDisposed
-- uid: System.Boolean
-  commentId: T:System.Boolean
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.boolean
-  name: bool
-  nameWithType: bool
-  fullName: bool
-  nameWithType.vb: Boolean
-  fullName.vb: Boolean
-  name.vb: Boolean

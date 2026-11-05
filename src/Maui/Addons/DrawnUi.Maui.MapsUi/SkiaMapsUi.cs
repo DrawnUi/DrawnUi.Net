@@ -715,7 +715,10 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
     /// <summary>
     /// Public functions
     /// </summary>
-    public void OpenInBrowser(string url)
+    public void OpenInBrowser(string url) => OpenUrl(url);
+
+    // static: Mapsui keeps the function in a static, an instance method would keep the last map and its page alive
+    private static void OpenUrl(string url)
     {
         Catch.TaskRun(() => _ = Launcher.OpenAsync(new Uri(url)));
     }
@@ -774,7 +777,7 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
 
     private void SharedConstructor()
     {
-        PlatformUtilities.SetOpenInBrowserFunc(OpenInBrowser);
+        PlatformUtilities.SetOpenInBrowserFunc(OpenUrl);
         // Create timer for invalidating the control
         _invalidateTimer?.Dispose();
         _invalidateTimer = new Timer(InvalidateTimerCallback, null,

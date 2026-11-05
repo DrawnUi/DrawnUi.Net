@@ -103,6 +103,9 @@ internal static partial class WebAccessibility
             if (node.IsPressed is { } pressed)
                 flags |= pressed ? 12 : 4;
 
+            if (node.IsExpanded is { } expanded)
+                flags |= expanded ? 768 : 256;
+
             // the active modal: the overlay itself becomes the dialog (role, name, aria-modal), so readers leave the page
             // around the canvas alone; its controls are the overlay's other elements, all inside it
             if (node.Source != null && ReferenceEquals(node.Source, manager.ActiveModal))

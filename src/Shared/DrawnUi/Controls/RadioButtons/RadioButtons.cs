@@ -34,13 +34,7 @@
         /// <returns>The selected SkiaControl, or null if no button is selected or group doesn't exist.</returns>
         public SkiaControl GetSelected(SkiaControl parent)
         {
-            var group = GroupsByParent[parent];
-
-            if (group == null)
-            {
-                return null;
-            }
-            return group.FirstOrDefault(c => c.GetValueInternal()) as SkiaControl;
+            return FindGroup(parent)?.FirstOrDefault(c => c.GetValueInternal()) as SkiaControl;
         }
 
         /// <summary>
@@ -50,13 +44,7 @@
         /// <returns>The selected SkiaControl, or null if no button is selected or group doesn't exist.</returns>
         public SkiaControl GetSelected(string groupName)
         {
-            var group = GroupsByName[groupName];
-
-            if (group == null)
-            {
-                return null;
-            }
-            return group.FirstOrDefault(c => c.GetValueInternal()) as SkiaControl;
+            return FindGroup(groupName)?.FirstOrDefault(c => c.GetValueInternal()) as SkiaControl;
         }
 
         /// <summary>
@@ -66,12 +54,8 @@
         /// <returns>The zero-based index of the selected button, or -1 if no button is selected or group doesn't exist.</returns>
         public int GetSelectedIndex(SkiaControl parent)
         {
-            var group = GroupsByParent[parent];
-            if (group == null)
-            {
-                return -1;
-            }
-            return GetSelectedIndexInternal(group);
+            var group = FindGroup(parent);
+            return group == null ? -1 : GetSelectedIndexInternal(group);
         }
 
         /// <summary>
@@ -81,12 +65,8 @@
         /// <returns>The zero-based index of the selected button, or -1 if no button is selected or group doesn't exist.</returns>
         public int GetSelectedIndex(string groupName)
         {
-            var group = GroupsByName[groupName];
-            if (group == null)
-            {
-                return -1;
-            }
-            return GetSelectedIndexInternal(group);
+            var group = FindGroup(groupName);
+            return group == null ? -1 : GetSelectedIndexInternal(group);
         }
 
         int GetSelectedIndexInternal(List<ISkiaRadioButton> group)
@@ -110,7 +90,7 @@
         /// <param name="index">The zero-based index of the button to select.</param>
         public void Select(SkiaControl container, int index)
         {
-            var group = GroupsByParent[container];
+            var group = FindGroup(container);
             if (group != null)
             {
                 var i = -1;
@@ -122,16 +102,62 @@
             }
         }
 
-        protected Dictionary<string, List<ISkiaRadioButton>> GroupsByName { get; private set; }
-        protected Dictionary<SkiaControl, List<ISkiaRadioButton>> GroupsByParent { get; private set; }
+        /// <summary>
+        /// The members of one group, held weakly: a page dropped without Dispose must not stay alive through this static
+        /// manager. Parent-based groups are also keyed weakly by their parent.
+        /// </summary>
+        private sealed class Group
+        {
+            private readonly List<WeakReference<ISkiaRadioButton>> _items = new();
+
+            /// <summary>The members still alive, in the order they joined.</summary>
+            public List<ISkiaRadioButton> Live()
+            {
+                var live = new List<ISkiaRadioButton>(_items.Count);
+                _items.RemoveAll(w =>
+                {
+                    if (!w.TryGetTarget(out var radio))
+                        return true;
+                    live.Add(radio);
+                    return false;
+                });
+                return live;
+            }
+
+            public void Add(ISkiaRadioButton control)
+            {
+                if (!Live().Any(r => ReferenceEquals(r, control)))
+                    _items.Add(new WeakReference<ISkiaRadioButton>(control));
+            }
+
+            public bool Remove(ISkiaRadioButton control) =>
+                _items.RemoveAll(w => w.TryGetTarget(out var r) && ReferenceEquals(r, control)) > 0;
+        }
+
+        private readonly Dictionary<string, Group> _byName = new();
+        private readonly ConditionalWeakTable<SkiaControl, Group> _byParent = new();
+
+        private List<ISkiaRadioButton> FindGroup(SkiaControl parent) =>
+            parent != null && _byParent.TryGetValue(parent, out var group) ? group.Live() : null;
+
+        private List<ISkiaRadioButton> FindGroup(string groupName) =>
+            groupName != null && _byName.TryGetValue(groupName, out var group) ? group.Live() : null;
+
+        /// <summary>A snapshot of the named groups and their live members; changing it changes nothing.</summary>
+        [Obsolete("A read-only snapshot: groups hold their members weakly.")]
+        protected Dictionary<string, List<ISkiaRadioButton>> GroupsByName =>
+            _byName.ToDictionary(x => x.Key, x => x.Value.Live());
+
+        /// <summary>A snapshot of the parent-based groups and their live members; changing it changes nothing.</summary>
+        [Obsolete("A read-only snapshot: groups hold their members weakly.")]
+        protected Dictionary<SkiaControl, List<ISkiaRadioButton>> GroupsByParent =>
+            _byParent.ToDictionary(x => x.Key, x => x.Value.Live());
 
         /// <summary>
         /// Initializes a new instance of the RadioButtons class.
         /// </summary>
         public RadioButtons()
         {
-            GroupsByName = new Dictionary<string, List<ISkiaRadioButton>>();
-            GroupsByParent = new Dictionary<SkiaControl, List<ISkiaRadioButton>>();
         }
 
         /// <summary>
@@ -141,19 +167,11 @@
         /// <param name="groupName">The name of the group to add the control to.</param>
         public void AddToGroup(ISkiaRadioButton control, string groupName)
         {
-            if (!GroupsByName.ContainsKey(groupName))
-            {
-                GroupsByName[groupName] = new();
-            }
+            if (!_byName.TryGetValue(groupName, out var group))
+                _byName[groupName] = group = new Group();
 
-            var group = GroupsByName[groupName];
-            if (!group.Contains(control))
-            {
-                group.Add(control);
-            }
-
-            NormalizeGroupSelection(group);
-            SyncGroupVisuals(group);
+            group.Add(control);
+            Normalize(group.Live());
         }
 
         /// <summary>
@@ -163,19 +181,9 @@
         /// <param name="parent">The parent control that defines the group.</param>
         public void AddToGroup(ISkiaRadioButton control, SkiaControl parent)
         {
-            if (!GroupsByParent.ContainsKey(parent))
-            {
-                GroupsByParent[parent] = new();
-            }
-
-            var group = GroupsByParent[parent];
-            if (!group.Contains(control))
-            {
-                group.Add(control);
-            }
-
-            NormalizeGroupSelection(group);
-            SyncGroupVisuals(group);
+            var group = _byParent.GetValue(parent, _ => new Group());
+            group.Add(control);
+            Normalize(group.Live());
         }
 
         /// <summary>
@@ -185,13 +193,8 @@
         /// <param name="control">The radio button control to remove.</param>
         public void RemoveFromGroup(string groupName, ISkiaRadioButton control)
         {
-            if (GroupsByName.ContainsKey(groupName) && GroupsByName[groupName].Contains(control))
-            {
-                var group = GroupsByName[groupName];
-                group.RemoveAll(radio => radio == control);
-                NormalizeGroupSelection(group);
-                SyncGroupVisuals(group);
-            }
+            if (_byName.TryGetValue(groupName, out var group) && group.Remove(control))
+                AfterRemove(group, () => _byName.Remove(groupName));
         }
 
         /// <summary>
@@ -201,13 +204,8 @@
         /// <param name="control">The radio button control to remove.</param>
         public void RemoveFromGroup(SkiaControl parent, ISkiaRadioButton control)
         {
-            if (GroupsByParent.ContainsKey(parent) && GroupsByParent[parent].Contains(control))
-            {
-                var group = GroupsByParent[parent];
-                group.RemoveAll(radio => radio == control);
-                NormalizeGroupSelection(group);
-                SyncGroupVisuals(group);
-            }
+            if (_byParent.TryGetValue(parent, out var group) && group.Remove(control))
+                AfterRemove(group, () => _byParent.Remove(parent));
         }
 
         /// <summary>
@@ -216,25 +214,33 @@
         /// <param name="control">The radio button control to remove from all groups.</param>
         public void RemoveFromGroups(ISkiaRadioButton control)
         {
-            foreach (var groupName in GroupsByName.Keys.ToList())
+            foreach (var pair in _byName.ToList())
             {
-                var group = GroupsByName[groupName];
-                if (group.RemoveAll(radio => radio == control) > 0)
-                {
-                    NormalizeGroupSelection(group);
-                    SyncGroupVisuals(group);
-                }
+                if (pair.Value.Remove(control))
+                    AfterRemove(pair.Value, () => _byName.Remove(pair.Key));
             }
 
-            foreach (var parent in GroupsByParent.Keys.ToList())
+            foreach (var pair in _byParent.ToList())
             {
-                var group = GroupsByParent[parent];
-                if (group.RemoveAll(radio => radio == control) > 0)
-                {
-                    NormalizeGroupSelection(group);
-                    SyncGroupVisuals(group);
-                }
+                if (pair.Value.Remove(control))
+                    AfterRemove(pair.Value, () => _byParent.Remove(pair.Key));
             }
+        }
+
+        // an empty group is dropped (a named group would keep its name forever, a parent group its key)
+        private void AfterRemove(Group group, Action dropEmpty)
+        {
+            var live = group.Live();
+            if (live.Count == 0)
+                dropEmpty();
+            else
+                Normalize(live);
+        }
+
+        private void Normalize(List<ISkiaRadioButton> group)
+        {
+            NormalizeGroupSelection(group);
+            SyncGroupVisuals(group);
         }
 
         private void NormalizeGroupSelection(List<ISkiaRadioButton> group)
@@ -284,58 +290,19 @@
         /// <param name="newValue">The new value of the control (true for selected, false for unselected).</param>
         public void ReportValueChange(ISkiaRadioButton control, bool newValue)
         {
-            foreach (var groupName in GroupsByName.Keys)
-            {
-                if (GroupsByName[groupName].Contains(control))
-                {
-                    SetGroupValuesExcept(groupName, control, newValue);
-                    if (newValue)
-                    {
-                        Changed?.Invoke(control, EventArgs.Empty);
-                    }
-                    return;
-                }
-            }
-
-            foreach (var parent in GroupsByParent.Keys)
-            {
-                if (GroupsByParent[parent].Contains(control))
-                {
-                    SetGroupValuesExcept(parent, control, newValue);
-                    if (newValue)
-                    {
-                        Changed?.Invoke(control, EventArgs.Empty);
-                    }
-                    return;
-                }
-            }
-        }
-
-        private void SetGroupValuesExcept(string groupName, ISkiaRadioButton exceptControl, bool newValue)
-        {
-            var group = GroupsByName[groupName];
+            var group = _byName.Values.Select(g => g.Live()).FirstOrDefault(g => g.Contains(control))
+                        ?? _byParent.Select(x => x.Value.Live()).FirstOrDefault(g => g.Contains(control));
+            if (group == null)
+                return;
 
             if (newValue)
             {
-                group.ForEach(c => { if (c != exceptControl) c.SetValueInternal(false); });
+                group.ForEach(c => { if (c != control) c.SetValueInternal(false); });
+                Changed?.Invoke(control, EventArgs.Empty);
             }
             else
             {
-                EnsureOneTrueInGroup(group, exceptControl);
-            }
-        }
-
-        private void SetGroupValuesExcept(SkiaControl parent, ISkiaRadioButton exceptControl, bool newValue)
-        {
-            var group = GroupsByParent[parent];
-
-            if (newValue)
-            {
-                group.ForEach(c => { if (c != exceptControl) c.SetValueInternal(false); });
-            }
-            else
-            {
-                EnsureOneTrueInGroup(group, exceptControl);
+                EnsureOneTrueInGroup(group, control);
             }
         }
 

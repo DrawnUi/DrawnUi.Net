@@ -8,6 +8,7 @@ items:
   - DrawnUi.Draw.LayoutType.Absolute
   - DrawnUi.Draw.LayoutType.Column
   - DrawnUi.Draw.LayoutType.Grid
+  - DrawnUi.Draw.LayoutType.Masonry
   - DrawnUi.Draw.LayoutType.Row
   - DrawnUi.Draw.LayoutType.Wrap
   langs:
@@ -171,6 +172,37 @@ items:
   example: []
   syntax:
     content: Grid = 4
+    return:
+      type: DrawnUi.Draw.LayoutType
+- uid: DrawnUi.Draw.LayoutType.Masonry
+  commentId: F:DrawnUi.Draw.LayoutType.Masonry
+  id: Masonry
+  parent: DrawnUi.Draw.LayoutType
+  langs:
+  - csharp
+  - vb
+  name: Masonry
+  nameWithType: LayoutType.Masonry
+  fullName: DrawnUi.Draw.LayoutType.Masonry
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/LayoutType.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Masonry
+    path: ../src/Shared/DrawnUi/Internals/Enums/LayoutType.cs
+    startLine: 33
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Split columns of equal width; every item goes to the bottom of the shortest column, so items of
+
+    different heights leave no gaps (Pinterest-like feed). Vertical, with ItemsSource or children.
+  example: []
+  syntax:
+    content: Masonry = 5
     return:
       type: DrawnUi.Draw.LayoutType
 references:

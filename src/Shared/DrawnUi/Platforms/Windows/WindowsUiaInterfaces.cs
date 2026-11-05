@@ -130,11 +130,22 @@ public interface IUiaToggleProvider
     int ToggleState { get; } // ToggleState: Off 0, On 1, Indeterminate 2
 }
 
+[ComVisible(true)]
+[Guid("d847d3a5-cab0-4a98-8c32-ecb45c59ad24")]
+[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+public interface IUiaExpandCollapseProvider
+{
+    void Expand();
+    void Collapse();
+    int ExpandCollapseState { get; } // ExpandCollapseState: Collapsed 0, Expanded 1
+}
+
 internal static class UiaPatternId
 {
     public const int Invoke     = 10000;
     public const int Value      = 10002;
     public const int RangeValue = 10003;
+    public const int ExpandCollapse = 10005;
     public const int Toggle     = 10015;
     public const int ScrollItem = 10017;
 }

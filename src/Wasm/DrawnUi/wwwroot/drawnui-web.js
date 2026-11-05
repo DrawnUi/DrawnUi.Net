@@ -489,8 +489,10 @@ function a11yCreate(id) {
         if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault(); // Space would scroll the page
             if (!e.repeat) a.onActivate(id);
+            a11yUsedKey = e.code;
         } else if (A11Y_KEYS.has(e.key) && a.onKey(id, e.key)) {
             e.preventDefault(); // a slider stepped, or focus moved inside the group
+            a11yUsedKey = e.code;
         }
     });
     el.addEventListener('focus', () => { if (_a11y && !_a11y.updating) _a11y.onFocus(id); });
@@ -499,6 +501,7 @@ function a11yCreate(id) {
 }
 
 const A11Y_STATES = ['aria-checked', 'aria-selected', 'aria-pressed'];
+let a11yUsedKey = null; // the key a node of the overlay just used: the window's keydown reports it handled
 const A11Y_KEYS = new Set(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown']);
 
 function a11ySet(el, name, value) {
@@ -510,7 +513,7 @@ function a11ySet(el, name, value) {
 }
 
 // flags: 1 takes input, 2 Tab stop, 4 has a pressed state, 8 pressed, 16 has a range value, 32 vertical,
-// 64 a control role that takes no input (unavailable)
+// 64 a control role that takes no input (unavailable), 128 the active modal, 256 has an expanded state, 512 expanded
 function a11yApply(el, flags, nums, o, strs, s) {
     const interactive = (flags & 1) !== 0;
     el._interactive = interactive;
@@ -524,6 +527,10 @@ function a11yApply(el, flags, nums, o, strs, s) {
     const state = (flags & 4) ? ((flags & 8) ? 'true' : 'false') : null;
     for (const name of A11Y_STATES) a11ySet(el, name, name === strs[s + 5] ? state : null);
     a11ySet(el, 'aria-disabled', (flags & 64) ? 'true' : null);
+    // a control that opens something (a menu title, a dropdown): open or closed
+    const expandable = (flags & 256) !== 0;
+    a11ySet(el, 'aria-expanded', expandable ? ((flags & 512) ? 'true' : 'false') : null);
+    a11ySet(el, 'aria-haspopup', expandable && strs[s] === 'menuitem' ? 'menu' : null);
     const value = (flags & 16) !== 0;
     a11ySet(el, 'aria-valuenow', value ? String(nums[o + 4]) : null);
     a11ySet(el, 'aria-valuemin', value ? String(nums[o + 5]) : null);
@@ -691,10 +698,12 @@ function setupKeyboardHandlers() {
     keyboardAttached = true;
     // Window-level: the WebGL canvas can't hold focus for key events.
     window.addEventListener('keydown', e => {
+        const used = a11yUsedKey === e.code;
+        a11yUsedKey = null;
         if (e.repeat) return;
         const forDrawnUi = keyIsForDrawnUi(e);
         if (PREVENT_DEFAULT_KEYS.has(e.code) && forDrawnUi) e.preventDefault();
-        onKeyDown?.(e.code, !forDrawnUi);
+        onKeyDown?.(e.code, !forDrawnUi, used);
     });
     window.addEventListener('keyup', e => {
         const forDrawnUi = keyIsForDrawnUi(e);

@@ -87,10 +87,12 @@ internal static class WpfStartup
             // A focused DrawnUiElement feeds the manager itself; everything else in the window
             // goes through here. Events are not marked handled, WPF controls keep their keys.
             // A key whose source is another control (a TextBox...) is that control's: reported, not for drawn controls.
+            var altAlone = false;
             window.PreviewKeyDown += (_, e) =>
             {
                 if (e.OriginalSource is DrawnUiElement || e.IsRepeat)
                     return;
+                altAlone = e.OriginalSource is Window && e.Key == Key.System && e.SystemKey is Key.LeftAlt or Key.RightAlt;
                 KeyboardManager.KeyboardPressed(KeyboardManager.MapKey(e.Key == Key.System ? e.SystemKey : e.Key), e.OriginalSource is not Window);
             };
             window.PreviewKeyUp += (_, e) =>
@@ -98,6 +100,12 @@ internal static class WpfStartup
                 if (e.OriginalSource is DrawnUiElement)
                     return;
                 KeyboardManager.KeyboardReleased(KeyboardManager.MapKey(e.Key == Key.System ? e.SystemKey : e.Key), e.OriginalSource is not Window);
+
+                // nothing focused yet: Alt alone is the app's (as in DrawnUiElement), not Windows' Alt menu mode, which
+                // would take the next arrows, Enter and Escape
+                if (altAlone && e.OriginalSource is Window && e.Key == Key.System && e.SystemKey is Key.LeftAlt or Key.RightAlt)
+                    e.Handled = true;
+                altAlone = false;
             };
             window.PreviewTextInput += (_, e) =>
             {

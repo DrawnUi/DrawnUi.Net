@@ -142,7 +142,7 @@ public class ShapesPage : SkiaLayer
                                 FillGradient = Gradient(GradientType.Linear, new[] { "#FFC107", "#D63384" }, angle: 90),
                             }.Center()),
 
-                            Demo("Label: BackgroundColor + FillGradient = both", new SkiaLabel("bg + text")
+                            Demo("Label: BackgroundColor + FillGradient → background", new SkiaLabel("bg + text")
                             {
                                 FontSize = 16,
                                 TextColor = Colors.White,

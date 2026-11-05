@@ -8,6 +8,7 @@ public partial class Canvas
     private TouchActionEventArgs? _desktopPointerDownArgs;
     private TouchActionEventArgs? _desktopPreviousArgs;
     private System.Threading.CancellationTokenSource? _desktopLongPressCts;
+    private volatile bool _desktopLongPressFired; // a release after it sends no Tapped (AppoMobi.Gestures rule)
     private const long DesktopPointerId = 1;
 
     // The pressed pointer's recent positions (time ns, pixels), for the move velocity: see DesktopMoveVelocity.
@@ -40,6 +41,7 @@ public partial class Canvas
         _desktopPressTime = DesktopClockNanos();
         _desktopTrail.Clear();
         _desktopTrail.Add((_desktopPressTime, location));
+        _desktopLongPressFired = false;
         ScheduleDesktopLongPress(args);
         OnGestureEvent(TouchActionType.Pressed, args, TouchActionResult.Down);
     }
@@ -108,8 +110,9 @@ public partial class Canvas
             TouchActionEventArgs.FillDistanceInfo(args, _desktopPreviousArgs);
 
         var threshold = TouchEffect.TappedCancelMoveThresholdPoints * Math.Max(0.1f, TouchEffect.Density);
-        if (Math.Abs(args.Distance.Total.X) < threshold && Math.Abs(args.Distance.Total.Y) < threshold)
+        if (!_desktopLongPressFired && Math.Abs(args.Distance.Total.X) < threshold && Math.Abs(args.Distance.Total.Y) < threshold)
             OnGestureEvent(TouchActionType.Released, args, TouchActionResult.Tapped);
+        _desktopLongPressFired = false;
 
         OnGestureEvent(TouchActionType.Released, args, TouchActionResult.Up);
         _desktopPointerDownArgs = null;
@@ -262,6 +265,7 @@ public partial class Canvas
         {
             if (t.IsCanceled || _desktopPointerDownArgs == null)
                 return;
+            _desktopLongPressFired = true;
             OnGestureEvent(TouchActionType.Pressing, downArgs, TouchActionResult.LongPressing);
         }, System.Threading.Tasks.TaskContinuationOptions.NotOnCanceled);
     }

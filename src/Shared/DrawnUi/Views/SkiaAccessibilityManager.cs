@@ -13,6 +13,9 @@ namespace DrawnUi.Views
         /// <summary>The value of a range control (slider, progress bar), null for other nodes.</summary>
         public AccessibilityValue? Value { get; init; }
 
+        /// <summary>A control that opens something (a menu title, a dropdown): open (true) or closed (false); null when it opens nothing.</summary>
+        public bool? IsExpanded { get; init; }
+
         /// <summary>
         /// A title text inside says this node's name (a card and its title), so the node is not named again: a head reads
         /// no name for it, also not the live <see cref="ISkiaAccessibilityNode.AccessibilityLabel"/>.
@@ -32,7 +35,8 @@ namespace DrawnUi.Views
             {
                 Source = node,
                 Id = node.AccessibilityId,
-                Value = node.GetAccessibilityValue()
+                Value = node.GetAccessibilityValue(),
+                IsExpanded = node.AccessibilityIsExpanded
             };
         }
     }
@@ -217,7 +221,11 @@ namespace DrawnUi.Views
         public SkiaControl? KeyboardScope { get; internal set; }
 
         /// <summary>Controls with <see cref="SkiaControl.AccessibilityModal"/> set, on every canvas. Empty: no modal work at all.</summary>
-        internal static readonly System.Collections.Concurrent.ConcurrentDictionary<SkiaControl, byte> Modals = new();
+        /// Held weakly: a page dropped without Dispose must not stay alive through its flagged dialog.
+        internal static readonly System.Runtime.CompilerServices.ConditionalWeakTable<SkiaControl, object> Modals = new();
+
+        /// <summary>Set when a control is flagged modal; cleared by a walk of <see cref="Modals"/> that finds none.</summary>
+        internal static volatile bool ModalsMaybe;
 
         /// <summary>
         /// The modal overlay that accessibility is limited to (<see cref="SkiaControl.AccessibilityModal"/>): the topmost
@@ -232,14 +240,20 @@ namespace DrawnUi.Views
         private void UpdateActiveModal()
         {
             SkiaControl? next = null;
-            foreach (var modal in Modals.Keys)
+            var any = false;
+            foreach (var pair in Modals)
             {
+                var modal = pair.Key;
+                any = true;
                 if (modal.IsDisposed || !modal.IsVisible || modal.Opacity <= 0 || IsHiddenByAncestor(modal)
                     || !ReferenceEquals(modal.Superview?.AccessibilityManager, this) || !modal.WasInLastFrame())
                     continue;
                 if (next == null || IsDrawnAbove(modal, next))
                     next = modal;
             }
+
+            if (!any)
+                ModalsMaybe = false;
 
             var previous = ActiveModal;
             if (ReferenceEquals(previous, next))
@@ -367,12 +381,60 @@ namespace DrawnUi.Views
             // the reader's node is going away with the popup: a rebuild before the return lands must not send the
             // reader (and the heads' focus with it) to the first node of the page
             ReaderNode = node;
-            if (Volatile.Read(ref _focusInside) == null) // a menu opening next (Left / Right in a menu bar) wins
+            if (Volatile.Read(ref _focusInside) == null // a menu opening next (Left / Right in a menu bar) wins
+                && !_appFocusRequested) // and so does the app's own SetAccessibilityFocus in this frame
                 Volatile.Write(ref _focusReturn, node);
+        }
+
+        private SkiaControl? _accessibilityFocusTarget;
+        private long _accessibilityFocusDeadline;
+        private bool _appFocusRequested; // until the frame end: the app said where the focus goes, a popup's return gives way
+
+        /// <summary>
+        /// Moves the keyboard and screen-reader focus to <paramref name="control"/> at the end of the next frame, for app
+        /// code such as a custom menu that moves its highlight and tells screen readers where it is. A control not drawn
+        /// yet gets it once it is, within 3 seconds. The focus ring keeps its state: it shows only if the keyboard is in use.
+        /// It wins over the library's own move in the same frame: a popup window closed with the keyboard in it gives the
+        /// focus back to its opener unless the app asked for another place. Null cancels a move still waiting.
+        /// </summary>
+        public void RequestAccessibilityFocus(SkiaControl control)
+        {
+            _appFocusRequested = true;
+            Volatile.Write(ref _focusReturn, null);
+            _accessibilityFocusDeadline = Environment.TickCount64 + 3000;
+            Volatile.Write(ref _accessibilityFocusTarget, control);
+            control?.Superview?.Update();
         }
 
         private void ProcessPendingFocus(float scale)
         {
+            _appFocusRequested = false;
+            var wanted = Volatile.Read(ref _accessibilityFocusTarget);
+            if (wanted != null)
+            {
+                if (wanted.IsDisposed || Environment.TickCount64 > _accessibilityFocusDeadline)
+                {
+                    _accessibilityFocusTarget = null;
+                }
+                else
+                {
+                    Rebuild(scale);
+                    if (IsInSnapshot(wanted))
+                    {
+                        _accessibilityFocusTarget = null;
+                        var canvas = wanted.Superview;
+                        var ring = canvas?.KeyboardFocusNode != null;
+                        FocusFromKeyboard(wanted, scale);
+                        if (!ring && canvas != null)
+                            canvas.KeyboardFocusNode = null; // the reader moved, the ring stays hidden
+                    }
+                    else
+                    {
+                        wanted.Superview?.Update(); // not drawn yet: look again next frame
+                    }
+                }
+            }
+
             var inside = Volatile.Read(ref _focusInside);
             if (inside != null)
             {
@@ -598,6 +660,11 @@ namespace DrawnUi.Views
                 default:
                     return false;
             }
+
+            // KeyboardWrap on the group: the arrows go round, the last item to the first and back
+            if (group.KeyboardWrap && key is InputKey.ArrowDown or InputKey.ArrowUp or InputKey.ArrowLeft or InputKey.ArrowRight
+                && (target < 0 || target >= count))
+                target = target < 0 ? count - 1 : 0;
 
             if (target < 0 || target >= count || target == current)
                 return true; // at the end of the group nothing happens, the key still belongs to it
@@ -938,7 +1005,7 @@ namespace DrawnUi.Views
         /// </summary>
         internal void OnFrameEnd(float scale)
         {
-            if (!Modals.IsEmpty || ActiveModal != null)
+            if (ModalsMaybe || ActiveModal != null)
                 UpdateActiveModal();
             ProcessPendingFocus(scale);
             ProcessGroupFocus(scale);
@@ -1132,7 +1199,7 @@ namespace DrawnUi.Views
                 var y = b[i];
                 if (!ReferenceEquals(x.Source, y.Source)
                     || x.Label != y.Label || x.Hint != y.Hint || x.Role != y.Role
-                    || x.CanInteract != y.CanInteract || x.IsPressed != y.IsPressed || x.Live != y.Live || x.Value != y.Value
+                    || x.CanInteract != y.CanInteract || x.IsPressed != y.IsPressed || x.IsExpanded != y.IsExpanded || x.Live != y.Live || x.Value != y.Value
                     || x.NamedByChild != y.NamedByChild
                     || Math.Abs(x.Rect.Left - y.Rect.Left) > 0.5f || Math.Abs(x.Rect.Top - y.Rect.Top) > 0.5f
                     || Math.Abs(x.Rect.Right - y.Rect.Right) > 0.5f || Math.Abs(x.Rect.Bottom - y.Rect.Bottom) > 0.5f)

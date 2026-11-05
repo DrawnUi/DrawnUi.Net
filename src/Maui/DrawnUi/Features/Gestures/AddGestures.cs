@@ -176,7 +176,11 @@ public static partial class AddGestures
 
     public static int CommandDelayMs = 6;
 
-    public static Dictionary<SkiaControl, GestureListener> AttachedListeners = new();
+    /// <summary>
+    /// The gesture listener of every control that uses these attached properties, held weakly: a page dropped without
+    /// Dispose is not kept alive by it.
+    /// </summary>
+    public static readonly ConditionalWeakTable<SkiaControl, GestureListener> AttachedListeners = new();
 
     private static void OnAttachableChanged(BindableObject view, object oldValue, object newValue)
     {
@@ -196,10 +200,10 @@ public static partial class AddGestures
             {
                 if (attach)
                 {
-                    if (!AttachedListeners.ContainsKey(control))
+                    if (!AttachedListeners.TryGetValue(control, out _))
                     {
                         GestureListener gestureListener = new GestureListener(control);
-                        AttachedListeners.TryAdd(control, gestureListener);
+                        AttachedListeners.AddOrUpdate(control, gestureListener);
                         //will throw if parent null
                         control.GesturesEffect = gestureListener;
                         control.Parent.RegisterGestureListener(gestureListener);
@@ -207,9 +211,9 @@ public static partial class AddGestures
                 }
                 else
                 {
-                    if (AttachedListeners.ContainsKey(control))
+                    if (AttachedListeners.TryGetValue(control, out var gestureListener))
                     {
-                        AttachedListeners.Remove(control, out var gestureListener);
+                        AttachedListeners.Remove(control);
                         control.GesturesEffect = null;
                         if (control.Parent != null)
                         {

@@ -74,7 +74,7 @@ MyGame/
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.80" />
-    <PackageReference Include="DrawnUi.Maui.Game" Version="1.10.8.19" />
+    <PackageReference Include="DrawnUi.Maui.Game" Version="1.10.8.20" />
   </ItemGroup>
 </Project>
 ```
@@ -113,7 +113,7 @@ MyGame/
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
-    <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.8.19" />
+    <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.8.20" />
   </ItemGroup>
 
   <ItemGroup>
@@ -220,7 +220,7 @@ src/
 <!-- In MyGame.Mobile.csproj -->
 <Import Project="../Shared/MyGame.Shared.projitems" Label="Shared" />
 <ItemGroup>
-  <PackageReference Include="DrawnUi.Maui.Game" Version="1.10.8.19" />
+  <PackageReference Include="DrawnUi.Maui.Game" Version="1.10.8.20" />
 </ItemGroup>
 ```
 
@@ -231,7 +231,7 @@ src/
 <!-- ... -->
 <Import Project="../../Shared/MyGame.Shared.projitems" Label="Shared" />
 <ItemGroup>
-  <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.8.19" />
+  <PackageReference Include="DrawnUi.Blazor.Game" Version="1.10.8.20" />
 </ItemGroup>
 ```
 
@@ -293,7 +293,7 @@ public class MyGame : DrawnUi.Gaming.DrawnGame   // alias: MauiGame = DrawnUi.Ga
 | `OnPaused()` / `OnResumed()` | Override for pause/resume logic |
 | `LastFrameTimeNanos` | Protected - last frame timestamp (nanos) |
 | `FrameInterpolatorDisabled` | Static - `true` = raw frame delta (frame-skip), `false` = delta smoothed by `FrameTimeInterpolator`. Default `true` on Android, OpenTK and browser builds (Blazor, pure Web), `false` elsewhere |
-| `OnKeyDown(InputKey)` / `OnKeyUp(InputKey)` | Override - keyboard wired by base |
+| `OnKeyDown(InputKey)` / `OnKeyUp(InputKey)` | Override - keyboard wired by base, while the game is on a canvas (a game removed from the screen gets no keys and is released) |
 | `ProcessGestures(...)` | Override - touch/gesture input |
 | `IgnoreChildrenInvalidations` | Set `true` after init - **critical for perf** |
 | `Update()` | Force one re-render |

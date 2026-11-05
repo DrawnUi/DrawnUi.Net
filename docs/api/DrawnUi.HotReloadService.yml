@@ -116,10 +116,12 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateApplication
     path: ../src/Maui/DrawnUi/HotReload.cs
-    startLine: 29
+    startLine: 32
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi
+  summary: Called by the runtime after it applied a code update, under a debugger or dotnet watch alike.
+  example: []
   syntax:
     content: public static void UpdateApplication(Type[]? types)
     parameters:

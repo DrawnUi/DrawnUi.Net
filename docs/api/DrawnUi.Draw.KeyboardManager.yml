@@ -7,7 +7,9 @@ items:
   children:
   - DrawnUi.Draw.KeyboardManager.IsAltPressed
   - DrawnUi.Draw.KeyboardManager.IsControlPressed
+  - DrawnUi.Draw.KeyboardManager.IsDispatchingKeyDown
   - DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement
+  - DrawnUi.Draw.KeyboardManager.IsKeyHandled
   - DrawnUi.Draw.KeyboardManager.IsMetaPressed
   - DrawnUi.Draw.KeyboardManager.IsShiftPressed
   - DrawnUi.Draw.KeyboardManager.KeyChar
@@ -19,6 +21,9 @@ items:
   - DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey,System.Boolean)
   - DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey)
   - DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey,System.Boolean)
+  - DrawnUi.Draw.KeyboardManager.MarkKeyHandled(DrawnUi.Draw.InputKey)
+  - DrawnUi.Draw.KeyboardManager.Subscribe(DrawnUi.Draw.SkiaControl,System.Action{DrawnUi.Draw.InputKey},System.Action{DrawnUi.Draw.InputKey})
+  - DrawnUi.Draw.KeyboardManager.Unsubscribe(DrawnUi.Draw.SkiaControl)
   langs:
   - csharp
   - vb
@@ -28,12 +33,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.Controls.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardManager
-    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 5
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.Controls.cs
+    startLine: 4
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -171,6 +176,80 @@ items:
       type: System.Boolean
     content.vb: Public Shared Property IsKeyForOtherElement As Boolean
   overload: DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement*
+- uid: DrawnUi.Draw.KeyboardManager.IsKeyHandled
+  commentId: P:DrawnUi.Draw.KeyboardManager.IsKeyHandled
+  id: IsKeyHandled
+  parent: DrawnUi.Draw.KeyboardManager
+  langs:
+  - csharp
+  - vb
+  name: IsKeyHandled
+  nameWithType: KeyboardManager.IsKeyHandled
+  fullName: DrawnUi.Draw.KeyboardManager.IsKeyHandled
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsKeyHandled
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    startLine: 28
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    True while <xref href="DrawnUi.Draw.KeyboardManager.KeyDown" data-throw-if-not-resolved="false"></xref> is raised for a key the canvas's keyboard navigation has already used: Tab moved
+
+    the focus, Enter / Space activated the focused control, an arrow moved inside a list or a menu or stepped a
+
+    slider, Escape let the drawn controls go. An app handler that would act on the same key (a menu that opens on
+
+    Enter) skips it, so one press does one thing. The canvas handles the key first, then KeyDown is raised.
+  example: []
+  syntax:
+    content: public static bool IsKeyHandled { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property IsKeyHandled As Boolean
+  overload: DrawnUi.Draw.KeyboardManager.IsKeyHandled*
+- uid: DrawnUi.Draw.KeyboardManager.MarkKeyHandled(DrawnUi.Draw.InputKey)
+  commentId: M:DrawnUi.Draw.KeyboardManager.MarkKeyHandled(DrawnUi.Draw.InputKey)
+  id: MarkKeyHandled(DrawnUi.Draw.InputKey)
+  parent: DrawnUi.Draw.KeyboardManager
+  langs:
+  - csharp
+  - vb
+  name: MarkKeyHandled(InputKey)
+  nameWithType: KeyboardManager.MarkKeyHandled(InputKey)
+  fullName: DrawnUi.Draw.KeyboardManager.MarkKeyHandled(DrawnUi.Draw.InputKey)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: MarkKeyHandled
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    startLine: 37
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    For heads: the canvas's keyboard navigation used <code class="paramref">key</code>, so the <xref href="DrawnUi.Draw.KeyboardManager.KeyDown" data-throw-if-not-resolved="false"></xref> raised next for
+
+    that key reports <xref href="DrawnUi.Draw.KeyboardManager.IsKeyHandled" data-throw-if-not-resolved="false"></xref>. Call it before <xref href="DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey%2cSystem.Boolean)" data-throw-if-not-resolved="false"></xref>; the key's
+
+    release forgets it.
+  example: []
+  syntax:
+    content: public static void MarkKeyHandled(InputKey key)
+    parameters:
+    - id: key
+      type: DrawnUi.Draw.InputKey
+    content.vb: Public Shared Sub MarkKeyHandled(key As InputKey)
+  overload: DrawnUi.Draw.KeyboardManager.MarkKeyHandled*
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardChar(System.String)
   commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardChar(System.String)
   id: KeyboardChar(System.String)
@@ -189,7 +268,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardChar
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 22
+    startLine: 39
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -221,7 +300,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardChar
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 26
+    startLine: 43
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -258,7 +337,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 39
+    startLine: 56
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -287,7 +366,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 43
+    startLine: 60
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -306,6 +385,42 @@ items:
   nameWithType.vb: KeyboardManager.KeyboardPressed(InputKey, Boolean)
   fullName.vb: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey, Boolean)
   name.vb: KeyboardPressed(InputKey, Boolean)
+- uid: DrawnUi.Draw.KeyboardManager.IsDispatchingKeyDown
+  commentId: P:DrawnUi.Draw.KeyboardManager.IsDispatchingKeyDown
+  id: IsDispatchingKeyDown
+  parent: DrawnUi.Draw.KeyboardManager
+  langs:
+  - csharp
+  - vb
+  name: IsDispatchingKeyDown
+  nameWithType: KeyboardManager.IsDispatchingKeyDown
+  fullName: DrawnUi.Draw.KeyboardManager.IsDispatchingKeyDown
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsDispatchingKeyDown
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    startLine: 86
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    True while a key press is handled, by the canvas and then by <xref href="DrawnUi.Draw.KeyboardManager.KeyDown" data-throw-if-not-resolved="false"></xref> handlers: what opens or closes
+
+    now was done with the keyboard (a popup window opened by Alt+F takes the keyboard focus, one closed by Escape
+
+    gives it back; a menu closed by Escape goes back one level).
+  example: []
+  syntax:
+    content: public static bool IsDispatchingKeyDown { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Property IsDispatchingKeyDown As Boolean
+  overload: DrawnUi.Draw.KeyboardManager.IsDispatchingKeyDown*
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey)
   commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey)
   id: KeyboardReleased(DrawnUi.Draw.InputKey)
@@ -324,7 +439,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardReleased
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 58
+    startLine: 94
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -353,7 +468,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardReleased
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 62
+    startLine: 98
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -390,7 +505,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsShiftPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 77
+    startLine: 115
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -419,7 +534,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAltPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 85
+    startLine: 123
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -448,7 +563,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsControlPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 93
+    startLine: 131
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -477,7 +592,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsMetaPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 104
+    startLine: 142
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -490,6 +605,82 @@ items:
       type: System.Boolean
     content.vb: Public Shared ReadOnly Property IsMetaPressed As Boolean
   overload: DrawnUi.Draw.KeyboardManager.IsMetaPressed*
+- uid: DrawnUi.Draw.KeyboardManager.Subscribe(DrawnUi.Draw.SkiaControl,System.Action{DrawnUi.Draw.InputKey},System.Action{DrawnUi.Draw.InputKey})
+  commentId: M:DrawnUi.Draw.KeyboardManager.Subscribe(DrawnUi.Draw.SkiaControl,System.Action{DrawnUi.Draw.InputKey},System.Action{DrawnUi.Draw.InputKey})
+  id: Subscribe(DrawnUi.Draw.SkiaControl,System.Action{DrawnUi.Draw.InputKey},System.Action{DrawnUi.Draw.InputKey})
+  parent: DrawnUi.Draw.KeyboardManager
+  langs:
+  - csharp
+  - vb
+  name: Subscribe(SkiaControl, Action<InputKey>, Action<InputKey>)
+  nameWithType: KeyboardManager.Subscribe(SkiaControl, Action<InputKey>, Action<InputKey>)
+  fullName: DrawnUi.Draw.KeyboardManager.Subscribe(DrawnUi.Draw.SkiaControl, System.Action<DrawnUi.Draw.InputKey>, System.Action<DrawnUi.Draw.InputKey>)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.Controls.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Subscribe
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.Controls.cs
+    startLine: 18
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Calls <code class="paramref">keyDown</code> / <code class="paramref">keyUp</code> for every key while <code class="paramref">owner</code> is on a
+
+    canvas. The owner is held weakly: a control removed without Dispose is not kept alive by its handlers, and it
+
+    gets no keys while it is off the canvas (they come back when it is added again). <xref href="DrawnUi.Draw.KeyboardManager.Unsubscribe(DrawnUi.Draw.SkiaControl)" data-throw-if-not-resolved="false"></xref>
+
+    removes them; Dispose of the owner should call it.
+  example: []
+  syntax:
+    content: public static void Subscribe(SkiaControl owner, Action<InputKey> keyDown, Action<InputKey> keyUp = null)
+    parameters:
+    - id: owner
+      type: DrawnUi.Draw.SkiaControl
+    - id: keyDown
+      type: System.Action{DrawnUi.Draw.InputKey}
+    - id: keyUp
+      type: System.Action{DrawnUi.Draw.InputKey}
+    content.vb: Public Shared Sub Subscribe(owner As SkiaControl, keyDown As Action(Of InputKey), keyUp As Action(Of InputKey) = Nothing)
+  overload: DrawnUi.Draw.KeyboardManager.Subscribe*
+  nameWithType.vb: KeyboardManager.Subscribe(SkiaControl, Action(Of InputKey), Action(Of InputKey))
+  fullName.vb: DrawnUi.Draw.KeyboardManager.Subscribe(DrawnUi.Draw.SkiaControl, System.Action(Of DrawnUi.Draw.InputKey), System.Action(Of DrawnUi.Draw.InputKey))
+  name.vb: Subscribe(SkiaControl, Action(Of InputKey), Action(Of InputKey))
+- uid: DrawnUi.Draw.KeyboardManager.Unsubscribe(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Draw.KeyboardManager.Unsubscribe(DrawnUi.Draw.SkiaControl)
+  id: Unsubscribe(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Draw.KeyboardManager
+  langs:
+  - csharp
+  - vb
+  name: Unsubscribe(SkiaControl)
+  nameWithType: KeyboardManager.Unsubscribe(SkiaControl)
+  fullName: DrawnUi.Draw.KeyboardManager.Unsubscribe(DrawnUi.Draw.SkiaControl)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.Controls.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Unsubscribe
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.Controls.cs
+    startLine: 38
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Removes every handler <code class="paramref">owner</code> registered with <xref href="DrawnUi.Draw.KeyboardManager.Subscribe(DrawnUi.Draw.SkiaControl%2cSystem.Action%7bDrawnUi.Draw.InputKey%7d%2cSystem.Action%7bDrawnUi.Draw.InputKey%7d)" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static void Unsubscribe(SkiaControl owner)
+    parameters:
+    - id: owner
+      type: DrawnUi.Draw.SkiaControl
+    content.vb: Public Shared Sub Unsubscribe(owner As SkiaControl)
+  overload: DrawnUi.Draw.KeyboardManager.Unsubscribe*
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -971,6 +1162,71 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: DrawnUi.Draw.KeyboardManager.IsKeyHandled*
+  commentId: Overload:DrawnUi.Draw.KeyboardManager.IsKeyHandled
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_IsKeyHandled
+  name: IsKeyHandled
+  nameWithType: KeyboardManager.IsKeyHandled
+  fullName: DrawnUi.Draw.KeyboardManager.IsKeyHandled
+- uid: DrawnUi.Draw.KeyboardManager.IsKeyHandled
+  commentId: P:DrawnUi.Draw.KeyboardManager.IsKeyHandled
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_IsKeyHandled
+  name: IsKeyHandled
+  nameWithType: KeyboardManager.IsKeyHandled
+  fullName: DrawnUi.Draw.KeyboardManager.IsKeyHandled
+- uid: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey,System.Boolean)
+  commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey,System.Boolean)
+  isExternal: true
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardPressed_DrawnUi_Draw_InputKey_System_Boolean_
+  name: KeyboardPressed(InputKey, bool)
+  nameWithType: KeyboardManager.KeyboardPressed(InputKey, bool)
+  fullName: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey, bool)
+  nameWithType.vb: KeyboardManager.KeyboardPressed(InputKey, Boolean)
+  fullName.vb: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey, Boolean)
+  name.vb: KeyboardPressed(InputKey, Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey,System.Boolean)
+    name: KeyboardPressed
+    href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardPressed_DrawnUi_Draw_InputKey_System_Boolean_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey,System.Boolean)
+    name: KeyboardPressed
+    href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardPressed_DrawnUi_Draw_InputKey_System_Boolean_
+  - name: (
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: DrawnUi.Draw.KeyboardManager.MarkKeyHandled*
+  commentId: Overload:DrawnUi.Draw.KeyboardManager.MarkKeyHandled
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_MarkKeyHandled_DrawnUi_Draw_InputKey_
+  name: MarkKeyHandled
+  nameWithType: KeyboardManager.MarkKeyHandled
+  fullName: DrawnUi.Draw.KeyboardManager.MarkKeyHandled
+- uid: DrawnUi.Draw.InputKey
+  commentId: T:DrawnUi.Draw.InputKey
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.InputKey.html
+  name: InputKey
+  nameWithType: InputKey
+  fullName: DrawnUi.Draw.InputKey
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardChar*
   commentId: Overload:DrawnUi.Draw.KeyboardManager.KeyboardChar
   href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardChar_System_String_
@@ -1000,13 +1256,12 @@ references:
   name: KeyboardPressed
   nameWithType: KeyboardManager.KeyboardPressed
   fullName: DrawnUi.Draw.KeyboardManager.KeyboardPressed
-- uid: DrawnUi.Draw.InputKey
-  commentId: T:DrawnUi.Draw.InputKey
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.InputKey.html
-  name: InputKey
-  nameWithType: InputKey
-  fullName: DrawnUi.Draw.InputKey
+- uid: DrawnUi.Draw.KeyboardManager.IsDispatchingKeyDown*
+  commentId: Overload:DrawnUi.Draw.KeyboardManager.IsDispatchingKeyDown
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_IsDispatchingKeyDown
+  name: IsDispatchingKeyDown
+  nameWithType: KeyboardManager.IsDispatchingKeyDown
+  fullName: DrawnUi.Draw.KeyboardManager.IsDispatchingKeyDown
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardReleased*
   commentId: Overload:DrawnUi.Draw.KeyboardManager.KeyboardReleased
   href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardReleased_DrawnUi_Draw_InputKey_
@@ -1037,3 +1292,183 @@ references:
   name: IsMetaPressed
   nameWithType: KeyboardManager.IsMetaPressed
   fullName: DrawnUi.Draw.KeyboardManager.IsMetaPressed
+- uid: DrawnUi.Draw.KeyboardManager.Unsubscribe(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Draw.KeyboardManager.Unsubscribe(DrawnUi.Draw.SkiaControl)
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_Unsubscribe_DrawnUi_Draw_SkiaControl_
+  name: Unsubscribe(SkiaControl)
+  nameWithType: KeyboardManager.Unsubscribe(SkiaControl)
+  fullName: DrawnUi.Draw.KeyboardManager.Unsubscribe(DrawnUi.Draw.SkiaControl)
+  spec.csharp:
+  - uid: DrawnUi.Draw.KeyboardManager.Unsubscribe(DrawnUi.Draw.SkiaControl)
+    name: Unsubscribe
+    href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_Unsubscribe_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.KeyboardManager.Unsubscribe(DrawnUi.Draw.SkiaControl)
+    name: Unsubscribe
+    href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_Unsubscribe_DrawnUi_Draw_SkiaControl_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: )
+- uid: DrawnUi.Draw.KeyboardManager.Subscribe*
+  commentId: Overload:DrawnUi.Draw.KeyboardManager.Subscribe
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_Subscribe_DrawnUi_Draw_SkiaControl_System_Action_DrawnUi_Draw_InputKey__System_Action_DrawnUi_Draw_InputKey__
+  name: Subscribe
+  nameWithType: KeyboardManager.Subscribe
+  fullName: DrawnUi.Draw.KeyboardManager.Subscribe
+- uid: DrawnUi.Draw.SkiaControl
+  commentId: T:DrawnUi.Draw.SkiaControl
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaControl.html
+  name: SkiaControl
+  nameWithType: SkiaControl
+  fullName: DrawnUi.Draw.SkiaControl
+- uid: System.Action{DrawnUi.Draw.InputKey}
+  commentId: T:System.Action{DrawnUi.Draw.InputKey}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<InputKey>
+  nameWithType: Action<InputKey>
+  fullName: System.Action<DrawnUi.Draw.InputKey>
+  nameWithType.vb: Action(Of InputKey)
+  fullName.vb: System.Action(Of DrawnUi.Draw.InputKey)
+  name.vb: Action(Of InputKey)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Draw.KeyboardManager.Subscribe(DrawnUi.Draw.SkiaControl,System.Action{DrawnUi.Draw.InputKey},System.Action{DrawnUi.Draw.InputKey})
+  commentId: M:DrawnUi.Draw.KeyboardManager.Subscribe(DrawnUi.Draw.SkiaControl,System.Action{DrawnUi.Draw.InputKey},System.Action{DrawnUi.Draw.InputKey})
+  isExternal: true
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_Subscribe_DrawnUi_Draw_SkiaControl_System_Action_DrawnUi_Draw_InputKey__System_Action_DrawnUi_Draw_InputKey__
+  name: Subscribe(SkiaControl, Action<InputKey>, Action<InputKey>)
+  nameWithType: KeyboardManager.Subscribe(SkiaControl, Action<InputKey>, Action<InputKey>)
+  fullName: DrawnUi.Draw.KeyboardManager.Subscribe(DrawnUi.Draw.SkiaControl, System.Action<DrawnUi.Draw.InputKey>, System.Action<DrawnUi.Draw.InputKey>)
+  nameWithType.vb: KeyboardManager.Subscribe(SkiaControl, Action(Of InputKey), Action(Of InputKey))
+  fullName.vb: DrawnUi.Draw.KeyboardManager.Subscribe(DrawnUi.Draw.SkiaControl, System.Action(Of DrawnUi.Draw.InputKey), System.Action(Of DrawnUi.Draw.InputKey))
+  name.vb: Subscribe(SkiaControl, Action(Of InputKey), Action(Of InputKey))
+  spec.csharp:
+  - uid: DrawnUi.Draw.KeyboardManager.Subscribe(DrawnUi.Draw.SkiaControl,System.Action{DrawnUi.Draw.InputKey},System.Action{DrawnUi.Draw.InputKey})
+    name: Subscribe
+    href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_Subscribe_DrawnUi_Draw_SkiaControl_System_Action_DrawnUi_Draw_InputKey__System_Action_DrawnUi_Draw_InputKey__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: '>'
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.KeyboardManager.Subscribe(DrawnUi.Draw.SkiaControl,System.Action{DrawnUi.Draw.InputKey},System.Action{DrawnUi.Draw.InputKey})
+    name: Subscribe
+    href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_Subscribe_DrawnUi_Draw_SkiaControl_System_Action_DrawnUi_Draw_InputKey__System_Action_DrawnUi_Draw_InputKey__
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: )
+  - name: ','
+  - name: " "
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.InputKey
+    name: InputKey
+    href: DrawnUi.Draw.InputKey.html
+  - name: )
+  - name: )
+- uid: DrawnUi.Draw.KeyboardManager.Unsubscribe*
+  commentId: Overload:DrawnUi.Draw.KeyboardManager.Unsubscribe
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_Unsubscribe_DrawnUi_Draw_SkiaControl_
+  name: Unsubscribe
+  nameWithType: KeyboardManager.Unsubscribe
+  fullName: DrawnUi.Draw.KeyboardManager.Unsubscribe

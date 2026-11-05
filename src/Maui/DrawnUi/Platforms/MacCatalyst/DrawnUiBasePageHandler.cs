@@ -59,14 +59,15 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
                         var shift = press.Key?.ModifierFlags.HasFlag(UIKeyModifierFlags.Shift) ?? KeyboardManager.IsShiftPressed;
                         if (TakeTab())
                         {
-                            KeyboardManager.KeyboardPressed(mapped);
                             NavigateTab(shift);
+                            KeyboardManager.KeyboardPressed(mapped);
                         }
                         continue;
                     }
 
-                    KeyboardManager.KeyboardPressed(mapped);
+                    // the canvas navigation first: KeyDown then tells the app whether it used the key (IsKeyHandled)
                     FindKeyboardCanvas()?.HandleKeyboardNavigation(mapped, KeyboardManager.IsShiftPressed);
+                    KeyboardManager.KeyboardPressed(mapped);
                 }
 
                 if (consumed) return;
@@ -143,9 +144,9 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
         {
             if (!TakeTab())
                 return;
+            NavigateTab(shift);
             KeyboardManager.KeyboardPressed(InputKey.Tab); // the app still gets Tab, as on the other platforms
             KeyboardManager.KeyboardReleased(InputKey.Tab);
-            NavigateTab(shift);
         }
 
         /// <summary>

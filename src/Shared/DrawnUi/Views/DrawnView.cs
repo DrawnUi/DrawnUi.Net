@@ -756,6 +756,13 @@ namespace DrawnUi.Views
         /// override <see cref="DrawKeyboardFocus"/>), and every <see cref="SkiaScroll"/> around it keeps its scroll bars
         /// visible. Null hides both. Pointer input clears it, keyboard focus itself stays with the accessibility layer.
         /// </summary>
+        /// <summary>
+        /// Moves the keyboard and screen-reader focus to <paramref name="control"/> at the end of the next frame, for app
+        /// code such as a custom menu that moves its highlight. A control not drawn yet gets it once it is, within 3
+        /// seconds. The focus ring keeps its state: it shows only if the keyboard is in use.
+        /// </summary>
+        public void SetAccessibilityFocus(SkiaControl control) => AccessibilityManager.RequestAccessibilityFocus(control);
+
         public ISkiaAccessibilityNode KeyboardFocusNode
         {
             get => _keyboardFocusNode;
@@ -778,9 +785,18 @@ namespace DrawnUi.Views
         /// Keyboard navigation for a head with no accessibility layer of its own (MAUI Mac Catalyst), with the rules of
         /// the MAUI Windows and WPF layers: Tab / Shift+Tab walk the Tab stops (<see cref="SkiaAccessibilityManager.NextTabStop"/>)
         /// from the node in focus (the keyboard's, else the last one tapped), Enter / Space activate it, Escape leaves the
-        /// drawn nodes, arrows / Home / End / PageUp / PageDown go to the node, else to its group. True when the key was used.
+        /// drawn nodes, arrows / Home / End / PageUp / PageDown go to the node, else to its group. True when the key was used;
+        /// the KeyDown raised next for it then reports <see cref="KeyboardManager.IsKeyHandled"/>.
         /// </summary>
         public bool HandleKeyboardNavigation(InputKey key, bool shift)
+        {
+            var used = NavigateWithKey(key, shift);
+            if (used)
+                KeyboardManager.MarkKeyHandled(key);
+            return used;
+        }
+
+        private bool NavigateWithKey(InputKey key, bool shift)
         {
             var current = KeyboardFocusNode ?? AccessibilityManager.FocusedNode;
             if (AccessibilityManager.IsOutsideModal(current))
@@ -1085,7 +1101,23 @@ namespace DrawnUi.Views
         public virtual void DisconnectedHandler()
         {
             HasHandler = false;
-            Super.NeedGlobalRefresh -= OnNeedUpdate;
+            GlobalRefreshViews.Remove(this);
+        }
+
+        // Canvases a global refresh reaches, held weakly: the static Super.NeedGlobalRefresh must not keep a canvas alive
+        // whose handler never disconnected (a dropped page, a headless host).
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<DrawnView, object> GlobalRefreshViews = new();
+
+        private static readonly bool GlobalRefreshHooked = HookGlobalRefresh();
+
+        private static bool HookGlobalRefresh()
+        {
+            Super.NeedGlobalRefresh += (sender, e) =>
+            {
+                foreach (var pair in GlobalRefreshViews)
+                    pair.Key.OnNeedUpdate(sender, e);
+            };
+            return true;
         }
 
         public long NeedGlobalRefreshCount { get; set; }
@@ -1125,8 +1157,8 @@ namespace DrawnUi.Views
         public virtual void ConnectedHandler()
         {
             HasHandler = true;
-            Super.NeedGlobalRefresh -= OnNeedUpdate;
-            Super.NeedGlobalRefresh += OnNeedUpdate;
+            _ = GlobalRefreshHooked;
+            GlobalRefreshViews.AddOrUpdate(this, null);
         }
 
 
@@ -1335,6 +1367,7 @@ namespace DrawnUi.Views
                     IsDisposing = true;
 
                     InitFramework(false);
+                    GlobalRefreshViews.Remove(this);
 
                     OnDisposing();
 

@@ -214,7 +214,7 @@ internal sealed class DrawnUiAutomationPeer : FrameworkElementAutomationPeer
 // (WindowsUiaInterfaces.cs, for the raw UIA provider) wins over a using. With that one the peer did not implement WinUI's,
 // the Invoke pattern failed to cast (E_NOINTERFACE) and Narrator could not activate any drawn control.
 internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, Microsoft.UI.Xaml.Automation.Provider.IInvokeProvider, IToggleProvider,
-    IRangeValueProvider, IValueProvider, IScrollItemProvider
+    IRangeValueProvider, IValueProvider, IScrollItemProvider, IExpandCollapseProvider
 {
     private AccessibilityNode _node;
     private int _index;
@@ -227,11 +227,14 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, Microsoft.U
     internal void UpdateSnapshot(AccessibilityNode node, int index)
     {
         var wasPressed = _node.IsPressed;
+        var wasExpanded = _node.IsExpanded;
         var wasValue = _node.Value;
         _node  = node;
         _index = index;
         if (wasPressed != node.IsPressed)
             RaisePropertyChangedEvent(TogglePatternIdentifiers.ToggleStateProperty, ToState(wasPressed), ToState(node.IsPressed));
+        if (wasExpanded != node.IsExpanded && wasExpanded.HasValue && node.IsExpanded.HasValue)
+            RaisePropertyChangedEvent(ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty, ToExpandState(wasExpanded), ToExpandState(node.IsExpanded));
         if (wasValue is { } before && node.Value is { } now && before.Now != now.Now)
             RaisePropertyChangedEvent(RangeValuePatternIdentifiers.ValueProperty, before.Now, now.Now);
     }
@@ -318,6 +321,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, Microsoft.U
     {
         PatternInterface.Invoke when _node.CanInteract => this,
         PatternInterface.Toggle when (Source?.AccessibilityIsPressed ?? _node.IsPressed).HasValue => this,
+        PatternInterface.ExpandCollapse when IsExpanded.HasValue => this,
         PatternInterface.RangeValue when _node.Value.HasValue => this,
         PatternInterface.Value when !string.IsNullOrEmpty(_node.Value?.Text) => this,
         PatternInterface.ScrollItem => this,
@@ -386,6 +390,27 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, Microsoft.U
         false => ToggleState.Off,
         _     => ToggleState.Indeterminate,
     };
+
+    // IExpandCollapseProvider: the state only reports; Expand / Collapse tap the control, the app opens or closes it
+
+    private bool? IsExpanded => Source?.AccessibilityIsExpanded ?? _node.IsExpanded;
+
+    public ExpandCollapseState ExpandCollapseState => ToExpandState(IsExpanded);
+
+    public void Expand()
+    {
+        if (IsExpanded == false)
+            Invoke();
+    }
+
+    public void Collapse()
+    {
+        if (IsExpanded == true)
+            Invoke();
+    }
+
+    private static ExpandCollapseState ToExpandState(bool? expanded) =>
+        expanded == true ? ExpandCollapseState.Expanded : ExpandCollapseState.Collapsed;
 
     // IInvokeProvider ─────────────────────────────────────────────────────────
 

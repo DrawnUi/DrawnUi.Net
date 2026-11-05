@@ -1442,22 +1442,41 @@ public partial class SkiaControl
 
         static void WorkerLoop()
         {
-            foreach (var control in Work.GetConsumingEnumerable())
+            while (BakeNext())
             {
-                try
-                {
-                    if (control.IsDisposed || control.IsDisposing)
-                        continue;
-
-                    // drains the control's own action queue; per-control semaphore keeps this safe
-                    // against a concurrent pump for the same control on another worker
-                    control.ProcessOffscreenCacheRenderingAsync().GetAwaiter().GetResult();
-                }
-                catch (Exception e)
-                {
-                    Super.Log(e);
-                }
             }
+        }
+
+        // One control per call: a waiting worker holds no reference to the control it baked last (a foreach over
+        // GetConsumingEnumerable kept it, and its page, alive in the enumerator's Current until the next item).
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        static bool BakeNext()
+        {
+            SkiaControl control;
+            try
+            {
+                control = Work.Take();
+            }
+            catch (InvalidOperationException)
+            {
+                return false; // completed adding (shutdown)
+            }
+
+            try
+            {
+                if (control.IsDisposed || control.IsDisposing)
+                    return true;
+
+                // drains the control's own action queue; per-control semaphore keeps this safe
+                // against a concurrent pump for the same control on another worker
+                control.ProcessOffscreenCacheRenderingAsync().GetAwaiter().GetResult();
+            }
+            catch (Exception e)
+            {
+                Super.Log(e);
+            }
+
+            return true;
         }
     }
 

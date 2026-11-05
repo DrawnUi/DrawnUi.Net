@@ -314,6 +314,16 @@ namespace DrawnUi.Views
                 }
             }
 
+            // a control that opens something (a menu title, a dropdown): open or closed is spoken as its state, and
+            // TalkBack offers expand or collapse, which taps it as a double tap does (the app opens or closes it)
+            var expanded = node.Source?.AccessibilityIsExpanded ?? node.IsExpanded;
+            if (expanded.HasValue)
+            {
+                info.StateDescription = expanded.Value ? "expanded" : "collapsed";
+                if (node.CanInteract)
+                    info.AddAction(expanded.Value ? AccessibilityNodeInfoCompat.ActionCollapse : AccessibilityNodeInfoCompat.ActionExpand);
+            }
+
             var live = node.Live ?? node.Source?.AccessibilityLive;
             info.LiveRegion = live switch
             {
@@ -330,7 +340,9 @@ namespace DrawnUi.Views
             if (source == null)
                 return false;
 
-            if (action == AccessibilityNodeInfoCompat.ActionClick)
+            if (action == AccessibilityNodeInfoCompat.ActionClick
+                || action == AccessibilityNodeInfoCompat.ActionExpand && source.AccessibilityIsExpanded == false
+                || action == AccessibilityNodeInfoCompat.ActionCollapse && source.AccessibilityIsExpanded == true)
             {
                 if (!SkiaAccessibilityManager.Activate(source))
                     return false;

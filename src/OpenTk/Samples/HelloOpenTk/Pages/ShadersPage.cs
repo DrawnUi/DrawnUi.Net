@@ -103,7 +103,7 @@ half4 main(float2 fragCoord) {
                     MaximumWidthRequest = 720,
                     Children = new List<SkiaControl>
                     {
-                        new SkiaLabel("Shaders") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center },
+                        new SkiaLabel("Shaders") { FontSize = 24, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Fill, HorizontalTextAlignment = DrawTextAlignment.Center, AccessibilityRole = DrawnUi.Models.Aria.RolePresentation },
                         new SkiaLabel("") { FontSize = 12, TextColor = Color.Parse("#FF6B6B"), HorizontalOptions = LayoutOptions.Fill, IsVisible = false }.Assign(out _error),
 
                         Card(Title(CarouselTitle()).Assign(out _carouselTitle).Adapt(me => me.FontFamilyFallback = Symbols),

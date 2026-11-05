@@ -9,6 +9,7 @@ items:
   - DrawnUi.Draw.LineSpan.Default
   - DrawnUi.Draw.LineSpan.Glyphs
   - DrawnUi.Draw.LineSpan.NeedsShaping
+  - DrawnUi.Draw.LineSpan.ShapeRightToLeft
   - DrawnUi.Draw.LineSpan.Size
   - DrawnUi.Draw.LineSpan.Span
   - DrawnUi.Draw.LineSpan.Text
@@ -187,6 +188,40 @@ items:
       type: System.Boolean
     content.vb: Public Property NeedsShaping As Boolean
   overload: DrawnUi.Draw.LineSpan.NeedsShaping*
+- uid: DrawnUi.Draw.LineSpan.ShapeRightToLeft
+  commentId: P:DrawnUi.Draw.LineSpan.ShapeRightToLeft
+  id: ShapeRightToLeft
+  parent: DrawnUi.Draw.LineSpan
+  langs:
+  - csharp
+  - vb
+  name: ShapeRightToLeft
+  nameWithType: LineSpan.ShapeRightToLeft
+  fullName: DrawnUi.Draw.LineSpan.ShapeRightToLeft
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/LineSpan.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ShapeRightToLeft
+    path: ../src/Shared/DrawnUi/Draw/Text/LineSpan.cs
+    startLine: 21
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    A run of a right-to-left level made only of neutral characters (brackets, punctuation): shaped right to left
+
+    on purpose, so brackets mirror, since shaping would guess left to right from such text.
+  example: []
+  syntax:
+    content: public bool ShapeRightToLeft { readonly get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property ShapeRightToLeft As Boolean
+  overload: DrawnUi.Draw.LineSpan.ShapeRightToLeft*
 - uid: DrawnUi.Draw.LineSpan.Size
   commentId: P:DrawnUi.Draw.LineSpan.Size
   id: Size
@@ -205,7 +240,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Size
     path: ../src/Shared/DrawnUi/Draw/Text/LineSpan.cs
-    startLine: 17
+    startLine: 23
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -234,7 +269,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Default
     path: ../src/Shared/DrawnUi/Draw/Text/LineSpan.cs
-    startLine: 21
+    startLine: 27
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -658,6 +693,12 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: DrawnUi.Draw.LineSpan.ShapeRightToLeft*
+  commentId: Overload:DrawnUi.Draw.LineSpan.ShapeRightToLeft
+  href: DrawnUi.Draw.LineSpan.html#DrawnUi_Draw_LineSpan_ShapeRightToLeft
+  name: ShapeRightToLeft
+  nameWithType: LineSpan.ShapeRightToLeft
+  fullName: DrawnUi.Draw.LineSpan.ShapeRightToLeft
 - uid: DrawnUi.Draw.LineSpan.Size*
   commentId: Overload:DrawnUi.Draw.LineSpan.Size
   href: DrawnUi.Draw.LineSpan.html#DrawnUi_Draw_LineSpan_Size

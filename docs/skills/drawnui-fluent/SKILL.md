@@ -165,7 +165,7 @@ Always use fluent extension methods — never `+=` events or commands wired outs
 | Label text + sender | `.OnTextChanged((lbl, text) => { ... })` |
 | Arbitrary setup | `.Adapt(me => { me.X = ...; })` |
 | Post-build wiring (touching Assign'd refs) | `.Initialize(me => { ... })` |
-| Key pressed | `.OnKeyDown((me, key) => { ... })` |
+| Key pressed | `.OnKeyDown((me, key) => { ... })` — fires only while the control is on a canvas; a removed page is released with it |
 | Key released | `.OnKeyUp((me, key) => { ... })` |
 | Paint hook (before own background) | `.WhenPaint((me, ctx) => { ... })` |
 | Overlay above content + children | `.WhenPainted((ctx, control) => { ...; return false; })` — `true` = keep repainting |
@@ -648,6 +648,8 @@ public override void OnWillDisposeWithChildren()
 Set on a child whose size changes at runtime (status labels, send bar, chat entry) so its remeasure does not propagate up and force the parent to remeasure. Needs an explicit size on the child; unnecessary when the parent has Fill or an explicit size.
 
 ## Accessibility and keyboard in code-behind
+
+Groups that go round: `.WithKeyboardWrap()` on a menu or list (arrows from the last item to the first and back). Focus from code: `canvas.SetAccessibilityFocus(control)` (keyboard and screen reader follow, at the next frame end). In a key handler, `KeyboardManager.IsKeyHandled` = the canvas navigation already used this key (skip Enter / Space then: the focused control was activated). Dialogs: `.WithAccessibilityModal()`.
 
 Lists and bars the keyboard should walk: a group role on the container, a role and a label on every item (`using DrawnUi.Models;` for `Aria`).
 
