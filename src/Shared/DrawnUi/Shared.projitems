@@ -152,6 +152,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\TintEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\TintWithAlphaEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Keyboard\KeyboardManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Keyboard\KeyboardManager.Controls.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Tooltips\TooltipStyle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Keyboard\MauiKeys.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Shaders\SKSL.cs" />

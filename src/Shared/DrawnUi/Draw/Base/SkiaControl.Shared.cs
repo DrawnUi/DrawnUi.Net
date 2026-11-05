@@ -3266,6 +3266,7 @@ namespace DrawnUi.Draw
             Superview?.ForgetHover(this);
             Superview?.UnregisterGestureListener(this as ISkiaGestureListener);
             Superview?.UnregisterAllAnimatorsByParent(this);
+            _parkedAnimators = null;
             Superview?.AccessibilityManager.UnregisterSubtree(this);
             if (_accessibilityModal)
                 SkiaAccessibilityManager.Modals.Remove(this);
@@ -9325,6 +9326,7 @@ namespace DrawnUi.Draw
 
                 bool needKick = false;
                 _lastAnimatorManager = Superview;
+                ResumeParkedAnimators();
                 while (PendingUnattachedAnimators.TryTake(out var animator))
                 {
                     Superview.AddAnimator(animator);
@@ -9342,6 +9344,50 @@ namespace DrawnUi.Draw
         }
 
         protected ConcurrentBag<ISkiaAnimator> PendingUnattachedAnimators = new();
+
+        // animators of this subtree taken off the canvas while it is removed; they go back when it is attached again
+        private List<ISkiaAnimator>? _parkedAnimators;
+
+        /// <summary>
+        /// This control was removed from its parent: the canvas lets go of every animator of its subtree (running or
+        /// paused), which wait on this control until it is attached again.
+        /// </summary>
+        private void ParkSubtreeAnimators(DrawnView canvas)
+        {
+            foreach (var pair in canvas.AnimatingControls)
+            {
+                if (pair.Value.Parent is not SkiaControl owner || !IsSelfOrAncestorOf(owner))
+                    continue;
+                if (canvas.AnimatingControls.TryRemove(pair.Key, out var animator))
+                    (_parkedAnimators ??= new()).Add(animator);
+            }
+        }
+
+        private bool IsSelfOrAncestorOf(SkiaControl control)
+        {
+            for (IDrawnBase? current = control; current != null; current = (current as SkiaControl)?.Parent)
+            {
+                if (ReferenceEquals(current, this))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>Attached again: the animators parked when this subtree was removed go back to the canvas.</summary>
+        private void ResumeParkedAnimators()
+        {
+            if (_parkedAnimators == null || IsDisposed || Parent == null || Superview is not { } canvas)
+                return;
+
+            var parked = _parkedAnimators;
+            _parkedAnimators = null;
+            foreach (var animator in parked)
+            {
+                // a control taken out of this subtree meanwhile, or disposed, does not come back with it
+                if (animator.Parent is SkiaControl { IsDisposed: false } owner && IsSelfOrAncestorOf(owner))
+                    canvas.AddAnimator(animator);
+            }
+        }
 
         #region Animation
 
@@ -9887,8 +9933,10 @@ namespace DrawnUi.Draw
                         Superview?.AccessibilityManager.UnregisterSubtree(iAmAccessibilityNode);
                     }
 
-                    //fill animations
-                    Superview?.UnregisterAllAnimatorsByParent(this);
+                    // the animations of this subtree pause while it is off the canvas, and resume when it comes back:
+                    // the canvas keeps no animator of a removed page (it would keep the page alive and tick for nothing)
+                    if (Superview is { } canvas)
+                        ParkSubtreeAnimators(canvas);
 
                     oldParent.Views.Remove(this);
 
@@ -9924,6 +9972,7 @@ namespace DrawnUi.Draw
                 }
 
                 InvalidateInternal();
+                ResumeParkedAnimators();
             }
         }
 

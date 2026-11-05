@@ -31,14 +31,13 @@ namespace DrawnUi.Gaming
         {
             Super.Log("****************** GAME CREATED **********************");
 
-            KeyboardManager.KeyDown += OnKeyboardDownEvent;
-            KeyboardManager.KeyUp += OnKeyboardUpEvent;
+            // keys only while the game is on a canvas; the game is held weakly, a removed one is collected
+            KeyboardManager.Subscribe(this, key => OnKeyboardDownEvent(this, key), key => OnKeyboardUpEvent(this, key));
         }
 
         public override void OnDisposing()
         {
-            KeyboardManager.KeyUp -= OnKeyboardUpEvent;
-            KeyboardManager.KeyDown -= OnKeyboardDownEvent;
+            KeyboardManager.Unsubscribe(this);
 
             base.OnDisposing();
         }

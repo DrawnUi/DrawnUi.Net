@@ -364,9 +364,9 @@ namespace DrawnUi.Draw
         #region KEYBOARD
 
         /// <summary>
-        /// Subscribes to global keyboard key-down while this control is alive. The handler
-        /// receives (control, key). Auto-unsubscribes when the control is disposed, so it is
-        /// safe to chain at construction. Keyboard events flow whenever the DrawnUI canvas has
+        /// Subscribes to global keyboard key-down while this control is on a canvas. The handler
+        /// receives (control, key). The control is held weakly (a removed page is collected), gets no
+        /// keys while it is off the canvas, and unsubscribes when disposed, so it is safe to chain at construction. Keyboard events flow whenever the DrawnUI canvas has
         /// focus (Blazor/Wasm/OpenTK). Handy for keyboard-driven games and shortcuts.
         /// </summary>
         public static T OnKeyDown<T>(this T control, Action<T, InputKey> action) where T : SkiaControl
@@ -374,9 +374,9 @@ namespace DrawnUi.Draw
             if (action == null)
                 return control;
 
-            void Handler(object sender, InputKey key) => action(control, key);
-            KeyboardManager.KeyDown += Handler;
-            control.ExecuteUponDisposal[$"OnKeyDown_{Guid.NewGuid()}"] = () => KeyboardManager.KeyDown -= Handler;
+            // held weakly and called only while the control is on a canvas: a removed page is not kept alive
+            KeyboardManager.Subscribe(control, key => action(control, key));
+            control.ExecuteUponDisposal["KeyboardManager.Subscribe"] = () => KeyboardManager.Unsubscribe(control);
             return control;
         }
 
@@ -388,9 +388,8 @@ namespace DrawnUi.Draw
             if (action == null)
                 return control;
 
-            void Handler(object sender, InputKey key) => action(control, key);
-            KeyboardManager.KeyUp += Handler;
-            control.ExecuteUponDisposal[$"OnKeyUp_{Guid.NewGuid()}"] = () => KeyboardManager.KeyUp -= Handler;
+            KeyboardManager.Subscribe(control, null, key => action(control, key));
+            control.ExecuteUponDisposal["KeyboardManager.Subscribe"] = () => KeyboardManager.Unsubscribe(control);
             return control;
         }
 
