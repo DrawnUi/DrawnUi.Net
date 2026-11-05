@@ -649,7 +649,7 @@ Set on a child whose size changes at runtime (status labels, send bar, chat entr
 
 ## Accessibility and keyboard in code-behind
 
-Groups that go round: `.WithKeyboardWrap()` on a menu or list (arrows from the last item to the first and back). Focus from code: `canvas.SetAccessibilityFocus(control)` (keyboard and screen reader follow, at the next frame end). Dialogs: `.WithAccessibilityModal()`.
+Groups that go round: `.WithKeyboardWrap()` on a menu or list (arrows from the last item to the first and back). Focus from code: `canvas.SetAccessibilityFocus(control)` (keyboard and screen reader follow, at the next frame end). In a key handler, `KeyboardManager.IsKeyHandled` = the canvas navigation already used this key (skip Enter / Space then: the focused control was activated). Dialogs: `.WithAccessibilityModal()`.
 
 Lists and bars the keyboard should walk: a group role on the container, a role and a label on every item (`using DrawnUi.Models;` for `Aria`).
 

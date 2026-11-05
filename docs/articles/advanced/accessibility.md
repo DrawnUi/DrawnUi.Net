@@ -236,7 +236,20 @@ On an OpenTK window, Enter, Space, Escape and the arrow keys go to the focused n
 
 **Focus ring.** It appears only after the keyboard was used, never at launch or after a click, like native Windows focus visuals. Desktop targets and WebAssembly draw it on the canvas on top of every frame (`DrawnView.KeyboardFocusNode`, color `DrawnView.KeyboardFocusColor`), so it follows the control while it scrolls. Blazor uses the CSS outline of its overlay element. Pointer input hides it. Every `SkiaScroll` around the focused control keeps its auto-hiding scroll bars visible while the focus is there.
 
-**Your own keys.** Keys the drawn nodes do not use (and Escape too) still reach `KeyboardManager.KeyDown`, for example to close a panel. For handlers that belong to a control, use `.OnKeyDown(...)` / `.OnKeyUp(...)` or `KeyboardManager.Subscribe(control, keyDown, keyUp)`: they fire only while the control is on a canvas, and a page removed from the screen is released with its handlers. On .NET MAUI enable it with `UseDesktopKeyboard = true` in `DrawnUiStartupSettings`. The manager listens to the window before the canvas, so it gets every key while the canvas has focus.
+**Your own keys.** Keys the drawn nodes do not use (and Escape too) still reach `KeyboardManager.KeyDown`, for example to close a panel. For handlers that belong to a control, use `.OnKeyDown(...)` / `.OnKeyUp(...)` or `KeyboardManager.Subscribe(control, keyDown, keyUp)`: they fire only while the control is on a canvas, and a page removed from the screen is released with its handlers. On .NET MAUI enable it with `UseDesktopKeyboard = true` in `DrawnUiStartupSettings`. Every key reaches `KeyDown`, also while the canvas has focus.
+
+**Keys the canvas already used.** On every head the canvas's keyboard navigation sees a key first, then `KeyDown` is raised. While it runs, `KeyboardManager.IsKeyHandled` is true when navigation used that key: Tab moved the focus, Enter or Space activated the focused control, an arrow moved inside a list or a menu or stepped a slider, Escape let the drawn controls go. A handler that would do the same thing skips it, so one press does one thing:
+
+```csharp
+KeyboardManager.KeyDown += (_, key) =>
+{
+    if (key is InputKey.Enter or InputKey.Space && KeyboardManager.IsKeyHandled)
+        return; // the focused control was activated already
+    ...
+};
+```
+
+Keys nothing used (letters, shortcuts, a game's arrows while nothing has keyboard focus) arrive with `IsKeyHandled` false. On the web heads the browser moves Tab itself, so there the flag covers Enter, Space and the arrow keys. When a popup window closes with the keyboard in it, the keyboard goes back to the control that opened it, unless the app called `SetAccessibilityFocus` in that same frame: the app's choice wins (`SetAccessibilityFocus(null)` keeps it from moving).
 
 **Only controls the pointer can use.** Keyboard navigation follows the pointer's rules (`SkiaControl.CanReceiveGesture`). A node is a Tab stop, gets activated and takes keys only while a tap (a pan, for the arrow keys) would reach it. That means:
 
