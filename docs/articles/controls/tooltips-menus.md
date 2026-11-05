@@ -168,13 +168,31 @@ new SkiaButton("Choose a fruit")
 ### Menu bar
 
 A desktop menu bar is a row of titles (`Aria.RoleMenuBar`), each opening its menu below it with
-`OpenPopupWindow(menu, title)`. The Hello apps' menu bar shows the usual desktop behavior built from these pieces:
+`OpenPopupWindow(menu, title)`. The Hello apps' menu bar works the way desktop users expect, from the mouse and from
+the keyboard alone:
 
-- A click opens a menu; while one is open, the mouse over another title opens that one.
-- Alt with the underlined letter opens a menu (Alt+F for File), its first line ready for the keyboard; Left and Right
-  open the next menu, Up and Down move through it, Enter picks, Escape closes. The keys come from
-  `KeyboardManager.KeyDown`, the modifiers from `KeyboardManager.IsAltPressed` / `IsControlPressed`.
-- Each line shows its shortcut (Ctrl+S, F1); the shortcuts work with the menus closed too.
-- The open title is highlighted, and goes back to normal when its menu closes for any reason (`PopupWindowClosed`).
+- **Mouse:** a click opens a menu; while one is open, the mouse over another title opens that one.
+- **Alt alone** puts the keyboard on the bar: the first title is highlighted, no menu opens. A text field that had the
+  keyboard gives it up. Alt with the underlined letter opens that menu directly (Alt+F for File).
+- **On the bar:** Left and Right move between all titles and go round at the ends. Down, Enter or Space opens the
+  highlighted title's menu on its first usable item.
+- **In a menu:** Up, Down, Home and End move through the usable items only, skipping dimmed items and separators, and
+  go round at the ends. Right opens a submenu on its first item, or the next menu; Left closes the submenu, or opens the
+  previous menu. Enter or Space runs the item or opens its submenu. Escape closes one level (submenu, menu, then the
+  bar); Alt also leaves. Leaving gives the keyboard back to where it was.
+- **Look:** wherever the keyboard is (a title, the open menu's title, the lit item) shows the menus' selected look in
+  the accent color, clearly visible; the mouse hover keeps its lighter look. A resting mouse does not take the
+  highlight back while the keyboard drives; a real mouse move does.
+- **Shortcuts** show at the right of each item (Ctrl+S, F1) and work with the menus closed too; unusable items are
+  dimmed and read as unavailable.
+- **Screen readers:** the bar is `Aria.RoleMenuBar`, each menu `Aria.RoleMenu`, each item `Aria.RoleMenuItem` (checkbox
+  or radio items for toggles), with their expanded and checked states; the screen-reader focus follows the lit item.
+
+The keys come from `KeyboardManager.KeyDown`, the modifiers from `KeyboardManager.IsAltPressed` /
+`IsControlPressed`; the open title goes back to normal when its menu closes for any reason (`PopupWindowClosed`).
+
+> [!TIP]
+> Test the menu keys with popup windows on (WPF, MAUI Windows and OpenTK on Windows open them in windows of their own),
+> not only with menus drawn inside the canvas: a menu that walks its own items from the keys works in both.
 
 The full code is the `TooltipsMenusPage` of the HelloMaui sample.
