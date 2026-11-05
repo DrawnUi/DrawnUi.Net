@@ -21,7 +21,7 @@ Every platform in the table has been tested by ear with its screen reader, excep
 
 ## What you get
 
-- **Ready-made controls are accessible:** buttons, switches, checkboxes, radio buttons, sliders, progress bars, the text editor, lists and dialogs carry their role, state and value.
+- **Ready-made controls are accessible:** switches, checkboxes, radio buttons, sliders, progress bars and the text editor carry their role, state and value. Buttons and labels are read once you give them a role, one line at startup for all of them, so a button used only as decoration stays silent: you decide what a screen reader sees.
 - **Names said once:** a card whose title already says its name is read once, not twice.
 - **Values:** a slider reads as "Volume, 65%", and a screen reader can step it up and down or set it.
 - **Keyboard (desktop and browser):** Tab and Shift+Tab follow the reading order. A list, toolbar, menu or radio group is one Tab stop that you walk with the arrow keys, Home, End, PageUp and PageDown, also through the rows of a long recycled list. Enter and Space press, and the focus ring shows only when you use the keyboard.
@@ -37,7 +37,7 @@ Every platform in the table has been tested by ear with its screen reader, excep
 2. Give a container a role when it is a group a screen reader should know (a list, a toolbar, a radio group, a menu): the arrow keys then move inside it.
 3. Mark a status text as live to have it read when it changes.
 4. Mark a drawn dialog as modal, so readers and the keyboard stay in it. Shell popups and modals do this by themselves.
-5. Give a custom control a role (a tappable card is a button) and, for a custom range control, its value.
+5. Give buttons and labels a role (once at startup for all, or per control), and a custom control too: a tappable card is a button. A custom range control also gives its value.
 6. Listen to your app once with the platform's screen reader.
 
 The property names for each framework:
