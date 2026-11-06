@@ -86,16 +86,19 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.8.20
+## What's New 1.10.8.21
+
+  * **Ripples only for a real tap.** The tap ripple plays for a finger, a pen or the left mouse button. A right click still opens its menu, without the ripple.
+  * **Margins in rows and columns.** A control with a set width or height keeps exactly that size inside a row or a column, with its margins around it.
+  * **Every character in its font.** In a rich (markdown) label, a single character that only a fallback font has is drawn, also between characters of the label's own font.
+
+### Previously
 
   * **A keyboard that just works.** Tab, Enter, Space, the arrow keys and Escape work the same in menus, lists and popups on every platform, and one key press does one thing. Your app still gets every key and knows which ones the screen already used. Arrow keys can go round a menu or list, your code can move the focus, and on WPF a drawn menu bar works with Alt and the arrows.
   * **Screen readers know when a menu is open.** Menus and dropdown lists tell screen readers whether they are open or closed.
   * **Less memory.** A page you leave is freed with everything on it, even when it isn't disposed. A control you take off the screen pauses its animations and stops listening to keys until you put it back.
   * **Gradients look the same everywhere.** Gradient text and backgrounds show the same colors on every platform, and a round gradient fills the whole circle by default.
   * **Long press on desktop.** On WPF and OpenTK a long press is just a long press, never also a tap.
-
-### Previously
-
   * **Tooltips and menus:** hover hints that stay by their control and wrap long text, icon buttons that show their accessibility name as a tooltip, right-click menus, dropdown lists and desktop menu bars, all usable from the keyboard; on Windows they can go past the app window's edge. On Mac, right click, two-finger click and Control-click open context menus, and two-finger trackpad scrolling glides on. A fresh default look with a blue accent and a slightly larger switch.
   * **Layout:** a `SkiaStack` without a set width (`HorizontalOptions` Center, Start or End) is as wide as its widest child, Fill children included, up to its `MaximumWidthRequest`, as in DrawnUI for React and Rust. Stacks of cards and labels lay out about twice as fast. `SkiaMasonry` (`LayoutType.Masonry`) lays items of different heights in columns without gaps, like a photo feed, with children or `ItemsSource`, recycled cells, `LoadMore`, `ScrollToIndex`, taps and keyboard arrows. See [Layouts](https://drawnui.net/articles/layouts.html).
   * **Text:** Arabic, Hebrew and the other right-to-left scripts are shaped in every label, mixed directions read in the right order, a right-to-left paragraph starts at the right edge, and in `SkiaEditor` the caret, taps, selection and arrow keys follow the text on screen. Text is measured with exact widths, so a label wraps the same way on every platform and engine. The hook of a "j" and italic slants are drawn whole, emoji runs with `AutoFindFont` get their own room, and text after an italic span keeps normal spacing. Japanese and Chinese text wraps properly, symbols and emoji use `FontFamilyFallback`, people can select and copy a label's text (`AccessibilityTextSelectable`), and no text is cut at in-between screen scales. In `SkiaEditor`, the caret moves with each typed character in the same frame, an editor focused from code shows its caret at once, number keyboards type on Android and get a Done button on iOS, the iOS keyboard closes when you leave the page, and only one editor shows a caret when several are on screen.

@@ -19,7 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup Condition="'$(UseSource)' != 'true'">
-        <PackageReference Include="DrawnUi.Maui" Version="1.10.8.20" />
+        <PackageReference Include="DrawnUi.Maui" Version="1.10.8.21" />
     </ItemGroup>
 
 	<PropertyGroup>

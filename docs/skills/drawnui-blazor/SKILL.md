@@ -125,6 +125,7 @@ body { min-height: 100vh; }
 ```
 
 ## Font payload slimming (subsetting)
+- **Single fallback characters** (since 1.10.8.21): in a `SkiaRichLabel`, a character only a `FontFamilyFallback` font has keeps that font also when it stands alone between label-font characters (one hanzi between kanji, 胜 in "，胜利"). After a fallback run the label's own font is tried first, then the fallbacks.
 
 Fonts are the usual bulk of a WASM bundle: full color-emoji ≈ 20–24 MB, full CJK ≈ 25–28 MB; subsetting to what the app renders cuts that to hundreds of KB. `WasmFilesToBundle` is a NO-OP — fonts are static web assets under `wwwroot/fonts/`, fetched over HTTP at startup; subsetting the served file IS the win.
 
