@@ -744,7 +744,7 @@ public partial class SkiaButton : SkiaLayout, ISkiaGestureListener
 
         Pressed?.Invoke(this, args);
 
-        if (this.ApplyEffect != SkiaTouchAnimation.None)
+        if (this.ApplyEffect != SkiaTouchAnimation.None && IsPrimaryPointer(args))
         {
             var control = this as SkiaControl;
             if (this.TransformView is SkiaControl other)

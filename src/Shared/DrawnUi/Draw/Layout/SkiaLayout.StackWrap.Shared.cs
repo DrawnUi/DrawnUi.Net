@@ -148,11 +148,12 @@ public partial class SkiaLayout
         if (!measured.IsEmpty)
         {
             var area = cell.Area;
+            // the slot holds the child WITH its margins (as measured): its Arrange takes them off once
             var desiredWidth = child?.WidthRequest >= 0
-                ? (float)Math.Ceiling(child.WidthRequest * scale)
+                ? (float)Math.Ceiling((child.WidthRequest + child.Margins.HorizontalThickness) * scale)
                 : measured.Pixels.Width;
             var desiredHeight = child?.HeightRequest >= 0
-                ? (float)Math.Ceiling(child.HeightRequest * scale)
+                ? (float)Math.Ceiling((child.HeightRequest + child.Margins.VerticalThickness) * scale)
                 : measured.Pixels.Height;
 
             if (child != null)

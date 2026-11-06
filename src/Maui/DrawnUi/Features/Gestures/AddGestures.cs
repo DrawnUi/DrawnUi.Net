@@ -144,7 +144,7 @@ public static partial class AddGestures
         public void PlayTouchAnimation(SkiaTouchAnimation anim, SkiaGesturesParameters args,
             GestureEventProcessingInfo apply)
         {
-            if (anim != SkiaTouchAnimation.None)
+            if (anim != SkiaTouchAnimation.None && SkiaControl.IsPrimaryPointer(args))
             {
                 var view = GetTransformView(_parent);
                 if (view == null)
