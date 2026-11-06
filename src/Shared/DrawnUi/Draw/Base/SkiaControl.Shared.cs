@@ -2183,12 +2183,19 @@ namespace DrawnUi.Draw
             return handled;
         }
 
+        /// <summary>
+        /// The gesture comes from a finger, a pen or the primary (left) mouse button. Tap and press animations (Ripple,
+        /// Shimmer) play only for those: a right or middle click raises its events but shows no tap feedback.
+        /// </summary>
+        public static bool IsPrimaryPointer(SkiaGesturesParameters args)
+            => (args?.Event?.Pointer?.Button ?? AppoMobi.Gestures.MouseButton.Left) == AppoMobi.Gestures.MouseButton.Left;
+
         protected bool SendTapped(object listener, SkiaGesturesParameters args, GestureEventProcessingInfo apply,
             bool useMainThread)
         {
             if (Tapped != null)
             {
-                if (this.AnimationTapped != SkiaTouchAnimation.None)
+                if (this.AnimationTapped != SkiaTouchAnimation.None && IsPrimaryPointer(args))
                 {
                     var control = this as SkiaControl;
                     if (this.TransformView is SkiaControl other)

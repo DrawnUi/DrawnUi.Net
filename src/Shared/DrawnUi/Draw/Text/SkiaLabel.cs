@@ -4791,7 +4791,8 @@ namespace DrawnUi.Draw
                             //mapped coords so it lands under the finger even with parent transforms.
                             var insideX = x / RenderingScale - X;
                             var insideY = y / RenderingScale - Y;
-                            PlayRippleAnimation(TouchEffectColor, insideX, insideY);
+                            if (IsPrimaryPointer(args))
+                                PlayRippleAnimation(TouchEffectColor, insideX, insideY);
 
                             return OnSpanTapped(span);
                         }

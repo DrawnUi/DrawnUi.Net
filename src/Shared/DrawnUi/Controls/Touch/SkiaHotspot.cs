@@ -90,7 +90,7 @@ namespace DrawnUi.Draw
                 //var x = (args.Event.Location.X) / RenderingScale;
                 //var y = (args.Event.Location.Y) / RenderingScale;
 
-                if (this.AnimationTapped != SkiaTouchAnimation.None)
+                if (this.AnimationTapped != SkiaTouchAnimation.None && IsPrimaryPointer(args))
                 {
 
                     var control = this as SkiaControl;
