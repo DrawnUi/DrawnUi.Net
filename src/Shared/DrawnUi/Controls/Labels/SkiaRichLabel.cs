@@ -245,12 +245,22 @@ public partial class SkiaRichLabel : SkiaLabel
             if (!isStandardSymbol && !glyph.IsAvailable)
             {
                 SKTypeface newTypeFace = null;
-                foreach (var fallback in TypeFaceFallbacks)
+
+                // leaving a fallback run: the label's own font first, when it has the glyph
+                if (currentTypeFace != originalTypeFace
+                    && SkiaLabel.GetGlyphs(glyphText, originalTypeFace).First().IsAvailable)
                 {
-                    if (SkiaLabel.GetGlyphs(glyphText, fallback).First().IsAvailable)
+                    newTypeFace = originalTypeFace;
+                }
+                else
+                {
+                    foreach (var fallback in TypeFaceFallbacks)
                     {
-                        newTypeFace = fallback;
-                        break;
+                        if (SkiaLabel.GetGlyphs(glyphText, fallback).First().IsAvailable)
+                        {
+                            newTypeFace = fallback;
+                            break;
+                        }
                     }
                 }
                 newTypeFace ??= SkiaFontManager.MatchCharacter(codePoint);
@@ -268,17 +278,8 @@ public partial class SkiaRichLabel : SkiaLabel
                     // Original font can render this glyph — always switch back regardless of
                     // what MatchCharacter returns for the codepoint. MatchCharacter finds any
                     // capable font, not the preferred one; user's FontFamily wins when it can render.
-                    if (currentIndex - spanStart > 1)
-                    {
-                        BreakSpanAndSwitchTypeface(originalTypeFace);
-                    }
-                    else
-                    {
-                        currentIndex--;
-                        currentTypeFace = originalTypeFace;
-                        spanStart = currentIndex;
-                        needShape = false;
-                    }
+                    // The fallback run before it is kept whatever its length: one character is a run too.
+                    BreakSpanAndSwitchTypeface(originalTypeFace);
                 }
             }
 

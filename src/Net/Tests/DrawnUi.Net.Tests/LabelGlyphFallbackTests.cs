@@ -96,4 +96,68 @@ public class LabelGlyphFallbackTests
         var colored = bitmap.Pixels.Count(c => Math.Max(c.Red, Math.Max(c.Green, c.Blue)) - Math.Min(c.Red, Math.Min(c.Green, c.Blue)) > 40);
         Assert.True(colored > 200, $"colored px: {colored}");
     }
+
+    private static int Ink(string text, string fallback)
+    {
+        Render(text, fallback, out var host);
+        using (host)
+        using (var bitmap = SKBitmap.FromImage(host.Snapshot()))
+            return bitmap.Pixels.Count(c => c.Red > 60 || c.Green > 60 || c.Blue > 60);
+    }
+
+    [Theory]
+    [InlineData("a→b", "ab")] // one fallback character with primary characters right around it
+    [InlineData("a→→b", "ab")]
+    [InlineData("→ab", "ab")]
+    [InlineData("ab→", "ab")]
+    [InlineData("a, →b!", "a, b!")]
+    public void SingleFallbackCharacter_IsDrawn(string text, string without)
+    {
+        var arrow = Ink("→", "FallbackTestMath");
+        var withArrow = Ink(text, "FallbackTestMath");
+        var plain = Ink(without, "FallbackTestMath");
+        var arrows = text.Count(c => c == '→');
+        Assert.True(withArrow - plain >= arrows * arrow * 0.8, $"ink: text {withArrow}, without {plain}, one arrow {arrow}");
+    }
+
+    [Theory]
+    [InlineData("a→b")] // one fallback character between label-font characters
+    [InlineData("→b")]
+    [InlineData("a, →b!")]
+    public void RichLabel_SingleFallbackCharacter_KeepsItsFont(string text)
+    {
+        using var host = new HeadlessCanvasHost(500, 200, scale: 1f, background: Colors.Black);
+        var label = new SkiaRichLabel
+        {
+            Text = text,
+            FontSize = 16,
+            FontFamily = "FallbackTestText",
+            FontFamilyFallback = "FallbackTestMath",
+        };
+        host.Canvas.Content = new SkiaLayout { HorizontalOptions = LayoutOptions.Fill, Children = { label } };
+        host.AdvanceFrames(3);
+
+        var spans = Assert.Single(label.Lines).Spans;
+        var arrow = Assert.Single(spans, s => s.Text == "→");
+        Assert.Equal(Face("FallbackTestMath").FamilyName, arrow.Span.TypeFace.FamilyName);
+        Assert.Equal(text, string.Concat(spans.Select(s => s.Text)));
+    }
+
+    [Fact]
+    public void RichLabel_AfterAFallbackRun_TheLabelFontComesFirst()
+    {
+        using var host = new HeadlessCanvasHost(500, 200, scale: 1f, background: Colors.Black);
+        var label = new SkiaRichLabel
+        {
+            Text = "😀done",
+            FontSize = 16,
+            FontFamily = "FallbackTestText",
+            FontFamilyFallback = "FallbackTestEmoji, FallbackTestMath",
+        };
+        host.Canvas.Content = new SkiaLayout { HorizontalOptions = LayoutOptions.Fill, Children = { label } };
+        host.AdvanceFrames(3);
+
+        var done = Assert.Single(Assert.Single(label.Lines).Spans, s => s.Text == "done");
+        Assert.Equal(Face("FallbackTestText").FamilyName, done.Span.TypeFace.FamilyName);
+    }
 }
