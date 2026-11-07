@@ -1328,7 +1328,7 @@ namespace DrawnUi.Draw
                                 }
 
                                 previousSpanLastLine = lastLine;
-                                offset = new SKPoint(lastLine.Width, 0);
+                                offset = new SKPoint(lastLine.Width - EffectsExtraWidth, 0);
 
                                 // Add all lines from current span
                                 mergedLines.AddRange(lines);
@@ -2093,13 +2093,15 @@ namespace DrawnUi.Draw
                             heightBlock += additionalHeight;
                         }
 
+                        // the outline and shadow room belongs to the line, once: a span advances by its glyphs, so
+                        // the spans of one line (markdown runs, mixed styles) sit as close as the font sets them
                         var chunk = new LineSpan()
                         {
                             NeedsShaping = needsShaping,
                             Glyphs = smartMeasure.Glyphs,
                             Text = adding.Replace("\n", "").Replace("\u2028", ""),
                             Span = span,
-                            Size = new(widthBlock, heightBlock)
+                            Size = new(widthBlock - EffectsExtraWidth, heightBlock)
                         };
 
                         var addLine = new TextLine()
@@ -2675,6 +2677,20 @@ namespace DrawnUi.Draw
         }
 
 
+        /// <summary>The width the outline (StrokeWidth) and the drop shadow add to a line, in pixels.</summary>
+        float EffectsExtraWidth
+        {
+            get
+            {
+                var extra = 0f;
+                if (StrokeWidth > 0 && StrokeColor != TransparentColor)
+                    extra += (float)(StrokeWidth * 2 * RenderingScale) * 2;
+                if (DropShadowSize > 0 && DropShadowColor != TransparentColor)
+                    extra += (float)(DropShadowSize * RenderingScale + DropShadowOffsetX * RenderingScale);
+                return extra;
+            }
+        }
+
         public void MergeSpansForLines(
                 TextSpan span,
                 TextLine line,
@@ -2690,7 +2706,7 @@ namespace DrawnUi.Draw
             if (!string.IsNullOrEmpty(line.Value))
             {
                 spans.AddRange(line.Spans);
-                line.Width += previousSpanLastLine.Width;
+                line.Width += previousSpanLastLine.Width - EffectsExtraWidth; // the outline and shadow room once per line
             }
             else
             {
