@@ -372,6 +372,18 @@ public partial class Super
     }
 
     /// <summary>
+    /// Raised after a control was added to or removed from another (AddSubView / RemoveSubView), with
+    /// that parent, on the thread that changed it. For development tools that mirror the control tree,
+    /// such as the DrawnUI Designer agent; nothing subscribes to it by default.
+    /// </summary>
+    public static event EventHandler<SkiaControl> ChildrenChanged;
+
+    /// <summary>
+    /// Raises <see cref="ChildrenChanged"/> for <paramref name="parent"/>; a null check when nobody listens.
+    /// </summary>
+    internal static void RaiseChildrenChanged(SkiaControl parent) => ChildrenChanged?.Invoke(null, parent);
+
+    /// <summary>
     /// App was launched and UI is ready to be created
     /// </summary>
     public static event EventHandler OnNativeAppCreated;
