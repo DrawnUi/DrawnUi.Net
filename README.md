@@ -86,14 +86,20 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.8.21
+## What's New 1.10.8.22
+
+  * **Context menus from the keyboard.** The Menu key and Shift+F10 open the menu of the control in keyboard focus, at its center, on WPF, OpenTK and WebAssembly, as on MAUI Windows. A key no control takes goes on to the app.
+  * **A calm caret in the background.** A focused `SkiaEditor` keeps its focus while another app has the keyboard, hides its caret and stops redrawing, and shows the caret again when you come back (WPF, OpenTK, MAUI Windows, WebAssembly).
+  * **Keys after a screen changes on the web.** On Blazor and WebAssembly the canvas focus follows the browser focus: when a focused button leaves the screen, the next keys go to the app and Tab or an arrow starts keyboard navigation again.
+  * **Outlined text sits together.** Text with an outline or a drop shadow keeps its letters together across styles and markdown runs, so a title such as "LEVEL COMPLETE!" keeps its "!" right after the word.
+  * **Composite layers keep their picture.** An `ImageComposite` layer keeps drawing its content when a shader effect on it is removed.
+  * **DrawnUI Designer (preview).** Debug builds carry Designer agent 0.1.0-preview.10: apps can declare named states with `DesignerActions` (a level, a dialog) that the Designer jumps to, the control tree updates as controls are added or removed (`Super.ChildrenChanged`), and on Android and iOS the agent takes its pictures from the app's own frames. Release builds do not reference it.
+
+### Previously
 
   * **Ripples only for a real tap.** The tap ripple plays for a finger, a pen or the left mouse button. A right click still opens its menu, without the ripple.
   * **Margins in rows and columns.** A control with a set width or height keeps exactly that size inside a row or a column, with its margins around it.
   * **Every character in its font.** In a rich (markdown) label, a single character that only a fallback font has is drawn, also between characters of the label's own font.
-
-### Previously
-
   * **Tooltips and menus:** hover hints that stay by their control and wrap long text, icon buttons that show their accessibility name as a tooltip, right-click menus, dropdown lists and desktop menu bars, all usable from the keyboard; on Windows they can go past the app window's edge. On Mac, right click, two-finger click and Control-click open context menus, and two-finger trackpad scrolling glides on. A fresh default look with a blue accent and a slightly larger switch.
   * **Layout:** a `SkiaStack` without a set width (`HorizontalOptions` Center, Start or End) is as wide as its widest child, Fill children included, up to its `MaximumWidthRequest`, as in DrawnUI for React and Rust. Stacks of cards and labels lay out about twice as fast. `SkiaMasonry` (`LayoutType.Masonry`) lays items of different heights in columns without gaps, like a photo feed, with children or `ItemsSource`, recycled cells, `LoadMore`, `ScrollToIndex`, taps and keyboard arrows. See [Layouts](https://drawnui.net/articles/layouts.html).
   * **Text:** Arabic, Hebrew and the other right-to-left scripts are shaped in every label, mixed directions read in the right order, a right-to-left paragraph starts at the right edge, and in `SkiaEditor` the caret, taps, selection and arrow keys follow the text on screen. Text is measured with exact widths, so a label wraps the same way on every platform and engine. The hook of a "j" and italic slants are drawn whole, emoji runs with `AutoFindFont` get their own room, and text after an italic span keeps normal spacing. Japanese and Chinese text wraps properly, symbols and emoji use `FontFamilyFallback`, people can select and copy a label's text (`AccessibilityTextSelectable`), and no text is cut at in-between screen scales. In `SkiaEditor`, the caret moves with each typed character in the same frame, an editor focused from code shows its caret at once, number keyboards type on Android and get a Done button on iOS, the iOS keyboard closes when you leave the page, and only one editor shows a caret when several are on screen.
