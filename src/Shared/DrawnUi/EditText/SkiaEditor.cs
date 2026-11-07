@@ -1034,6 +1034,7 @@ namespace DrawnUi.Draw
             });
 
             SyncSuperviewFocus(value);
+            WatchWindowActive(value);
 
             FocusChanged?.Invoke(this, value);
             CommandOnFocusChanged?.Execute(value);
@@ -1281,8 +1282,38 @@ namespace DrawnUi.Draw
 
         }
 
+        DrawnView _watchedWindow;
+
+        /// <summary>
+        /// While focused, the editor follows its window's activation: the caret hides while another app has the
+        /// keyboard and shows again on return (focus stays), as native text fields do. No subscription while unfocused.
+        /// </summary>
+        void WatchWindowActive(bool focused)
+        {
+            if (_watchedWindow != null)
+            {
+                _watchedWindow.WindowActiveChanged -= OnWindowActiveChanged;
+                _watchedWindow = null;
+            }
+
+            if (focused && Superview is DrawnView view)
+            {
+                _watchedWindow = view;
+                view.WindowActiveChanged += OnWindowActiveChanged;
+            }
+        }
+
+        void OnWindowActiveChanged(object sender, bool active)
+        {
+            SetCursorVisible(IsFocused && CanShowCursor);
+            Update();
+        }
+
+        bool WindowIsActive => Superview?.IsWindowActive ?? true;
+
         protected void SetCursorVisible(bool show)
         {
+            show = show && WindowIsActive;
             if (show)
             {
                 Cursor.Opacity = 1;
@@ -1785,6 +1816,7 @@ namespace DrawnUi.Draw
 
         public override void OnDisposing()
         {
+            WatchWindowActive(false);
             DisposePlatform();
 
             base.OnDisposing();

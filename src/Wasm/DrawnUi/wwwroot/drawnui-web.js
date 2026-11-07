@@ -469,6 +469,12 @@ export function a11yAttach(elementId, onActivate, onKey, onFocus, onBlur) {
     _a11y = { overlay, map: new Map(), updating: false, place, observer, onActivate, onKey, onFocus, onBlur };
 }
 
+/** Reports the browser window gaining (true) or losing (false) the keyboard, once per change. */
+export function watchWindowFocus(onChanged) {
+    window.addEventListener('focus', () => onChanged(true));
+    window.addEventListener('blur', () => onChanged(false));
+}
+
 export function a11yDetach() {
     const a = _a11y;
     if (!a) return;
