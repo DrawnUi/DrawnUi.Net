@@ -58,6 +58,24 @@ public class KeyboardContextMenuTests
     }
 
     [Fact]
+    public void A_focused_control_without_a_handler_leaves_the_key_unhandled()
+    {
+        using var host = new HeadlessCanvasHost(W, H);
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
+        host.Canvas.Content = new SkiaShape
+        {
+            WidthRequest = 200, HeightRequest = 40, HorizontalOptions = LayoutOptions.Start, BackgroundColor = Colors.Gray,
+            AccessibilityRole = Aria.RoleButton, AccessibilityCanInteract = true, AccessibilityLabel = "Plain",
+        };
+        host.AdvanceFrames(4);
+        host.Canvas.HandleKeyboardNavigation(InputKey.Tab, false);
+        host.AdvanceFrames(2);
+
+        // nobody took it: the host lets the key go on (the system menu, the app's own fallback)
+        Assert.False(host.Canvas.HandleDesktopContextMenu(50, 20, W, H, null));
+    }
+
+    [Fact]
     public void A_right_click_still_goes_where_the_mouse_is()
     {
         var got = new List<string>();
