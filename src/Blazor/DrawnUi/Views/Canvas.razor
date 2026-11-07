@@ -1134,6 +1134,7 @@
     // the focused overlay element is the canvas keyboard focus: scroll bars around it stay visible
     private void OnA11yFocus(AccessibilityNode node)
     {
+        AccessibilityManager.NotifyFocused(node.Source);
         AccessibilityManager.NotifyReaderFocused(node.Source);
         KeyboardFocusNode = node.Source;
         node.Source?.OnAccessibilityFocused(true); // a text field takes the caret, same as the Windows heads
@@ -1148,6 +1149,8 @@
         node.Source?.OnAccessibilityFocused(false); // Tab left the element: a text field releases the caret
         if (ReferenceEquals(KeyboardFocusNode, node.Source))
             KeyboardFocusNode = null;
+        if (ReferenceEquals(AccessibilityManager.FocusedNode, node.Source))
+            AccessibilityManager.NotifyFocused(null); // the browser focus went to nothing (the element left): so does the canvas focus
     }
 
     /// <summary>The overlay element's CSS outline is the focus ring on Blazor, the canvas draws none.</summary>
