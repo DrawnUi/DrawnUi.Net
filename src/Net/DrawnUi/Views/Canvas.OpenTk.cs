@@ -133,6 +133,22 @@ public partial class Canvas
     /// <returns>True when a control took the request, so the host suppresses its own menu.</returns>
     public bool HandleDesktopContextMenu(float x, float y, float clientW, float clientH, PointerDeviceType? device)
     {
+        if (!device.HasValue)
+        {
+            // the keyboard's request (Menu key, Shift+F10) is for the control in keyboard focus, at its center, as on
+            // MAUI Windows; with nothing drawn in focus it stays at the given point (where the pointer last was)
+            var focus = KeyboardFocusNode ?? AccessibilityManager.FocusedNode;
+            if (focus != null && !AccessibilityManager.IsOutsideModal(focus))
+            {
+                var rect = focus.GetAccessibilityPixelRect();
+                if (!rect.IsEmpty)
+                {
+                    x = rect.MidX;
+                    y = rect.MidY;
+                }
+            }
+        }
+
         var location = new PointF(x, y);
         var args = MakeDesktopTouchArgs(TouchActionType.ContextMenu, location, clientW, clientH);
         args.IsInsideView = true;

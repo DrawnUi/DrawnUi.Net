@@ -495,6 +495,13 @@ function a11yCreate(id) {
             a11yUsedKey = e.code;
         }
     });
+    // the Menu key, Shift+F10 or a screen reader's "show menu" on a focused node: its context menu, at its center
+    el.addEventListener('contextmenu', e => {
+        const a = _a11y;
+        if (!a) return;
+        const r = el.getBoundingClientRect(), o = a.overlay.getBoundingClientRect();
+        if (onContextMenu?.(r.left + r.width / 2 - o.left, r.top + r.height / 2 - o.top, 'keyboard')) e.preventDefault();
+    });
     el.addEventListener('focus', () => { if (_a11y && !_a11y.updating) _a11y.onFocus(id); });
     el.addEventListener('blur', () => { if (_a11y && !_a11y.updating) _a11y.onBlur(id); });
     return el;

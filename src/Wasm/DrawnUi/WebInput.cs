@@ -154,13 +154,16 @@ public static partial class WebInput
         args.IsInsideView = true;
         args.StartingLocation = location;
         args.Distance = new TouchActionEventArgs.DistanceInfo();
-        args.Pointer = new PointerData
+        if (pointerType != "keyboard") // a focused node's request (Menu key) carries no pointer: Source = Keyboard
         {
-            Button = MouseButton.Right,
-            ButtonNumber = 2,
-            State = MouseButtonState.Released,
-            DeviceType = pointerType switch { "touch" => PointerDeviceType.Touch, "pen" => PointerDeviceType.Pen, _ => PointerDeviceType.Mouse },
-        };
+            args.Pointer = new PointerData
+            {
+                Button = MouseButton.Right,
+                ButtonNumber = 2,
+                State = MouseButtonState.Released,
+                DeviceType = pointerType switch { "touch" => PointerDeviceType.Touch, "pen" => PointerDeviceType.Pen, _ => PointerDeviceType.Mouse },
+            };
+        }
 
         TargetCanvas?.OnGestureEvent(TouchActionType.ContextMenu, args, TouchActionResult.ContextMenu);
 
