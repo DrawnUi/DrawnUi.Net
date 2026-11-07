@@ -77,6 +77,34 @@ namespace DrawnUi.Views
         {
             ClosePopupWindows();
             CloseTooltipOnInput();
+            SetWindowActive(false);
+        }
+
+        /// <summary>
+        /// The app's window became the active window again (it has the keyboard). The desktop heads call it from their
+        /// window's activation.
+        /// </summary>
+        public void OnWindowActivated() => SetWindowActive(true);
+
+        /// <summary>
+        /// The app's window has the keyboard: true unless the head reported it inactive (another app is in front). A
+        /// focused <see cref="SkiaEditor"/> hides its caret while it is false, as native text fields do.
+        /// </summary>
+        public bool IsWindowActive { get; private set; } = true;
+
+        /// <summary>Raised when <see cref="IsWindowActive"/> changes, with the new value.</summary>
+        public event EventHandler<bool> WindowActiveChanged;
+
+        /// <summary>
+        /// Sets <see cref="IsWindowActive"/> alone, without closing popup windows: for heads whose window losing the
+        /// keyboard is not a deactivation (the browser tab or window losing focus).
+        /// </summary>
+        public void SetWindowActive(bool active)
+        {
+            if (IsWindowActive == active)
+                return;
+            IsWindowActive = active;
+            WindowActiveChanged?.Invoke(this, active);
         }
 
         /// <summary>

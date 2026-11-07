@@ -138,6 +138,8 @@ internal static partial class WebAccessibility
         JsUpdate(ints, nums, strs);
     }
 
+    private static ISkiaAccessibilityNode? _focused;
+
     private static ISkiaAccessibilityNode? Find(int id)
     {
         var canvas = _canvas;
@@ -168,6 +170,8 @@ internal static partial class WebAccessibility
         if (canvas == null || source == null)
             return;
 
+        _focused = source;
+        canvas.AccessibilityManager.NotifyFocused(source);
         canvas.AccessibilityManager.NotifyReaderFocused(source);
         canvas.KeyboardFocusNode = source;
         source.OnAccessibilityFocused(true); // a text field takes the caret, as on the other heads
@@ -177,10 +181,16 @@ internal static partial class WebAccessibility
 
     private static void OnBlur(int id)
     {
+        // the node may have left the snapshot already (its element was removed, which blurs it): use the one focused
         var canvas = _canvas;
-        var source = Find(id);
+        var source = _focused != null && _focused.AccessibilityId == id ? _focused : Find(id);
         if (canvas == null || source == null)
             return;
+
+        if (ReferenceEquals(_focused, source))
+            _focused = null;
+        if (ReferenceEquals(canvas.AccessibilityManager.FocusedNode, source))
+            canvas.AccessibilityManager.NotifyFocused(null); // the browser focus went to nothing: so does the canvas focus
 
         if (ReferenceEquals(canvas.AccessibilityManager.ReaderNode, source))
             canvas.AccessibilityManager.NotifyReaderFocused(null); // focus left the canvas: never pull it back later

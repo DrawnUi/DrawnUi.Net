@@ -469,6 +469,12 @@ export function a11yAttach(elementId, onActivate, onKey, onFocus, onBlur) {
     _a11y = { overlay, map: new Map(), updating: false, place, observer, onActivate, onKey, onFocus, onBlur };
 }
 
+/** Reports the browser window gaining (true) or losing (false) the keyboard, once per change. */
+export function watchWindowFocus(onChanged) {
+    window.addEventListener('focus', () => onChanged(true));
+    window.addEventListener('blur', () => onChanged(false));
+}
+
 export function a11yDetach() {
     const a = _a11y;
     if (!a) return;
@@ -494,6 +500,13 @@ function a11yCreate(id) {
             e.preventDefault(); // a slider stepped, or focus moved inside the group
             a11yUsedKey = e.code;
         }
+    });
+    // the Menu key, Shift+F10 or a screen reader's "show menu" on a focused node: its context menu, at its center
+    el.addEventListener('contextmenu', e => {
+        const a = _a11y;
+        if (!a) return;
+        const r = el.getBoundingClientRect(), o = a.overlay.getBoundingClientRect();
+        if (onContextMenu?.(r.left + r.width / 2 - o.left, r.top + r.height / 2 - o.top, 'keyboard')) e.preventDefault();
     });
     el.addEventListener('focus', () => { if (_a11y && !_a11y.updating) _a11y.onFocus(id); });
     el.addEventListener('blur', () => { if (_a11y && !_a11y.updating) _a11y.onBlur(id); });

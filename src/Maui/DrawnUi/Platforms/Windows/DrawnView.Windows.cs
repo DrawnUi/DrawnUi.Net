@@ -90,6 +90,8 @@ namespace DrawnUi.Views
         {
             if (e.WindowActivationState == Microsoft.UI.Xaml.WindowActivationState.Deactivated)
                 OnWindowDeactivated();
+            else
+                OnWindowActivated();
         }
 
         private void AttachTooltipHost(FrameworkElement element)

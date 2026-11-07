@@ -115,7 +115,19 @@ public static partial class BrowserHost
 
         // screen readers and Tab: the ARIA overlay of the Blazor head
         WebAccessibility.Attach(canvas, _elementId!);
+
+        // the browser window has the keyboard or not: a focused editor hides its caret meanwhile, as an <input> does
+        if (!_watchingWindowFocus)
+        {
+            _watchingWindowFocus = true;
+            JsWatchWindowFocus(active => _canvas?.SetWindowActive(active));
+        }
     }
+
+    private static bool _watchingWindowFocus;
+
+    [JSImport("watchWindowFocus", "drawnui-web")]
+    private static partial void JsWatchWindowFocus([JSMarshalAs<JSType.Function<JSType.Boolean>>] Action<bool> onChanged);
 
     private static long Nanos() => _frameTimer.ElapsedTicks * (1_000_000_000L / Stopwatch.Frequency);
 

@@ -945,6 +945,14 @@ public partial class SkiaControl
                     SurfaceIsRecycled = recordingContext.Context.IsRecycled, DataContext = this.ContextIndex
                 };
 
+                // An unchanged surface gives the same snapshot again, and SkiaSharp hands out the same SKImage for it:
+                // the new cache owns it now, or disposing the cache it came from would dispose the image drawn from here
+                // (an ImageComposite with nothing redrawn since, e.g. while a shader effect drew it, went blank).
+                if (reuseSurfaceFrom != null && ReferenceEquals(reuseSurfaceFrom.Image, renderObject.Image))
+                {
+                    reuseSurfaceFrom.Image = null;
+                }
+
                 if (Super.UseFrozenVisualLayers && VisualLayer != null)
                 {
                     var childrenNodes = this.VisualLayer.Children;

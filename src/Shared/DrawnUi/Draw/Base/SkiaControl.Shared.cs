@@ -128,6 +128,8 @@ namespace DrawnUi.Draw
 
             OnChildAdded(control);
 
+            Super.RaiseChildrenChanged(this);
+
             if (Debugger.IsAttached)
                 Superview?.PostponeExecutionAfterDraw(() => { ReportHotreloadChildAdded(control); });
 
@@ -150,6 +152,7 @@ namespace DrawnUi.Draw
             {
                 control.SetParent(null);
                 OnChildRemoved(control);
+                Super.RaiseChildrenChanged(this);
             }
             catch (Exception e)
             {

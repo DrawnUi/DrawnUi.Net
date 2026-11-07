@@ -166,6 +166,8 @@ public class DrawnUiWindow : GameWindow
         base.OnFocusedChanged(e);
         if (!e.IsFocused)
             _canvas.OnWindowDeactivated(); // popups and tooltips close with the window's focus
+        else
+            _canvas.OnWindowActivated(); // a focused editor shows its caret again
         if (OperatingSystem.IsLinux())
             _atSpiProvider?.SetActive(e.IsFocused);
     }

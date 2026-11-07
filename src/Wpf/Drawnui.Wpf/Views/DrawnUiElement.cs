@@ -227,6 +227,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             _window = window;
             _window.Closed += OnWindowClosed;
             _window.Deactivated += OnWindowDeactivated;
+            _window.Activated += OnWindowActivated;
 
             // menus and dropdowns in windows of their own, the mouse over them coming back into the canvas
             var popupPressed = false;
@@ -463,6 +464,8 @@ public class DrawnUiElement : FrameworkElement, IDisposable
 
     private void OnWindowDeactivated(object sender, EventArgs e) => Canvas.OnWindowDeactivated();
 
+    private void OnWindowActivated(object sender, EventArgs e) => Canvas.OnWindowActivated();
+
     /// <summary>
     /// Stops rendering and releases the drawn tree, its animators and every GPU object. Called
     /// automatically when the hosting window closes; call it yourself when discarding the element
@@ -485,6 +488,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         {
             _window.Closed -= OnWindowClosed;
             _window.Deactivated -= OnWindowDeactivated;
+            _window.Activated -= OnWindowActivated;
             _window = null;
         }
 
