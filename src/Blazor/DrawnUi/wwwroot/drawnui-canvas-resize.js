@@ -200,7 +200,21 @@ export function detachCanvasHost(element) {
     document.removeEventListener('drawnui-simulated-fullscreen', state.onSimulatedFullscreen);
     element.removeEventListener('webglcontextlost', state.onContextLost, true);
     element.removeEventListener('webglcontextrestored', state.onContextRestored, true);
+    state.themeQuery?.removeEventListener('change', state.onThemeChange);
     observers.delete(element);
+}
+
+/** Reports the system's dark (true) or light (false) appearance now, then once per change, until detachCanvasHost. */
+export function watchSystemTheme(element, dotNetRef) {
+    const state = observers.get(element);
+    if (!state || state.themeQuery || !window.matchMedia) {
+        return;
+    }
+
+    state.themeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    state.onThemeChange = (e) => dotNetRef.invokeMethodAsync('OnSystemThemeChanged', e.matches);
+    state.themeQuery.addEventListener('change', state.onThemeChange);
+    dotNetRef.invokeMethodAsync('OnSystemThemeChanged', state.themeQuery.matches);
 }
 
 export async function setCanvasFullscreen(element, enabled) {

@@ -405,7 +405,12 @@
         // attachCanvasHost fires notifySize immediately, but OnHostResized checks
         // for size equality and returns early — no redundant StateHasChanged triggered.
         await _resizeModule.InvokeVoidAsync("attachCanvasHost", _hostElement, _resizeCallbackRef, RenderingMode == RenderingModeType.Default);
+        await _resizeModule.InvokeVoidAsync("watchSystemTheme", _hostElement, _resizeCallbackRef);
     }
+
+    /// <summary>The browser's prefers-color-scheme, at start and on every change.</summary>
+    [JSInvokable]
+    public void OnSystemThemeChanged(bool dark) => SetSystemTheme(dark ? global::DrawnUi.Views.SystemTheme.Dark : global::DrawnUi.Views.SystemTheme.Light);
 
     [JSInvokable]
     public virtual async Task OnHostResized(double width, double height)

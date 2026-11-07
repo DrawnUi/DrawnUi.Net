@@ -121,10 +121,14 @@ public static partial class BrowserHost
         {
             _watchingWindowFocus = true;
             JsWatchWindowFocus(active => _canvas?.SetWindowActive(active));
+            JsWatchSystemTheme(dark => _canvas?.SetSystemTheme(dark ? global::DrawnUi.Views.SystemTheme.Dark : global::DrawnUi.Views.SystemTheme.Light));
         }
     }
 
     private static bool _watchingWindowFocus;
+
+    [JSImport("watchSystemTheme", "drawnui-web")]
+    private static partial void JsWatchSystemTheme([JSMarshalAs<JSType.Function<JSType.Boolean>>] Action<bool> onChanged);
 
     [JSImport("watchWindowFocus", "drawnui-web")]
     private static partial void JsWatchWindowFocus([JSMarshalAs<JSType.Function<JSType.Boolean>>] Action<bool> onChanged);

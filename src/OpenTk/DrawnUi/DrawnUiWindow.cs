@@ -123,6 +123,8 @@ public class DrawnUiWindow : GameWindow
                     _oldWndProc = WindowChrome.SetWindowLongPtr(_hwnd, -4,
                         Marshal.GetFunctionPointerForDelegate(_wndProcDelegate));
                     ConfigureWindowChrome(_hwnd);
+                    if (DrawnView.ReadWindowsSystemTheme() is { } theme)
+                        _canvas.SetSystemTheme(theme);
                     _uiaProvider = new WindowsUiaProvider(
                         _hwnd, _canvas.AccessibilityManager, () => (float)_canvas.RenderingScale);
                     _canvas.AccessibilityManager.FocusChanged += node => _uiaProvider.NotifyFocusChanged(node);
@@ -211,6 +213,9 @@ public class DrawnUiWindow : GameWindow
             ToggleFullscreen();
             return 0;
         }
+
+        if (DrawnView.IsWindowsThemeMessage((int)msg, lParam) && DrawnView.ReadWindowsSystemTheme() is { } theme)
+            _canvas.SetSystemTheme(theme);
 
         if (_uiaProvider != null)
         {
