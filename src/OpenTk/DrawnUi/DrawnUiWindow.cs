@@ -164,6 +164,9 @@ public class DrawnUiWindow : GameWindow
     protected override void OnFocusedChanged(FocusedChangedEventArgs e)
     {
         base.OnFocusedChanged(e);
+        // OpenTK's own constructor reports the focus already, before ours has set the canvas
+        if (_canvas == null)
+            return;
         if (!e.IsFocused)
             _canvas.OnWindowDeactivated(); // popups and tooltips close with the window's focus
         else
