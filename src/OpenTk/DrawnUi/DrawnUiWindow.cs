@@ -97,6 +97,7 @@ public class DrawnUiWindow : GameWindow
             // VSync paces the frames; where the driver ignores it (WSLg's software GL) the window paces them itself.
             VSync = VSyncMode.On;
             _pacing = new FramePacing(refreshRate, alwaysOn: false);
+            Super.EnsureFrameLoopStarted(); // Super.OnFrame ticks every frame, as on every head
         }
         else
         {
