@@ -86,7 +86,13 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.8.23
+## What's New 1.10.8.24
+
+  * **DrawnUI Designer on OpenTK.** Debug builds of OpenTK apps carry the Designer agent: the Designer attaches, shows screens and controls, edits them live and runs the app's Designer actions. `DrawnUiWindow.Current` and `DrawnUiWindow.Canvas` give tools the window and its canvas. Release builds don't include the agent.
+  * **System light and dark.** `canvas.SystemTheme` and `SystemThemeChanged` report the system's light or dark appearance at start and on every change, on MAUI (every platform), WPF, OpenTK, Blazor and WebAssembly, as in DrawnUI for React and Rust.
+  * **A steady frame tick on OpenTK.** `Super.OnFrame` fires every frame in OpenTK windows that redraw every frame, as on every other head, so code that waits for the next frame runs there too.
+
+### Previously
 
   * **Context menus from the keyboard.** The Menu key and Shift+F10 open the menu of the control in keyboard focus, at its center, on WPF, OpenTK and WebAssembly, as on MAUI Windows. A key no control takes goes on to the app.
   * **A calm caret in the background.** A focused `SkiaEditor` keeps its focus while another app has the keyboard, hides its caret and stops redrawing, and shows the caret again when you come back (WPF, OpenTK, MAUI Windows, WebAssembly).
@@ -95,9 +101,6 @@ Please star ⭐ if you like it!
   * **Composite layers keep their picture.** An `ImageComposite` layer keeps drawing its content when a shader effect on it is removed.
   * **DrawnUI Designer (preview).** Debug builds carry Designer agent 0.1.0-preview.10: apps can declare named states with `DesignerActions` (a level, a dialog) that the Designer jumps to, the control tree updates as controls are added or removed (`Super.ChildrenChanged`), and on Android and iOS the agent takes its pictures from the app's own frames. Release builds do not reference it.
   * **OpenTK windows** follow the window focus from the moment they open, also in a `DrawnUiWindow` subclass.
-
-### Previously
-
   * **Tooltips and menus:** hover hints that stay by their control and wrap long text, icon buttons that show their accessibility name as a tooltip, right-click menus, dropdown lists and desktop menu bars, all usable from the keyboard; on Windows they can go past the app window's edge. On Mac, right click, two-finger click and Control-click open context menus, and two-finger trackpad scrolling glides on. A fresh default look with a blue accent and a slightly larger switch.
   * **Layout:** a `SkiaStack` without a set width (`HorizontalOptions` Center, Start or End) is as wide as its widest child, Fill children included, up to its `MaximumWidthRequest`, as in DrawnUI for React and Rust. Stacks of cards and labels lay out about twice as fast. `SkiaMasonry` (`LayoutType.Masonry`) lays items of different heights in columns without gaps, like a photo feed, with children or `ItemsSource`, recycled cells, `LoadMore`, `ScrollToIndex`, taps and keyboard arrows. See [Layouts](https://drawnui.net/articles/layouts.html). A control with a set width or height keeps exactly that size inside a row or a column, with its margins around it.
   * **Text:** Arabic, Hebrew and the other right-to-left scripts are shaped in every label, mixed directions read in the right order, a right-to-left paragraph starts at the right edge, and in `SkiaEditor` the caret, taps, selection and arrow keys follow the text on screen. Text is measured with exact widths, so a label wraps the same way on every platform and engine. The hook of a "j" and italic slants are drawn whole, emoji runs with `AutoFindFont` get their own room, and text after an italic span keeps normal spacing. Japanese and Chinese text wraps properly, symbols and emoji use `FontFamilyFallback`, people can select and copy a label's text (`AccessibilityTextSelectable`), and no text is cut at in-between screen scales. In `SkiaEditor`, the caret moves with each typed character in the same frame, an editor focused from code shows its caret at once, number keyboards type on Android and get a Done button on iOS, the iOS keyboard closes when you leave the page, and only one editor shows a caret when several are on screen. In a rich (markdown) label, a single character that only a fallback font has is drawn too.
