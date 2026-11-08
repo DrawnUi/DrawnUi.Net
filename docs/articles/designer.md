@@ -5,7 +5,7 @@ screens, the live control tree and the properties of every control. Change a val
 write it back and it lands in your C# code. It runs as a desktop app (Windows, macOS), inside VS Code, and for AI
 agents through MCP. Download it from [Releases](https://github.com/DrawnUi/DrawnUi.Designer/releases).
 
-Debug builds of apps on DrawnUi.Maui and DrawnUi.Wpf carry the designer agent: run your app in Debug with the designer
+Debug builds of apps on DrawnUi.Maui, DrawnUi.Wpf and DrawnUi.OpenTk (1.10.8.24 or newer, apps on `DrawnUiWindow`) carry the designer agent: run your app in Debug with the designer
 open and it shows up. Release builds carry nothing. See the
 [designer docs](https://github.com/DrawnUi/DrawnUi.Designer/blob/master/docs/designer.md) for phones (USB cable,
 Wi-Fi) and the other platforms.
