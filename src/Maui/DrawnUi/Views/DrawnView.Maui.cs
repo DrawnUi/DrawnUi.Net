@@ -193,8 +193,32 @@ namespace DrawnUi.Views
 #endif
             }
 
+            WatchSystemTheme(Handler != null);
+
             HandlerWasSet?.Invoke(this, Handler != null);
             //InvalidateChildren(); //need clear gfx cache
+        }
+
+        private Application _themeApp;
+
+        // the system's light or dark appearance (Application.RequestedTheme, the platform's, not UserAppTheme)
+        private void WatchSystemTheme(bool watch)
+        {
+            if (_themeApp != null)
+                _themeApp.RequestedThemeChanged -= OnRequestedThemeChanged;
+            _themeApp = watch ? Application.Current : null;
+            if (_themeApp == null)
+                return;
+            _themeApp.RequestedThemeChanged += OnRequestedThemeChanged;
+            ApplySystemTheme(_themeApp.PlatformAppTheme);
+        }
+
+        private void OnRequestedThemeChanged(object sender, AppThemeChangedEventArgs e) => ApplySystemTheme(_themeApp?.PlatformAppTheme ?? e.RequestedTheme);
+
+        private void ApplySystemTheme(AppTheme theme)
+        {
+            if (theme != AppTheme.Unspecified)
+                SetSystemTheme(theme == AppTheme.Dark ? global::DrawnUi.Views.SystemTheme.Dark : global::DrawnUi.Views.SystemTheme.Light);
         }
 
         private VisualElement _visibilityParent;

@@ -879,6 +879,9 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     /// </summary>
     private IntPtr OnWindowMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
+        if (DrawnView.IsWindowsThemeMessage(msg, lParam) && DrawnView.ReadWindowsSystemTheme() is { } theme)
+            Canvas.SetSystemTheme(theme);
+
         if (msg != WM_MOUSEHWHEEL || InputDisabled || !IsVisible)
             return IntPtr.Zero;
 
@@ -900,6 +903,8 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         _hwndSource?.RemoveHook(OnWindowMessage);
         _hwndSource = attach ? PresentationSource.FromVisual(this) as HwndSource : null;
         _hwndSource?.AddHook(OnWindowMessage);
+        if (attach && DrawnView.ReadWindowsSystemTheme() is { } theme)
+            Canvas.SetSystemTheme(theme);
     }
 
     /// <summary>

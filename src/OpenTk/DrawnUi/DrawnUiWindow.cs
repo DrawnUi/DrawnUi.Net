@@ -38,6 +38,17 @@ public class DrawnUiWindow : GameWindow
     // Dynamic:  render only when dirty, sleep via GLFW between frames (apps).
     private UpdateModeType UpdateMode => _canvas.UpdateMode;
 
+    /// <summary>
+    /// The DrawnUiWindow that is open, the last one loaded: development tools such as the DrawnUI Designer agent find
+    /// the app's canvas through it. Null before the window loaded and after it closed.
+    /// </summary>
+    public static DrawnUiWindow? Current { get; private set; }
+
+    /// <summary>
+    /// The canvas this window draws.
+    /// </summary>
+    public Canvas Canvas => _canvas;
+
     public DrawnUiWindow(GameWindowSettings gameSettings, NativeWindowSettings nativeSettings, Canvas canvas)
         : base(gameSettings, HideUntilCentered(nativeSettings))
     {
@@ -61,6 +72,7 @@ public class DrawnUiWindow : GameWindow
         Super.SetClipboardText ??= text => MainThread.BeginInvokeOnMainThread(() => ClipboardString = text);
 
         _windowThreadId = Environment.CurrentManagedThreadId;
+        Current = this;
         MainThread.Configure(
             action => _mainThreadActions.Enqueue(action),
             () => Environment.CurrentManagedThreadId == _windowThreadId);
@@ -85,6 +97,7 @@ public class DrawnUiWindow : GameWindow
             // VSync paces the frames; where the driver ignores it (WSLg's software GL) the window paces them itself.
             VSync = VSyncMode.On;
             _pacing = new FramePacing(refreshRate, alwaysOn: false);
+            Super.EnsureFrameLoopStarted(); // Super.OnFrame ticks every frame, as on every head
         }
         else
         {
@@ -110,6 +123,8 @@ public class DrawnUiWindow : GameWindow
                     _oldWndProc = WindowChrome.SetWindowLongPtr(_hwnd, -4,
                         Marshal.GetFunctionPointerForDelegate(_wndProcDelegate));
                     ConfigureWindowChrome(_hwnd);
+                    if (DrawnView.ReadWindowsSystemTheme() is { } theme)
+                        _canvas.SetSystemTheme(theme);
                     _uiaProvider = new WindowsUiaProvider(
                         _hwnd, _canvas.AccessibilityManager, () => (float)_canvas.RenderingScale);
                     _canvas.AccessibilityManager.FocusChanged += node => _uiaProvider.NotifyFocusChanged(node);
@@ -198,6 +213,9 @@ public class DrawnUiWindow : GameWindow
             ToggleFullscreen();
             return 0;
         }
+
+        if (DrawnView.IsWindowsThemeMessage((int)msg, lParam) && DrawnView.ReadWindowsSystemTheme() is { } theme)
+            _canvas.SetSystemTheme(theme);
 
         if (_uiaProvider != null)
         {
@@ -437,6 +455,8 @@ public class DrawnUiWindow : GameWindow
         }
 
         MainThread.Reset();
+        if (Current == this)
+            Current = null;
         _surface?.Dispose();
         _renderTarget?.Dispose();
         _grContext?.Dispose();

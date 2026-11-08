@@ -470,6 +470,14 @@ export function a11yAttach(elementId, onActivate, onKey, onFocus, onBlur) {
 }
 
 /** Reports the browser window gaining (true) or losing (false) the keyboard, once per change. */
+/** Reports the system's dark (true) or light (false) appearance now, then once per change. */
+export function watchSystemTheme(onChanged) {
+    const query = window.matchMedia?.('(prefers-color-scheme: dark)');
+    if (!query) return;
+    query.addEventListener('change', e => onChanged(e.matches));
+    onChanged(query.matches);
+}
+
 export function watchWindowFocus(onChanged) {
     window.addEventListener('focus', () => onChanged(true));
     window.addEventListener('blur', () => onChanged(false));
