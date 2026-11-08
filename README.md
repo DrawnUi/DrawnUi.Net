@@ -86,7 +86,7 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.8.22
+## What's New 1.10.8.23
 
   * **Context menus from the keyboard.** The Menu key and Shift+F10 open the menu of the control in keyboard focus, at its center, on WPF, OpenTK and WebAssembly, as on MAUI Windows. A key no control takes goes on to the app.
   * **A calm caret in the background.** A focused `SkiaEditor` keeps its focus while another app has the keyboard, hides its caret and stops redrawing, and shows the caret again when you come back (WPF, OpenTK, MAUI Windows, WebAssembly).
@@ -94,6 +94,7 @@ Please star ⭐ if you like it!
   * **Outlined text sits together.** Text with an outline or a drop shadow keeps its letters together across styles and markdown runs, so a title such as "LEVEL COMPLETE!" keeps its "!" right after the word.
   * **Composite layers keep their picture.** An `ImageComposite` layer keeps drawing its content when a shader effect on it is removed.
   * **DrawnUI Designer (preview).** Debug builds carry Designer agent 0.1.0-preview.10: apps can declare named states with `DesignerActions` (a level, a dialog) that the Designer jumps to, the control tree updates as controls are added or removed (`Super.ChildrenChanged`), and on Android and iOS the agent takes its pictures from the app's own frames. Release builds do not reference it.
+  * **OpenTK windows** follow the window focus from the moment they open, also in a `DrawnUiWindow` subclass.
 
 ### Previously
 
