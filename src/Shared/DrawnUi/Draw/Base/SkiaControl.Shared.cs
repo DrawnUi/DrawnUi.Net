@@ -1178,7 +1178,9 @@ namespace DrawnUi.Draw
                     if (cancel.IsCancellationRequested)
                     {
                         callbaclOnCancel?.Invoke();
-                        tcs.TrySetCanceled(cancel.Token);
+                        // no cancel.Token here: FadeToAsync, ScaleToAsync etc. dispose the source of an animation they
+                        // replace, and reading Token of a disposed source throws inside the frame's animator pass
+                        tcs.TrySetCanceled();
                     }
                     else
                     {
