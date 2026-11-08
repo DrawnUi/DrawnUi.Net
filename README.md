@@ -86,11 +86,12 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.8.24
+## What's New 1.10.8.25
 
   * **DrawnUI Designer on OpenTK.** Debug builds of OpenTK apps carry the Designer agent: the Designer attaches, shows screens and controls, edits them live and runs the app's Designer actions. `DrawnUiWindow.Current` and `DrawnUiWindow.Canvas` give tools the window and its canvas. Release builds don't include the agent.
   * **System light and dark.** `canvas.SystemTheme` and `SystemThemeChanged` report the system's light or dark appearance at start and on every change, on MAUI (every platform), WPF, OpenTK, Blazor and WebAssembly, as in DrawnUI for React and Rust.
   * **A steady frame tick on OpenTK.** `Super.OnFrame` fires every frame in OpenTK windows that redraw every frame, as on every other head, so code that waits for the next frame runs there too.
+  * **Animations that replace each other.** `FadeToAsync`, `ScaleToAsync`, `TranslateToAsync` and `RotateToAsync` started again on a control that is still animating end the previous animation cleanly, and the canvas keeps animating, also when one label is re-animated many times in a frame.
 
 ### Previously
 
