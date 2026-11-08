@@ -936,6 +936,7 @@ namespace DrawnUi.Views
         }
 
         List<Guid> _listRemoveAnimators = new(512);
+        readonly HashSet<Guid> _animatorsThatThrew = new(); // logged once each
 
         /// <summary>
         /// Tracking controls that what to be animated right now so we constantly refresh
@@ -1000,11 +1001,20 @@ namespace DrawnUi.Views
 
                             if (canPlay)
                             {
-                                if (skiaAnimation.IsPaused)
-                                    skiaAnimation.Resume(); //continue anim from current time instead of the old one
+                                // each animator on its own: one that throws is logged once and the others keep going
+                                try
+                                {
+                                    if (skiaAnimation.IsPaused)
+                                        skiaAnimation.Resume(); //continue anim from current time instead of the old one
 
-                                skiaAnimation.TickFrame(nanos);
-                                executed++;
+                                    skiaAnimation.TickFrame(nanos);
+                                    executed++;
+                                }
+                                catch (Exception e)
+                                {
+                                    if (_animatorsThatThrew.Add(key))
+                                        Super.Log(e);
+                                }
                             }
                             else
                             {
