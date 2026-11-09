@@ -1,3 +1,4 @@
+using SkiaSharp;
 using DrawnUi.Add3d;
 using DrawnUi.Draw;
 using DrawnUi.Testing;
@@ -104,5 +105,10 @@ public class Scene3DLayerTests
         Assert.Equal(Add3dAssets.Idle, f.Layer.CurrentAnimation("b"));
         Assert.True(f.Layer.SetMaterialColor("a", "Dragon_Main", Color.FromRgb(40, 120, 220)));
         Assert.False(f.Layer.SetMaterialColor("a", "Nothing", null));
+        using var surface = SKSurface.Create(new SKImageInfo(4, 4));
+        using var snapshot = surface.Snapshot();
+        Assert.True(f.Layer.SetMaterialImage("a", "Dragon_Main", Texture3D.FromImage(snapshot)));
+        Assert.False(f.Layer.SetMaterialImage("a", "Nothing", null));
+        Assert.False(f.Layer.SetMaterialImage("nobody", "Dragon_Main", null));
     }
 }

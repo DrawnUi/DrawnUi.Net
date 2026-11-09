@@ -341,6 +341,21 @@ public class SkiaModel3D : SkiaControl
         return true;
     }
 
+    /// <summary>
+    /// Puts an image on a material (a skin, a label, a photo, a pattern) in place of the file's own; null = the file's
+    /// again. The image is multiplied by the material's color: a white material (or SetMaterialColor(name,
+    /// Colors.White)) shows it as it is. False when there is no such material.
+    /// </summary>
+    public bool SetMaterialImage(string name, Texture3D image)
+    {
+        var i = _scene?.MaterialNamed(name) ?? -1;
+        if (i < 0)
+            return false;
+        _materials[i].Image = image;
+        Update();
+        return true;
+    }
+
     /// <summary>Shows or hides every surface with this material. False when there is none such.</summary>
     public bool SetMaterialVisible(string name, bool visible)
     {

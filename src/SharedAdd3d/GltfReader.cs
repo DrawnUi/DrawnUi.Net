@@ -419,7 +419,13 @@ internal sealed partial class Scene3D
         if (encoded == null || encoded.Length == 0)
             return null;
         using var image = SKImage.FromEncodedData(encoded);
-        if (image == null)
+        return ImagePixels(image);
+    }
+
+    /// <summary>An image's pixels as unpremultiplied RGBA; null when it has none on the CPU (a GPU-only image).</summary>
+    internal static Image3D ImagePixels(SKImage image)
+    {
+        if (image == null || image.IsTextureBacked)
             return null;
         var info = new SKImageInfo(image.Width, image.Height, SKColorType.Rgba8888, SKAlphaType.Unpremul);
         using var bitmap = new SKBitmap(info);

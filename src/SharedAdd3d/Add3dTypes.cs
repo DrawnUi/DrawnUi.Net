@@ -57,13 +57,49 @@ internal struct Track
     }
 }
 
-/// <summary>A material changed from code (SetMaterialColor, SetMaterialVisible).</summary>
+/// <summary>A material changed from code (SetMaterialColor, SetMaterialVisible, SetMaterialImage).</summary>
 internal struct MaterialOverride
 {
     public bool HasColor;
     /// <summary>Linear RGBA.</summary>
     public Vector4 Color;
     public bool Hidden;
+    /// <summary>An image in place of the file's own, null = the file's.</summary>
+    public Texture3D Image;
+}
+
+/// <summary>
+/// An image to put on a material (<see cref="SkiaModel3D.SetMaterialImage"/>, <see cref="SkiaScene3D.SetMaterialImage"/>):
+/// a PNG / JPEG / WebP file, or any Skia image (a photo, a pattern drawn in code). One copy of its pixels is uploaded
+/// once per GPU context, however many materials and controls show it. It wraps by the surface's texture coordinates
+/// (the model file's, or those of the shapes made in code) and is multiplied by the material's color: a white material
+/// shows it as it is.
+/// </summary>
+public sealed class Texture3D
+{
+    internal readonly Image3D Pixels;
+
+    Texture3D(Image3D pixels) => Pixels = pixels;
+
+    /// <summary>From encoded bytes (PNG, JPEG, WebP); null when they are not an image.</summary>
+    public static Texture3D Decode(byte[] encoded)
+    {
+        var pixels = Scene3D.DecodeImage(encoded);
+        return pixels == null ? null : new Texture3D(pixels);
+    }
+
+    /// <summary>From a Skia image in memory (decoded, or drawn on a raster surface); null for an image that lives on the GPU only.</summary>
+    public static Texture3D FromImage(SkiaSharp.SKImage image)
+    {
+        var pixels = Scene3D.ImagePixels(image);
+        return pixels == null ? null : new Texture3D(pixels);
+    }
+
+    /// <summary>Width in pixels.</summary>
+    public int Width => Pixels.Width;
+
+    /// <summary>Height in pixels.</summary>
+    public int Height => Pixels.Height;
 }
 
 /// <summary>A node's own transform: translation, rotation, scale.</summary>

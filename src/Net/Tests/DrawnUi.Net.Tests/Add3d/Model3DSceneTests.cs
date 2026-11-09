@@ -1,3 +1,4 @@
+using SkiaSharp;
 using System.Numerics;
 using DrawnUi.Add3d;
 using DrawnUi.Draw;
@@ -169,6 +170,22 @@ public class Model3DSceneTests
         Assert.True(s.Boss.SetNodeRotation(nodes[0], 0, 90, 0));
         Assert.True(s.Boss.ResetNode(nodes[0]));
         Assert.False(s.Boss.SetNodeVisible("Nothing", false));
+    }
+
+    [Fact]
+    public void An_image_goes_on_a_material_by_name()
+    {
+        using var s = new Scene();
+        using var surface = SKSurface.Create(new SKImageInfo(8, 4));
+        surface.Canvas.Clear(new SKColor(200, 30, 30));
+        using var snapshot = surface.Snapshot();
+        var drawn = Texture3D.FromImage(snapshot);
+        Assert.NotNull(drawn);
+        Assert.Equal((8, 4), (drawn.Width, drawn.Height));
+        Assert.Null(Texture3D.Decode("not an image"u8.ToArray()));
+        Assert.True(s.Boss.SetMaterialImage("Dragon_Main", drawn));
+        Assert.True(s.Boss.SetMaterialImage("Dragon_Main", null));
+        Assert.False(s.Boss.SetMaterialImage("Nothing", null));
     }
 
     [Fact]

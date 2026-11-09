@@ -8,7 +8,8 @@ namespace DrawnUi.Add3d;
 
 /// <summary>
 /// A mesh made in code: smooth shapes (turned profiles, spheres, rings, boxes, any 2D path pushed into depth). Put
-/// them together as named, colored parts with <see cref="Model3D"/>.
+/// them together as named, colored parts with <see cref="Model3D"/>. Every shape has texture coordinates, so
+/// SetMaterialImage can wrap an image around it.
 /// </summary>
 public sealed class Mesh3D
 {
@@ -17,8 +18,14 @@ public sealed class Mesh3D
     internal readonly List<uint> Indices = new();
     /// <summary>Outline directions per vertex; empty = the normals averaged per position.</summary>
     internal readonly List<Vector3> Outline = new();
+    /// <summary>Texture coordinates per vertex, (0, 0) = the image's top left.</summary>
+    internal readonly List<Vector2> Uvs = new();
 
-    void Quad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Vector3 normal)
+    /// <summary>A quad's texture coordinates when the image covers it whole, upright.</summary>
+    static readonly Vector2[] Whole = { new(0, 1), new(1, 1), new(1, 0), new(0, 0) };
+
+    /// <summary>A quad from its bottom left corner counter-clockwise, seen from outside; <paramref name="uvs"/> in that order.</summary>
+    void Quad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Vector3 normal, Vector2[] uvs)
     {
         var at = (uint)Positions.Count;
         Positions.Add(a);
@@ -27,21 +34,31 @@ public sealed class Mesh3D
         Positions.Add(d);
         for (var i = 0; i < 4; i++)
             Normals.Add(normal);
+        Uvs.AddRange(uvs);
         Indices.AddRange(new[] { at, at + 1, at + 2, at, at + 2, at + 3 });
     }
 
     /// <summary>
     /// A profile turned around the vertical axis: (radius, height) points from bottom to top (a cup, a vase, a coin's
-    /// rim). Each step of the profile is its own band, so corners stay sharp.
+    /// rim). Each step of the profile is its own band, so corners stay sharp. An image wraps once around and runs from
+    /// the top of the profile to its bottom, by length along it.
     /// </summary>
     public static Mesh3D Lathe(IReadOnlyList<(float Radius, float Height)> profile, int segments)
     {
         segments = Math.Max(segments, 3);
         var mesh = new Mesh3D();
+        var total = 0f;
+        for (var k = 0; k + 1 < profile.Count; k++)
+            total += new Vector2(profile[k + 1].Radius - profile[k].Radius, profile[k + 1].Height - profile[k].Height).Length();
+        total = MathF.Max(total, 1e-6f);
+        var along = 0f;
         for (var k = 0; k + 1 < profile.Count; k++)
         {
             var (r0, y0) = profile[k];
             var (r1, y1) = profile[k + 1];
+            var length = new Vector2(r1 - r0, y1 - y0).Length();
+            float v0 = 1 - along / total, v1 = 1 - (along + length) / total;
+            along += length;
             // The band's outward normal in the profile plane.
             var edge = new Vector2(y1 - y0, -(r1 - r0));
             var len = edge.Length();
@@ -49,12 +66,14 @@ public sealed class Mesh3D
             var at = (uint)mesh.Positions.Count;
             for (var s = 0; s <= segments; s++)
             {
-                var a = s / (float)segments * MathF.Tau;
-                var (sin, cos) = MathF.SinCos(a);
+                var u = s / (float)segments;
+                var (sin, cos) = MathF.SinCos(u * MathF.Tau);
                 mesh.Positions.Add(new Vector3(r0 * cos, y0, r0 * sin));
                 mesh.Normals.Add(new Vector3(nr * cos, ny, nr * sin));
+                mesh.Uvs.Add(new Vector2(1 - u, v0));
                 mesh.Positions.Add(new Vector3(r1 * cos, y1, r1 * sin));
                 mesh.Normals.Add(new Vector3(nr * cos, ny, nr * sin));
+                mesh.Uvs.Add(new Vector2(1 - u, v1));
             }
             for (uint s = 0; s < segments; s++)
             {
@@ -119,18 +138,18 @@ public sealed class Mesh3D
         return this;
     }
 
-    /// <summary>A box, centered.</summary>
+    /// <summary>A box, centered. An image covers each face whole, upright on the sides.</summary>
     public static Mesh3D Cuboid(float width, float height, float depth)
     {
         float x = width / 2, y = height / 2, z = depth / 2;
         Vector3 V(float a, float b, float c) => new(a * x, b * y, c * z);
         var mesh = new Mesh3D();
-        mesh.Quad(V(-1, -1, 1), V(1, -1, 1), V(1, 1, 1), V(-1, 1, 1), Vector3.UnitZ);
-        mesh.Quad(V(1, -1, -1), V(-1, -1, -1), V(-1, 1, -1), V(1, 1, -1), -Vector3.UnitZ);
-        mesh.Quad(V(1, -1, 1), V(1, -1, -1), V(1, 1, -1), V(1, 1, 1), Vector3.UnitX);
-        mesh.Quad(V(-1, -1, -1), V(-1, -1, 1), V(-1, 1, 1), V(-1, 1, -1), -Vector3.UnitX);
-        mesh.Quad(V(-1, 1, 1), V(1, 1, 1), V(1, 1, -1), V(-1, 1, -1), Vector3.UnitY);
-        mesh.Quad(V(-1, -1, -1), V(1, -1, -1), V(1, -1, 1), V(-1, -1, 1), -Vector3.UnitY);
+        mesh.Quad(V(-1, -1, 1), V(1, -1, 1), V(1, 1, 1), V(-1, 1, 1), Vector3.UnitZ, Whole);
+        mesh.Quad(V(1, -1, -1), V(-1, -1, -1), V(-1, 1, -1), V(1, 1, -1), -Vector3.UnitZ, Whole);
+        mesh.Quad(V(1, -1, 1), V(1, -1, -1), V(1, 1, -1), V(1, 1, 1), Vector3.UnitX, Whole);
+        mesh.Quad(V(-1, -1, -1), V(-1, -1, 1), V(-1, 1, 1), V(-1, 1, -1), -Vector3.UnitX, Whole);
+        mesh.Quad(V(-1, 1, 1), V(1, 1, 1), V(1, 1, -1), V(-1, 1, -1), Vector3.UnitY, Whole);
+        mesh.Quad(V(-1, -1, -1), V(1, -1, -1), V(1, -1, 1), V(-1, -1, 1), -Vector3.UnitY, Whole);
         return mesh;
     }
 
@@ -139,7 +158,7 @@ public sealed class Mesh3D
     /// <summary>
     /// A 2D path pushed into depth (a star, a heart, a check mark, a logo, a digit), <paramref name="depth"/> thick,
     /// facing the viewer, centered on the path's bounds; path units, y down as in Skia. Each closed contour is its own
-    /// solid.
+    /// solid. An image lies on the front over the path's bounds (mirrored on the back) and runs once around the walls.
     /// </summary>
     public static Mesh3D Extrude(SKPath path, float depth)
     {
@@ -167,6 +186,7 @@ public sealed class Mesh3D
                 corner[i] = new Vector3(v.X, v.Y, 0);
             }
             float front = depth / 2, back = -depth / 2;
+            var size = Vector2.Max(new Vector2(bounds.Width, bounds.Height), new Vector2(1e-6f));
             var triangles = EarClip(contour);
             foreach (var (z, normal, flip) in new[] { (front, Vector3.UnitZ, false), (back, -Vector3.UnitZ, true) })
             {
@@ -176,6 +196,7 @@ public sealed class Mesh3D
                     mesh.Positions.Add(new Vector3(contour[i].X, contour[i].Y, z));
                     mesh.Normals.Add(normal);
                     mesh.Outline.Add(corner[i]);
+                    mesh.Uvs.Add(new Vector2(contour[i].X / size.X + 0.5f, 0.5f - contour[i].Y / size.Y));
                 }
                 foreach (var (a, b, c) in triangles)
                 {
@@ -184,6 +205,11 @@ public sealed class Mesh3D
                     mesh.Indices.Add(at + (flip ? b : c));
                 }
             }
+            var perimeter = 0f;
+            for (var i = 0; i < n; i++)
+                perimeter += Vector2.Distance(contour[i], contour[(i + 1) % n]);
+            perimeter = MathF.Max(perimeter, 1e-6f);
+            var along = 0f;
             for (var i = 0; i < n; i++)
             {
                 var a = contour[i];
@@ -192,7 +218,10 @@ public sealed class Mesh3D
                 if (edge.LengthSquared() < 1e-12f)
                     continue;
                 var normal = Vector3.Normalize(new Vector3(edge.Y, -edge.X, 0));
-                mesh.Quad(new Vector3(a.X, a.Y, back), new Vector3(b.X, b.Y, back), new Vector3(b.X, b.Y, front), new Vector3(a.X, a.Y, front), normal);
+                float u0 = along / perimeter, u1 = (along + edge.Length()) / perimeter;
+                along += edge.Length();
+                mesh.Quad(new Vector3(a.X, a.Y, back), new Vector3(b.X, b.Y, back), new Vector3(b.X, b.Y, front), new Vector3(a.X, a.Y, front), normal,
+                    new[] { new Vector2(u0, 1), new Vector2(u1, 1), new Vector2(u1, 0), new Vector2(u0, 0) });
                 var ca = corner[i];
                 var cb = corner[(i + 1) % n];
                 mesh.Outline.Add(ca);
@@ -429,7 +458,7 @@ public sealed class Model3D
                     Normals = p.Mesh.Normals.ToArray(),
                     // Only a mesh that gave one for every vertex keeps its own outline directions.
                     OutlineNormals = p.Mesh.Outline.Count == n ? p.Mesh.Outline.ToArray() : null,
-                    Uvs = new Vector2[n],
+                    Uvs = p.Mesh.Uvs.Count == n ? p.Mesh.Uvs.ToArray() : new Vector2[n],
                     Indices = p.Mesh.Indices.ToArray(),
                     Material = i,
                 }

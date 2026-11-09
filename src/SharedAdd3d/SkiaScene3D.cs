@@ -309,6 +309,22 @@ public class SkiaScene3D : SkiaControl
         return true;
     }
 
+    /// <summary>
+    /// Puts an image on one material of one object (see <see cref="SkiaModel3D.SetMaterialImage"/>); null = the file's
+    /// again. False when there is no such object or material.
+    /// </summary>
+    public bool SetMaterialImage(string name, string material, Texture3D image)
+    {
+        if (!_byName.TryGetValue(name, out var o))
+            return false;
+        var i = o.Model.Scene.MaterialNamed(material);
+        if (i < 0)
+            return false;
+        o.Materials[i].Image = image;
+        Update();
+        return true;
+    }
+
     /// <summary>Stops or resumes every animation of the layer.</summary>
     public void SetPlaying(bool on) => IsPlaying = on;
 

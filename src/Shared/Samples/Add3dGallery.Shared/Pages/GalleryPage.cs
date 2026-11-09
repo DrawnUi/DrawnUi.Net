@@ -7,6 +7,7 @@ namespace Add3dGallery;
 /// Rust's gallery3d:
 /// - made in code, flat: a coin and bouncing dots for loading, a medal for an achievement, a check for success, a heart
 ///   for a like, falling confetti; smooth shapes in flat colors with outlines, animated by the app;
+/// - images on 3D: a product box with its label and a ball with three skins, drawn in code and switched live;
 /// - from model files: an avatar, a reward chest, and a field of walking mobs drawn by one 3D layer.
 /// </summary>
 public partial class GalleryPage : DrawnGame
@@ -91,6 +92,8 @@ public partial class GalleryPage : DrawnGame
                                     new UiButton("Hooray", Theme.Accent).OnTapped(_ => Hooray())),
                             }
                         },
+                        Theme.Section("Images on 3D", "Any image on a 3D surface, switched live: drawn in code here, or a photo or a file."),
+                        ImagesSection(),
                         Theme.Section("From model files", "Free 3D models with their own animations, driven by the app."),
                         new SkiaWrap
                         {

@@ -120,6 +120,16 @@ void main() {
     // and drop many different models.
     static ConditionalWeakTable<Scene3D, GpuModel> _models = new();
 
+    /// <summary>A texture of an image put on a material from code (<see cref="Texture3D"/>).</summary>
+    sealed class GpuImage
+    {
+        public uint Texture;
+    }
+
+    // ponytail: like models, the texture of an image that is gone is deleted only when the context goes.
+    /// <summary>Images put on materials from code, by their pixels: uploaded once per context.</summary>
+    static ConditionalWeakTable<Image3D, GpuImage> _images = new();
+
     /// <summary>Targets of disposed controls, deleted at the next draw (on the GL thread, context current).</summary>
     static readonly List<RenderTarget> _released = new();
 
@@ -267,23 +277,39 @@ void main() {
         return result;
     }
 
-    static GpuModel Upload(Scene3D scene)
+    /// <summary>One RGBA image as a mipmapped texture.</summary>
+    static uint Texture(Image3D image)
     {
         Gl.glPixelStorei(UNPACK_ALIGNMENT, 4);
+        uint t;
+        Gl.glGenTextures(1, &t);
+        Gl.glBindTexture(TEXTURE_2D, t);
+        fixed (byte* p = image.Rgba)
+            Gl.glTexImage2D(TEXTURE_2D, 0, (int)RGBA8, image.Width, image.Height, 0, RGBA, UNSIGNED_BYTE, p);
+        Gl.glGenerateMipmap(TEXTURE_2D);
+        Gl.glTexParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, (int)LINEAR_MIPMAP_LINEAR);
+        Gl.glTexParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, (int)LINEAR);
+        return t;
+    }
+
+    /// <summary>The texture of an image put on a material, uploaded the first time it is drawn in this context.</summary>
+    static uint ImageTexture(Image3D image)
+    {
+        if (!_images.TryGetValue(image, out var gpu))
+        {
+            gpu = new GpuImage { Texture = Texture(image) };
+            _images.AddOrUpdate(image, gpu);
+            // The upload bound its own texture.
+            _state.Texture = 0;
+        }
+        return gpu.Texture;
+    }
+
+    static GpuModel Upload(Scene3D scene)
+    {
         var model = new GpuModel { Textures = new uint[scene.Images.Length], Vaos = new uint[scene.Meshes.Length][], Counts = new int[scene.Meshes.Length][] };
         for (var i = 0; i < scene.Images.Length; i++)
-        {
-            var image = scene.Images[i];
-            uint t;
-            Gl.glGenTextures(1, &t);
-            Gl.glBindTexture(TEXTURE_2D, t);
-            fixed (byte* p = image.Rgba)
-                Gl.glTexImage2D(TEXTURE_2D, 0, (int)RGBA8, image.Width, image.Height, 0, RGBA, UNSIGNED_BYTE, p);
-            Gl.glGenerateMipmap(TEXTURE_2D);
-            Gl.glTexParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, (int)LINEAR_MIPMAP_LINEAR);
-            Gl.glTexParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, (int)LINEAR);
-            model.Textures[i] = t;
-        }
+            model.Textures[i] = Texture(scene.Images[i]);
         for (var m = 0; m < scene.Meshes.Length; m++)
         {
             var primitives = scene.Meshes[m];
@@ -408,6 +434,7 @@ void main() {
         {
             _context = gr;
             _models = new ConditionalWeakTable<Scene3D, GpuModel>();
+            _images = new ConditionalWeakTable<Image3D, GpuImage>();
             MakeProgram();
         }
         if (_released.Count > 0)
@@ -515,7 +542,9 @@ void main() {
                     Gl.glUniformMatrix4fv(_u.Model, 1, 0, (float*)&model);
                 }
                 var color = changed.HasColor ? changed.Color : material?.Color ?? new Vector4(0.8f, 0.8f, 0.8f, 1);
-                var texture = material != null && material.Texture >= 0 && material.Texture < gpu.Textures.Length ? gpu.Textures[material.Texture] : 0u;
+                // An image put on the material from code, else the file's own.
+                var texture = changed.Image != null ? ImageTexture(changed.Image.Pixels)
+                    : material != null && material.Texture >= 0 && material.Texture < gpu.Textures.Length ? gpu.Textures[material.Texture] : 0u;
                 // GL state set only when it changes: a crowd of one model repeats the same state per object.
                 var cull = !((material?.DoubleSided ?? false) && !outlinePass);
                 if (_state.Cull != (cull ? 1 : 2))

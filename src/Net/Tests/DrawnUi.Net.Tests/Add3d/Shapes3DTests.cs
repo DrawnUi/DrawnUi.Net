@@ -74,6 +74,34 @@ public class Shapes3DTests
     }
 
     [Fact]
+    public void Every_shape_has_texture_coordinates_inside_the_image()
+    {
+        foreach (var (name, mesh) in new[]
+                 {
+                     ("sphere", Mesh3D.Sphere(1)), ("cylinder", Mesh3D.Cylinder(1, 0.3f)), ("torus", Mesh3D.Torus(1, 0.2f)),
+                     ("box", Mesh3D.Cuboid(1, 2, 0.5f)), ("star", Mesh3D.Extrude(Star(), 10)),
+                 })
+        {
+            Assert.Equal(mesh.Positions.Count, mesh.Uvs.Count);
+            Assert.All(mesh.Uvs, uv => Assert.True(uv.X is >= -1e-4f and <= 1 + 1e-4f && uv.Y is >= -1e-4f and <= 1 + 1e-4f, name));
+            var lo = mesh.Uvs.Aggregate(Vector2.One, Vector2.Min);
+            var hi = mesh.Uvs.Aggregate(Vector2.Zero, Vector2.Max);
+            Assert.True(lo.X < 0.01f && lo.Y < 0.01f && hi.X > 0.99f && hi.Y > 0.99f, $"{name} uses the whole image: {lo} {hi}");
+        }
+        // A sphere: the top of the image at the top.
+        var sphere = Mesh3D.Sphere(1);
+        var top = Enumerable.Range(0, sphere.Positions.Count).MaxBy(i => sphere.Positions[i].Y);
+        Assert.True(sphere.Uvs[top].Y < 0.01f, sphere.Uvs[top].ToString());
+    }
+
+    [Fact]
+    public void Parts_made_in_code_keep_their_texture_coordinates()
+    {
+        var scene = new Model3D().Part("box", Mesh3D.Cuboid(1, 1, 1), Colors.White).ToScene();
+        Assert.Contains(scene.Meshes[0][0].Uvs, uv => uv == new Vector2(1, 1));
+    }
+
+    [Fact]
     public void Shapes_face_outward()
     {
         foreach (var (name, mesh) in new[]

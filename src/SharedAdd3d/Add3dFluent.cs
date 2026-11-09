@@ -18,6 +18,13 @@ public static class Add3dFluent
         return model;
     }
 
+    /// <summary>Starts with an image on a material (see <see cref="SkiaModel3D.SetMaterialImage"/>).</summary>
+    public static T MaterialImage<T>(this T model, string name, Texture3D image) where T : SkiaModel3D
+    {
+        model.SetMaterialImage(name, image);
+        return model;
+    }
+
     /// <summary>Runs when an object's animation played with PlayOnce or Hold ended: the object's name and the animation's.</summary>
     public static T OnAnimationEnded<T>(this T layer, Action<T, SceneAnimationEnded> action) where T : SkiaScene3D
     {
