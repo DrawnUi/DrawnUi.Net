@@ -2819,6 +2819,20 @@ else
         }
 
         /// <summary>
+        /// Fills the templates pool up to <paramref name="warmTarget"/> on a background thread, a moment later. Its own
+        /// method so the closure is made only when it runs, not on every draw of the method that asks for it.
+        /// </summary>
+        void WarmTemplatesPoolLater(int warmTarget)
+        {
+            Tasks.StartDelayed(TimeSpan.FromMilliseconds(50),
+                () =>
+                {
+                    ChildrenFactory.FillPoolInBackgroundAsync(warmTarget);
+                    OnPropertyChanged(nameof(DebugString));
+                });
+        }
+
+        /// <summary>
         /// A render tree entry: a plane bake makes new ones (its tree is deposited, never published); a live draw reuses
         /// the published entry at the same place when unchanged (see <see cref="SkiaControl.RenderTreeEntry"/>).
         /// </summary>
@@ -2855,7 +2869,8 @@ else
             var zOrdered = !IsTemplated && !IsPlaneBakePass && ChildrenUseZIndex();
             if (zOrdered)
                 _zOrderedDraws.Clear();
-            var cellsToRelease = new List<SkiaControl>();
+            // views to give back to the templates pool, made only by a templated stack
+            List<SkiaControl> cellsToRelease = null;
             int countRendered = 0;
             Vector2 offsetOthers = Vector2.Zero;
 
@@ -2892,12 +2907,7 @@ else
                     var warmTarget = Math.Max(visibleElements.Count + ReserveTemplates, GetTemplatesPoolPrefill());
                     if (warmTarget > 0)
                     {
-                        Tasks.StartDelayed(TimeSpan.FromMilliseconds(50),
-                            () =>
-                            {
-                                ChildrenFactory.FillPoolInBackgroundAsync(warmTarget);
-                                OnPropertyChanged(nameof(DebugString));
-                            });
+                        WarmTemplatesPoolLater(warmTarget);
                     }
                 }
 
@@ -2936,7 +2946,7 @@ else
                             continue;
                         }
 
-                        cellsToRelease.Add(child);
+                        (cellsToRelease ??= new List<SkiaControl>()).Add(child);
                     }
                     else
                     {
@@ -3365,7 +3375,7 @@ else
             }
             finally
             {
-                if (IsTemplated)
+                if (IsTemplated && cellsToRelease != null)
                     foreach (var cell in cellsToRelease)
                     {
                         ChildrenFactory.ReleaseViewInUse(cell);
