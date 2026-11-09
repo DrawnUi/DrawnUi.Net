@@ -498,15 +498,40 @@ namespace DrawnUi.Draw
             render(); //we will handle shadows by ourselves
         }
 
+        /// <summary>Parameters made by <see cref="AddPaintArguments"/>, with what they were made from.</summary>
+        sealed class MadePaintArguments
+        {
+            public object From;
+            public ShapePaintArguments Values;
+            public object Parameters;
+        }
+
+        // The same incoming parameters and the same sizes give the same dictionary (parameters are never changed once
+        // made), instead of a copy and a boxed struct on every paint. One object swapped whole, so a paint on another
+        // thread never mixes two of them.
+        MadePaintArguments _paintArguments;
+
         public override DrawingContext AddPaintArguments(DrawingContext ctx)
         {
-            return ctx.WithArgument(new(nameof(ContextArguments.ShapePaint),
-                new ShapePaintArguments()
-                {
-                    StrokeAwareSize = MeasuredStrokeAwareSize,
-                    StrokeAwareChildrenSize = MeasuredStrokeAwareChildrenSize,
-                    StrokeAwareClipSize = MeasuredStrokeAwareClipSize
-                }));
+            var values = new ShapePaintArguments()
+            {
+                StrokeAwareSize = MeasuredStrokeAwareSize,
+                StrokeAwareChildrenSize = MeasuredStrokeAwareChildrenSize,
+                StrokeAwareClipSize = MeasuredStrokeAwareClipSize
+            };
+
+            var made = _paintArguments;
+            if (made != null && ReferenceEquals(made.From, ctx.Parameters)
+                             && made.Values.StrokeAwareSize == values.StrokeAwareSize
+                             && made.Values.StrokeAwareChildrenSize == values.StrokeAwareChildrenSize
+                             && made.Values.StrokeAwareClipSize == values.StrokeAwareClipSize)
+            {
+                return ctx.WithParameters(made.Parameters);
+            }
+
+            var result = ctx.WithArgument(new(nameof(ContextArguments.ShapePaint), values));
+            _paintArguments = new MadePaintArguments { From = ctx.Parameters, Values = values, Parameters = result.Parameters };
+            return result;
         }
 
         protected override void Paint(DrawingContext ctx)
@@ -520,10 +545,12 @@ namespace DrawnUi.Draw
             var strokeAwareChildrenSize = MeasuredStrokeAwareChildrenSize;
             var rectBackground = MeasuredStrokeAwareClipSize;
 
-            ShapePaintArguments? arguments = null;
-            if (ctx.GetArgument(nameof(ContextArguments.ShapePaint)) is ShapePaintArguments defined)
+            // the arguments as the context holds them (already boxed), or none
+            object arguments = null;
+            var definedObject = ctx.GetArgument(nameof(ContextArguments.ShapePaint));
+            if (definedObject is ShapePaintArguments defined)
             {
-                arguments = defined;
+                arguments = definedObject;
                 strokeAwareSize = defined.StrokeAwareSize;
                 strokeAwareChildrenSize = defined.StrokeAwareChildrenSize;
             }
