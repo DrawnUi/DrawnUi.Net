@@ -530,7 +530,7 @@ public class SkiaModel3D : SkiaControl
         ComputePose();
         _items[0] = new RenderItem { Scene = _scene, Pose = _pose, Hidden = _hidden, Materials = _materials };
         var style = new RenderStyle { Look = _look, Outline = _outlineWidth * ctx.Scale, OutlineColor = Math3D.Srgb(_outlineColor) };
-        var image = Renderer3D.Draw(gr, _target, _items, 1, style, Camera(w, h), w, h);
+        var image = Renderer3D.Draw(Superview, gr, _target, _items, 1, style, Camera(w, h), w, h);
         if (image != null)
             ctx.Context.Canvas.DrawImage(image, SKRect.Create(dest.Left, dest.Top, w, h));
     }

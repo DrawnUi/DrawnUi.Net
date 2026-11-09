@@ -20,6 +20,12 @@
         <ProjectReference Include="..\..\DrawnUi\DrawnUi.Maui.csproj" />
     </ItemGroup>
 
+    <!-- Vulkan shaders: Platforms/Android/Shaders/model.vert and model.frag compiled with the NDK's glslc
+         (shader-tools folder, option -O, target env vulkan1.0) and checked in, so building needs no shader tools. -->
+    <ItemGroup Condition="$(TargetFramework.Contains('android'))">
+        <EmbeddedResource Include="Platforms\Android\Shaders\*.spv" LogicalName="%(Filename)%(Extension)" />
+    </ItemGroup>
+
     <Import Project="..\..\..\SharedAdd3d\SharedAdd3d.projitems" Label="Shared" />
 
 </Project>

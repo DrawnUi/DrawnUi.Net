@@ -1,4 +1,5 @@
 using System.Numerics;
+using DrawnUi.Views;
 using SkiaSharp;
 
 namespace DrawnUi.Add3d;
@@ -9,7 +10,7 @@ namespace DrawnUi.Add3d;
 /// </summary>
 internal static class Renderer3D
 {
-    public static SKImage? Draw(GRContext gr, RenderTarget target, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h) => null;
+    public static SKImage? Draw(DrawnView canvas, GRContext gr, RenderTarget target, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h) => null;
 
     public static void Release(RenderTarget target)
     {

@@ -3,6 +3,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using DrawnUi.Draw;
+using DrawnUi.Views;
 using SkiaSharp;
 
 namespace DrawnUi.Add3d;
@@ -144,6 +145,13 @@ void main() {
     {
         if (target == null)
             return;
+#if ANDROID
+        if (target.Native != null)
+        {
+            VulkanRenderer3D.Release(target);
+            return;
+        }
+#endif
         target.Image?.Dispose();
         target.Image = null;
         lock (_released)
@@ -367,11 +375,27 @@ void main() {
     /// Draws the objects into the control's texture in one pass and returns the image Skia shows of it (null when
     /// nothing could be drawn). Skia's GL state is reset after the GL calls.
     /// </summary>
-    public static SKImage Draw(GRContext gr, RenderTarget target, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h)
+    public static SKImage Draw(DrawnView canvas, GRContext gr, RenderTarget target, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h)
     {
-        // ponytail: GL only; a Vulkan or Metal canvas shows no 3D until those backends land.
-        if (gr == null || w <= 0 || h <= 0 || gr.Backend != GRBackend.OpenGL)
+        if (gr == null || w <= 0 || h <= 0)
             return null;
+        if (gr.Backend != GRBackend.OpenGL)
+        {
+#if ANDROID
+            if (gr.Backend == GRBackend.Vulkan)
+                return VulkanRenderer3D.Draw(canvas, gr, target, items, count, style, viewProj, w, h);
+#endif
+            // ponytail: no Metal path yet, those canvases show no 3D.
+            return null;
+        }
+#if ANDROID
+        if (target.Native != null)
+        {
+            // The canvas went from Vulkan to GL: the Vulkan objects are left to their device.
+            VulkanRenderer3D.Release(target);
+            target.Native = null;
+        }
+#endif
         if (_context != gr)
         {
             _context = gr;

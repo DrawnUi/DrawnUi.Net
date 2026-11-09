@@ -506,7 +506,7 @@ public class SkiaScene3D : SkiaControl
         }
         var scale = MathF.Max(ctx.Scale, 0.1f);
         var style = new RenderStyle { Look = _look, Outline = _outlineWidth * scale, OutlineColor = Math3D.Srgb(_outlineColor) };
-        var image = Renderer3D.Draw(gr, _target, _items, count, style, Camera(w / scale, h / scale), w, h);
+        var image = Renderer3D.Draw(Superview, gr, _target, _items, count, style, Camera(w / scale, h / scale), w, h);
         // The items keep no objects alive past the frame.
         Array.Clear(_items, 0, count);
         if (image != null)

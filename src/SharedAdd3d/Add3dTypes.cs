@@ -167,6 +167,8 @@ internal sealed class RenderTarget
     /// <summary>The GPU context its objects belong to; another one means they are gone.</summary>
     public object Context;
     public uint Frame, Color, Depth;
+    /// <summary>The objects of a renderer other than GL (Vulkan, Metal), null on GL.</summary>
+    public object Native;
     public int Width, Height;
     public SkiaSharp.SKImage Image;
 }
