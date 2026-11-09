@@ -1,0 +1,138 @@
+using Microsoft.AspNetCore.Components;
+
+namespace Add3dGallery;
+
+/// <summary>
+/// The whole app: a header with two tabs (the gallery and the boss fight) over one drawing surface that fills the
+/// browser window (see wwwroot/index.html for the full-height CSS). Add <c>?perf</c> to the address to measure the
+/// gallery with 100 mobs (results in the browser console).
+/// </summary>
+public partial class MainPage
+{
+    readonly SkiaControl _content;
+    readonly UiButton[] _tabs = new UiButton[2];
+    readonly SkiaControl[] _pages = new SkiaControl[2];
+
+    [Inject] NavigationManager Navigation { get; set; }
+
+    public MainPage()
+    {
+        _content = new SkiaLayer
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            BackgroundColor = Theme.Page,
+            Children =
+            {
+                new SkiaGrid
+                    {
+                        RowSpacing = 0,
+                        VerticalOptions = LayoutOptions.Fill,
+                        Children =
+                        {
+                            new SkiaLayer
+                            {
+                                BackgroundColor = Theme.Header,
+                                HeightRequest = 64,
+                                Padding = new Thickness(24, 0),
+                                // Static chrome over pages that draw every frame: blitted, not drawn again.
+                                UseCache = SkiaCacheType.Image,
+                                Children =
+                                {
+                                    new SkiaRow
+                                    {
+                                        Spacing = 12,
+                                        VerticalOptions = LayoutOptions.Center,
+                                        Children =
+                                        {
+                                            new SkiaShape
+                                            {
+                                                Type = ShapeType.Rectangle, CornerRadius = 8, WidthRequest = 32, HeightRequest = 32,
+                                                VerticalOptions = LayoutOptions.Center,
+                                                FillGradient = new SkiaGradient
+                                                {
+                                                    StartXRatio = 0, StartYRatio = 0, EndXRatio = 1, EndYRatio = 1,
+                                                    Colors = new List<Color> { Theme.Accent, Color.FromRgb(255, 99, 132) },
+                                                },
+                                                Children =
+                                                {
+                                                    new SkiaLabel("3D") { FontSize = 13, FontFamily = Theme.Title, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+                                                }
+                                            },
+                                            new SkiaStack
+                                            {
+                                                Spacing = 0,
+                                                HorizontalOptions = LayoutOptions.Start,
+                                                VerticalOptions = LayoutOptions.Center,
+                                                Children =
+                                                {
+                                                    new SkiaLabel("DrawnUI 3D") { FontSize = 17, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                                                    new SkiaLabel("The Add3d add-on for Blazor") { FontSize = 12, TextColor = Theme.Muted },
+                                                }
+                                            },
+                                        }
+                                    },
+                                    new SkiaRow
+                                    {
+                                        Spacing = 8,
+                                        HorizontalOptions = LayoutOptions.End,
+                                        VerticalOptions = LayoutOptions.Center,
+                                        AccessibilityRole = Aria.RoleTabList,
+                                        AccessibilityLabel = "Screens",
+                                        Children =
+                                        {
+                                            new UiButton("Gallery", Theme.Accent, 120) { AccessibilityRole = Aria.RoleTab }
+                                                .Assign(out _tabs[0])
+                                                .OnTapped(_ => Show(0)),
+                                            new UiButton("Boss fight", Theme.Quiet, 120) { AccessibilityRole = Aria.RoleTab }
+                                                .Assign(out _tabs[1])
+                                                .OnTapped(_ => Show(1)),
+                                        }
+                                    },
+                                }
+                            }.SetGrid(0, 0),
+                            new SkiaLayer
+                            {
+                                VerticalOptions = LayoutOptions.Fill,
+                                Children =
+                                {
+                                    new GalleryPage().Assign(out _pages[0]),
+                                    new BossPage { IsVisible = false }.Assign(out _pages[1]),
+                                }
+                            }.SetGrid(0, 1),
+                        }
+                    }
+                    .WithRowDefinitions("Auto,*"),
+                new SkiaLabelFps
+                {
+                    Margin = new Thickness(0, 0, 8, 8),
+                    VerticalOptions = LayoutOptions.End,
+                    HorizontalOptions = LayoutOptions.End,
+                    FontSize = 12,
+                    BackgroundColor = Color.FromRgb(139, 0, 0),
+                    TextColor = Colors.White,
+                    UseCache = SkiaCacheType.GPU,
+                    ZIndex = 110,
+                },
+            }
+        };
+        Show(0);
+    }
+
+    /// <summary>Shows one screen; the hidden one asks for no frames.</summary>
+    void Show(int index)
+    {
+        for (var i = 0; i < _pages.Length; i++)
+        {
+            _pages[i].IsVisible = i == index;
+            _tabs[i].Fill = i == index ? Theme.Accent : Theme.Quiet;
+            _tabs[i].AccessibilityIsPressed = i == index;
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (new Uri(Navigation.Uri).Query.Contains("perf", StringComparison.OrdinalIgnoreCase))
+            PerfProbe.Start((GalleryPage)_pages[0]);
+    }
+}

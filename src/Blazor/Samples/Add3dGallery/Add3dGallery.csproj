@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <RootNamespace>Add3dGallery</RootNamespace>
+        <AssemblyName>Add3dGallery</AssemblyName>
+        <!-- Links native Skia into dotnet.native.wasm; needs the wasm-tools workload. -->
+        <WasmBuildNative>true</WasmBuildNative>
+        <!-- Content-hashed js/css names in index.html, so a redeploy is never served stale. -->
+        <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+    <!-- Release runs compiled ahead of time (the interpreter costs about half the frame rate). -->
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <RunAOTCompilation>true</RunAOTCompilation>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\DrawnUi.Wasm\DrawnUi.Blazor.Wasm.csproj" />
+        <ProjectReference Include="..\..\Addons\DrawnUi.Blazor.Game\DrawnUi.Blazor.Game.csproj" />
+        <ProjectReference Include="..\..\Addons\DrawnUi.Blazor.Add3d\DrawnUi.Blazor.Add3d.csproj" />
+    </ItemGroup>
+
+    <!-- The models (CC0, Assets/MODELS-LICENSE.txt) ship inside the app, read once at startup. -->
+    <ItemGroup>
+        <EmbeddedResource Include="Assets\*.glb" LogicalName="%(Filename)%(Extension)" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <TrimmerRootAssembly Include="SkiaSharp" />
+    </ItemGroup>
+
+</Project>
