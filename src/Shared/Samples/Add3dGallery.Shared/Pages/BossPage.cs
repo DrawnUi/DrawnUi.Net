@@ -69,7 +69,9 @@ public class BossPage : SkiaLayer
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 BackgroundColor = Color.FromRgb(18, 14, 22),
-                UseCache = SkiaCacheType.Image,
+                // A full-page gradient: drawn on the GPU once and kept there (a CPU picture of the whole page took
+                // about 45 ms of the page's first frame on WebAssembly, then had to be uploaded).
+                UseCache = SkiaCacheType.GPU,
                 FillGradient = new SkiaGradient
                 {
                     Type = GradientType.Circular,
