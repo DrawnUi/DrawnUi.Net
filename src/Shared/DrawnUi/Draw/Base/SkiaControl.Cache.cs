@@ -1501,7 +1501,7 @@ public partial class SkiaControl
 
                 // drains the control's own action queue; per-control semaphore keeps this safe
                 // against a concurrent pump for the same control on another worker
-                control.ProcessOffscreenCacheRenderingAsync().GetAwaiter().GetResult();
+                control.ProcessOffscreenCacheRendering();
             }
             catch (Exception e)
             {
@@ -1531,6 +1531,23 @@ public partial class SkiaControl
     }
 
     protected SemaphoreSlim semaphoreOffsecreenProcess = new(1);
+
+    /// <summary>
+    /// The bake threads' pump: waits for the semaphore on the calling thread. An async wait for a control another bake
+    /// thread is pumping ends on the thread pool, so a busy pool held every bake thread.
+    /// </summary>
+    void ProcessOffscreenCacheRendering()
+    {
+        semaphoreOffsecreenProcess.Wait();
+        try
+        {
+            DrainOffscreenQueueInline();
+        }
+        finally
+        {
+            semaphoreOffsecreenProcess.Release();
+        }
+    }
 
     public async Task ProcessOffscreenCacheRenderingAsync()
     {
