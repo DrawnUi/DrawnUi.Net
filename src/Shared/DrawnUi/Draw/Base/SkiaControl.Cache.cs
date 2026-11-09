@@ -187,6 +187,25 @@ public partial class SkiaControl
     /// control's area and redraws the child clipped to it.
     /// </summary>
     /// <param name="ctx"></param>
+    /// <summary>
+    /// A changed child's areas: where it is now and, when it moved since, where it was last drawn (moved by Left /
+    /// Top, its old place still holds its pixels).
+    /// </summary>
+    static void AddChildAreas(List<SKRect> areas, SkiaControl child)
+    {
+        var now = child.GetTransformedDirtyBounds();
+        areas.Add(now);
+        if (child.TryGetDrawnDirtyBounds(out var drawn) && drawn != now && !drawn.IsEmpty)
+            areas.Add(drawn);
+    }
+
+    static bool ChildAreasIntersect(SkiaControl child, SKRect bounds)
+    {
+        if (child.GetTransformedDirtyBounds().IntersectsWith(bounds))
+            return true;
+        return child.TryGetDrawnDirtyBounds(out var drawn) && drawn.IntersectsWith(bounds);
+    }
+
     static bool IntersectsAny(SKRect[] areas, SKRect bounds)
     {
         if (areas == null)
@@ -245,7 +264,7 @@ public partial class SkiaControl
                         {
                             areas.RemoveRange(areasBefore, areas.Count - areasBefore);
                             changed.RemoveRange(changedBefore, changed.Count - changedBefore);
-                            areas.Add(item.GetTransformedDirtyBounds());
+                            AddChildAreas(areas, item);
                         }
                     }
                 }
@@ -298,8 +317,7 @@ public partial class SkiaControl
                         //use full transform-aware bounds (handles rotation, scale, skew, perspective)
                         if (!DirtyChildrenInternal.Contains(cell.Control) &&
                             (DirtyChildrenInternal.Any(dirtyChild =>
-                                 dirtyChild.GetTransformedDirtyBounds()
-                                     .IntersectsWith(cell.Control.GetTransformedDirtyBounds()))
+                                 ChildAreasIntersect(dirtyChild, cell.Control.GetTransformedDirtyBounds()))
                              || IntersectsAny(removedAreas, cell.Control.GetTransformedDirtyBounds())))
                         {
                             DirtyChildrenInternal.Add(cell.Control);
@@ -309,7 +327,7 @@ public partial class SkiaControl
                     // the overlapping siblings are erased and redrawn whole as well
                     areas.Clear();
                     foreach (var dirtyChild in DirtyChildrenInternal)
-                        areas.Add(dirtyChild.GetTransformedDirtyBounds());
+                        AddChildAreas(areas, dirtyChild);
                     if (removedAreas != null)
                         areas.AddRange(removedAreas);
                 }

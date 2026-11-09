@@ -4856,11 +4856,13 @@ namespace DrawnUi.Draw
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SKRect GetTransformedDirtyBounds()
         {
+            return TransformDirtyBounds((float)(Left * RenderingScale), (float)(Top * RenderingScale));
+        }
+
+        SKRect TransformDirtyBounds(float leftOffset, float topOffset)
+        {
             var rect = DirtyRegion;
             var m = RenderTransformMatrix;
-
-            var leftOffset = (float)(Left * RenderingScale);
-            var topOffset = (float)(Top * RenderingScale);
 
             // Fast path: matrix is pure translation (no rotation/scale/skew)
             if (m.ScaleX == 1 && m.ScaleY == 1 && m.SkewX == 0 && m.SkewY == 0 &&
@@ -4875,23 +4877,53 @@ namespace DrawnUi.Draw
                     rect.Bottom + offsetY);
             }
 
-            // Full transform path: map corners through matrix and compute AABB
-            var tl = m.MapPoint(rect.Left, rect.Top);
-            var tr = m.MapPoint(rect.Right, rect.Top);
-            var br = m.MapPoint(rect.Right, rect.Bottom);
-            var bl = m.MapPoint(rect.Left, rect.Bottom);
+            // Full transform path: the matrix turns around a pivot that already holds the Left / Top the control was
+            // drawn with, so the rect is placed there first, mapped, and then moved by any Left / Top change since
+            var dl = _drawnLeftOffset;
+            var dt = _drawnTopOffset;
+            var tl = m.MapPoint(rect.Left + dl, rect.Top + dt);
+            var tr = m.MapPoint(rect.Right + dl, rect.Top + dt);
+            var br = m.MapPoint(rect.Right + dl, rect.Bottom + dt);
+            var bl = m.MapPoint(rect.Left + dl, rect.Bottom + dt);
+            var moveX = leftOffset - dl;
+            var moveY = topOffset - dt;
 
             return new SKRect(
-                Math.Min(Math.Min(tl.X, tr.X), Math.Min(br.X, bl.X)) + leftOffset,
-                Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(br.Y, bl.Y)) + topOffset,
-                Math.Max(Math.Max(tl.X, tr.X), Math.Max(br.X, bl.X)) + leftOffset,
-                Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(br.Y, bl.Y)) + topOffset);
+                Math.Min(Math.Min(tl.X, tr.X), Math.Min(br.X, bl.X)) + moveX,
+                Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(br.Y, bl.Y)) + moveY,
+                Math.Max(Math.Max(tl.X, tr.X), Math.Max(br.X, bl.X)) + moveX,
+                Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(br.Y, bl.Y)) + moveY);
         }
 
         /// <summary>
         /// Stores the transformation matrix used during rendering for hit testing
         /// </summary>
-        public SKMatrix RenderTransformMatrix { get; protected set; } = SKMatrix.Identity;
+        public SKMatrix RenderTransformMatrix
+        {
+            get => _renderTransformMatrix;
+            protected set
+            {
+                _renderTransformMatrix = value;
+                // where Left / Top put it when it was drawn: a composite parent erases that place after a move
+                _drawnLeftOffset = (float)(Left * RenderingScale);
+                _drawnTopOffset = (float)(Top * RenderingScale);
+                _hasDrawnBounds = true;
+            }
+        }
+
+        private SKMatrix _renderTransformMatrix = SKMatrix.Identity;
+        private float _drawnLeftOffset, _drawnTopOffset;
+        private bool _hasDrawnBounds;
+
+        /// <summary>
+        /// Where the control was last drawn, in its parent's pixels: <see cref="GetTransformedDirtyBounds"/> with the
+        /// Left / Top it had then. Differs from the current bounds after Left / Top changed and before the next draw.
+        /// </summary>
+        public bool TryGetDrawnDirtyBounds(out SKRect bounds)
+        {
+            bounds = TransformDirtyBounds(_drawnLeftOffset, _drawnTopOffset);
+            return _hasDrawnBounds;
+        }
 
         /// <summary>
         /// Gets the inverse of the rendering transformation matrix for hit testing
@@ -9958,8 +9990,7 @@ namespace DrawnUi.Draw
         {
             if (IsCacheComposite)
             {
-                var drawnAt = child.GetTransformedDirtyBounds();
-                if (!drawnAt.IsEmpty)
+                if (child.TryGetDrawnDirtyBounds(out var drawnAt) && !drawnAt.IsEmpty)
                 {
                     lock (DirtyChildrenTracker)
                         (_compositeRemovedAreas ??= new()).Add(drawnAt);
