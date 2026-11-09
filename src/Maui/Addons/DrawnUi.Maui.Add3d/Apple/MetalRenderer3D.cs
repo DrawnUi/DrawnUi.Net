@@ -212,7 +212,7 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
         _opaque = Pipeline(device, vs, fs, layout, false, 1);
         _blend = Pipeline(device, vs, fs, layout, true, 1);
         _opaqueMsaa = _blendMsaa = null;
-        _msaaSamples = device.SupportsTextureSampleCount(4) ? 4 : device.SupportsTextureSampleCount(2) ? 2 : 1;
+        _msaaSamples = Math.Max(1, Math3D.MsaaSamples(device.SupportsTextureSampleCount(4) ? 4 : device.SupportsTextureSampleCount(2) ? 2 : 1));
 
         _depthWrite = device.CreateDepthStencilState(new MTLDepthStencilDescriptor { DepthCompareFunction = MTLCompareFunction.Less, DepthWriteEnabled = true });
         _depthRead = device.CreateDepthStencilState(new MTLDepthStencilDescriptor { DepthCompareFunction = MTLCompareFunction.Less, DepthWriteEnabled = false });

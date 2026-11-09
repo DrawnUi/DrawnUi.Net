@@ -255,7 +255,8 @@ internal sealed unsafe class VulkanRenderer3D
             || vkGetPhysicalDeviceImageFormatProperties(_physical, _depthFormat, IMAGE_TYPE_2D, IMAGE_TILING_OPTIMAL, IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | usage, 0, &depth) != SUCCESS)
             return 1;
         var both = color.sampleCounts & depth.sampleCounts;
-        return (both & 4) != 0 ? 4u : (both & 2) != 0 ? 2u : 1u;
+        var max = (both & 64) != 0 ? 64 : (both & 32) != 0 ? 32 : (both & 16) != 0 ? 16 : (both & 8) != 0 ? 8 : (both & 4) != 0 ? 4 : (both & 2) != 0 ? 2 : 1;
+        return (uint)Math.Max(1, Math3D.MsaaSamples(max));
     }
 
     /// <summary>

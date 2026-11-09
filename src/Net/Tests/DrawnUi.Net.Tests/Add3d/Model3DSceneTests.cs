@@ -126,10 +126,24 @@ public class Model3DSceneTests
             Assert.Same(first[i], again[i]);
     }
 
-    /// <summary>Smooth 3D edges are opt-in: off by default, switchable at any time.</summary>
+    /// <summary>Smooth edges take 4 samples, or the most the device has; one sample is the plain path (as Rust's msaa_samples).</summary>
     [Fact]
-    public void Smooth_edges_are_off_by_default()
+    public void Smooth_edges_take_4_samples_or_the_most_the_device_has()
     {
+        Assert.Equal(4, Math3D.MsaaSamples(16));
+        Assert.Equal(4, Math3D.MsaaSamples(4));
+        Assert.Equal(2, Math3D.MsaaSamples(2));
+        Assert.Equal(0, Math3D.MsaaSamples(1));
+        Assert.Equal(0, Math3D.MsaaSamples(0));
+    }
+
+    /// <summary>Smooth 3D edges are opt-in on both 3D controls: off until asked, switchable at any time (as Rust's smooth_edges_are_off_until_asked).</summary>
+    [Fact]
+    public void Smooth_edges_are_off_until_asked()
+    {
+        Assert.False(new SkiaScene3D().Antialias);
+        Assert.True(new SkiaScene3D { Antialias = true }.Antialias);
+        Assert.True(new SkiaModel3D(new Model3D().Part("p", Mesh3D.Sphere(1), Colors.White)) { Antialias = true }.Antialias);
         using var s = new Scene();
         Assert.False(s.Boss.Antialias);
         Assert.False(new SkiaModel3D(new Model3D().Part("box", Mesh3D.Cuboid(1, 1, 1), Colors.White)).Antialias);

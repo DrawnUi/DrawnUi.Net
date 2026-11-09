@@ -49,6 +49,7 @@ public class SkiaScene3D : SkiaControl
     float _tilt = 15, _outlineWidth;
     bool _playing = true;
     Look _look;
+    bool _antialias;
     Color _outlineColor = Colors.Black;
 
     #region PROPERTIES
@@ -71,6 +72,22 @@ public class SkiaScene3D : SkiaControl
         set
         {
             _look = value;
+            Update();
+        }
+    }
+
+    /// <summary>
+    /// Smooth 3D edges (4x multisampling, or the most the GPU offers), off by default. On, the layer's GPU frame takes
+    /// about four times the memory; off, nothing extra is allocated. Can be switched at any time.
+    /// </summary>
+    public bool Antialias
+    {
+        get => _antialias;
+        set
+        {
+            if (_antialias == value)
+                return;
+            _antialias = value;
             Update();
         }
     }
@@ -521,7 +538,7 @@ public class SkiaScene3D : SkiaControl
             _items[count++] = new RenderItem { Scene = o.Model.Scene, Pose = o.Pose, Hidden = o.Hidden, Materials = o.Materials };
         }
         var scale = MathF.Max(ctx.Scale, 0.1f);
-        var style = new RenderStyle { Look = _look, Outline = _outlineWidth * scale, OutlineColor = Math3D.Srgb(_outlineColor) };
+        var style = new RenderStyle { Look = _look, Outline = _outlineWidth * scale, OutlineColor = Math3D.Srgb(_outlineColor), Samples = _antialias ? 4 : 1 };
         var image = Renderer3D.Draw(Superview, gr, _target, _items, count, style, Camera(w / scale, h / scale), w, h);
         // The items keep no objects alive past the frame.
         Array.Clear(_items, 0, count);

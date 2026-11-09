@@ -351,7 +351,7 @@ void main() {
             target.Depth = id;
             target.Width = target.Height = 0;
         }
-        var samples = Math.Clamp(samplesWanted, 1, _maxSamples);
+        var samples = samplesWanted > 1 ? Math.Max(1, Math3D.MsaaSamples(_maxSamples)) : 1;
         if (target.Width == w && target.Height == h && target.Samples == samples && target.Image != null)
             return;
         target.Image?.Dispose();

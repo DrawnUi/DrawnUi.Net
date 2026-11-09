@@ -140,6 +140,12 @@ internal static class Math3D
 
     public static float Radians(float degrees) => degrees * (MathF.PI / 180f);
 
+    /// <summary>
+    /// The samples per pixel smooth edges take on a GPU offering <paramref name="max"/>: 4, or fewer when that is all
+    /// it has; 0 when it has fewer than 2 (no smoothing: the plain path). Same as DrawnUI for Rust's msaa_samples.
+    /// </summary>
+    public static int MsaaSamples(int max) => max < 2 ? 0 : Math.Min(max, 4);
+
     /// <summary>Rotations around x, y, z in degrees, as glam's EulerRot::XYZ (x * y * z).</summary>
     public static Quaternion Euler(float x, float y, float z) =>
         Quaternion.CreateFromAxisAngle(Vector3.UnitX, Radians(x))
