@@ -43,6 +43,7 @@ public class SkiaModel3D : SkiaControl
     float _yaw = 20, _pitch = 10, _autoRotate, _zoom = 1, _outlineWidth;
     bool _orbit = true;
     Look _look;
+    bool _antialias;
     Color _outlineColor = Colors.Black;
 
     /// <summary>
@@ -202,6 +203,23 @@ public class SkiaModel3D : SkiaControl
         set
         {
             _look = value;
+            Update();
+        }
+    }
+
+    /// <summary>
+    /// Smooth 3D edges (4x multisampling, or the most the GPU offers), off by default. On, the control's GPU frame
+    /// takes about four times the memory (a 300 x 200 point control at 3x: about 13 MB more); off, nothing extra is
+    /// allocated. Can be switched at any time.
+    /// </summary>
+    public bool Antialias
+    {
+        get => _antialias;
+        set
+        {
+            if (_antialias == value)
+                return;
+            _antialias = value;
             Update();
         }
     }
@@ -544,7 +562,7 @@ public class SkiaModel3D : SkiaControl
             return;
         ComputePose();
         _items[0] = new RenderItem { Scene = _scene, Pose = _pose, Hidden = _hidden, Materials = _materials };
-        var style = new RenderStyle { Look = _look, Outline = _outlineWidth * ctx.Scale, OutlineColor = Math3D.Srgb(_outlineColor) };
+        var style = new RenderStyle { Look = _look, Outline = _outlineWidth * ctx.Scale, OutlineColor = Math3D.Srgb(_outlineColor), Samples = _antialias ? 4 : 1 };
         var image = Renderer3D.Draw(Superview, gr, _target, _items, 1, style, Camera(w, h), w, h);
         if (image != null)
             ctx.Context.Canvas.DrawImage(image, SKRect.Create(dest.Left, dest.Top, w, h));

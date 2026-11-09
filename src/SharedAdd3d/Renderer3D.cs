@@ -97,6 +97,7 @@ void main() {
     const uint ONE = 1, ONE_MINUS_SRC_ALPHA = 0x0303, TEXTURE0 = 0x84C0, UNPACK_ALIGNMENT = 0x0CF5;
     const uint COLOR_BUFFER_BIT = 0x4000, DEPTH_BUFFER_BIT = 0x0100;
     const uint TEXTURE_MIN_FILTER = 0x2801, TEXTURE_MAG_FILTER = 0x2800, LINEAR = 0x2601, LINEAR_MIPMAP_LINEAR = 0x2703;
+    const uint READ_FRAMEBUFFER = 0x8CA8, DRAW_FRAMEBUFFER = 0x8CA9, NEAREST = 0x2600, MAX_SAMPLES = 0x8D57;
     const uint VERTEX_SHADER = 0x8B31, FRAGMENT_SHADER = 0x8B30, COMPILE_STATUS = 0x8B81, LINK_STATUS = 0x8B82;
 
     struct Uniforms
@@ -117,6 +118,8 @@ void main() {
 
     uint _program;
     Uniforms _u;
+    /// <summary>The most samples per pixel this context offers (GL_MAX_SAMPLES).</summary>
+    int _maxSamples = 1;
 
     // ponytail: a model whose scene is gone keeps its GL buffers until the context goes; delete them when apps load
     // and drop many different models.
@@ -327,14 +330,15 @@ void main() {
         return model;
     }
 
-    void EnsureTarget(GRContext gr, RenderTarget target, int w, int h)
+    void EnsureTarget(GRContext gr, RenderTarget target, int w, int h, int samplesWanted)
     {
         if (target.Context != gr)
         {
             // A new context: the old objects are left to the old one (deleted there, or gone with it).
             if (target.Context is GRContext old && Renderers.TryGetValue(old, out var owner))
                 lock (owner._released)
-                    owner._released.Add(new RenderTarget { Context = old, Frame = target.Frame, Color = target.Color, Depth = target.Depth });
+                    owner._released.Add(new RenderTarget { Context = old, Frame = target.Frame, Color = target.Color, Depth = target.Depth, MsaaFrame = target.MsaaFrame, MsaaColor = target.MsaaColor });
+            target.MsaaFrame = target.MsaaColor = 0;
             target.Image?.Dispose();
             target.Image = null;
             target.Context = gr;
@@ -347,20 +351,54 @@ void main() {
             target.Depth = id;
             target.Width = target.Height = 0;
         }
-        if (target.Width == w && target.Height == h && target.Image != null)
+        var samples = Math.Clamp(samplesWanted, 1, _maxSamples);
+        if (target.Width == w && target.Height == h && target.Samples == samples && target.Image != null)
             return;
         target.Image?.Dispose();
+        target.Image = null;
         Gl.glBindTexture(TEXTURE_2D, target.Color);
         Gl.glTexImage2D(TEXTURE_2D, 0, (int)RGBA8, w, h, 0, RGBA, UNSIGNED_BYTE, null);
         Gl.glTexParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, (int)LINEAR);
         Gl.glTexParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, (int)LINEAR);
         Gl.glBindRenderbuffer(RENDERBUFFER, target.Depth);
-        Gl.glRenderbufferStorage(RENDERBUFFER, DEPTH_COMPONENT24, w, h);
         Gl.glBindFramebuffer(FRAMEBUFFER, target.Frame);
         Gl.glFramebufferTexture2D(FRAMEBUFFER, COLOR_ATTACHMENT0, TEXTURE_2D, target.Color, 0);
-        Gl.glFramebufferRenderbuffer(FRAMEBUFFER, DEPTH_ATTACHMENT, RENDERBUFFER, target.Depth);
+        if (samples > 1)
+        {
+            // Smooth edges: drawn into a multisampled color and depth, then resolved into the texture.
+            uint id;
+            if (target.MsaaFrame == 0)
+            {
+                Gl.glGenFramebuffers(1, &id);
+                target.MsaaFrame = id;
+                Gl.glGenRenderbuffers(1, &id);
+                target.MsaaColor = id;
+            }
+            Gl.glRenderbufferStorageMultisample(RENDERBUFFER, samples, DEPTH_COMPONENT24, w, h);
+            Gl.glFramebufferRenderbuffer(FRAMEBUFFER, DEPTH_ATTACHMENT, RENDERBUFFER, 0);
+            Gl.glBindRenderbuffer(RENDERBUFFER, target.MsaaColor);
+            Gl.glRenderbufferStorageMultisample(RENDERBUFFER, samples, RGBA8, w, h);
+            Gl.glBindFramebuffer(FRAMEBUFFER, target.MsaaFrame);
+            Gl.glFramebufferRenderbuffer(FRAMEBUFFER, COLOR_ATTACHMENT0, RENDERBUFFER, target.MsaaColor);
+            Gl.glFramebufferRenderbuffer(FRAMEBUFFER, DEPTH_ATTACHMENT, RENDERBUFFER, target.Depth);
+        }
+        else
+        {
+            if (target.MsaaFrame != 0)
+            {
+                // Smooth edges turned off: the multisampled buffers go.
+                uint id = target.MsaaFrame;
+                Gl.glDeleteFramebuffers(1, &id);
+                id = target.MsaaColor;
+                Gl.glDeleteRenderbuffers(1, &id);
+                target.MsaaFrame = target.MsaaColor = 0;
+            }
+            Gl.glRenderbufferStorage(RENDERBUFFER, DEPTH_COMPONENT24, w, h);
+            Gl.glFramebufferRenderbuffer(FRAMEBUFFER, DEPTH_ATTACHMENT, RENDERBUFFER, target.Depth);
+        }
         target.Width = w;
         target.Height = h;
+        target.Samples = samples;
         // The texture keeps its identity: one image wraps it until the next resize. The frame is imported bottom-left.
         using var backend = new GRBackendTexture(w, h, false, new GRGlTextureInfo(TEXTURE_2D, target.Color, RGBA8));
         target.Image = SKImage.FromTexture(gr, backend, GRSurfaceOrigin.BottomLeft, SKColorType.Rgba8888, SKAlphaType.Premul);
@@ -380,6 +418,13 @@ void main() {
                 Gl.glDeleteTextures(1, &id);
                 id = t.Depth;
                 Gl.glDeleteRenderbuffers(1, &id);
+                if (t.MsaaFrame != 0)
+                {
+                    id = t.MsaaFrame;
+                    Gl.glDeleteFramebuffers(1, &id);
+                    id = t.MsaaColor;
+                    Gl.glDeleteRenderbuffers(1, &id);
+                }
             }
             _released.Clear();
         }
@@ -418,12 +463,17 @@ void main() {
     SKImage DrawOn(GRContext gr, RenderTarget target, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h)
     {
         if (_program == 0)
+        {
             MakeProgram();
+            int max;
+            Gl.glGetIntegerv(MAX_SAMPLES, &max);
+            _maxSamples = Math.Max(1, max);
+        }
         if (_released.Count > 0)
             DeleteReleased(gr);
-        EnsureTarget(gr, target, w, h);
+        EnsureTarget(gr, target, w, h, style.Samples);
 
-        Gl.glBindFramebuffer(FRAMEBUFFER, target.Frame);
+        Gl.glBindFramebuffer(FRAMEBUFFER, target.MsaaFrame != 0 ? target.MsaaFrame : target.Frame);
         Gl.glViewport(0, 0, w, h);
         Gl.glDisable(SCISSOR_TEST);
         Gl.glDisable(STENCIL_TEST);
@@ -480,6 +530,12 @@ void main() {
         Gl.glDisable(CULL_FACE);
         Gl.glDisable(BLEND);
         Gl.glDepthMask(1);
+        if (target.MsaaFrame != 0)
+        {
+            Gl.glBindFramebuffer(READ_FRAMEBUFFER, target.MsaaFrame);
+            Gl.glBindFramebuffer(DRAW_FRAMEBUFFER, target.Frame);
+            Gl.glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, COLOR_BUFFER_BIT, NEAREST);
+        }
         Gl.glBindFramebuffer(FRAMEBUFFER, 0);
         Gl.glBindBuffer(ARRAY_BUFFER, 0);
         gr.ResetContext();

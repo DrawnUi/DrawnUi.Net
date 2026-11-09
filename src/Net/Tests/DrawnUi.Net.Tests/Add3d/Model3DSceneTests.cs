@@ -126,6 +126,21 @@ public class Model3DSceneTests
             Assert.Same(first[i], again[i]);
     }
 
+    /// <summary>Smooth 3D edges are opt-in: off by default, switchable at any time.</summary>
+    [Fact]
+    public void Smooth_edges_are_off_by_default()
+    {
+        using var s = new Scene();
+        Assert.False(s.Boss.Antialias);
+        Assert.False(new SkiaModel3D(new Model3D().Part("box", Mesh3D.Cuboid(1, 1, 1), Colors.White)).Antialias);
+        s.Boss.Antialias = true;
+        s.Frames(0.05f);
+        Assert.True(s.Boss.Antialias);
+        s.Boss.Antialias = false;
+        s.Frames(0.05f);
+        Assert.False(s.Boss.Antialias);
+    }
+
     /// <summary>Vertices at one position (a hard edge) share one outline direction, the average of their normals.</summary>
     [Fact]
     public void Outline_directions_average_the_normals_at_one_position()

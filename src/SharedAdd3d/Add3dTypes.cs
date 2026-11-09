@@ -195,6 +195,8 @@ internal struct RenderStyle
     public float Outline;
     /// <summary>Outline color, sRGB, premultiplied by the shader.</summary>
     public Vector4 OutlineColor;
+    /// <summary>Samples per pixel asked for (smooth edges); 1 or 0 = none. The renderer uses at most what the GPU offers.</summary>
+    public int Samples;
 }
 
 /// <summary>A control's frame: the texture it draws into with its depth buffer, and the image Skia shows of it.</summary>
@@ -203,6 +205,10 @@ internal sealed class RenderTarget
     /// <summary>The GPU context its objects belong to; another one means they are gone.</summary>
     public object Context;
     public uint Frame, Color, Depth;
+    /// <summary>GL, smooth edges on: the multisampled frame drawn into, resolved into Frame's texture; 0 when off.</summary>
+    public uint MsaaFrame, MsaaColor;
+    /// <summary>Samples per pixel the frame was made with (1 = none).</summary>
+    public int Samples = 1;
     /// <summary>The objects of a renderer other than GL (Vulkan, Metal), null on GL.</summary>
     public object Native;
     public int Width, Height;

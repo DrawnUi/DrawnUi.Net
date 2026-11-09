@@ -47,6 +47,9 @@ internal static unsafe class Gl
     [DllImport(Lib)] public static extern void glDeleteRenderbuffers(int n, uint* renderbuffers);
     [DllImport(Lib)] public static extern void glBindRenderbuffer(uint target, uint renderbuffer);
     [DllImport(Lib)] public static extern void glRenderbufferStorage(uint target, uint internalformat, int width, int height);
+    [DllImport(Lib)] public static extern void glRenderbufferStorageMultisample(uint target, int samples, uint internalformat, int width, int height);
+    [DllImport(Lib)] public static extern void glBlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, uint mask, uint filter);
+    [DllImport(Lib)] public static extern void glGetIntegerv(uint pname, int* data);
     [DllImport(Lib)] public static extern void glGenFramebuffers(int n, uint* framebuffers);
     [DllImport(Lib)] public static extern void glDeleteFramebuffers(int n, uint* framebuffers);
     [DllImport(Lib)] public static extern void glBindFramebuffer(uint target, uint framebuffer);
