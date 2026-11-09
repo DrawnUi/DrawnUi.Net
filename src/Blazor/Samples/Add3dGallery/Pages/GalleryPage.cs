@@ -57,7 +57,7 @@ public partial class GalleryPage : DrawnGame
                                 },
                             }
                         },
-                        Theme.Section("Made in code", "Smooth shapes drawn flat with an outline: the drawn look for 3D pieces, a few lines each."),
+                        Theme.Section("Made in code", "Smooth shapes in real 3D, shaded by a light: a few lines of code each."),
                         new SkiaWrap
                         {
                             Spacing = 16,
@@ -65,24 +65,24 @@ public partial class GalleryPage : DrawnGame
                             Children =
                             {
                                 Tile("Loading", "A coin turning while something loads.",
-                                    Flat(Coin()).Assign(out _coin).Adapt(me => me.AutoRotate = 200),
+                                    Shaded(Coin(), 0, 12).Assign(out _coin).Adapt(me => me.AutoRotate = 200),
                                     new UiButton("Pause", Theme.Accent).Assign(out _coinButton).OnTapped(_ => ToggleCoin())),
                                 Tile("Loading dots", "Three dots that bounce one after another.",
-                                    Flat(Dots()).Assign(out _dots),
+                                    Shaded(Dots(), 0, 28).Assign(out _dots),
                                     new UiButton("Pause", Theme.Accent).Assign(out _dotsButton).OnTapped(_ => ToggleDots())),
                                 Tile("Achievement", "A medal that lights up and spins when unlocked.",
-                                    Flat(Medal()).Assign(out _medal).OnTapped3D((_, _) => SpinMedal()),
+                                    Shaded(Medal(), MedalYaw, 12).Assign(out _medal).OnTapped3D((_, _) => SpinMedal()),
                                     new UiButton("Lock", Theme.Accent).Assign(out _medalButton).OnTapped(_ => ToggleMedal())),
                                 Tile("Success", "A badge that pops in, then its check grows.",
-                                    Flat(Badge()).Assign(out _badge),
+                                    Shaded(Badge(), 22, 14).Assign(out _badge),
                                     new UiButton("Done", Theme.Accent).OnTapped(_ => Done())),
                                 Tile("Like", "A heart that beats, and jumps when liked.",
-                                    Flat(HeartModel()).Assign(out _heart).OnTapped3D((_, _) => ToggleLike()),
+                                    Shaded(HeartModel(), -24, 12).Assign(out _heart).OnTapped3D((_, _) => ToggleLike()),
                                     new UiButton("Unlike", Theme.Accent).Assign(out _likeButton).OnTapped(_ => ToggleLike())),
                                 Tile("Celebration", "Confetti and stars falling: one 3D layer, many pieces.",
                                     new SkiaScene3D
                                         {
-                                            Look = Look.Flat, OutlineWidth = 1.5f, OutlineColor = Theme.Outline, Tilt = 20,
+                                            Tilt = 20,
                                             HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
                                         }
                                         .Model("paper", Paper())
@@ -101,8 +101,7 @@ public partial class GalleryPage : DrawnGame
                                 Tile("Avatar", "A character that idles, and waves when tapped.",
                                     new SkiaModel3D(Theme.Avatar)
                                         {
-                                            Animation = "CharacterArmature|Idle", Look = Look.Toon, OutlineWidth = 2,
-                                            OutlineColor = Theme.Outline, Yaw = 15, Pitch = 5,
+                                            Animation = "CharacterArmature|Idle", Yaw = 25, Pitch = 10,
                                             HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
                                         }
                                         .Assign(out _avatar)
@@ -111,8 +110,7 @@ public partial class GalleryPage : DrawnGame
                                 Tile("Reward", "A chest that opens and closes.",
                                     new SkiaModel3D(Theme.Chest)
                                         {
-                                            Animation = "Chest_Open", IsPlaying = false, Look = Look.Toon, OutlineWidth = 2,
-                                            OutlineColor = Theme.Outline, Yaw = 25, Pitch = 18, Orbit = false,
+                                            Animation = "Chest_Open", IsPlaying = false, Yaw = 30, Pitch = 20, Orbit = false,
                                             HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
                                         }
                                         .Assign(out _chest),
@@ -171,15 +169,18 @@ public partial class GalleryPage : DrawnGame
         }
     };
 
-    /// <summary>A flat illustration: flat colors, a dark outline, still unless the app moves it.</summary>
-    static SkiaModel3D Flat(Model3D model) => new(model)
+    /// <summary>The medal's resting turn: it spins from here and lands here.</summary>
+    const float MedalYaw = 20;
+
+    /// <summary>
+    /// A piece made in code in real 3D (the default Lit look: shaded by a light with a sky ambient, in perspective),
+    /// turned so its depth shows; still unless the app moves it.
+    /// </summary>
+    static SkiaModel3D Shaded(Model3D model, float yaw, float pitch) => new(model)
     {
-        Look = Look.Flat,
-        OutlineWidth = 2.5f,
-        OutlineColor = Theme.Outline,
         Orbit = false,
-        Yaw = 0,
-        Pitch = 0,
+        Yaw = yaw,
+        Pitch = pitch,
         HorizontalOptions = LayoutOptions.Fill,
         VerticalOptions = LayoutOptions.Fill,
     };
@@ -224,7 +225,7 @@ public partial class GalleryPage : DrawnGame
                         {
                             new SkiaScene3D
                                 {
-                                    Look = Look.Toon, OutlineWidth = 1.5f, OutlineColor = Theme.Outline, Tilt = 30,
+                                    Tilt = 30,
                                     HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
                                 }
                                 .Model("slime", Theme.Mob)

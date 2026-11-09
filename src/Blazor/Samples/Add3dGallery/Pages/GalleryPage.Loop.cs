@@ -76,7 +76,7 @@ public partial class GalleryPage
         if (_spin < 1)
         {
             _spin = MathF.Min(_spin + delta / 0.9f, 1);
-            _medal.Yaw = 360 * EaseOut(_spin);
+            _medal.Yaw = MedalYaw + 360 * EaseOut(_spin);
         }
 
         if (_grow < 1)

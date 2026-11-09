@@ -15,8 +15,6 @@ public static class Theme
     public static readonly Color Muted = Color.FromRgb(154, 152, 176);
     public static readonly Color Accent = Color.FromRgb(124, 108, 242);
     public static readonly Color Quiet = Color.FromRgb(52, 56, 78);
-    /// <summary>The illustrations' outline.</summary>
-    public static readonly Color Outline = Color.FromRgb(20, 17, 34);
 
     public const string Title = "FontTextTitle";
 
