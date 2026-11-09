@@ -376,8 +376,7 @@ public partial class SkiaControl
     /// <summary>
     /// Cache sharing is supported for the Operations, Image and GPU cache types.
     /// </summary>
-    private bool IsSharedCacheEligible => UsingCacheType == SkiaCacheType.Operations ||
-                                          UsingCacheType == SkiaCacheType.Image || UsingCacheType == SkiaCacheType.GPU;
+    private bool IsSharedCacheEligible => UsingCacheType is SkiaCacheType.Operations or SkiaCacheType.Image or SkiaCacheType.GPU;
 
     public static readonly BindableProperty AutoCacheProperty = BindableProperty.Create(nameof(AutoCache),
         typeof(bool),
@@ -769,7 +768,7 @@ public partial class SkiaControl
 
     public bool IsCacheGPU
     {
-        get { return UsingCacheType == SkiaCacheType.GPU || UsingCacheType == SkiaCacheType.ImageCompositeGPU; }
+        get { return UsingCacheType is SkiaCacheType.GPU or SkiaCacheType.ImageCompositeGPU; }
     }
 
     public virtual SkiaCacheType UsingCacheType
@@ -781,48 +780,51 @@ public partial class SkiaControl
                 return SkiaCacheType.None;
             }
 
+            // read once: a bindable read takes a lock and a lookup, and this runs many times per control and frame
+            var useCache = UseCache;
+
             if (CanUseCacheDoubleBuffering && Super.Multithreaded)
             {
                 //if (Parent is SkiaControl)
                 {
-                    if (UseCache == SkiaCacheType.None)
+                    if (useCache == SkiaCacheType.None)
                         return SkiaCacheType.OperationsFull;
                 }
 
-                if (UseCache == SkiaCacheType.ImageDoubleBuffered || UseCache == SkiaCacheType.GPU)
+                if (useCache == SkiaCacheType.ImageDoubleBuffered || useCache == SkiaCacheType.GPU)
                     return SkiaCacheType.Image;
 
-                if (UseCache == SkiaCacheType.ImageComposite || UseCache == SkiaCacheType.ImageCompositeGPU)
+                if (useCache == SkiaCacheType.ImageComposite || useCache == SkiaCacheType.ImageCompositeGPU)
                     return SkiaCacheType.Operations;
             }
             // FIX: removed ImageDoubleBuffered->Image downgrade in the non-multithreaded else branch.
             // It defeated async double-buffering (Super.Multithreaded is false by default) -> recycled cells
             // rebaked synchronously on the render thread = scroll lag. (regression from "improvements for cells")
             //else
-            //if (UseCache == SkiaCacheType.ImageDoubleBuffered)
+            //if (useCache == SkiaCacheType.ImageDoubleBuffered)
             //    return SkiaCacheType.Image;
 
-            if (UseCache == SkiaCacheType.ImageDoubleBuffered && !CanUseCacheDoubleBuffering)
+            if (useCache == SkiaCacheType.ImageDoubleBuffered && !CanUseCacheDoubleBuffering)
                 return SkiaCacheType.Image;
 
-            if (UseCache == SkiaCacheType.Auto)
+            if (useCache == SkiaCacheType.Auto)
                 return SkiaCacheType.Image;
 
-            if (UseCache == SkiaCacheType.GPU && !Super.GpuCacheEnabled)
+            if (useCache == SkiaCacheType.GPU && !Super.GpuCacheEnabled)
                 return SkiaCacheType.Image;
 
-            if (UseCache == SkiaCacheType.ImageCompositeGPU && !Super.GpuCacheEnabled)
+            if (useCache == SkiaCacheType.ImageCompositeGPU && !Super.GpuCacheEnabled)
                 return SkiaCacheType.ImageComposite;
 
             //if (EffectPostRenderer != null 
-            //    && (UseCache == SkiaCacheType.None || UseCache == SkiaCacheType.Operations))
+            //    && (useCache == SkiaCacheType.None || useCache == SkiaCacheType.Operations))
             //    return SkiaCacheType.Image;
 
-            if (UseCache == SkiaCacheType.None && CanUseCacheDoubleBuffering && Super.Multithreaded &&
+            if (useCache == SkiaCacheType.None && CanUseCacheDoubleBuffering && Super.Multithreaded &&
                 Parent is SkiaControl)
                 return SkiaCacheType.Operations;
 
-            return UseCache;
+            return useCache;
         }
     }
 
@@ -830,7 +832,7 @@ public partial class SkiaControl
     {
         get
         {
-            return UsingCacheType == SkiaCacheType.ImageComposite || UsingCacheType == SkiaCacheType.ImageCompositeGPU;
+            return UsingCacheType is SkiaCacheType.ImageComposite or SkiaCacheType.ImageCompositeGPU;
         }
     }
 
