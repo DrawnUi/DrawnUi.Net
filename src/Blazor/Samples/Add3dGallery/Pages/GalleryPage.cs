@@ -132,6 +132,8 @@ public partial class GalleryPage : DrawnGame
     static SkiaShape Tile(string title, string caption, SkiaControl piece, SkiaControl button) => new()
     {
         WidthRequest = 300,
+        // Holds a 3D piece that draws every frame: a recorded cache would be made again each frame.
+        UseCache = SkiaCacheType.None,
         CornerRadius = 16,
         BackgroundColor = Theme.Card,
         StrokeColor = Theme.Line,
@@ -157,6 +159,7 @@ public partial class GalleryPage : DrawnGame
                     new SkiaShape
                     {
                         CornerRadius = 12,
+                        UseCache = SkiaCacheType.None,
                         BackgroundColor = Theme.Stage,
                         HorizontalOptions = LayoutOptions.Fill,
                         HeightRequest = RainHeight,
@@ -183,6 +186,7 @@ public partial class GalleryPage : DrawnGame
 
     SkiaControl MobsCard() => new SkiaShape
     {
+        UseCache = SkiaCacheType.None,
         CornerRadius = 16,
         BackgroundColor = Theme.Card,
         StrokeColor = Theme.Line,
@@ -213,6 +217,7 @@ public partial class GalleryPage : DrawnGame
                     {
                         WidthRequest = FieldWidth,
                         HeightRequest = FieldHeight,
+                        UseCache = SkiaCacheType.None,
                         CornerRadius = 10,
                         BackgroundColor = Color.FromRgb(58, 98, 74),
                         Children =

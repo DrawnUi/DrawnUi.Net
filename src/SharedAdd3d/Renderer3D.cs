@@ -124,6 +124,19 @@ void main() {
 
     static readonly Matrix4x4[] _joints = new Matrix4x4[MaxJoints];
 
+    /// <summary>GL state set during one draw, 0 = not set yet (Skia's state is unknown after it ran).</summary>
+    struct DrawState
+    {
+        /// <summary>1 = cull on, 2 = off.</summary>
+        public int Cull;
+        /// <summary>The bound texture + 1.</summary>
+        public uint Texture;
+        /// <summary>1 = skinned, 2 = not.</summary>
+        public int Skinned;
+    }
+
+    static DrawState _state;
+
     static readonly Vector3 Light = Vector3.Normalize(new Vector3(0.4f, 0.8f, 0.6f));
 
     /// <summary>Frees a control's texture and buffers at the next draw.</summary>
@@ -289,6 +302,8 @@ void main() {
         {
             model = Upload(scene);
             _models.AddOrUpdate(scene, model);
+            // The upload bound its own textures.
+            _state.Texture = 0;
         }
         return model;
     }
@@ -391,6 +406,11 @@ void main() {
         var outlineColor = style.OutlineColor;
         Gl.glUniform4fv(_u.OutlineColor, 1, (float*)&outlineColor);
         Gl.glActiveTexture(TEXTURE0);
+        // Joints and weights of a primitive without a skin: no joint moves it (generic values, used where its vertex
+        // array has no such attribute).
+        Gl.glVertexAttrib4f(3, 0, 0, 0, 0);
+        Gl.glVertexAttrib4f(4, 1, 0, 0, 0);
+        _state = default;
 
         // The outline first (back faces pushed out), then opaque, then blended, each in tree order.
         var firstPass = style.Outline > 0 ? 0 : 1;
@@ -463,23 +483,33 @@ void main() {
                 }
                 var color = changed.HasColor ? changed.Color : material?.Color ?? new Vector4(0.8f, 0.8f, 0.8f, 1);
                 var texture = material != null && material.Texture >= 0 && material.Texture < gpu.Textures.Length ? gpu.Textures[material.Texture] : 0u;
-                if ((material?.DoubleSided ?? false) && !outlinePass)
-                    Gl.glDisable(CULL_FACE);
-                else
-                    Gl.glEnable(CULL_FACE);
-                Gl.glUniform4fv(_u.Color, 1, (float*)&color);
-                Gl.glUniform1i(_u.Textured, texture != 0 ? 1 : 0);
-                Gl.glBindTexture(TEXTURE_2D, texture);
-                var hasJoints = p.Joints.Length > 0;
-                Gl.glUniform1i(_u.Skinned, skinned && hasJoints ? 1 : 0);
-                Gl.glBindVertexArray(vaos[k]);
-                if (!hasJoints)
+                // GL state set only when it changes: a crowd of one model repeats the same state per object.
+                var cull = !((material?.DoubleSided ?? false) && !outlinePass);
+                if (_state.Cull != (cull ? 1 : 2))
                 {
-                    Gl.glVertexAttrib4f(3, 0, 0, 0, 0);
-                    Gl.glVertexAttrib4f(4, 1, 0, 0, 0);
+                    if (cull)
+                        Gl.glEnable(CULL_FACE);
+                    else
+                        Gl.glDisable(CULL_FACE);
+                    _state.Cull = cull ? 1 : 2;
                 }
+                Gl.glUniform4fv(_u.Color, 1, (float*)&color);
+                if (_state.Texture != texture + 1)
+                {
+                    Gl.glUniform1i(_u.Textured, texture != 0 ? 1 : 0);
+                    Gl.glBindTexture(TEXTURE_2D, texture);
+                    _state.Texture = texture + 1;
+                }
+                var skin = skinned && p.Joints.Length > 0 ? 1 : 2;
+                if (_state.Skinned != skin)
+                {
+                    Gl.glUniform1i(_u.Skinned, skin == 1 ? 1 : 0);
+                    _state.Skinned = skin;
+                }
+                Gl.glBindVertexArray(vaos[k]);
                 Gl.glDrawElements(TRIANGLES, counts[k], UNSIGNED_INT, 0);
             }
         }
     }
 }
+
