@@ -27,11 +27,6 @@
         <ProjectReference Include="..\..\DrawnUi\DrawnUi.Wasm.csproj" />
     </ItemGroup>
 
-    <!-- Both web heads draw through the same emscripten WebGL library linked into libSkiaSharp: one GL binding. -->
-    <ItemGroup>
-        <Compile Include="..\..\..\Blazor\Addons\DrawnUi.Blazor.Add3d\Gl.Blazor.cs" Link="Gl.Web.cs" />
-    </ItemGroup>
-
     <Import Project="..\..\..\SharedAdd3d\SharedAdd3d.projitems" Label="Shared" />
 
 </Project>

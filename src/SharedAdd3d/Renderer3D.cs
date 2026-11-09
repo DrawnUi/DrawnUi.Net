@@ -369,7 +369,8 @@ void main() {
     /// </summary>
     public static SKImage Draw(GRContext gr, RenderTarget target, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h)
     {
-        if (gr == null || w <= 0 || h <= 0)
+        // ponytail: GL only; a Vulkan or Metal canvas shows no 3D until those backends land.
+        if (gr == null || w <= 0 || h <= 0 || gr.Backend != GRBackend.OpenGL)
             return null;
         if (_context != gr)
         {

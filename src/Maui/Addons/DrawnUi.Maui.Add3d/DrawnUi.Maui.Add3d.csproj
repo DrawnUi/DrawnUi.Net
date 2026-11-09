@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!--using Directory.Build.props-->
+
+    <PropertyGroup>
+        <Title>3D add-on to DrawnUI for .NET MAUI</Title>
+        <PackageId>DrawnUi.Maui.Add3d</PackageId>
+        <Description>3D models in a DrawnUI screen for .NET MAUI: glTF scenes with skeleton animations, many objects on one game field, shapes made in code, shaded, cartoon or flat looks.</Description>
+        <PackageTags>maui drawnui skia skiasharp 3d gltf glb game</PackageTags>
+        <Packable>true</Packable>
+        <CreatePackage>false</CreatePackage>
+        <RootNamespace>DrawnUi.Add3d</RootNamespace>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <WarningsAsErrors>$(WarningsAsErrors);CS0108</WarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\DrawnUi\DrawnUi.Maui.csproj" />
+    </ItemGroup>
+
+    <Import Project="..\..\..\SharedAdd3d\SharedAdd3d.projitems" Label="Shared" />
+
+</Project>

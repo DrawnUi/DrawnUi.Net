@@ -3,14 +3,18 @@ using System.Runtime.InteropServices;
 namespace DrawnUi.Add3d;
 
 /// <summary>
-/// The GL binding of both web heads (Blazor WebAssembly, and pure WebAssembly where DrawnUi.Wasm.Add3d links this
-/// file): the WebGL2 entry points of the emscripten GL library libSkiaSharp is
-/// linked with, imported under the module name the wasm pinvoke generator knows. The renderer (Renderer3D) calls only
-/// these; another head brings its own Gl class with the same methods.
+/// The GL ES 3 / WebGL2 entry points the renderer (Renderer3D) calls. The web heads (Blazor and pure WebAssembly) import
+/// them from the emscripten GL library libSkiaSharp is linked with, under the module name the wasm pinvoke generator
+/// knows; the MAUI heads from the system GL ES library (Android) or ANGLE (Windows), both named libGLESv2. Called only
+/// on a canvas drawing with GL, with its context current.
 /// </summary>
 internal static unsafe class Gl
 {
+#if BROWSER
     const string Lib = "libSkiaSharp";
+#else
+    const string Lib = "libGLESv2";
+#endif
 
     [DllImport(Lib)] public static extern uint glCreateShader(uint type);
     [DllImport(Lib)] public static extern void glShaderSource(uint shader, int count, byte** strings, int* lengths);

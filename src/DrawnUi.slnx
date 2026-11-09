@@ -7,6 +7,7 @@
   <Folder Name="/Addons/">
     <Project Path="Blazor/Addons/DrawnUi.Blazor.Add3d/DrawnUi.Blazor.Add3d.csproj" />
     <Project Path="Blazor/Addons/DrawnUi.Blazor.Game/DrawnUi.Blazor.Game.csproj" />
+    <Project Path="Maui/Addons/DrawnUi.Maui.Add3d/DrawnUi.Maui.Add3d.csproj" />
     <Project Path="Maui/Addons/DrawnUi.Maui.Game/DrawnUi.Maui.Game.csproj" />
     <Project Path="Maui/Addons/DrawnUi.Maui.MapsUi/DrawnUi.Maui.MapsUi.csproj" />
     <Project Path="Maui/Addons/DrawnUi.MauiGraphics/DrawnUi.MauiGraphics.csproj" />
@@ -47,6 +48,9 @@
     <Project Path="Blazor/Samples/BlazorSandboxServer/BlazorSandboxServer/BlazorSandboxServer.csproj" />
   </Folder>
   <Folder Name="/Samples/MAUI/">
+    <Project Path="Maui/Samples/Add3dGalleryMaui/Add3dGalleryMaui.csproj">
+      <Deploy Solution="Debug|Any CPU" />
+    </Project>
     <Project Path="Maui/Samples/FastRepro/FastRepro.csproj">
       <Deploy Solution="*|Any CPU" />
     </Project>
