@@ -78,20 +78,23 @@
         inset: 0;
     }
 
+    /* the overlay is for screen readers and the keyboard only: the mouse and touch go through to the canvas,
+       so every control gets its hover, taps and drags there, as on the other heads (pure WebAssembly does the same) */
     .xaml-a11y-overlay {
         position: absolute;
+        pointer-events: none;
     }
 
     .xaml-a11y-element {
         position: absolute;
         background: transparent;
         color: transparent;
+        pointer-events: none;
     }
 
     .xaml-a11y-interactive {
         font-size: 0px;
         user-select: none;
-        cursor: pointer;
     }
 
     .xaml-a11y-interactive:focus-visible {
