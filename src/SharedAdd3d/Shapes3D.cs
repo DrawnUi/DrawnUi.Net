@@ -84,7 +84,8 @@ public sealed class Mesh3D
             var r = i == 0 || i == steps ? 0 : radius * MathF.Cos(a);
             profile[i] = (r, radius * MathF.Sin(a));
         }
-        return Lathe(profile, 48);
+        // Shaded round, not band by band: every normal points away from the center.
+        return Lathe(profile, 48).Smooth(p => p);
     }
 
     /// <summary>A ring (a torus): <paramref name="radius"/> to the middle of the tube, <paramref name="tube"/> the tube's radius.</summary>
@@ -95,9 +96,27 @@ public sealed class Mesh3D
         for (var i = 0; i <= steps; i++)
         {
             var a = i / (float)steps * MathF.Tau;
-            profile[i] = (radius + tube * MathF.Cos(a), -tube * MathF.Sin(a));
+            profile[i] = (radius + tube * MathF.Cos(a), tube * MathF.Sin(a));
         }
-        return Lathe(profile, 64);
+        // Every normal points away from the middle of the tube.
+        return Lathe(profile, 64).Smooth(p =>
+        {
+            var axis = new Vector3(p.X, 0, p.Z);
+            var l = axis.Length();
+            return l > 0 ? p - axis / l * radius : p;
+        });
+    }
+
+    /// <summary>Normals from the surface's own shape: <paramref name="away"/>(position) points outward from it.</summary>
+    Mesh3D Smooth(Func<Vector3, Vector3> away)
+    {
+        for (var i = 0; i < Positions.Count; i++)
+        {
+            var v = away(Positions[i]);
+            var l = v.Length();
+            Normals[i] = l > 0 ? v / l : Vector3.Zero;
+        }
+        return this;
     }
 
     /// <summary>A box, centered.</summary>

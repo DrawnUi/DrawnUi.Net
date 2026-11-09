@@ -44,6 +44,35 @@ public class Shapes3DTests
         return true;
     }
 
+    /// <summary>Every vertex's normal points away from the shape's middle (a convex shape, or a ring's tube).</summary>
+    static bool NormalsPointOut(Mesh3D mesh, Func<Vector3, Vector3> middle)
+    {
+        for (var i = 0; i < mesh.Positions.Count; i++)
+        {
+            var p = mesh.Positions[i];
+            if (Vector3.Dot(p - middle(p), mesh.Normals[i]) <= 0)
+                return false;
+        }
+        return true;
+    }
+
+    [Fact]
+    public void Round_shapes_point_their_normals_out()
+    {
+        Assert.True(NormalsPointOut(Mesh3D.Sphere(1), _ => Vector3.Zero), "sphere");
+        Assert.True(NormalsPointOut(Mesh3D.Cylinder(1, 0.3f), _ => Vector3.Zero), "cylinder");
+        Assert.True(NormalsPointOut(Mesh3D.Torus(1, 0.2f), p => Vector3.Normalize(new Vector3(p.X, 0, p.Z))), "torus");
+    }
+
+    /// <summary>A sphere is shaded round: each vertex's normal is the direction from the center (not its band's).</summary>
+    [Fact]
+    public void A_sphere_is_shaded_round()
+    {
+        var sphere = Mesh3D.Sphere(1);
+        for (var i = 0; i < sphere.Positions.Count; i++)
+            Assert.True(Vector3.Dot(Vector3.Normalize(sphere.Positions[i]), sphere.Normals[i]) > 0.9999f, $"vertex {i}");
+    }
+
     [Fact]
     public void Shapes_face_outward()
     {
