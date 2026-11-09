@@ -106,6 +106,9 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
     {
         public IntPtr Device;
         public IMTLTexture Color, Depth;
+        /// <summary>Smooth edges on: the multisampled color drawn into, resolved into Color; null when off.</summary>
+        public IMTLTexture MsaaColor;
+        public int Samples = 1;
         public MTLRenderPassDescriptor Pass;
 
         public void Dispose()
@@ -113,6 +116,7 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
             Pass?.Dispose();
             Color?.Dispose();
             Depth?.Dispose();
+            MsaaColor?.Dispose();
         }
     }
 
@@ -128,6 +132,12 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
     static IntPtr _device;
     static IMTLDevice _mtlDevice;
     static IMTLRenderPipelineState _opaque, _blend;
+    /// <summary>Smooth edges: the most samples per pixel (at most 4) the device offers, and the pipelines drawing with
+    /// them, made the first time a control turns smooth edges on.</summary>
+    static int _msaaSamples = 1;
+    static IMTLRenderPipelineState _opaqueMsaa, _blendMsaa;
+    static IMTLFunction _vs, _fs;
+    static MTLVertexDescriptor _layout;
     static IMTLDepthStencilState _depthWrite, _depthRead;
     static IMTLSamplerState _sampler;
     static IMTLTexture _white;
@@ -161,7 +171,7 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
         {
             if (device.Handle != _device)
                 Init(device);
-            var t = EnsureTarget(gr, target, w, h);
+            var t = EnsureTarget(gr, target, w, h, style.Samples);
             Render(queue, t, items, count, style, viewProj, w, h);
             return target.Image;
         }
@@ -185,8 +195,8 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
         using var library = device.CreateLibrary(Source, new MTLCompileOptions(), out var error);
         if (library == null)
             throw new InvalidOperationException($"shaders: {error?.LocalizedDescription}");
-        using var vs = library.CreateFunction("model_vertex");
-        using var fs = library.CreateFunction("model_fragment");
+        var vs = _vs = library.CreateFunction("model_vertex");
+        var fs = _fs = library.CreateFunction("model_fragment");
 
         // One buffer per attribute, as the GL renderer: position, normal, uv, joints, weights, outline normal.
         var layout = new MTLVertexDescriptor();
@@ -198,8 +208,11 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
             layout.Attributes[i].Offset = 0;
             layout.Layouts[i].Stride = (nuint)(sizes[i] * 4);
         }
-        _opaque = Pipeline(device, vs, fs, layout, false);
-        _blend = Pipeline(device, vs, fs, layout, true);
+        _layout = layout;
+        _opaque = Pipeline(device, vs, fs, layout, false, 1);
+        _blend = Pipeline(device, vs, fs, layout, true, 1);
+        _opaqueMsaa = _blendMsaa = null;
+        _msaaSamples = device.SupportsTextureSampleCount(4) ? 4 : device.SupportsTextureSampleCount(2) ? 2 : 1;
 
         _depthWrite = device.CreateDepthStencilState(new MTLDepthStencilDescriptor { DepthCompareFunction = MTLCompareFunction.Less, DepthWriteEnabled = true });
         _depthRead = device.CreateDepthStencilState(new MTLDepthStencilDescriptor { DepthCompareFunction = MTLCompareFunction.Less, DepthWriteEnabled = false });
@@ -211,7 +224,7 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
         _white = UploadTexture(new Image3D { Width = 1, Height = 1, Rgba = new byte[] { 255, 255, 255, 255 } }, null);
     }
 
-    static IMTLRenderPipelineState Pipeline(IMTLDevice device, IMTLFunction vs, IMTLFunction fs, MTLVertexDescriptor layout, bool blend)
+    static IMTLRenderPipelineState Pipeline(IMTLDevice device, IMTLFunction vs, IMTLFunction fs, MTLVertexDescriptor layout, bool blend, int samples)
     {
         var info = new MTLRenderPipelineDescriptor
         {
@@ -219,6 +232,7 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
             FragmentFunction = fs,
             VertexDescriptor = layout,
             DepthAttachmentPixelFormat = MTLPixelFormat.Depth32Float,
+            RasterSampleCount = (nuint)samples,
         };
         var color = info.ColorAttachments[0];
         color.PixelFormat = MTLPixelFormat.RGBA8Unorm;
@@ -342,27 +356,58 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
         return model;
     }
 
-    static MtlTarget EnsureTarget(GRContext gr, RenderTarget target, int w, int h)
+    static MtlTarget EnsureTarget(GRContext gr, RenderTarget target, int w, int h, int samplesWanted)
     {
+        var samples = samplesWanted > 1 ? _msaaSamples : 1;
         var t = target.Native as MtlTarget;
-        if (t != null && t.Device == _device && target.Width == w && target.Height == h && target.Image != null)
+        if (t != null && t.Device == _device && target.Width == w && target.Height == h && t.Samples == samples && target.Image != null)
             return t;
+        // A resize, or smooth edges switched: Metal keeps the old textures alive while a command buffer uses them.
         Release(target);
 
+        var msaa = samples > 1;
+        if (msaa && _opaqueMsaa == null)
+        {
+            _opaqueMsaa = Pipeline(_mtlDevice, _vs, _fs, _layout, false, samples);
+            _blendMsaa = Pipeline(_mtlDevice, _vs, _fs, _layout, true, samples);
+        }
         var colorInfo = MTLTextureDescriptor.CreateTexture2DDescriptor(MTLPixelFormat.RGBA8Unorm, (nuint)w, (nuint)h, false);
         colorInfo.Usage = MTLTextureUsage.RenderTarget | MTLTextureUsage.ShaderRead;
         colorInfo.StorageMode = MTLStorageMode.Private;
         var depthInfo = MTLTextureDescriptor.CreateTexture2DDescriptor(MTLPixelFormat.Depth32Float, (nuint)w, (nuint)h, false);
         depthInfo.Usage = MTLTextureUsage.RenderTarget;
         depthInfo.StorageMode = MTLStorageMode.Private;
-        t = new MtlTarget { Device = _device, Color = _mtlDevice.CreateTexture(colorInfo), Depth = _mtlDevice.CreateTexture(depthInfo) };
+        if (msaa)
+        {
+            // The samples live only during the pass: on Apple GPUs they stay in tile memory (memoryless), no RAM.
+            var memoryless = _mtlDevice.SupportsFamily(MTLGpuFamily.Apple1);
+            depthInfo.TextureType = MTLTextureType.k2DMultisample;
+            depthInfo.SampleCount = (nuint)samples;
+            depthInfo.StorageMode = memoryless ? MTLStorageMode.Memoryless : MTLStorageMode.Private;
+        }
+        t = new MtlTarget { Device = _device, Samples = samples, Color = _mtlDevice.CreateTexture(colorInfo), Depth = _mtlDevice.CreateTexture(depthInfo) };
+        if (msaa)
+        {
+            var msaaInfo = MTLTextureDescriptor.CreateTexture2DDescriptor(MTLPixelFormat.RGBA8Unorm, (nuint)w, (nuint)h, false);
+            msaaInfo.TextureType = MTLTextureType.k2DMultisample;
+            msaaInfo.SampleCount = (nuint)samples;
+            msaaInfo.Usage = MTLTextureUsage.RenderTarget;
+            msaaInfo.StorageMode = depthInfo.StorageMode;
+            t.MsaaColor = _mtlDevice.CreateTexture(msaaInfo);
+        }
 
         // Made once per size: the frames only reuse it.
         t.Pass = new MTLRenderPassDescriptor();
         var color = t.Pass.ColorAttachments[0];
-        color.Texture = t.Color;
+        color.Texture = msaa ? t.MsaaColor : t.Color;
         color.LoadAction = MTLLoadAction.Clear;
-        color.StoreAction = MTLStoreAction.Store;
+        if (msaa)
+        {
+            color.ResolveTexture = t.Color;
+            color.StoreAction = MTLStoreAction.MultisampleResolve;
+        }
+        else
+            color.StoreAction = MTLStoreAction.Store;
         color.ClearColor = new MTLClearColor(0, 0, 0, 0);
         var depth = t.Pass.DepthAttachment;
         depth.Texture = t.Depth;
@@ -415,7 +460,7 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
             var blendPass = pass == 2;
             block.OutlinePass = outlinePass ? 1 : 0;
             block.Params.X = outlinePass ? style.Outline : 0;
-            encoder.SetRenderPipelineState(blendPass ? _blend : _opaque);
+            encoder.SetRenderPipelineState(t.Samples > 1 ? blendPass ? _blendMsaa : _opaqueMsaa : blendPass ? _blend : _opaque);
             encoder.SetDepthStencilState(blendPass ? _depthRead : _depthWrite);
             for (var o = 0; o < count; o++)
                 DrawItem(encoder, queue, items[o], outlinePass, blendPass, ref block, ref state);
