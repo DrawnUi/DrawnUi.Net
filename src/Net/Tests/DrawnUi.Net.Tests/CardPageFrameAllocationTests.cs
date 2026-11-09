@@ -12,7 +12,7 @@ namespace DrawnUi.Net.Tests;
 /// header, a scroll of cards with titles, stages and buttons, rows of buttons, an FPS label, an animator keeping the
 /// frames coming), redrawn every frame as on the web heads. Before the per-frame allocation fixes such a frame made
 /// about 22 KB (render tree records and lists, copied drawing parameters, boxed structs, radii arrays, path builders
-/// for clips, children snapshots); now about 1.5 KB.
+/// for clips, children snapshots, a render tree object per layout and frame); now about 350 B.
 /// </summary>
 public class CardPageFrameAllocationTests
 {
@@ -38,7 +38,7 @@ public class CardPageFrameAllocationTests
         Array.Sort(bytes);
         var median = bytes[frames / 2];
         _out.WriteLine($"allocated per frame: median {median} B, max {bytes[^1]} B");
-        Assert.True(median < 4096, $"a redrawn static page allocated {median} B per frame");
+        Assert.True(median < 1024, $"a redrawn static page allocated {median} B per frame");
     }
 }
 

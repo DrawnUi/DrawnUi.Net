@@ -8617,7 +8617,13 @@ namespace DrawnUi.Draw
 
         public virtual void SetRenderingTree(List<SkiaControlWithRect> tree)
         {
-            RenderTree = new(tree);
+            // the same list published again (a frame drawn again unchanged): the tree that holds it stays,
+            // unless a served cache moved it (Offset), which a new tree resets
+            var current = RenderTree;
+            if (current == null || !ReferenceEquals(current.Tree, tree) || current.Offset != default)
+            {
+                RenderTree = new(tree);
+            }
             _builtRenderTreeStamp = _measuredStamp;
         }
 
