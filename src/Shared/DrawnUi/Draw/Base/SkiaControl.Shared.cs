@@ -8505,7 +8505,8 @@ namespace DrawnUi.Draw
                 return 0;
             var count = 0;
 
-            List<SkiaControlWithRect> tree = new();
+            // built in a list kept between draws; published as a copy only when it differs from the last frame's
+            var tree = RentRenderTreeBuilder();
 
             //actually base control has NO virtualization on purpose. implemented only for non-absolute layouts.
             foreach (var child in skiaControls)
@@ -8537,7 +8538,7 @@ namespace DrawnUi.Draw
 
                         if (inTree)
                         {
-                            tree.Add(new SkiaControlWithRect(child,
+                            tree.Add(RenderTreeEntry(tree.Count, child,
                                 context.Destination,
                                 child.CreateHitRect(),
                                 count,
@@ -8554,7 +8555,8 @@ namespace DrawnUi.Draw
             // Clear dirty tracking since we've processed all changes
             ClearDirtyChildren();
 
-            SetRenderingTree(tree);
+            PublishRenderingTree(tree);
+            ReturnRenderTreeBuilder(tree);
 
             return count;
         }
@@ -8586,6 +8588,77 @@ namespace DrawnUi.Draw
         {
             RenderTree = new(tree);
             _builtRenderTreeStamp = _measuredStamp;
+        }
+
+        /// <summary>
+        /// A render tree entry for this frame: the entry published last frame at <paramref name="position"/> when it holds
+        /// the same values (a frame drawn again unchanged keeps its entries), else a new one. Entries are immutable, so
+        /// an equal one is the same entry.
+        /// </summary>
+        protected SkiaControlWithRect RenderTreeEntry(int position, SkiaControl control, SKRect rect, SKRect hitRect,
+            int index, int freezeIndex, object freezeBindingContext)
+        {
+            var published = CollectionsMarshal.AsSpan(RenderTree?.Tree);
+            if (position < published.Length && published[position] is { } entry
+                && ReferenceEquals(entry.Control, control) && entry.Rect == rect && entry.HitRect == hitRect
+                && entry.Index == index && entry.FreezeIndex == freezeIndex
+                && ReferenceEquals(entry.FreezeBindingContext, freezeBindingContext))
+            {
+                return entry;
+            }
+
+            return new SkiaControlWithRect(control, rect, hitRect, index, freezeIndex, freezeBindingContext);
+        }
+
+        /// <summary>
+        /// Publishes a render tree built in a list the caller reuses: when it holds the same entries as the published
+        /// tree, that tree's list is published again; otherwise a copy of <paramref name="built"/>. Either way through
+        /// <see cref="SetRenderingTree"/>.
+        /// </summary>
+        protected void PublishRenderingTree(List<SkiaControlWithRect> built)
+        {
+            var current = RenderTree;
+            if (current != null && current.Offset == default)
+            {
+                var published = CollectionsMarshal.AsSpan(current.Tree);
+                var fresh = CollectionsMarshal.AsSpan(built);
+                if (published.Length == fresh.Length)
+                {
+                    var same = true;
+                    for (var i = 0; i < fresh.Length; i++)
+                    {
+                        if (!ReferenceEquals(published[i], fresh[i]))
+                        {
+                            same = false;
+                            break;
+                        }
+                    }
+
+                    if (same)
+                    {
+                        SetRenderingTree(current.Tree);
+                        return;
+                    }
+                }
+            }
+
+            SetRenderingTree(new List<SkiaControlWithRect>(built));
+        }
+
+        /// <summary>The list a render tree is built in, kept between draws; a draw running at the same time makes its own.</summary>
+        private List<SkiaControlWithRect> _renderTreeSpare;
+
+        /// <summary>Takes the list to build a render tree in; give it back with <see cref="ReturnRenderTreeBuilder"/>.</summary>
+        protected List<SkiaControlWithRect> RentRenderTreeBuilder()
+        {
+            return Interlocked.Exchange(ref _renderTreeSpare, null) ?? new List<SkiaControlWithRect>();
+        }
+
+        /// <summary>Gives back a list taken with <see cref="RentRenderTreeBuilder"/>, emptied.</summary>
+        protected void ReturnRenderTreeBuilder(List<SkiaControlWithRect> list)
+        {
+            list.Clear();
+            _renderTreeSpare = list;
         }
 
         #endregion
