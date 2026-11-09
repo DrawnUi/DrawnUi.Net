@@ -8,7 +8,9 @@ namespace DrawnUi.Draw
 {
     public partial class BindableObject : INotifyPropertyChanged
     {
-        private readonly Dictionary<BindableProperty, object> _values = new();
+        // keyed by the property's id: a dictionary with an int key compiles to code of its own (the AOT web heads run
+        // a shared, slower one for reference keys), and every property maps to one id
+        private readonly Dictionary<int, object> _values = new();
         private object _bindingContext;
 
         public event PropertyChangingEventHandler PropertyChanging;
@@ -62,7 +64,7 @@ namespace DrawnUi.Draw
 
         // Lazily created on first explicit SetValue: GetValue's store-on-miss writes the DEFAULT into
         // _values, so key presence there cannot answer "was this property explicitly set".
-        private HashSet<BindableProperty> _explicitlySet;
+        private HashSet<int> _explicitlySet;
 
         /// <summary>
         /// Returns true if the property value was explicitly set via <see cref="SetValue"/>,
@@ -75,7 +77,7 @@ namespace DrawnUi.Draw
 
             lock (_valuesLock)
             {
-                return _explicitlySet != null && _explicitlySet.Contains(targetProperty);
+                return _explicitlySet != null && _explicitlySet.Contains(targetProperty.Id);
             }
         }
 
@@ -86,7 +88,7 @@ namespace DrawnUi.Draw
 
             lock (_valuesLock)
             {
-                if (_values.TryGetValue(property, out var value))
+                if (_values.TryGetValue(property.Id, out var value))
                     return value;
             }
 
@@ -95,7 +97,7 @@ namespace DrawnUi.Draw
             {
                 lock (_valuesLock)
                 {
-                    _values[property] = defaultValue;
+                    _values[property.Id] = defaultValue;
                 }
             }
 
@@ -116,8 +118,8 @@ namespace DrawnUi.Draw
             object oldValue;
             lock (_valuesLock)
             {
-                hadExistingValue = _values.TryGetValue(property, out oldValue);
-                (_explicitlySet ??= new()).Add(property);
+                hadExistingValue = _values.TryGetValue(property.Id, out oldValue);
+                (_explicitlySet ??= new()).Add(property.Id);
             }
             if (!hadExistingValue)
             {
@@ -130,7 +132,7 @@ namespace DrawnUi.Draw
             OnPropertyChanging(property.PropertyName);
             lock (_valuesLock)
             {
-                _values[property] = value;
+                _values[property.Id] = value;
             }
             property.PropertyChanged?.Invoke(this, oldValue, value);
             OnPropertyChanged(property.PropertyName);
@@ -149,8 +151,8 @@ namespace DrawnUi.Draw
             object oldValue;
             lock (_valuesLock)
             {
-                hadExistingValue = _values.Remove(property, out oldValue);
-                _explicitlySet?.Remove(property);
+                hadExistingValue = _values.Remove(property.Id, out oldValue);
+                _explicitlySet?.Remove(property.Id);
             }
 
             if (!hadExistingValue)
@@ -200,7 +202,13 @@ namespace DrawnUi.Draw
             PropertyChanged = propertyChanged;
             CoerceValue = coerceValue;
             HasExplicitDefaultValue = defaultValueCreator != null || defaultValue != null;
+            Id = Interlocked.Increment(ref _lastId);
         }
+
+        private static int _lastId;
+
+        /// <summary>A number of its own for every property, the key its values are kept under.</summary>
+        internal int Id { get; }
 
         public string PropertyName { get; }
 
