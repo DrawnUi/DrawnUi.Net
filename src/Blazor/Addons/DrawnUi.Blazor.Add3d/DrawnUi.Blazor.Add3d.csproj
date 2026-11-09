@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+    <!--using Directory.Build.props-->
+
+    <PropertyGroup>
+        <Title>3D add-on to DrawnUI for Blazor</Title>
+        <PackageId>DrawnUi.Blazor.Add3d</PackageId>
+        <Description>3D models in a DrawnUI screen for Blazor WebAssembly: glTF scenes with skeleton animations, many objects on one game field, shapes made in code, shaded, cartoon or flat looks.</Description>
+        <PackageTags>blazor drawnui skia skiasharp 3d gltf glb webgl game wasm</PackageTags>
+        <Packable>true</Packable>
+        <CreatePackage>false</CreatePackage>
+        <TargetFramework>net10.0</TargetFramework>
+        <RootNamespace>DrawnUi.Add3d</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);BROWSER;</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <WarningsAsErrors>$(WarningsAsErrors);CS0108</WarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\DrawnUi.Wasm\DrawnUi.Blazor.Wasm.csproj" />
+    </ItemGroup>
+
+    <Import Project="..\..\..\SharedAdd3d\SharedAdd3d.projitems" Label="Shared" />
+
+</Project>

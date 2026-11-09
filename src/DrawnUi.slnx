@@ -5,11 +5,13 @@
     <Platform Name="x86" />
   </Configurations>
   <Folder Name="/Addons/">
+    <Project Path="Blazor/Addons/DrawnUi.Blazor.Add3d/DrawnUi.Blazor.Add3d.csproj" />
     <Project Path="Blazor/Addons/DrawnUi.Blazor.Game/DrawnUi.Blazor.Game.csproj" />
     <Project Path="Maui/Addons/DrawnUi.Maui.Game/DrawnUi.Maui.Game.csproj" />
     <Project Path="Maui/Addons/DrawnUi.Maui.MapsUi/DrawnUi.Maui.MapsUi.csproj" />
     <Project Path="Maui/Addons/DrawnUi.MauiGraphics/DrawnUi.MauiGraphics.csproj" />
     <Project Path="OpenTk/Addons/DrawnUi.OpenTk.Game/DrawnUi.OpenTk.Game.csproj" />
+    <Project Path="SharedAdd3d/SharedAdd3d.shproj" />
     <Project Path="SharedGame/SharedGame.shproj" />
     <Project Path="Wasm/Addons/DrawnUi.Wasm.Game/DrawnUi.Wasm.Game.csproj" />
   </Folder>
@@ -39,6 +41,7 @@
   </Folder>
   <Folder Name="/Samples/" />
   <Folder Name="/Samples/Blazor/">
+    <Project Path="Blazor/Samples/Add3dGallery/Add3dGallery.csproj" />
     <Project Path="Blazor/Samples/BlazorSandbox/BlazorSandbox.csproj" />
     <Project Path="Blazor/Samples/BlazorSandboxServer/BlazorSandboxServer/BlazorSandboxServer.csproj" />
   </Folder>

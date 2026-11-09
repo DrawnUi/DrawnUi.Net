@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>0141c17a-8f29-4946-ba75-780bebaf5660</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>DrawnUi.Add3d</Import_RootNamespace>
+  </PropertyGroup>
+  <!-- The 3D add-on: pure C#, compiled into each head's add-on package. Renderer3D.cs is the only GL file; it calls
+       the head's Gl class (e.g. Blazor/Addons/DrawnUi.Blazor.Add3d/Gl.Blazor.cs). -->
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Add3dTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Add3dFluent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scene3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GltfReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Player3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Shapes3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Renderer3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SkiaModel3D.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SkiaScene3D.cs" />
+  </ItemGroup>
+</Project>

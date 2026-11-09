@@ -24,6 +24,13 @@
     </ItemGroup>
 
     <ItemGroup>
+        <!-- the 3D add-on's CPU side (reading, posing, animations, hit tests, shapes, controls); the GL renderer stays
+             out, Add3d/Renderer3D.Headless.cs draws nothing -->
+        <Compile Include="..\..\..\SharedAdd3d\*.cs" Exclude="..\..\..\SharedAdd3d\Renderer3D.cs" LinkBase="SharedAdd3d" />
+        <None Include="..\..\..\Blazor\Samples\Add3dGallery\Assets\*.glb" Link="Assets\Add3d\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <ItemGroup>
         <EmbeddedResource Include="Resources\green.png" />
         <None Update="Assets\**" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
