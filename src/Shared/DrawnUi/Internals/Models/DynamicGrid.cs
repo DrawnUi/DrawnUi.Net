@@ -13,8 +13,21 @@ public class DynamicGrid<T>
     public int MaxRows { get; private set; } = 0;
     public int MaxColumns { get; private set; } = 0;
 
+    /// <summary>Bumped on every change, so <see cref="GetChildrenAsSpans"/> knows its last list is out of date.</summary>
+    private int _version;
+
+    /// <summary>The children list <see cref="GetChildrenAsSpans"/> made last, with the version it was made at.</summary>
+    private sealed class ChildrenSnapshot
+    {
+        public int Version;
+        public List<T> List;
+    }
+
+    private ChildrenSnapshot _childrenSnapshot;
+
     public void Add(T item, int column, int row)
     {
+        _version++;
         grid[(column, row)] = item;
         indexedValues.Add(item); // Maintain indexed list for O(1) access
 
@@ -75,6 +88,7 @@ public class DynamicGrid<T>
 
     public void Clear()
     {
+        _version++;
         grid.Clear();
         columnCountPerColumn.Clear();
         columnCountPerRow.Clear();
@@ -113,9 +127,21 @@ public class DynamicGrid<T>
         }
     }
 
+    /// <summary>
+    /// The children in order, as a span over a list made when the grid last changed: the list is never changed once
+    /// made (a change makes a new one), so a span taken before a change still reads what it read.
+    /// </summary>
     public Span<T> GetChildrenAsSpans()
     {
-        return CollectionsMarshal.AsSpan(grid.Values.ToList());
+        var version = _version;
+        var snapshot = _childrenSnapshot;
+        if (snapshot == null || snapshot.Version != version)
+        {
+            snapshot = new ChildrenSnapshot { Version = version, List = grid.Values.ToList() };
+            _childrenSnapshot = snapshot;
+        }
+
+        return CollectionsMarshal.AsSpan(snapshot.List);
     }
 
     public int GetCount()
