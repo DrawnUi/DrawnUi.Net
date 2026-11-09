@@ -56,6 +56,111 @@ public class RotatedLeftTopMoveTests
         Assert.False(Lit(host, 50, 150), "nothing is left at its first place");
     }
 
+    // the Bricks Breaker victory rays: Operations cache inside an uncached layer, scaled and rotated, parked with
+    // SkipRendering after its first draw, unparked, then moved by Left / Top every frame
+    [Theory]
+    [InlineData(30, 1.0, false)]
+    [InlineData(30, 0.8, false)]
+    [InlineData(30, 0.8, true)]
+    [InlineData(0, 0.8, true)]
+    public void Rays_parked_scaled_and_rotated_follow_Left_and_Top(double rotation, double scale, bool park)
+    {
+        using var host = new HeadlessCanvasHost(600, 300, 1f, Colors.Black);
+        SkiaShape rays = null;
+        host.Canvas.Content = new SkiaLayer
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            IsClippedToBounds = true,
+            Children =
+            {
+                new SkiaShape { BackgroundColor = Colors.DarkBlue, WidthRequest = 40, HeightRequest = 40, Left = 500, Top = 20, UseCache = SkiaCacheType.GPU },
+                new SkiaShape
+                {
+                    BackgroundColor = Colors.White, WidthRequest = 60, HeightRequest = 60, ZIndex = 4,
+                    HorizontalOptions = LayoutOptions.Start, VerticalOptions = LayoutOptions.Start,
+                    UseCache = SkiaCacheType.Operations, Rotation = rotation, Scale = scale, Left = 20, Top = 120,
+                }.Assign(out rays),
+            }
+        };
+        host.AdvanceFrames(3);
+        if (park)
+        {
+            rays.SkipRendering = true;
+            host.AdvanceFrames(3);
+            rays.SkipRendering = false;
+            host.AdvanceFrames(2);
+        }
+        Assert.True(Lit(host, 50, 150), "drawn at its first place " + LitBox(host));
+
+        for (var i = 0; i < 80; i++)
+        {
+            rays.Left += 5;
+            host.RenderFrame(16);
+        }
+        host.AdvanceFrames(2);
+
+        Assert.True(Lit(host, 450, 150), $"drawn at its new place (Left {rays.Left}) " + LitBox(host));
+        Assert.False(Lit(host, 50, 150), "nothing is left at its first place");
+    }
+
+    // a copy of the game's VictoryRays: a plain SkiaControl that draws one image in Paint, Operations cache
+    class ImageRays : SkiaControl
+    {
+        static SKImage _image;
+        readonly SKPaint _paint = new() { IsAntialias = true };
+        public ImageRays() { UseCache = SkiaCacheType.Operations; HorizontalOptions = LayoutOptions.Center; VerticalOptions = LayoutOptions.Center; WidthRequest = 900; HeightRequest = 900; }
+        protected override void Paint(DrawingContext ctx)
+        {
+            base.Paint(ctx);
+            if (_image == null)
+            {
+                using var surface = SKSurface.Create(new SKImageInfo(64, 64));
+                surface.Canvas.Clear(SKColors.White);
+                _image = surface.Snapshot();
+            }
+            ctx.Context.Canvas.DrawImage(_image, ctx.Destination, _paint);
+        }
+    }
+
+    [Theory]
+    [InlineData(30)]
+    [InlineData(0)]
+    public void Image_rays_animated_then_held_follow_Left_and_Top(double rotation)
+    {
+        using var host = new HeadlessCanvasHost(600, 300, 1f, Colors.Black);
+        ImageRays rays = null;
+        host.Canvas.Content = new SkiaLayer
+        {
+            HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill, IsClippedToBounds = true,
+            Children =
+            {
+                new ImageRays { WidthRequest = 60, HeightRequest = 60, HorizontalOptions = LayoutOptions.Start, VerticalOptions = LayoutOptions.Start, ZIndex = 4, Opacity = 0.01 }.Assign(out rays),
+            }
+        };
+        host.AdvanceFrames(3);
+        rays.SkipRendering = true; // parked
+        host.AdvanceFrames(3);
+
+        // flash: placed, turned, scaled, shown, unparked, animated
+        rays.Left = 20; rays.Top = 120; rays.Rotation = rotation; rays.Scale = 0.3; rays.Opacity = 1;
+        rays.SkipRendering = false;
+        _ = rays.RotateToAsync(rotation + 50, 300);
+        _ = rays.ScaleToAsync(1, 1, 150);
+        for (var i = 0; i < 30; i++) host.RenderFrame(16); // animations end, held on screen
+        Assert.True(Lit(host, 50, 150), "drawn at its first place " + LitBox(host));
+
+        for (var i = 0; i < 80; i++) // follows the paddle
+        {
+            rays.Left += 5;
+            host.RenderFrame(16);
+        }
+        host.AdvanceFrames(2);
+
+        Assert.True(Lit(host, 450, 150), $"drawn at its new place (Left {rays.Left}) " + LitBox(host));
+        Assert.False(Lit(host, 50, 150), "nothing is left at its first place");
+    }
+
     static string LitBox(HeadlessCanvasHost host)
     {
         using var image = host.Snapshot();
