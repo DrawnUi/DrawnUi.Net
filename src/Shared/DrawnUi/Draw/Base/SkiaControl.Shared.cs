@@ -8509,47 +8509,16 @@ namespace DrawnUi.Draw
             var tree = RentRenderTreeBuilder();
 
             //actually base control has NO virtualization on purpose. implemented only for non-absolute layouts.
-            foreach (var child in skiaControls)
+            // a List is walked with its own enumerator (no boxed one per draw), anything else as given
+            if (skiaControls is List<SkiaControl> list)
             {
-                if (child != null)
-                {
-                    child.OptionalOnBeforeDrawing(); //could set IsVisible or whatever inside
-                    bool inTree = true;
-                    if (child.CanDraw) //still visible 
-                    {
-                        if (IsRenderingWithComposition)
-                        {
-                            if (DirtyChildrenInternal.Contains(child))
-                            {
-                                RenderCompositionChild(child, context);
-                            }
-                            else
-                            {
-                                //todo investigate if this helps or just slows us down
-                                child.Arrange(context.Destination, child.SizeRequest.Width,
-                                    child.SizeRequest.Height,
-                                    context.Scale);
-                            }
-                        }
-                        else
-                        {
-                            child.Render(context);
-                        }
-
-                        if (inTree)
-                        {
-                            tree.Add(RenderTreeEntry(tree.Count, child,
-                                context.Destination,
-                                child.CreateHitRect(),
-                                count,
-                                -1, // Default freeze index
-                                child.BindingContext)); // Capture current binding context
-                        }
-
-
-                        count++;
-                    }
-                }
+                foreach (var child in list)
+                    RenderViewsListChild(context, child, tree, ref count);
+            }
+            else
+            {
+                foreach (var child in skiaControls)
+                    RenderViewsListChild(context, child, tree, ref count);
             }
 
             // Clear dirty tracking since we've processed all changes
@@ -8559,6 +8528,50 @@ namespace DrawnUi.Draw
             ReturnRenderTreeBuilder(tree);
 
             return count;
+        }
+
+        /// <summary>One child of <see cref="RenderViewsList"/>: drawn when it can be, and entered in the render tree.</summary>
+        void RenderViewsListChild(DrawingContext context, SkiaControl child, List<SkiaControlWithRect> tree, ref int count)
+        {
+            if (child != null)
+            {
+                child.OptionalOnBeforeDrawing(); //could set IsVisible or whatever inside
+                bool inTree = true;
+                if (child.CanDraw) //still visible 
+                {
+                    if (IsRenderingWithComposition)
+                    {
+                        if (DirtyChildrenInternal.Contains(child))
+                        {
+                            RenderCompositionChild(child, context);
+                        }
+                        else
+                        {
+                            //todo investigate if this helps or just slows us down
+                            child.Arrange(context.Destination, child.SizeRequest.Width,
+                                child.SizeRequest.Height,
+                                context.Scale);
+                        }
+                    }
+                    else
+                    {
+                        child.Render(context);
+                    }
+
+                    if (inTree)
+                    {
+                        tree.Add(RenderTreeEntry(tree.Count, child,
+                            context.Destination,
+                            child.CreateHitRect(),
+                            count,
+                            -1, // Default freeze index
+                            child.BindingContext)); // Capture current binding context
+                    }
+
+
+                    count++;
+                }
+            }
         }
 
         /// <summary>
