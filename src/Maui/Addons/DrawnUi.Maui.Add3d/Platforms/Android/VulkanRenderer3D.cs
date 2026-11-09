@@ -71,6 +71,9 @@ internal sealed unsafe class VulkanRenderer3D
     GpuTexture _white;
     uint[] _memoryTypes;
     ConditionalWeakTable<Scene3D, GpuModel> _models = new();
+    // ponytail: like models, the texture of an image that is gone is freed only with the device.
+    /// <summary>Images put on materials from code (Texture3D), by their pixels: uploaded once per device.</summary>
+    ConditionalWeakTable<Image3D, GpuTexture> _images = new();
     readonly List<RenderTarget> _released = new();
     readonly Matrix4x4[] _joints = new Matrix4x4[MaxJoints];
     static readonly Vector3 Light = Vector3.Normalize(new Vector3(0.4f, 0.8f, 0.6f));
@@ -143,6 +146,7 @@ internal sealed unsafe class VulkanRenderer3D
         _queue = view.VkQueue;
         _family = view.VkQueueFamily;
         _models = new ConditionalWeakTable<Scene3D, GpuModel>();
+        _images = new ConditionalWeakTable<Image3D, GpuTexture>();
         lock (_released)
             _released.Clear();
 
@@ -544,6 +548,17 @@ internal sealed unsafe class VulkanRenderer3D
         return model;
     }
 
+    /// <summary>The texture of an image put on a material, uploaded the first time it is drawn.</summary>
+    GpuTexture ImageTexture(Image3D image)
+    {
+        if (!_images.TryGetValue(image, out var texture))
+        {
+            texture = UploadTexture(image);
+            _images.AddOrUpdate(image, texture);
+        }
+        return texture;
+    }
+
     GpuModel Model(Scene3D scene)
     {
         if (!_models.TryGetValue(scene, out var model))
@@ -747,9 +762,14 @@ internal sealed unsafe class VulkanRenderer3D
 
     void Render(VkTarget t, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h)
     {
-        // Models first: an upload submits and waits on its own command buffer.
+        // Models and images first: an upload submits and waits on its own command buffer.
         for (var o = 0; o < count; o++)
+        {
             Model(items[o].Scene);
+            foreach (var m in items[o].Materials)
+                if (m.Image != null)
+                    ImageTexture(m.Image.Pixels);
+        }
 
         var firstPass = style.Outline > 0 ? 0 : 1;
         var slot = NextSlot();
@@ -837,7 +857,9 @@ internal sealed unsafe class VulkanRenderer3D
                     }
                 }
                 block.Color = changed.HasColor ? changed.Color : material?.Color ?? new Vector4(0.8f, 0.8f, 0.8f, 1);
-                var texture = material != null && material.Texture >= 0 && material.Texture < gpu.Textures.Length ? gpu.Textures[material.Texture] : null;
+                // An image put on the material from code, else the file's own.
+                var texture = changed.Image != null ? ImageTexture(changed.Image.Pixels)
+                    : material != null && material.Texture >= 0 && material.Texture < gpu.Textures.Length ? gpu.Textures[material.Texture] : null;
                 block.Textured = texture != null ? 1 : 0;
                 block.Skinned = skinned && p.Joints.Length > 0 ? 1 : 0;
                 var drawOffset = (uint)used;
