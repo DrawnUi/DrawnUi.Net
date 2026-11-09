@@ -282,15 +282,42 @@ namespace DrawnUi.Draw
             return correctedRadii;
         }
 
+        /// <summary>The radii <see cref="CreateScaledRadii"/> made last, with the corners and scale they were made for.</summary>
+        sealed class ScaledRadii
+        {
+            public double TopLeft, TopRight, BottomLeft, BottomRight;
+            public float Scale;
+            public SKPoint[] Radii;
+        }
+
+        // the same corners at the same scale give the same array (callers only read it), instead of a new one for every
+        // paint and every clip; one object swapped whole, so a paint on another thread never mixes two of them
+        ScaledRadii _scaledRadii;
+
         protected virtual SKPoint[] CreateScaledRadii(float scale)
         {
-            return new[]
+            var corners = CornerRadius;
+            var made = _scaledRadii;
+            if (made != null && made.Scale.Equals(scale)
+                             && made.TopLeft.Equals(corners.TopLeft) && made.TopRight.Equals(corners.TopRight)
+                             && made.BottomLeft.Equals(corners.BottomLeft) && made.BottomRight.Equals(corners.BottomRight))
             {
-                new SKPoint((float)(CornerRadius.TopLeft * scale), (float)(CornerRadius.TopLeft * scale)),
-                new SKPoint((float)(CornerRadius.TopRight * scale), (float)(CornerRadius.TopRight * scale)),
-                new SKPoint((float)(CornerRadius.BottomLeft * scale), (float)(CornerRadius.BottomLeft * scale)),
-                new SKPoint((float)(CornerRadius.BottomRight * scale), (float)(CornerRadius.BottomRight * scale))
+                return made.Radii;
+            }
+
+            var radii = new[]
+            {
+                new SKPoint((float)(corners.TopLeft * scale), (float)(corners.TopLeft * scale)),
+                new SKPoint((float)(corners.TopRight * scale), (float)(corners.TopRight * scale)),
+                new SKPoint((float)(corners.BottomLeft * scale), (float)(corners.BottomLeft * scale)),
+                new SKPoint((float)(corners.BottomRight * scale), (float)(corners.BottomRight * scale))
             };
+            _scaledRadii = new ScaledRadii
+            {
+                TopLeft = corners.TopLeft, TopRight = corners.TopRight, BottomLeft = corners.BottomLeft,
+                BottomRight = corners.BottomRight, Scale = scale, Radii = radii,
+            };
+            return radii;
         }
 
         protected virtual void AlignResizedPath(SKRect outRect)
