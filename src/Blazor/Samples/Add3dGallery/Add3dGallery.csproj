@@ -30,10 +30,8 @@
         <ProjectReference Include="..\..\Addons\DrawnUi.Blazor.Add3d\DrawnUi.Blazor.Add3d.csproj" />
     </ItemGroup>
 
-    <!-- The models (CC0, Assets/MODELS-LICENSE.txt) ship inside the app, read once at startup. -->
-    <ItemGroup>
-        <EmbeddedResource Include="Assets\*.glb" LogicalName="%(Filename)%(Extension)" />
-    </ItemGroup>
+    <!-- The app itself (pages and models), shared with the pure WebAssembly head src/Wasm/Samples/Add3dGalleryWeb. -->
+    <Import Project="..\..\..\Shared\Samples\Add3dGallery.Shared\Add3dGallery.Shared.projitems" Label="Shared" />
 
     <ItemGroup>
         <TrimmerRootAssembly Include="SkiaSharp" />

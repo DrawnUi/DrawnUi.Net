@@ -3,7 +3,8 @@ using System.Runtime.InteropServices;
 namespace DrawnUi.Add3d;
 
 /// <summary>
-/// The Blazor WebAssembly head's GL binding: the WebGL2 entry points of the emscripten GL library libSkiaSharp is
+/// The GL binding of both web heads (Blazor WebAssembly, and pure WebAssembly where DrawnUi.Wasm.Add3d links this
+/// file): the WebGL2 entry points of the emscripten GL library libSkiaSharp is
 /// linked with, imported under the module name the wasm pinvoke generator knows. The renderer (Renderer3D) calls only
 /// these; another head brings its own Gl class with the same methods.
 /// </summary>

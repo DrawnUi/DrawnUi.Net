@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>673AEBB1-DA78-4547-91DB-3A33AD1400A6</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Add3dGallery</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)GalleryRoot.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\BossPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.Loop.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.Shapes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\PerfProbe.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Theme.cs" />
+  </ItemGroup>
+  <!-- The models (CC0, Assets/MODELS-LICENSE.txt) ship inside the app, read once at startup. -->
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Assets\*.glb" LogicalName="%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

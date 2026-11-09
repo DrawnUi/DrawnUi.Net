@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+        <RootNamespace>Add3dGallery</RootNamespace>
+        <!-- Links native Skia into dotnet.native.wasm; needs the wasm-tools workload. -->
+        <WasmBuildNative>true</WasmBuildNative>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <!-- DRAWNUI_NET = non-Blazor base, WEB/BROWSER = web defaults -->
+        <DefineConstants>$(DefineConstants);DRAWNUI_NET;WEB;NET;NET10;BROWSER</DefineConstants>
+    </PropertyGroup>
+
+    <!-- Release runs compiled ahead of time (the interpreter costs about half the frame rate). -->
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <RunAOTCompilation>true</RunAOTCompilation>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
+        <PackageReference Include="HarfBuzzSharp.NativeAssets.WebAssembly" Version="14.2.0" />
+        <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.148.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Addons\DrawnUi.Wasm.Game\DrawnUi.Wasm.Game.csproj" />
+        <ProjectReference Include="..\..\Addons\DrawnUi.Wasm.Add3d\DrawnUi.Wasm.Add3d.csproj" />
+    </ItemGroup>
+
+    <!-- ProjectReference does not import a package's buildTransitive props (NuGet consumers of DrawnUi.Web get it). -->
+    <Import Project="..\..\DrawnUi\buildTransitive\DrawnUi.Wasm.props" />
+
+    <ItemGroup>
+        <WasmExtraConfig Include="emcc_flags">
+            <Value>-s ERROR_ON_UNDEFINED_SYMBOLS=0 -s ALLOW_MEMORY_GROWTH=1</Value>
+        </WasmExtraConfig>
+    </ItemGroup>
+
+    <ItemGroup>
+        <TrimmerRootAssembly Include="SkiaSharp" />
+    </ItemGroup>
+
+    <!-- The app itself (pages and models), shared with the Blazor head src/Blazor/Samples/Add3dGallery. -->
+    <Import Project="..\..\..\Shared\Samples\Add3dGallery.Shared\Add3dGallery.Shared.projitems" Label="Shared" />
+
+</Project>

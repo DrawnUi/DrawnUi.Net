@@ -13,6 +13,7 @@
     <Project Path="OpenTk/Addons/DrawnUi.OpenTk.Game/DrawnUi.OpenTk.Game.csproj" />
     <Project Path="SharedAdd3d/SharedAdd3d.shproj" />
     <Project Path="SharedGame/SharedGame.shproj" />
+    <Project Path="Wasm/Addons/DrawnUi.Wasm.Add3d/DrawnUi.Wasm.Add3d.csproj" />
     <Project Path="Wasm/Addons/DrawnUi.Wasm.Game/DrawnUi.Wasm.Game.csproj" />
   </Folder>
   <Folder Name="/Lib/" />
@@ -73,9 +74,11 @@
     <Project Path="OpenTk/Samples/OpenTkPong/OpenTkPong.csproj" />
   </Folder>
   <Folder Name="/Samples/Shared/">
+    <Project Path="Shared/Samples/Add3dGallery.Shared/Add3dGallery.Shared.shproj" />
     <Project Path="Shared/Samples/Pong.Shared/Pong.Shared.shproj" />
   </Folder>
   <Folder Name="/Samples/Wasm/">
+    <Project Path="Wasm/Samples/Add3dGalleryWeb/Add3dGalleryWeb.csproj" />
     <Project Path="Wasm/Samples/PongWeb/PongWeb.csproj" />
   </Folder>
   <Folder Name="/Samples/WPF/">

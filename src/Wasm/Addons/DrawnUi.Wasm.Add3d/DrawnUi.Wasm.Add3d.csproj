@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Title>3D add-on to DrawnUI for pure Web (WASM)</Title>
+        <PackageId>DrawnUi.Web.Add3d</PackageId>
+        <Description>3D models in a DrawnUI screen on pure WebAssembly (no Blazor): glTF scenes with skeleton animations, many objects on one game field, shapes made in code, shaded, cartoon or flat looks.</Description>
+        <PackageTags>web wasm webassembly drawnui skia skiasharp 3d gltf glb webgl game</PackageTags>
+        <Packable>true</Packable>
+        <CreatePackage>false</CreatePackage>
+        <TargetFramework>net10.0</TargetFramework>
+        <RootNamespace>DrawnUi.Add3d</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <!-- Same code paths as DrawnUi.Web. -->
+        <DefineConstants>$(DefineConstants);DRAWNUI_NET;WEB;NET;NET10;BROWSER</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <WarningsAsErrors>$(WarningsAsErrors);CS0108</WarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\DrawnUi\DrawnUi.Wasm.csproj" />
+    </ItemGroup>
+
+    <!-- Both web heads draw through the same emscripten WebGL library linked into libSkiaSharp: one GL binding. -->
+    <ItemGroup>
+        <Compile Include="..\..\..\Blazor\Addons\DrawnUi.Blazor.Add3d\Gl.Blazor.cs" Link="Gl.Web.cs" />
+    </ItemGroup>
+
+    <Import Project="..\..\..\SharedAdd3d\SharedAdd3d.projitems" Label="Shared" />
+
+</Project>
