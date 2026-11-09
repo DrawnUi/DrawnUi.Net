@@ -108,6 +108,38 @@ public class Model3DSceneTests
         Assert.Same(a, b);
     }
 
+    /// <summary>
+    /// The outline directions are made once per scene: the first upload makes them, every later upload (another
+    /// control showing the same file, another GPU context) gets the same arrays. They used to be rebuilt at each
+    /// upload, which blocked the first frame of a page.
+    /// </summary>
+    [Fact]
+    public void Outline_directions_are_made_once_per_scene()
+    {
+        var scene = Scene3D.Shared(Add3dAssets.Dragon, out _);
+        var primitives = scene.Meshes.SelectMany(m => m).ToArray();
+        var first = primitives.Select(p => p.OutlineDirections()).ToArray();
+        Assert.All(primitives, p => Assert.Equal(p.Positions.Length, p.OutlineDirections().Length));
+        // The same bytes give the same scene, and its primitives keep the arrays made the first time.
+        var again = Scene3D.Shared(Add3dAssets.Dragon, out _).Meshes.SelectMany(m => m).Select(p => p.OutlineDirections()).ToArray();
+        for (var i = 0; i < first.Length; i++)
+            Assert.Same(first[i], again[i]);
+    }
+
+    /// <summary>Vertices at one position (a hard edge) share one outline direction, the average of their normals.</summary>
+    [Fact]
+    public void Outline_directions_average_the_normals_at_one_position()
+    {
+        var positions = new[] { new Vector3(1, 1, 1), new Vector3(1, 1, 1), new Vector3(0, 0, 0), new Vector3(1, 1, 1.00000001f) };
+        var normals = new[] { Vector3.UnitX, Vector3.UnitY, Vector3.UnitZ, Vector3.UnitZ };
+        var result = Scene3D.AveragedNormals(positions, normals);
+        var corner = Vector3.Normalize(new Vector3(1, 1, 1));
+        Assert.True(Vector3.Distance(corner, result[0]) < 1e-5f, result[0].ToString());
+        Assert.Equal(result[0], result[1]);
+        Assert.Equal(result[0], result[3]);
+        Assert.Equal(Vector3.UnitZ, result[2]);
+    }
+
     [Fact]
     public void A_move_played_once_ends_and_goes_back_to_the_loop()
     {

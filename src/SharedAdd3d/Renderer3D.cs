@@ -256,31 +256,6 @@ void main() {
         Gl.glVertexAttribPointer(index, size, FLOAT, 0, 0, 0);
     }
 
-    /// <summary>
-    /// One normal per position, the average of the normals there: an outline pushed along them stays closed at hard
-    /// edges (a coin's rim, a box's corner).
-    /// </summary>
-    internal static Vector3[] OutlineNormals(Primitive3D p)
-    {
-        if (p.OutlineNormals != null)
-            return p.OutlineNormals;
-        static (int, int, int) Key(Vector3 v) => ((int)MathF.Round(v.X * 10_000), (int)MathF.Round(v.Y * 10_000), (int)MathF.Round(v.Z * 10_000));
-        var sums = new Dictionary<(int, int, int), Vector3>();
-        for (var i = 0; i < p.Positions.Length; i++)
-        {
-            var key = Key(p.Positions[i]);
-            sums[key] = sums.GetValueOrDefault(key) + p.Normals[i];
-        }
-        var result = new Vector3[p.Positions.Length];
-        for (var i = 0; i < result.Length; i++)
-        {
-            var s = sums[Key(p.Positions[i])];
-            var l = s.Length();
-            result[i] = l > 0 ? s / l : Vector3.Zero;
-        }
-        return result;
-    }
-
     /// <summary>One RGBA image as a mipmapped texture.</summary>
     static uint Texture(Image3D image)
     {
@@ -330,7 +305,7 @@ void main() {
                 Attribute(2, p.Uvs, 2);
                 Attribute(3, p.Joints, 4);
                 Attribute(4, p.Weights, 4);
-                Attribute(5, OutlineNormals(p), 3);
+                Attribute(5, p.OutlineDirections(), 3);
                 Buffer(ELEMENT_ARRAY_BUFFER, p.Indices);
                 Gl.glBindVertexArray(0);
                 model.Vaos[m][k] = vao;

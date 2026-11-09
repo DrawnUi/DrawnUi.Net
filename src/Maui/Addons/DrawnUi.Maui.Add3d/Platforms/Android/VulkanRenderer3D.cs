@@ -537,7 +537,7 @@ internal sealed unsafe class VulkanRenderer3D
                     Put(p.Uvs, n, Vector2.Zero),
                     Put(p.Joints, n, Vector4.Zero),
                     Put(p.Weights, n, new Vector4(1, 0, 0, 0)),
-                    Put(Renderer3D.OutlineNormals(p), n, Vector3.Zero),
+                    Put(p.OutlineDirections(), n, Vector3.Zero),
                     Put(p.Indices, p.Indices.Length, 0u),
                 };
                 model.Counts[m][k] = p.Indices.Length;

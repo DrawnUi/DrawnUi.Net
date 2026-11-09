@@ -1,4 +1,5 @@
 #nullable disable
+using System.Buffers;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
@@ -17,8 +18,15 @@ internal sealed class Primitive3D
 {
     public Vector3[] Positions;
     public Vector3[] Normals;
-    /// <summary>The directions an outline pushes each vertex along; null = the normals averaged per position.</summary>
+    /// <summary>The directions an outline pushes each vertex along, given by a shape made in code; null = <see cref="OutlineDirections"/> makes them.</summary>
     public Vector3[] OutlineNormals;
+
+    /// <summary>
+    /// The outline directions: given, else the normals averaged per position, made the first time a GPU uploads this
+    /// primitive and kept, so every control showing the scene and every GPU context reads the same array.
+    /// </summary>
+    // A race between two render threads only makes the same array twice; either is kept.
+    public Vector3[] OutlineDirections() => OutlineNormals ??= Scene3D.AveragedNormals(Positions, Normals);
     public Vector2[] Uvs;
     /// <summary>Joint indices as floats, empty when not skinned.</summary>
     public Vector4[] Joints = Array.Empty<Vector4>();
@@ -144,6 +152,73 @@ internal sealed partial class Scene3D
         MaxJoints = Skins.Length == 0 ? 0 : Skins.Max(s => s.Joints.Length);
         (BoundsMin, BoundsMax) = RestBounds();
     }
+
+    /// <summary>
+    /// One normal per position, the average of the normals there: an outline pushed along them stays closed at hard
+    /// edges (a coin's rim, a box's corner). Positions are matched to 1/10000 of a unit, through a hash table in
+    /// pooled arrays (no per-vertex allocation, no boxing).
+    /// </summary>
+    internal static Vector3[] AveragedNormals(Vector3[] positions, Vector3[] normals)
+    {
+        var n = positions?.Length ?? 0;
+        var result = new Vector3[n];
+        if (n == 0 || normals == null || normals.Length != n)
+            return result;
+        var size = (int)System.Numerics.BitOperations.RoundUpToPowerOf2((uint)Math.Max(16, n * 2));
+        var mask = size - 1;
+        var slots = ArrayPool<int>.Shared.Rent(size);
+        var keys = ArrayPool<int>.Shared.Rent(n * 3);
+        var groupOf = ArrayPool<int>.Shared.Rent(n);
+        var sums = ArrayPool<Vector3>.Shared.Rent(n);
+        try
+        {
+            System.Array.Fill(slots, -1, 0, size);
+            var groups = 0;
+            for (var i = 0; i < n; i++)
+            {
+                var p = positions[i];
+                int x = Quantize(p.X), y = Quantize(p.Y), z = Quantize(p.Z);
+                var h = (int)((uint)(x * 73856093 ^ y * 19349663 ^ z * 83492791) & (uint)mask);
+                int g;
+                while (true)
+                {
+                    g = slots[h];
+                    if (g < 0)
+                    {
+                        g = groups++;
+                        slots[h] = g;
+                        keys[g * 3] = x;
+                        keys[g * 3 + 1] = y;
+                        keys[g * 3 + 2] = z;
+                        sums[g] = Vector3.Zero;
+                        break;
+                    }
+                    if (keys[g * 3] == x && keys[g * 3 + 1] == y && keys[g * 3 + 2] == z)
+                        break;
+                    h = (h + 1) & mask;
+                }
+                sums[g] += normals[i];
+                groupOf[i] = g;
+            }
+            for (var i = 0; i < n; i++)
+            {
+                var s = sums[groupOf[i]];
+                var l = s.Length();
+                result[i] = l > 0 ? s / l : Vector3.Zero;
+            }
+        }
+        finally
+        {
+            ArrayPool<int>.Shared.Return(slots);
+            ArrayPool<int>.Shared.Return(keys);
+            ArrayPool<int>.Shared.Return(groupOf);
+            ArrayPool<Vector3>.Shared.Return(sums);
+        }
+        return result;
+    }
+
+    /// <summary>A coordinate in 1/10000 of a unit, rounded half away from zero.</summary>
+    static int Quantize(float v) => (int)(v * 10_000 + (v < 0 ? -0.5f : 0.5f));
 
     /// <summary>The animation with this name, -1 when none.</summary>
     public int AnimationNamed(string name)
