@@ -135,4 +135,71 @@ public class BackgroundMeasureRaceTests
             Trace.Listeners.Remove(capture);
         }
     }
+
+    /// <summary>A cell whose measure throws once, off the test thread, for one item.</summary>
+    private sealed class FailingCell : SkiaShape
+    {
+        public static Item FailFor;
+        public static int TestThread;
+        public static volatile bool Waiting;
+        public static int FramesWhileWaiting;
+
+        public FailingCell()
+        {
+            HeightRequest = 100;
+        }
+
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+            if (BindingContext is Item item)
+                WidthRequest = item.Width;
+        }
+
+        public override ScaledSize OnMeasuring(float widthConstraint, float heightConstraint, float scale)
+        {
+            if (BindingContext is Item item && item == FailFor && Environment.CurrentManagedThreadId != TestThread)
+            {
+                // the frames drawn meanwhile find measurement running, so none of them starts a pass
+                FailFor = null;
+                Waiting = true;
+                var wait = Stopwatch.StartNew();
+                while (Volatile.Read(ref FramesWhileWaiting) < 5 && wait.ElapsedMilliseconds < 3000)
+                    Thread.Sleep(1);
+                Waiting = false;
+                throw new InvalidOperationException("cell failed to measure");
+            }
+
+            return base.OnMeasuring(widthConstraint, heightConstraint, scale);
+        }
+    }
+
+    /// <summary>
+    /// A pass that ends with an error leaves the rest unmeasured: the next frame starts a new pass, also when the
+    /// layout sits in a SkiaScroll that caches itself (nothing drew the layout again, the frontier stopped there).
+    /// </summary>
+    [Fact]
+    public void PassThatFails_MeasurementGoesOn()
+    {
+        var items = Items(300);
+        var (host, row) = Scene(items, 10);
+        row.ItemTemplate = new DataTemplate(() => new FailingCell());
+        using (host)
+        {
+            FailingCell.TestThread = Environment.CurrentManagedThreadId;
+            FailingCell.FramesWhileWaiting = 0;
+            FailingCell.FailFor = items[150];
+            host.Canvas.WasDrawn += (_, _) =>
+            {
+                if (FailingCell.Waiting)
+                    Interlocked.Increment(ref FailingCell.FramesWhileWaiting);
+            };
+
+            RunUntilMeasured(host, row, items.Count);
+
+            Assert.Null(FailingCell.FailFor); // the pass did fail
+            Assert.Equal(items.Count, row.GetStackStructure().GetCount());
+            Assert.Equal(items.Count - 1, row.LastMeasuredIndex);
+        }
+    }
 }

@@ -1093,6 +1093,7 @@ public partial class SkiaLayout
     async Task RunBackgroundMeasurementPass(SKRect constraints, float scale, int startFromIndex, BackgroundBatchCursor cursor,
         CancellationToken cancellationToken, BackgroundMeasurementContext context, CancellationTokenSource myCts)
     {
+        var failed = false;
         try
         {
             await BackgroundMeasureItems(constraints, scale, startFromIndex, cursor, cancellationToken, context);
@@ -1104,6 +1105,7 @@ public partial class SkiaLayout
         catch (Exception ex)
         {
             Debug.WriteLine($"[StartBackgroundMeasurement] Background measurement error: {ex.Message}");
+            failed = true;
         }
         finally
         {
@@ -1117,6 +1119,17 @@ public partial class SkiaLayout
                 {
                     _isBackgroundMeasuring = false;
                 }
+                else
+                {
+                    failed = false; // a newer pass runs
+                }
+            }
+
+            // A pass that died left items unmeasured. Measurement restarts from this layout's next draw, which a
+            // cached parent (a SkiaScroll caches itself) makes only when asked: ask now that the flag is clear.
+            if (failed)
+            {
+                Repaint();
             }
         }
     }
