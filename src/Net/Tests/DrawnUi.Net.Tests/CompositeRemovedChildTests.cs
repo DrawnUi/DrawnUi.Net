@@ -45,6 +45,35 @@ public class CompositeRemovedChildTests
         Assert.True(Lit(host, 320, 140), "the other child is still drawn");
     }
 
+    [Theory]
+    [InlineData(SkiaCacheType.ImageComposite)]
+    [InlineData(SkiaCacheType.Image)]
+    public void A_child_moved_by_its_translation_draws_at_its_new_place(SkiaCacheType cache)
+    {
+        using var host = new HeadlessCanvasHost(400, 200, scale: 1f, background: Colors.Black);
+        SkiaShape brick = null;
+        var layer = new SkiaLayer
+        {
+            UseCache = cache,
+            VerticalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new SkiaShape { BackgroundColor = Colors.SteelBlue, WidthRequest = 40, HeightRequest = 40, Left = 300, Top = 120 },
+                new SkiaShape { BackgroundColor = Colors.Orange, WidthRequest = 40, HeightRequest = 40, Left = 20, Top = 20 }.Assign(out brick),
+            },
+        };
+        host.Canvas.Content = layer;
+        host.AdvanceFrames(3);
+
+        brick.TranslationX = 140; // a sprite moved by its transform only
+        brick.TranslationY = 100;
+        host.AdvanceFrames(3);
+
+        Assert.False(Lit(host, 40, 40), "nothing is left where the brick was");
+        Assert.True(Lit(host, 180, 140), "the brick is drawn at its new place");
+        Assert.True(Lit(host, 320, 140), "the other child is still drawn");
+    }
+
     static bool Lit(HeadlessCanvasHost host, int x, int y)
     {
         using var image = host.Snapshot();
