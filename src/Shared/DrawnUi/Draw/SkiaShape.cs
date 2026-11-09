@@ -511,6 +511,72 @@ namespace DrawnUi.Draw
         // thread never mixes two of them.
         MadePaintArguments _paintArguments;
 
+        /// <summary>What <see cref="ClipContentPath"/> was made from by <see cref="PrepareClipContentPath"/>.</summary>
+        struct ClipContentKey
+        {
+            public ShapeType Type;
+            public SKRect Size, ClipSize;
+            public double TopLeft, TopRight, BottomLeft, BottomRight;
+            public float Scale;
+            public bool Antialiased;
+
+            public readonly bool SameShape(in ClipContentKey other) =>
+                Type == other.Type && Size == other.Size && ClipSize == other.ClipSize && Scale.Equals(other.Scale)
+                && TopLeft.Equals(other.TopLeft) && TopRight.Equals(other.TopRight)
+                && BottomLeft.Equals(other.BottomLeft) && BottomRight.Equals(other.BottomRight);
+        }
+
+        ClipContentKey _clipContentMade;
+        bool _clipContentKept;
+
+        /// <summary>
+        /// Makes <see cref="ClipContentPath"/>, the clip of this shape: <see cref="CreateClip"/> into an emptied path.
+        /// A plain SkiaShape or SkiaFrame (CreateClip not overridden) with a rectangle, circle or ellipse made from the
+        /// same sizes, corners and scale as the path holds keeps the path as it is: a path changed after it was drawn
+        /// makes SkiaSharp make a new path builder.
+        /// </summary>
+        void PrepareClipContentPath(object arguments)
+        {
+            if (ClipContentPath == null)
+            {
+                ClipContentPath = new();
+                _clipContentKept = false;
+            }
+
+            var keep = (GetType() == typeof(SkiaShape) || GetType() == typeof(SkiaFrame))
+                       && Type is ShapeType.Rectangle or ShapeType.Circle or ShapeType.Ellipse;
+            ClipContentKey key = default;
+            if (keep)
+            {
+                var corners = CornerRadius;
+                key = new ClipContentKey
+                {
+                    Type = Type,
+                    Size = arguments is ShapePaintArguments args ? args.StrokeAwareSize : MeasuredStrokeAwareSize,
+                    ClipSize = arguments is ShapePaintArguments clipArgs ? clipArgs.StrokeAwareClipSize : MeasuredStrokeAwareClipSize,
+                    TopLeft = corners.TopLeft, TopRight = corners.TopRight,
+                    BottomLeft = corners.BottomLeft, BottomRight = corners.BottomRight,
+                    Scale = RenderingScale,
+                };
+                if (_clipContentKept && key.SameShape(_clipContentMade))
+                {
+                    // what CreateClip sets with the path
+                    ShouldClipAntialiased = _clipContentMade.Antialiased;
+                    return;
+                }
+            }
+
+            ClipContentPath.Reset();
+            CreateClip(arguments, true, ClipContentPath);
+
+            _clipContentKept = keep;
+            if (keep)
+            {
+                key.Antialiased = ShouldClipAntialiased;
+                _clipContentMade = key;
+            }
+        }
+
         public override DrawingContext AddPaintArguments(DrawingContext ctx)
         {
             var values = new ShapePaintArguments()
@@ -753,9 +819,7 @@ namespace DrawnUi.Draw
 
                     if (ClipBackgroundColor)
                     {
-                        ClipContentPath ??= new();
-                        ClipContentPath.Reset();
-                        CreateClip(arguments, true, ClipContentPath);
+                        PrepareClipContentPath(arguments);
 
                         var saved = ctx.Context.Canvas.Save();
 
@@ -787,10 +851,7 @@ namespace DrawnUi.Draw
                 }
             }
 
-            ClipContentPath ??= new();
-            ClipContentPath.Reset();
-
-            CreateClip(arguments, true, ClipContentPath);
+            PrepareClipContentPath(arguments);
 
             void PaintBackgroundPass()
             {
