@@ -26,6 +26,11 @@
         <EmbeddedResource Include="Platforms\Android\Shaders\*.spv" LogicalName="%(Filename)%(Extension)" />
     </ItemGroup>
 
+    <!-- The Metal renderer: iOS and Mac Catalyst only. -->
+    <ItemGroup Condition="!$(TargetFramework.Contains('-ios')) And !$(TargetFramework.Contains('maccatalyst'))">
+        <Compile Remove="Apple\**" />
+    </ItemGroup>
+
     <Import Project="..\..\..\SharedAdd3d\SharedAdd3d.projitems" Label="Shared" />
 
 </Project>

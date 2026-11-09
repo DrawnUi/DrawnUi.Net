@@ -151,6 +151,12 @@ void main() {
             VulkanRenderer3D.Release(target);
             return;
         }
+#elif IOS || MACCATALYST
+        if (target.Native != null)
+        {
+            MetalRenderer3D.Release(target);
+            return;
+        }
 #endif
         target.Image?.Dispose();
         target.Image = null;
@@ -384,8 +390,10 @@ void main() {
 #if ANDROID
             if (gr.Backend == GRBackend.Vulkan)
                 return VulkanRenderer3D.Draw(canvas, gr, target, items, count, style, viewProj, w, h);
+#elif IOS || MACCATALYST
+            if (gr.Backend == GRBackend.Metal)
+                return MetalRenderer3D.Draw(canvas, gr, target, items, count, style, viewProj, w, h);
 #endif
-            // ponytail: no Metal path yet, those canvases show no 3D.
             return null;
         }
 #if ANDROID
