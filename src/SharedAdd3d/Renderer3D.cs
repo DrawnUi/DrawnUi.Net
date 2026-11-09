@@ -9,11 +9,12 @@ using SkiaSharp;
 namespace DrawnUi.Add3d;
 
 /// <summary>
-/// The GPU side: one shader program and one copy of each model per GL context, shared by every control; each control
+/// The GPU side: one shader program and one copy of each model per GL context (one renderer each, used only on that
+/// context's thread), shared by every control of that context; each control
 /// draws its objects in one pass into its own texture, which Skia then shows. GL calls go through the head's
 /// <c>Gl</c> binding; the shaders are the ones of DrawnUI for Rust, so both engines draw the same.
 /// </summary>
-internal static unsafe class Renderer3D
+internal sealed unsafe class Renderer3D
 {
     /// <summary>Joint matrices a skinned mesh may use (WebGL2 guarantees 256 vertex uniform vectors).</summary>
     const int MaxJoints = 64;
@@ -111,14 +112,15 @@ void main() {
         public uint[] Textures;
     }
 
-    /// <summary>The GL context the program and the models below belong to.</summary>
-    static object _context;
-    static uint _program;
-    static Uniforms _u;
+    /// <summary>One renderer per GL context: two canvases (each with its own context, maybe its own thread) never share GL objects.</summary>
+    static readonly ConditionalWeakTable<GRContext, Renderer3D> Renderers = new();
+
+    uint _program;
+    Uniforms _u;
 
     // ponytail: a model whose scene is gone keeps its GL buffers until the context goes; delete them when apps load
     // and drop many different models.
-    static ConditionalWeakTable<Scene3D, GpuModel> _models = new();
+    readonly ConditionalWeakTable<Scene3D, GpuModel> _models = new();
 
     /// <summary>A texture of an image put on a material from code (<see cref="Texture3D"/>).</summary>
     sealed class GpuImage
@@ -128,12 +130,12 @@ void main() {
 
     // ponytail: like models, the texture of an image that is gone is deleted only when the context goes.
     /// <summary>Images put on materials from code, by their pixels: uploaded once per context.</summary>
-    static ConditionalWeakTable<Image3D, GpuImage> _images = new();
+    readonly ConditionalWeakTable<Image3D, GpuImage> _images = new();
 
     /// <summary>Targets of disposed controls, deleted at the next draw (on the GL thread, context current).</summary>
-    static readonly List<RenderTarget> _released = new();
+    readonly List<RenderTarget> _released = new();
 
-    static readonly Matrix4x4[] _joints = new Matrix4x4[MaxJoints];
+    readonly Matrix4x4[] _joints = new Matrix4x4[MaxJoints];
 
     /// <summary>GL state set during one draw, 0 = not set yet (Skia's state is unknown after it ran).</summary>
     struct DrawState
@@ -146,7 +148,7 @@ void main() {
         public int Skinned;
     }
 
-    static DrawState _state;
+    DrawState _state;
 
     static readonly Vector3 Light = Vector3.Normalize(new Vector3(0.4f, 0.8f, 0.6f));
 
@@ -170,8 +172,10 @@ void main() {
 #endif
         target.Image?.Dispose();
         target.Image = null;
-        lock (_released)
-            _released.Add(target);
+        // Its GL objects are deleted by the renderer of the context that made them, at its next draw.
+        if (target.Context is GRContext gr && Renderers.TryGetValue(gr, out var owner))
+            lock (owner._released)
+                owner._released.Add(target);
     }
 
     static uint Shader(uint kind, string source)
@@ -198,14 +202,14 @@ void main() {
         return s;
     }
 
-    static int Location(string name)
+    int Location(string name)
     {
         var bytes = Encoding.UTF8.GetBytes(name + "\0");
         fixed (byte* p = bytes)
             return Gl.glGetUniformLocation(_program, p);
     }
 
-    static void MakeProgram()
+    void MakeProgram()
     {
         _program = Gl.glCreateProgram();
         Gl.glAttachShader(_program, Shader(VERTEX_SHADER, Vs));
@@ -293,7 +297,7 @@ void main() {
     }
 
     /// <summary>The texture of an image put on a material, uploaded the first time it is drawn in this context.</summary>
-    static uint ImageTexture(Image3D image)
+    uint ImageTexture(Image3D image)
     {
         if (!_images.TryGetValue(image, out var gpu))
         {
@@ -336,7 +340,7 @@ void main() {
         return model;
     }
 
-    static GpuModel Model(Scene3D scene)
+    GpuModel Model(Scene3D scene)
     {
         if (!_models.TryGetValue(scene, out var model))
         {
@@ -348,11 +352,14 @@ void main() {
         return model;
     }
 
-    static void EnsureTarget(GRContext gr, RenderTarget target, int w, int h)
+    void EnsureTarget(GRContext gr, RenderTarget target, int w, int h)
     {
         if (target.Context != gr)
         {
-            // A new context: the old objects died with the old one.
+            // A new context: the old objects are left to the old one (deleted there, or gone with it).
+            if (target.Context is GRContext old && Renderers.TryGetValue(old, out var owner))
+                lock (owner._released)
+                    owner._released.Add(new RenderTarget { Context = old, Frame = target.Frame, Color = target.Color, Depth = target.Depth });
             target.Image?.Dispose();
             target.Image = null;
             target.Context = gr;
@@ -384,7 +391,7 @@ void main() {
         target.Image = SKImage.FromTexture(gr, backend, GRSurfaceOrigin.BottomLeft, SKColorType.Rgba8888, SKAlphaType.Premul);
     }
 
-    static void DeleteReleased(GRContext gr)
+    void DeleteReleased(GRContext gr)
     {
         lock (_released)
         {
@@ -430,13 +437,13 @@ void main() {
             target.Native = null;
         }
 #endif
-        if (_context != gr)
-        {
-            _context = gr;
-            _models = new ConditionalWeakTable<Scene3D, GpuModel>();
-            _images = new ConditionalWeakTable<Image3D, GpuImage>();
+        return Renderers.GetValue(gr, _ => new Renderer3D()).DrawOn(gr, target, items, count, style, viewProj, w, h);
+    }
+
+    SKImage DrawOn(GRContext gr, RenderTarget target, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h)
+    {
+        if (_program == 0)
             MakeProgram();
-        }
         if (_released.Count > 0)
             DeleteReleased(gr);
         EnsureTarget(gr, target, w, h);
@@ -504,7 +511,7 @@ void main() {
         return target.Image;
     }
 
-    static void DrawItem(in RenderItem item, bool outlinePass, bool blendPass)
+    void DrawItem(in RenderItem item, bool outlinePass, bool blendPass)
     {
         var scene = item.Scene;
         var gpu = Model(scene);
