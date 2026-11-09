@@ -9791,6 +9791,7 @@ namespace DrawnUi.Draw
                 DirtyChildrenTracker.Clear();
                 _compositeWhole?.Clear();
                 _compositeDeep?.Clear();
+                _compositeRemovedAreas?.Clear();
             }
         }
 
@@ -9824,6 +9825,12 @@ namespace DrawnUi.Draw
         }
 
         private HashSet<SkiaControl> _compositeWhole;
+
+        /// <summary>
+        /// Where removed children were last drawn, taken when they were removed: a composite erases these areas even
+        /// when the same object comes back at another place before the next draw (pooled sprites).
+        /// </summary>
+        private List<SKRect> _compositeRemovedAreas;
         private Dictionary<SkiaControl, HashSet<SkiaControl>> _compositeDeep;
 
         public virtual void OnChildAdded(SkiaControl child)
@@ -9841,6 +9848,12 @@ namespace DrawnUi.Draw
         {
             if (IsCacheComposite)
             {
+                var drawnAt = child.GetTransformedDirtyBounds();
+                if (!drawnAt.IsEmpty)
+                {
+                    lock (DirtyChildrenTracker)
+                        (_compositeRemovedAreas ??= new()).Add(drawnAt);
+                }
                 TrackChildAsDirty(child);
             }
 
