@@ -4939,8 +4939,8 @@ namespace DrawnUi.Draw
 
             float pivotX = (float)(destination.Left + destination.Width * AnchorX);
             float pivotY = (float)(destination.Top + destination.Height * AnchorY);
-            var skewX = SkewX > 0 ? (float)Math.Tan(Math.PI * SkewX / 180f) : 0f;
-            var skewY = SkewY > 0 ? (float)Math.Tan(Math.PI * SkewY / 180f) : 0f;
+            var skewX = SkewX != 0 ? (float)Math.Tan(Math.PI * SkewX / 180f) : 0f; // negative skews too
+            var skewY = SkewY != 0 ? (float)Math.Tan(Math.PI * SkewY / 180f) : 0f;
 
             // Build transformation matrix step by step
 
@@ -5031,8 +5031,8 @@ namespace DrawnUi.Draw
 
             float pivotX = (float)(destination.Left + destination.Width * AnchorX);
             float pivotY = (float)(destination.Top + destination.Height * AnchorY);
-            var skewX = SkewX > 0 ? (float)Math.Tan(Math.PI * SkewX / 180f) : 0f;
-            var skewY = SkewY > 0 ? (float)Math.Tan(Math.PI * SkewY / 180f) : 0f;
+            var skewX = SkewX != 0 ? (float)Math.Tan(Math.PI * SkewX / 180f) : 0f; // negative skews too
+            var skewY = SkewY != 0 ? (float)Math.Tan(Math.PI * SkewY / 180f) : 0f;
 
             // Build transformation matrix step by step
 
