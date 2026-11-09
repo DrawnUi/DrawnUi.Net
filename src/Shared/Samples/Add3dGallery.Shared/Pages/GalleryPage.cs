@@ -3,7 +3,7 @@ using DrawnUi.Gaming;
 namespace Add3dGallery;
 
 /// <summary>
-/// A gallery of tiny 3D animations inside a DrawnUI screen (the DrawnUi.Blazor.Add3d add-on), a port of DrawnUI for
+/// A gallery of tiny 3D animations inside a DrawnUI screen (the Add3d add-on), a port of DrawnUI for
 /// Rust's gallery3d:
 /// - made in code, flat: a coin and bouncing dots for loading, a medal for an achievement, a check for success, a heart
 ///   for a like, falling confetti; smooth shapes in flat colors with outlines, animated by the app;
