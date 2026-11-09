@@ -3621,6 +3621,8 @@ namespace DrawnUi.Draw
             }
         }
 
+        private List<SkiaControl> _drawViewsSpare;
+
         protected override int DrawViews(DrawingContext context)
         {
             if (context.Destination.Width <= 0 || context.Destination.Height <= 0)
@@ -3628,9 +3630,12 @@ namespace DrawnUi.Draw
                 return 0;
             }
 
+            // the views of one draw, in a list kept between draws; a draw at the same time makes its own
+            var drawViews = Interlocked.Exchange(ref _drawViewsSpare, null) ?? new List<SkiaControl>(5);
+
             int Render(DrawingContext ctx)
             {
-                var drawViews = new List<SkiaControl>(5) { Content };
+                drawViews.Add(Content);
                 var offsetFooter = 0f;
                 var translateContent = 0.0;
 
@@ -3828,7 +3833,16 @@ namespace DrawnUi.Draw
                 return RenderViewsList(ctx, drawViews);
             }
 
-            var drawn = Render(context);
+            int drawn;
+            try
+            {
+                drawn = Render(context);
+            }
+            finally
+            {
+                drawViews.Clear();
+                _drawViewsSpare = drawViews;
+            }
 
             if (Header != null && HeaderSticky && !HeaderBehind)
             {
