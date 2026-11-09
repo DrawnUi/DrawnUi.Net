@@ -9,5 +9,8 @@
         {
             Type = ShapeType.Rectangle;
         }
+
+        /// <inheritdoc />
+        protected override bool ClipDependsOnlyOnShape => GetType() == typeof(SkiaFrame);
     }
 }

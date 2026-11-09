@@ -8,6 +8,9 @@ namespace DrawnUi.Draw;
 /// </summary>
 public class ProgressTrail : SkiaShape
 {
+    /// <inheritdoc />
+    protected override bool ClipDependsOnlyOnShape => GetType() == typeof(ProgressTrail);
+
     public static readonly BindableProperty XPosProperty = BindableProperty.Create(
         nameof(XPos), typeof(double), typeof(ProgressTrail), 0.0);
 

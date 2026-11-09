@@ -37,6 +37,9 @@ namespace DrawnUi.Draw
         /// </summary>
         protected override SKRect CalculateClipSizeForStroke(SKRect destination, float scale) => destination;
 
+        /// <inheritdoc />
+        protected override bool ClipDependsOnlyOnShape => GetType() == typeof(SkiaEditor);
+
         /// <summary>
         /// Lay children out in the FULL padded area, never the stroke-inset one. The base insets the
         /// children rect by the stroke (see <see cref="SkiaShape.CalculateContentSizeForStroke"/>), which

@@ -4,6 +4,9 @@ namespace DrawnUi.Draw;
 
 public class SkiaCursor : SkiaShape
 {
+    /// <inheritdoc />
+    protected override bool ClipDependsOnlyOnShape => GetType() == typeof(SkiaCursor);
+
     private const long BlinkHalfPeriodNanos = 500_000_000L;
 
     private SkiaLabel _label;

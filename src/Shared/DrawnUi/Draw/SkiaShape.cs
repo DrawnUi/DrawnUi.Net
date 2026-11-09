@@ -526,13 +526,24 @@ namespace DrawnUi.Draw
                 && BottomLeft.Equals(other.BottomLeft) && BottomRight.Equals(other.BottomRight);
         }
 
+        /// <summary>
+        /// True when the clip this shape makes (<see cref="CreateClip"/>) depends only on its <see cref="Type"/>, its
+        /// stroke-aware sizes, <see cref="CornerRadius"/> and the rendering scale. Then a rectangle, circle or ellipse
+        /// keeps its clip path between paints while those stay the same, instead of making it again (in SkiaSharp 4 a
+        /// path changed after it was drawn makes a new path builder each time). A plain SkiaShape is; a subclass is not
+        /// unless it says so: return true from a class whose CreateClip, TryCreateBasicClip and CreateScaledRadii are
+        /// the library's, or follow only those inputs. Library subclasses return true for their own type only, so a
+        /// class derived from them that overrides the clip is never kept by mistake.
+        /// </summary>
+        protected virtual bool ClipDependsOnlyOnShape => GetType() == typeof(SkiaShape);
+
         ClipContentKey _clipContentMade;
         bool _clipContentKept;
 
         /// <summary>
         /// Makes <see cref="ClipContentPath"/>, the clip of this shape: <see cref="CreateClip"/> into an emptied path.
-        /// A plain SkiaShape or SkiaFrame (CreateClip not overridden) with a rectangle, circle or ellipse made from the
-        /// same sizes, corners and scale as the path holds keeps the path as it is: a path changed after it was drawn
+        /// A shape whose <see cref="ClipDependsOnlyOnShape"/> is true, a rectangle, circle or ellipse made from the
+        /// same sizes, corners and scale as the path holds, keeps the path as it is: a path changed after it was drawn
         /// makes SkiaSharp make a new path builder.
         /// </summary>
         void PrepareClipContentPath(object arguments)
@@ -543,7 +554,7 @@ namespace DrawnUi.Draw
                 _clipContentKept = false;
             }
 
-            var keep = (GetType() == typeof(SkiaShape) || GetType() == typeof(SkiaFrame))
+            var keep = ClipDependsOnlyOnShape
                        && Type is ShapeType.Rectangle or ShapeType.Circle or ShapeType.Ellipse;
             ClipContentKey key = default;
             if (keep)
