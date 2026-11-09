@@ -36,6 +36,9 @@ internal sealed unsafe class VulkanRenderer3D
         public IntPtr Device;
         public ulong Color, ColorMemory, ColorView, Depth, DepthMemory, DepthView, Framebuffer;
         public ulong ColorSize;
+        /// <summary>Smooth edges on: the multisampled color drawn into and resolved into Color; 0 when off.</summary>
+        public ulong MsaaColor, MsaaColorMemory, MsaaColorView;
+        public int Samples = 1;
     }
 
     sealed class GpuTexture
@@ -66,6 +69,13 @@ internal sealed unsafe class VulkanRenderer3D
     uint _depthFormat;
     ulong _renderPass, _setLayoutDraw, _setLayoutTexture, _pipelineLayout, _pool, _descriptorPool, _sampler;
     readonly ulong[] _pipelines = new ulong[6]; // cull (none, back, front) * 2 + blend
+    /// <summary>Smooth edges: the most samples per pixel (at most 4) the device offers for our color and depth; 1 = none.</summary>
+    uint _msaaSamples = 1;
+    /// <summary>The multisampled render pass and pipelines, made the first time a control turns smooth edges on.</summary>
+    ulong _renderPassMsaa;
+    readonly ulong[] _pipelinesMsaa = new ulong[6];
+    /// <summary>The pipelines of the frame being recorded.</summary>
+    ulong[] _drawPipelines;
     Slot[] _slots;
     int _nextSlot;
     GpuTexture _white;
@@ -116,7 +126,7 @@ internal sealed unsafe class VulkanRenderer3D
                 Init(view);
             if (_released.Count > 0)
                 DeleteReleased();
-            var t = EnsureTarget(gr, target, w, h);
+            var t = EnsureTarget(gr, target, w, h, style.Samples);
             Render(t, items, count, style, viewProj, w, h);
             return target.Image;
         }
@@ -169,9 +179,11 @@ internal sealed unsafe class VulkanRenderer3D
             }
         }
 
-        MakeRenderPass();
+        _renderPass = MakeRenderPass(1);
         MakeLayouts();
-        MakePipelines();
+        MakePipelines(_renderPass, 1, _pipelines);
+        _renderPassMsaa = 0;
+        _msaaSamples = MsaaSamples();
 
         var poolInfo = new CommandPoolCreateInfo { sType = STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO, flags = COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT, queueFamilyIndex = _family };
         fixed (ulong* p = &_pool)
@@ -203,6 +215,9 @@ internal sealed unsafe class VulkanRenderer3D
         for (var i = 0; i < _memoryTypes.Length; i++)
             if ((bits & (1u << i)) != 0 && (_memoryTypes[i] & flags) == flags)
                 return (uint)i;
+        // Lazily allocated memory is a saving where it exists (tile GPUs), not a need.
+        if ((flags & MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT) != 0)
+            return MemoryType(bits, flags & ~MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT);
         if ((flags & MEMORY_PROPERTY_DEVICE_LOCAL_BIT) != 0)
             return MemoryType(bits, flags & ~MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
         throw new InvalidOperationException("no memory type");
@@ -231,18 +246,34 @@ internal sealed unsafe class VulkanRenderer3D
         return buffer;
     }
 
-    (ulong image, ulong memory, ulong view) Image(uint w, uint h, uint levels, uint format, uint usage, uint aspect)
+    /// <summary>The most samples per pixel (4, 2 or 1) both our color and our depth format can be drawn with.</summary>
+    uint MsaaSamples()
+    {
+        ImageFormatProperties color, depth;
+        var usage = IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT;
+        if (vkGetPhysicalDeviceImageFormatProperties(_physical, FORMAT_R8G8B8A8_UNORM, IMAGE_TYPE_2D, IMAGE_TILING_OPTIMAL, IMAGE_USAGE_COLOR_ATTACHMENT_BIT | usage, 0, &color) != SUCCESS
+            || vkGetPhysicalDeviceImageFormatProperties(_physical, _depthFormat, IMAGE_TYPE_2D, IMAGE_TILING_OPTIMAL, IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | usage, 0, &depth) != SUCCESS)
+            return 1;
+        var both = color.sampleCounts & depth.sampleCounts;
+        return (both & 4) != 0 ? 4u : (both & 2) != 0 ? 2u : 1u;
+    }
+
+    /// <summary>
+    /// An image with its memory and view. <paramref name="samples"/> above 1: a multisampled attachment that lives only
+    /// during the render pass, in lazily allocated memory where the GPU has it (tile GPUs keep it on chip).
+    /// </summary>
+    (ulong image, ulong memory, ulong view) Image(uint w, uint h, uint levels, uint format, uint usage, uint aspect, uint samples = 1)
     {
         var info = new ImageCreateInfo
         {
             sType = STRUCTURE_TYPE_IMAGE_CREATE_INFO, imageType = 1, format = format, extent = new Extent3D { width = w, height = h, depth = 1 },
-            mipLevels = levels, arrayLayers = 1, samples = 1, usage = usage, initialLayout = IMAGE_LAYOUT_UNDEFINED,
+            mipLevels = levels, arrayLayers = 1, samples = samples, usage = usage, initialLayout = IMAGE_LAYOUT_UNDEFINED,
         };
         ulong image;
         Check(vkCreateImage(_device, &info, IntPtr.Zero, &image), "image");
         MemoryRequirements req;
         vkGetImageMemoryRequirements(_device, image, &req);
-        var memory = Allocate(req, MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+        var memory = Allocate(req, MEMORY_PROPERTY_DEVICE_LOCAL_BIT | (samples > 1 ? MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT : 0));
         Check(vkBindImageMemory(_device, image, memory, 0), "bind image");
         var vInfo = new ImageViewCreateInfo
         {
@@ -254,24 +285,41 @@ internal sealed unsafe class VulkanRenderer3D
         return (image, memory, view);
     }
 
-    void MakeRenderPass()
+    /// <summary>
+    /// The render pass: one sample, the color stored for Skia; or multisampled, the samples resolved into that color
+    /// at the end (attachments: multisampled color, depth, then the resolved color).
+    /// </summary>
+    ulong MakeRenderPass(uint samples)
     {
-        var attachments = stackalloc AttachmentDescription[2];
+        var msaa = samples > 1;
+        var attachments = stackalloc AttachmentDescription[3];
         attachments[0] = new AttachmentDescription
         {
-            format = FORMAT_R8G8B8A8_UNORM, samples = 1, loadOp = ATTACHMENT_LOAD_OP_CLEAR, storeOp = ATTACHMENT_STORE_OP_STORE,
+            format = FORMAT_R8G8B8A8_UNORM, samples = samples, loadOp = ATTACHMENT_LOAD_OP_CLEAR,
+            storeOp = msaa ? ATTACHMENT_STORE_OP_DONT_CARE : ATTACHMENT_STORE_OP_STORE,
             stencilLoadOp = ATTACHMENT_LOAD_OP_DONT_CARE, stencilStoreOp = ATTACHMENT_STORE_OP_DONT_CARE,
-            initialLayout = IMAGE_LAYOUT_UNDEFINED, finalLayout = IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+            initialLayout = IMAGE_LAYOUT_UNDEFINED, finalLayout = msaa ? IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL : IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
         };
         attachments[1] = new AttachmentDescription
         {
-            format = _depthFormat, samples = 1, loadOp = ATTACHMENT_LOAD_OP_CLEAR, storeOp = ATTACHMENT_STORE_OP_DONT_CARE,
+            format = _depthFormat, samples = samples, loadOp = ATTACHMENT_LOAD_OP_CLEAR, storeOp = ATTACHMENT_STORE_OP_DONT_CARE,
             stencilLoadOp = ATTACHMENT_LOAD_OP_DONT_CARE, stencilStoreOp = ATTACHMENT_STORE_OP_DONT_CARE,
             initialLayout = IMAGE_LAYOUT_UNDEFINED, finalLayout = IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
         };
+        attachments[2] = new AttachmentDescription
+        {
+            format = FORMAT_R8G8B8A8_UNORM, samples = 1, loadOp = ATTACHMENT_LOAD_OP_DONT_CARE, storeOp = ATTACHMENT_STORE_OP_STORE,
+            stencilLoadOp = ATTACHMENT_LOAD_OP_DONT_CARE, stencilStoreOp = ATTACHMENT_STORE_OP_DONT_CARE,
+            initialLayout = IMAGE_LAYOUT_UNDEFINED, finalLayout = IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+        };
         var color = new AttachmentReference { attachment = 0, layout = IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL };
         var depth = new AttachmentReference { attachment = 1, layout = IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL };
-        var subpass = new SubpassDescription { pipelineBindPoint = PIPELINE_BIND_POINT_GRAPHICS, colorAttachmentCount = 1, pColorAttachments = &color, pDepthStencilAttachment = &depth };
+        var resolve = new AttachmentReference { attachment = 2, layout = IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL };
+        var subpass = new SubpassDescription
+        {
+            pipelineBindPoint = PIPELINE_BIND_POINT_GRAPHICS, colorAttachmentCount = 1, pColorAttachments = &color, pDepthStencilAttachment = &depth,
+            pResolveAttachments = msaa ? &resolve : null,
+        };
         var deps = stackalloc SubpassDependency[2];
         // Before: Skia's reads of the last frame and our last depth writes are done.
         deps[0] = new SubpassDependency
@@ -291,11 +339,12 @@ internal sealed unsafe class VulkanRenderer3D
         };
         var info = new RenderPassCreateInfo
         {
-            sType = STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO, attachmentCount = 2, pAttachments = attachments, subpassCount = 1, pSubpasses = &subpass,
+            sType = STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO, attachmentCount = msaa ? 3u : 2u, pAttachments = attachments, subpassCount = 1, pSubpasses = &subpass,
             dependencyCount = 2, pDependencies = deps,
         };
-        fixed (ulong* p = &_renderPass)
-            Check(vkCreateRenderPass(_device, &info, IntPtr.Zero, p), "render pass");
+        ulong pass;
+        Check(vkCreateRenderPass(_device, &info, IntPtr.Zero, &pass), "render pass");
+        return pass;
     }
 
     void MakeLayouts()
@@ -331,7 +380,8 @@ internal sealed unsafe class VulkanRenderer3D
         }
     }
 
-    void MakePipelines()
+    /// <summary>The six pipelines (cull none / back / front, blend off / on) of a render pass and sample count.</summary>
+    void MakePipelines(ulong renderPass, uint samples, ulong[] into)
     {
         var vs = ShaderModule("model.vert.spv");
         var fs = ShaderModule("model.frag.spv");
@@ -360,7 +410,7 @@ internal sealed unsafe class VulkanRenderer3D
         };
         var assembly = new PipelineInputAssemblyStateCreateInfo { sType = STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO, topology = PRIMITIVE_TOPOLOGY_TRIANGLE_LIST };
         var viewport = new PipelineViewportStateCreateInfo { sType = STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO, viewportCount = 1, scissorCount = 1 };
-        var multisample = new PipelineMultisampleStateCreateInfo { sType = STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO, rasterizationSamples = 1 };
+        var multisample = new PipelineMultisampleStateCreateInfo { sType = STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO, rasterizationSamples = samples };
         var dynamic = stackalloc uint[] { DYNAMIC_STATE_VIEWPORT, DYNAMIC_STATE_SCISSOR };
         var dynamicState = new PipelineDynamicStateCreateInfo { sType = STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO, dynamicStateCount = 2, pDynamicStates = dynamic };
 
@@ -391,9 +441,9 @@ internal sealed unsafe class VulkanRenderer3D
                 sType = STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO, stageCount = 2, pStages = stages, pVertexInputState = &vertexInput,
                 pInputAssemblyState = &assembly, pViewportState = &viewport, pRasterizationState = &raster, pMultisampleState = &multisample,
                 pDepthStencilState = &depth, pColorBlendState = &colorBlend, pDynamicState = &dynamicState, layout = _pipelineLayout,
-                renderPass = _renderPass, basePipelineIndex = -1,
+                renderPass = renderPass, basePipelineIndex = -1,
             };
-            fixed (ulong* p = &_pipelines[cull * 2 + blend])
+            fixed (ulong* p = &into[cull * 2 + blend])
                 Check(vkCreateGraphicsPipelines(_device, 0, 1, &info, IntPtr.Zero, p), "pipeline");
         }
     }
@@ -573,8 +623,9 @@ internal sealed unsafe class VulkanRenderer3D
 
     #region Frames
 
-    VkTarget EnsureTarget(GRContext gr, RenderTarget target, int w, int h)
+    VkTarget EnsureTarget(GRContext gr, RenderTarget target, int w, int h, int samplesWanted)
     {
+        var samples = samplesWanted > 1 ? (int)_msaaSamples : 1;
         var t = target.Native as VkTarget;
         if (t != null && t.Owner != this)
         {
@@ -582,13 +633,13 @@ internal sealed unsafe class VulkanRenderer3D
             Release(target);
             t = null;
         }
-        if (t != null && t.Device == _device && target.Width == w && target.Height == h && target.Image != null)
+        if (t != null && t.Device == _device && target.Width == w && target.Height == h && t.Samples == samples && target.Image != null)
             return t;
         target.Image?.Dispose();
         target.Image = null;
         if (t != null && t.Device == _device)
         {
-            // A resize: the GPU may still read the old images.
+            // A resize, or smooth edges switched: the GPU may still read the old images.
             vkQueueWaitIdle(_queue);
             Destroy(t);
         }
@@ -600,12 +651,34 @@ internal sealed unsafe class VulkanRenderer3D
         MemoryRequirements req;
         vkGetImageMemoryRequirements(_device, t.Color, &req);
         t.ColorSize = req.size;
-        (t.Depth, t.DepthMemory, t.DepthView) = Image((uint)w, (uint)h, 1, _depthFormat, IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, IMAGE_ASPECT_DEPTH_BIT);
-        var views = stackalloc ulong[] { t.ColorView, t.DepthView };
+        t.Samples = samples;
+        var msaa = samples > 1;
+        if (msaa && _renderPassMsaa == 0)
+        {
+            _renderPassMsaa = MakeRenderPass(_msaaSamples);
+            MakePipelines(_renderPassMsaa, _msaaSamples, _pipelinesMsaa);
+        }
+        (t.Depth, t.DepthMemory, t.DepthView) = Image((uint)w, (uint)h, 1, _depthFormat,
+            IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT | (msaa ? IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT : 0), IMAGE_ASPECT_DEPTH_BIT, (uint)samples);
+        if (msaa)
+            (t.MsaaColor, t.MsaaColorMemory, t.MsaaColorView) = Image((uint)w, (uint)h, 1, FORMAT_R8G8B8A8_UNORM,
+                IMAGE_USAGE_COLOR_ATTACHMENT_BIT | IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT, IMAGE_ASPECT_COLOR_BIT, (uint)samples);
+        var views = stackalloc ulong[3];
+        if (msaa)
+        {
+            views[0] = t.MsaaColorView;
+            views[1] = t.DepthView;
+            views[2] = t.ColorView;
+        }
+        else
+        {
+            views[0] = t.ColorView;
+            views[1] = t.DepthView;
+        }
         var info = new FramebufferCreateInfo
         {
-            sType = STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO, renderPass = _renderPass, attachmentCount = 2, pAttachments = views,
-            width = (uint)w, height = (uint)h, layers = 1,
+            sType = STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO, renderPass = msaa ? _renderPassMsaa : _renderPass, attachmentCount = msaa ? 3u : 2u,
+            pAttachments = views, width = (uint)w, height = (uint)h, layers = 1,
         };
         ulong framebuffer;
         Check(vkCreateFramebuffer(_device, &info, IntPtr.Zero, &framebuffer), "framebuffer");
@@ -642,6 +715,12 @@ internal sealed unsafe class VulkanRenderer3D
         vkDestroyImageView(_device, t.DepthView, IntPtr.Zero);
         vkDestroyImage(_device, t.Depth, IntPtr.Zero);
         vkFreeMemory(_device, t.DepthMemory, IntPtr.Zero);
+        if (t.MsaaColor != 0)
+        {
+            vkDestroyImageView(_device, t.MsaaColorView, IntPtr.Zero);
+            vkDestroyImage(_device, t.MsaaColor, IntPtr.Zero);
+            vkFreeMemory(_device, t.MsaaColorMemory, IntPtr.Zero);
+        }
     }
 
     void DeleteReleased()
@@ -776,13 +855,16 @@ internal sealed unsafe class VulkanRenderer3D
         EnsureUniforms(slot, UniformBytes(items, count, 3 - firstPass));
         var cb = slot.Commands;
 
-        var clears = stackalloc ClearValue[2];
+        var msaa = t.Samples > 1;
+        _drawPipelines = msaa ? _pipelinesMsaa : _pipelines;
+        var clears = stackalloc ClearValue[3];
         clears[0] = default;
         clears[1] = new ClearValue { r = 1 };
+        clears[2] = default;
         var begin = new RenderPassBeginInfo
         {
-            sType = STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO, renderPass = _renderPass, framebuffer = t.Framebuffer,
-            width = (uint)w, height = (uint)h, clearValueCount = 2, pClearValues = clears,
+            sType = STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO, renderPass = msaa ? _renderPassMsaa : _renderPass, framebuffer = t.Framebuffer,
+            width = (uint)w, height = (uint)h, clearValueCount = msaa ? 3u : 2u, pClearValues = clears,
         };
         vkCmdBeginRenderPass(cb, &begin, SUBPASS_CONTENTS_INLINE);
         var vp = new Viewport { width = w, height = h, maxDepth = 1 };
@@ -870,7 +952,7 @@ internal sealed unsafe class VulkanRenderer3D
                 var want = cull * 2 + (blendPass ? 1 : 0);
                 if (pipeline != want)
                 {
-                    vkCmdBindPipeline(cb, PIPELINE_BIND_POINT_GRAPHICS, _pipelines[want]);
+                    vkCmdBindPipeline(cb, PIPELINE_BIND_POINT_GRAPHICS, _drawPipelines[want]);
                     pipeline = want;
                 }
                 dynamicOffsets[0] = drawOffset;

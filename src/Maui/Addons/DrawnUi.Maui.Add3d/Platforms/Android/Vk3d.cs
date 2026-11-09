@@ -59,6 +59,8 @@ internal static unsafe class Vk3d
     public const uint IMAGE_USAGE_SAMPLED_BIT = 0x4;
     public const uint IMAGE_USAGE_COLOR_ATTACHMENT_BIT = 0x10;
     public const uint IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT = 0x20;
+    public const uint IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT = 0x40;
+    public const uint IMAGE_TYPE_2D = 1, IMAGE_TILING_OPTIMAL = 0;
 
     public const uint BUFFER_USAGE_TRANSFER_SRC_BIT = 0x1;
     public const uint BUFFER_USAGE_UNIFORM_BUFFER_BIT = 0x10;
@@ -68,6 +70,7 @@ internal static unsafe class Vk3d
     public const uint MEMORY_PROPERTY_DEVICE_LOCAL_BIT = 0x1;
     public const uint MEMORY_PROPERTY_HOST_VISIBLE_BIT = 0x2;
     public const uint MEMORY_PROPERTY_HOST_COHERENT_BIT = 0x4;
+    public const uint MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT = 0x10;
 
     public const uint IMAGE_LAYOUT_UNDEFINED = 0;
     public const uint IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL = 2;
@@ -127,6 +130,9 @@ internal static unsafe class Vk3d
 
     [StructLayout(LayoutKind.Sequential)]
     public struct MemoryRequirements { public ulong size, alignment; public uint memoryTypeBits; }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ImageFormatProperties { public Extent3D maxExtent; public uint maxMipLevels, maxArrayLayers, sampleCounts; public ulong maxResourceSize; }
 
     [StructLayout(LayoutKind.Sequential)]
     public struct FormatProperties { public uint linearTilingFeatures, optimalTilingFeatures, bufferFeatures; }
@@ -386,6 +392,7 @@ internal static unsafe class Vk3d
     [DllImport(Lib)] public static extern void vkGetPhysicalDeviceMemoryProperties(IntPtr physicalDevice, byte* properties);
     [DllImport(Lib)] public static extern void vkGetPhysicalDeviceFormatProperties(IntPtr physicalDevice, uint format, FormatProperties* properties);
     [DllImport(Lib)] public static extern int vkDeviceWaitIdle(IntPtr device);
+    [DllImport(Lib)] public static extern int vkGetPhysicalDeviceImageFormatProperties(IntPtr physicalDevice, uint format, uint type, uint tiling, uint usage, uint flags, ImageFormatProperties* properties);
     [DllImport(Lib)] public static extern int vkQueueWaitIdle(IntPtr queue);
 
     [DllImport(Lib)] public static extern int vkAllocateMemory(IntPtr device, MemoryAllocateInfo* info, IntPtr allocator, ulong* memory);
