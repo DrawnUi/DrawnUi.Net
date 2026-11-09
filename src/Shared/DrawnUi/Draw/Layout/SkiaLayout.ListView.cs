@@ -1590,6 +1590,8 @@ public partial class SkiaLayout
     private List<MeasuredItemInfo> MeasureBatchInBackground(SKRect constraints, float scale, int startIndex, int count,
         BackgroundBatchCursor cursor, CancellationToken cancellationToken)
     {
+        BeforeMeasureBatch?.Invoke(startIndex);
+
         var measuredBatch = new List<MeasuredItemInfo>();
 
         SkiaControl template = null;
@@ -1748,6 +1750,11 @@ public partial class SkiaLayout
     /// is written. Lets a test run a frame at that exact moment.
     /// </summary>
     internal Action<int> BeforeIntegrateBatch;
+
+    /// <summary>
+    /// Harness tests only: called on the measuring thread with the first index of a batch, before it is measured.
+    /// </summary>
+    internal Action<int> BeforeMeasureBatch;
 
     private void IntegrateMeasuredBatch(List<MeasuredItemInfo> measuredBatch, float scale,
         BackgroundMeasurementContext context = null,

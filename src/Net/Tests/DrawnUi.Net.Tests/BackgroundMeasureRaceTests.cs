@@ -19,7 +19,8 @@ public class BackgroundMeasureRaceTests
     private sealed class Item
     {
         public int Index;
-        public float Width;
+        public float Width = -1;
+        public float Height = 100;
     }
 
     private sealed class Cell : SkiaShape
@@ -34,7 +35,10 @@ public class BackgroundMeasureRaceTests
         {
             base.OnBindingContextChanged();
             if (BindingContext is Item item)
+            {
                 WidthRequest = item.Width;
+                HeightRequest = item.Height;
+            }
         }
     }
 
@@ -191,6 +195,91 @@ public class BackgroundMeasureRaceTests
                 var cell = structure.GetForIndex(item.Index);
                 Assert.True(Math.Abs(cell.Destination.Left - left) < 1, $"#{item.Index} at {cell.Destination.Left}, expected {left}");
                 left += item.Width;
+            }
+        }
+    }
+
+    /// <summary>
+    /// A Split grid measured in batches that end mid-row: a frame appends one batch to the structure while the next
+    /// batch starts. That batch used to take its start from the structure before the append and the height of the row
+    /// it continues after it, and placed the next rows lower by the whole grid above (item 24 of a 3-column grid at
+    /// 2038 instead of 1088).
+    /// </summary>
+    [Fact]
+    public void SplitGrid_FrameAppendsABatchWhileTheNextStarts_RowsStayInPlace()
+    {
+        const int split = 3;
+        // rows of different heights, so a misplaced row shows
+        var items = Enumerable.Range(0, 297)
+            .Select(i => new Item { Index = i, Width = 100, Height = 40 + (i / split % 5) * 10 }).ToList();
+        var host = new HeadlessCanvasHost(400, 600, scale: 1f, background: Colors.Black);
+        SkiaLayout grid = null;
+        host.Canvas.Content = new SkiaScroll
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaLayout
+            {
+                Type = LayoutType.Column,
+                Split = split,
+                Spacing = 0,
+                HorizontalOptions = LayoutOptions.Fill,
+                MeasureItemsStrategy = MeasuringStrategy.MeasureVisible,
+                BackgroundMeasurementBatchSize = 5, // batches covering a row and ending in the next
+                ItemsSource = items,
+                ItemTemplate = new DataTemplate(() => new Cell()),
+            }.Assign(out grid)
+        };
+        using (host)
+        {
+            // batch k (ends mid-row) is written while no frame runs; the next batch starts, and only then does a
+            // frame append batch k to the structure
+            using var pauseFrames = new ManualResetEventSlim();
+            using var framesPaused = new ManualResetEventSlim();
+            using var appendNow = new ManualResetEventSlim();
+            using var appended = new ManualResetEventSlim();
+            var chosen = -1;
+            SetHook(grid, "BeforeIntegrateBatch", start =>
+            {
+                if (chosen < 0 && start >= 30 && (start + 5) % split != 0)
+                {
+                    chosen = start;
+                    pauseFrames.Set();
+                    framesPaused.Wait(5000);
+                }
+            });
+            SetHook(grid, "BeforeMeasureBatch", start =>
+            {
+                if (chosen >= 0 && start == chosen + 5 && !appendNow.IsSet)
+                {
+                    appendNow.Set();
+                    appended.Wait(5000);
+                }
+            });
+
+            var wait = Stopwatch.StartNew();
+            while (!pauseFrames.IsSet && wait.ElapsedMilliseconds < 5000)
+                host.RenderFrame(16);
+            Assert.True(pauseFrames.IsSet, "background measurement never reached item 30");
+            framesPaused.Set();
+            Assert.True(appendNow.Wait(5000), "the next batch never started");
+            host.RenderFrame(16);
+            appended.Set();
+
+            RunUntilMeasured(host, grid, items.Count);
+
+            var structure = grid.GetStackStructure();
+            Assert.Equal(items.Count, structure.GetCount());
+            float top = structure.GetForIndex(0).Destination.Top;
+            for (var r = 0; r * split < items.Count; r++)
+            {
+                for (var c = 0; c < split; c++)
+                {
+                    var cell = structure.GetForIndex(r * split + c);
+                    Assert.True(Math.Abs(cell.Destination.Top - top) < 1,
+                        $"#{r * split + c}: top {cell.Destination.Top}, row {r} is at {top}");
+                }
+                top += items[r * split].Height;
             }
         }
     }
