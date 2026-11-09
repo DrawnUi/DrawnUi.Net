@@ -7785,6 +7785,12 @@ namespace DrawnUi.Draw
         private bool _paintWithOpacityIsAntialias;
         private bool _paintWithOpacityIsDither;
         SKPath _preparedClipBounds = null;
+
+        /// <summary>
+        /// The rect <see cref="_preparedClipBounds"/> holds when the plain rect clip made it, else null. The same rect
+        /// again leaves the path as it is: a path changed makes SkiaSharp make a new path builder for it.
+        /// </summary>
+        SKRect? _preparedClipRect;
         private IAnimatorsManager _lastAnimatorManager;
         private Func<List<SkiaControl>> _createChildren;
 
@@ -7824,15 +7830,22 @@ namespace DrawnUi.Draw
 
             if (isClipping)
             {
-                _preparedClipBounds ??= new SKPath();
-                _preparedClipBounds.Reset();
+                if (_preparedClipBounds == null)
+                {
+                    _preparedClipBounds = new SKPath();
+                    _preparedClipRect = null;
+                }
 
                 if (HasPlatformClip())
                 {
+                    _preparedClipRect = null;
+                    _preparedClipBounds.Reset();
                     GetPlatformClip(_preparedClipBounds, ctx.Destination, RenderingScale);
                 }
                 else if (ClipWith != null)
                 {
+                    _preparedClipRect = null;
+                    _preparedClipBounds.Reset();
                     ClipWith.CreateClip(null, true, _preparedClipBounds);
                 }
                 else
@@ -7850,8 +7863,13 @@ namespace DrawnUi.Draw
                             clipRect.Bottom + (float)Math.Round(expand.Bottom));
                     }
 
-                    _preparedClipBounds.AddRect(clipRect);
-                    Clipping?.Invoke(_preparedClipBounds, ctx.Destination);
+                    if (Clipping != null || _preparedClipRect != clipRect)
+                    {
+                        _preparedClipBounds.Reset();
+                        _preparedClipBounds.AddRect(clipRect);
+                        Clipping?.Invoke(_preparedClipBounds, ctx.Destination);
+                        _preparedClipRect = Clipping == null ? clipRect : null;
+                    }
                 }
             }
 
