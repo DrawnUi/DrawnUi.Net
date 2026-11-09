@@ -133,6 +133,9 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
     static IMTLTexture _white;
     static bool _failed;
     static ConditionalWeakTable<Scene3D, GpuModel> _models = new();
+    // ponytail: like models, the texture of an image that is gone is freed only with the device.
+    /// <summary>Images put on materials from code (Texture3D), by their pixels: uploaded once per device.</summary>
+    static ConditionalWeakTable<Image3D, IMTLTexture> _images = new();
     static readonly Matrix4x4[] _joints = new Matrix4x4[MaxJoints];
     static readonly Vector3 Light = Vector3.Normalize(new Vector3(0.4f, 0.8f, 0.6f));
 
@@ -177,6 +180,7 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
         _device = device.Handle;
         _mtlDevice = device;
         _models = new ConditionalWeakTable<Scene3D, GpuModel>();
+        _images = new ConditionalWeakTable<Image3D, IMTLTexture>();
 
         using var library = device.CreateLibrary(Source, new MTLCompileOptions(), out var error);
         if (library == null)
@@ -317,6 +321,17 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
         return model;
     }
 
+    /// <summary>The texture of an image put on a material, uploaded the first time it is drawn.</summary>
+    static IMTLTexture ImageTexture(Image3D image, IMTLCommandQueue queue)
+    {
+        if (!_images.TryGetValue(image, out var texture))
+        {
+            texture = UploadTexture(image, queue);
+            _images.AddOrUpdate(image, texture);
+        }
+        return texture;
+    }
+
     static GpuModel Model(Scene3D scene, IMTLCommandQueue queue)
     {
         if (!_models.TryGetValue(scene, out var model))
@@ -367,9 +382,14 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
 
     static void Render(IMTLCommandQueue queue, MtlTarget t, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h)
     {
-        // Models first: an upload may commit its own command buffer (mipmaps).
+        // Models and images first: an upload may commit its own command buffer (mipmaps).
         for (var o = 0; o < count; o++)
+        {
             Model(items[o].Scene, queue);
+            foreach (var m in items[o].Materials)
+                if (m.Image != null)
+                    ImageTexture(m.Image.Pixels, queue);
+        }
 
         // ponytail: the command buffer and encoder are new ObjC wrappers each frame (Metal has no reusable ones).
         using var cb = queue.CommandBuffer();
@@ -446,7 +466,9 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
                         encoder.SetVertexBytes((IntPtr)j, (nuint)(n * sizeof(Matrix4x4)), 7);
                 }
                 block.Color = changed.HasColor ? changed.Color : material?.Color ?? new Vector4(0.8f, 0.8f, 0.8f, 1);
-                var texture = material != null && material.Texture >= 0 && material.Texture < gpu.Textures.Length ? gpu.Textures[material.Texture] : null;
+                // An image put on the material from code, else the file's own.
+                var texture = changed.Image != null ? ImageTexture(changed.Image.Pixels, queue)
+                    : material != null && material.Texture >= 0 && material.Texture < gpu.Textures.Length ? gpu.Textures[material.Texture] : null;
                 block.Textured = texture != null ? 1 : 0;
                 block.Skinned = skinned && p.Joints.Length > 0 ? 1 : 0;
                 var b = block;
