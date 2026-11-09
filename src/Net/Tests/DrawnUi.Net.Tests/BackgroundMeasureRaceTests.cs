@@ -136,6 +136,65 @@ public class BackgroundMeasureRaceTests
         }
     }
 
+    private static void SetHook(SkiaLayout layout, string name, Action<int> hook) =>
+        typeof(SkiaLayout).GetField(name, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
+            .SetValue(layout, hook);
+
+    private static long MeasureStamp(SkiaLayout layout) => (long)typeof(SkiaLayout)
+        .GetField("MeasureStamp", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
+        .GetValue(layout)!;
+
+    /// <summary>
+    /// The layout is measured again (a new size, an invalidation) while a background batch is about to be written: the
+    /// new measure throws the old measurements away and cancels the pass. The batch, measured for the old layout, used
+    /// to be written anyway: into the measured items the new pass then skipped, or appended to the new structure.
+    /// </summary>
+    [Fact]
+    public void MeasuredAgainWhileABatchIsWritten_TheOldBatchIsDropped_EveryItemInPlace()
+    {
+        var items = Items(300);
+        var (host, row) = Scene(items, 10);
+        using (host)
+        {
+            using var atBatch = new ManualResetEventSlim();
+            using var resume = new ManualResetEventSlim();
+            var once = 0;
+            SetHook(row, "BeforeIntegrateBatch", start =>
+            {
+                if (start >= 100 && Interlocked.Exchange(ref once, 1) == 0)
+                {
+                    atBatch.Set();
+                    resume.Wait(5000);
+                }
+            });
+
+            var wait = Stopwatch.StartNew();
+            while (!atBatch.IsSet && wait.ElapsedMilliseconds < 5000)
+                host.RenderFrame(16);
+            Assert.True(atBatch.IsSet, "background measurement never reached item 100");
+
+            // measured again right now, on the frame thread
+            var stamp = MeasureStamp(row);
+            row.Invalidate();
+            host.RenderFrame(16);
+            Assert.True(MeasureStamp(row) > stamp, "the layout was not measured again");
+            resume.Set();
+
+            RunUntilMeasured(host, row, items.Count);
+
+            var structure = row.GetStackStructure();
+            Assert.Equal(items.Count, structure.GetCount());
+            Assert.Equal(items.Count - 1, row.LastMeasuredIndex);
+            float left = structure.GetForIndex(0).Destination.Left;
+            foreach (var item in items)
+            {
+                var cell = structure.GetForIndex(item.Index);
+                Assert.True(Math.Abs(cell.Destination.Left - left) < 1, $"#{item.Index} at {cell.Destination.Left}, expected {left}");
+                left += item.Width;
+            }
+        }
+    }
+
     /// <summary>A cell whose measure throws once, off the test thread, for one item.</summary>
     private sealed class FailingCell : SkiaShape
     {
