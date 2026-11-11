@@ -15,6 +15,13 @@ public class TextLine
     public float Width { get; set; }
     public float Height { get; set; }
 
+    /// <summary>
+    /// Largest ascent and descent (positive, pixels) of the fonts on this line, the label's own font included: they
+    /// share the line's baseline, which sits at the line's bottom minus <see cref="Descent"/>.
+    /// </summary>
+    public float Ascent { get; set; }
+    public float Descent { get; set; }
+
     //public LineGlyph[] Glyphs { get; set; }
 
     //public List<ApplySpan> ApplySpans { get; set; }
