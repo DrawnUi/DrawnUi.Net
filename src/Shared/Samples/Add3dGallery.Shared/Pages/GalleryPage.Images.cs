@@ -1,11 +1,11 @@
 namespace Add3dGallery;
 
-/// <summary>Images on 3D: a product box with its label and a ball with three skins, every image drawn in code with Skia.</summary>
+/// <summary>Images on 3D: a product box with its label, every image drawn in code with Skia.</summary>
 public partial class GalleryPage
 {
-    SkiaModel3D _product, _ball;
-    Texture3D[] _labels, _skins;
-    int _label, _skin;
+    SkiaModel3D _product;
+    Texture3D[] _labels;
+    int _label;
 
     /// <summary>An image drawn with Skia, ready to put on a 3D surface.</summary>
     static Texture3D Painted(int width, int height, Action<SKCanvas, float, float> draw)
@@ -50,53 +50,8 @@ public partial class GalleryPage
         Label("SUN", new SKColor(255, 214, 10), new SKColor(253, 126, 20), new SKColor(255, 159, 28)),
     };
 
-    /// <summary>Skins for a sphere: the image wraps once around (left to right) from the top pole to the bottom one.</summary>
-    static Texture3D[] Skins() => new[]
-    {
-        // A beach ball.
-        Painted(1024, 512, (c, w, h) =>
-        {
-            var colors = new[] { new SKColor(255, 77, 109), SKColors.White, new SKColor(255, 196, 61), SKColors.White, new SKColor(92, 140, 255), SKColors.White };
-            for (var i = 0; i < colors.Length; i++)
-                using (var paint = Fill(colors[i]))
-                    c.DrawRect(i * w / 6, 0, w / 6, h, paint);
-            using var white = Fill(SKColors.White);
-            c.DrawRect(0, 0, w, 46, white);
-            c.DrawRect(0, h - 46, w, 46, white);
-        }),
-        // A planet's bands and its storm.
-        Painted(1024, 512, (c, w, h) =>
-        {
-            var tones = new[] { new SKColor(232, 196, 150), new SKColor(196, 140, 92), new SKColor(244, 222, 186), new SKColor(170, 112, 74) };
-            var y = 0f;
-            for (var i = 0; y < h; i++)
-            {
-                var band = 18 + 22 * (MathF.Sin(i * 1.7f) * 0.5f + 0.5f);
-                using (var paint = Fill(tones[i % tones.Length]))
-                    c.DrawRect(0, y, w, band + 1, paint);
-                y += band;
-            }
-            using (var paint = Fill(new SKColor(200, 84, 60)))
-                c.DrawOval(SKRect.Create(620, 300, 150, 70), paint);
-            using (var paint = Fill(new SKColor(226, 120, 84)))
-                c.DrawOval(SKRect.Create(640, 312, 110, 46), paint);
-        }),
-        // Dots.
-        Painted(1024, 512, (c, w, h) =>
-        {
-            using (var paint = Fill(new SKColor(30, 41, 90)))
-                c.DrawRect(0, 0, w, h, paint);
-            using var dot = Fill(new SKColor(255, 196, 61));
-            for (var row = 0; row < 8; row++)
-            for (var col = 0; col < 16; col++)
-                c.DrawCircle((col + (row % 2 == 0 ? 0.25f : 0.75f)) * w / 16, (row + 0.5f) * h / 8, 13, dot);
-        }),
-    };
-
-    /// <summary>A white box and a white ball: the images show as they are.</summary>
+    /// <summary>A white box: the label shows as it is.</summary>
     static Model3D ProductBox() => new Model3D().Part("box", Mesh3D.Cuboid(1, 1, 1), Colors.White);
-
-    static Model3D Ball() => new Model3D().Part("ball", Mesh3D.Sphere(1), Colors.White);
 
     /// <summary>The next image of a list on a material.</summary>
     static void NextImage(SkiaModel3D model, string material, Texture3D[] images, ref int index)
@@ -105,11 +60,10 @@ public partial class GalleryPage
         model.SetMaterialImage(material, images[index]);
     }
 
-    /// <summary>The section's two tiles.</summary>
+    /// <summary>The section's tile.</summary>
     SkiaControl ImagesSection()
     {
-        _labels = Labels();
-        _skins = Skins();
+        _labels ??= Labels();
         return new SkiaWrap
         {
             Spacing = 16,
@@ -139,13 +93,6 @@ public partial class GalleryPage
                                 }),
                         }
                     }),
-                Tile("Ball", "One sphere, three skins: a beach ball, a planet, dots.",
-                    Shaded(Ball(), 0, 16)
-                        .Adapt(me => me.AutoRotate = 60)
-                        .MaterialImage("ball", _skins[0])
-                        .Assign(out _ball)
-                        .OnTapped3D((me, _) => NextImage(me, "ball", _skins, ref _skin)),
-                    new UiButton("Next skin", Theme.Accent).OnTapped(_ => NextImage(_ball, "ball", _skins, ref _skin))),
             }
         };
     }

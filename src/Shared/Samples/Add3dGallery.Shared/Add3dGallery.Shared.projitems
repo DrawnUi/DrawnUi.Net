@@ -12,14 +12,20 @@
     <Compile Include="$(MSBuildThisFileDirectory)GalleryRoot.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\BossPage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.Card.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.Form.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.Globe.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.List.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.Viewer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.Images.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.Loop.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.Shapes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\PerfProbe.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\Theme.cs" />
   </ItemGroup>
-  <!-- The models (CC0, Assets/MODELS-LICENSE.txt) ship inside the app, read once at startup. -->
+  <!-- The models and the Earth map (CC0 / public domain, Assets/MODELS-LICENSE.txt) ship inside the app, read once at startup. -->
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)Assets\*.glb" LogicalName="%(Filename)%(Extension)" />
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Assets\*.jpg" LogicalName="%(Filename)%(Extension)" />
   </ItemGroup>
 </Project>

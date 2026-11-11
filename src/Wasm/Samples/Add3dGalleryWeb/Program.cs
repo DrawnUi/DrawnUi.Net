@@ -24,9 +24,9 @@ public static partial class Program
         .RunAsync("drawnui-canvas", () =>
         {
             var root = new GalleryRoot("The Add3d add-on for the web");
-            if (JSHost.GlobalThis.GetPropertyAsJSObject("location").GetPropertyAsString("search")
-                ?.Contains("perf", StringComparison.OrdinalIgnoreCase) == true)
-                PerfProbe.Start(root.Gallery);
+            var query = JSHost.GlobalThis.GetPropertyAsJSObject("location").GetPropertyAsString("search") ?? "";
+            if (query.Contains("perf", StringComparison.OrdinalIgnoreCase))
+                PerfProbe.Start(root.Gallery, query);
             return new Canvas
             {
                 BackgroundColor = Theme.Page,

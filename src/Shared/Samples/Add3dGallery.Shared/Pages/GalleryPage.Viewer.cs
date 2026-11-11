@@ -1,0 +1,440 @@
+using System.Numerics;
+
+namespace Add3dGallery;
+
+/// <summary>
+/// The product viewer: an office chair from a .glb, shipped in the app or loaded from a link (with a placeholder while
+/// it loads and an error card when it cannot), turned by dragging, zoomed by pinch or wheel, reset by a double tap;
+/// dots anchored to points of the model open a note on that part; swatches recolor its fabric.
+/// </summary>
+public partial class GalleryPage
+{
+    const float ViewerWidth = 620, ViewerHeight = 420, PinSize = 26, NoteWidth = 210;
+
+    /// <summary>Where the model comes from.</summary>
+    enum Source
+    {
+        /// <summary>The .glb shipped inside the app.</summary>
+        App,
+        /// <summary>The same model at its address on the web.</summary>
+        Link,
+        /// <summary>An address with nothing behind it: the error card.</summary>
+        Broken,
+    }
+
+    static readonly (Source Source, string Caption)[] Sources =
+    {
+        (Source.App, "In the app"),
+        (Source.Link, "From a link"),
+        (Source.Broken, "Broken link"),
+    };
+
+    /// <summary>Parts of the chair worth a note: name, note and the point in the model's own units.</summary>
+    static readonly (string Name, string Note, Vector3 At)[] Hotspots =
+    {
+        ("Backrest", "A curved back that follows your spine.", new Vector3(0, 0.9f, -0.22f)),
+        ("Seat", "Deep foam, 48 cm wide.", new Vector3(0, 0.495f, 0.1f)),
+        ("Armrest", "Padded, at elbow height.", new Vector3(0.355f, 0.6f, 0)),
+    };
+
+    /// <summary>The fabric colors; null = the file's own navy.</summary>
+    static readonly (string Name, Color Color, Color Shown)[] Fabrics =
+    {
+        ("Navy", null, Color.FromRgb(58, 106, 157)),
+        ("Graphite", Color.FromRgb(74, 79, 92), Color.FromRgb(74, 79, 92)),
+        ("Coral", Color.FromRgb(232, 115, 90), Color.FromRgb(232, 115, 90)),
+    };
+
+    const string BrokenUrl = "https://static.poly.pizza/no-such-model.glb";
+
+    static readonly HttpClient Http = new();
+
+    SkiaLayer _viewerHost, _loading, _failed;
+    SkiaModel3D _viewer;
+    SkiaLabel _failedText, _fabricName;
+    SkiaShape _note;
+    SkiaLabel _noteTitle, _noteText;
+    readonly SkiaShape[] _pins = new SkiaShape[Hotspots.Length];
+    readonly UiButton[] _sourceButtons = new UiButton[Sources.Length];
+    readonly SkiaShape[] _swatches = new SkiaShape[Fabrics.Length];
+    int _fabric, _openSpot = -1, _loadVersion;
+    Source _source;
+
+    SkiaControl ViewerCard() => WideCard(new SkiaRow
+    {
+        Spacing = 24,
+        Children =
+        {
+            new SkiaShape
+            {
+                CornerRadius = 12,
+                // At rest the chair shows its last render and the dots stand still: one GPU blit. Turning, zooming or a
+                // note draws it again.
+                UseCache = SkiaCacheType.GPU,
+                BackgroundColor = Theme.Stage,
+                WidthRequest = ViewerWidth,
+                HeightRequest = ViewerHeight,
+                Children =
+                {
+                    new SkiaLayer { VerticalOptions = LayoutOptions.Fill }.Assign(out _viewerHost),
+                    // The dots and the note follow their points of the model every frame.
+                    new SkiaLayer
+                    {
+                        VerticalOptions = LayoutOptions.Fill,
+                        Children = Hotspots.Select((spot, i) => (SkiaControl)Pin(i, spot.Name)).Append(Note()).ToList(),
+                    },
+                    new SkiaLabel("Drag to turn  ·  pinch or scroll to zoom  ·  double-tap to reset")
+                    {
+                        FontSize = 12, TextColor = Theme.Muted, Margin = new Thickness(0, 0, 0, 12),
+                        HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.End, InputTransparent = true,
+                    },
+                    Loading().Assign(out _loading),
+                    Failed().Assign(out _failed),
+                }
+            },
+            new SkiaStack
+            {
+                Spacing = 14,
+                // Still beside a stage that draws every frame: blitted, drawn again only when a choice changes.
+                UseCache = SkiaCacheType.Image,
+                WidthRequest = WideWidth - ViewerWidth - 24,
+                Children =
+                {
+                    new SkiaStack
+                    {
+                        Spacing = 2,
+                        UseCache = SkiaCacheType.Image,
+                        Children =
+                        {
+                            new SkiaLabel("Office chair") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new SkiaLabel("Ergonomic task chair, five-star base") { FontSize = 14, TextColor = Theme.Muted },
+                            new SkiaLabel("$249") { FontSize = 22, FontFamily = Theme.Title, TextColor = Theme.Accent, Margin = new Thickness(0, 6, 0, 0) },
+                        }
+                    },
+                    PanelLabel("MODEL"),
+                    new SkiaWrap
+                    {
+                        Spacing = 8,
+                        AccessibilityRole = Aria.RoleRadioGroup,
+                        AccessibilityLabel = "Load the model",
+                        Children = Sources.Select((s, i) => (SkiaControl)new UiButton(s.Caption, Theme.Quiet, 108) { AccessibilityRole = Aria.RoleRadio }
+                            .Assign(out _sourceButtons[i])
+                            .OnTapped(_ => LoadViewer(s.Source))).ToList(),
+                    },
+                    PanelLabel("FABRIC"),
+                    new SkiaRow
+                    {
+                        Spacing = 12,
+                        AccessibilityRole = Aria.RoleRadioGroup,
+                        AccessibilityLabel = "Fabric color",
+                        Children = Fabrics.Select((f, i) => (SkiaControl)Swatch(f.Name, f.Shown).Assign(out _swatches[i]).OnTapped(_ => SetFabric(i))).ToList(),
+                    },
+                    new SkiaLabel(Fabrics[0].Name) { FontSize = 14, TextColor = Theme.Ink }.Assign(out _fabricName),
+                    new UiButton("Reset view", Theme.Quiet, 140) { AccessibilityHint = "Turns the chair back to the front" }
+                        .OnTapped(_ => _viewer?.ResetView()),
+                }
+            },
+        }
+    }).Initialize(_ =>
+    {
+        SetFabric(0);
+        LoadViewer(Source.App);
+    });
+
+    static SkiaLabel PanelLabel(string text) => new(text)
+    {
+        FontSize = 12, FontFamily = Theme.Title, TextColor = Theme.Muted, Margin = new Thickness(0, 8, 0, -6),
+        CharacterSpacing = 1.5,
+    };
+
+    /// <summary>A dot on a part of the model: tap it for the part's note.</summary>
+    SkiaShape Pin(int index, string name) => new SkiaShape
+        {
+            Type = ShapeType.Circle,
+            WidthRequest = PinSize,
+            HeightRequest = PinSize,
+            BackgroundColor = Colors.White,
+            StrokeColor = Theme.Accent,
+            StrokeWidth = 3,
+            // Shown while its point faces the eye: hidden, it is out of taps and screen readers too.
+            IsVisible = false,
+            AccessibilityRole = Aria.RoleButton,
+            AccessibilityLabel = $"{name}, hotspot",
+            AccessibilityHint = "Shows a note about this part",
+            Shadows = new List<SkiaShadow> { new() { Blur = 4, Y = 2, Opacity = 0.35, Color = Colors.Black } },
+            Children =
+            {
+                new SkiaLabel($"{index + 1}")
+                {
+                    FontSize = 12, FontFamily = Theme.Title, TextColor = Theme.Accent,
+                    HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center,
+                },
+            }
+        }
+        .Assign(out _pins[index])
+        .OnHovered((me, on) => me.BackgroundColor = on ? Theme.Lighter(Theme.Accent, 0.75f) : Colors.White)
+        .OnTapped(_ => ToggleNote(index));
+
+    /// <summary>The note a dot opens, above its point.</summary>
+    SkiaShape Note() => new SkiaShape
+    {
+        CornerRadius = 10,
+        BackgroundColor = Theme.Header,
+        StrokeColor = Theme.Line,
+        StrokeWidth = 1,
+        Padding = new Thickness(12, 9),
+        WidthRequest = NoteWidth,
+        IsVisible = false,
+        InputTransparent = true,
+        Shadows = new List<SkiaShadow> { new() { Blur = 10, Y = 4, Opacity = 0.4, Color = Colors.Black } },
+        Children =
+        {
+            new SkiaStack
+            {
+                Spacing = 2,
+                Children =
+                {
+                    new SkiaLabel { FontSize = 14, FontFamily = Theme.Title, TextColor = Theme.Ink }.Assign(out _noteTitle),
+                    new SkiaLabel { FontSize = 13, TextColor = Theme.Muted }.Assign(out _noteText),
+                }
+            }
+        }
+    }.Assign(out _note);
+
+    /// <summary>The placeholder while the model loads: a spinning ring and a line.</summary>
+    static SkiaLayer Loading() => new()
+    {
+        VerticalOptions = LayoutOptions.Fill,
+        BackgroundColor = Theme.Stage,
+        IsVisible = false,
+        Children =
+        {
+            new SkiaStack
+            {
+                Spacing = 14,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                Children =
+                {
+                    new SkiaShape
+                        {
+                            Type = ShapeType.Arc, WidthRequest = 44, HeightRequest = 44, StrokeWidth = 4,
+                            StrokeColor = Theme.Accent, Value1 = 0, Value2 = 270, StrokeCap = SKStrokeCap.Round,
+                            HorizontalOptions = LayoutOptions.Center,
+                        }
+                        .AnimateRotation(0, 360, seconds: 0.9, repeat: -1),
+                    new SkiaLabel("Loading the chair…") { FontSize = 14, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RoleText }
+                        .WithAccessibilityLive(),
+                }
+            }
+        }
+    };
+
+    /// <summary>The card shown when the model could not be loaded, with a way back.</summary>
+    SkiaLayer Failed() => new()
+    {
+        VerticalOptions = LayoutOptions.Fill,
+        BackgroundColor = Theme.Stage,
+        IsVisible = false,
+        Children =
+        {
+            new SkiaStack
+            {
+                Spacing = 10,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                WidthRequest = 320,
+                Children =
+                {
+                    new SkiaShape
+                    {
+                        Type = ShapeType.Circle, WidthRequest = 48, HeightRequest = 48, BackgroundColor = Theme.Bad.WithAlpha(0.18f),
+                        HorizontalOptions = LayoutOptions.Center,
+                        Children =
+                        {
+                            new SkiaLabel("!") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Bad, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+                        }
+                    },
+                    new SkiaLabel("The model could not be loaded")
+                    {
+                        FontSize = 16, FontFamily = Theme.Title, TextColor = Theme.Ink, HorizontalOptions = LayoutOptions.Center,
+                        AccessibilityRole = Aria.RoleText,
+                    }.WithAccessibilityLive(),
+                    new SkiaLabel { FontSize = 13, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center, HorizontalTextAlignment = DrawTextAlignment.Center }
+                        .Assign(out _failedText),
+                    new UiButton("Use the app's copy", Theme.Accent, 180) { Margin = new Thickness(0, 6, 0, 0) }
+                        .WithHorizontalOptions(LayoutOptions.Center)
+                        .OnTapped(_ => LoadViewer(Source.App)),
+                }
+            }
+        }
+    };
+
+    /// <summary>A round color swatch: a ring shows the chosen one.</summary>
+    static SkiaShape Swatch(string name, Color color)
+    {
+        return new SkiaShape
+            {
+                Type = ShapeType.Circle,
+                WidthRequest = 40,
+                HeightRequest = 40,
+                StrokeWidth = 3,
+                StrokeColor = Colors.Transparent,
+                Padding = new Thickness(6),
+                AccessibilityRole = Aria.RoleRadio,
+                AccessibilityLabel = name,
+                Children =
+                {
+                    new SkiaShape { Type = ShapeType.Circle, BackgroundColor = color, HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill },
+                }
+            }
+            .OnHovered((me, on) => me.BackgroundColor = on ? Theme.Lighter(Theme.Card, 0.12f) : Colors.Transparent);
+    }
+
+    void SetFabric(int index)
+    {
+        _fabric = index;
+        for (var i = 0; i < _swatches.Length; i++)
+        {
+            _swatches[i].StrokeColor = i == index ? Theme.Ink : Colors.Transparent;
+            _swatches[i].AccessibilityIsPressed = i == index;
+        }
+        _fabricName.Text = Fabrics[index].Name;
+        _viewer?.SetMaterialColor("Chair", Fabrics[index].Color);
+    }
+
+    void ToggleNote(int index)
+    {
+        _openSpot = _openSpot == index ? -1 : index;
+        for (var i = 0; i < _pins.Length; i++)
+            _pins[i].AccessibilityIsPressed = i == _openSpot;
+        if (_openSpot < 0)
+        {
+            _note.IsVisible = false;
+            return;
+        }
+        _noteTitle.Text = Hotspots[index].Name;
+        _noteText.Text = Hotspots[index].Note;
+        _note.IsVisible = true;
+    }
+
+    /// <summary>Loads the chair from where the buttons say: a placeholder meanwhile, the error card when it fails.</summary>
+    async void LoadViewer(Source source)
+    {
+        _source = source;
+        for (var i = 0; i < Sources.Length; i++)
+        {
+            var on = Sources[i].Source == source;
+            _sourceButtons[i].Fill = on ? Theme.Accent : Theme.Quiet;
+            _sourceButtons[i].AccessibilityIsPressed = on;
+        }
+        var version = ++_loadVersion;
+        ShowViewer(null);
+        _failed.IsVisible = false;
+        _loading.IsVisible = true;
+
+        byte[] bytes = null;
+        string problem = null;
+        if (source == Source.App)
+            bytes = Theme.Chair;
+        else
+        {
+            try
+            {
+                bytes = await Http.GetByteArrayAsync(source == Source.Link ? Theme.ChairUrl : BrokenUrl);
+            }
+            catch (HttpRequestException e)
+            {
+                problem = e.StatusCode is { } code ? $"The server answered {(int)code} {code}." : "There was no answer from the server.";
+            }
+            catch (Exception e)
+            {
+                problem = e.Message;
+            }
+        }
+        if (version != _loadVersion)
+            return;
+
+        if (bytes != null)
+        {
+            var model = new SkiaModel3D(bytes)
+            {
+                Yaw = 35,
+                Pitch = 12,
+                PinchZoom = true,
+                MinZoom = 0.55f,
+                MaxZoom = 1.8f,
+                ResetOnDoubleTap = true,
+                Antialias = true,
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+            };
+            if (model.Error == null)
+            {
+                model.SetMaterialColor("Chair", Fabrics[_fabric].Color);
+                ShowViewer(model);
+                _loading.IsVisible = false;
+                return;
+            }
+            problem = $"The file is not a model this viewer reads: {model.Error}";
+            model.Dispose();
+        }
+        _loading.IsVisible = false;
+        _failedText.Text = $"{problem}\nCheck the link, or show the copy shipped with the app.";
+        _failed.IsVisible = true;
+    }
+
+    void ShowViewer(SkiaModel3D model)
+    {
+        if (_viewer != null)
+        {
+            _viewerHost.RemoveSubView(_viewer);
+            // Its GPU frame is freed with the frame's other disposals, on the drawing thread.
+            _viewerHost.DisposeObject(_viewer);
+        }
+        _viewer = model;
+        if (model != null)
+            _viewerHost.AddSubView(model);
+        _openSpot = -1;
+        _note.IsVisible = false;
+        foreach (var pin in _pins)
+        {
+            pin.IsVisible = false;
+            pin.AccessibilityIsPressed = false;
+        }
+    }
+
+    /// <summary>Each frame: the dots and the open note go where their points of the turning chair show.</summary>
+    void ViewerFrame()
+    {
+        if (_viewer == null || !_viewer.WasInLastFrame())
+            return;
+        for (var i = 0; i < Hotspots.Length; i++)
+        {
+            var pin = _pins[i];
+            var at = _viewer.ScreenPosition(Hotspots[i].At);
+            var shown = at is { Occluded: false };
+            if (pin.IsVisible != shown)
+                pin.IsVisible = shown;
+            if (at == null)
+                continue;
+            Move(pin, at.Value.X - PinSize / 2, at.Value.Y - PinSize / 2);
+            if (i != _openSpot)
+                continue;
+            _note.IsVisible = shown;
+            var height = (float)_note.MeasuredSize.Units.Height;
+            Move(_note, Math.Clamp(at.Value.X - NoteWidth / 2, 8, ViewerWidth - NoteWidth - 8),
+                MathF.Max(8, at.Value.Y - PinSize / 2 - height - 8));
+        }
+    }
+
+    /// <summary>Moves a control drawn over another to a point, skipping changes under a quarter point.</summary>
+    static void Move(SkiaControl control, float x, float y)
+    {
+        if (MathF.Abs((float)control.TranslationX - x) > 0.25f || MathF.Abs((float)control.TranslationY - y) > 0.25f)
+        {
+            control.TranslationX = x;
+            control.TranslationY = y;
+        }
+    }
+}

@@ -3,23 +3,30 @@ using DrawnUi.Gaming;
 namespace Add3dGallery;
 
 /// <summary>
-/// A gallery of tiny 3D animations inside a DrawnUI screen (the Add3d add-on), a port of DrawnUI for
-/// Rust's gallery3d:
-/// - made in code, flat: a coin and bouncing dots for loading, a medal for an achievement, a check for success, a heart
-///   for a like, falling confetti; smooth shapes in flat colors with outlines, animated by the app;
-/// - images on 3D: a product box with its label and a ball with three skins, drawn in code and switched live;
-/// - from model files: an avatar, a reward chest, and a field of walking mobs drawn by one 3D layer.
+/// Where 3D belongs in an app, inside a DrawnUI screen (the Add3d add-on), the same gallery as DrawnUI for Rust's
+/// gallery3d. The reasons an app adds 3D come first, the fun after, games last:
+/// - a product viewer (a model from the app or from a link, turn, zoom, hotspots, colors);
+/// - 3D thumbnails in a scrolling list;
+/// - a card that flips;
+/// - a globe with pins;
+/// - a 3D mascot beside a plain sign-up form;
+/// - micro-interactions (like, celebration, achievement), an image on a 3D box, models with their own animations,
+///   and a field of walking mobs drawn by one 3D layer.
 /// </summary>
 public partial class GalleryPage : DrawnGame
 {
     /// <summary>The confetti tile and the mobs' field, in points.</summary>
     const float RainWidth = 268, RainHeight = 190, FieldWidth = 1000, FieldHeight = 280;
 
+    /// <summary>The inner width of the wide cards (the first five sections and the mobs).</summary>
+    const float WideWidth = 1000;
+
     static readonly int[] MobCounts = { 10, 40, 100 };
 
-    SkiaModel3D _coin, _dots, _medal, _badge, _heart, _avatar, _chest;
+    SkiaScroll _scroll;
+    SkiaModel3D _medal, _heart, _avatar, _chest;
     SkiaScene3D _rain, _field;
-    UiButton _coinButton, _dotsButton, _medalButton, _likeButton, _chestButton;
+    UiButton _medalButton, _likeButton, _chestButton;
     readonly UiButton[] _mobButtons = new UiButton[MobCounts.Length];
 
     public GalleryPage()
@@ -51,32 +58,36 @@ public partial class GalleryPage : DrawnGame
                                     FontSize = 30, FontFamily = Theme.Title, TextColor = Theme.Ink,
                                     HorizontalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RoleHeading,
                                 },
-                                new SkiaLabel("3D pieces and characters built and animated inside a DrawnUI screen.")
+                                new SkiaLabel("Where 3D earns its place in an app: products, lists, cards, maps and forms first, then the fun.")
                                 {
                                     FontSize = 15, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center,
                                     HorizontalTextAlignment = DrawTextAlignment.Center,
                                 },
                             }
                         },
-                        Theme.Section("Made in code", "Smooth shapes in real 3D, shaded by a light: a few lines of code each."),
+
+                        Theme.Section("Product viewer", "A real product model on a shop page: turn it, zoom in, tap the dots, pick a color."),
+                        ViewerCard(),
+
+                        Theme.Section("3D in a scrolling list", "Thirty products, each with a live 3D thumbnail: point at a row to turn it, or drag a thumbnail sideways. Rows off screen draw nothing."),
+                        ListCard(),
+
+                        Theme.Section("Card flip", "A loyalty card in 3D: it leans toward the pointer and turns over to show its back."),
+                        FlipCard(),
+
+                        Theme.Section("Globe with pins", "Drag the Earth to turn it. Pins stay on their cities and hide behind the globe; tap one for its name."),
+                        GlobeCard(),
+
+                        Theme.Section("3D next to normal UI", "A plain sign-up form with a 3D mascot beside it: it watches what you type and looks away from your password."),
+                        FormCard(),
+
+                        Theme.Section("Micro-interactions", "Small 3D touches that answer a tap."),
                         new SkiaWrap
                         {
                             Spacing = 16,
                             HorizontalOptions = LayoutOptions.Center,
                             Children =
                             {
-                                Tile("Loading", "A coin turning while something loads.",
-                                    Shaded(Coin(), 0, 12).Assign(out _coin).Adapt(me => me.AutoRotate = 200),
-                                    new UiButton("Pause", Theme.Accent).Assign(out _coinButton).OnTapped(_ => ToggleCoin())),
-                                Tile("Loading dots", "Three dots that bounce one after another.",
-                                    Shaded(Dots(), 0, 28).Assign(out _dots),
-                                    new UiButton("Pause", Theme.Accent).Assign(out _dotsButton).OnTapped(_ => ToggleDots())),
-                                Tile("Achievement", "A medal that lights up and spins when unlocked.",
-                                    Shaded(Medal(), MedalYaw, 12).Assign(out _medal).OnTapped3D((_, _) => SpinMedal()),
-                                    new UiButton("Lock", Theme.Accent).Assign(out _medalButton).OnTapped(_ => ToggleMedal())),
-                                Tile("Success", "A badge that pops in, then its check grows.",
-                                    Shaded(Badge(), 22, 14).Assign(out _badge),
-                                    new UiButton("Done", Theme.Accent).OnTapped(_ => Done())),
                                 Tile("Like", "A heart that beats, and jumps when liked.",
                                     Shaded(HeartModel(), -24, 12).Assign(out _heart).OnTapped3D((_, _) => ToggleLike()),
                                     new UiButton("Unlike", Theme.Accent).Assign(out _likeButton).OnTapped(_ => ToggleLike())),
@@ -90,10 +101,15 @@ public partial class GalleryPage : DrawnGame
                                         .Model("star", ConfettiStar())
                                         .Assign(out _rain),
                                     new UiButton("Hooray", Theme.Accent).OnTapped(_ => Hooray())),
+                                Tile("Achievement", "A medal that lights up and spins when unlocked.",
+                                    Shaded(Medal(), MedalYaw, 12).Assign(out _medal).OnTapped3D((_, _) => SpinMedal()),
+                                    new UiButton("Lock", Theme.Accent).Assign(out _medalButton).OnTapped(_ => ToggleMedal())),
                             }
                         },
+
                         Theme.Section("Images on 3D", "Any image on a 3D surface, switched live: drawn in code here, or a photo or a file."),
                         ImagesSection(),
+
                         Theme.Section("From model files", "Free 3D models with their own animations, driven by the app."),
                         new SkiaWrap
                         {
@@ -120,10 +136,12 @@ public partial class GalleryPage : DrawnGame
                                     new UiButton("Open", Theme.Accent).Assign(out _chestButton).OnTapped(_ => ToggleChest())),
                             }
                         },
+
+                        Theme.Section("Games", "Many 3D characters on one field, moved like sprites and drawn by one layer in one pass."),
                         MobsCard(),
                     }
                 }
-            }
+            }.Assign(out _scroll)
         };
         _mobs = 40;
         UpdateMobButtons();
@@ -157,19 +175,36 @@ public partial class GalleryPage : DrawnGame
                             new SkiaLabel(caption) { FontSize = 13, TextColor = Theme.Muted, HeightRequest = 36 },
                         }
                     },
-                    new SkiaShape
-                    {
-                        CornerRadius = 12,
-                        UseCache = SkiaCacheType.None,
-                        BackgroundColor = Theme.Stage,
-                        HorizontalOptions = LayoutOptions.Fill,
-                        HeightRequest = RainHeight,
-                        Children = { piece },
-                    },
+                    Stage(piece).WithHeight(RainHeight),
                     button.WithHorizontalOptions(LayoutOptions.Center),
                 }
             }
         }
+    };
+
+    /// <summary>The rounded panel a 3D piece stands on.</summary>
+    static SkiaShape Stage(SkiaControl piece) => new()
+    {
+        CornerRadius = 12,
+        UseCache = SkiaCacheType.None,
+        BackgroundColor = Theme.Stage,
+        HorizontalOptions = LayoutOptions.Fill,
+        Children = { piece },
+    };
+
+    /// <summary>A wide card holding a whole demo (the section above names it).</summary>
+    static SkiaShape WideCard(SkiaControl content) => new()
+    {
+        // Holds 3D that draws every frame: a recorded cache would be made again each frame.
+        UseCache = SkiaCacheType.None,
+        CornerRadius = 16,
+        BackgroundColor = Theme.Card,
+        StrokeColor = Theme.Line,
+        StrokeWidth = 1,
+        Padding = new Thickness(16),
+        HorizontalOptions = LayoutOptions.Center,
+        WidthRequest = WideWidth + 32,
+        Children = { content },
     };
 
     /// <summary>The medal's resting turn: it spins from here and lands here.</summary>
@@ -188,85 +223,69 @@ public partial class GalleryPage : DrawnGame
         VerticalOptions = LayoutOptions.Fill,
     };
 
-    SkiaControl MobsCard() => new SkiaShape
+    SkiaControl MobsCard() => WideCard(new SkiaStack
     {
-        UseCache = SkiaCacheType.None,
-        CornerRadius = 16,
-        BackgroundColor = Theme.Card,
-        StrokeColor = Theme.Line,
-        StrokeWidth = 1,
-        Padding = new Thickness(16),
-        HorizontalOptions = LayoutOptions.Center,
-        Children = new List<SkiaControl>
+        Spacing = 10,
+        Children =
         {
             new SkiaStack
             {
-                Spacing = 10,
-                HorizontalOptions = LayoutOptions.Start,
-                WidthRequest = FieldWidth,
+                Spacing = 4,
+                UseCache = SkiaCacheType.Image,
                 Children =
                 {
-                    new SkiaStack
-                    {
-                        Spacing = 4,
-                        UseCache = SkiaCacheType.Image,
-                        Children =
-                        {
-                            new SkiaLabel("Mobs on a 2D field") { FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                            new SkiaLabel("Many 3D monsters from one model, moved like sprites and drawn by one layer in one pass. Tap one to hit it.")
-                                { FontSize = 13, TextColor = Theme.Muted },
-                        }
-                    },
-                    new SkiaShape
-                    {
-                        WidthRequest = FieldWidth,
-                        HeightRequest = FieldHeight,
-                        UseCache = SkiaCacheType.None,
-                        CornerRadius = 10,
-                        BackgroundColor = Color.FromRgb(58, 98, 74),
-                        Children =
-                        {
-                            new SkiaScene3D
-                                {
-                                    Tilt = 30,
-                                    HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
-                                }
-                                .Model("slime", Theme.Mob)
-                                .Assign(out _field)
-                                .OnTapped3D((me, hit) => me.PlayOnce(hit.Object, "CharacterArmature|HitRecieve")),
-                        }
-                    },
-                    new SkiaRow
-                    {
-                        Spacing = 8,
-                        AccessibilityRole = Aria.RoleRadioGroup,
-                        AccessibilityLabel = "Mobs on the field",
-                        Children = MobCounts.Select((n, i) => (SkiaControl)new UiButton($"{n} mobs", Theme.Quiet, 110) { AccessibilityRole = Aria.RoleRadio }
-                            .Assign(out _mobButtons[i])
-                            .OnTapped(_ => SetMobs(n))).ToList(),
-                    },
+                    new SkiaLabel("Mobs on a 2D field") { FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                    new SkiaLabel("Many 3D monsters from one model, moved like sprites and drawn by one layer in one pass. Tap one to hit it.")
+                        { FontSize = 13, TextColor = Theme.Muted },
                 }
-            }
+            },
+            new SkiaShape
+            {
+                WidthRequest = FieldWidth,
+                HeightRequest = FieldHeight,
+                UseCache = SkiaCacheType.None,
+                CornerRadius = 10,
+                BackgroundColor = Color.FromRgb(58, 98, 74),
+                Children =
+                {
+                    new SkiaScene3D
+                        {
+                            Tilt = 30,
+                            HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
+                        }
+                        .Model("slime", Theme.Mob)
+                        .Assign(out _field)
+                        .OnTapped3D((me, hit) => me.PlayOnce(hit.Object, "CharacterArmature|HitRecieve")),
+                }
+            },
+            new SkiaRow
+            {
+                Spacing = 8,
+                AccessibilityRole = Aria.RoleRadioGroup,
+                AccessibilityLabel = "Mobs on the field",
+                Children = MobCounts.Select((n, i) => (SkiaControl)new UiButton($"{n} mobs", Theme.Quiet, 110) { AccessibilityRole = Aria.RoleRadio }
+                    .Assign(out _mobButtons[i])
+                    .OnTapped(_ => SetMobs(n))).ToList(),
+            },
         }
-    };
+    });
+
+    /// <summary>
+    /// For <see cref="PerfProbe"/>: puts the page (or, with <paramref name="list"/>, the 3D product list) at
+    /// <paramref name="travel"/> points of steady scrolling, going down and back up between the ends; -1 = the end.
+    /// </summary>
+    internal void ProbeScroll(bool list, float travel)
+    {
+        var scroll = list ? _listScroll : _scroll;
+        var range = MathF.Max(1, (float)(scroll.ContentSize.Units.Height - scroll.Viewport.Units.Height));
+        var at = travel < 0 ? range : travel % (2 * range);
+        scroll.ScrollTo(0, -(at < range ? at : 2 * range - at), 0, true);
+    }
 
     protected override void OnLayoutReady()
     {
         base.OnLayoutReady();
         StartLoop();
-    }
-
-    void ToggleCoin()
-    {
-        _coinPaused = !_coinPaused;
-        _coin.AutoRotate = _coinPaused ? 0 : 200;
-        _coinButton.Text = _coinPaused ? "Spin" : "Pause";
-    }
-
-    void ToggleDots()
-    {
-        _resting = !_resting;
-        _dotsButton.Text = _resting ? "Bounce" : "Pause";
     }
 
     void SpinMedal() => _spin = 0;
@@ -289,14 +308,6 @@ public partial class GalleryPage : DrawnGame
             _medal.Scale = 0.6;
             _ = _medal.ScaleToAsync(1, 1, 500, Easing.SpringOut);
         }
-    }
-
-    void Done()
-    {
-        _grow = 0;
-        _badge.SetNodeScale("check", 0, 0, 0);
-        _badge.Scale = 0.3;
-        _ = _badge.ScaleToAsync(1, 1, 450, Easing.SpringOut);
     }
 
     void ToggleLike()

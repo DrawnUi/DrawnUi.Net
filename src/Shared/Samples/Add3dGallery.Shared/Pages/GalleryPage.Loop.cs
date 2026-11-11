@@ -35,15 +35,9 @@ public partial class GalleryPage
     static readonly string[] MobNames = Enumerable.Range(0, MaxMobs).Select(i => $"m{i}").ToArray();
 
     float _time;
-    bool _coinPaused;
-    /// <summary>The dots' own clock: it stops while they wait.</summary>
-    float _bounce;
-    bool _resting;
     bool _unlocked = true;
     /// <summary>The medal's spin after unlocking, 0 to 1.</summary>
     float _spin = 1;
-    /// <summary>The check's growth after "Done", 0 to 1.</summary>
-    float _grow = 1;
     bool _liked = true;
     /// <summary>The heart's pop after a like, 1 to 0.</summary>
     float _pop;
@@ -65,25 +59,16 @@ public partial class GalleryPage
         _time += delta;
         var t = _time;
 
-        if (!_resting)
-            _bounce += delta;
-        for (var i = 0; i < 3; i++)
-        {
-            var y = _resting ? 0 : 0.5f * MathF.Max(MathF.Sin(_bounce * 7 - i * 0.8f), 0);
-            _dots.SetNodeTranslation(DotNames[i], (i - 1) * 0.9f, y, 0);
-        }
+        ViewerFrame();
+        ListFrame();
+        CardFrame(delta);
+        GlobeFrame(delta);
+        FormFrame(delta);
 
         if (_spin < 1)
         {
             _spin = MathF.Min(_spin + delta / 0.9f, 1);
             _medal.Yaw = MedalYaw + 360 * EaseOut(_spin);
-        }
-
-        if (_grow < 1)
-        {
-            _grow = MathF.Min(_grow + delta / 0.35f, 1);
-            var s = 0.013f * EaseOut(_grow);
-            _badge.SetNodeScale("check", s, s, s);
         }
 
         _pop = MathF.Max(_pop - delta * 3, 0);

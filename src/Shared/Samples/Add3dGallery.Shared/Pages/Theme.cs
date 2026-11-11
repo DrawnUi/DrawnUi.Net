@@ -21,7 +21,7 @@ public static class Theme
     static byte[] Model(string name)
     {
         using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name)
-                           ?? throw new InvalidOperationException($"no embedded model {name}");
+                           ?? throw new InvalidOperationException($"no embedded asset {name}");
         using var copy = new MemoryStream();
         stream.CopyTo(copy);
         return copy.ToArray();
@@ -32,6 +32,19 @@ public static class Theme
     public static readonly byte[] Avatar = Model("avatar.glb");
     public static readonly byte[] Chest = Model("gift.glb");
     public static readonly byte[] Mob = Model("mob.glb");
+    public static readonly byte[] Chair = Model("chair.glb");
+
+    /// <summary>The product viewer's chair at its address on poly.pizza (CC0), loaded over the network.</summary>
+    public const string ChairUrl = "https://static.poly.pizza/ac2301f3-af86-435a-885a-d8f1a32f9f76.glb";
+
+    /// <summary>NASA's Blue Marble (public domain), an equirectangular map for the globe.</summary>
+    public static readonly byte[] Earth = Model("earth.jpg");
+
+    public static readonly Color Good = Color.FromRgb(76, 201, 140);
+    public static readonly Color Bad = Color.FromRgb(255, 107, 107);
+    /// <summary>A button's color once its action is done (in the cart).</summary>
+    public static readonly Color Added = Color.FromRgb(38, 122, 88);
+    public static readonly Color Field = Color.FromRgb(31, 35, 52);
 
     /// <summary>A color moved toward white by <paramref name="amount"/> (0..1): the hover lift.</summary>
     public static Color Lighter(Color c, float amount) =>

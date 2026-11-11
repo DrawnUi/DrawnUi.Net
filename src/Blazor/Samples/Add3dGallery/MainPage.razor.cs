@@ -17,6 +17,6 @@ public partial class MainPage
     {
         base.OnInitialized();
         if (new Uri(Navigation.Uri).Query.Contains("perf", StringComparison.OrdinalIgnoreCase))
-            PerfProbe.Start(_content.Gallery);
+            PerfProbe.Start(_content.Gallery, new Uri(Navigation.Uri).Query);
     }
 }
