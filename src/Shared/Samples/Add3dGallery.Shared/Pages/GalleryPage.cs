@@ -73,7 +73,7 @@ public partial class GalleryPage : DrawnGame
 
                         FlipCard(),
 
-                        GlobeCard(),
+                        GlobeCard().Assign(out _globeCard),
 
                         FormCard(),
 
@@ -268,6 +268,18 @@ public partial class GalleryPage : DrawnGame
             },
         }
     });
+
+    SkiaControl _globeCard;
+
+    /// <summary>For <see cref="PerfProbe"/>: puts the globe's card at the top of the page.</summary>
+    internal void ProbeShowGlobe()
+    {
+        if (_scroll.Content is not SkiaLayout page)
+            return;
+        foreach (var cell in page.GetStackStructure().GetChildren())
+            if (ReferenceEquals(cell.View, _globeCard))
+                _scroll.ScrollTo(0, -(cell.Destination.Top / page.RenderingScale), 0, true);
+    }
 
     /// <summary>
     /// For <see cref="PerfProbe"/>: puts the page (or, with <paramref name="list"/>, the 3D product list) at

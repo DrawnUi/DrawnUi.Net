@@ -5,7 +5,8 @@ namespace Add3dGallery;
 /// <summary>
 /// Measures the gallery in the browser, results in the console. Address options:
 /// <c>?perf</c> = the top of the page at rest, <c>?perf=scroll</c> = the page scrolled down at a steady 600 pt/s,
-/// <c>?perf=list</c> = the 3D product list scrolled, <c>?perf=mobs</c> = 100 mobs on the field, scrolled to it.
+/// <c>?perf=list</c> = the 3D product list scrolled, <c>?perf=mobs</c> = 100 mobs on the field, scrolled to it,
+/// <c>?perf=globe</c> = the turning globe with its pins at the top.
 /// Per frame: the CPU time of drawing (canvas WillDraw to WasDrawn: layout, drawing, the 3D GL calls; Skia's GPU flush
 /// comes after it), the managed bytes allocated on the UI thread from one frame to the next, and the frame interval.
 /// 2 s warm-up, then 5 s of frames: median, p99, frames over 12 ms, allocations per frame, gen-0 collections.
@@ -14,7 +15,7 @@ public static class PerfProbe
 {
     const double WarmupSeconds = 2, MeasureSeconds = 5;
 
-    static readonly double[] Draw = new double[2048], Alloc = new double[2048];
+    static readonly double[] Draw = new double[2048], Alloc = new double[2048], At = new double[2048];
     static int _count;
     static long _start, _frameStart, _first, _last, _lastAlloc;
     static int _gcAtFirst;
@@ -43,6 +44,8 @@ public static class PerfProbe
         _canvas = canvas;
         if (_mode == "mobs")
             _page.ProbeScroll(false, -1);
+        else if (_mode == "globe")
+            _page.ProbeShowGlobe();
         _start = Stopwatch.GetTimestamp();
         canvas.WillDraw += OnWillDraw;
         canvas.WasDrawn += OnWasDrawn;
@@ -79,6 +82,7 @@ public static class PerfProbe
             if (_count < Draw.Length)
             {
                 Draw[_count] = Stopwatch.GetElapsedTime(_frameStart, now).TotalMilliseconds;
+                At[_count] = since - WarmupSeconds;
                 Alloc[_count] = alloc - _lastAlloc;
                 _count++;
             }
@@ -90,9 +94,11 @@ public static class PerfProbe
         var draw = Draw.AsSpan(0, _count).ToArray();
         var alloc2 = Alloc.AsSpan(0, _count).ToArray();
         var over = draw.Count(x => x > 12);
+        // The three slowest frames and when they came (seconds into the measured run): one-time costs show here.
+        var slowest = string.Join(", ", Enumerable.Range(0, _count).OrderByDescending(i => Draw[i]).Take(3).Select(i => $"{Draw[i]:0.0} ms at {At[i]:0.00} s"));
         Array.Sort(draw);
         Array.Sort(alloc2);
         var fps = (_count - 1) / Stopwatch.GetElapsedTime(_first, _last).TotalSeconds;
-        Console.WriteLine($"[perf] {_mode}: frames {_count}, {fps:0.0} FPS, draw median {draw[_count / 2]:0.00} ms, p99 {draw[(int)(_count * 0.99)]:0.00} ms, max {draw[^1]:0.00} ms, over 12 ms {over}, alloc/frame median {alloc2[_count / 2] / 1024:0.0} KB, p99 {alloc2[(int)(_count * 0.99)] / 1024:0.0} KB, GC {GC.CollectionCount(0) - _gcAtFirst}");
+        Console.WriteLine($"[perf] {_mode}: frames {_count}, {fps:0.0} FPS, draw median {draw[_count / 2]:0.00} ms, p99 {draw[(int)(_count * 0.99)]:0.00} ms, max {draw[^1]:0.00} ms, over 12 ms {over}, alloc/frame median {alloc2[_count / 2] / 1024:0.0} KB, p99 {alloc2[(int)(_count * 0.99)] / 1024:0.0} KB, GC {GC.CollectionCount(0) - _gcAtFirst}, slowest {slowest}");
     }
 }
