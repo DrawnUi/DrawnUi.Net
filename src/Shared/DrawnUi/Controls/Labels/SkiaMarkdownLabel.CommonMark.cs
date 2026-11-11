@@ -37,10 +37,11 @@ public partial class SkiaRichLabel : SkiaLabel
 
                 if (!string.IsNullOrEmpty(TextInternal))
                 {
-                    var markdownDocument = CommonMarkConverter.Parse(TextInternal, MarkdownSettings);
+                    var markdownDocument = CommonMarkConverter.Parse(TextInternal,
+                        TrackSourceIndexes ? MarkdownSettingsTracked : MarkdownSettings);
 
                     Spans.Clear();
-                    _sourceMap = new List<int>(TextInternal.Length);
+                    _sourceMap = TrackSourceIndexes ? new List<int>(TextInternal.Length) : null;
 
                     isBold = false;
                     isItalic = false;
@@ -61,13 +62,16 @@ public partial class SkiaRichLabel : SkiaLabel
                         }
                     }
 
-                    // every drawn character got its source index, or the map is not trusted
-                    var drawn = 0;
-                    foreach (var span in Spans)
-                        drawn += span.Text?.Length ?? 0;
-                    if (drawn == _sourceMap.Count)
-                        SourceIndexes = _sourceMap;
-                    _sourceMap = null;
+                    if (_sourceMap != null)
+                    {
+                        // every drawn character got its source index, or the map is not trusted
+                        var drawn = 0;
+                        foreach (var span in Spans)
+                            drawn += span.Text?.Length ?? 0;
+                        if (drawn == _sourceMap.Count)
+                            SourceIndexes = _sourceMap;
+                        _sourceMap = null;
+                    }
                 }
                 else
                 {
@@ -83,9 +87,16 @@ public partial class SkiaRichLabel : SkiaLabel
     List<int> _sourceMap;
 
     /// <summary>
+    /// Build <see cref="SourceIndexes"/> when parsing: set by the editor that owns this label, display-only labels
+    /// parse without source positions.
+    /// </summary>
+    internal bool TrackSourceIndexes;
+
+    /// <summary>
     /// For each character of the drawn text (the spans' text in order), its index in the markdown source
     /// (<see cref="SkiaLabel.Text"/> as parsed), -1 for characters the markdown adds (list bullets, breaks between blocks).
-    /// Null when markdown is off or the text is empty. An editor uses it to map its text index to the drawn character.
+    /// Built only for an editor's label; null otherwise, when markdown is off or the text is empty. The editor uses it to
+    /// map its text index to the drawn character.
     /// </summary>
     public IReadOnlyList<int> SourceIndexes { get; private set; }
 
@@ -121,16 +132,20 @@ public partial class SkiaRichLabel : SkiaLabel
     }
 
     /// <summary>
-    /// CommonMark parser settings: the defaults plus ~~strikethrough~~, with source positions (see
-    /// <see cref="SourceIndexes"/>).
+    /// CommonMark parser settings: the defaults plus ~~strikethrough~~.
     /// </summary>
-    static readonly CommonMarkSettings MarkdownSettings = CreateMarkdownSettings();
+    static readonly CommonMarkSettings MarkdownSettings = CreateMarkdownSettings(false);
 
-    static CommonMarkSettings CreateMarkdownSettings()
+    /// <summary>
+    /// <see cref="MarkdownSettings"/> with source positions, for <see cref="SourceIndexes"/>.
+    /// </summary>
+    static readonly CommonMarkSettings MarkdownSettingsTracked = CreateMarkdownSettings(true);
+
+    static CommonMarkSettings CreateMarkdownSettings(bool trackSourcePosition)
     {
         var settings = CommonMarkSettings.Default.Clone();
         settings.AdditionalFeatures |= CommonMarkAdditionalFeatures.StrikethroughTilde;
-        settings.TrackSourcePosition = true;
+        settings.TrackSourcePosition = trackSourcePosition;
         return settings;
     }
 

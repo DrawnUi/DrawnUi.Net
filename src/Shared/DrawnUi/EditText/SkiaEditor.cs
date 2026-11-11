@@ -247,7 +247,7 @@ namespace DrawnUi.Draw
             // neither: plain single-font label (lightest).
             SkiaLabel label;
             if (UseMarkdown)
-                label = new SkiaRichLabel();
+                label = new SkiaRichLabel { TrackSourceIndexes = true }; // the caret maps text to drawn characters
             else if (UseUnicode)
                 label = new SkiaRichLabel { MarkdownEnabled = false };
             else

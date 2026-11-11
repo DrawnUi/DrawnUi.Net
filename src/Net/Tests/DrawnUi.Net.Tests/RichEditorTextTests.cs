@@ -1,3 +1,4 @@
+#if DEBUG // SkiaRichEditor is built in Debug only
 using DrawnUi.Draw;
 using DrawnUi.Testing;
 using DrawnUi.Views;
@@ -52,3 +53,4 @@ public class RichEditorTextTests
         AssertShows(editor, "one\ntwo");
     }
 }
+#endif
