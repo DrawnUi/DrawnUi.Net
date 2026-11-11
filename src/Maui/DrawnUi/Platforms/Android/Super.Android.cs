@@ -315,6 +315,15 @@ public partial class Super
     public class InsetsListener : Java.Lang.Object, Android.Views.View.IOnApplyWindowInsetsListener
     {
         private WindowInsets _returnInsets;
+        private bool _reported;
+
+        static bool SetInset(double current, double value, Action<double> set)
+        {
+            if (Math.Abs(current - value) < 0.01)
+                return false;
+            set(value);
+            return true;
+        }
 
         public WindowInsets OnApplyWindowInsets(Android.Views.View v, WindowInsets insets)
         {
@@ -337,6 +346,28 @@ public partial class Super
                 v.SetPadding(bars.Left, bars.Top, bars.Right, bars.Bottom);
             }
 #endif
+            // Android 11+: the bars and cutouts are measured again at every change (a rotation, a switch between gesture
+            // and 3-button navigation, a window resize), also while they are hidden, so a fullscreen app keeps them too.
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.R)
+            {
+                var bars = insets.GetInsetsIgnoringVisibility(WindowInsets.Type.SystemBars() | WindowInsets.Type.DisplayCutout());
+                var density = Super.Screen.Density;
+                var changed = SetInset(Super.Screen.TopInset, bars.Top / density, value => Super.Screen.TopInset = value)
+                              | SetInset(Super.Screen.BottomInset, bars.Bottom / density, value => Super.Screen.BottomInset = value)
+                              | SetInset(Super.Screen.LeftInset, bars.Left / density, value => Super.Screen.LeftInset = value)
+                              | SetInset(Super.Screen.RightInset, bars.Right / density, value => Super.Screen.RightInset = value);
+                Super.StatusBarHeight = Super.Screen.TopInset;
+                if (changed || !_reported)
+                {
+                    _reported = true;
+                    InsetsChanged?.Invoke(this, null);
+                }
+
+                return isFullscreen //our android fullscreen
+                    ? insets.ReplaceSystemWindowInsets(insets.SystemWindowInsetLeft, 0, insets.SystemWindowInsetRight, insets.SystemWindowInsetBottom)
+                    : insets;
+            }
+
             //we are saving system insets BEFORE the fullscreen flag was applied
             //and system insets became zero
             if (_returnInsets == null)
