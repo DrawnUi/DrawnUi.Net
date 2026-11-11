@@ -46,7 +46,7 @@ internal sealed class RayTree
             centers[t] = (mins[t] + maxs[t]) * 0.5f;
         }
         if (count > 0)
-            tree.Split(0, count, centers, mins, maxs);
+            tree.Split(0, count, centers, mins, maxs, new float[count]);
         return tree;
     }
 
@@ -59,7 +59,7 @@ internal sealed class RayTree
     }
 
     /// <summary>Makes the node of triangles [first, first + count): splits at the median along the box's longest side.</summary>
-    int Split(int first, int count, Vector3[] centers, Vector3[] mins, Vector3[] maxs)
+    int Split(int first, int count, Vector3[] centers, Vector3[] mins, Vector3[] maxs, float[] keys)
     {
         var index = _used++;
         Vector3 lo = new(float.MaxValue), hi = new(float.MinValue);
@@ -78,10 +78,13 @@ internal sealed class RayTree
         }
         var size = hi - lo;
         var axis = size.X >= size.Y && size.X >= size.Z ? 0 : size.Y >= size.Z ? 1 : 2;
-        Array.Sort(_tris, first, count, Comparer<int>.Create((p, q) => Axis(centers[p], axis).CompareTo(Axis(centers[q], axis))));
+        // Sorted by plain float keys: no comparer call per comparison (a Debug web build interprets every call).
+        for (var i = first; i < first + count; i++)
+            keys[i] = Axis(centers[_tris[i]], axis);
+        Array.Sort(keys, _tris, first, count);
         var half = count / 2;
-        Split(first, half, centers, mins, maxs);
-        _nodes[index].Second = Split(first + half, count - half, centers, mins, maxs);
+        Split(first, half, centers, mins, maxs, keys);
+        _nodes[index].Second = Split(first + half, count - half, centers, mins, maxs, keys);
         return index;
     }
 
