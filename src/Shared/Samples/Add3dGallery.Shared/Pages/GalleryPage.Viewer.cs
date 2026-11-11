@@ -155,7 +155,7 @@ public partial class GalleryPage
                                 Spacing = 8,
                                 AccessibilityRole = Aria.RoleRadioGroup,
                                 AccessibilityLabel = "Load the model",
-                                Children = Sources.Select((s, i) => (SkiaControl)new UiButton(s.Caption, Theme.Quiet, 108) { AccessibilityRole = Aria.RoleRadio }
+                                Children = Sources.Select((s, i) => (SkiaControl)new UiButton(s.Caption, Theme.Quiet, -1) { AccessibilityRole = Aria.RoleRadio }
                                     .Assign(out _sourceButtons[i])
                                     .OnTapped(_ => LoadViewer(s.Source))).ToList(),
                             },

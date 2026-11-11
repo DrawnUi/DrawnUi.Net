@@ -115,7 +115,7 @@ public partial class GalleryPage
                         Spacing = 8,
                         AccessibilityRole = Aria.RoleRadioGroup,
                         AccessibilityLabel = "Cities",
-                        Children = Cities.Select((city, i) => (SkiaControl)new UiButton(city.Name, Theme.Quiet, 158) { AccessibilityRole = Aria.RoleRadio }
+                        Children = Cities.Select((city, i) => (SkiaControl)new UiButton(city.Name, Theme.Quiet, -1) { AccessibilityRole = Aria.RoleRadio }
                             .Assign(out _cityButtons[i])
                             .OnTapped(_ => GoToCity(i))).ToList(),
                     },

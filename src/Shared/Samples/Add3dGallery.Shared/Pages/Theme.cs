@@ -85,11 +85,14 @@ public class UiButton : SkiaShape
     Color _fill;
     bool _hovered;
 
+    /// <param name="width">Points; -1 = as wide as its caption plus padding (a chip).</param>
     public UiButton(string text, Color fill, double width = 150)
     {
         _fill = fill;
         CornerRadius = 10;
         WidthRequest = width;
+        if (width < 0)
+            Padding = new Thickness(18, 0);
         HeightRequest = 40;
         BackgroundColor = fill;
         AccessibilityRole = Aria.RoleButton;
