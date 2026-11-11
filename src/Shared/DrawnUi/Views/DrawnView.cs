@@ -936,6 +936,8 @@ namespace DrawnUi.Views
         }
 
         List<Guid> _listRemoveAnimators = new(512);
+        readonly List<Guid> _animatorKeys = new(512);
+        bool _executingAnimators;
         readonly HashSet<Guid> _animatorsThatThrew = new(); // logged once each
 
         /// <summary>
@@ -979,52 +981,66 @@ namespace DrawnUi.Views
 
                     _listRemoveAnimators.Clear();
 
-                    var animatorKeys = AnimatingControls.Keys.ToList();
-
-                    //Debug.WriteLine($"Animators: {animatorKeys.Count}");
-
-                    foreach (var key in animatorKeys)
+                    // the keys of this frame, copied into a reused list (animators may come and go while they tick);
+                    // a nested call gets its own list
+                    var animatorKeys = _executingAnimators ? new List<Guid>(AnimatingControls.Count) : _animatorKeys;
+                    animatorKeys.Clear();
+                    foreach (var pair in AnimatingControls)
+                        animatorKeys.Add(pair.Key);
+                    var nested = _executingAnimators;
+                    _executingAnimators = true;
+                    try
                     {
-                        if (AnimatingControls.TryGetValue(key, out var skiaAnimation))
+
+                        //Debug.WriteLine($"Animators: {animatorKeys.Count}");
+
+                        foreach (var key in animatorKeys)
                         {
-                            if (skiaAnimation.IsDeactivated
-                                || skiaAnimation.Parent != null && skiaAnimation.Parent.IsDisposed)
+                            if (AnimatingControls.TryGetValue(key, out var skiaAnimation))
                             {
-                                //Debug.WriteLine($"Animators: removing {key}");
-                                _listRemoveAnimators.Add(key);
-                                continue;
-                            }
-
-                            bool canPlay =
-                                !skiaAnimation
-                                    .IsHiddenInViewTree; //!(skiaAnimation.Parent != null && !skiaAnimation.Parent.IsVisibleInViewTree());
-
-                            if (canPlay)
-                            {
-                                // each animator on its own: one that throws is logged once and the others keep going
-                                try
+                                if (skiaAnimation.IsDeactivated
+                                    || skiaAnimation.Parent != null && skiaAnimation.Parent.IsDisposed)
                                 {
-                                    if (skiaAnimation.IsPaused)
-                                        skiaAnimation.Resume(); //continue anim from current time instead of the old one
-
-                                    skiaAnimation.TickFrame(nanos);
-                                    executed++;
+                                    //Debug.WriteLine($"Animators: removing {key}");
+                                    _listRemoveAnimators.Add(key);
+                                    continue;
                                 }
-                                catch (Exception e)
+
+                                bool canPlay =
+                                    !skiaAnimation
+                                        .IsHiddenInViewTree; //!(skiaAnimation.Parent != null && !skiaAnimation.Parent.IsVisibleInViewTree());
+
+                                if (canPlay)
                                 {
-                                    if (_animatorsThatThrew.Add(key))
-                                        Super.Log(e);
+                                    // each animator on its own: one that throws is logged once and the others keep going
+                                    try
+                                    {
+                                        if (skiaAnimation.IsPaused)
+                                            skiaAnimation.Resume(); //continue anim from current time instead of the old one
+
+                                        skiaAnimation.TickFrame(nanos);
+                                        executed++;
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        if (_animatorsThatThrew.Add(key))
+                                            Super.Log(e);
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                if (!skiaAnimation.IsPaused)
+                                else
                                 {
-                                    skiaAnimation.Pause();
-                                    //Debug.WriteLine($"ANIMATORS - PAUSED {key}");
+                                    if (!skiaAnimation.IsPaused)
+                                    {
+                                        skiaAnimation.Pause();
+                                        //Debug.WriteLine($"ANIMATORS - PAUSED {key}");
+                                    }
                                 }
                             }
                         }
+                    }
+                    finally
+                    {
+                        _executingAnimators = nested;
                     }
 
                     foreach (var key in _listRemoveAnimators)
