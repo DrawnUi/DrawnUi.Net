@@ -15,6 +15,8 @@ public static class Theme
     public static readonly Color Muted = Color.FromRgb(154, 152, 176);
     public static readonly Color Accent = Color.FromRgb(124, 108, 242);
     public static readonly Color Quiet = Color.FromRgb(52, 56, 78);
+    /// <summary>Prices.</summary>
+    public static readonly Color Gold = Color.FromRgb(255, 196, 61);
 
     public const string Title = "FontTextTitle";
 
@@ -49,10 +51,7 @@ public static class Theme
     /// <summary>NASA's Blue Marble (public domain), an equirectangular map for the globe.</summary>
     public static readonly byte[] Earth = Model("earth.jpg");
 
-    public static readonly Color Good = Color.FromRgb(76, 201, 140);
-    public static readonly Color Bad = Color.FromRgb(255, 107, 107);
-    /// <summary>A button's color once its action is done (in the cart).</summary>
-    public static readonly Color Added = Color.FromRgb(38, 122, 88);
+    public static readonly Color Bad = Color.FromRgb(255, 99, 132);
     public static readonly Color Field = Color.FromRgb(31, 35, 52);
 
     /// <summary>A color moved toward white by <paramref name="amount"/> (0..1): the hover lift.</summary>

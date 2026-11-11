@@ -107,18 +107,19 @@ public partial class GalleryPage
                 WidthRequest = WideWidth - ViewerWidth - 24,
                 Children =
                 {
-                    // Uncached: the price cross-fades.
+                    // Uncached: the price counts. Its box is the stack's width, so a new price never lays the page out again.
                     new SkiaStack
                     {
                         Spacing = 2,
+                        IgnoreChildrenInvalidations = true,
                         Children =
                         {
                             new SkiaLabel("Walnut sofa") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                            new SkiaLabel("Three-seater, carved walnut frame") { FontSize = 14, TextColor = Theme.Muted },
+                            new SkiaLabel("Three-seater, carved walnut frame") { FontSize = 13, TextColor = Theme.Muted },
                             new SkiaLabel(Dollars(Fabrics[0].Price))
                                 {
-                                    FontSize = 22, FontFamily = Theme.Title, TextColor = Theme.Accent, Margin = new Thickness(0, 6, 0, 0),
-                                    AccessibilityRole = Aria.RoleText,
+                                    FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Gold, Margin = new Thickness(0, 6, 0, 0),
+                                    HorizontalOptions = LayoutOptions.Fill, AccessibilityRole = Aria.RoleText,
                                 }
                                 .WithAccessibilityLive()
                                 .Assign(out _price),
@@ -131,7 +132,7 @@ public partial class GalleryPage
                         UseCache = SkiaCacheType.Image,
                         Children =
                         {
-                            PanelLabel("UPHOLSTERY"),
+                            PanelLabel("FABRIC"),
                             new SkiaRow
                             {
                                 Spacing = 10,
@@ -321,26 +322,27 @@ public partial class GalleryPage
 
     void SetFabric(int index)
     {
-        var changed = _fabric != index;
         _fabric = index;
         for (var i = 0; i < _swatches.Length; i++)
         {
             _swatches[i].StrokeColor = i == index ? Theme.Ink : Colors.Transparent;
             _swatches[i].AccessibilityIsPressed = i == index;
         }
-        if (changed)
-            ShowPrice(Dollars(Fabrics[index].Price));
         Dress(_viewer);
     }
 
-    /// <summary>The price for the chosen fabric, cross-faded.</summary>
-    async void ShowPrice(string text)
+    /// <summary>The price on the label, counting to the chosen fabric's.</summary>
+    float _priceShown = Fabrics[0].Price;
+
+    /// <summary>Each frame: the price counts to the chosen fabric's at 2,800 dollars a second (Linen to Leather in a quarter second).</summary>
+    void PriceFrame(float delta)
     {
-        if (_price.Text == text)
+        var target = Fabrics[Math.Max(_fabric, 0)].Price;
+        if (_priceShown == target)
             return;
-        await _price.FadeToAsync(0, 90);
-        _price.Text = text;
-        await _price.FadeToAsync(1, 140);
+        var step = MathF.Sign(target - _priceShown) * MathF.Max(700 * 4 * delta, 1);
+        _priceShown = MathF.Abs(target - _priceShown) <= MathF.Abs(step) ? target : _priceShown + step;
+        _price.Text = Dollars((int)MathF.Round(_priceShown));
     }
 
     /// <summary>The upholstery's image and shine for the chosen fabric.</summary>

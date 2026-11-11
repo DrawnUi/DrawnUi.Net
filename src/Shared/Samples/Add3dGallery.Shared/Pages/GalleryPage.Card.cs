@@ -6,8 +6,8 @@ namespace Add3dGallery;
 /// </summary>
 public partial class GalleryPage
 {
-    /// <summary>The card in model units: a bank card's proportions (85.6 x 54 mm).</summary>
-    const float CardW = 8.56f, CardH = 5.4f, CardDepth = 0.06f;
+    /// <summary>The card in model units: a bank card's proportions (85.6 x 54 mm), its face 1024 x 646 path units.</summary>
+    const float CardScale = 8.56f / 1024;
 
     SkiaModel3D _card;
     UiButton _flipButton;
@@ -18,7 +18,7 @@ public partial class GalleryPage
     static SKPath CardOutline()
     {
         var path = new SKPath();
-        path.AddRoundRect(new SKRoundRect(SKRect.Create(CardW, CardH), 0.38f));
+        path.AddRoundRect(new SKRoundRect(SKRect.Create(1024, 646), 46));
         return path;
     }
 
@@ -28,72 +28,84 @@ public partial class GalleryPage
     /// </summary>
     static Model3D CardModel()
     {
-        var half = Mesh3D.Extrude(CardOutline(), CardDepth / 2);
+        var half = Mesh3D.Extrude(CardOutline(), 4);
         return new Model3D()
-            .Part("front", half, Colors.White).At(0, 0, CardDepth / 4)
-            .Part("back", half, Colors.White).At(0, 0, -CardDepth / 4).Turned(0, 180, 0);
+            .Part("front", half, Colors.White).Scaled(CardScale, CardScale, CardScale).At(0, 0, 2 * CardScale)
+            .Part("back", half, Colors.White).Scaled(CardScale, CardScale, CardScale).Turned(0, 180, 0).At(0, 0, -2 * CardScale);
     }
+
+    static SKPaint Linear(float x0, float y0, float x1, float y1, SKColor a, SKColor b) => new()
+    {
+        IsAntialias = true,
+        Shader = SKShader.CreateLinearGradient(new SKPoint(x0, y0), new SKPoint(x1, y1), new[] { a, b }, SKShaderTileMode.Clamp),
+    };
 
     static Texture3D CardFront() => Painted(1024, 646, (c, w, h) =>
     {
         using (var gradient = new SKPaint
                {
                    Shader = SKShader.CreateLinearGradient(new SKPoint(0, 0), new SKPoint(w, h),
-                       new[] { new SKColor(38, 30, 92), new SKColor(124, 108, 242), new SKColor(255, 99, 132) }, new[] { 0f, 0.62f, 1f },
-                       SKShaderTileMode.Clamp)
+                       new[] { new SKColor(0x26, 0x1E, 0x5C), new SKColor(0x7C, 0x6C, 0xF2), new SKColor(0xFF, 0x63, 0x84) }, SKShaderTileMode.Clamp)
                })
             c.DrawRect(0, 0, w, h, gradient);
-        // A soft light across the card.
-        using (var sheen = new SKPaint { Color = new SKColor(255, 255, 255, 26), IsAntialias = true })
-            c.DrawCircle(w * 0.85f, -h * 0.2f, h * 0.9f, sheen);
-        // The brand: two rings and a name.
-        using (var ring = new SKPaint { Color = new SKColor(255, 255, 255, 230), IsAntialias = true, Style = SKPaintStyle.Stroke, StrokeWidth = 10 })
-        {
-            c.DrawCircle(96, 92, 34, ring);
-            c.DrawCircle(138, 92, 34, ring);
-        }
-        Text(c, "DRAWN REWARDS", 196, 106, 40, SKColors.White);
-        Text(c, "GOLD", w - 64, 106, 34, new SKColor(255, 214, 120), SKTextAlign.Right);
-        // The chip.
-        using (var chip = new SKPaint
+        // A soft white glow at the top right.
+        using (var glow = new SKPaint
                {
-                   IsAntialias = true,
-                   Shader = SKShader.CreateLinearGradient(new SKPoint(80, 220), new SKPoint(210, 320),
-                       new[] { new SKColor(255, 222, 140), new SKColor(214, 166, 64) }, SKShaderTileMode.Clamp)
+                   Shader = SKShader.CreateRadialGradient(new SKPoint(w * 0.84f, h * 0.1f), 330,
+                       new[] { new SKColor(255, 255, 255, 90), new SKColor(255, 255, 255, 0) }, SKShaderTileMode.Clamp)
                })
-            c.DrawRoundRect(80, 220, 130, 100, 16, 16, chip);
-        using (var lines = new SKPaint { Color = new SKColor(150, 110, 40, 160), IsAntialias = true, Style = SKPaintStyle.Stroke, StrokeWidth = 3 })
+            c.DrawRect(0, 0, w, h, glow);
+        // Two white rings and the name, top left; the tier, top right.
+        using (var ring = new SKPaint { Color = SKColors.White, IsAntialias = true, Style = SKPaintStyle.Stroke, StrokeWidth = 5 })
         {
-            c.DrawLine(80, 270, 210, 270, lines);
-            c.DrawLine(145, 220, 145, 320, lines);
+            c.DrawCircle(84, 92, 24, ring);
+            c.DrawCircle(114, 92, 24, ring);
         }
-        Text(c, "4821  0730  5512  9046", 80, 430, 58, SKColors.White);
-        Text(c, "MEMBER", 80, 520, 22, new SKColor(255, 255, 255, 170));
-        Text(c, "ALEX MORGAN", 80, 562, 38, SKColors.White);
-        Text(c, "VALID THRU", w - 80, 520, 22, new SKColor(255, 255, 255, 170), SKTextAlign.Right);
-        Text(c, "08/29", w - 80, 562, 38, SKColors.White, SKTextAlign.Right);
+        Text(c, "DRAWN REWARDS", 158, 106, 38, SKColors.White);
+        Text(c, "GOLD", w - 64, 108, 44, new SKColor(0xFF, 0xD6, 0x78), SKTextAlign.Right);
+        // The chip.
+        using (var chip = Linear(64, 196, 200, 300, new SKColor(255, 222, 122), new SKColor(255, 196, 61)))
+            c.DrawRoundRect(64, 196, 136, 104, 18, 18, chip);
+        using (var lines = new SKPaint { Color = new SKColor(120, 80, 0, 130), IsAntialias = true, Style = SKPaintStyle.Stroke, StrokeWidth = 3 })
+        {
+            c.DrawRoundRect(98, 220, 68, 56, 10, 10, lines);
+            c.DrawLine(64, 248, 98, 248, lines);
+            c.DrawLine(166, 248, 200, 248, lines);
+        }
+        Text(c, "4821  0730  5512  9046", 64, 420, 60, SKColors.White);
+        var dim = new SKColor(255, 255, 255, 190);
+        Text(c, "MEMBER", 64, 520, 24, dim);
+        Text(c, "ALEX MORGAN", 64, 568, 40, SKColors.White);
+        Text(c, "VALID THRU", 700, 520, 24, dim);
+        Text(c, "08/29", 700, 568, 40, SKColors.White);
     });
 
     static Texture3D CardBack() => Painted(1024, 646, (c, w, h) =>
     {
-        using (var paint = new SKPaint { Color = new SKColor(30, 26, 62) })
+        using (var paint = Fill(new SKColor(0x1E, 0x1A, 0x3E)))
             c.DrawRect(0, 0, w, h, paint);
-        using (var stripe = new SKPaint { Color = new SKColor(12, 12, 18) })
-            c.DrawRect(0, 70, w, 120, stripe);
-        using (var strip = new SKPaint { Color = new SKColor(238, 236, 246), IsAntialias = true })
-            c.DrawRoundRect(64, 250, 640, 90, 8, 8, strip);
-        Text(c, "Alex Morgan", 96, 312, 44, new SKColor(52, 56, 120), SKTextAlign.Left, true);
-        using (var cvv = new SKPaint { Color = SKColors.White, IsAntialias = true })
-            c.DrawRoundRect(730, 250, 150, 90, 8, 8, cvv);
-        Text(c, "123", 805, 312, 40, new SKColor(30, 26, 62), SKTextAlign.Center);
-        Text(c, "12,480 points", 64, 450, 52, SKColors.White);
-        Text(c, "Show this card at checkout to collect points.", 64, 506, 28, new SKColor(255, 255, 255, 170));
-        Text(c, "drawnui.net", 64, 590, 28, new SKColor(255, 214, 120));
+        // The magnetic stripe.
+        using (var stripe = Fill(new SKColor(10, 10, 14)))
+            c.DrawRect(0, 60, w, 112, stripe);
+        // The signature strip and the CVV.
+        using (var strip = Fill(new SKColor(232, 228, 240)))
+            c.DrawRoundRect(64, 226, 620, 84, 8, 8, strip);
+        Text(c, "Alex Morgan", 92, 282, 40, new SKColor(52, 48, 84), SKTextAlign.Left, true);
+        using (var cvv = Fill(SKColors.White))
+            c.DrawRoundRect(708, 226, 140, 84, 8, 8, cvv);
+        Text(c, "123", 778, 282, 40, new SKColor(30, 28, 52), SKTextAlign.Center);
+        Text(c, "12,480 points", 64, 420, 52, SKColors.White);
+        Text(c, "Show this card at checkout to collect points.", 64, 478, 30, new SKColor(255, 255, 255, 200));
+        Text(c, "drawnui.net", 64, h - 64, 34, new SKColor(0xFF, 0xD6, 0x78));
     });
 
+    /// <summary>Text on a card face, its baseline at <paramref name="y"/>: subpixel-positioned and antialiased, so it stays even on the turning card.</summary>
     static void Text(SKCanvas canvas, string text, float x, float y, float size, SKColor color, SKTextAlign align = SKTextAlign.Left, bool italic = false)
     {
-        using var font = new SKFont(SkiaFontManager.Instance.GetFont(Theme.Title) ?? SKTypeface.Default, size) { SkewX = italic ? -0.25f : 0 };
+        using var font = new SKFont(SkiaFontManager.Instance.GetFont("FontText") ?? SKTypeface.Default, size)
+        {
+            SkewX = italic ? -0.22f : 0, Subpixel = true, Edging = SKFontEdging.Antialias,
+        };
         using var paint = new SKPaint { IsAntialias = true, Color = color };
         canvas.DrawText(text, x, y, align, font, paint);
     }
@@ -108,7 +120,7 @@ public partial class GalleryPage
                         Orbit = false,
                         Yaw = 0,
                         Pitch = 0,
-                        Zoom = 0.82f,
+                        Zoom = 0.74f,
                         // Leans toward the mouse or the finger, up to 14 degrees at the stage's edge.
                         TiltToPointer = 14,
                         Antialias = true,
@@ -138,7 +150,7 @@ public partial class GalleryPage
                         UseCache = SkiaCacheType.Image,
                         Children =
                         {
-                            new SkiaLabel("Drawn Rewards Gold") { FontSize = 22, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new SkiaLabel("Drawn Rewards Gold") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
                             new SkiaLabel("12,480 points · member since 2021") { FontSize = 14, TextColor = Theme.Muted },
                             new SkiaLabel("Both faces are images drawn in code with Skia and put on the card's two halves.")
                                 { FontSize = 13, TextColor = Theme.Muted, Margin = new Thickness(0, 10, 0, 0) },

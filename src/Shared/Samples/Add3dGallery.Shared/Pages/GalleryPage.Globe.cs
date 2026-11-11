@@ -106,7 +106,7 @@ public partial class GalleryPage
                         Spacing = 4,
                         Children =
                         {
-                            new SkiaLabel("Offices") { FontSize = 22, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new SkiaLabel("Offices") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
                             new SkiaLabel("Pick a city to turn the globe to it, or tap a pin.") { FontSize = 13, TextColor = Theme.Muted },
                         }
                     },
@@ -122,6 +122,7 @@ public partial class GalleryPage
                     new UiButton("Pause spin", Theme.Quiet, 158) { Margin = new Thickness(0, 6, 0, 0), AccessibilityHint = "Stops or starts the globe turning by itself" }
                         .Assign(out _spinButton)
                         .OnTapped(_ => SetSpin(!_spinning)),
+                    new SkiaLabel("Image: NASA Blue Marble") { FontSize = 12, TextColor = Theme.Muted },
                 }
             },
         }

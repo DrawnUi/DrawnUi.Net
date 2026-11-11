@@ -67,7 +67,7 @@ public partial class GalleryPage : DrawnGame
                             }
                         },
 
-                        Theme.Section("Product viewer", "A real product on a shop page: turn it, zoom in, tap the dots, try another upholstery."),
+                        Theme.Section("Product viewer", "A real product model on a shop page: turn it, zoom in, tap the dots, pick a fabric."),
                         ViewerCard(),
 
                         Theme.Section("3D in a scrolling list", "Thirty pieces of furniture, each with a live 3D thumbnail: point at a row to turn it, or drag a thumbnail sideways. Rows off screen draw nothing."),
@@ -287,6 +287,9 @@ public partial class GalleryPage : DrawnGame
     protected override void OnLayoutReady()
     {
         base.OnLayoutReady();
+        // The pins' first placement makes the globe's ray tree (hidden pins are found by a ray): done now, while the
+        // page opens, and not in the frame the globe scrolls into view.
+        PlacePins();
         StartLoop();
     }
 

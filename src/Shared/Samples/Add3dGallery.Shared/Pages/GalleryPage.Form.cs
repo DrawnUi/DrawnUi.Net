@@ -136,11 +136,11 @@ public partial class GalleryPage
         var password = _passwordField.Text ?? "";
         string problem = null;
         if (name.Length == 0)
-            problem = "Please type your name.";
+            problem = "Please tell us your name.";
         else if (!email.Contains('@') || !email.Contains('.'))
             problem = "That email does not look right.";
-        else if (password.Length < 6)
-            problem = "The password needs at least 6 characters.";
+        else if (password.Length < 8)
+            problem = "Use at least 8 characters for the password.";
         if (problem != null)
         {
             _formStatus.Text = problem;
@@ -149,7 +149,7 @@ public partial class GalleryPage
             return;
         }
         _formStatus.Text = $"Welcome aboard, {name}!";
-        _formStatus.TextColor = Theme.Good;
+        _formStatus.TextColor = Theme.Gold;
         _formFocus = -1;
         Watch();
         _mascot.PlayOnce("CharacterArmature|Wave");

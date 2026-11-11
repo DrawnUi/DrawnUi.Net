@@ -59,6 +59,7 @@ public partial class GalleryPage
         _time += delta;
         var t = _time;
 
+        PriceFrame(delta);
         ListFrame();
         // The scene pans: every layer slides by its share, the ground (and the mobs on it) the most.
         _pan += Scenery.PanSpeed * delta;
@@ -75,8 +76,12 @@ public partial class GalleryPage
         }
 
         _pop = MathF.Max(_pop - delta * 3, 0);
-        var beat = 1 + 0.05f * MathF.Max(MathF.Sin(t * 5), 0) + 0.35f * _pop;
-        _heart.SetNodeScale("heart", beat, beat, 1);
+        // Controls off screen are not touched: their state moves on, they get it when they show again.
+        if (_heart.WasInLastFrame())
+        {
+            var beat = 1 + 0.05f * MathF.Max(MathF.Sin(t * 5), 0) + 0.35f * _pop;
+            _heart.SetNodeScale("heart", beat, beat, 1);
+        }
 
         if (!_rainReady)
         {
@@ -93,6 +98,7 @@ public partial class GalleryPage
                 _pieces[i] = p;
             }
         }
+        var rainShown = _rain.WasInLastFrame();
         for (var i = 0; i < PieceCount; i++)
         {
             ref var p = ref _pieces[i];
@@ -100,6 +106,8 @@ public partial class GalleryPage
             p.Facing += p.Spin * delta;
             if (p.Y > RainHeight + 16)
                 p.Y = -12;
+            if (!rainShown)
+                continue;
             _rain.SetPosition(PieceNames[i], p.X + MathF.Sin(t * 2 + p.Sway) * 10, p.Y);
             _rain.SetFacing(PieceNames[i], p.Facing);
         }
@@ -123,6 +131,7 @@ public partial class GalleryPage
                 _walkers[i] = w;
             }
         }
+        var fieldShown = _field.WasInLastFrame();
         for (var i = 0; i < _mobs; i++)
         {
             ref var w = ref _walkers[i];
@@ -132,7 +141,8 @@ public partial class GalleryPage
                 w.X += FieldWidth + 80;
             else if (w.X > FieldWidth + 40)
                 w.X -= FieldWidth + 80;
-            _field.SetPosition(MobNames[i], w.X, w.Y);
+            if (fieldShown)
+                _field.SetPosition(MobNames[i], w.X, w.Y);
         }
     }
 }

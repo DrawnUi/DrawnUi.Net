@@ -46,6 +46,9 @@ public partial class GalleryPage
                 new SkiaRow
                 {
                     HorizontalOptions = LayoutOptions.Fill,
+                    // Neither the title nor the count (a fixed box) ever changes the row's size: a new count
+                    // redraws the row and does not lay out the card and the list under it again.
+                    IgnoreChildrenInvalidations = true,
                     Children =
                     {
                         new SkiaLabel("Shop") { FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
@@ -74,7 +77,7 @@ public partial class GalleryPage
                             VerticalOptions = LayoutOptions.Fill,
                             Content = new SkiaStack
                             {
-                                Spacing = 0,
+                                Spacing = 2,
                                 AccessibilityRole = Aria.RoleList,
                                 AccessibilityLabel = "Products",
                                 Children = Enumerable.Range(0, ListRows).Select(ProductRow).ToList(),
@@ -107,71 +110,54 @@ public partial class GalleryPage
             model.SetMaterialColor(model.MaterialNames[0], finish.Tint);
         _thumbs[index] = model;
         var added = false;
-        return new SkiaShape
+        return new SkiaRow
             {
                 HeightRequest = RowHeight,
                 HorizontalOptions = LayoutOptions.Fill,
+                Spacing = 16,
+                Padding = new Thickness(12, 8),
                 // A still row (its thumbnail shows its last render) is one GPU blit, also while the list scrolls; the
                 // row under the mouse is drawn again while its model turns.
                 UseCache = SkiaCacheType.GPU,
-                Padding = new Thickness(12, 8, 12, 0),
                 AccessibilityRole = Aria.RoleListItem,
-                AccessibilityLabel = $"{name}, ${price}",
+                AccessibilityLabel = $"{name}, {Dollars(price)}",
                 Children =
                 {
-                    new SkiaRow
+                    new SkiaShape
                     {
-                        Spacing = 16,
-                        Margin = new Thickness(0, 0, 0, 8),
-                        HorizontalOptions = LayoutOptions.Fill,
-                        VerticalOptions = LayoutOptions.Fill,
+                        CornerRadius = 10,
+                        BackgroundColor = Theme.Stage,
+                        WidthRequest = ThumbSize,
+                        HeightRequest = ThumbSize,
+                        VerticalOptions = LayoutOptions.Center,
+                        Children = { model },
+                    },
+                    new SkiaStack
+                    {
+                        Spacing = 2,
+                        VerticalOptions = LayoutOptions.Center,
                         Children =
                         {
-                            Stage(model).WithWidth(ThumbSize).WithHeight(ThumbSize).WithVerticalOptions(LayoutOptions.Center),
-                            new SkiaRow
-                            {
-                                Spacing = 16,
-                                VerticalOptions = LayoutOptions.Center,
-                                Children =
-                                {
-                                    new SkiaStack
-                                    {
-                                        Spacing = 2,
-                                        WidthRequest = 520,
-                                        VerticalOptions = LayoutOptions.Center,
-                                        Children =
-                                        {
-                                            new SkiaLabel(name) { FontSize = 16, FontFamily = Theme.Title, TextColor = Theme.Ink },
-                                            new SkiaLabel(large ? $"{piece.Detail} · large" : piece.Detail) { FontSize = 13, TextColor = Theme.Muted },
-                                        }
-                                    },
-                                    new SkiaLabel(Dollars(price))
-                                    {
-                                        FontSize = 17, FontFamily = Theme.Title, TextColor = Theme.Ink, VerticalOptions = LayoutOptions.Center,
-                                        WidthRequest = 80, HorizontalTextAlignment = DrawTextAlignment.End,
-                                    },
-                                    new UiButton("Add", Theme.Accent, 120) { AccessibilityLabel = $"Add {name} to the cart", VerticalOptions = LayoutOptions.Center }
-                                        .OnTapped(me =>
-                                        {
-                                            added = !added;
-                                            me.Text = added ? "In the cart" : "Add";
-                                            me.AccessibilityLabel = added ? $"Remove {name} from the cart" : $"Add {name} to the cart";
-                                            me.Fill = added ? Theme.Added : Theme.Accent;
-                                        }),
-                                }
-                            },
+                            new SkiaLabel(name) { FontSize = 15, TextColor = Theme.Ink },
+                            new SkiaLabel(large ? $"{piece.Detail} · large" : piece.Detail) { FontSize = 12, TextColor = Theme.Muted },
+                            new SkiaLabel(Dollars(price)) { FontSize = 14, TextColor = Theme.Gold },
                         }
                     },
-                    // A hairline between rows.
-                    new SkiaShape { HeightRequest = 1, BackgroundColor = Theme.Line, HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.End },
+                    new UiButton("Add", Theme.Accent, 120)
+                        {
+                            AccessibilityLabel = $"Add {name} to the cart", HorizontalOptions = LayoutOptions.End, VerticalOptions = LayoutOptions.Center,
+                        }
+                        .OnTapped(me =>
+                        {
+                            added = !added;
+                            me.Text = added ? "In the cart" : "Add";
+                            me.AccessibilityLabel = added ? $"Remove {name} from the cart" : $"Add {name} to the cart";
+                            me.Fill = added ? Theme.Stage : Theme.Accent;
+                        }),
                 }
             }
-            // The row under the mouse turns its thumbnail; the others stay still and are only blitted.
-            .OnHovered((me, on) =>
-            {
-                me.BackgroundColor = on ? Theme.Lighter(Theme.Page, 0.04f) : Colors.Transparent;
-                model.AutoRotate = on ? 40 : 0;
-            });
+            // The row under the mouse turns its piece; the others stay still and are only blitted.
+            .OnHovered((_, on) => model.AutoRotate = on ? 40 : 0);
     }
 
     /// <summary>Each frame: how many thumbnails the list drew, shown above it (the rest cost nothing).</summary>
