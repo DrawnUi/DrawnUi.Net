@@ -71,7 +71,26 @@
                     HorizontalOptions = LayoutOptions.Fill,
                 },
 
-                _viewer,
+                new SkiaLayer()
+                {
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill,
+                    Children =
+                    {
+                        _viewer,
+                        new SkiaLabelFps()
+                        {
+                            UseCache = SkiaCacheType.GPU,
+                            Margin = new (0, 0, 4, 24),
+                            VerticalOptions = LayoutOptions.End,
+                            HorizontalOptions = LayoutOptions.End,
+                            Rotation = -45,
+                            BackgroundColor = Colors.DarkRed,
+                            TextColor = Colors.White,
+                            ZIndex = 110,
+                        },
+                    }
+                },
             }
         };
     }
@@ -107,6 +126,7 @@
         private readonly Action<string> _setStatus;
         private PerpetualPendulumAnimator? _animator;
         private ObjModel? _model;
+        private SKMeshSpecification? _spec; // compiled once: SkSL compilation is far too slow for every frame
         private double _phase;
         private bool _reportedReady;
 
@@ -132,6 +152,8 @@
         {
             _animator?.Stop();
             _animator = null;
+            _spec?.Dispose();
+            _spec = null;
             base.OnDisposing();
         }
 
@@ -157,7 +179,8 @@
             try
             {
                 var packet = BuildFramePacket(dest, (float)_phase, _model);
-                using var spec = CreateMeshSpecification(out var specErr);
+                string? specErr = null;
+                var spec = _spec ??= CreateMeshSpecification(out specErr);
                 if (spec == null)
                 {
                     _setStatus("rocket spec FAIL: " + specErr);
@@ -300,10 +323,16 @@
 
         private static FramePacket BuildFramePacket(SKRect dest, float phase, ObjModel model)
         {
-            var meshVertices = new float[model.Triangles.Count * 18];
-            var wireLines = new float[model.Triangles.Count * 12];
+            var count = model.Triangles.Count;
+            var meshVertices = new float[count * 18];
+            var wireLines = new SKPoint[count * 6];
             var meshIndex = 0;
             var wireIndex = 0;
+            var corners = new Vec2[count * 3];
+            var colors = new SKColor[count];
+            var order = new int[count];
+            var keys = new float[count];
+            var t = 0;
             var minX = float.MaxValue;
             var minY = float.MaxValue;
             var maxX = float.MinValue;
@@ -329,19 +358,31 @@
                 var projected1 = Project(p1, dest);
                 var projected2 = Project(p2, dest);
 
-                var color = ComputeColor(lightValue, depthTint);
-
-                AppendMeshVertex(meshVertices, ref meshIndex, projected0.X, projected0.Y, color);
-                AppendMeshVertex(meshVertices, ref meshIndex, projected1.X, projected1.Y, color);
-                AppendMeshVertex(meshVertices, ref meshIndex, projected2.X, projected2.Y, color);
-
-                AppendWire(wireLines, ref wireIndex, projected0, projected1);
-                AppendWire(wireLines, ref wireIndex, projected1, projected2);
-                AppendWire(wireLines, ref wireIndex, projected2, projected0);
+                corners[t * 3] = projected0;
+                corners[t * 3 + 1] = projected1;
+                corners[t * 3 + 2] = projected2;
+                colors[t] = ComputeColor(lightValue, depthTint);
+                keys[t] = -depth; // farthest first: no depth buffer, so triangles are drawn back to front
+                order[t] = t;
+                t++;
 
                 UpdateBounds(projected0.X, projected0.Y, ref minX, ref minY, ref maxX, ref maxY);
                 UpdateBounds(projected1.X, projected1.Y, ref minX, ref minY, ref maxX, ref maxY);
                 UpdateBounds(projected2.X, projected2.Y, ref minX, ref minY, ref maxX, ref maxY);
+            }
+
+            Array.Sort(keys, order);
+            foreach (var i in order)
+            {
+                var a = corners[i * 3];
+                var b = corners[i * 3 + 1];
+                var c = corners[i * 3 + 2];
+                AppendMeshVertex(meshVertices, ref meshIndex, a.X, a.Y, colors[i]);
+                AppendMeshVertex(meshVertices, ref meshIndex, b.X, b.Y, colors[i]);
+                AppendMeshVertex(meshVertices, ref meshIndex, c.X, c.Y, colors[i]);
+                AppendWire(wireLines, ref wireIndex, a, b);
+                AppendWire(wireLines, ref wireIndex, b, c);
+                AppendWire(wireLines, ref wireIndex, c, a);
             }
 
             return new FramePacket(
@@ -350,7 +391,7 @@
                 new SKRect(minX - 12, minY - 12, maxX + 12, maxY + 12));
         }
 
-        private static void DrawWireOverlay(SKCanvas canvas, float[] wireLines)
+        private static void DrawWireOverlay(SKCanvas canvas, SKPoint[] wireLines)
         {
             using var paint = new SKPaint
             {
@@ -360,15 +401,7 @@
                 Style = SKPaintStyle.Stroke,
             };
 
-            for (var index = 0; index < wireLines.Length; index += 4)
-            {
-                canvas.DrawLine(
-                    wireLines[index],
-                    wireLines[index + 1],
-                    wireLines[index + 2],
-                    wireLines[index + 3],
-                    paint);
-            }
+            canvas.DrawPoints(SKPointMode.Lines, wireLines, paint); // one call for every edge
         }
 
         private static void AppendMeshVertex(float[] buffer, ref int index, float x, float y, SKColor color)
@@ -381,12 +414,10 @@
             buffer[index++] = color.Alpha / 255f;
         }
 
-        private static void AppendWire(float[] buffer, ref int index, Vec2 a, Vec2 b)
+        private static void AppendWire(SKPoint[] buffer, ref int index, Vec2 a, Vec2 b)
         {
-            buffer[index++] = a.X;
-            buffer[index++] = a.Y;
-            buffer[index++] = b.X;
-            buffer[index++] = b.Y;
+            buffer[index++] = new SKPoint(a.X, a.Y);
+            buffer[index++] = new SKPoint(b.X, b.Y);
         }
 
         private static SKColor ComputeColor(float lightValue, float depthTint)
@@ -605,7 +636,7 @@
     }
 
     private readonly record struct Bounds3(Vec3 Min, Vec3 Max, Vec3 Size);
-    private readonly record struct FramePacket(float[] MeshVertices, float[] WireLines, SKRect Bounds);
+    private readonly record struct FramePacket(float[] MeshVertices, SKPoint[] WireLines, SKRect Bounds);
     private readonly record struct Vec2(float X, float Y);
     private readonly record struct Vec3(float X, float Y, float Z);
 }
