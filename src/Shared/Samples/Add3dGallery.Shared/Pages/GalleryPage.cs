@@ -50,7 +50,8 @@ public partial class GalleryPage : DrawnGame
                     {
                         new SkiaStack
                         {
-                            Spacing = 6,
+                            // As the page's own spacing in DrawnUI for Rust's gallery, where the caption is the title's sibling.
+                            Spacing = 20,
                             UseCache = SkiaCacheType.Image,
                             Children =
                             {
