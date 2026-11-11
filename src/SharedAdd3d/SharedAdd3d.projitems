@@ -13,6 +13,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Add3dTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Add3dFluent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RayTree.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scene3D.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)GltfReader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Player3D.cs" />

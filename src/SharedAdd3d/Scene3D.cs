@@ -33,6 +33,9 @@ internal sealed class Primitive3D
     public Vector4[] Weights = Array.Empty<Vector4>();
     public uint[] Indices;
     public int Material = -1;
+
+    /// <summary>The triangles' box tree for rays (taps, points hidden behind the model), made at the first ray; rigid primitives only.</summary>
+    public RayTree Tree;
 }
 
 internal sealed class Material3D
@@ -394,37 +397,74 @@ internal sealed partial class Scene3D
     /// passed through.
     /// </summary>
     public bool RayHit(ReadOnlySpan<Matrix4x4> pose, ReadOnlySpan<bool> hidden, ReadOnlySpan<MaterialOverride> materials,
-        Vector3 from, Vector3 dir, out int hitNode, out int hitPrimitive, out float distance)
+        Vector3 from, Vector3 dir, out int hitNode, out int hitPrimitive, out float distance) =>
+        Ray(pose, hidden, materials, from, dir, float.MaxValue, false, out hitNode, out hitPrimitive, out distance);
+
+    /// <summary>
+    /// Whether any surface lies on the ray closer than <paramref name="limit"/> (in units of <paramref name="dir"/>):
+    /// stops at the first one found. Hidden nodes and materials are passed through.
+    /// </summary>
+    public bool RayBlocked(ReadOnlySpan<Matrix4x4> pose, ReadOnlySpan<bool> hidden, ReadOnlySpan<MaterialOverride> materials,
+        Vector3 from, Vector3 dir, float limit) =>
+        Ray(pose, hidden, materials, from, dir, limit, true, out _, out _, out _);
+
+    /// <summary>Posed positions of skinned parts during a ray test, reused (rays run on the UI thread).</summary>
+    [ThreadStatic] static Vector3[] _rayScratch;
+
+    bool Ray(ReadOnlySpan<Matrix4x4> pose, ReadOnlySpan<bool> hidden, ReadOnlySpan<MaterialOverride> materials,
+        Vector3 from, Vector3 dir, float limit, bool anyHit, out int hitNode, out int hitPrimitive, out float distance)
     {
         hitNode = -1;
         hitPrimitive = -1;
-        distance = float.MaxValue;
-        Vector3[] at = null;
+        distance = limit;
         for (var i = 0; i < Nodes.Length; i++)
         {
             var mesh = Nodes[i].Mesh;
             if (mesh < 0 || mesh >= Meshes.Length || (hidden.Length > i && hidden[i]))
                 continue;
+            var skin = Nodes[i].Skin;
             var primitives = Meshes[mesh];
             for (var p = 0; p < primitives.Length; p++)
             {
                 var primitive = primitives[p];
                 if (primitive.Material >= 0 && primitive.Material < materials.Length && materials[primitive.Material].Hidden)
                     continue;
-                if (at == null || at.Length < primitive.Positions.Length)
-                    at = new Vector3[primitive.Positions.Length];
-                PosedPositions(i, primitive, pose, at);
+                if (!(skin >= 0 && skin < Skins.Length && primitive.Joints.Length == primitive.Positions.Length))
+                {
+                    // A rigid part: the ray goes into the part's own space instead of every vertex out of it, and through
+                    // its box tree. A point along a ray keeps its parameter through an affine map, so distances compare.
+                    if (!Matrix4x4.Invert(pose[i], out var inverse))
+                        continue;
+                    primitive.Tree ??= RayTree.Build(primitive.Positions, primitive.Indices);
+                    if (primitive.Tree.Hit(primitive.Positions, primitive.Indices, Vector3.Transform(from, inverse),
+                            Vector3.TransformNormal(dir, inverse), ref distance, anyHit))
+                    {
+                        hitNode = i;
+                        hitPrimitive = p;
+                        if (anyHit)
+                            return true;
+                    }
+                    continue;
+                }
+                // A skinned part: its vertices where the pose puts them, tested one by one.
+                if (_rayScratch == null || _rayScratch.Length < primitive.Positions.Length)
+                    _rayScratch = new Vector3[primitive.Positions.Length];
+                PosedPositions(i, primitive, pose, _rayScratch);
+                var at = _rayScratch;
                 var idx = primitive.Indices;
+                var n = (uint)primitive.Positions.Length;
                 for (var k = 0; k + 2 < idx.Length; k += 3)
                 {
                     uint a = idx[k], b = idx[k + 1], c = idx[k + 2];
-                    if (a >= primitive.Positions.Length || b >= primitive.Positions.Length || c >= primitive.Positions.Length)
+                    if (a >= n || b >= n || c >= n)
                         continue;
-                    if (RayTriangle(from, dir, at[a], at[b], at[c], out var t) && t < distance)
+                    if (RayTriangle(from, dir, at[(int)a], at[(int)b], at[(int)c], out var t) && t < distance)
                     {
                         distance = t;
                         hitNode = i;
                         hitPrimitive = p;
+                        if (anyHit)
+                            return true;
                     }
                 }
             }

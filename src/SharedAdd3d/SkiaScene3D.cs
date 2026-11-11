@@ -46,6 +46,8 @@ public class SkiaScene3D : SkiaControl
     NodeTransform[] _locals = Array.Empty<NodeTransform>();
     ActionOnTickAnimator _loop;
     long _lastNanos;
+    /// <summary>Drawn since the last frame tick: a layer that was not (off screen) stops asking for frames.</summary>
+    bool _painted;
     float _tilt = 15, _outlineWidth;
     bool _playing = true;
     Look _look;
@@ -395,6 +397,7 @@ public class SkiaScene3D : SkiaControl
             if (!_loop.IsRunning)
             {
                 _lastNanos = 0;
+                _painted = true;
                 _loop.Start();
                 Superview?.RequestNextFrame();
             }
@@ -405,6 +408,14 @@ public class SkiaScene3D : SkiaControl
 
     void Tick(long nanos)
     {
+        if (!_painted)
+        {
+            // Not drawn since the last tick (scrolled off screen, under a hidden parent): no frames, time stands still.
+            // Drawing it again starts the loop (Paint).
+            _loop.Stop();
+            return;
+        }
+        _painted = false;
         var delta = _lastNanos == 0 ? 0 : (nanos - _lastNanos) / 1_000_000_000f;
         _lastNanos = nanos;
         Advance(delta);
@@ -522,6 +533,7 @@ public class SkiaScene3D : SkiaControl
         int w = (int)MathF.Round(dest.Width), h = (int)MathF.Round(dest.Height);
         if (w <= 0 || h <= 0 || _objects.Count == 0)
             return;
+        _painted = true;
         if (WantsFrames && _loop is not { IsRunning: true })
             UpdateTicking();
         var gr = Superview?.GetGRContext();

@@ -28,6 +28,13 @@ public enum Look
 public sealed record ModelHit(string Node, string Material, Vector3 Point);
 
 /// <summary>
+/// Where a 3D point of a model shows in its control (<see cref="SkiaModel3D.ScreenPosition"/>): points from the control's
+/// top left, and whether the model's own surface hides it (a pin on the far side of a globe, a hotspot behind the
+/// model). Same as DrawnUI for Rust's PointOnScreen.
+/// </summary>
+public readonly record struct PointOnScreen(float X, float Y, bool Occluded);
+
+/// <summary>
 /// What a tap on a <see cref="SkiaScene3D"/> hit: the object by its name, and the node and material of its model under the finger.
 /// </summary>
 /// <param name="Object">The object's name given to <see cref="SkiaScene3D.Add"/>.</param>

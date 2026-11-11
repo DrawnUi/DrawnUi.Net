@@ -42,6 +42,19 @@ public class SkiaModel3D : SkiaControl
     string _animation;
     float _yaw = 20, _pitch = 10, _autoRotate, _zoom = 1, _outlineWidth;
     bool _orbit = true;
+    /// <summary>The view the app set last (the one <see cref="ResetView"/> glides back to).</summary>
+    float _homeYaw = 20, _homePitch = 10, _homeZoom = 1;
+    /// <summary>The glide back to the home view, 0 to 1 (1 = none running), and where it started.</summary>
+    float _reset = 1, _fromYaw, _fromPitch, _fromZoom;
+    bool _pinchZoom, _resetOnDoubleTap, _lockPitch;
+    float _minZoom = 0.5f, _maxZoom = 2.5f;
+    /// <summary>This gesture's drag: 0 not decided yet, 1 turns the model, 2 left to the parent (vertical, pitch locked).</summary>
+    int _panAxis;
+    long _lastTapMs;
+    /// <summary>Drawn since the last frame tick: a model that was not (off screen) stops asking for frames.</summary>
+    bool _painted;
+    /// <summary>Something changed since the last 3D render (every change calls Update); false = its image can be shown again.</summary>
+    bool _stale = true;
     Look _look;
     bool _antialias;
     Color _outlineColor = Colors.Black;
@@ -162,7 +175,7 @@ public class SkiaModel3D : SkiaControl
         get => _yaw;
         set
         {
-            _yaw = value;
+            _yaw = _homeYaw = value;
             Update();
         }
     }
@@ -173,7 +186,7 @@ public class SkiaModel3D : SkiaControl
         get => _pitch;
         set
         {
-            _pitch = value;
+            _pitch = _homePitch = value;
             Update();
         }
     }
@@ -184,7 +197,7 @@ public class SkiaModel3D : SkiaControl
         get => _zoom;
         set
         {
-            _zoom = MathF.Max(0.05f, value);
+            _zoom = _homeZoom = MathF.Max(0.05f, value);
             Update();
         }
     }
@@ -194,6 +207,47 @@ public class SkiaModel3D : SkiaControl
     {
         get => _orbit;
         set => _orbit = value;
+    }
+
+    /// <summary>
+    /// Two fingers pinching and the mouse wheel zoom the view, between <see cref="MinZoom"/> and <see cref="MaxZoom"/>
+    /// (off by default; on, the wheel over the model zooms instead of scrolling the page).
+    /// </summary>
+    public bool PinchZoom
+    {
+        get => _pinchZoom;
+        set => _pinchZoom = value;
+    }
+
+    /// <summary>The nearest a pinch or the wheel brings the view, as a <see cref="Zoom"/> factor (0.5 by default).</summary>
+    public float MinZoom
+    {
+        get => _minZoom;
+        set => _minZoom = MathF.Max(0.05f, value);
+    }
+
+    /// <summary>The farthest a pinch or the wheel takes the view, as a <see cref="Zoom"/> factor (2.5 by default).</summary>
+    public float MaxZoom
+    {
+        get => _maxZoom;
+        set => _maxZoom = MathF.Max(0.05f, value);
+    }
+
+    /// <summary>Two taps in a row glide the view back home (<see cref="ResetView"/>); off by default.</summary>
+    public bool ResetOnDoubleTap
+    {
+        get => _resetOnDoubleTap;
+        set => _resetOnDoubleTap = value;
+    }
+
+    /// <summary>
+    /// Drags turn the model only around its vertical axis, and a drag that starts vertical is left to the parent: a
+    /// model in a scrolling list turns sideways while the list still scrolls (off by default).
+    /// </summary>
+    public bool LockPitch
+    {
+        get => _lockPitch;
+        set => _lockPitch = value;
     }
 
     /// <summary>How it is drawn: Lit (default), Toon or Flat.</summary>
@@ -283,6 +337,45 @@ public class SkiaModel3D : SkiaControl
 
     /// <summary>Stops an animation started with <see cref="PlayLayer"/>.</summary>
     public void StopLayer(string name) => WithAnimation(name, 4);
+
+    /// <summary>
+    /// Glides the view (turn, tilt, zoom) back to the one the app set last through <see cref="Yaw"/>, <see cref="Pitch"/>
+    /// and <see cref="Zoom"/>, in 300 ms; drags and pinches never change that home view.
+    /// </summary>
+    public void ResetView()
+    {
+        _fromYaw = _yaw;
+        _fromPitch = _pitch;
+        _fromZoom = _zoom;
+        _reset = 0;
+        Changed();
+    }
+
+    /// <summary>
+    /// Where a point of the scene (scene units, the space of <see cref="ModelHit.Point"/>) shows in this control now:
+    /// points from its top left, and <see cref="PointOnScreen.Occluded"/> when the model's own surface hides it (a ray
+    /// from the eye to the point meets the model first). Null with no scene, before the control has a size, or for a
+    /// point behind the eye. Call it each frame to keep a label on a point of a turning model.
+    /// </summary>
+    public PointOnScreen? ScreenPosition(Vector3 point)
+    {
+        if (_scene == null)
+            return null;
+        var (w, h) = SizeInPoints();
+        if (w <= 0 || h <= 0)
+            return null;
+        var camera = Camera(w, h);
+        var clip = Vector4.Transform(new Vector4(point, 1), camera);
+        if (clip.W <= 1e-6f)
+            return null;
+        float fx = (clip.X / clip.W + 1) * 0.5f, fy = (1 - clip.Y / clip.W) * 0.5f;
+        ComputePose();
+        var (from, dir) = Scene3D.Ray(camera, fx, fy);
+        // A point on the surface must not hide behind itself: half a percent of the model's size.
+        var near = (_scene.BoundsMax - _scene.BoundsMin).Length() * 0.005f;
+        var occluded = _scene.RayBlocked(_pose, _hidden, _materials, from, dir, Vector3.Distance(from, point) - near);
+        return new PointOnScreen(fx * w, fy * h, occluded);
+    }
 
     /// <summary>Shows or hides a node by name, with what hangs under it. False when there is none such.</summary>
     public bool SetNodeVisible(string name, bool visible)
@@ -413,7 +506,7 @@ public class SkiaModel3D : SkiaControl
         Update();
     }
 
-    bool WantsFrames => _scene != null && (_autoRotate != 0 || _player.Busy);
+    bool WantsFrames => _scene != null && (_autoRotate != 0 || _reset < 1 || _player.Busy);
 
     void UpdateTicking()
     {
@@ -425,6 +518,7 @@ public class SkiaModel3D : SkiaControl
             if (!_loop.IsRunning)
             {
                 _lastNanos = 0;
+                _painted = true;
                 _loop.Start();
                 Superview?.RequestNextFrame();
             }
@@ -436,6 +530,14 @@ public class SkiaModel3D : SkiaControl
     /// <summary>One frame: time moves on, an animation played once that ended is reported.</summary>
     void Tick(long nanos)
     {
+        if (!_painted)
+        {
+            // Not drawn since the last tick (scrolled off screen, under a hidden parent): no frames, time stands still.
+            // Drawing it again starts the loop (Paint).
+            _loop.Stop();
+            return;
+        }
+        _painted = false;
         var delta = _lastNanos == 0 ? 0 : (nanos - _lastNanos) / 1_000_000_000f;
         _lastNanos = nanos;
         Advance(delta);
@@ -450,6 +552,16 @@ public class SkiaModel3D : SkiaControl
         if (_scene == null)
             return;
         _yaw = (_yaw + _autoRotate * delta) % 360;
+        if (_reset < 1)
+        {
+            _reset = MathF.Min(1, _reset + delta / 0.3f);
+            var e = 1 - MathF.Pow(1 - _reset, 3);
+            // The yaw goes the short way round.
+            var turn = ((_homeYaw - _fromYaw) % 360 + 540) % 360 - 180;
+            _yaw = _fromYaw + turn * e;
+            _pitch = _fromPitch + (_homePitch - _fromPitch) * e;
+            _zoom = _fromZoom + (_homeZoom - _fromZoom) * e;
+        }
         var ended = _player.Advance(_scene, delta);
         if (ended >= 0)
             AnimationEnded?.Invoke(this, _scene.Animations[ended].Name);
@@ -521,16 +633,51 @@ public class SkiaModel3D : SkiaControl
         {
             switch (args.Type)
             {
-                case TouchActionResult.Down when _orbit || Tapped3D != null:
+                case TouchActionResult.Down when _orbit || _pinchZoom || _resetOnDoubleTap || Tapped3D != null:
+                    _panAxis = 0;
                     base.ProcessGestures(args, apply);
                     return this;
-                case TouchActionResult.Panning when _orbit:
-                    var scale = MathF.Max(RenderingScale, 0.1f);
-                    _yaw += args.Event.Distance.Delta.X / scale * 0.5f;
-                    _pitch = Math.Clamp(_pitch + args.Event.Distance.Delta.Y / scale * 0.3f, -60, 80);
+                case TouchActionResult.Panning when _pinchZoom && args.Event.Manipulation != null:
+                    _reset = 1;
+                    _zoom = Math.Clamp(_zoom / MathF.Max(0.2f, 1 + (float)args.Event.Manipulation.Scale), _minZoom, _maxZoom);
                     Update();
                     return this;
-                case TouchActionResult.Tapped when Tapped3D != null:
+                case TouchActionResult.Panning when _orbit:
+                    if (_lockPitch)
+                    {
+                        if (_panAxis == 0)
+                        {
+                            var total = args.Event.Distance.Total;
+                            if (MathF.Abs(total.X) + MathF.Abs(total.Y) < 2)
+                                return this;
+                            _panAxis = MathF.Abs(total.Y) > MathF.Abs(total.X) ? 2 : 1;
+                        }
+                        if (_panAxis == 2)
+                            return null;
+                    }
+                    var scale = MathF.Max(RenderingScale, 0.1f);
+                    _reset = 1;
+                    _yaw += args.Event.Distance.Delta.X / scale * 0.5f;
+                    if (!_lockPitch)
+                        _pitch = Math.Clamp(_pitch + args.Event.Distance.Delta.Y / scale * 0.3f, -60, 80);
+                    Update();
+                    return this;
+                case TouchActionResult.Wheel when _pinchZoom && args.Event.Wheel != null:
+                    var perNotch = Superview?.WheelDeltaPerNotch ?? 0;
+                    var notches = perNotch > 0 ? args.Event.Wheel.Delta / perNotch : MathF.Sign(args.Event.Wheel.Delta);
+                    _reset = 1;
+                    _zoom = Math.Clamp(_zoom * MathF.Pow(0.88f, notches), _minZoom, _maxZoom);
+                    Update();
+                    return this;
+                case TouchActionResult.Tapped when _resetOnDoubleTap && Environment.TickCount64 - _lastTapMs < 300:
+                    _lastTapMs = 0;
+                    ResetView();
+                    return this;
+                case TouchActionResult.Tapped when _resetOnDoubleTap || Tapped3D != null:
+                    if (_resetOnDoubleTap)
+                        _lastTapMs = Environment.TickCount64;
+                    if (Tapped3D == null)
+                        return this;
                     var at = PointInside(apply);
                     var hit = HitTest(at.X, at.Y);
                     if (hit != null)
@@ -555,17 +702,33 @@ public class SkiaModel3D : SkiaControl
         if (w <= 0 || h <= 0)
             return;
         _drawn = true;
+        _painted = true;
         if (WantsFrames && _loop is not { IsRunning: true })
             UpdateTicking();
         var gr = Superview?.GetGRContext();
         if (gr == null)
             return;
+        // Nothing changed since the last render (a parent redraws: the page scrolls, a sibling changes): its image
+        // again, no 3D pass. GL keeps one texture per control; other GPU backends render every time.
+        if (!_stale && gr.Backend == GRBackend.OpenGL && _target.Image != null && _target.Context == gr && _target.Width == w && _target.Height == h)
+        {
+            ctx.Context.Canvas.DrawImage(_target.Image, SKRect.Create(dest.Left, dest.Top, w, h));
+            return;
+        }
+        _stale = false;
         ComputePose();
         _items[0] = new RenderItem { Scene = _scene, Pose = _pose, Hidden = _hidden, Materials = _materials };
         var style = new RenderStyle { Look = _look, Outline = _outlineWidth * ctx.Scale, OutlineColor = Math3D.Srgb(_outlineColor), Samples = _antialias ? 4 : 1 };
         var image = Renderer3D.Draw(Superview, gr, _target, _items, 1, style, Camera(w, h), w, h);
         if (image != null)
             ctx.Context.Canvas.DrawImage(image, SKRect.Create(dest.Left, dest.Top, w, h));
+    }
+
+    /// <inheritdoc />
+    public override void Update()
+    {
+        _stale = true;
+        base.Update();
     }
 
     /// <inheritdoc />
