@@ -570,13 +570,20 @@ sealed class MeshGeometry
             }
             g.TexCoords = texs;
 
+            // The image wraps the pooled pixels (no copy of a megabyte-sized image per rebuilt mesh); they go
+            // back to the pool when Skia releases the image.
             var info = new SKImageInfo(width, rows * 2, SKColorType.RgbaF16, SKAlphaType.Unpremul);
-            g.AttributeImage = SKImage.FromPixelCopy(info, MemoryMarshal.AsBytes(pixels.AsSpan(0, pixelCount)));
+            var pin = GCHandle.Alloc(pixels, GCHandleType.Pinned);
+            var owned = pixels;
+            using (var pixmap = new SKPixmap(info, pin.AddrOfPinnedObject(), info.RowBytes))
+                g.AttributeImage = SKImage.FromPixels(pixmap, (_, _) => { pin.Free(); ArrayPool<ushort>.Shared.Return(owned); });
             if (g.AttributeImage == null)
             {
+                pin.Free(); // pixels still returned by the finally below
                 g.Release();
                 return null;
             }
+            pixels = null; // the image owns them now
             g.AttributeShader = g.AttributeImage.ToRawShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, Nearest);
             g.HiRows = rows;
 
