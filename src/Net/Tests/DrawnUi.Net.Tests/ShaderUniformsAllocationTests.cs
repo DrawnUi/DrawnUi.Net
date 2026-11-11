@@ -46,7 +46,7 @@ half4 main(float2 fragCoord)
 
         public Scene()
         {
-            Effect = new SkiaShaderEffect
+            Effect = new ProbeEffect
             {
                 ShaderCode = Tint,
                 UseBackground = PostRendererEffectUseBackgroud.Always,
@@ -73,36 +73,38 @@ half4 main(float2 fragCoord)
         public void Dispose() => Host.Dispose();
     }
 
-    static long BytesPerFrame(bool changeUniformEveryFrame)
+    /// <summary>The effect with its uniforms step reachable: what one draw of it writes, measured alone.</summary>
+    sealed class ProbeEffect : SkiaShaderEffect
+    {
+        public void MakeUniforms(SKRect destination) => CreateUniforms(destination);
+    }
+
+    // The uniforms step of one draw, called directly after the effect was drawn (compiled) a few times: no frame
+    // scheduling, snapshot or other test in the count, only the writes into the uniforms holder.
+    static long BytesPerUniformsStep(bool changeUniformEveryDraw)
     {
         using var scene = new Scene();
-        const int frames = 200;
-        long before = GC.GetAllocatedBytesForCurrentThread();
-        for (int i = 0; i < frames; i++)
+        var destination = new SKRect(0, 0, 40, 30);
+        int i = 0;
+        return AllocationMeasure.MinBytesPerFrame(() =>
         {
-            if (changeUniformEveryFrame)
-                scene.TintValues[3] = i; // changed in place, the effect sees it at the next draw
-            scene.Shape.Update(); // the content is drawn again every frame
-            scene.Host.RenderFrame(16.0);
-        }
-        return (GC.GetAllocatedBytesForCurrentThread() - before) / frames;
+            if (changeUniformEveryDraw)
+                scene.TintValues[3] = ++i; // changed in place, without SetUniform
+            ((ProbeEffect)scene.Effect).MakeUniforms(destination);
+        }, warmup: 10, frames: 50);
     }
 
     [Fact]
     public void UnchangedUniforms_AreNotWrittenAgain()
     {
-        long still = BytesPerFrame(false);
-        long changing = BytesPerFrame(true);
-        _output.WriteLine($"{still} B/frame uniforms unchanged, {changing} B/frame one uniform changed every frame");
-        // writing uTint again every frame is what an unchanged frame no longer pays
-        Assert.True(changing - still >= 24, $"unchanged {still} B/frame, changing {changing} B/frame");
-        Assert.True(still <= StillBudget, $"unchanged uniforms: {still} B/frame");
+        long still = BytesPerUniformsStep(false);
+        long changing = BytesPerUniformsStep(true);
+        _output.WriteLine($"{still} B per draw with uniforms unchanged, {changing} B with one uniform changed every draw");
+        // nothing is written when nothing changed (every write allocates in SkiaSharp: 7 writes, 336 B, before the fix);
+        // a uniform changed in place is still written
+        Assert.Equal(0, still);
+        Assert.True(changing >= 40, $"one changed uniform: {changing} B per draw");
     }
-
-    // measured with the fix: what an effect drawn every frame still allocates (snapshot, shader, SkiaSharp wrappers)
-    // (765 measured, iTime written each frame included; every uniform written each frame was ~75 B more per uniform)
-    const long StillBudget = 800;
-
     [Fact]
     public void EveryFrameDrawsThisFramesContentAndValues()
     {
