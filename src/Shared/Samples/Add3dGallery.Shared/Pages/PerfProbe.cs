@@ -8,7 +8,7 @@ namespace Add3dGallery;
 /// <c>?perf=list</c> = the 3D product list scrolled, <c>?perf=mobs</c> = 100 mobs on the field, scrolled to it.
 /// Per frame: the CPU time of drawing (canvas WillDraw to WasDrawn: layout, drawing, the 3D GL calls; Skia's GPU flush
 /// comes after it), the managed bytes allocated on the UI thread from one frame to the next, and the frame interval.
-/// 2 s warm-up, then 5 s of frames: median, p99, frames over 12 ms, allocations per frame.
+/// 2 s warm-up, then 5 s of frames: median, p99, frames over 12 ms, allocations per frame, gen-0 collections.
 /// </summary>
 public static class PerfProbe
 {
@@ -17,6 +17,7 @@ public static class PerfProbe
     static readonly double[] Draw = new double[2048], Alloc = new double[2048];
     static int _count;
     static long _start, _frameStart, _first, _last, _lastAlloc;
+    static int _gcAtFirst;
     static DrawnView _canvas;
     static GalleryPage _page;
     static string _mode;
@@ -70,7 +71,10 @@ public static class PerfProbe
         if (since < WarmupSeconds + MeasureSeconds)
         {
             if (_count == 0)
+            {
                 _first = now;
+                _gcAtFirst = GC.CollectionCount(0);
+            }
             _last = now;
             if (_count < Draw.Length)
             {
@@ -89,6 +93,6 @@ public static class PerfProbe
         Array.Sort(draw);
         Array.Sort(alloc2);
         var fps = (_count - 1) / Stopwatch.GetElapsedTime(_first, _last).TotalSeconds;
-        Console.WriteLine($"[perf] {_mode}: frames {_count}, {fps:0.0} FPS, draw median {draw[_count / 2]:0.00} ms, p99 {draw[(int)(_count * 0.99)]:0.00} ms, max {draw[^1]:0.00} ms, over 12 ms {over}, alloc/frame median {alloc2[_count / 2] / 1024:0.0} KB, p99 {alloc2[(int)(_count * 0.99)] / 1024:0.0} KB");
+        Console.WriteLine($"[perf] {_mode}: frames {_count}, {fps:0.0} FPS, draw median {draw[_count / 2]:0.00} ms, p99 {draw[(int)(_count * 0.99)]:0.00} ms, max {draw[^1]:0.00} ms, over 12 ms {over}, alloc/frame median {alloc2[_count / 2] / 1024:0.0} KB, p99 {alloc2[(int)(_count * 0.99)] / 1024:0.0} KB, GC {GC.CollectionCount(0) - _gcAtFirst}");
     }
 }

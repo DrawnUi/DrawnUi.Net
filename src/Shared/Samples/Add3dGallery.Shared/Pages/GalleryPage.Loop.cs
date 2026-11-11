@@ -34,7 +34,7 @@ public partial class GalleryPage
     static readonly string[] PieceNames = Enumerable.Range(0, PieceCount).Select(i => $"c{i}").ToArray();
     static readonly string[] MobNames = Enumerable.Range(0, MaxMobs).Select(i => $"m{i}").ToArray();
 
-    float _time;
+    float _time, _pan;
     bool _unlocked = true;
     /// <summary>The medal's spin after unlocking, 0 to 1.</summary>
     float _spin = 1;
@@ -60,8 +60,10 @@ public partial class GalleryPage
         var t = _time;
 
         ListFrame();
+        // The scene pans: every layer slides by its share, the ground (and the mobs on it) the most.
+        _pan += Scenery.PanSpeed * delta;
         if (_field.WasInLastFrame())
-            _scenery.Scroll = _time * 24;
+            _scenery.Pan = _pan;
         CardFrame(delta);
         GlobeFrame(delta);
         FormFrame(delta);
@@ -110,8 +112,8 @@ public partial class GalleryPage
             {
                 var w = new Walker
                 {
-                    // On the ground strip, below the hills.
-                    X = _dice.Next() * FieldWidth, Y = Scenery.GroundTop + 12 + _dice.Next() * (FieldHeight - Scenery.GroundTop - 16),
+                    // On the ground band, below the hills.
+                    X = _dice.Next() * FieldWidth, Y = Scenery.GroundTop + 10 + _dice.Next() * (Scenery.GroundBottom - Scenery.GroundTop - 10),
                     Speed = (_dice.Next() < 0.5f ? -1 : 1) * (30 + _dice.Next() * 50),
                 };
                 _field.Add(MobNames[i], "slime", w.X, w.Y, 46);
@@ -124,12 +126,12 @@ public partial class GalleryPage
         for (var i = 0; i < _mobs; i++)
         {
             ref var w = ref _walkers[i];
-            w.X += w.Speed * delta;
-            if (w.X < -30 || w.X > FieldWidth + 30)
-            {
-                w.Speed = -w.Speed;
-                _field.SetFacing(MobNames[i], w.Speed > 0 ? 90 : -90);
-            }
+            // Walking on the ground, which moves with the pan; off one side, back in at the other.
+            w.X += (w.Speed - Scenery.PanSpeed) * delta;
+            if (w.X < -40)
+                w.X += FieldWidth + 80;
+            else if (w.X > FieldWidth + 40)
+                w.X -= FieldWidth + 80;
             _field.SetPosition(MobNames[i], w.X, w.Y);
         }
     }

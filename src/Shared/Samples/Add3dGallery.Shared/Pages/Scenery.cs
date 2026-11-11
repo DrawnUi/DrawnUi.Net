@@ -1,101 +1,111 @@
 namespace Add3dGallery;
 
 /// <summary>
-/// The mobs' field: a side-scroller scene drawn in code, back to front: a sky, a sun, drifting clouds, far hills, near
-/// hills and a ground strip with grass and a dirt path, each layer scrolling slower the farther it is (parallax).
-/// The shapes are made once per size; a frame only moves them (<see cref="Scroll"/>, in points).
+/// The mobs' field: a side-scroller scene drawn in code with gradients and smooth outlines, the same as DrawnUI for
+/// Rust's gallery3d: a still sky and sun, then clouds, far hills, near hills and the grass with its dirt path, each
+/// sliding at its own share of the pan (parallax). Every moving layer repeats every 1000 points and is drawn twice side
+/// by side, its slide snapped to whole device pixels so the copies meet without a seam. The shapes are made once per
+/// size; a frame only slides them (<see cref="Pan"/>, in points).
 /// </summary>
 public class Scenery : SkiaControl
 {
-    float _scroll;
-    float _builtW, _builtH, _builtScale;
-    SKPath _clouds, _far, _near, _tufts;
-    SKShader _sky, _ground, _sun;
-    readonly SKPaint _paint = new() { IsAntialias = true };
+    /// <summary>One tile of the scene, in points: every moving layer repeats over it.</summary>
+    public const float TileWidth = 1000;
 
-    /// <summary>The top of the ground strip and the dirt path, from the field's top, in points.</summary>
-    public const float GroundTop = 196, PathTop = 226, PathBottom = 250;
+    /// <summary>Where the mobs walk: the top and bottom of the ground band, in points from the field's top.</summary>
+    public const float GroundTop = 196, GroundBottom = 262;
 
-    /// <summary>How far the scene has moved, in points (the ground's pace; farther layers move less).</summary>
-    public float Scroll
+    /// <summary>How fast the scene pans, points per second, and each layer's share of it (far ones move less).</summary>
+    public const float PanSpeed = 22;
+
+    static readonly float[] Parallax = { 0.08f, 0.2f, 0.45f, 1.0f };
+
+    /// <summary>A layer: its shapes and their fills, in device pixels.</summary>
+    sealed class Layer : IDisposable
     {
-        get => _scroll;
-        set
-        {
-            if (_scroll == value)
-                return;
-            _scroll = value;
-            Update();
-        }
-    }
+        public readonly List<(SKPath Path, SKShader Shader, SKColor Color)> Parts = new();
 
-    static float Wave(float x, float w, int k1, float p1, float a1, int k2, float p2, float a2) =>
-        a1 * MathF.Sin(MathF.Tau * k1 * x / w + p1) + a2 * MathF.Sin(MathF.Tau * k2 * x / w + p2);
-
-    /// <summary>A ridge of hills one tile wide (it repeats exactly), closed down to <paramref name="bottom"/>.</summary>
-    static SKPath Ridge(float w, float bottom, float baseY, int k1, float a1, int k2, float a2, float scale)
-    {
-        var path = new SKPath();
-        path.MoveTo(0, bottom * scale);
-        for (var x = 0f; x <= w; x += 8)
-            path.LineTo(x * scale, (baseY + Wave(x, w, k1, 0.6f, a1, k2, 2.1f, a2)) * scale);
-        path.LineTo(w * scale, bottom * scale);
-        path.Close();
-        return path;
-    }
-
-    void Build(float w, float h, float s)
-    {
-        DisposeShapes();
-        _builtW = w;
-        _builtH = h;
-        _builtScale = s;
-        _sky = SKShader.CreateLinearGradient(new SKPoint(0, 0), new SKPoint(0, GroundTop * s),
-            new[] { new SKColor(110, 190, 245), new SKColor(196, 232, 250) }, SKShaderTileMode.Clamp);
-        _sun = SKShader.CreateRadialGradient(new SKPoint(0, 0), 70 * s,
-            new[] { new SKColor(255, 246, 200), new SKColor(255, 236, 160, 160), new SKColor(255, 236, 160, 0) }, new[] { 0f, 0.45f, 1f },
-            SKShaderTileMode.Clamp);
-        _ground = SKShader.CreateLinearGradient(new SKPoint(0, GroundTop * s), new SKPoint(0, h * s),
-            new[] { new SKColor(104, 170, 84), new SKColor(70, 128, 62) }, SKShaderTileMode.Clamp);
-        _far = Ridge(w, GroundTop + 4, 150, 2, 18, 5, 7, s);
-        _near = Ridge(w, GroundTop + 4, 178, 3, 12, 7, 5, s);
-        _clouds = new SKPath();
-        foreach (var (cx, cy, r) in new[] { (120f, 52f, 18f), (420f, 34f, 14f), (690f, 64f, 20f), (900f, 40f, 12f) })
+        public void Dispose()
         {
-            _clouds.AddOval(SKRect.Create((cx - r * 1.9f) * s, (cy - r * 0.55f) * s, r * 3.8f * s, r * 1.3f * s));
-            _clouds.AddCircle((cx - r * 0.6f) * s, (cy - r * 0.3f) * s, r * 0.85f * s);
-            _clouds.AddCircle((cx + r * 0.4f) * s, (cy - r * 0.55f) * s, r * s);
-        }
-        _tufts = new SKPath();
-        for (var x = 6f; x < w; x += 22)
-        {
-            var y = GroundTop + 6 + (x * 7 % 9);
-            _tufts.MoveTo((x - 3) * s, y * s);
-            _tufts.LineTo(x * s, (y - 7) * s);
-            _tufts.LineTo((x + 3) * s, y * s);
-            _tufts.Close();
-            if (((int)x / 22) % 3 == 0)
+            foreach (var (path, shader, _) in Parts)
             {
-                var y2 = PathBottom + 10 + (x * 5 % 11);
-                _tufts.MoveTo((x + 8) * s, y2 * s);
-                _tufts.LineTo((x + 10) * s, (y2 - 6) * s);
-                _tufts.LineTo((x + 12) * s, y2 * s);
-                _tufts.Close();
+                path.Dispose();
+                shader?.Dispose();
             }
         }
     }
 
-    /// <summary>Draws a tile-wide path twice, moved by <paramref name="offset"/> points, so it wraps seamlessly.</summary>
-    void Tiled(SKCanvas canvas, SKRect dest, SKPath path, float offset, float w, float s)
+    float _pan;
+    float _builtH, _builtScale = -1;
+    Layer[] _layers = Array.Empty<Layer>();
+    SKShader _sky;
+    readonly SKPaint _paint = new() { IsAntialias = true };
+    readonly SKPaint _glow = new() { IsAntialias = true, Color = new SKColor(255, 230, 150, 230), MaskFilter = SKMaskFilter.CreateBlur(SKBlurStyle.Normal, 13) };
+
+    /// <summary>How far the scene has panned, in points (the ground's pace; farther layers move less).</summary>
+    public float Pan
     {
-        var x = -(offset % w);
-        for (var i = 0; i < 2; i++)
+        get => _pan;
+        set
         {
-            canvas.Save();
-            canvas.Translate(dest.Left + (x + i * w) * s, dest.Top);
-            canvas.DrawPath(path, _paint);
-            canvas.Restore();
+            if (_pan == value)
+                return;
+            _pan = value;
+            Update();
         }
+    }
+
+    static SKShader Vertical(float top, float bottom, SKColor from, SKColor to, float s) =>
+        SKShader.CreateLinearGradient(new SKPoint(0, top * s), new SKPoint(0, bottom * s), new[] { from, to }, SKShaderTileMode.Clamp);
+
+    /// <summary>A ridge line across one tile down to <paramref name="bottom"/>, filled top to bottom with a gradient.</summary>
+    static (SKPath, SKShader, SKColor) Ridge(float baseY, (float Amp, float Period, float Phase)[] waves, float bottom, SKColor from, SKColor to, float s)
+    {
+        // One device pixel past each end: the twin copies overlap there, so no antialiased edge shows between them.
+        var path = new SKPath();
+        path.MoveTo(-1, bottom * s);
+        var top = bottom;
+        for (var i = 0; i <= 100; i++)
+        {
+            var x = i * 10f;
+            var y = baseY;
+            foreach (var (amp, period, phase) in waves)
+                y -= amp * MathF.Sin(x / period * MathF.Tau + phase);
+            top = MathF.Min(top, y);
+            path.LineTo(i == 0 ? -1 : i == 100 ? TileWidth * s + 1 : x * s, y * s);
+        }
+        path.LineTo(TileWidth * s + 1, bottom * s);
+        path.Close();
+        return (path, Vertical(top, bottom, from, to, s), from);
+    }
+
+    void Build(float h, float s)
+    {
+        DisposeShapes();
+        _builtH = h;
+        _builtScale = s;
+        _sky = Vertical(0, h, new SKColor(92, 164, 232), new SKColor(214, 238, 250), s);
+
+        var clouds = new Layer();
+        foreach (var (x, y, k) in new[] { (60f, 26f, 1f), (340f, 52f, 0.7f), (610f, 18f, 1.2f), (860f, 60f, 0.8f) })
+        {
+            var ellipse = new SKPath();
+            ellipse.AddOval(SKRect.Create(x * s, (y + 14 * k) * s, 90 * k * s, 30 * k * s));
+            clouds.Parts.Add((ellipse, null, new SKColor(255, 255, 255, 220)));
+            var puffs = new SKPath();
+            puffs.AddOval(SKRect.Create((x + 18 * k) * s, y * s, 44 * k * s, 44 * k * s));
+            puffs.AddOval(SKRect.Create((x + 46 * k) * s, (y + 8 * k) * s, 32 * k * s, 32 * k * s));
+            clouds.Parts.Add((puffs, null, new SKColor(255, 255, 255, 230)));
+        }
+        var far = new Layer();
+        far.Parts.Add(Ridge(150, new[] { (22f, 1000f, 0.3f), (12f, 500f, 1.7f), (5f, 250f, 0.4f) }, h, new SKColor(150, 190, 196), new SKColor(176, 210, 210), s));
+        var near = new Layer();
+        near.Parts.Add(Ridge(190, new[] { (26f, 1000f, 2.1f), (14f, 333.33f, 0.9f), (6f, 200f, 2.5f) }, h, new SKColor(98, 160, 104), new SKColor(70, 128, 80), s));
+        var ground = new Layer();
+        // Grass, then the dirt path the mobs walk on.
+        ground.Parts.Add(Ridge(GroundTop - 6, new[] { (3f, 500f, 0f), (2f, 125f, 1.3f) }, h, new SKColor(112, 178, 72), new SKColor(64, 120, 48), s));
+        ground.Parts.Add(Ridge(GroundTop + 22, new[] { (4f, 1000f, 0.8f), (3f, 250f, 2.2f) }, GroundBottom + 4, new SKColor(214, 182, 128), new SKColor(190, 152, 98), s));
+        _layers = new[] { clouds, far, near, ground };
     }
 
     /// <inheritdoc />
@@ -104,54 +114,52 @@ public class Scenery : SkiaControl
         base.Paint(ctx);
         var dest = ctx.Destination;
         var s = ctx.Scale;
-        float w = dest.Width / s, h = dest.Height / s;
-        if (w <= 0 || h <= 0)
+        var h = dest.Height / s;
+        if (dest.Width <= 0 || h <= 0)
             return;
-        if (w != _builtW || h != _builtH || s != _builtScale)
-            Build(w, h, s);
+        if (h != _builtH || s != _builtScale)
+            Build(h, s);
         var canvas = ctx.Context.Canvas;
         canvas.Save();
         canvas.ClipRect(dest);
+        canvas.Translate(dest.Left, dest.Top);
 
         _paint.Shader = _sky;
-        canvas.Save();
-        canvas.Translate(dest.Left, dest.Top);
-        canvas.DrawRect(0, 0, dest.Width, GroundTop * s, _paint);
-        _paint.Shader = _sun;
-        canvas.Translate(w * 0.82f * s, 62 * s);
-        canvas.DrawCircle(0, 0, 70 * s, _paint);
-        canvas.Restore();
+        canvas.DrawRect(0, 0, dest.Width, dest.Height, _paint);
         _paint.Shader = null;
+        // The sun: a soft glow, then its disc.
+        canvas.DrawCircle(795 * s, 69 * s, 38 * s, _glow);
+        _paint.Color = new SKColor(255, 236, 170);
+        canvas.DrawCircle(795 * s, 69 * s, 35 * s, _paint);
 
-        _paint.Color = new SKColor(255, 255, 255, 225);
-        Tiled(canvas, dest, _clouds, _scroll * 0.08f, w, s);
-        _paint.Color = new SKColor(150, 196, 178);
-        Tiled(canvas, dest, _far, _scroll * 0.2f, w, s);
-        _paint.Color = new SKColor(102, 168, 112);
-        Tiled(canvas, dest, _near, _scroll * 0.45f, w, s);
-
-        _paint.Shader = _ground;
-        canvas.DrawRect(dest.Left, dest.Top + GroundTop * s, dest.Width, dest.Height - GroundTop * s, _paint);
+        for (var i = 0; i < _layers.Length; i++)
+        {
+            // Whole device pixels: the two copies meet on a pixel edge, with no blended seam.
+            var shift = MathF.Round(((_pan * Parallax[i]) % TileWidth) * s);
+            for (var copy = 0; copy < 2; copy++)
+            {
+                canvas.Save();
+                canvas.Translate(copy * MathF.Round(TileWidth * s) - shift, 0);
+                foreach (var (path, shader, color) in _layers[i].Parts)
+                {
+                    _paint.Shader = shader;
+                    _paint.Color = color;
+                    canvas.DrawPath(path, _paint);
+                }
+                canvas.Restore();
+            }
+        }
         _paint.Shader = null;
-        // The dirt path with a darker edge.
-        _paint.Color = new SKColor(214, 178, 120);
-        canvas.DrawRect(dest.Left, dest.Top + PathTop * s, dest.Width, (PathBottom - PathTop) * s, _paint);
-        _paint.Color = new SKColor(176, 140, 88);
-        canvas.DrawRect(dest.Left, dest.Top + (PathBottom - 2) * s, dest.Width, 2 * s, _paint);
-        _paint.Color = new SKColor(70, 132, 58);
-        Tiled(canvas, dest, _tufts, _scroll, w, s);
         canvas.Restore();
     }
 
     void DisposeShapes()
     {
-        _clouds?.Dispose();
-        _far?.Dispose();
-        _near?.Dispose();
-        _tufts?.Dispose();
+        foreach (var layer in _layers)
+            layer.Dispose();
+        _layers = Array.Empty<Layer>();
         _sky?.Dispose();
-        _sun?.Dispose();
-        _ground?.Dispose();
+        _sky = null;
     }
 
     /// <inheritdoc />
@@ -159,6 +167,7 @@ public class Scenery : SkiaControl
     {
         DisposeShapes();
         _paint.Dispose();
+        _glow.Dispose();
         base.OnDisposing();
     }
 }
