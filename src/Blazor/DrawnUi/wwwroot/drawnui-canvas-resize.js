@@ -44,25 +44,59 @@ function patchSkiaCanvasResize() {
 // truncated. At fractional display scales (1.25, 1.5) that is often one pixel off the device pixels the canvas covers,
 // so the browser resamples the whole bitmap and every glyph goes soft. Its size watcher now reports the CSS size that,
 // times the ratio and truncated, is exactly the canvas's device-pixel box (ResizeObserver devicePixelContentBoxSize;
-// where the browser lacks it, Safari, the fractional CSS size times the ratio, rounded).
+// where the browser lacks it, Safari, the fractional CSS size times the ratio, rounded). Where devicePixelRatio and
+// the box disagree by more than 2% (DPR emulation, DevTools device mode, some zoom levels) the ratio SkiaSharp scales
+// with (its DpiWatcher) is the box over the CSS size, so the layout keeps the page's width.
 let skiaSizePatch = null;
 
 function patchSkiaSizeWatcher() {
-    skiaSizePatch ??= import(new URL('./_content/SkiaSharp.Views.Blazor/SizeWatcher.js', document.baseURI).href)
-        .then(({ SizeWatcher }) => {
-            if (!SizeWatcher || SizeWatcher.drawnUiDevicePixels) return;
+    skiaSizePatch ??= Promise.all([
+        import(new URL('./_content/SkiaSharp.Views.Blazor/SizeWatcher.js', document.baseURI).href),
+        import(new URL('./_content/SkiaSharp.Views.Blazor/DpiWatcher.js', document.baseURI).href),
+    ])
+        .then(([{ SizeWatcher }, { DpiWatcher }]) => {
+            if (!SizeWatcher || !DpiWatcher || SizeWatcher.drawnUiDevicePixels) return;
             SizeWatcher.drawnUiDevicePixels = true;
+
+            // the ratio of the last canvas reported; devicePixelRatio until a box disagrees with it
+            let pixelRatio = null;
+            const currentRatio = () => pixelRatio ?? (window.devicePixelRatio || 1);
+            DpiWatcher.getDpi = currentRatio;
+            DpiWatcher.update = () => {
+                if (!DpiWatcher.callback) return;
+                const current = currentRatio(), last = DpiWatcher.lastDpi;
+                DpiWatcher.lastDpi = current;
+                if (Math.abs(last - current) > 0.001) {
+                    if (typeof DpiWatcher.callback === 'function') DpiWatcher.callback(last, current);
+                    else DpiWatcher.callback.invokeMethod('Invoke', last, current);
+                }
+            };
+            DpiWatcher.start = (callback) => {
+                DpiWatcher.lastDpi = currentRatio();
+                DpiWatcher.timerId = window.setInterval(DpiWatcher.update, 1000);
+                DpiWatcher.callback = callback;
+                return DpiWatcher.lastDpi;
+            };
+            if (DpiWatcher.timerId) { // already started with the original update: poll with this one
+                window.clearInterval(DpiWatcher.timerId);
+                DpiWatcher.timerId = window.setInterval(DpiWatcher.update, 1000);
+            }
 
             const invoke = (element) => {
                 const instance = element?.SizeWatcher;
                 if (!instance || !instance.callback) return;
-                const ratio = window.devicePixelRatio || 1;
+                const rect = element.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                let ratio = dpr;
                 let width = element.drawnUiDeviceBox?.[0], height = element.drawnUiDeviceBox?.[1];
                 if (!width || !height) {
-                    const rect = element.getBoundingClientRect();
                     width = Math.round(rect.width * ratio);
                     height = Math.round(rect.height * ratio);
+                } else if (rect.width > 0 && Math.abs(width / rect.width - dpr) > dpr * 0.02) {
+                    ratio = width / rect.width;
                 }
+                pixelRatio = ratio === dpr ? null : ratio;
+                DpiWatcher.update(); // the new ratio first, then the size, so the bitmap is the box
                 const cssWidth = (width + 0.01) / ratio, cssHeight = (height + 0.01) / ratio;
                 if (typeof instance.callback === 'function') instance.callback(cssWidth, cssHeight);
                 else instance.callback.invokeMethod('Invoke', cssWidth, cssHeight);

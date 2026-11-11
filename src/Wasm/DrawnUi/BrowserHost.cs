@@ -43,7 +43,7 @@ public static partial class BrowserHost
         // Wire DOM input listeners + read the element's CSS size / device pixel ratio.
         JsInterop.InitCanvas(elementId);
         JsInterop.UpdateCanvasSize();
-        WebInput.RenderingScale = (float)JsInterop.DevicePixelRatio;
+        WebInput.RenderingScale = (float)PixelRatio;
 
         // Build the user's Canvas via the factory (remembered for Hot Reload rebuilds).
         _elementId = elementId;
@@ -52,7 +52,7 @@ public static partial class BrowserHost
 
         // The renderer/handler is created from the Canvas: RenderingMode picks GPU vs raster.
         var view = new WebSkiaView(elementId, OnRenderFrame);
-        view.SetDpi(JsInterop.DevicePixelRatio);
+        view.SetDpi(PixelRatio);
         view.SetSize(_cssSize.IsEmpty ? new SKSize(JsInterop.CanvasWidth, JsInterop.CanvasHeight) : _cssSize);
         view.Init(preferGPU: canvas.RenderingMode == RenderingModeType.Accelerated);
         _view = view;
@@ -158,12 +158,14 @@ public static partial class BrowserHost
     /// </summary>
     /// <param name="width">CSS width, fractional: times <paramref name="pixelRatio"/> it gives the canvas bitmap's width in device pixels.</param>
     /// <param name="height">CSS height, see <paramref name="width"/>.</param>
-    /// <param name="pixelRatio">The device pixel ratio.</param>
+    /// <param name="pixelRatio">Device pixels per CSS pixel: devicePixelRatio, or the canvas's device-pixel box over its
+    /// CSS size where the two disagree by more than 2% (DPR emulation, device mode, some zoom levels).</param>
     [JSExport]
     public static void OnCanvasResize(double width, double height, double pixelRatio)
     {
         JsInterop.OnCanvasResize((int)Math.Round(width), (int)Math.Round(height), pixelRatio);
         _cssSize = new SKSize((float)width, (float)height);
+        _pixelRatio = pixelRatio;
         WebInput.RenderingScale = (float)pixelRatio;
         _view?.SetDpi(pixelRatio);
         _view?.SetSize(_cssSize);
@@ -176,6 +178,10 @@ public static partial class BrowserHost
 
     // The last CSS size reported with OnCanvasResize (fractional), empty before the first.
     private static SKSize _cssSize;
+
+    // The pixel ratio that came with it: the device-pixel box over the CSS size where devicePixelRatio disagrees.
+    private static double _pixelRatio;
+    private static double PixelRatio => _pixelRatio > 0 ? _pixelRatio : JsInterop.DevicePixelRatio;
 }
 
 /// <summary>

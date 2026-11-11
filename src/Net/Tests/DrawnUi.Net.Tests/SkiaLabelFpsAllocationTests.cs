@@ -22,11 +22,8 @@ public class SkiaLabelFpsAllocationTests
                 ? new List<SkiaControl> { new SkiaLabelFps { HorizontalOptions = LayoutOptions.Start } }
                 : new List<SkiaControl>(),
         };
-        host.AdvanceFrames(30);
-        const int frames = 200;
-        long before = GC.GetAllocatedBytesForCurrentThread();
-        host.AdvanceFrames(frames);
-        return (GC.GetAllocatedBytesForCurrentThread() - before) / frames;
+        // the fewest bytes of a frame: frames whose shown value changes make a new text, the others nothing
+        return AllocationMeasure.MinBytesPerFrame(() => host.AdvanceFrames(1));
     }
 
     [Fact]

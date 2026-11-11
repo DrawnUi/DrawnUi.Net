@@ -64,6 +64,24 @@ namespace DrawnUi.Views
 
             if (scale <= 0.0f)
             {
+                // the bitmap over the canvas element's CSS width: devicePixelRatio, or the device-pixel box's own ratio
+                // where the two disagree (DPR emulation, device mode, some zoom levels), so the layout keeps the page's width
+                var cssWidth = CanvasView switch
+                {
+                    SKGLViewWrap gl => gl.CanvasSize.Width,
+                    SKCanvasViewWrap raster => raster.CanvasSize.Width,
+                    _ => 0f,
+                };
+                var density = (float)GetDensity();
+                if (cssWidth > 0.1f && canvasWidth > 0)
+                {
+                    var ratio = (float)(canvasWidth / cssWidth);
+                    scale = density > 0 && Math.Abs(ratio - density) <= density * 0.02f ? density : ratio;
+                }
+            }
+
+            if (scale <= 0.0f)
+            {
                 scale = (float)GetDensity();
             }
 

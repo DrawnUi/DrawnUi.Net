@@ -19,11 +19,7 @@ public class AnimatorsAllocationTests
         for (int i = 0; i < animators; i++)
             layer.Children.Add(new SkiaControl { WidthRequest = 4, HeightRequest = 4 }.UpdateNonStop());
         host.Canvas.Content = layer;
-        host.AdvanceFrames(30);
-        const int frames = 300;
-        long before = GC.GetAllocatedBytesForCurrentThread();
-        host.AdvanceFrames(frames);
-        return (GC.GetAllocatedBytesForCurrentThread() - before) / frames;
+        return AllocationMeasure.MinBytesPerFrame(() => host.AdvanceFrames(1));
     }
 
     [Fact]

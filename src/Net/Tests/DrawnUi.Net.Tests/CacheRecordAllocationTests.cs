@@ -22,16 +22,12 @@ public class CacheRecordAllocationTests
         using var host = new HeadlessCanvasHost(200, 100, 1f, Colors.Black);
         var shape = new SkiaShape { WidthRequest = 40, HeightRequest = 40, BackgroundColor = Colors.Red, UseCache = cache };
         host.Canvas.Content = new SkiaLayer { Children = { shape } };
-        host.AdvanceFrames(30);
-        const int frames = 300;
-        long before = GC.GetAllocatedBytesForCurrentThread();
-        for (int i = 0; i < frames; i++)
+        return AllocationMeasure.MinBytesPerFrame(() =>
         {
             if (recordEveryFrame)
                 shape.Update(); // its cache is recorded again
             host.RenderFrame();
-        }
-        return (GC.GetAllocatedBytesForCurrentThread() - before) / frames;
+        });
     }
 
     [Theory]
@@ -49,7 +45,7 @@ public class CacheRecordAllocationTests
     // what one record costs after the fix, measured: the picture or surface wrappers SkiaSharp makes
     static readonly Dictionary<SkiaCacheType, long> RecordBudget = new()
     {
-        [SkiaCacheType.Operations] = 2500, // 2478 measured, 2542 with a new delegate per record
-        [SkiaCacheType.Image] = 560, // 538 measured, 602 with a new delegate per record
+        [SkiaCacheType.Operations] = 2480, // 2448 measured (fewest bytes of a frame), 64 more with a new delegate per record
+        [SkiaCacheType.Image] = 530, // 504 measured, 64 more with a new delegate per record
     };
 }

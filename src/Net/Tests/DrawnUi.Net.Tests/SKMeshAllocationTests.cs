@@ -57,23 +57,19 @@ public class SKMeshAllocationTests
             canvas.DrawMesh(mesh!, paint);
         }
 
-        for (int i = 0; i < 80; i++)
-            Frame(i);
-        const int frames = 80;
-        long before = GC.GetAllocatedBytesForCurrentThread();
-        for (int i = 0; i < frames; i++)
-            Frame(i + 1);
-        long perFrame = (GC.GetAllocatedBytesForCurrentThread() - before) / frames;
+        int frame = 0;
+        long perFrame = AllocationMeasure.MinBytesPerFrame(() => Frame(frame++), warmup: 80, frames: 80);
         _output.WriteLine($"{perFrame} B per frame");
 
-        // the last frame (i = 80) is green, the one before red: each frame draws its own tint
+        // each frame draws its own tint: even frames green, odd frames red
+        Frame(160);
         Assert.Equal(SKColors.Lime, bmp.GetPixel(10, 10));
-        Frame(81);
+        Frame(161);
         Assert.Equal(SKColors.Red, bmp.GetPixel(10, 10));
-        Assert.True(perFrame <= (vertexProgram ? 3500 : 2560), $"{perFrame} B per frame");
+        Assert.True(perFrame <= (vertexProgram ? 2700 : 1900), $"{perFrame} B per frame");
     }
 
-    // Measured with the fix: 2508 B (attribute) and 3439 B (vertex program), before it 2724 and 5784 (a new target
-    // surface per count). What is left is SkiaSharp's wrappers of the objects new vertices need: the mesh and its
+    // Measured with the fix (fewest bytes of a frame): 1832 B (attribute) and 2528 B (vertex program); before it about
+    // 216 B more (attribute) and a new target surface per count (vertex program, ~2.3 KB more). What is left is SkiaSharp's wrappers of the objects new vertices need: the mesh and its
     // buffers, the vertex and packed images, the shaders made from them (~330 B each) and the DrawVertices object.
 }

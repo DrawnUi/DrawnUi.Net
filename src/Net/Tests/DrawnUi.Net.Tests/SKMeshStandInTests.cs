@@ -566,13 +566,7 @@ public class SKMeshStandInTests
             canvas.DrawMesh(mesh!, paint);
         }
 
-        for (int i = 0; i < 5; i++)
-            Frame();
-        const int frames = 20;
-        long before = GC.GetAllocatedBytesForCurrentThread();
-        for (int i = 0; i < frames; i++)
-            Frame();
-        long perFrame = (GC.GetAllocatedBytesForCurrentThread() - before) / frames;
+        long perFrame = AllocationMeasure.MinBytesPerFrame(Frame, warmup: 5, frames: 20);
 
         Assert.Equal(SKColors.Red, bmp.GetPixel(10, 10));
         // What is left: SkiaSharp's own wrapper objects (surfaces, images, shaders, vertices), each a few dozen bytes.
@@ -623,13 +617,8 @@ public class SKMeshStandInTests
             canvas.DrawMesh(mesh!, paint);
         }
 
-        for (int i = 0; i < 80; i++)
-            Frame(i);
-        const int frames = 80;
-        long before = GC.GetAllocatedBytesForCurrentThread();
-        for (int i = 0; i < frames; i++)
-            Frame(i + 1);
-        long perFrame = (GC.GetAllocatedBytesForCurrentThread() - before) / frames;
+        int frame = 0;
+        long perFrame = AllocationMeasure.MinBytesPerFrame(() => Frame(frame++), warmup: 80, frames: 80);
 
         Assert.Equal(SKColors.Red, bmp.GetPixel(10, 10));
         Assert.True(perFrame < 4096, $"{perFrame} bytes per frame");

@@ -36,6 +36,10 @@ using var window = new DrawnUiWindow(gameSettings, nativeSettings, canvas);
 window.Run();
 ```
 
+### Window size and display scale
+
+`ClientSize` is in points: the window opens at that size times the monitor's display scale, so `1280x720` at 125 % gives a 1600x900 pixel client area, the same size as a WPF, MAUI or DrawnUI for Rust window. The canvas draws at that scale (`Super.Screen.Density` and `DrawnUiWindow.ContentScale` return it), and moving the window to a monitor with another scale keeps its size in points. Mouse input needs no change. Minimum and maximum window sizes are in pixels. On DrawnUi 1.10.8.25 and earlier, `ClientSize` is in pixels and the canvas draws at scale 1.
+
 ### UpdateMode
 
 | `UpdateMode` | VSync | Render trigger | Use for |

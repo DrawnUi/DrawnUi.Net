@@ -368,6 +368,15 @@ public class SkiaRichEditor : SkiaEditor
         {
             ReplaceSpans(spans);
         }
+
+        /// <summary>
+        /// The spans come from the editor's document (<see cref="SetSpans"/>), never from Text: parsing the label's
+        /// empty Text when it measures would clear them.
+        /// </summary>
+        protected override void SetTextInternal()
+        {
+            ReplaceFont();
+        }
     }
 }
 #endif
