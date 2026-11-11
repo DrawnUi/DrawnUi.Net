@@ -53,7 +53,7 @@ public static partial class BrowserHost
         // The renderer/handler is created from the Canvas: RenderingMode picks GPU vs raster.
         var view = new WebSkiaView(elementId, OnRenderFrame);
         view.SetDpi(JsInterop.DevicePixelRatio);
-        view.SetSize(new SKSize(JsInterop.CanvasWidth, JsInterop.CanvasHeight));
+        view.SetSize(_cssSize.IsEmpty ? new SKSize(JsInterop.CanvasWidth, JsInterop.CanvasHeight) : _cssSize);
         view.Init(preferGPU: canvas.RenderingMode == RenderingModeType.Accelerated);
         _view = view;
 
@@ -92,9 +92,9 @@ public static partial class BrowserHost
     private static void AttachScene(Canvas canvas)
     {
         if (canvas.WidthRequest <= 0)
-            canvas.WidthRequest = JsInterop.CanvasWidth;
+            canvas.WidthRequest = _cssSize.IsEmpty ? JsInterop.CanvasWidth : _cssSize.Width;
         if (canvas.HeightRequest <= 0)
-            canvas.HeightRequest = JsInterop.CanvasHeight;
+            canvas.HeightRequest = _cssSize.IsEmpty ? JsInterop.CanvasHeight : _cssSize.Height;
 
         // RenderingMode must be final BEFORE attach: align to the already-initialized view
         // (GPU if WebGL came up, else the raster fallback) so a rebuild can't re-init GL.
@@ -156,19 +156,26 @@ public static partial class BrowserHost
     /// <summary>
     /// Called by JS when the canvas element resizes (wired from main.js to this assembly).
     /// </summary>
+    /// <param name="width">CSS width, fractional: times <paramref name="pixelRatio"/> it gives the canvas bitmap's width in device pixels.</param>
+    /// <param name="height">CSS height, see <paramref name="width"/>.</param>
+    /// <param name="pixelRatio">The device pixel ratio.</param>
     [JSExport]
-    public static void OnCanvasResize(int width, int height, double pixelRatio)
+    public static void OnCanvasResize(double width, double height, double pixelRatio)
     {
-        JsInterop.OnCanvasResize(width, height, pixelRatio);
+        JsInterop.OnCanvasResize((int)Math.Round(width), (int)Math.Round(height), pixelRatio);
+        _cssSize = new SKSize((float)width, (float)height);
         WebInput.RenderingScale = (float)pixelRatio;
         _view?.SetDpi(pixelRatio);
-        _view?.SetSize(new SKSize(width, height));
+        _view?.SetSize(_cssSize);
         if (_canvas != null)
         {
             _canvas.WidthRequest = width;
             _canvas.HeightRequest = height;
         }
     }
+
+    // The last CSS size reported with OnCanvasResize (fractional), empty before the first.
+    private static SKSize _cssSize;
 }
 
 /// <summary>

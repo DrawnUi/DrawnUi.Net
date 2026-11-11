@@ -40,6 +40,60 @@ function patchSkiaCanvasResize() {
     return skiaCanvasPatch;
 }
 
+// SkiaSharp.Views.Blazor sizes the canvas bitmap from clientWidth (whole CSS pixels) times the device pixel ratio,
+// truncated. At fractional display scales (1.25, 1.5) that is often one pixel off the device pixels the canvas covers,
+// so the browser resamples the whole bitmap and every glyph goes soft. Its size watcher now reports the CSS size that,
+// times the ratio and truncated, is exactly the canvas's device-pixel box (ResizeObserver devicePixelContentBoxSize;
+// where the browser lacks it, Safari, the fractional CSS size times the ratio, rounded).
+let skiaSizePatch = null;
+
+function patchSkiaSizeWatcher() {
+    skiaSizePatch ??= import(new URL('./_content/SkiaSharp.Views.Blazor/SizeWatcher.js', document.baseURI).href)
+        .then(({ SizeWatcher }) => {
+            if (!SizeWatcher || SizeWatcher.drawnUiDevicePixels) return;
+            SizeWatcher.drawnUiDevicePixels = true;
+
+            const invoke = (element) => {
+                const instance = element?.SizeWatcher;
+                if (!instance || !instance.callback) return;
+                const ratio = window.devicePixelRatio || 1;
+                let width = element.drawnUiDeviceBox?.[0], height = element.drawnUiDeviceBox?.[1];
+                if (!width || !height) {
+                    const rect = element.getBoundingClientRect();
+                    width = Math.round(rect.width * ratio);
+                    height = Math.round(rect.height * ratio);
+                }
+                const cssWidth = (width + 0.01) / ratio, cssHeight = (height + 0.01) / ratio;
+                if (typeof instance.callback === 'function') instance.callback(cssWidth, cssHeight);
+                else instance.callback.invokeMethod('Invoke', cssWidth, cssHeight);
+            };
+
+            const observer = new ResizeObserver((entries) => {
+                for (const entry of entries) {
+                    const box = entry.devicePixelContentBoxSize?.[0];
+                    entry.target.drawnUiDeviceBox = box ? [box.inlineSize, box.blockSize] : null;
+                    invoke(entry.target);
+                }
+            });
+            const observe = (element) => {
+                try { observer.observe(element, { box: 'device-pixel-content-box' }); }
+                catch { observer.observe(element); }
+            };
+
+            // canvases already watched move to this observer, which reports them at once
+            const previous = SizeWatcher.observer;
+            SizeWatcher.elements ??= new Map();
+            SizeWatcher.invoke = invoke;
+            SizeWatcher.observer = { observe, unobserve: (element) => observer.unobserve(element) };
+            if (previous) {
+                previous.disconnect?.();
+                for (const element of SizeWatcher.elements.values()) if (element) observe(element);
+            }
+        })
+        .catch(() => { /* SkiaSharp not present or its layout changed: keep its own behavior */ });
+    return skiaSizePatch;
+}
+
 // A lost WebGL context (GPU reset, driver update, too many contexts) comes back only if the loss is
 // prevented. While it is lost SkiaSharp's canvas draws nothing. On restore the same WebGL object gets a
 // new Emscripten GL handle (fresh extensions and object tables), .NET drops the lost Skia context
@@ -134,6 +188,7 @@ export function isMobileBrowser() {
 export function attachCanvasHost(element, dotNetRef, allowSnapshot) {
     detachCanvasHost(element);
     patchSkiaCanvasResize();
+    patchSkiaSizeWatcher();
 
     const state = {
         resizeObserver: null,
