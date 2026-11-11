@@ -12,6 +12,12 @@ public class SkiaEditorSelection : SkiaControl
     /// </summary>
     public Func<TextLine, LineGlyph[]>? GetLineGlyphsOverride { get; set; }
 
+    /// <summary>
+    /// The text the label draws when it differs from its Text (a markdown label hides its markup): the selection is
+    /// then in its indexes and every span of a line counts.
+    /// </summary>
+    public string? LayoutText { get; set; }
+
     public int SelectionStart { get; set; } = -1;
     public int SelectionLength { get; set; } = 0;
     public Color SelectionColor { get; set; } = Color.FromArgb("#5590CFFE");
@@ -38,7 +44,7 @@ public class SkiaEditorSelection : SkiaControl
         var start = SelectionStart;
         var end = SelectionStart + SelectionLength;
         var lineIndex = 0;
-        var text = SourceLabel.Text;
+        var text = LayoutText ?? SourceLabel.Text;
 
         var leftHandleX = 0f;
         var leftHandleBottom = 0f;
@@ -50,7 +56,7 @@ public class SkiaEditorSelection : SkiaControl
         {
             var glyphs = GetLineGlyphsOverride != null
                 ? GetLineGlyphsOverride(labelLine)
-                : labelLine.Carets != null
+                : labelLine.Carets != null || LayoutText != null
                 ? SkiaLabel.GetLineGlyphs(labelLine)
                 : (labelLine.Spans.Count > 0 ? (labelLine.Spans[0].Glyphs ?? Array.Empty<LineGlyph>()) : Array.Empty<LineGlyph>());
 
