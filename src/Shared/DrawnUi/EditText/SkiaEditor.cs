@@ -1785,6 +1785,25 @@ namespace DrawnUi.Draw
             // Writing it back could move the native caret to a position captured before the
             // keystrokes typed meanwhile (fast typing / SendKeys burst): the next characters
             // went in before the last ones ("drawncamera.com" came out as "drawncameracom.").
+            // a caret move (the text unchanged) into hidden markdown markup goes on to the next drawn character in the
+            // move's direction, and the native caret follows: otherwise the press seems to do nothing
+            var text = Text;
+            var caretMoveOnly = ReferenceEquals(text, _nativeCaretText);
+            _nativeCaretText = text;
+            if (caretMoveOnly && length == 0)
+            {
+                var snapped = SnapNativeCaret(start, CursorPosition);
+                if (snapped != start)
+                {
+                    SelectionLength = 0;
+                    if (CursorPosition == snapped)
+                        SetCursorPositionNative(snapped); // unchanged: no property change writes it back
+                    else
+                        CursorPosition = snapped;
+                    return;
+                }
+            }
+
             _cursorFromNative = true;
             try
             {
@@ -1795,6 +1814,29 @@ namespace DrawnUi.Draw
             {
                 _cursorFromNative = false;
             }
+        }
+
+        string _nativeCaretText;
+
+        /// <summary>
+        /// A caret moved from <paramref name="previous"/> to <paramref name="position"/> by the native control: when
+        /// that lands inside hidden markdown markup, the text index of the next drawn character in the move's direction
+        /// (one drawn character on when only markup was crossed); otherwise <paramref name="position"/>. The text's
+        /// start and end are always kept.
+        /// </summary>
+        protected int SnapNativeCaret(int position, int previous)
+        {
+            var length = Text?.Length ?? 0;
+            if (position == previous || position <= 0 || position >= length || !UpdateLayoutMap())
+                return position;
+
+            var drawn = ToLayoutIndex(position);
+            if (FromLayoutIndex(drawn) == position)
+                return position;
+
+            if (drawn == ToLayoutIndex(previous))
+                drawn += position > previous ? 1 : -1;
+            return FromLayoutIndex(Math.Clamp(drawn, 0, _layoutText.Length));
         }
 
         public virtual void SetSelection(int start, int end)
