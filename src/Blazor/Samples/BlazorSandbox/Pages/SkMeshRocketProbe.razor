@@ -140,12 +140,12 @@
         private SKMeshSpecification? _spec; // compiled once: SkSL compilation is far too slow for every frame
         private float[] _triangleData = Array.Empty<float>();  // static, FloatsPerTriangle per triangle
         private float[] _centers = Array.Empty<float>();       // static, 3 per triangle
-        private float[] _frameData = Array.Empty<float>();     // the triangles in this frame's draw order
+        private SKMeshVertexBuffer? _vertexBuffer;              // made once: the vertices never change
+        private ushort[] _indices = Array.Empty<ushort>();     // this frame's draw order, 3 per triangle
         private const int DepthSlots = 4096;
         private float[] _depth = Array.Empty<float>();
         private int[] _slot = Array.Empty<int>();
         private readonly int[] _slotStart = new int[DepthSlots + 1];
-        private int[] _order = Array.Empty<int>();
         private double _phase;
         private bool _reportedReady;
 
@@ -188,10 +188,11 @@
 
             _triangleData = data;
             _centers = centers;
-            _frameData = new float[data.Length];
+            _vertexBuffer?.Dispose();
+            _vertexBuffer = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(data.AsSpan()));
+            _indices = new ushort[count * 3]; // 16-bit indices: up to 21845 triangles
             _depth = new float[count];
             _slot = new int[count];
-            _order = new int[count];
             _model = model;
             _reportedReady = false;
             Update();
@@ -209,6 +210,8 @@
             _animator = null;
             _spec?.Dispose();
             _spec = null;
+            _vertexBuffer?.Dispose();
+            _vertexBuffer = null;
             base.OnDisposing();
         }
 
@@ -277,11 +280,11 @@
                 }
                 for (var t = 0; t < count; t++)
                 {
-                    _order[_slotStart[_slot[t]]++] = t;
-                }
-                for (var k = 0; k < count; k++)
-                {
-                    Array.Copy(_triangleData, _order[k] * FloatsPerTriangle, _frameData, k * FloatsPerTriangle, FloatsPerTriangle);
+                    var at = _slotStart[_slot[t]]++ * 3;
+                    var first = (ushort)(t * 3);
+                    _indices[at] = first;
+                    _indices[at + 1] = (ushort)(first + 1);
+                    _indices[at + 2] = (ushort)(first + 2);
                 }
 
                 var bounds = _model.Bounds;
@@ -294,11 +297,14 @@
                     bounds.Min.Z, Math.Max(0.0001f, bounds.Size.Z), 0f, 0f,
                 };
                 using var uniformData = SKData.CreateCopy(MemoryMarshal.AsBytes(uniforms.AsSpan()));
-                using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(_frameData.AsSpan()));
-                using var mesh = SKMesh.Make(
+                using var ib = SKMeshIndexBuffer.Make(MemoryMarshal.AsBytes(_indices.AsSpan()));
+                using var mesh = SKMesh.MakeIndexed(
                     spec,
                     SKMeshMode.Triangles,
-                    vb,
+                    _vertexBuffer!,
+                    count * 3,
+                    0,
+                    ib,
                     count * 3,
                     0,
                     uniformData,
