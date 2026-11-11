@@ -53,7 +53,7 @@ new SkiaImage
 
 - **Inline code**: `ShaderCode`, written as a raw string literal (`"""`) in its own `const`, never a verbatim `@"..."` string: no `""` escaping, and the closing `"""` strips the C# indentation so compiler error columns match.
 - **A file**: `ShaderSource = @"Shaders\myeffect.sksl"`. MAUI loads it from `Resources/Raw`, OpenTK / WPF from the exe folder (`CopyToOutputDirectory`), web heads from the site, asynchronously (the effect draws nothing until the file arrives). In the browser the synchronous `SkiaShader.FromResource` / `SkSl.LoadFromResources` throw for a file not loaded yet: `await SkSl.PrecompileAsync(...)` first.
-- `UseBackground` defaults to `Always` (input read every frame). `Once` freezes the first picture; reset `AquiredBackground` to take a new one.
+- `UseBackground` defaults to `Always` (input read every frame). `Once` freezes the first picture; reset `AquiredBackground` to take a new one. `Never` (no input texture, generative shaders) still gets `iOffset` at the control's corner on DrawnUi after 1.10.8.25, so a shader placing itself by `iOffset` draws inside its control (1.10.8.25 and earlier pass 0 there).
 
 ## 2. Uniforms
 

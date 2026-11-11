@@ -153,7 +153,11 @@ public static partial class Program
 }
 ```
 
-`RunAsync(elementId, factory)` wires rendering, input, the rAF loop, resize, fonts and gestures.
+`RunAsync(elementId, factory)` wires rendering, input, the rAF loop, resize, fonts and gestures to the canvas with that element id (DrawnUi after 1.10.8.25; 1.10.8.25 and earlier need the id `drawnui-canvas`).
+
+DrawnUi after 1.10.8.25 also gives the pure Wasm head:
+- `SkiaShell`, the drawn shell (routes, modals, popups, toasts), as on the other heads, with `Super.AddHotReloadListener` / `RemoveHotReloadListener` as on desktop.
+- `Super.OpenLink(url)`, which opens the link in a new browser tab (same name as on MAUI).
 
 ---
 
