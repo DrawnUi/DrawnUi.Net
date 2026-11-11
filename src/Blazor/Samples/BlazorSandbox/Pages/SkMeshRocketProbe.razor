@@ -3,8 +3,10 @@
 @using DrawnUi.Views
 @using DrawnUi
 @using SkiaSharp
+@using DrawnUi.Draw.Meshes
 @using System.Globalization
 @using System.Net.Http
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using System.Runtime.InteropServices
 @inject HttpClient Http
 
@@ -17,7 +19,7 @@
 <Canvas Content="_canvasContent"
     WidthRequest="420"
     HeightRequest="560"
-    BackgroundColor="#060A12"
+    BackgroundColor="@Color.Parse("#060A12")"
     Margin="0,16,0,32"
     RenderingMode="@RenderingModeType.Accelerated"
      />
@@ -64,13 +66,32 @@
 
                 new SkiaLabel()
                 {
-                    Text = "Parsing + projection, wireframe pass rendered on top.",
+                    Text = "Parsed on the CPU; rotation, projection, light and wireframe in the mesh shaders.",
                     FontSize = 13,
                     TextColor = Color.FromHex("#9DB4FF"),
                     HorizontalOptions = LayoutOptions.Fill,
                 },
 
-                _viewer,
+                new SkiaLayer()
+                {
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill,
+                    Children =
+                    {
+                        _viewer,
+                        new SkiaLabelFps()
+                        {
+                            UseCache = SkiaCacheType.GPU,
+                            Margin = new (0, 0, 4, 24),
+                            VerticalOptions = LayoutOptions.End,
+                            HorizontalOptions = LayoutOptions.End,
+                            Rotation = -45,
+                            BackgroundColor = Colors.DarkRed,
+                            TextColor = Colors.White,
+                            ZIndex = 110,
+                        },
+                    }
+                },
             }
         };
     }
@@ -79,7 +100,11 @@
     {
         try
         {
-            var objText = await Http.GetStringAsync("media/rocket.obj");
+            using var request = new HttpRequestMessage(HttpMethod.Get, "media/rocket.obj");
+            request.SetBrowserRequestCache(BrowserRequestCache.NoStore); // always the file on disk: the dev server keeps the ETag of build time
+            using var response = await Http.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var objText = await response.Content.ReadAsStringAsync();
             var model = ObjModel.Parse(objText);
             _viewer.SetModel(model);
             SetStatus($"rocket loaded tris={model.Triangles.Count} verts={model.VertexCount}");
@@ -103,9 +128,24 @@
 
     private sealed class RocketMeshControl : SkiaControl
     {
+        // Per vertex: position, face normal, triangle center, barycentric corner, the triangle's 3 heights
+        // (distance from each corner to its opposite edge). Rotation, projection, light and wireframe run
+        // on the GPU; the CPU only sorts the triangles back to front once per frame.
+        private const int FloatsPerVertex = 15;
+        private const int FloatsPerTriangle = FloatsPerVertex * 3;
+
         private readonly Action<string> _setStatus;
         private PerpetualPendulumAnimator? _animator;
         private ObjModel? _model;
+        private SKMeshSpecification? _spec; // compiled once: SkSL compilation is far too slow for every frame
+        private float[] _triangleData = Array.Empty<float>();  // static, FloatsPerTriangle per triangle
+        private float[] _centers = Array.Empty<float>();       // static, 3 per triangle
+        private SKMeshVertexBuffer? _vertexBuffer;              // made once: the vertices never change
+        private ushort[] _indices = Array.Empty<ushort>();     // this frame's draw order, 3 per triangle
+        private const int DepthSlots = 4096;
+        private float[] _depth = Array.Empty<float>();
+        private int[] _slot = Array.Empty<int>();
+        private readonly int[] _slotStart = new int[DepthSlots + 1];
         private double _phase;
         private bool _reportedReady;
 
@@ -116,6 +156,43 @@
 
         public void SetModel(ObjModel model)
         {
+            var count = model.Triangles.Count;
+            var data = new float[count * FloatsPerTriangle];
+            var centers = new float[count * 3];
+            var o = 0;
+            for (var t = 0; t < count; t++)
+            {
+                var tri = model.Triangles[t];
+                var a = tri.A.Position;
+                var b = tri.B.Position;
+                var c = tri.C.Position;
+                var normal = Normalize(Cross(Subtract(b, a), Subtract(c, a)));
+                var center = new Vec3((a.X + b.X + c.X) / 3f, (a.Y + b.Y + c.Y) / 3f, (a.Z + b.Z + c.Z) / 3f);
+                var doubleArea = Length(Cross(Subtract(b, a), Subtract(c, a)));
+                var h0 = doubleArea / Math.Max(1e-6f, Length(Subtract(c, b)));
+                var h1 = doubleArea / Math.Max(1e-6f, Length(Subtract(a, c)));
+                var h2 = doubleArea / Math.Max(1e-6f, Length(Subtract(b, a)));
+                centers[t * 3] = center.X;
+                centers[t * 3 + 1] = center.Y;
+                centers[t * 3 + 2] = center.Z;
+                for (var k = 0; k < 3; k++)
+                {
+                    var p = k == 0 ? a : k == 1 ? b : c;
+                    data[o++] = p.X; data[o++] = p.Y; data[o++] = p.Z;
+                    data[o++] = normal.X; data[o++] = normal.Y; data[o++] = normal.Z;
+                    data[o++] = center.X; data[o++] = center.Y; data[o++] = center.Z;
+                    data[o++] = k == 0 ? 1 : 0; data[o++] = k == 1 ? 1 : 0; data[o++] = k == 2 ? 1 : 0;
+                    data[o++] = h0; data[o++] = h1; data[o++] = h2;
+                }
+            }
+
+            _triangleData = data;
+            _centers = centers;
+            _vertexBuffer?.Dispose();
+            _vertexBuffer = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(data.AsSpan()));
+            _indices = new ushort[count * 3]; // 16-bit indices: up to 21845 triangles
+            _depth = new float[count];
+            _slot = new int[count];
             _model = model;
             _reportedReady = false;
             Update();
@@ -131,6 +208,10 @@
         {
             _animator?.Stop();
             _animator = null;
+            _spec?.Dispose();
+            _spec = null;
+            _vertexBuffer?.Dispose();
+            _vertexBuffer = null;
             base.OnDisposing();
         }
 
@@ -155,22 +236,79 @@
 
             try
             {
-                var packet = BuildFramePacket(dest, (float)_phase, _model);
-                using var spec = CreateMeshSpecification(out var specErr);
+                string? specErr = null;
+                var spec = _spec ??= CreateMeshSpecification(out specErr);
                 if (spec == null)
                 {
                     _setStatus("rocket spec FAIL: " + specErr);
                     return;
                 }
 
-                using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(packet.MeshVertices.AsSpan()));
-                using var mesh = SKMesh.Make(
+                var phase = (float)_phase;
+                var yaw = phase * 0.65f;
+                var pitch = -0.35f + MathF.Sin(phase * 0.4f) * 0.12f;
+                var roll = MathF.Sin(phase * 0.23f) * 0.08f;
+
+                // The rotation as a matrix: where it sends each axis.
+                var rx = Rotate(new Vec3(1, 0, 0), yaw, pitch, roll);
+                var ry = Rotate(new Vec3(0, 1, 0), yaw, pitch, roll);
+                var rz = Rotate(new Vec3(0, 0, 1), yaw, pitch, roll);
+
+                // No depth buffer: triangles are drawn farthest first, by the depth of their center. A counting sort
+                // over DepthSlots depth steps allocates nothing (Array.Sort allocates every call in a Debug build).
+                var count = _model.Triangles.Count;
+                var minZ = float.MaxValue;
+                var maxZ = float.MinValue;
+                for (var t = 0; t < count; t++)
+                {
+                    var z = _centers[t * 3] * rx.Z + _centers[t * 3 + 1] * ry.Z + _centers[t * 3 + 2] * rz.Z;
+                    _depth[t] = z;
+                    if (z < minZ) minZ = z;
+                    if (z > maxZ) maxZ = z;
+                }
+                var toSlot = (DepthSlots - 1) / Math.Max(1e-6f, maxZ - minZ);
+                Array.Clear(_slotStart);
+                for (var t = 0; t < count; t++)
+                {
+                    var slot = (int)((maxZ - _depth[t]) * toSlot); // farthest (largest z) in slot 0
+                    _slot[t] = slot;
+                    _slotStart[slot + 1]++;
+                }
+                for (var i = 1; i <= DepthSlots; i++)
+                {
+                    _slotStart[i] += _slotStart[i - 1];
+                }
+                for (var t = 0; t < count; t++)
+                {
+                    var at = _slotStart[_slot[t]]++ * 3;
+                    var first = (ushort)(t * 3);
+                    _indices[at] = first;
+                    _indices[at + 1] = (ushort)(first + 1);
+                    _indices[at + 2] = (ushort)(first + 2);
+                }
+
+                var bounds = _model.Bounds;
+                var uniforms = new float[]
+                {
+                    rx.X, rx.Y, rx.Z,
+                    ry.X, ry.Y, ry.Z,
+                    rz.X, rz.Y, rz.Z,
+                    dest.MidX, dest.MidY, 540f, 0f,
+                    bounds.Min.Z, Math.Max(0.0001f, bounds.Size.Z), 0f, 0f,
+                };
+                using var uniformData = SKData.CreateCopy(MemoryMarshal.AsBytes(uniforms.AsSpan()));
+                using var ib = SKMeshIndexBuffer.Make(MemoryMarshal.AsBytes(_indices.AsSpan()));
+                using var mesh = SKMesh.MakeIndexed(
                     spec,
                     SKMeshMode.Triangles,
-                    vb,
-                    packet.MeshVertices.Length / 6,
+                    _vertexBuffer!,
+                    count * 3,
                     0,
-                    packet.Bounds,
+                    ib,
+                    count * 3,
+                    0,
+                    uniformData,
+                    dest,
                     out var meshErr);
 
                 if (mesh == null)
@@ -181,12 +319,11 @@
 
                 using var paint = new SKPaint { IsAntialias = true, Color = SKColors.White };
                 canvas.DrawMesh(mesh, paint);
-                DrawWireOverlay(canvas, packet.WireLines);
 
                 if (!_reportedReady)
                 {
                     _reportedReady = true;
-                    _setStatus($"rocket OK tris={_model.Triangles.Count} submitted={packet.MeshVertices.Length / 6 / 3}");
+                    _setStatus($"rocket OK tris={count} submitted={count}");
                 }
             }
             catch (Exception ex)
@@ -264,152 +401,66 @@
         {
             var attrs = new[]
             {
-                new SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType.Float2, 0, "position"),
-                new SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType.Float4, 8, "color"),
+                new SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType.Float3, 0, "pos"),
+                new SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType.Float3, 12, "normal"),
+                new SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType.Float3, 24, "center"),
+                new SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType.Float3, 36, "bary"),
+                new SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType.Float3, 48, "heights"),
             };
             var varyings = new[]
             {
                 new SKMeshSpecificationVarying(SKMeshSpecificationVaryingType.Float4, "color"),
+                new SKMeshSpecificationVarying(SKMeshSpecificationVaryingType.Float3, "bary"),
+                new SKMeshSpecificationVarying(SKMeshSpecificationVaryingType.Float3, "heights"),
+                new SKMeshSpecificationVarying(SKMeshSpecificationVaryingType.Float, "scale"),
             };
 
+            // Rotation, perspective projection and the flat light, per vertex.
             const string vert = @"
-                Varyings main(const Attributes attrs) {
+                uniform float3 uRotX;
+                uniform float3 uRotY;
+                uniform float3 uRotZ;
+                uniform float4 uView;  // center x, center y, focal
+                uniform float4 uDepth; // model min z, model depth
+                Varyings main(const Attributes a) {
                     Varyings v;
-                    v.position = attrs.position;
-                    v.color = attrs.color;
+                    float3 p = a.pos.x * uRotX + a.pos.y * uRotY + a.pos.z * uRotZ;
+                    float3 n = a.normal.x * uRotX + a.normal.y * uRotY + a.normal.z * uRotZ;
+                    float depth = (a.center.x * uRotX + a.center.y * uRotY + a.center.z * uRotZ).z;
+                    float scale = uView.z / max(1.2, 8.5 + p.z);
+                    v.position = float2(uView.x + p.x * scale, uView.y - p.y * scale);
+                    float lightValue = max(0.16, dot(n, normalize(float3(0.45, -0.6, -1.0))) * 0.75 + 0.25);
+                    float t = clamp((depth - uDepth.x) / uDepth.y, 0.0, 1.0);
+                    v.color = float4(
+                        clamp((0.26 + t * 0.28) * lightValue, 0.0, 1.0),
+                        clamp((0.36 + t * 0.22) * lightValue, 0.0, 1.0),
+                        clamp((0.45 + t * 0.40) * (0.92 + t * 0.18), 0.0, 1.0),
+                        1.0);
+                    v.bary = a.bary;
+                    v.heights = a.heights;
+                    v.scale = scale;
                     return v;
                 }";
 
+            // Wireframe: the pixel's distance to the nearest edge of its triangle, in pixels.
             const string frag = @"
                 float2 main(const Varyings v, out half4 color) {
-                    color = half4(v.color);
+                    float3 d = v.bary * v.heights * v.scale;
+                    float edge = min(d.x, min(d.y, d.z));
+                    float wire = (1.0 - smoothstep(0.0, 1.2, edge)) * 0.43;
+                    color = half4(half3(mix(v.color.rgb, float3(0.647, 0.847, 1.0), wire)), 1.0);
                     return v.position;
                 }";
 
             return SKMeshSpecification.Make(
                 attrs,
-                sizeof(float) * 6,
+                sizeof(float) * FloatsPerVertex,
                 varyings,
                 vert,
                 frag,
                 SKColorSpace.CreateSrgb(),
                 SKAlphaType.Premul,
                 out error);
-        }
-
-        private static FramePacket BuildFramePacket(SKRect dest, float phase, ObjModel model)
-        {
-            var meshVertices = new float[model.Triangles.Count * 18];
-            var wireLines = new float[model.Triangles.Count * 12];
-            var meshIndex = 0;
-            var wireIndex = 0;
-            var minX = float.MaxValue;
-            var minY = float.MaxValue;
-            var maxX = float.MinValue;
-            var maxY = float.MinValue;
-
-            var yaw = phase * 0.65f;
-            var pitch = -0.35f + MathF.Sin(phase * 0.4f) * 0.12f;
-            var roll = MathF.Sin(phase * 0.23f) * 0.08f;
-            var light = Normalize(new Vec3(0.45f, -0.6f, -1.0f));
-
-            foreach (var triangle in model.Triangles)
-            {
-                var p0 = Rotate(triangle.A.Position, yaw, pitch, roll);
-                var p1 = Rotate(triangle.B.Position, yaw, pitch, roll);
-                var p2 = Rotate(triangle.C.Position, yaw, pitch, roll);
-
-                var faceNormal = Normalize(Cross(Subtract(p1, p0), Subtract(p2, p0)));
-                var depth = (p0.Z + p1.Z + p2.Z) / 3f;
-                var lightValue = MathF.Max(0.16f, Dot(faceNormal, light) * 0.75f + 0.25f);
-                var depthTint = Math.Clamp((depth - model.Bounds.Min.Z) / Math.Max(0.0001f, model.Bounds.Size.Z), 0f, 1f);
-
-                var projected0 = Project(p0, dest);
-                var projected1 = Project(p1, dest);
-                var projected2 = Project(p2, dest);
-
-                var color = ComputeColor(lightValue, depthTint);
-
-                AppendMeshVertex(meshVertices, ref meshIndex, projected0.X, projected0.Y, color);
-                AppendMeshVertex(meshVertices, ref meshIndex, projected1.X, projected1.Y, color);
-                AppendMeshVertex(meshVertices, ref meshIndex, projected2.X, projected2.Y, color);
-
-                AppendWire(wireLines, ref wireIndex, projected0, projected1);
-                AppendWire(wireLines, ref wireIndex, projected1, projected2);
-                AppendWire(wireLines, ref wireIndex, projected2, projected0);
-
-                UpdateBounds(projected0.X, projected0.Y, ref minX, ref minY, ref maxX, ref maxY);
-                UpdateBounds(projected1.X, projected1.Y, ref minX, ref minY, ref maxX, ref maxY);
-                UpdateBounds(projected2.X, projected2.Y, ref minX, ref minY, ref maxX, ref maxY);
-            }
-
-            return new FramePacket(
-                meshVertices,
-                wireLines,
-                new SKRect(minX - 12, minY - 12, maxX + 12, maxY + 12));
-        }
-
-        private static void DrawWireOverlay(SKCanvas canvas, float[] wireLines)
-        {
-            using var paint = new SKPaint
-            {
-                Color = SKColor.Parse("#A5D8FF").WithAlpha(110),
-                StrokeWidth = 1,
-                IsAntialias = true,
-                Style = SKPaintStyle.Stroke,
-            };
-
-            for (var index = 0; index < wireLines.Length; index += 4)
-            {
-                canvas.DrawLine(
-                    wireLines[index],
-                    wireLines[index + 1],
-                    wireLines[index + 2],
-                    wireLines[index + 3],
-                    paint);
-            }
-        }
-
-        private static void AppendMeshVertex(float[] buffer, ref int index, float x, float y, SKColor color)
-        {
-            buffer[index++] = x;
-            buffer[index++] = y;
-            buffer[index++] = color.Red / 255f;
-            buffer[index++] = color.Green / 255f;
-            buffer[index++] = color.Blue / 255f;
-            buffer[index++] = color.Alpha / 255f;
-        }
-
-        private static void AppendWire(float[] buffer, ref int index, Vec2 a, Vec2 b)
-        {
-            buffer[index++] = a.X;
-            buffer[index++] = a.Y;
-            buffer[index++] = b.X;
-            buffer[index++] = b.Y;
-        }
-
-        private static SKColor ComputeColor(float lightValue, float depthTint)
-        {
-            var baseRed = 0.26f + depthTint * 0.28f;
-            var baseGreen = 0.36f + depthTint * 0.22f;
-            var baseBlue = 0.45f + depthTint * 0.40f;
-
-            return new SKColor(
-                (byte)(Math.Clamp(baseRed * lightValue, 0f, 1f) * 255),
-                (byte)(Math.Clamp(baseGreen * lightValue, 0f, 1f) * 255),
-                (byte)(Math.Clamp(baseBlue * (0.92f + depthTint * 0.18f), 0f, 1f) * 255),
-                255);
-        }
-
-        private static Vec2 Project(Vec3 point, SKRect dest)
-        {
-            const float focal = 540f;
-            var depth = 8.5f + point.Z;
-            var scale = focal / Math.Max(1.2f, depth);
-
-            return new Vec2(
-                dest.MidX + point.X * scale,
-                dest.MidY - point.Y * scale);
         }
 
         private static Vec3 Rotate(Vec3 point, float yaw, float pitch, float roll)
@@ -437,25 +488,17 @@
 
         private static Vec3 Subtract(Vec3 a, Vec3 b) => new(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
         private static Vec3 Cross(Vec3 a, Vec3 b) => new(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
-        private static float Dot(Vec3 a, Vec3 b) => a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+        private static float Length(Vec3 v) => MathF.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
 
         private static Vec3 Normalize(Vec3 value)
         {
-            var length = MathF.Sqrt(value.X * value.X + value.Y * value.Y + value.Z * value.Z);
+            var length = Length(value);
             if (length <= 0.0001f)
             {
                 return new Vec3(0, 1, 0);
             }
 
             return new Vec3(value.X / length, value.Y / length, value.Z / length);
-        }
-
-        private static void UpdateBounds(float x, float y, ref float minX, ref float minY, ref float maxX, ref float maxY)
-        {
-            minX = Math.Min(minX, x);
-            minY = Math.Min(minY, y);
-            maxX = Math.Max(maxX, x);
-            maxY = Math.Max(maxY, y);
         }
     }
 
@@ -604,7 +647,6 @@
     }
 
     private readonly record struct Bounds3(Vec3 Min, Vec3 Max, Vec3 Size);
-    private readonly record struct FramePacket(float[] MeshVertices, float[] WireLines, SKRect Bounds);
     private readonly record struct Vec2(float X, float Y);
     private readonly record struct Vec3(float X, float Y, float Z);
 }

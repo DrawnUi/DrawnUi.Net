@@ -474,6 +474,9 @@ public partial class SkiaPicker : SkiaLayout
     /// </summary>
     private sealed class OutlineFrame : SkiaShape
     {
+        /// <inheritdoc />
+        protected override bool ClipDependsOnlyOnShape => true;
+
         /// <summary>
         /// Floating label laid over the top outline: a sibling placed at the frame's left edge plus its margin.
         /// </summary>

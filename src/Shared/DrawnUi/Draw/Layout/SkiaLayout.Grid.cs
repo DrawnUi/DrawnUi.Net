@@ -168,7 +168,8 @@ public partial class SkiaLayout
 
             var cells = GetOrderedSubviews();
 
-            List<SkiaControlWithRect> tree = new();
+            // built in a list kept between draws; published as a copy only when it differs from the last frame's
+            var tree = RentRenderTreeBuilder();
 
             var cellIndex = 0;
             foreach (var child in cells)
@@ -205,12 +206,13 @@ public partial class SkiaLayout
                     DrawChild(context.WithDestination(cellRect), child);
                 }
 
-                tree.Add(new SkiaControlWithRect(child, cellRect, child.CreateHitRect(), drawn, -1, child.BindingContext));
+                tree.Add(RenderTreeEntry(tree.Count, child, cellRect, child.CreateHitRect(), drawn, -1, child.BindingContext));
 
                 drawn++;
             }
 
-            SetRenderingTree(tree);
+            PublishRenderingTree(tree);
+            ReturnRenderTreeBuilder(tree);
 
         }
         return drawn;

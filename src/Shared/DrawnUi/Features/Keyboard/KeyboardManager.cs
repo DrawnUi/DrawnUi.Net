@@ -37,6 +37,19 @@ public partial class KeyboardManager
     /// </summary>
     public static void MarkKeyHandled(InputKey key) => _keyUsedByCanvas = key;
 
+    /// <summary>
+    /// For the browser heads: the key of a DOM <c>KeyboardEvent.code</c>. The numpad's Enter is <see cref="InputKey.Enter"/>,
+    /// as on the desktop heads; an unknown code is <see cref="InputKey.Unknown"/>.
+    /// </summary>
+    public static InputKey MapBrowserCode(string code)
+    {
+        if (string.IsNullOrWhiteSpace(code))
+            return InputKey.Unknown;
+        if (code == "NumpadEnter")
+            return InputKey.Enter;
+        return Enum.TryParse<InputKey>(code, ignoreCase: false, out var mapped) ? mapped : InputKey.Unknown;
+    }
+
     public static void KeyboardChar(string ch) => KeyboardChar(ch, false);
 
     /// <param name="ch">The typed text.</param>

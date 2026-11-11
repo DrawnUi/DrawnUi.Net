@@ -1062,7 +1062,8 @@ namespace DrawnUi.Views
             var modal = ActiveModal;
             foreach (var node in _nodes.Keys)
             {
-                if (node is not SkiaControl control || !control.IsVisible || control.IsDisposed)
+                // not drawn (hidden or transparent): not heard, as in DrawnUI for Rust and DrawnUi.React
+                if (node is not SkiaControl control || !control.IsVisible || control.Opacity <= 0 || control.IsDisposed)
                     continue;
                 // a modal overlay is shown: only its own nodes, and those of popup windows opened over it
                 if (modal != null && !IsDescendantOrSelf(control, modal) && !IsInPopupWindow(control))

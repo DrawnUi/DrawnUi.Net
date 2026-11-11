@@ -3209,6 +3209,37 @@ namespace DrawnUi.Draw
             DrawViews(ctx);
         }
 
+        /// <summary>Parameters made by <see cref="AddViewportArguments"/>, with what they were made from.</summary>
+        sealed class MadeViewportArguments
+        {
+            public object From;
+            public float Scale;
+            public SKRect Rect;
+            public object Parameters;
+        }
+
+        // The same incoming parameters, zoom and content rect give the same dictionary (parameters are never changed
+        // once made). One object swapped whole, so a paint on another thread never mixes two of them.
+        MadeViewportArguments _viewportArguments;
+
+        /// <summary>The context for the content: the scroll's zoom and content rect added to the parameters.</summary>
+        DrawingContext AddViewportArguments(DrawingContext ctx)
+        {
+            var scale = _zoomedScale;
+            var rect = ContentRectWithOffset.Pixels;
+            var made = _viewportArguments;
+            if (made != null && ReferenceEquals(made.From, ctx.Parameters) && made.Scale.Equals(scale) && made.Rect == rect)
+            {
+                return ctx.WithParameters(made.Parameters);
+            }
+
+            var result = ctx.WithArguments(
+                new(nameof(ContextArguments.Scale), scale),
+                new(nameof(ContextArguments.Rect), rect));
+            _viewportArguments = new MadeViewportArguments { From = ctx.Parameters, Scale = scale, Rect = rect, Parameters = result.Parameters };
+            return result;
+        }
+
         protected override void Paint(DrawingContext ctx)
         {
             if (ctx.Destination.Width == 0 || ctx.Destination.Height == 0)
@@ -3216,9 +3247,7 @@ namespace DrawnUi.Draw
 
             base.Paint(ctx);
 
-            var c = ctx.WithArguments(
-                new(nameof(ContextArguments.Scale), _zoomedScale),
-                new(nameof(ContextArguments.Rect), ContentRectWithOffset.Pixels));
+            var c = AddViewportArguments(ctx);
 
             //Children containment, same pattern SkiaShape uses for its outline: the outer clip in
             //DrawWithClipAndTransforms is an EFFECTS concern (expanded by the subtree's aggregated
@@ -3592,6 +3621,8 @@ namespace DrawnUi.Draw
             }
         }
 
+        private List<SkiaControl> _drawViewsSpare;
+
         protected override int DrawViews(DrawingContext context)
         {
             if (context.Destination.Width <= 0 || context.Destination.Height <= 0)
@@ -3599,9 +3630,12 @@ namespace DrawnUi.Draw
                 return 0;
             }
 
+            // the views of one draw, in a list kept between draws; a draw at the same time makes its own
+            var drawViews = Interlocked.Exchange(ref _drawViewsSpare, null) ?? new List<SkiaControl>(5);
+
             int Render(DrawingContext ctx)
             {
-                var drawViews = new List<SkiaControl>(5) { Content };
+                drawViews.Add(Content);
                 var offsetFooter = 0f;
                 var translateContent = 0.0;
 
@@ -3799,7 +3833,16 @@ namespace DrawnUi.Draw
                 return RenderViewsList(ctx, drawViews);
             }
 
-            var drawn = Render(context);
+            int drawn;
+            try
+            {
+                drawn = Render(context);
+            }
+            finally
+            {
+                drawViews.Clear();
+                _drawViewsSpare = drawViews;
+            }
 
             if (Header != null && HeaderSticky && !HeaderBehind)
             {

@@ -257,10 +257,12 @@ export function putImageData(elementId, pixels, width, height) {
 let canvas = null;
 let ctx = null;
 
-export function initCanvas(targetWidth, targetHeight) {
-    canvas = document.getElementById('drawnui-canvas');
+// The canvas RunAsync was given (its element id); the old (width, height) call means "drawnui-canvas".
+export function initCanvas(elementId) {
+    const id = typeof elementId === 'string' ? elementId : 'drawnui-canvas';
+    canvas = document.getElementById(id);
     if (!canvas) {
-        console.error('Canvas element with id "drawnui-canvas" not found');
+        console.error(`Canvas element with id "${id}" not found`);
         return;
     }
     // Do NOT acquire a 2D context here: a canvas can only ever hold ONE context
@@ -297,14 +299,43 @@ function handleFrame(timestamp) {
     if (onBrowserFrame) onBrowserFrame(timestamp);
 }
 
+// The canvas's real box in device pixels, from a ResizeObserver; null where the browser does not report it (Safari).
+let _deviceBox = null;
+
+// The bitmap matches the device pixels the canvas covers, so the browser shows it 1:1 (a bitmap one pixel off is
+// resampled whole and every glyph goes soft at fractional display scales). Without the device box: the fractional
+// CSS size times the ratio, rounded.
 function reportCanvasSize() {
     if (!canvas) return;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
     const pixelRatio = getDevicePixelRatio();
-    canvas.width = Math.floor(width * pixelRatio);
-    canvas.height = Math.floor(height * pixelRatio);
-    if (onCanvasResize) onCanvasResize(width, height, pixelRatio);
+    let width = _deviceBox?.[0], height = _deviceBox?.[1];
+    if (!width || !height) {
+        const rect = canvas.getBoundingClientRect();
+        width = Math.round(rect.width * pixelRatio);
+        height = Math.round(rect.height * pixelRatio);
+    }
+    canvas.width = width;
+    canvas.height = height;
+    // the CSS size .NET multiplies back by the ratio and truncates: exactly this bitmap
+    if (onCanvasResize) onCanvasResize((width + 0.01) / pixelRatio, (height + 0.01) / pixelRatio, pixelRatio);
+}
+
+function watchCanvasSize() {
+    if (typeof ResizeObserver !== 'function') {
+        window.addEventListener('resize', reportCanvasSize);
+        return;
+    }
+    const observer = new ResizeObserver(entries => {
+        const box = entries[entries.length - 1].devicePixelContentBoxSize?.[0];
+        _deviceBox = box ? [box.inlineSize, box.blockSize] : null;
+        reportCanvasSize();
+    });
+    try {
+        observer.observe(canvas, { box: 'device-pixel-content-box' });
+    } catch {
+        observer.observe(canvas); // no device-pixel box: the content box, sized from the CSS size
+        window.addEventListener('resize', reportCanvasSize); // a ratio change without a CSS size change
+    }
 }
 
 function setupInputHandlers() {
@@ -322,7 +353,7 @@ function setupInputHandlers() {
     canvas.addEventListener('wheel', e => { const used = moduleOnWheel?.(e.deltaX, e.deltaY, e.deltaMode, relX(e), relY(e)); if (!_shareInput || used) e.preventDefault(); }, { passive: false });
     // right click / long press / Menu key: a control that handles ContextMenu suppresses the browser menu
     canvas.addEventListener('contextmenu', e => { if (onContextMenu?.(relX(e), relY(e), e.pointerType ?? 'mouse')) e.preventDefault(); });
-    window.addEventListener('resize', reportCanvasSize);
+    watchCanvasSize();
 }
 
 // ============================================================================

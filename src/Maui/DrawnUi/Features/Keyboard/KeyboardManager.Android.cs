@@ -135,6 +135,7 @@ public partial class KeyboardManager
             case Keycode.CtrlLeft: return InputKey.ControlLeft;
             case Keycode.CtrlRight: return InputKey.ControlRight;
             case Keycode.Enter: return InputKey.Enter;
+            case Keycode.NumpadEnter: return InputKey.Enter; // as on the desktop heads
             case Keycode.Tab: return InputKey.Tab;
 
             case Keycode.F1: return InputKey.F1;

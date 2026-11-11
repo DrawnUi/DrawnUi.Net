@@ -57,6 +57,11 @@
     <Compile Remove="$(MSBuildThisFileDirectory)..\..\Shared\DrawnUi\Draw\Layout\OldRepro\**\*.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- The drawn shell of the desktop and pure WebAssembly heads: routes, modals, popups, toasts. -->
+    <Compile Include="..\..\Net\DrawnUi\Controls\SkiaShell.cs" Link="Controls\SkiaShell.cs" />
+  </ItemGroup>
+
  
 
 

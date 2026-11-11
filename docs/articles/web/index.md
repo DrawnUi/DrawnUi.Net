@@ -57,7 +57,10 @@ public static Task Main() =>
         });
 ```
 
-`RunAsync(elementId, factory)` wires rendering, input, the `requestAnimationFrame` loop, resize, fonts and gestures automatically.
+`RunAsync(elementId, factory)` wires rendering, input, the `requestAnimationFrame` loop, resize, fonts and gestures automatically, to the canvas with that element id (on DrawnUi 1.10.8.25 and earlier, use the id `drawnui-canvas`).
+
+- **SkiaShell** (routes, modals, popups, toasts) works on the web head as on the other targets (DrawnUi after 1.10.8.25).
+- **`Super.OpenLink(url)`** opens the link in a new browser tab (DrawnUi after 1.10.8.25).
 
 ## Fonts and styles
 

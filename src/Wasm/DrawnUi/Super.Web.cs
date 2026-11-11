@@ -39,7 +39,48 @@ namespace DrawnUi.Draw
         /// </summary>
         public static event Action<Type[]> HotReload;
 
-        private static void OnHotReload(Type[] obj) => HotReload?.Invoke(obj);
+        private static void OnHotReload(Type[] obj)
+        {
+            HotReload?.Invoke(obj);
+            foreach (var pair in WeakListeners)
+                pair.Value(obj);
+        }
+
+        // Listeners held weakly by their owner: the static event must not keep a dropped canvas or shell alive.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<object, Action<Type[]>> WeakListeners = new();
+
+        /// <summary>
+        /// Calls <paramref name="handler"/> on every hot reload while <paramref name="owner"/> is alive, without keeping
+        /// it alive: an owner dropped without unsubscribing is still collected. One handler per owner. Same API as the
+        /// desktop .NET heads.
+        /// </summary>
+        public static void AddHotReloadListener(object owner, Action<Type[]> handler) =>
+            WeakListeners.AddOrUpdate(owner, handler);
+
+        /// <summary>Stops calling the handler <paramref name="owner"/> registered with <see cref="AddHotReloadListener"/>.</summary>
+        public static void RemoveHotReloadListener(object owner) => WeakListeners.Remove(owner);
+
+        /// <summary>
+        /// Opens <paramref name="link"/> in a new browser tab (window.open), as Super.OpenLink opens it in the system
+        /// browser on the MAUI heads.
+        /// </summary>
+        [SupportedOSPlatform("browser")]
+        public static void OpenLink(string link)
+        {
+            if (string.IsNullOrEmpty(link))
+                return;
+            try
+            {
+                JsOpenWindow(link, "_blank", "noopener");
+            }
+            catch (Exception e)
+            {
+                Log(e.Message, LogLevel.Error);
+            }
+        }
+
+        [JSImport("globalThis.open")]
+        private static partial void JsOpenWindow(string url, string target, string features);
 
         public static object App { get; set; }
 

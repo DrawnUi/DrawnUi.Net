@@ -8,7 +8,123 @@ namespace DrawnUi.Draw
 {
     public partial class BindableObject : INotifyPropertyChanged
     {
-        private readonly Dictionary<BindableProperty, object> _values = new();
+        // keyed by the property's id (every property maps to one id), in a small table of its own: property reads are
+        // the most frequent call of a frame, and a Dictionary lookup costs a comparer call and more on the AOT web heads
+        private readonly PropertyValues _values = new();
+
+        /// <summary>
+        /// Values by property id: open addressing with linear probing over arrays sized a power of two, ids start at 1
+        /// so 0 marks a free slot. Used under <see cref="_valuesLock"/> only.
+        /// </summary>
+        private sealed class PropertyValues
+        {
+            private int[] _keys = new int[8];
+            private object[] _items = new object[8];
+            private int _count;
+
+            public bool TryGetValue(int id, out object value)
+            {
+                var keys = _keys;
+                var mask = keys.Length - 1;
+                for (var i = id & mask; ; i = (i + 1) & mask)
+                {
+                    var key = keys[i];
+                    if (key == id)
+                    {
+                        value = _items[i];
+                        return true;
+                    }
+
+                    if (key == 0)
+                    {
+                        value = null;
+                        return false;
+                    }
+                }
+            }
+
+            public object this[int id]
+            {
+                set
+                {
+                    var mask = _keys.Length - 1;
+                    for (var i = id & mask; ; i = (i + 1) & mask)
+                    {
+                        var key = _keys[i];
+                        if (key == id)
+                        {
+                            _items[i] = value;
+                            return;
+                        }
+
+                        if (key == 0)
+                        {
+                            _keys[i] = id;
+                            _items[i] = value;
+                            // grow at three quarters, so a probe always reaches a free slot
+                            if (++_count * 4 > _keys.Length * 3)
+                                Grow();
+                            return;
+                        }
+                    }
+                }
+            }
+
+            public bool Remove(int id, out object value)
+            {
+                var mask = _keys.Length - 1;
+                var i = id & mask;
+                while (true)
+                {
+                    var key = _keys[i];
+                    if (key == 0)
+                    {
+                        value = null;
+                        return false;
+                    }
+
+                    if (key == id)
+                        break;
+                    i = (i + 1) & mask;
+                }
+
+                value = _items[i];
+                _count--;
+                // backward shift: entries after the freed slot that probed past it move back, so lookups never stop
+                // early at a hole
+                var hole = i;
+                for (var j = (i + 1) & mask; _keys[j] != 0; j = (j + 1) & mask)
+                {
+                    var home = _keys[j] & mask;
+                    // the entry at j may fill the hole when its home is not in the cyclic range (hole, j]
+                    var inRange = hole <= j ? home > hole && home <= j : home > hole || home <= j;
+                    if (!inRange)
+                    {
+                        _keys[hole] = _keys[j];
+                        _items[hole] = _items[j];
+                        hole = j;
+                    }
+                }
+
+                _keys[hole] = 0;
+                _items[hole] = null;
+                return true;
+            }
+
+            private void Grow()
+            {
+                var keys = _keys;
+                var items = _items;
+                _keys = new int[keys.Length * 2];
+                _items = new object[keys.Length * 2];
+                _count = 0;
+                for (var i = 0; i < keys.Length; i++)
+                {
+                    if (keys[i] != 0)
+                        this[keys[i]] = items[i];
+                }
+            }
+        }
         private object _bindingContext;
 
         public event PropertyChangingEventHandler PropertyChanging;
@@ -62,7 +178,7 @@ namespace DrawnUi.Draw
 
         // Lazily created on first explicit SetValue: GetValue's store-on-miss writes the DEFAULT into
         // _values, so key presence there cannot answer "was this property explicitly set".
-        private HashSet<BindableProperty> _explicitlySet;
+        private HashSet<int> _explicitlySet;
 
         /// <summary>
         /// Returns true if the property value was explicitly set via <see cref="SetValue"/>,
@@ -75,7 +191,7 @@ namespace DrawnUi.Draw
 
             lock (_valuesLock)
             {
-                return _explicitlySet != null && _explicitlySet.Contains(targetProperty);
+                return _explicitlySet != null && _explicitlySet.Contains(targetProperty.Id);
             }
         }
 
@@ -86,7 +202,7 @@ namespace DrawnUi.Draw
 
             lock (_valuesLock)
             {
-                if (_values.TryGetValue(property, out var value))
+                if (_values.TryGetValue(property.Id, out var value))
                     return value;
             }
 
@@ -95,7 +211,7 @@ namespace DrawnUi.Draw
             {
                 lock (_valuesLock)
                 {
-                    _values[property] = defaultValue;
+                    _values[property.Id] = defaultValue;
                 }
             }
 
@@ -116,8 +232,8 @@ namespace DrawnUi.Draw
             object oldValue;
             lock (_valuesLock)
             {
-                hadExistingValue = _values.TryGetValue(property, out oldValue);
-                (_explicitlySet ??= new()).Add(property);
+                hadExistingValue = _values.TryGetValue(property.Id, out oldValue);
+                (_explicitlySet ??= new()).Add(property.Id);
             }
             if (!hadExistingValue)
             {
@@ -130,7 +246,7 @@ namespace DrawnUi.Draw
             OnPropertyChanging(property.PropertyName);
             lock (_valuesLock)
             {
-                _values[property] = value;
+                _values[property.Id] = value;
             }
             property.PropertyChanged?.Invoke(this, oldValue, value);
             OnPropertyChanged(property.PropertyName);
@@ -149,8 +265,8 @@ namespace DrawnUi.Draw
             object oldValue;
             lock (_valuesLock)
             {
-                hadExistingValue = _values.Remove(property, out oldValue);
-                _explicitlySet?.Remove(property);
+                hadExistingValue = _values.Remove(property.Id, out oldValue);
+                _explicitlySet?.Remove(property.Id);
             }
 
             if (!hadExistingValue)
@@ -200,7 +316,13 @@ namespace DrawnUi.Draw
             PropertyChanged = propertyChanged;
             CoerceValue = coerceValue;
             HasExplicitDefaultValue = defaultValueCreator != null || defaultValue != null;
+            Id = Interlocked.Increment(ref _lastId);
         }
+
+        private static int _lastId;
+
+        /// <summary>A number of its own for every property, the key its values are kept under.</summary>
+        internal int Id { get; }
 
         public string PropertyName { get; }
 

@@ -2550,9 +2550,26 @@ else
 
         int DrawStack(DrawingContext ctx, LayoutStructure structure, List<ControlInStack> visibleElements)
         {
+            // a plane bake deposits its tree for the plane owner: a list of its own, sized like the last one so it
+            // never regrows; a live draw builds in a list kept between draws, published as a copy only when it
+            // differs from the last frame's
+            var bake = IsPlaneBakePass;
+            var tree = bake ? new List<SkiaControlWithRect>(_lastRenderTreeCount) : RentRenderTreeBuilder();
+            try
+            {
+                return DrawStack(ctx, structure, visibleElements, tree);
+            }
+            finally
+            {
+                if (!bake)
+                    ReturnRenderTreeBuilder(tree);
+            }
+        }
+
+        int DrawStack(DrawingContext ctx, LayoutStructure structure, List<ControlInStack> visibleElements,
+            List<SkiaControlWithRect> tree)
+        {
             var drawn = 0;
-            // published as RenderTree, so a new list each draw; sized like the last one so it never regrows
-            List<SkiaControlWithRect> tree = new(_lastRenderTreeCount);
             var needrebuild = templatesInvalidated;
             bool updateInternal = false;
 
@@ -2782,7 +2799,7 @@ else
             }
 
             _lastRenderTreeCount = tree.Count;
-            SetRenderingTree(tree);
+            PublishRenderingTree(tree);
 
             if (Parent is IDefinesViewport viewport &&
                 viewport.TrackIndexPosition != RelativePositionType.None)
@@ -2799,6 +2816,32 @@ else
             WillDrawFromFreshItemssSource++;
 
             return drawn;
+        }
+
+        /// <summary>
+        /// Fills the templates pool up to <paramref name="warmTarget"/> on a background thread, a moment later. Its own
+        /// method so the closure is made only when it runs, not on every draw of the method that asks for it.
+        /// </summary>
+        void WarmTemplatesPoolLater(int warmTarget)
+        {
+            Tasks.StartDelayed(TimeSpan.FromMilliseconds(50),
+                () =>
+                {
+                    ChildrenFactory.FillPoolInBackgroundAsync(warmTarget);
+                    OnPropertyChanged(nameof(DebugString));
+                });
+        }
+
+        /// <summary>
+        /// A render tree entry: a plane bake makes new ones (its tree is deposited, never published); a live draw reuses
+        /// the published entry at the same place when unchanged (see <see cref="SkiaControl.RenderTreeEntry"/>).
+        /// </summary>
+        SkiaControlWithRect TreeEntry(List<SkiaControlWithRect> tree, bool bakePass, SkiaControl control, SKRect rect,
+            SKRect hitRect, int index, int freezeIndex, object freezeBindingContext)
+        {
+            return bakePass
+                ? new SkiaControlWithRect(control, rect, hitRect, index, freezeIndex, freezeBindingContext)
+                : RenderTreeEntry(tree.Count, control, rect, hitRect, index, freezeIndex, freezeBindingContext);
         }
 
         /// <summary>
@@ -2826,7 +2869,8 @@ else
             var zOrdered = !IsTemplated && !IsPlaneBakePass && ChildrenUseZIndex();
             if (zOrdered)
                 _zOrderedDraws.Clear();
-            var cellsToRelease = new List<SkiaControl>();
+            // views to give back to the templates pool, made only by a templated stack
+            List<SkiaControl> cellsToRelease = null;
             int countRendered = 0;
             Vector2 offsetOthers = Vector2.Zero;
 
@@ -2863,12 +2907,7 @@ else
                     var warmTarget = Math.Max(visibleElements.Count + ReserveTemplates, GetTemplatesPoolPrefill());
                     if (warmTarget > 0)
                     {
-                        Tasks.StartDelayed(TimeSpan.FromMilliseconds(50),
-                            () =>
-                            {
-                                ChildrenFactory.FillPoolInBackgroundAsync(warmTarget);
-                                OnPropertyChanged(nameof(DebugString));
-                            });
+                        WarmTemplatesPoolLater(warmTarget);
                     }
                 }
 
@@ -2907,7 +2946,7 @@ else
                             continue;
                         }
 
-                        cellsToRelease.Add(child);
+                        (cellsToRelease ??= new List<SkiaControl>()).Add(child);
                     }
                     else
                     {
@@ -2987,7 +3026,7 @@ else
                                 // space, so gestures land on the (already bound) cell and integrity watchers see
                                 // a contiguous sequence instead of a fake hole. CreateHitRect() would return a
                                 // stale DrawingRect here (never arranged) — use the slot rect for both.
-                                tree.Add(new SkiaControlWithRect(child,
+                                tree.Add(TreeEntry(tree, bakePass, child,
                                     placeholderRect,
                                     placeholderRect,
                                     index,
@@ -3246,7 +3285,7 @@ else
                                     if (zOrdered)
                                         _zOrderedDraws.Add(new ZOrderedDraw(control, destinationRect, index, pendingDraw));
                                     else
-                                        tree.Add(new SkiaControlWithRect(control,
+                                        tree.Add(TreeEntry(tree, bakePass, control,
                                             destinationRect,
                                             control.CreateHitRect(),
                                             index,
@@ -3321,7 +3360,7 @@ else
                             countRendered++;
                         }
 
-                        tree.Add(new SkiaControlWithRect(control,
+                        tree.Add(TreeEntry(tree, bakePass, control,
                             item.Destination,
                             control.CreateHitRect(),
                             item.Index,
@@ -3336,7 +3375,7 @@ else
             }
             finally
             {
-                if (IsTemplated)
+                if (IsTemplated && cellsToRelease != null)
                     foreach (var cell in cellsToRelease)
                     {
                         ChildrenFactory.ReleaseViewInUse(cell);

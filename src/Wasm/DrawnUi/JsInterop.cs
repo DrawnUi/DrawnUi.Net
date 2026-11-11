@@ -31,10 +31,16 @@ public static partial class JsInterop
     public static partial Task WriteClipboardText(string text);
 
     /// <summary>
-    /// Initialize the canvas and get its dimensions
+    /// Initialize the canvas with the id "drawnui-canvas" and get its dimensions
     /// </summary>
     [JSImport("initCanvas", "drawnui-web")]
     public static partial void InitCanvas(int targetWidth, int targetHeight);
+
+    /// <summary>
+    /// Wires input to the canvas element <paramref name="elementId"/> (the one passed to RunAsync) and reads its size.
+    /// </summary>
+    [JSImport("initCanvas", "drawnui-web")]
+    public static partial void InitCanvas(string elementId);
 
     /// <summary>
     /// Apply gesture CSS to the canvas (and page) based on the DrawnUI Canvas.Gestures mode.

@@ -988,9 +988,9 @@ new SkiaShaderEffect
 `SetUniform` passes custom uniforms to the shader (float / float2 / float3 / float4, plus a
 `float[]` overload for arrays); call it again anytime — e.g. from a slider — it requests a redraw
 itself. A custom uniform the shader does not declare is skipped and logged, so a typo there does
-nothing; a standard uniform missing from the shader throws and kills the effect, so declare all of
-them. Standard uniforms (`iTime`, `iResolution`, `iImage1`, `iImageResolution`, `iOffset`, `iMouse`)
-are fed by the engine automatically each frame. A failed compile reports once, not per frame (a
+nothing. Standard uniforms (`iTime`, `iResolution`, `iImage1`, `iImageResolution`, `iOffset`, `iMouse`)
+are fed by the engine automatically each frame; declare only the ones your shader uses (on DrawnUi
+1.10.8.25 and earlier, declare all of them, even unused ones). A failed compile reports once, not per frame (a
 `_compileFailed` latch); fixing `ShaderCode` or `ShaderSource` clears it and recompiles.
 
 A shader driven by `iTime` has nothing changing a property, so nothing asks for the next frame:

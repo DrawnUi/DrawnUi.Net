@@ -528,6 +528,49 @@ public partial class SkiaLayout
     }
 
     /// <summary>
+    /// Where the next background batch starts, owned by one measurement pass. Taken from the structure on the
+    /// render thread when the pass starts, then advanced by the pass itself batch after batch: the pass never
+    /// reads the structure the render thread is appending its earlier batches to.
+    /// </summary>
+    private sealed class BackgroundBatchCursor
+    {
+        public float X, Y;
+        public int Row, Col;
+
+        /// <summary>Height of the cells already in the current row (a batch that continues a partial row).</summary>
+        public float RowHeight;
+
+        /// <summary>Height a Row layout measures its cells with.</summary>
+        public float LineHeight;
+    }
+
+    /// <summary>
+    /// The cursor for a pass starting at <paramref name="index"/>, read from the structure. Render thread only.
+    /// </summary>
+    private BackgroundBatchCursor CreateBackgroundBatchCursor(int index, SKRect constraints)
+    {
+        var (x, y, row, col) = GetPositionForIndexDirect(index);
+        var cursor = new BackgroundBatchCursor { X = x, Y = y, Row = row, Col = col };
+
+        var structure = StackStructure;
+        if (Type == LayoutType.Row)
+        {
+            // the line's height, as the cells measured in the foreground got it
+            var first = GetMeasuredCellForIndex(0);
+            cursor.LineHeight = first != null && float.IsFinite(first.Area.Height) && first.Area.Height > 0
+                ? first.Area.Height
+                : float.IsFinite(constraints.Height) ? constraints.Height : float.PositiveInfinity;
+        }
+        else if (col > 0 && structure != null && Type == LayoutType.Column)
+        {
+            // continuing a partial row: the row is as tall as its cells measured before this pass
+            cursor.RowHeight = Math.Max(0f, ComputeBottomOfRow(structure, row) - y);
+        }
+
+        return cursor;
+    }
+
+    /// <summary>
     /// Context for background measurement operations
     /// </summary>
     public class BackgroundMeasurementContext
@@ -1024,6 +1067,10 @@ public partial class SkiaLayout
         }
 
         var cancellationToken = myCts.Token;
+        // the batches' start, read from the structure here on the render thread: the pass never reads it
+        var cursor = context?.IsSingleItemRemeasurement == true && context.SingleItemIndex.HasValue
+            ? null
+            : CreateBackgroundBatchCursor(startFromIndex, constraints);
 
         Tasks.StartDelayed(TimeSpan.FromMilliseconds(50), () =>
         {
@@ -1033,22 +1080,23 @@ public partial class SkiaLayout
             // timer callback that got us here fires reliably; a threadpool item does not). Run the
             // async pass directly: the first batch executes inline here, subsequent batches yield
             // via the pass's own Task.Delay(1) timers.
-            _backgroundMeasurementTask = RunBackgroundMeasurementPass(constraints, scale, startFromIndex, cancellationToken, context, myCts);
+            _backgroundMeasurementTask = RunBackgroundMeasurementPass(constraints, scale, startFromIndex, cursor, cancellationToken, context, myCts);
 #else
             _backgroundMeasurementTask = Task.Run(async () =>
             {
-                await RunBackgroundMeasurementPass(constraints, scale, startFromIndex, cancellationToken, context, myCts);
+                await RunBackgroundMeasurementPass(constraints, scale, startFromIndex, cursor, cancellationToken, context, myCts);
             });
 #endif
         });
     }
 
-    async Task RunBackgroundMeasurementPass(SKRect constraints, float scale, int startFromIndex,
+    async Task RunBackgroundMeasurementPass(SKRect constraints, float scale, int startFromIndex, BackgroundBatchCursor cursor,
         CancellationToken cancellationToken, BackgroundMeasurementContext context, CancellationTokenSource myCts)
     {
+        var failed = false;
         try
         {
-            await BackgroundMeasureItems(constraints, scale, startFromIndex, cancellationToken, context);
+            await BackgroundMeasureItems(constraints, scale, startFromIndex, cursor, cancellationToken, context);
         }
         catch (OperationCanceledException)
         {
@@ -1057,6 +1105,7 @@ public partial class SkiaLayout
         catch (Exception ex)
         {
             Debug.WriteLine($"[StartBackgroundMeasurement] Background measurement error: {ex.Message}");
+            failed = true;
         }
         finally
         {
@@ -1070,6 +1119,17 @@ public partial class SkiaLayout
                 {
                     _isBackgroundMeasuring = false;
                 }
+                else
+                {
+                    failed = false; // a newer pass runs
+                }
+            }
+
+            // A pass that died left items unmeasured. Measurement restarts from this layout's next draw, which a
+            // cached parent (a SkiaScroll caches itself) makes only when asked: ask now that the flag is clear.
+            if (failed)
+            {
+                Repaint();
             }
         }
     }
@@ -1524,11 +1584,14 @@ public partial class SkiaLayout
     }
 
     /// <summary>
-    /// Measures a batch of items in background thread
+    /// Measures a batch of items in background thread, starting where <paramref name="cursor"/> stands and
+    /// leaving it where the next batch starts
     /// </summary>
     private List<MeasuredItemInfo> MeasureBatchInBackground(SKRect constraints, float scale, int startIndex, int count,
-        float startX, float startY, int startRow, int startCol, CancellationToken cancellationToken)
+        BackgroundBatchCursor cursor, CancellationToken cancellationToken)
     {
+        BeforeMeasureBatch?.Invoke(startIndex);
+
         var measuredBatch = new List<MeasuredItemInfo>();
 
         SkiaControl template = null;
@@ -1546,28 +1609,19 @@ public partial class SkiaLayout
             var columnsCount = horizontal ? int.MaxValue : (Split > 0) ? Split : 1;
             var columnWidth = horizontal ? 0f : ComputeColumnWidth(columnsCount);
 
-            // Initialize positioning variables from parameters (thread-safe)
-            float currentX = startX;
-            float currentY = startY;
-            int row = startRow;
-            int col = startCol;
-            float rowHeight = 0f;
-
-            // continuing a partial row: the row is as tall as its cells measured before this batch
-            var structure = StackStructure;
-            if (startCol > 0 && structure != null && Type == LayoutType.Column)
-                rowHeight = Math.Max(0f, ComputeBottomOfRow(structure, startRow) - startY);
+            // Initialize positioning variables from the pass's cursor (thread-safe)
+            float currentX = cursor.X;
+            float currentY = cursor.Y;
+            int row = cursor.Row;
+            int col = cursor.Col;
+            float rowHeight = cursor.RowHeight; // continuing a partial row: as tall as its cells so far
 
             float availableWidth = columnWidth;
             float availableHeight = float.PositiveInfinity;
 
             if (horizontal)
             {
-                // the line's height, as the cells measured in the foreground got it
-                var first = GetMeasuredCellForIndex(0);
-                availableHeight = first != null && float.IsFinite(first.Area.Height) && first.Area.Height > 0
-                    ? first.Area.Height
-                    : float.IsFinite(constraints.Height) ? constraints.Height : float.PositiveInfinity;
+                availableHeight = cursor.LineHeight;
                 availableWidth = float.PositiveInfinity;
             }
 
@@ -1659,6 +1713,12 @@ public partial class SkiaLayout
 
                 //Debug.WriteLine($"[MeasureBatchInBackground] Measured item {itemIndex} at ({cell.Destination.Left:F1},{cell.Destination.Top:F1}): {measured.Pixels.Width:F1}x{measured.Pixels.Height:F1}");
             }
+
+            cursor.X = currentX;
+            cursor.Y = currentY;
+            cursor.Row = row;
+            cursor.Col = col;
+            cursor.RowHeight = rowHeight;
         }
         finally
         {
@@ -1685,13 +1745,26 @@ public partial class SkiaLayout
     /// <summary>
     /// Integrates measured batch into the main structure
     /// </summary>
+    /// <summary>
+    /// Harness tests only: called on the measuring thread with the first index of a measured batch, before the batch
+    /// is written. Lets a test run a frame at that exact moment.
+    /// </summary>
+    internal Action<int> BeforeIntegrateBatch;
+
+    /// <summary>
+    /// Harness tests only: called on the measuring thread with the first index of a batch, before it is measured.
+    /// </summary>
+    internal Action<int> BeforeMeasureBatch;
+
     private void IntegrateMeasuredBatch(List<MeasuredItemInfo> measuredBatch, float scale,
         BackgroundMeasurementContext context = null,
         BackgroundMeasurementStartingPosition startingPosition = null,
-        int epoch = 0)
+        int epoch = 0, CancellationToken cancellationToken = default)
     {
         if (measuredBatch?.Count > 0)
         {
+            BeforeIntegrateBatch?.Invoke(measuredBatch[0].Cell.ControlIndex);
+
             // Indices were shifted while this batch was measuring: its ControlIndexes and
             // positions are stale — writing them would corrupt the measurement cache/structure.
             if (epoch != _itemsShiftEpoch)
@@ -1701,30 +1774,40 @@ public partial class SkiaLayout
                 return;
             }
 
-            var count = 0;
-            foreach (var item in measuredBatch)
+            // Under the lock that cancels the pass: a new measure of the layout cancels it before it clears the
+            // measured items and starts a new stamp, so a batch of the old measure is either written before that
+            // (and thrown away with the rest) or not at all. Written after it, its items stayed measured for the new
+            // pass, which skipped them, and its change was applied to the new structure or dropped by the stamp.
+            lock (_measurementLock)
             {
-                if (SkiaLayout.IsTraced(item.Cell.ControlIndex))
-                    SkiaLayout.TraceIdx(item.Cell.ControlIndex, "BG-MEASURE-integrate",
-                        $"measuredH={item.Cell.Measured.Pixels.Height:0} destTop={item.Cell.Destination.Top:0} destH={item.Cell.Destination.Height:0} epoch={epoch} insertAt={context?.InsertAtIndex}");
+                if (cancellationToken.IsCancellationRequested)
+                    return;
 
-                _measuredItems[item.Cell.ControlIndex] = item;
-                count++;
-            }
-
-            // Stage for rendering pipeline integration
-            lock (_structureChangesLock)
-            {
-                _pendingStructureChanges.Add(new StructureChange(StructureChangeType.BackgroundMeasurement, MeasureStamp)
+                var count = 0;
+                foreach (var item in measuredBatch)
                 {
-                    Type = StructureChangeType.BackgroundMeasurement,
-                    MeasuredItems = measuredBatch,
-                    InsertAtIndex = context?.InsertAtIndex,
-                    IsInsertOperation = context?.IsInsertOperation ?? false,
-                    StartingPosition = startingPosition, // CRITICAL: Store starting position for offset compensation
-                    Count = count,
-                    Epoch = epoch
-                });
+                    if (SkiaLayout.IsTraced(item.Cell.ControlIndex))
+                        SkiaLayout.TraceIdx(item.Cell.ControlIndex, "BG-MEASURE-integrate",
+                            $"measuredH={item.Cell.Measured.Pixels.Height:0} destTop={item.Cell.Destination.Top:0} destH={item.Cell.Destination.Height:0} epoch={epoch} insertAt={context?.InsertAtIndex}");
+
+                    _measuredItems[item.Cell.ControlIndex] = item;
+                    count++;
+                }
+
+                // Stage for rendering pipeline integration
+                lock (_structureChangesLock)
+                {
+                    _pendingStructureChanges.Add(new StructureChange(StructureChangeType.BackgroundMeasurement, MeasureStamp)
+                    {
+                        Type = StructureChangeType.BackgroundMeasurement,
+                        MeasuredItems = measuredBatch,
+                        InsertAtIndex = context?.InsertAtIndex,
+                        IsInsertOperation = context?.IsInsertOperation ?? false,
+                        StartingPosition = startingPosition, // CRITICAL: Store starting position for offset compensation
+                        Count = count,
+                        Epoch = epoch
+                    });
+                }
             }
 
             // Same reason as in StageStructureChange: the queue is drained by ApplyStructureChanges
@@ -4020,7 +4103,7 @@ public partial class SkiaLayout
     /// <summary>
     /// Background measurement implementation with sliding window
     /// </summary>
-    private async Task BackgroundMeasureItems(SKRect constraints, float scale, int startIndex,
+    private async Task BackgroundMeasureItems(SKRect constraints, float scale, int startIndex, BackgroundBatchCursor cursor,
         CancellationToken cancellationToken,
         BackgroundMeasurementContext context = null)
     {
@@ -4079,7 +4162,9 @@ public partial class SkiaLayout
             //Debug.WriteLine($"[MeasureVisible] Measuring batch {currentBatchStart}-{batchEnd - 1} ({itemsToMeasure} items) [iteration {iterationCount}/{maxIterations}]");
 
 
-            var (startX, startY, startRow, startCol) = GetPositionForIndexDirect(currentBatchStart);
+            // where the previous batch of this pass ended (not read from the structure: the render thread may be
+            // appending that batch to it right now)
+            var (startX, startY, startRow, startCol) = (cursor.X, cursor.Y, cursor.Row, cursor.Col);
 
             // Create starting position data for offset compensation
             var startingPosition = new BackgroundMeasurementStartingPosition
@@ -4102,12 +4187,12 @@ public partial class SkiaLayout
             // pass already runs on the one thread anyway; call the batch inline, the Task.Delay(1)
             // below is the cooperative yield between batches.
             var measuredBatch = MeasureBatchInBackground(
-                constraints, scale, currentBatchStart, itemsToMeasure, startX, startY, startRow, startCol,
+                constraints, scale, currentBatchStart, itemsToMeasure, cursor,
                 cancellationToken);
 #else
             // Measure batch on background thread
             var measuredBatch = await Task.Run(() => MeasureBatchInBackground(
-                constraints, scale, currentBatchStart, itemsToMeasure, startX, startY, startRow, startCol,
+                constraints, scale, currentBatchStart, itemsToMeasure, cursor,
                 cancellationToken), cancellationToken);
 #endif
 
@@ -4120,7 +4205,7 @@ public partial class SkiaLayout
             // Integrate results on background thread (safe for reading/staging)
             if (!cancellationToken.IsCancellationRequested)
             {
-                IntegrateMeasuredBatch(measuredBatch, scale, context, startingPosition, epoch);
+                IntegrateMeasuredBatch(measuredBatch, scale, context, startingPosition, epoch, cancellationToken);
             }
 
             _backgroundMeasurementProgress = batchEnd;
