@@ -4413,7 +4413,9 @@ namespace DrawnUi.Draw
 
         protected override string? GetDefaultAccessibilityRole() => DefaultAccessibilityRole;
 
-        protected override string? DefaultAccessibilityLabel() => TextInternal;
+        /// <summary>What a screen reader reads: the spans' text joined when the label is made of spans, else its text.</summary>
+        protected override string? DefaultAccessibilityLabel() =>
+            Spans.Count > 0 ? string.Concat(Spans.Select(span => span.Text)) : TextInternal;
 
         public static readonly BindableProperty FallbackCharacterProperty = BindableProperty.Create(
             nameof(FallbackCharacter),
