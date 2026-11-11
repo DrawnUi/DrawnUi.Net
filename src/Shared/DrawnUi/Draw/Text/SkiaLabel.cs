@@ -1427,15 +1427,7 @@ namespace DrawnUi.Draw
                         }
                         else
                         {
-                            // each line its own height, as drawn
-                            double height = addParagraphSpacings;
-                            for (int i = 0; i < LinesCount; i++)
-                            {
-                                height += Lines[i].Height;
-                                if (i < LinesCount - 1)
-                                    height += GetSpaceBetweenLines(Lines[i].Height);
-                            }
-                            textHeightPixels = (float)height;
+                            textHeightPixels = GetLinesHeightPixels(LinesCount);
                         }
 
                         ContentSize = ScaledSize.FromPixels(textWidthPixels, textHeightPixels, scale);
@@ -3357,6 +3349,29 @@ namespace DrawnUi.Draw
         public double SpaceBetweenParagraphs
         {
             get { return LineHeightWithSpacing * ParagraphSpacing; }
+        }
+
+        /// <summary>
+        /// Pixels the first <paramref name="count"/> lines take as drawn when each line has its own height
+        /// (<see cref="LineHeightUniform"/> false): their heights, the space between them and the paragraph spacing
+        /// above each paragraph after the first.
+        /// </summary>
+        public float GetLinesHeightPixels(int count)
+        {
+            var lines = Lines;
+            if (lines == null)
+                return 0;
+            count = Math.Min(count, lines.Length);
+            double height = 0;
+            for (int i = 0; i < count; i++)
+            {
+                height += lines[i].Height;
+                if (i > 0 && lines[i].IsNewParagraph)
+                    height += SpaceBetweenParagraphs;
+                if (i < count - 1)
+                    height += GetSpaceBetweenLines(lines[i].Height);
+            }
+            return (float)height;
         }
 
         public double GetSpaceBetweenLines(float lineHeight)

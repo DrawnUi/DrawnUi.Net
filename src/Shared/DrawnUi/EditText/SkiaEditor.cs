@@ -600,6 +600,17 @@ namespace DrawnUi.Draw
             if (lineHeightPx <= 0)
                 return 0f;
 
+            // lines of their own heights (SkiaLabel.LineHeightUniform false, mixed fonts): as the label lays them out
+            if (AutoHeight && IsMultiline && Label != null && !Label.LineHeightUniform
+                && Label.Lines != null && Label.Lines.Length >= lines)
+            {
+                for (var i = 0; i < lines; i++)
+                {
+                    if (Label.Lines[i].Height != lineHeightPx)
+                        return Label.GetLinesHeightPixels(lines);
+                }
+            }
+
             var lineSpacingPx = lines > 1 ? GetAutoLineSpacingPixels(lineHeightPx) : 0f;
             var contentHeightPx = lineHeightPx * lines + lineSpacingPx * Math.Max(0, lines - 1);
             if (lines <= 1 || Label == null)
@@ -1175,6 +1186,15 @@ namespace DrawnUi.Draw
                     var line = 0;
                     var endX = 0f;
                     var lastY = 0f;
+                    TextLine lastLine = null;
+
+                    // the caret is as tall as the line it is on: lines have their own heights (SkiaLabel.LineHeightUniform)
+                    void CaretOn(TextLine caretLine)
+                    {
+                        if (caretLine != null && caretLine.Bounds.Height > 0)
+                            Cursor.HeightRequest = caretLine.Bounds.Height / RenderingScale;
+                    }
+
                     foreach (var labelLine in Label.Lines)
                     {
                         var lineGlyphs = GetLineGlyphs(labelLine);
@@ -1201,6 +1221,7 @@ namespace DrawnUi.Draw
                             {
                                 translateX = (LineEndX(labelLine) - Label.DrawingRect.Left) / RenderingScale;
                                 translateY = (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale;
+                                CaretOn(labelLine);
                             }
 
                             MoveCursorTo(translateX, translateY);
@@ -1216,6 +1237,7 @@ namespace DrawnUi.Draw
                                 var startX = nextLine.Carets != null
                                     ? BidiCaretX(nextLine, 0)
                                     : nextLine.Bounds.Left + (nextGlyphs.Length > 0 ? nextGlyphs[0].Position : 0);
+                                CaretOn(nextLine);
                                 MoveCursorTo((startX - Label.DrawingRect.Left) / RenderingScale,
                                     (nextLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
                                 break;
@@ -1224,6 +1246,7 @@ namespace DrawnUi.Draw
 
                         if (cursorIndex == nextIndex - 1 && nextIndex > index + lineGlyphs.Length)
                         {
+                            CaretOn(labelLine);
                             MoveCursorTo((LineEndX(labelLine) - Label.DrawingRect.Left) / RenderingScale,
                                 (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
                             break;
@@ -1244,11 +1267,13 @@ namespace DrawnUi.Draw
                                     var startX = labelLine.Carets != null
                                         ? BidiCaretX(labelLine, 0)
                                         : labelLine.Bounds.Left + (lineGlyphs.Length > 0 ? lineGlyphs[0].Position : 0);
+                                    CaretOn(labelLine);
                                     MoveCursorTo((startX - Label.DrawingRect.Left) / RenderingScale,
                                         (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
                                 }
                                 else
                                 {
+                                    CaretOn(lastLine);
                                     MoveCursorTo((endX - Label.DrawingRect.Left) / RenderingScale,
                                         (lastY - Label.DrawingRect.Top) / RenderingScale);
                                 }
@@ -1260,12 +1285,14 @@ namespace DrawnUi.Draw
                                 : labelLine.Bounds.Left + lineGlyphs[cursorIndex - index].Position;
                             var y = labelLine.Bounds.Top;
 
+                            CaretOn(labelLine);
                             MoveCursorTo((x - Label.DrawingRect.Left) / RenderingScale, (y - Label.DrawingRect.Top) / RenderingScale);
                             break;
                         }
 
                         endX = LineEndX(labelLine);
                         lastY = labelLine.Bounds.Top;
+                        lastLine = labelLine;
                         line++;
                         index = nextIndex;
                     }
