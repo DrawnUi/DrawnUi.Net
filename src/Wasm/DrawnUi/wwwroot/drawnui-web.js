@@ -307,12 +307,16 @@ let _deviceBox = null;
 // CSS size times the ratio, rounded.
 function reportCanvasSize() {
     if (!canvas) return;
-    const pixelRatio = getDevicePixelRatio();
+    const rect = canvas.getBoundingClientRect();
+    let pixelRatio = getDevicePixelRatio();
     let width = _deviceBox?.[0], height = _deviceBox?.[1];
     if (!width || !height) {
-        const rect = canvas.getBoundingClientRect();
         width = Math.round(rect.width * pixelRatio);
         height = Math.round(rect.height * pixelRatio);
+    } else if (rect.width > 0 && Math.abs(width / rect.width - pixelRatio) > pixelRatio * 0.02) {
+        // the box and devicePixelRatio disagree (DPR emulation, device mode, some zoom levels): the scale follows
+        // the box, or the layout would be wider or narrower than the page
+        pixelRatio = width / rect.width;
     }
     canvas.width = width;
     canvas.height = height;
