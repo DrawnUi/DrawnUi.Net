@@ -156,7 +156,7 @@ internal static class NavMenuItems
 #endif
 
         //INTERNAL TESTING
-#if DEBUG
+#if SHOW_TESTING // hidden in every build; define SHOW_TESTING to list the testing pages
         new(
             "testing",
             "Testing",
