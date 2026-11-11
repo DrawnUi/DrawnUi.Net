@@ -17,7 +17,7 @@ namespace DrawnUi.Add3d;
 /// (<see cref="Tapped3D"/>). Drag to turn it. Needs an accelerated canvas (RenderingMode Accelerated), and no
 /// image cache on it or above it.
 /// </summary>
-public class SkiaModel3D : SkiaControl
+public class SkiaModel3D : SkiaControl, IPrefetch3D
 {
     /// <summary>A node's own transform set from code: it replaces what the file and the animations give that part.</summary>
     struct NodeOverride
@@ -912,13 +912,39 @@ public class SkiaModel3D : SkiaControl
             ctx.Context.Canvas.DrawImage(_target.Image, SKRect.Create(dest.Left, dest.Top, w, h));
             return;
         }
-        _stale = false;
-        ComputePose();
-        _items[0] = new RenderItem { Scene = _scene, Pose = _pose, Hidden = _hidden, Materials = _materials };
-        var style = new RenderStyle { Look = _look, Outline = _outlineWidth * ctx.Scale, OutlineColor = Math3D.Srgb(_outlineColor), Samples = _antialias ? 4 : 1 };
-        var image = Renderer3D.Draw(Superview, gr, _target, _items, 1, style, Camera(w, h), w, h);
+        var image = Render(gr, w, h, ctx.Scale);
         if (image != null)
             ctx.Context.Canvas.DrawImage(image, SKRect.Create(dest.Left, dest.Top, w, h));
+    }
+
+    SKImage Render(GRContext gr, int w, int h, float scale)
+    {
+        _stale = false;
+        _gpuReady = true;
+        ComputePose();
+        _items[0] = new RenderItem { Scene = _scene, Pose = _pose, Hidden = _hidden, Materials = _materials };
+        var style = new RenderStyle { Look = _look, Outline = _outlineWidth * scale, OutlineColor = Math3D.Srgb(_outlineColor), Samples = _antialias ? 4 : 1 };
+        return Renderer3D.Draw(Superview, gr, _target, _items, 1, style, Camera(w, h), w, h);
+    }
+
+    bool _gpuReady, _queued;
+
+    bool IPrefetch3D.GpuReady => _gpuReady;
+
+    void IPrefetch3D.Prefetch(GRContext gr)
+    {
+        int w = (int)MathF.Round(MeasuredSize.Pixels.Width), h = (int)MathF.Round(MeasuredSize.Pixels.Height);
+        if (_scene != null && !_gpuReady && w > 0 && h > 0 && !float.IsInfinity(MeasuredSize.Pixels.Width) && !float.IsInfinity(MeasuredSize.Pixels.Height))
+            Render(gr, w, h, RenderingScale);
+    }
+
+    /// <inheritdoc />
+    protected override void OnMeasured()
+    {
+        base.OnMeasured();
+        // Rendered ahead once it comes near the screen (Prefetch3D).
+        if (!_queued && !_gpuReady)
+            _queued = Prefetch3D.Add(this);
     }
 
     /// <inheritdoc />

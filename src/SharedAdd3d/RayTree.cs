@@ -135,14 +135,31 @@ internal sealed class RayTree
     }
 
     /// <summary>Slab test: whether the ray crosses the box before <paramref name="limit"/>.</summary>
-    static bool Crosses(Vector3 min, Vector3 max, Vector3 from, Vector3 inverse, float limit)
+    static bool Crosses(in Vector3 min, in Vector3 max, in Vector3 from, in Vector3 inverse, float limit)
     {
-        var t1 = (min - from) * inverse;
-        var t2 = (max - from) * inverse;
-        var near = Vector3.Min(t1, t2);
-        var far = Vector3.Max(t1, t2);
-        var enter = MathF.Max(MathF.Max(near.X, near.Y), MathF.Max(near.Z, 0));
-        var leave = MathF.Min(MathF.Min(far.X, far.Y), MathF.Min(far.Z, limit));
+        // Plain floats: a Debug web build interprets every vector operator as a call.
+        float a = (min.X - from.X) * inverse.X, b = (max.X - from.X) * inverse.X;
+        float enter = a < b ? a : b, leave = a < b ? b : a;
+        a = (min.Y - from.Y) * inverse.Y;
+        b = (max.Y - from.Y) * inverse.Y;
+        if (a > b)
+            (a, b) = (b, a);
+        if (a > enter)
+            enter = a;
+        if (b < leave)
+            leave = b;
+        a = (min.Z - from.Z) * inverse.Z;
+        b = (max.Z - from.Z) * inverse.Z;
+        if (a > b)
+            (a, b) = (b, a);
+        if (a > enter)
+            enter = a;
+        if (b < leave)
+            leave = b;
+        if (enter < 0)
+            enter = 0;
+        if (limit < leave)
+            leave = limit;
         return enter <= leave;
     }
 }

@@ -531,25 +531,26 @@ internal sealed partial class Scene3D
     }
 
     /// <summary>Where a ray meets a triangle, both sides (Moller-Trumbore): the distance along the ray.</summary>
-    public static bool RayTriangle(Vector3 from, Vector3 dir, Vector3 a, Vector3 b, Vector3 c, out float t)
+    public static bool RayTriangle(in Vector3 from, in Vector3 dir, in Vector3 a, in Vector3 b, in Vector3 c, out float t)
     {
+        // Plain floats: a Debug web build interprets every vector operator as a call.
         t = 0;
-        var e1 = b - a;
-        var e2 = c - a;
-        var p = Vector3.Cross(dir, e2);
-        var det = Vector3.Dot(e1, p);
-        if (MathF.Abs(det) < 1e-9f)
+        float e1x = b.X - a.X, e1y = b.Y - a.Y, e1z = b.Z - a.Z;
+        float e2x = c.X - a.X, e2y = c.Y - a.Y, e2z = c.Z - a.Z;
+        float px = dir.Y * e2z - dir.Z * e2y, py = dir.Z * e2x - dir.X * e2z, pz = dir.X * e2y - dir.Y * e2x;
+        var det = e1x * px + e1y * py + e1z * pz;
+        if (det > -1e-9f && det < 1e-9f)
             return false;
         var inv = 1 / det;
-        var s = from - a;
-        var u = Vector3.Dot(s, p) * inv;
+        float sx = from.X - a.X, sy = from.Y - a.Y, sz = from.Z - a.Z;
+        var u = (sx * px + sy * py + sz * pz) * inv;
         if (u < 0 || u > 1)
             return false;
-        var q = Vector3.Cross(s, e1);
-        var v = Vector3.Dot(dir, q) * inv;
+        float qx = sy * e1z - sz * e1y, qy = sz * e1x - sx * e1z, qz = sx * e1y - sy * e1x;
+        var v = (dir.X * qx + dir.Y * qy + dir.Z * qz) * inv;
         if (v < 0 || u + v > 1)
             return false;
-        t = Vector3.Dot(e2, q) * inv;
+        t = (e2x * qx + e2y * qy + e2z * qz) * inv;
         return t > 0;
     }
 

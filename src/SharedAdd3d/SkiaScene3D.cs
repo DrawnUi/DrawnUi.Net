@@ -14,7 +14,7 @@ namespace DrawnUi.Add3d;
 /// size its height. An object lower on the field is drawn in front. The view is straight on, each object tilted
 /// forward by <see cref="Tilt"/> degrees, so a game moves them as it moves 2D sprites. Needs an accelerated canvas.
 /// </summary>
-public class SkiaScene3D : SkiaControl
+public class SkiaScene3D : SkiaControl, IPrefetch3D
 {
     /// <summary>A model the layer can place: its scene, the point it stands on and its height at rest.</summary>
     sealed class ModelEntry
@@ -539,6 +539,14 @@ public class SkiaScene3D : SkiaControl
         var gr = Superview?.GetGRContext();
         if (gr == null)
             return;
+        var image = Render(gr, w, h, ctx.Scale);
+        if (image != null)
+            ctx.Context.Canvas.DrawImage(image, SKRect.Create(dest.Left, dest.Top, w, h));
+    }
+
+    SKImage Render(GRContext gr, int w, int h, float scale)
+    {
+        _gpuReady = true;
         var count = 0;
         foreach (var o in _objects)
         {
@@ -549,13 +557,32 @@ public class SkiaScene3D : SkiaControl
                 Array.Resize(ref _items, count * 2);
             _items[count++] = new RenderItem { Scene = o.Model.Scene, Pose = o.Pose, Hidden = o.Hidden, Materials = o.Materials };
         }
-        var scale = MathF.Max(ctx.Scale, 0.1f);
+        scale = MathF.Max(scale, 0.1f);
         var style = new RenderStyle { Look = _look, Outline = _outlineWidth * scale, OutlineColor = Math3D.Srgb(_outlineColor), Samples = _antialias ? 4 : 1 };
         var image = Renderer3D.Draw(Superview, gr, _target, _items, count, style, Camera(w / scale, h / scale), w, h);
         // The items keep no objects alive past the frame.
         Array.Clear(_items, 0, count);
-        if (image != null)
-            ctx.Context.Canvas.DrawImage(image, SKRect.Create(dest.Left, dest.Top, w, h));
+        return image;
+    }
+
+    bool _gpuReady, _queued;
+
+    bool IPrefetch3D.GpuReady => _gpuReady;
+
+    void IPrefetch3D.Prefetch(GRContext gr)
+    {
+        int w = (int)MathF.Round(MeasuredSize.Pixels.Width), h = (int)MathF.Round(MeasuredSize.Pixels.Height);
+        if (_objects.Count > 0 && !_gpuReady && w > 0 && h > 0 && !float.IsInfinity(MeasuredSize.Pixels.Width) && !float.IsInfinity(MeasuredSize.Pixels.Height))
+            Render(gr, w, h, RenderingScale);
+    }
+
+    /// <inheritdoc />
+    protected override void OnMeasured()
+    {
+        base.OnMeasured();
+        // Rendered ahead once it comes near the screen (Prefetch3D).
+        if (!_queued && !_gpuReady)
+            _queued = Prefetch3D.Add(this);
     }
 
     /// <inheritdoc />
