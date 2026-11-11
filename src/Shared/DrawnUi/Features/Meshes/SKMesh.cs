@@ -95,8 +95,7 @@ public sealed class SKMeshVertexBuffer : IDisposable
         {
             if (_image == null && _data != null)
             {
-                var data = _data;
-                _image = MeshData.Wrap(data, _size, () => ArrayPool<byte>.Shared.Return(data));
+                _image = MeshData.Wrap(_data, _size);
             }
             return _image;
         }
@@ -230,8 +229,7 @@ public sealed class SKMeshIndexBuffer : IDisposable
         {
             if (_image == null && Data != null)
             {
-                var data = Data;
-                _image = MeshData.Wrap(data, _size, () => ArrayPool<byte>.Shared.Return(data));
+                _image = MeshData.Wrap(Data, _size);
             }
             return _image;
         }
@@ -252,9 +250,22 @@ sealed class MeshData : IDisposable
 {
     static readonly SKSamplingOptions Nearest = new(SKFilterMode.Nearest, SKMipmapMode.None);
 
-    public SKImage Image { get; private init; }
-    public SKShader Shader { get; private init; }
-    public int Width { get; private init; }
+    public SKImage Image { get; private set; }
+    public SKShader Shader { get; private set; }
+    public int Width { get; private set; }
+
+    // The wrapped array, pinned while Skia reads it, back to the pool when Skia lets go of the image. One release
+    // delegate and one pixmap per thread for every image: wrapping makes no closures or pixmap wrappers.
+    byte[] _data;
+    GCHandle _pin;
+    static readonly SKImageRasterReleaseDelegate Released = (_, context) =>
+    {
+        var owner = (MeshData)context;
+        owner._pin.Free();
+        ArrayPool<byte>.Shared.Return(owner._data);
+        owner._data = null;
+    };
+    [ThreadStatic] static SKPixmap t_pixmap;
 
     static int WidthFor(int bytes)
     {
@@ -273,25 +284,28 @@ sealed class MeshData : IDisposable
         return w * rows * 4;
     }
 
-    // Null when the bytes need more rows than a texture may have (64 MB). The array must stay untouched until
-    // `released` runs, which Skia does when it no longer needs the pixels.
-    public static MeshData Wrap(byte[] data, int size, Action released)
+    // Null when the bytes need more rows than a texture may have (64 MB). The array (from ArrayPool) must stay
+    // untouched until Skia no longer needs the pixels; it is then returned to the pool. On null it stays the caller's.
+    public static MeshData Wrap(byte[] data, int size)
     {
         int w = WidthFor(size);
         int rows = (Math.Max(1, (size + 3) / 4) + w - 1) / w;
         if (rows > SKMeshSpecification.MaxTextureSide)
             return null;
         var info = new SKImageInfo(w, rows, SKColorType.Rgba8888, SKAlphaType.Unpremul);
-        var pin = GCHandle.Alloc(data, GCHandleType.Pinned);
-        SKImage image;
-        using (var pixmap = new SKPixmap(info, pin.AddrOfPinnedObject(), info.RowBytes))
-            image = SKImage.FromPixels(pixmap, (_, _) => { pin.Free(); released(); });
+        var owner = new MeshData { _data = data, _pin = GCHandle.Alloc(data, GCHandleType.Pinned), Width = w };
+        var pixmap = t_pixmap ??= new SKPixmap();
+        pixmap.Reset(info, owner._pin.AddrOfPinnedObject(), info.RowBytes); // read by FromPixels, not kept
+        var image = SKImage.FromPixels(pixmap, Released, owner);
+        pixmap.Reset();
         if (image == null)
         {
-            pin.Free();
+            owner._pin.Free();
             return null;
         }
-        return new MeshData { Image = image, Shader = image.ToRawShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, Nearest), Width = w };
+        owner.Image = image;
+        owner.Shader = image.ToRawShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, Nearest);
+        return owner;
     }
 
     public void Dispose()
@@ -562,7 +576,7 @@ public sealed class SKMesh : IDisposable
             MeshGeometry.SetUniforms(uniforms, _spec.Uniforms, _uniforms);
             float alpha = paintShader == null ? 1f : paintColor.Alpha / 255f;
             g.SetCornerUniforms(uniforms, alpha);
-            uniforms["_sm_pk"] = (ReadOnlySpan<float>)stackalloc float[] { 0, g.Packed.VerticesPerRow, 1f / g.Packed.VerticesPerRow, g.Packed.Rows };
+            uniforms.Set("_sm_pk", stackalloc float[] { 0, g.Packed.VerticesPerRow, 1f / g.Packed.VerticesPerRow, g.Packed.Rows });
 
             var children = _spec.DrawChildren;
             for (int i = 0; i < _spec.Children.Length; i++)
@@ -572,7 +586,7 @@ public sealed class SKMesh : IDisposable
             children["_sm_paint"] = source;
             if (blender != null)
                 children["_sm_blend"] = blender;
-            shader = _spec.DrawEffect.ToShader(uniforms, children);
+            shader = _spec.DrawEffect.ToShader(uniforms.Holder, children);
             children.Reset(); // holds no mesh's objects between draws
         }
 
@@ -718,11 +732,11 @@ sealed class PackedVertices
         lock (spec.EffectLock)
         {
             var uniforms = spec.ConvertUniforms;
-            uniforms["_sm_vtx"] = (ReadOnlySpan<float>)stackalloc float[] { FirstFloat, VertexImage.Width, 1f / VertexImage.Width, 0 };
-            uniforms["_sm_cv"] = (ReadOnlySpan<float>)stackalloc float[] { VerticesPerRow, Rows, plain ? 1 : 0, 0 };
+            uniforms.Set("_sm_vtx", stackalloc float[] { FirstFloat, VertexImage.Width, 1f / VertexImage.Width, 0 });
+            uniforms.Set("_sm_cv", stackalloc float[] { VerticesPerRow, Rows, plain ? 1 : 0, 0 });
             var children = spec.ConvertChildren;
             children["_sm_attr"] = VertexImage.Shader;
-            shader = spec.ConvertEffect.ToShader(uniforms, children);
+            shader = spec.ConvertEffect.ToShader(uniforms.Holder, children);
             children.Reset();
         }
         using (shader)
@@ -903,11 +917,17 @@ sealed class MeshGeometry
         int tail = triangles - full;
         if (tail == 0)
             return triangles;
+        return full + Math.Min(PaddedCount(tail), ChunkTriangles);
+    }
+
+    // `count` rounded up to its size class: at most 1/16 more, 64 under 1024.
+    static int PaddedCount(int count)
+    {
         int pow2 = 1;
-        while (pow2 < tail)
+        while (pow2 < count)
             pow2 <<= 1;
         int step = Math.Max(64, pow2 / 16);
-        return full + Math.Min((tail + step - 1) / step * step, ChunkTriangles);
+        return (count + step - 1) / step * step;
     }
 
     // TexCoords depend only on the triangle count: shared by every mesh of that size (a mesh rebuilt each
@@ -942,12 +962,12 @@ sealed class MeshGeometry
     }
 
     // Uniforms that place the mesh's corners in the packed and index images, for the draw and position programs.
-    public void SetCornerUniforms(SKRuntimeEffectUniforms uniforms, float alpha)
+    public void SetCornerUniforms(SKMeshSpecification.CachedUniforms uniforms, float alpha)
     {
         var idx = IndexImage ?? Packed.VertexImage; // any image when not indexed: never read
-        uniforms["_sm_grid"] = (ReadOnlySpan<float>)stackalloc float[]
-            { CellsPerRow, alpha, Id.Mode == SKMeshMode.TriangleStrip ? 1 : 0, IndexImage != null ? 1 : 0 };
-        uniforms["_sm_ix"] = (ReadOnlySpan<float>)stackalloc float[] { FirstIndex, idx.Width, 1f / idx.Width, 0 };
+        uniforms.Set("_sm_grid", stackalloc float[]
+            { CellsPerRow, alpha, Id.Mode == SKMeshMode.TriangleStrip ? 1 : 0, IndexImage != null ? 1 : 0 });
+        uniforms.Set("_sm_ix", stackalloc float[] { FirstIndex, idx.Width, 1f / idx.Width, 0 });
     }
 
     public SKShader IndexShader => (IndexImage ?? Packed.VertexImage).Shader;
@@ -964,26 +984,30 @@ sealed class MeshGeometry
             // The GPU path waits for the GPU once per draw (the read-back), about half a millisecond: small meshes
             // (a strip of a few dozen vertices, often drawn many times a frame) run on the CPU instead.
             // ponytail: fixed vertex threshold; measure per device if meshes of ~1000 vertices matter.
+            // The targets are made for a padded row width (as the DrawVertices arrays): a mesh whose count changes every
+            // frame keeps its target instead of making a new surface for each count. Only the real width is run and read.
             if (context != null && _available >= GpuVertexProgramMinVertices)
             {
                 int corners = _triangles * 3;
-                int perRow = Math.Min(corners, SKMeshSpecification.MaxTextureSide / 2); // 2 pixels per corner: x, y
+                int perRow = Math.Min(PaddedCount(corners), SKMeshSpecification.MaxTextureSide / 2); // 2 pixels per corner: x, y
                 int rows = (corners + perRow - 1) / perRow;
+                int used = rows == 1 ? corners : perRow;
                 var packed = Packed.GetPacked(context);
                 if (packed != null && rows <= SKMeshSpecification.MaxTextureSide)
                 {
                     var info = new SKImageInfo(perRow * 2, rows, SKColorType.Rgba8888, SKAlphaType.Premul); // read back as written
                     if (t_gpuPositions.Acquire(context, info))
                     {
-                        var readBack = ReadBack(info.BytesSize);
-                        if (RunVertexProgram(t_gpuPositions.Canvas, uniformData, packed, Packed.Rows, perRow, rows, true)
-                            && t_gpuPositions.Surface.ReadPixels(info, Marshal.UnsafeAddrOfPinnedArrayElement(readBack, 0), info.RowBytes, 0, 0))
+                        var readInfo = info.WithSize(used * 2, rows);
+                        var readBack = ReadBack(readInfo.BytesSize);
+                        if (RunVertexProgram(t_gpuPositions.Canvas, uniformData, packed, Packed.Rows, perRow, used, rows, true)
+                            && t_gpuPositions.Surface.ReadPixels(readInfo, Marshal.UnsafeAddrOfPinnedArrayElement(readBack, 0), readInfo.RowBytes, 0, 0))
                             return MakeVertices(MemoryMarshal.Cast<byte, SKPoint>(readBack.AsSpan(0, corners * 8)));
                     }
                 }
             }
 
-            int vPerRow = Math.Min(_available, SKMeshSpecification.MaxTextureSide);
+            int vPerRow = Math.Min(PaddedCount(_available), SKMeshSpecification.MaxTextureSide);
             int vRows = (_available + vPerRow - 1) / vPerRow;
             if (vRows > SKMeshSpecification.MaxTextureSide)
                 return null;
@@ -992,8 +1016,10 @@ sealed class MeshGeometry
             var output = ReadBack(rasterInfo.BytesSize);
             if (input == null || !t_rasterPositions.Acquire(null, rasterInfo, Marshal.UnsafeAddrOfPinnedArrayElement(output, 0)))
                 return null;
-            if (!RunVertexProgram(t_rasterPositions.Canvas, uniformData, input, 0, vPerRow, vRows, false)) // raster: written at once
+            int vUsed = vRows == 1 ? _available : vPerRow;
+            if (!RunVertexProgram(t_rasterPositions.Canvas, uniformData, input, 0, vPerRow, vUsed, vRows, false)) // raster: written at once
                 return null;
+            // vertex v at pixel (v % vPerRow, v / vPerRow): float v * 4 of the rows laid end to end
             return MakeVertices(MemoryMarshal.Cast<byte, float>(output.AsSpan(0, rasterInfo.BytesSize)), 0, 4);
         }
     }
@@ -1012,7 +1038,8 @@ sealed class MeshGeometry
     }
 
     // `loRows`: rows of the high half block of an fp16 hi/lo input, 0 for F32. `corners`: the GPU RGBA8 output.
-    bool RunVertexProgram(SKCanvas canvas, byte[] uniformData, SKShader input, int loRows, int perRow, int rows, bool corners)
+    // `perRow` items per row of the target, the first `used` of each row are run.
+    bool RunVertexProgram(SKCanvas canvas, byte[] uniformData, SKShader input, int loRows, int perRow, int used, int rows, bool corners)
     {
         var spec = Id.Spec;
         SKShader shader;
@@ -1020,19 +1047,19 @@ sealed class MeshGeometry
         {
             var uniforms = spec.PositionUniforms;
             SetUniforms(uniforms, spec.VertexUniforms, uniformData);
-            uniforms["_sm_pk"] = (ReadOnlySpan<float>)stackalloc float[] { 0, Packed.VerticesPerRow, 1f / Packed.VerticesPerRow, loRows };
-            uniforms["_sm_pos"] = (ReadOnlySpan<float>)stackalloc float[] { perRow, corners ? 1 : 0, _available, 0 };
+            uniforms.Set("_sm_pk", stackalloc float[] { 0, Packed.VerticesPerRow, 1f / Packed.VerticesPerRow, loRows });
+            uniforms.Set("_sm_pos", stackalloc float[] { perRow, corners ? 1 : 0, _available, 0 });
             SetCornerUniforms(uniforms, 1);
             var children = spec.PositionChildren;
             children["_sm_attr"] = input;
             children["_sm_idx"] = IndexShader;
-            shader = spec.PositionEffect.ToShader(uniforms, children);
+            shader = spec.PositionEffect.ToShader(uniforms.Holder, children);
             children.Reset();
         }
         if (shader == null)
             return false;
         using (shader)
-            PassSurface.Fill(canvas, shader, corners ? perRow * 2 : perRow, rows);
+            PassSurface.Fill(canvas, shader, corners ? used * 2 : used, rows);
         return true;
     }
 
@@ -1075,7 +1102,7 @@ sealed class MeshGeometry
         }
     }
 
-    public static void SetUniforms(SKRuntimeEffectUniforms target, SKMeshSpecification.UniformSlot[] slots, byte[] data)
+    public static void SetUniforms(SKMeshSpecification.CachedUniforms target, SKMeshSpecification.UniformSlot[] slots, byte[] data)
     {
         foreach (var slot in slots)
         {
@@ -1083,18 +1110,12 @@ sealed class MeshGeometry
             if (slot.IsInt)
             {
                 var ints = MemoryMarshal.Cast<byte, int>(bytes);
-                if (ints.Length == 1 && !slot.IsArray)
-                    target[slot.Name] = ints[0];
-                else
-                    target[slot.Name] = ints;
+                target.Set(slot.Name, ints, ints.Length == 1 && !slot.IsArray);
             }
             else
             {
                 var floats = MemoryMarshal.Cast<byte, float>(bytes);
-                if (floats.Length == 1 && !slot.IsArray)
-                    target[slot.Name] = floats[0];
-                else
-                    target[slot.Name] = floats;
+                target.Set(slot.Name, floats, floats.Length == 1 && !slot.IsArray);
             }
         }
     }

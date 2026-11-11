@@ -1,6 +1,7 @@
 #nullable disable
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using SkiaSharp;
 using System.Text.RegularExpressions;
@@ -129,14 +130,61 @@ public sealed class SKMeshSpecification : IDisposable
     // Uniform and child holders of the programs, made once and refilled for every shader (ToShader copies
     // them), under EffectLock: building them per draw cost more than the shader itself.
     internal readonly object EffectLock = new();
-    SKRuntimeEffectUniforms _drawUniforms, _positionUniforms, _convertUniforms;
+    CachedUniforms _drawUniforms, _positionUniforms, _convertUniforms;
     SKRuntimeEffectChildren _drawChildren, _positionChildren, _convertChildren;
-    internal SKRuntimeEffectUniforms DrawUniforms => _drawUniforms ??= new SKRuntimeEffectUniforms(DrawEffect);
+    internal CachedUniforms DrawUniforms => _drawUniforms ??= new CachedUniforms(DrawEffect);
     internal SKRuntimeEffectChildren DrawChildren => _drawChildren ??= new SKRuntimeEffectChildren(DrawEffect);
-    internal SKRuntimeEffectUniforms PositionUniforms => _positionUniforms ??= new SKRuntimeEffectUniforms(PositionEffect);
+    internal CachedUniforms PositionUniforms => _positionUniforms ??= new CachedUniforms(PositionEffect);
     internal SKRuntimeEffectChildren PositionChildren => _positionChildren ??= new SKRuntimeEffectChildren(PositionEffect);
-    internal SKRuntimeEffectUniforms ConvertUniforms => _convertUniforms ??= new SKRuntimeEffectUniforms(ConvertEffect);
+    internal CachedUniforms ConvertUniforms => _convertUniforms ??= new CachedUniforms(ConvertEffect);
     internal SKRuntimeEffectChildren ConvertChildren => _convertChildren ??= new SKRuntimeEffectChildren(ConvertEffect);
+
+    // A program's uniform holder that writes a value only when it differs from the one it holds (each write allocates
+    // in SkiaSharp): a mesh drawn every frame writes only what changed since the last draw of its specification.
+    internal sealed class CachedUniforms : IDisposable
+    {
+        readonly Dictionary<string, byte[]> _written = new();
+
+        public CachedUniforms(SKRuntimeEffect effect) => Holder = new SKRuntimeEffectUniforms(effect);
+
+        public SKRuntimeEffectUniforms Holder { get; }
+
+        public void Set(string name, ReadOnlySpan<float> values, bool scalar = false)
+        {
+            var bytes = MemoryMarshal.AsBytes(values);
+            if (Holds(name, bytes))
+                return;
+            if (scalar)
+                Holder[name] = values[0];
+            else
+                Holder[name] = values;
+            Keep(name, bytes);
+        }
+
+        public void Set(string name, ReadOnlySpan<int> values, bool scalar = false)
+        {
+            var bytes = MemoryMarshal.AsBytes(values);
+            if (Holds(name, bytes))
+                return;
+            if (scalar)
+                Holder[name] = values[0];
+            else
+                Holder[name] = values;
+            Keep(name, bytes);
+        }
+
+        bool Holds(string name, ReadOnlySpan<byte> bytes)
+            => _written.TryGetValue(name, out var last) && bytes.SequenceEqual(last);
+
+        void Keep(string name, ReadOnlySpan<byte> bytes)
+        {
+            if (!_written.TryGetValue(name, out var last) || last.Length != bytes.Length)
+                _written[name] = last = new byte[bytes.Length];
+            bytes.CopyTo(last);
+        }
+
+        public void Dispose() => Holder.Dispose();
+    }
 
     internal UniformSlot[] Uniforms { get; }          // user uniforms of the draw program, in mesh layout order
     internal UniformSlot[] VertexUniforms { get; }     // same, for the position program (vertex program uniforms only)
