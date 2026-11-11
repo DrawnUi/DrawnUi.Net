@@ -27,6 +27,14 @@ public class SkiaShader : IDisposable
     // Which standard uniforms and whether iImage1 the compiled shader declares, read once with the cached holders.
     private int _declaredStandard;
     private bool _declaresImage1;
+    private float _writtenTime;
+
+    /// <summary>
+    /// Changes when the uniforms holder returned by <see cref="CreateUniforms"/> is made again (a new compile): a subclass
+    /// that writes its own uniforms only when they change writes all of them again then.
+    /// </summary>
+    public int UniformsVersion { get; private set; }
+
     private const int StandardResolution = 1, StandardImageResolution = 2, StandardTime = 4, StandardOffset = 8, StandardMouse = 16;
     private SKShader _cachedTextureShader;
     private IntPtr _cachedTextureSourceHandle;
@@ -308,9 +316,12 @@ public class SkiaShader : IDisposable
         float imageWidth, float imageHeight)
     {
         var uniforms = _cachedUniforms;
+        bool fresh = false;
         if (uniforms == null)
         {
             uniforms = _cachedUniforms = new SKRuntimeEffectUniforms(_compiled);
+            UniformsVersion++;
+            fresh = true;
             // A shader may leave out the standard uniforms it does not use: writing an undeclared one throws.
             _declaredStandard = (uniforms.Contains("iResolution") ? StandardResolution : 0)
                                 | (uniforms.Contains("iImageResolution") ? StandardImageResolution : 0)
@@ -319,31 +330,40 @@ public class SkiaShader : IDisposable
                                 | (uniforms.Contains("iMouse") ? StandardMouse : 0);
         }
 
-        if ((_declaredStandard & StandardResolution) != 0)
+        // The holder keeps what was written: a value is written again only when it changed (each write allocates in
+        // SkiaSharp).
+        if ((_declaredStandard & StandardResolution) != 0
+            && (fresh || _bufResolution[0] != viewportWidth || _bufResolution[1] != viewportHeight))
         {
             _bufResolution[0] = viewportWidth;
             _bufResolution[1] = viewportHeight;
             uniforms["iResolution"] = _bufResolution;
         }
 
-        if ((_declaredStandard & StandardImageResolution) != 0)
+        if ((_declaredStandard & StandardImageResolution) != 0
+            && (fresh || _bufImageResolution[0] != imageWidth || _bufImageResolution[1] != imageHeight))
         {
             _bufImageResolution[0] = imageWidth;
             _bufImageResolution[1] = imageHeight;
             uniforms["iImageResolution"] = _bufImageResolution;
         }
 
-        if ((_declaredStandard & StandardTime) != 0)
+        if ((_declaredStandard & StandardTime) != 0 && (fresh || _writtenTime != Time))
+        {
+            _writtenTime = Time;
             uniforms["iTime"] = Time;
+        }
 
-        if ((_declaredStandard & StandardOffset) != 0)
+        if ((_declaredStandard & StandardOffset) != 0
+            && (fresh || _bufOffset[0] != Offset.X || _bufOffset[1] != Offset.Y))
         {
             _bufOffset[0] = Offset.X;
             _bufOffset[1] = Offset.Y;
             uniforms["iOffset"] = _bufOffset;
         }
 
-        if ((_declaredStandard & StandardMouse) != 0)
+        if ((_declaredStandard & StandardMouse) != 0
+            && (fresh || _bufMouse[0] != Mouse.X || _bufMouse[1] != Mouse.Y || _bufMouse[2] != MouseInitial.X || _bufMouse[3] != MouseInitial.Y))
         {
             _bufMouse[0] = Mouse.X;
             _bufMouse[1] = Mouse.Y;

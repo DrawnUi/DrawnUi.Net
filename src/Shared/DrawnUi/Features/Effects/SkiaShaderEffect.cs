@@ -637,18 +637,36 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
         var engine = GetEngine();
         var uniforms = engine.CreateUniforms(destination.Width, destination.Height, destination.Width, destination.Height);
 
+        // The engine's holder keeps what was written: a uniform is written again only when its values changed (each
+        // write allocates in SkiaSharp), compared with a copy, so arrays changed in place without SetUniform still count.
+        if (!ReferenceEquals(_writtenEngine, engine) || _writtenVersion != engine.UniformsVersion)
+        {
+            _writtenEngine = engine;
+            _writtenVersion = engine.UniformsVersion;
+            _writtenUniforms.Clear();
+        }
+
         if (Uniforms.Count > 0)
         {
             foreach (var kv in Uniforms)
             {
+                var values = kv.Value;
+                if (_writtenUniforms.TryGetValue(kv.Key, out var written)
+                    && System.Runtime.InteropServices.MemoryMarshal.AsBytes(written.AsSpan())
+                        .SequenceEqual(System.Runtime.InteropServices.MemoryMarshal.AsBytes(values.AsSpan())))
+                    continue;
+                if (written == null || written.Length != values.Length)
+                    _writtenUniforms[kv.Key] = written = new float[values.Length];
+                values.CopyTo(written, 0);
+
                 // Skip uniforms the shader doesn't declare (indexer throws for unknown names).
                 // Scalars must be written as float — SkiaSharp rejects float[1] for a 'float' uniform.
                 try
                 {
-                    if (kv.Value.Length == 1)
-                        uniforms[kv.Key] = kv.Value[0];
+                    if (values.Length == 1)
+                        uniforms[kv.Key] = values[0];
                     else
-                        uniforms[kv.Key] = kv.Value;
+                        uniforms[kv.Key] = values;
                 }
                 catch (Exception e) { Super.Log($"[SkiaShaderEffect] SetUniform '{kv.Key}' failed: {e.Message}"); }
             }
@@ -656,6 +674,10 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
 
         return uniforms;
     }
+
+    private readonly Dictionary<string, float[]> _writtenUniforms = new();
+    private SkiaShader _writtenEngine;
+    private int _writtenVersion;
 
     /// <summary>
     /// Creates texture children via engine. Override to add additional textures.
