@@ -33,6 +33,8 @@ struct DrawBlock {
     float4 outline_color;
     float4 params; // x outline width (pixels), yz viewport
     int4 flags;    // x skinned, y textured, z look, w outline pass
+    float4 eye;    // the eye (w = 1) or the direction toward the viewer (w = 0)
+    float4 material; // x roughness
 };
 
 struct VertexIn {
@@ -48,6 +50,7 @@ struct VertexOut {
     float4 position [[position]];
     float3 nrm;
     float2 uv;
+    float3 wpos;
 };
 
 vertex VertexOut model_vertex(VertexIn v [[stage_in]], constant DrawBlock& d [[buffer(6)]], constant float4x4* joints [[buffer(7)]]) {
@@ -61,7 +64,9 @@ vertex VertexOut model_vertex(VertexIn v [[stage_in]], constant DrawBlock& d [[b
     VertexOut o;
     o.nrm = m3 * v.nrm;
     o.uv = v.uv;
-    o.position = d.view_proj * m * float4(v.pos, 1.0);
+    float4 world = m * float4(v.pos, 1.0);
+    o.wpos = world.xyz;
+    o.position = d.view_proj * world;
     if (d.params.x > 0.0) {
         // The outline pass: the back faces pushed out along their smoothed normals, a fixed number of pixels on screen.
         float4 n = d.view_proj * float4(m3 * v.outline_nrm, 0.0);
@@ -88,7 +93,18 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
     float3 lit;
     if (d.flags.z == 2) lit = c.rgb;
     else if (d.flags.z == 1) lit = c.rgb * (sun > 0.35 ? 1.0 : 0.62);
-    else lit = c.rgb * (0.30 + 0.25 * sky + 0.70 * sun);
+    else {
+        // Lit (DrawnUI for Rust's render.rs): a key light, a soft fill from the other side, the sky, and a
+        // highlight that only glossy materials get (roughness below 1).
+        float fill = max(dot(n, normalize(float3(-d.light.x, 0.3, -d.light.z))), 0.0);
+        lit = c.rgb * (0.24 + 0.20 * sky + 0.68 * sun + 0.22 * fill);
+        float gloss = 1.0 - clamp(d.material.x, 0.0, 1.0);
+        if (gloss > 0.01 && sun > 0.0) {
+            float3 v = d.eye.w > 0.5 ? normalize(d.eye.xyz - i.wpos) : normalize(d.eye.xyz);
+            float s = pow(max(dot(n, normalize(d.light.xyz + v)), 0.0), mix(6.0, 90.0, gloss * gloss));
+            lit += 0.55 * gloss * gloss * s;
+        }
+    }
     return float4(pow(lit, float3(1.0 / 2.2)) * c.a, c.a);
 }
 """;
@@ -99,6 +115,8 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
         public Matrix4x4 Model, ViewProj;
         public Vector4 Color, Light, OutlineColor, Params;
         public int Skinned, Textured, Look, OutlinePass;
+        /// <summary>The eye for the highlight (<see cref="Renderer3D.Eye"/>); X of Material = roughness.</summary>
+        public Vector4 Eye, Material;
     }
 
     /// <summary>A control's frame on Metal, in <see cref="RenderTarget.Native"/>.</summary>
@@ -220,6 +238,8 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
         {
             MinFilter = MTLSamplerMinMagFilter.Linear, MagFilter = MTLSamplerMinMagFilter.Linear, MipFilter = MTLSamplerMipFilter.Linear,
             SAddressMode = MTLSamplerAddressMode.Repeat, TAddressMode = MTLSamplerAddressMode.Repeat,
+            // Text and fine lines on a surface at an angle (a tilted card) stay sharp, as on GL.
+            MaxAnisotropy = 8,
         });
         _white = UploadTexture(new Image3D { Width = 1, Height = 1, Rgba = new byte[] { 255, 255, 255, 255 } }, null);
     }
@@ -451,6 +471,7 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
             OutlineColor = style.OutlineColor,
             Params = new Vector4(0, w, h, 0),
             Look = (int)style.Look,
+            Eye = Renderer3D.Eye(viewProj),
         };
         var state = new EncoderState { Cull = -1 };
         var firstPass = style.Outline > 0 ? 0 : 1;
@@ -511,6 +532,7 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
                         encoder.SetVertexBytes((IntPtr)j, (nuint)(n * sizeof(Matrix4x4)), 7);
                 }
                 block.Color = changed.HasColor ? changed.Color : material?.Color ?? new Vector4(0.8f, 0.8f, 0.8f, 1);
+                block.Material.X = changed.HasRoughness ? changed.Roughness : material?.Roughness ?? 1;
                 // An image put on the material from code, else the file's own.
                 var texture = changed.Image != null ? ImageTexture(changed.Image.Pixels, queue)
                     : material != null && material.Texture >= 0 && material.Texture < gpu.Textures.Length ? gpu.Textures[material.Texture] : null;

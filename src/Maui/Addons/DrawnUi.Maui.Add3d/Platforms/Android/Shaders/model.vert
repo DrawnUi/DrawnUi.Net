@@ -14,10 +14,13 @@ layout(set=0, binding=0) uniform Draw {
     vec4 u_outline_color;
     vec4 u_params;  // x outline width (pixels), yz viewport
     ivec4 u_flags;  // x skinned, y textured, z look, w outline pass
+    vec4 u_eye;     // the eye (w = 1) or the direction toward the viewer (w = 0)
+    vec4 u_material; // x roughness
 };
 layout(set=0, binding=1) uniform Joints { mat4 u_joints[64]; };
 layout(location=0) out vec3 v_nrm;
 layout(location=1) out vec2 v_uv;
+layout(location=2) out vec3 v_wpos;
 void main() {
     mat4 skin = mat4(1.0);
     if (u_flags.x != 0) {
@@ -27,7 +30,9 @@ void main() {
     mat4 m = u_model * skin;
     v_nrm = mat3(m) * a_nrm;
     v_uv = a_uv;
-    gl_Position = u_view_proj * m * vec4(a_pos, 1.0);
+    vec4 world = m * vec4(a_pos, 1.0);
+    v_wpos = world.xyz;
+    gl_Position = u_view_proj * world;
     if (u_params.x > 0.0) {
         vec4 n = u_view_proj * vec4(mat3(m) * a_outline_nrm, 0.0);
         vec2 dir = normalize(n.xy + vec2(1e-6));

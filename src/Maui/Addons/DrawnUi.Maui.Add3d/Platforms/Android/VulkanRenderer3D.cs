@@ -26,6 +26,8 @@ internal sealed unsafe class VulkanRenderer3D
         public Matrix4x4 Model, ViewProj;
         public Vector4 Color, Light, OutlineColor, Params;
         public int Skinned, Textured, Look, OutlinePass;
+        /// <summary>The eye for the highlight (<see cref="Renderer3D.Eye"/>); X of Material = roughness.</summary>
+        public Vector4 Eye, Material;
     }
 
     /// <summary>A control's frame on Vulkan, in <see cref="RenderTarget.Native"/>.</summary>
@@ -880,6 +882,7 @@ internal sealed unsafe class VulkanRenderer3D
             OutlineColor = style.OutlineColor,
             Params = new Vector4(0, w, h, 0),
             Look = (int)style.Look,
+            Eye = Renderer3D.Eye(viewProj),
         };
         // The joints block at 0 stays bound for unskinned draws.
         ulong used = JointsBlockSize;
@@ -940,6 +943,7 @@ internal sealed unsafe class VulkanRenderer3D
                     }
                 }
                 block.Color = changed.HasColor ? changed.Color : material?.Color ?? new Vector4(0.8f, 0.8f, 0.8f, 1);
+                block.Material.X = changed.HasRoughness ? changed.Roughness : material?.Roughness ?? 1;
                 // An image put on the material from code, else the file's own.
                 var texture = changed.Image != null ? ImageTexture(changed.Image.Pixels)
                     : material != null && material.Texture >= 0 && material.Texture < gpu.Textures.Length ? gpu.Textures[material.Texture] : null;
