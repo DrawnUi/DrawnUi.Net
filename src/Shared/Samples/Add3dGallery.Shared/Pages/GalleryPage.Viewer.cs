@@ -69,7 +69,7 @@ public partial class GalleryPage
 
     static string Dollars(int amount) => "$" + amount.ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
 
-    SkiaControl ViewerCard() => WideCard("Product viewer", "A real product model on a shop page: turn it, zoom in, tap the dots, pick a fabric.", Split(new SkiaRow
+    SkiaControl ViewerCard() => WideCard("Product viewer", "A real product model on a shop page: turn it, zoom in, tap the dots, pick a fabric.", TwoColumnCard(new SkiaRow
     {
         Spacing = 24,
         Children =

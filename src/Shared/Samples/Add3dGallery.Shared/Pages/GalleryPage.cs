@@ -220,7 +220,7 @@ public partial class GalleryPage : DrawnGame
     /// A two-column card body: the 3D view (<paramref name="viewWidth"/> x <paramref name="viewHeight"/>) beside its panel;
     /// when the card is narrow, stacked, the view on top at full width and its desktop proportions.
     /// </summary>
-    SkiaLayout Split(SkiaLayout row, float viewWidth, float viewHeight)
+    SkiaLayout TwoColumnCard(SkiaLayout row, float viewWidth, float viewHeight)
     {
         _adapt.Add(width =>
         {
