@@ -23,7 +23,7 @@ public partial class GalleryPage
     float _headYaw, _headPitch, _headYawTo, _headPitchTo, _hands, _handsTo;
     bool _headSet, _handsSet;
 
-    SkiaControl FormCard() => WideCard(new SkiaRow
+    SkiaControl FormCard() => WideCard("3D next to normal UI", "A plain sign-up form with a 3D mascot beside it: it watches what you type and looks away from your password.", new SkiaRow
     {
         Spacing = 24,
         Children =

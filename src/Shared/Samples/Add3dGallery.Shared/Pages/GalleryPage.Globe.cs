@@ -53,7 +53,7 @@ public partial class GalleryPage
     static (float Yaw, float Pitch) Facing(Vector3 p) =>
         (MathF.Atan2(p.X, p.Z) * 180 / MathF.PI, Math.Clamp(MathF.Asin(Math.Clamp(p.Y / p.Length(), -1, 1)) * 180 / MathF.PI, -55, 75));
 
-    SkiaControl GlobeCard() => WideCard(new SkiaRow
+    SkiaControl GlobeCard() => WideCard("Globe with pins", "Drag the Earth to turn it. Pins stay on their cities and hide behind the globe; tap one for its name.", new SkiaRow
     {
         Spacing = 24,
         Children =

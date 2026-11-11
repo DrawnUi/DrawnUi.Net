@@ -67,19 +67,14 @@ public partial class GalleryPage : DrawnGame
                             }
                         },
 
-                        Theme.Section("Product viewer", "A real product model on a shop page: turn it, zoom in, tap the dots, pick a fabric."),
                         ViewerCard(),
 
-                        Theme.Section("3D in a scrolling list", "Thirty pieces of furniture, each with a live 3D thumbnail: point at a row to turn it, or drag a thumbnail sideways. Rows off screen draw nothing."),
                         ListCard(),
 
-                        Theme.Section("Card flip", "A loyalty card in 3D: it leans toward the pointer and turns over to show its back."),
                         FlipCard(),
 
-                        Theme.Section("Globe with pins", "Drag the Earth to turn it. Pins stay on their cities and hide behind the globe; tap one for its name."),
                         GlobeCard(),
 
-                        Theme.Section("3D next to normal UI", "A plain sign-up form with a 3D mascot beside it: it watches what you type and looks away from your password."),
                         FormCard(),
 
                         Theme.Section("Micro-interactions", "Small 3D touches that answer a tap."),
@@ -193,8 +188,8 @@ public partial class GalleryPage : DrawnGame
         Children = { piece },
     };
 
-    /// <summary>A wide card holding a whole demo (the section above names it).</summary>
-    static SkiaShape WideCard(SkiaControl content) => new()
+    /// <summary>A wide card for one demo: its title, a caption, and what it shows.</summary>
+    static SkiaShape WideCard(string title, string caption, SkiaControl content) => new()
     {
         // Holds 3D that draws every frame: a recorded cache would be made again each frame.
         UseCache = SkiaCacheType.None,
@@ -202,10 +197,22 @@ public partial class GalleryPage : DrawnGame
         BackgroundColor = Theme.Card,
         StrokeColor = Theme.Line,
         StrokeWidth = 1,
-        Padding = new Thickness(16),
+        Padding = new Thickness(20),
         HorizontalOptions = LayoutOptions.Center,
-        WidthRequest = WideWidth + 32,
-        Children = { content },
+        WidthRequest = WideWidth + 40,
+        Children =
+        {
+            new SkiaStack
+            {
+                Spacing = 10,
+                Children =
+                {
+                    new SkiaLabel(title) { FontSize = 20, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                    new SkiaLabel(caption) { FontSize = 14, TextColor = Theme.Muted },
+                    content.WithMargin(0, 6, 0, 0),
+                }
+            },
+        },
     };
 
     /// <summary>The medal's resting turn: it spins from here and lands here.</summary>
@@ -224,22 +231,12 @@ public partial class GalleryPage : DrawnGame
         VerticalOptions = LayoutOptions.Fill,
     };
 
-    SkiaControl MobsCard() => WideCard(new SkiaStack
+    SkiaControl MobsCard() => WideCard("Mobs on a 2D field",
+        "Many 3D monsters from one model, moved like sprites and drawn by one layer in one pass. Tap one to hit it.", new SkiaStack
     {
         Spacing = 10,
         Children =
         {
-            new SkiaStack
-            {
-                Spacing = 4,
-                UseCache = SkiaCacheType.Image,
-                Children =
-                {
-                    new SkiaLabel("Mobs on a 2D field") { FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                    new SkiaLabel("Many 3D monsters from one model, moved like sprites and drawn by one layer in one pass. Tap one to hit it.")
-                        { FontSize = 13, TextColor = Theme.Muted },
-                }
-            },
             new SkiaShape
             {
                 WidthRequest = FieldWidth,

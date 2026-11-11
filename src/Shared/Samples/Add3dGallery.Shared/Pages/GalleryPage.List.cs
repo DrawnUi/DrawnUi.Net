@@ -38,7 +38,7 @@ public partial class GalleryPage
 
     SkiaControl ListCard()
     {
-        return WideCard(new SkiaStack
+        return WideCard("3D in a scrolling list", "Thirty pieces of furniture, each with a live 3D thumbnail: point at a row to turn it, or drag a thumbnail sideways. Rows off screen draw nothing.", new SkiaStack
         {
             Spacing = 10,
             Children =
@@ -160,14 +160,16 @@ public partial class GalleryPage
             .OnHovered((_, on) => model.AutoRotate = on ? 40 : 0);
     }
 
-    /// <summary>Each frame: how many thumbnails the list drew, shown above it (the rest cost nothing).</summary>
+    /// <summary>Each frame: how many thumbnails are on screen now, shown above the list (the rest cost nothing).</summary>
     void ListFrame()
     {
         if (!_listScroll.WasInLastFrame())
             return;
+        // Drawn by the list, and inside the page's window too (a row below the window's edge is drawn but not seen).
+        var window = _scroll.GetAccessibilityPixelRect();
         var drawn = 0;
         foreach (var thumb in _thumbs)
-            if (thumb.WasInLastFrame())
+            if (thumb.WasInLastFrame() && thumb.GetAccessibilityPixelRect().IntersectsWith(window))
                 drawn++;
         if (drawn == _thumbsDrawn)
             return;

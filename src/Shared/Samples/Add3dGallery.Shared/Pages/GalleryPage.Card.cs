@@ -110,7 +110,7 @@ public partial class GalleryPage
         canvas.DrawText(text, x, y, align, font, paint);
     }
 
-    SkiaControl FlipCard() => WideCard(new SkiaRow
+    SkiaControl FlipCard() => WideCard("Card flip", "A loyalty card in 3D: it leans toward the pointer and turns over to show its back.", new SkiaRow
     {
         Spacing = 24,
         Children =
