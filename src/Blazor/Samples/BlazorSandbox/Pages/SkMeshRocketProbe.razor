@@ -6,6 +6,7 @@
 @using DrawnUi.Draw.Meshes
 @using System.Globalization
 @using System.Net.Http
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using System.Runtime.InteropServices
 @inject HttpClient Http
 
@@ -99,7 +100,11 @@
     {
         try
         {
-            var objText = await Http.GetStringAsync("media/rocket.obj");
+            using var request = new HttpRequestMessage(HttpMethod.Get, "media/rocket.obj");
+            request.SetBrowserRequestCache(BrowserRequestCache.NoCache); // a replaced model file shows on the next visit
+            using var response = await Http.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var objText = await response.Content.ReadAsStringAsync();
             var model = ObjModel.Parse(objText);
             _viewer.SetModel(model);
             SetStatus($"rocket loaded tris={model.Triangles.Count} verts={model.VertexCount}");
