@@ -262,7 +262,7 @@ public class SKMeshStandInTests
     [Fact]
     public void LargePositions_KeepFullPrecision()
     {
-        // Attributes travel as fp16 hi + lo: a position near 3000 must still interpolate to the pixel.
+        // A position near 3000 must still interpolate to the pixel.
         var vary = new[] { new SKMeshSpecificationVarying(SKMeshSpecificationVaryingType.Float2, "p") };
         using var spec = Spec(new[] { Pos }, 8, vary,
             "Varyings main(const Attributes a) { Varyings v; v.position = a.position; v.p = a.position; return v; }",
@@ -279,6 +279,39 @@ public class SKMeshStandInTests
                 Assert.InRange(pixels[(y * 64 + x) * 4], 0.5 - 0.01, 0.5 + 0.01);
                 Assert.InRange(pixels[(y * 64 + x) * 4 + 1], 0.5 - 0.01, 0.5 + 0.01);
             }
+    }
+
+    [Theory]
+    [InlineData(16777215f)]
+    [InlineData(1234567.875f)]
+    [InlineData(-0.1f)]
+    [InlineData(3.4028235e38f)]
+    [InlineData(-1.17549435e-38f)] // smallest normal
+    [InlineData(0f)]
+    public void AttributeFloats_ReachTheProgramsBitExact(float value)
+    {
+        // The programs rebuild each attribute float from its bytes: the vertex program sees exactly the value
+        // the app wrote (any difference moves the triangle 50 px down).
+        var attrs = new[] { Pos, new SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType.Float, 8, "val"),
+            new SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType.Ubyte4Unorm, 12, "rgba") };
+        var vary = new[] { new SKMeshSpecificationVarying(SKMeshSpecificationVaryingType.Half4, "rgba") };
+        using var spec = Spec(attrs, 16, vary,
+            "uniform float uRef; Varyings main(const Attributes a) { Varyings v; v.position = a.position + float2(0.0, a.val == uRef ? 0.0 : 50.0); v.rgba = a.rgba; return v; }",
+            "float2 main(const Varyings v, out half4 color) { color = v.rgba; return v.position; }");
+        var bytes = new byte[48];
+        var f = MemoryMarshal.Cast<byte, float>(bytes.AsSpan());
+        (f[0], f[1], f[4], f[5], f[8], f[9]) = (0, 0, 40, 0, 0, 40);
+        f[2] = f[6] = f[10] = value;
+        for (int v = 0; v < 3; v++)
+            (bytes[v * 16 + 12], bytes[v * 16 + 13], bytes[v * 16 + 14], bytes[v * 16 + 15]) = (0, 51, 204, 255);
+        using var vb = SKMeshVertexBuffer.Make(bytes);
+        using var mesh = SKMesh.Make(spec, SKMeshMode.Triangles, vb, 3, 0, Uniforms(value), new SKRect(0, 0, 100, 100), out var e);
+        Assert.True(mesh != null, e);
+        using var paint = new SKPaint { Color = SKColors.White };
+        using var bmp = Render(100, 100, c => c.DrawMesh(mesh!, paint));
+
+        Assert.Equal(new SKColor(0, 51, 204), bmp.GetPixel(10, 10)); // Ubyte4Unorm bytes exact too
+        Assert.Equal(SKColors.Black, bmp.GetPixel(10, 60));
     }
 
     [Fact]

@@ -112,25 +112,31 @@ public sealed class SKMeshSpecification : IDisposable
     public int UniformSize { get; }
 
     internal SKMeshSpecificationAttribute[] Attributes { get; }
-    internal int TexelsPerVertex { get; }      // RGBA texels holding the packed attribute floats (Ubyte4Unorm as 4 floats)
     internal bool HasColor { get; }
+    internal int TexelsPerVertex { get; }      // RGBA texels of a vertex's attributes, packed (Ubyte4Unorm as 4 floats)
 
+    // The vertex bytes reach the programs as an RGBA8 image (one float per texel, wrapped without a copy).
+    // Convert program: once per vertex range, rebuilds each float from its bytes and packs a vertex's
+    // attributes into TexelsPerVertex texels, as fp16 hi + lo rows (draw) or F32 (vertex program on the CPU).
+    internal SKRuntimeEffect ConvertEffect { get; }
     // Draw program: vertex program run 3 times per pixel + fragment program, fed by DrawVertices texCoords.
     internal SKRuntimeEffect DrawEffect { get; }
     // Vertex program alone, run on the CPU (raster) to get the vertex positions DrawVertices needs.
     // Null when the vertex program copies the "position" attribute as is.
     internal SKRuntimeEffect PositionEffect { get; }
-    internal int PositionAttributeFloat { get; } = -1; // float index of the "position" attribute in a packed vertex
+    internal int PositionAttributeFloat { get; } = -1; // float index of the "position" attribute inside a vertex
 
-    // Uniform and child holders of both programs, made once and refilled for every shader (ToShader copies
+    // Uniform and child holders of the programs, made once and refilled for every shader (ToShader copies
     // them), under EffectLock: building them per draw cost more than the shader itself.
     internal readonly object EffectLock = new();
-    SKRuntimeEffectUniforms _drawUniforms, _positionUniforms;
-    SKRuntimeEffectChildren _drawChildren, _positionChildren;
+    SKRuntimeEffectUniforms _drawUniforms, _positionUniforms, _convertUniforms;
+    SKRuntimeEffectChildren _drawChildren, _positionChildren, _convertChildren;
     internal SKRuntimeEffectUniforms DrawUniforms => _drawUniforms ??= new SKRuntimeEffectUniforms(DrawEffect);
     internal SKRuntimeEffectChildren DrawChildren => _drawChildren ??= new SKRuntimeEffectChildren(DrawEffect);
     internal SKRuntimeEffectUniforms PositionUniforms => _positionUniforms ??= new SKRuntimeEffectUniforms(PositionEffect);
     internal SKRuntimeEffectChildren PositionChildren => _positionChildren ??= new SKRuntimeEffectChildren(PositionEffect);
+    internal SKRuntimeEffectUniforms ConvertUniforms => _convertUniforms ??= new SKRuntimeEffectUniforms(ConvertEffect);
+    internal SKRuntimeEffectChildren ConvertChildren => _convertChildren ??= new SKRuntimeEffectChildren(ConvertEffect);
 
     internal UniformSlot[] Uniforms { get; }          // user uniforms of the draw program, in mesh layout order
     internal UniformSlot[] VertexUniforms { get; }     // same, for the position program (vertex program uniforms only)
@@ -156,13 +162,15 @@ public sealed class SKMeshSpecification : IDisposable
         public readonly string Kind; // "shader", "colorFilter", "blender"
     }
 
-    SKMeshSpecification(int stride, SKMeshSpecificationAttribute[] attributes, int texels, bool hasColor, SKRuntimeEffect draw, SKRuntimeEffect positions, int positionFloat,
+    SKMeshSpecification(int stride, SKMeshSpecificationAttribute[] attributes, int texels, bool hasColor, SKRuntimeEffect convert,
+        SKRuntimeEffect draw, SKRuntimeEffect positions, int positionFloat,
         UniformSlot[] uniforms, UniformSlot[] vertexUniforms, int uniformSize, ChildSlot[] children)
     {
         Stride = stride;
         Attributes = attributes;
         TexelsPerVertex = texels;
         HasColor = hasColor;
+        ConvertEffect = convert;
         DrawEffect = draw;
         PositionEffect = positions;
         PositionAttributeFloat = positionFloat;
@@ -275,7 +283,7 @@ public sealed class SKMeshSpecification : IDisposable
         vs = MainRegex.Replace(vs, "_sm_vs(");
         fs = MainRegex.Replace(fs, "_sm_fs(");
 
-        // Packed attribute floats.
+        // Packed attribute floats: attribute i at float floatIndex[i] of its vertex's texels.
         var attrs = attributes.ToArray();
         var varys = varyings.ToArray();
         int floats = 0;
@@ -285,7 +293,7 @@ public sealed class SKMeshSpecification : IDisposable
         {
             floatIndex[i] = floats;
             if (attrs[i].Name == "position" && attrs[i].Type == SKMeshSpecificationAttributeType.Float2)
-                positionFloat = floats;
+                positionFloat = attrs[i].Offset / 4; // in the vertex bytes
             floats += AttributeFloats(attrs[i].Type);
         }
         int texels = (floats + 3) / 4;
@@ -294,14 +302,14 @@ public sealed class SKMeshSpecification : IDisposable
 
         // Vertex program alone: checked first so its errors carry the "VS:" prefix, and used on the CPU for
         // positions when the vertex program does more than copy the "position" attribute.
+        // Output pixel (x, y) = vertex y * _sm_pos.x + x, read from the F32 packed image.
         var positionSource = new StringBuilder()
             .Append(structs).Append('\n').Append(vs).Append('\n')
-            .Append("uniform shader _sm_attr;\n")
+            .Append("uniform shader _sm_attr;\nuniform float4 _sm_pk;\nuniform float4 _sm_pos;\n")
             .Append("float4 _sm_t(float x, float y) { return float4(_sm_attr.eval(float2(x + 0.5, y + 0.5))); }\n")
             .Append(BuildLoad(attrs, floatIndex, texels))
             .Append("half4 main(float2 p) {\n")
-            .Append("  float vx = floor(p.x);\n  float vy = floor(p.y);\n")
-            .Append($"  Varyings v = _sm_vs(_sm_load(vx * {texels}.0, vy));\n")
+            .Append("  Varyings v = _sm_vs(_sm_vload(floor(p.y) * _sm_pos.x + floor(p.x)));\n")
             .Append("  return half4(half2(v.position), 0.0, 1.0);\n}\n")
             .ToString();
 
@@ -327,6 +335,15 @@ public sealed class SKMeshSpecification : IDisposable
             return null;
         }
 
+        var convertEffect = SKRuntimeEffect.CreateShader(BuildConvert(attrs, floatIndex, texels, vertexStride / 4), out var convertErrors);
+        if (convertEffect == null)
+        {
+            positionEffect.Dispose();
+            drawEffect.Dispose();
+            errors = "DrawnUi SKMesh stand-in: " + convertErrors;
+            return null;
+        }
+
         // Uniform layout: Skia packs the vertex program's uniforms first, then the fragment program's own,
         // tightly (4-byte aligned), the same layout a runtime effect uses.
         var uniforms = new List<UniformSlot>();
@@ -338,6 +355,7 @@ public sealed class SKMeshSpecification : IDisposable
             {
                 positionEffect.Dispose();
                 drawEffect.Dispose();
+                convertEffect.Dispose();
                 errors = $"Uniform {u.Name}: type '{u.Type}{u.Array}' is not supported by the DrawnUi SKMesh stand-in.";
                 return null;
             }
@@ -354,7 +372,7 @@ public sealed class SKMeshSpecification : IDisposable
             positionEffect = null;
         }
 
-        return new SKMeshSpecification(vertexStride, attrs, texels, hasColor, drawEffect, positionEffect, positionFloat,
+        return new SKMeshSpecification(vertexStride, attrs, texels, hasColor, convertEffect, drawEffect, positionEffect, positionFloat,
             uniforms.ToArray(), vertexUniforms, uniformSize, children);
     }
 
@@ -458,7 +476,8 @@ public sealed class SKMeshSpecification : IDisposable
         return sb.ToString();
     }
 
-    // Attributes _sm_load(x, y): reads one vertex from the attribute image, its texels starting at column x.
+    // Attributes _sm_vload(v): vertex v of the packed image (its texels side by side, _sm_pk.y vertices per row,
+    // a power of two; _sm_pk.z = 1 / _sm_pk.y). _sm_t(x, y) reads one packed texel.
     static string BuildLoad(SKMeshSpecificationAttribute[] attrs, int[] floatIndex, int texels)
     {
         const string xyzw = "xyzw";
@@ -474,6 +493,62 @@ public sealed class SKMeshSpecification : IDisposable
               .Append(n == 1 ? parts.First() : $"{type}({string.Join(", ", parts)})").Append(";\n");
         }
         sb.Append("  return a;\n}\n");
+        sb.Append("Attributes _sm_vload(float v) {\n  float y = floor(v * _sm_pk.z);\n")
+          .Append($"  return _sm_load((v - y * _sm_pk.y) * {texels}.0, y);\n}}\n");
+        return sb.ToString();
+    }
+
+    // Convert program: the vertex bytes as they are (RGBA8, one float per texel, _sm_vtx.y texels per row, a
+    // power of two, _sm_vtx.z = 1 / _sm_vtx.y, the mesh's first float at _sm_vtx.x) into the packed image:
+    // output texel (x, y) = texel x % texels of vertex y * _sm_cv.x + x / texels.
+    // _sm_cv.z = 1: plain F32 floats. Else rows [0, _sm_cv.y) hold fp16 high halves and the rows after them the
+    // low halves: hi is the float rounded to 11 bits, lo = float - hi, both exact in fp16 storage and math
+    // (~22 bits once added; values beyond fp16 range overflow, below 6e-5 lose bits).
+    // Each float is rebuilt from its IEEE bytes with exact float math (exp2 is approximate on the CPU), so every
+    // GPU and the CPU get the value the app wrote, whatever precision their texture reads have. Zero and
+    // subnormals give 0.
+    static string BuildConvert(SKMeshSpecificationAttribute[] attrs, int[] floatIndex, int texels, int strideFloats)
+    {
+        var sb = new StringBuilder("uniform shader _sm_attr;\nuniform float4 _sm_vtx;\nuniform float4 _sm_cv;\n");
+        sb.Append("float4 _sm_b(float i) {\n  float y = floor(i * _sm_vtx.z);\n")
+          .Append("  return floor(float4(_sm_attr.eval(float2(i - y * _sm_vtx.y + 0.5, y + 0.5))) * 255.0 + 0.5);\n}\n")
+          // float i of the vertex bytes: plain, or its high or low fp16 part
+          .Append("float _sm_f(float i, float lo) {\n  float4 b = _sm_b(i);\n")
+          .Append("  float e = mod(b.w, 128.0) * 2.0 + floor(b.z * 0.0078125);\n")
+          .Append("  if (e == 0.0) { return 0.0; }\n")
+          .Append("  float m = mod(b.z, 128.0) * 65536.0 + b.y * 256.0 + b.x;\n")
+          .Append("  float d = e - 127.0;\n  float a = abs(d);\n  float s = d < 0.0 ? 0.5 : 2.0;\n  float p = 1.0;\n")
+          .Append("  for (int k = 0; k < 7; k++) {\n")
+          .Append("    float h = floor(a * 0.5);\n    if (a - h * 2.0 > 0.5) { p *= s; }\n    s *= s;\n    a = h;\n  }\n")
+          .Append("  float x = (m * 0.00000011920928955078125 + 1.0) * p;\n")
+          .Append("  if (_sm_cv.z < 0.5) {\n    float hi = (floor(m * 0.0001220703125 + 0.5) * 0.0009765625 + 1.0) * p;\n    x = lo > 0.5 ? x - hi : hi;\n  }\n")
+          .Append("  return b.w >= 128.0 ? -x : x;\n}\n");
+
+        // Packed float q of a vertex: its source in the vertex bytes.
+        var lanes = new string[texels * 4];
+        for (int q = 0; q < lanes.Length; q++)
+            lanes[q] = "0.0";
+        for (int i = 0; i < attrs.Length; i++)
+        {
+            int n = AttributeFloats(attrs[i].Type);
+            int f = attrs[i].Offset / 4;
+            for (int c = 0; c < n; c++)
+                lanes[floatIndex[i] + c] = attrs[i].Type == SKMeshSpecificationAttributeType.Ubyte4Unorm
+                    ? $"(lo > 0.5 ? 0.0 : _sm_b(i + {f}.0).{"xyzw"[c]} / 255.0)" // already fp16-exact enough: unorm8
+                    : $"_sm_f(i + {f + c}.0, lo)";
+        }
+
+        sb.Append("half4 main(float2 p) {\n  float y = floor(p.y);\n  float lo = 0.0;\n")
+          .Append("  if (_sm_cv.z < 0.5 && y >= _sm_cv.y) { y -= _sm_cv.y; lo = 1.0; }\n")
+          .Append($"  float x = floor(p.x);\n  float vx = floor((x + 0.5) / {texels}.0);\n  float j = x - vx * {texels}.0;\n")
+          .Append($"  float i = _sm_vtx.x + (y * _sm_cv.x + vx) * {strideFloats}.0;\n")
+          .Append("  float4 r = float4(0.0);\n");
+        for (int t = 0; t < texels; t++)
+        {
+            sb.Append(t == 0 ? "  if (j < 0.5) " : $"  else if (j < {t}.5) ")
+              .Append($"{{ r = float4({lanes[t * 4]}, {lanes[t * 4 + 1]}, {lanes[t * 4 + 2]}, {lanes[t * 4 + 3]}); }}\n");
+        }
+        sb.Append("  return half4(r);\n}\n");
         return sb.ToString();
     }
 
@@ -486,15 +561,22 @@ public sealed class SKMeshSpecification : IDisposable
         int texels, string colorType, SKAlphaType alphaType)
     {
         var sb = new StringBuilder();
-        // _sm_grid.x: rows of the high half block (the low halves follow), .y: paint alpha applied on top.
-        sb.Append("uniform float4 _sm_grid;\nuniform shader _sm_attr;\nuniform shader _sm_paint;\n");
+        // _sm_grid.x: triangle cells per texCoord row, .y: paint alpha applied on top, .z: 1 for a triangle strip,
+        // .w: 1 when indexed. _sm_ix.x: first index, .y: index image width (a power of two), .z: 1 / width.
+        // _sm_pk: the packed fp16 image (see BuildLoad), .w: rows of its high half block (the low halves follow).
+        sb.Append("uniform float4 _sm_grid;\nuniform float4 _sm_ix;\nuniform float4 _sm_pk;\n")
+          .Append("uniform shader _sm_attr;\nuniform shader _sm_idx;\nuniform shader _sm_paint;\n");
         if (colorType != null)
             sb.Append("uniform blender _sm_blend;\n");
-        // Each attribute float is stored as two halves (hi + lo): exact in fp16 storage and fp16 shader math,
-        // ~22 bits once added in float.
         sb.Append("float4 _sm_t(float x, float y) {\n  float2 c = float2(x + 0.5, y + 0.5);\n")
-          .Append("  return float4(_sm_attr.eval(c)) + float4(_sm_attr.eval(float2(c.x, c.y + _sm_grid.x)));\n}\n");
+          .Append("  return float4(_sm_attr.eval(c)) + float4(_sm_attr.eval(float2(c.x, c.y + _sm_pk.w)));\n}\n");
         sb.Append(BuildLoad(attrs, floatIndex, texels));
+        // Vertex of corner k of triangle t. The index image holds the index bytes as they are, 2 per texel.
+        sb.Append("float _sm_corner(float t, float k) {\n  float c = _sm_grid.z > 0.5 ? t + k : t * 3.0 + k;\n")
+          .Append("  if (_sm_grid.w > 0.5) {\n    c += _sm_ix.x;\n    float h = floor(c * 0.5);\n    float y = floor(h * _sm_ix.z);\n")
+          .Append("    float4 b = floor(float4(_sm_idx.eval(float2(h - y * _sm_ix.y + 0.5, y + 0.5))) * 255.0 + 0.5);\n")
+          .Append("    c = c - h * 2.0 > 0.5 ? b.z + b.w * 256.0 : b.x + b.y * 256.0;\n  }\n")
+          .Append("  return c;\n}\n");
 
         sb.Append("Varyings _sm_mix(Varyings a, Varyings b, Varyings c, float3 w) {\n  Varyings v;\n");
         var fields = new List<(string name, bool half)> { ("position", false) };
@@ -517,8 +599,8 @@ public sealed class SKMeshSpecification : IDisposable
           .Append("  float cx = floor(p.x);\n  float cy = floor(p.y);\n")
           .Append($"  float b1 = (p.x - cx - {low}) * {inv};\n  float b2 = (p.y - cy - {low}) * {inv};\n")
           .Append("  float3 w = float3(1.0 - b1 - b2, b1, b2);\n")
-          .Append($"  float x0 = cx * {3 * texels}.0;\n")
-          .Append($"  Varyings v = _sm_mix(_sm_vs(_sm_load(x0, cy)), _sm_vs(_sm_load(x0 + {texels}.0, cy)), _sm_vs(_sm_load(x0 + {2 * texels}.0, cy)), w);\n");
+          .Append("  float t = cy * _sm_grid.x + cx;\n")
+          .Append("  Varyings v = _sm_mix(_sm_vs(_sm_vload(_sm_corner(t, 0.0))), _sm_vs(_sm_vload(_sm_corner(t, 1.0))), _sm_vs(_sm_vload(_sm_corner(t, 2.0))), w);\n");
         if (colorType == null)
         {
             sb.Append("  float2 lc = _sm_fs(v);\n")
@@ -607,9 +689,12 @@ public sealed class SKMeshSpecification : IDisposable
             _drawChildren?.Dispose();
             _positionUniforms?.Dispose();
             _positionChildren?.Dispose();
-            _drawUniforms = _positionUniforms = null;
-            _drawChildren = _positionChildren = null;
+            _convertUniforms?.Dispose();
+            _convertChildren?.Dispose();
+            _drawUniforms = _positionUniforms = _convertUniforms = null;
+            _drawChildren = _positionChildren = _convertChildren = null;
         }
+        ConvertEffect?.Dispose();
         DrawEffect?.Dispose();
         PositionEffect?.Dispose();
     }
