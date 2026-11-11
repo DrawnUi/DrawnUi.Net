@@ -255,7 +255,8 @@ public class Model3DSceneTests
         using var s = new Scene();
         var yaw = s.Boss.Yaw;
         new GestureRobot(s.Host).Pan(100, 200, 300, 200, 200, 12);
-        Assert.True(s.Boss.Yaw > yaw + 30, $"yaw {yaw} -> {s.Boss.Yaw}");
+        // A drag to the right moves the near side right: the camera goes the other way round.
+        Assert.True(s.Boss.Yaw < yaw - 30, $"yaw {yaw} -> {s.Boss.Yaw}");
     }
 
     static bool Near(Matrix4x4 a, Matrix4x4 b)
