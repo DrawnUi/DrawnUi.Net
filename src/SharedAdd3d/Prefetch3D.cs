@@ -56,6 +56,10 @@ internal static class Prefetch3D
         // when their first frames show up in measurements.
         if (gr == null || gr.Backend != GRBackend.OpenGL)
             return;
+        // The 3D program compiles in the GPU driver while the next frames go on (its status is read at the first draw):
+        // nothing is rendered ahead in the frame that starts it, which would wait for the compile.
+        if (Renderer3D.StartProgram(gr))
+            return;
         var screen = (float)(canvas.Height * canvas.RenderingScale);
         if (screen <= 0)
             return;

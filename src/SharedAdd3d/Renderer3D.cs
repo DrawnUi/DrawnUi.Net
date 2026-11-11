@@ -224,6 +224,12 @@ void main() {
             Gl.glShaderSource(s, 1, &ptr, &len);
         }
         Gl.glCompileShader(s);
+        return s;
+    }
+
+    /// <summary>Logs a shader's compile errors; the first status query waits for the compile to end.</summary>
+    static void CheckShader(uint s)
+    {
         int ok;
         Gl.glGetShaderiv(s, COMPILE_STATUS, &ok);
         if (ok == 0)
@@ -234,7 +240,6 @@ void main() {
                 Gl.glGetShaderInfoLog(s, log.Length, &n, p);
             Super.Log($"[SkiaModel3D] shader: {Encoding.UTF8.GetString(log, 0, Math.Max(0, n))}");
         }
-        return s;
     }
 
     int Location(string name)
@@ -244,14 +249,53 @@ void main() {
             return Gl.glGetUniformLocation(_program, p);
     }
 
-    void MakeProgram()
+    uint _vs, _fs;
+    bool _programReady;
+
+    /// <summary>
+    /// Starts compiling and linking the shader program without asking for its status: the driver (Chrome's GPU
+    /// process on the web) does the work in parallel and the first draw finds it done. Called after a frame once a 3D
+    /// control is on the canvas (<see cref="Prefetch3D"/>), else by the first draw.
+    /// </summary>
+    void StartProgram()
     {
+        if (_program != 0)
+            return;
+        _vs = Shader(VERTEX_SHADER, Vs);
+        _fs = Shader(FRAGMENT_SHADER, Fs);
         _program = Gl.glCreateProgram();
-        Gl.glAttachShader(_program, Shader(VERTEX_SHADER, Vs));
-        Gl.glAttachShader(_program, Shader(FRAGMENT_SHADER, Fs));
+        Gl.glAttachShader(_program, _vs);
+        Gl.glAttachShader(_program, _fs);
         Gl.glLinkProgram(_program);
+    }
+
+    /// <summary>Starts the program on this context ahead of the first 3D draw (GL only); true when it started just now.</summary>
+    internal static bool StartProgram(GRContext gr)
+    {
+        if (gr?.Backend != GRBackend.OpenGL)
+            return false;
+        var renderer = Renderers.GetValue(gr, _ => new Renderer3D());
+        if (renderer._program != 0)
+            return false;
+        renderer.StartProgram();
+        return true;
+    }
+
+    /// <summary>The program's status and uniform places, read at the first draw.</summary>
+    void FinishProgram()
+    {
+        StartProgram();
+        _programReady = true;
+        int max;
+        Gl.glGetIntegerv(MAX_SAMPLES, &max);
+        _maxSamples = Math.Max(1, max);
         int ok;
         Gl.glGetProgramiv(_program, LINK_STATUS, &ok);
+        if (ok == 0)
+        {
+            CheckShader(_vs);
+            CheckShader(_fs);
+        }
         if (ok == 0)
             Super.Log("[SkiaModel3D] the shader program did not link");
         _u = new Uniforms
@@ -518,13 +562,8 @@ void main() {
 
     SKImage DrawOn(GRContext gr, RenderTarget target, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h)
     {
-        if (_program == 0)
-        {
-            MakeProgram();
-            int max;
-            Gl.glGetIntegerv(MAX_SAMPLES, &max);
-            _maxSamples = Math.Max(1, max);
-        }
+        if (!_programReady)
+            FinishProgram();
         if (_released.Count > 0)
             DeleteReleased(gr);
         EnsureTarget(gr, target, w, h, style.Samples);
