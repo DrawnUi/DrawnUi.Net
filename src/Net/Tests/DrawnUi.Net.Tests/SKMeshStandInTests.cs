@@ -578,4 +578,34 @@ public class SKMeshStandInTests
         // What is left: SkiaSharp's own wrapper objects (surfaces, images, shaders, vertices), each a few dozen bytes.
         Assert.True(perFrame < 4096, $"{perFrame} bytes per frame");
     }
+
+    [Fact]
+    public void NewIndicesEachFrame_ReuseThePackedVertices()
+    {
+        // A page that keeps its vertex buffer and gives a new draw order (index buffer) every frame: the vertex
+        // data is packed once, and each order still draws its own triangles.
+        using var spec = Spec(new[] { Pos }, 8, Array.Empty<SKMeshSpecificationVarying>(),
+            "uniform float2 uShift; Varyings main(const Attributes a) { Varyings v; v.position = a.position + uShift; return v; }",
+            RedFs);
+        using var vb = Vb(0, 0, 40, 0, 0, 40, 60, 60, 99, 60, 60, 99); // two triangles, far apart
+        var packedField = typeof(SKMeshVertexBuffer).GetField("_packed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        Assert.NotNull(packedField);
+        using var paint = new SKPaint { Color = SKColors.White };
+        object packed = null;
+        foreach (var order in new[] { new ushort[] { 0, 1, 2 }, new ushort[] { 3, 4, 5 }, new ushort[] { 0, 1, 2 } })
+        {
+            using var ib = SKMeshIndexBuffer.Make(MemoryMarshal.AsBytes(order.AsSpan()));
+            using var mesh = SKMesh.MakeIndexed(spec, SKMeshMode.Triangles, vb, 6, 0, ib, 3, 0, Uniforms(0, 0), new SKRect(0, 0, 100, 100), out var e);
+            Assert.True(mesh != null, e);
+            using var bmp = Render(100, 100, c => c.DrawMesh(mesh!, paint));
+            bool first = order[0] == 0;
+            Assert.Equal(first ? SKColors.Red : SKColors.Black, bmp.GetPixel(10, 10));
+            Assert.Equal(first ? SKColors.Black : SKColors.Red, bmp.GetPixel(70, 70));
+            var now = packedField!.GetValue(vb);
+            Assert.NotNull(now);
+            if (packed != null)
+                Assert.Same(packed, now);
+            packed = now;
+        }
+    }
 }

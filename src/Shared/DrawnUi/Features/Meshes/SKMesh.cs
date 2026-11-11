@@ -20,6 +20,7 @@ public sealed class SKMeshVertexBuffer : IDisposable
     readonly object _lock = new();
     MeshGeometry _geometry; // last geometry built from these bytes, shared by the meshes that use the same range
     MeshData _image;       // the bytes as the programs read them
+    PackedVertices _packed; // last packed vertex range, shared by the geometries over it
 
     SKMeshVertexBuffer(int size)
     {
@@ -76,6 +77,8 @@ public sealed class SKMeshVertexBuffer : IDisposable
         {
             _geometry?.Release();
             _geometry = null;
+            _packed?.Release();
+            _packed = null;
             if (_image != null)
                 _image.Dispose(); // the bytes go back to the pool when Skia releases the image
             else
@@ -119,6 +122,25 @@ public sealed class SKMeshVertexBuffer : IDisposable
         }
     }
 
+    // Packed vertices of a range, kept across geometries: a mesh that only changes its indices each frame
+    // packs nothing again.
+    internal PackedVertices AcquirePacked(in PackedVertices.Key key)
+    {
+        lock (_lock)
+        {
+            if (_packed == null || !_packed.Id.Equals(key))
+            {
+                var built = PackedVertices.Build(key, this);
+                if (built == null)
+                    return null;
+                _packed?.Release();
+                _packed = built; // the buffer's own reference
+            }
+            _packed.AddRef();
+            return _packed;
+        }
+    }
+
     /// <summary>Releases this reference to the bytes; meshes made from the buffer keep theirs.</summary>
     public void Dispose()
     {
@@ -132,15 +154,19 @@ public sealed class SKMeshVertexBuffer : IDisposable
 /// <summary>Raw 16-bit index bytes of a mesh, copied at creation (stand-in for SkiaSharp's SKMeshIndexBuffer).</summary>
 public sealed class SKMeshIndexBuffer : IDisposable
 {
-    internal readonly byte[] Data; // padded to the image size the programs read
+    // Pooled, padded to the image size the programs read (a new draw order every frame allocates nothing).
+    // Returned when the buffer and every mesh made from it are disposed, and Skia let go of its image.
+    internal byte[] Data;
     readonly int _size;
     readonly object _lock = new();
     MeshData _image;
+    int _refs = 1;
+    bool _disposed;
 
     SKMeshIndexBuffer(int size)
     {
         _size = size;
-        Data = new byte[MeshData.PaddedBytes(size)];
+        Data = ArrayPool<byte>.Shared.Rent(MeshData.PaddedBytes(size));
     }
 
     /// <summary>Size in bytes.</summary>
@@ -166,25 +192,59 @@ public sealed class SKMeshIndexBuffer : IDisposable
     }
 
     /// <summary>Creates a zero-filled index buffer of <paramref name="size"/> bytes.</summary>
-    public static SKMeshIndexBuffer Make(int size) => size < 0 ? null : new SKMeshIndexBuffer(size);
+    public static SKMeshIndexBuffer Make(int size)
+    {
+        if (size < 0)
+            return null;
+        var ib = new SKMeshIndexBuffer(size);
+        ib.Data.AsSpan(0, size).Clear();
+        return ib;
+    }
 
-    // The bytes wrapped as they are in an image the draw program reads; it keeps the array alive.
+    internal void AddRef()
+    {
+        if (_disposed && Volatile.Read(ref _refs) <= 0)
+            throw new ObjectDisposedException(nameof(SKMeshIndexBuffer));
+        Interlocked.Increment(ref _refs);
+    }
+
+    internal void Release()
+    {
+        if (Interlocked.Decrement(ref _refs) != 0)
+            return;
+        lock (_lock)
+        {
+            if (_image != null)
+                _image.Dispose(); // the bytes go back to the pool when Skia releases the image
+            else
+                ArrayPool<byte>.Shared.Return(Data);
+            _image = null;
+            Data = null;
+        }
+    }
+
+    // The bytes wrapped as they are (no copy) in an image the draw program reads.
     internal MeshData GetImage()
     {
         lock (_lock)
         {
-            if (_image == null)
+            if (_image == null && Data != null)
             {
                 var data = Data;
-                _image = MeshData.Wrap(data, _size, () => GC.KeepAlive(data));
+                _image = MeshData.Wrap(data, _size, () => ArrayPool<byte>.Shared.Return(data));
             }
             return _image;
         }
     }
 
-    /// <summary>Kept for parity with SkiaSharp; the index image is released with the buffer by the GC, since
-    /// meshes made from the buffer may still draw.</summary>
-    public void Dispose() { }
+    /// <summary>Releases this reference to the indices; meshes made from the buffer keep theirs.</summary>
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+        _disposed = true;
+        Release();
+    }
 }
 
 // Mesh bytes as an RGBA8 image, one texel per 4 bytes, rows of a power-of-two width, wrapped without a copy.
@@ -294,6 +354,7 @@ public sealed class SKMesh : IDisposable
         _children = children;
         Bounds = bounds;
         vertexBuffer.AddRef();
+        indexBuffer?.AddRef();
     }
 
     /// <summary>True for every mesh <c>Make</c> / <c>MakeIndexed</c> returned.</summary>
@@ -460,7 +521,7 @@ public sealed class SKMesh : IDisposable
         else
             blender ??= Modulate;
 
-        var packed = _geometry.GetPacked(context);
+        var packed = _geometry.Packed.GetPacked(context);
         if (packed == null)
             return null;
         if (_shader != null && ReferenceEquals(_shaderPaintShader, paintShader) && _shaderPaintColor == paintColor
@@ -486,17 +547,14 @@ public sealed class SKMesh : IDisposable
             var uniforms = _spec.DrawUniforms;
             MeshGeometry.SetUniforms(uniforms, _spec.Uniforms, _uniforms);
             float alpha = paintShader == null ? 1f : paintColor.Alpha / 255f;
-            uniforms["_sm_grid"] = (ReadOnlySpan<float>)stackalloc float[]
-                { g.CellsPerRow, alpha, _mode == SKMeshMode.TriangleStrip ? 1 : 0, g.IndexImage != null ? 1 : 0 };
-            uniforms["_sm_pk"] = (ReadOnlySpan<float>)stackalloc float[] { 0, g.VerticesPerRow, 1f / g.VerticesPerRow, g.PackedRows };
-            var idx = g.IndexImage ?? g.VertexImage; // any shader when not indexed: never read
-            uniforms["_sm_ix"] = (ReadOnlySpan<float>)stackalloc float[] { g.FirstIndex, idx.Width, 1f / idx.Width, 0 };
+            g.SetCornerUniforms(uniforms, alpha);
+            uniforms["_sm_pk"] = (ReadOnlySpan<float>)stackalloc float[] { 0, g.Packed.VerticesPerRow, 1f / g.Packed.VerticesPerRow, g.Packed.Rows };
 
             var children = _spec.DrawChildren;
             for (int i = 0; i < _spec.Children.Length; i++)
                 children[_spec.Children[i].Name] = _children[i].Value == null ? (SKRuntimeEffectChild?)null : _children[i];
             children["_sm_attr"] = packed;
-            children["_sm_idx"] = idx.Shader;
+            children["_sm_idx"] = g.IndexShader;
             children["_sm_paint"] = source;
             if (blender != null)
                 children["_sm_blend"] = blender;
@@ -533,50 +591,35 @@ public sealed class SKMesh : IDisposable
             {
                 _disposed = true;
                 _vertexBuffer.Release();
+                _indexBuffer?.Release();
             }
         }
     }
 }
 
-// What a mesh draws with that depends only on its vertex bytes and range: the attributes packed per vertex
-// as the draw program reads them, the DrawVertices texCoords, and the positions when the vertex program
-// copies the "position" attribute. Reference counted: the buffer and every mesh using it.
-//
-// No per-float work on the CPU: the app's bytes go to the GPU as they are and the convert program packs
-// them there, once per vertex range. The CPU only gathers 2 floats per corner for DrawVertices. Triangle i
-// covers texCoord cell (i % w, i / w); the draw program finds the vertex of each of its corners.
-sealed class MeshGeometry
+// The attributes of a vertex range packed per vertex as the programs read them, made from the vertex bytes by
+// the convert program (on the GPU when there is one). Depends only on the vertex buffer, the range and the
+// specification: meshes that change only their indices or uniforms (a draw order sorted every frame) share it.
+// Reference counted: the buffer and every geometry using it.
+sealed class PackedVertices
 {
-    internal readonly record struct Key(SKMeshSpecification Spec, SKMeshMode Mode, int VertexCount, int VertexOffset,
-        SKMeshIndexBuffer IndexBuffer, int IndexCount, int IndexOffset);
+    internal readonly record struct Key(SKMeshSpecification Spec, int VertexOffset, int Available);
 
-    // Triangles per SKVertices: its SKPoint arrays stay under the large object heap threshold (85 KB).
-    const int ChunkTriangles = 3000;
+    static readonly SKSamplingOptions Nearest = new(SKFilterMode.Nearest, SKMipmapMode.None);
 
     public Key Id { get; private init; }
-    public int CellsPerRow { get; private init; }
     public MeshData VertexImage { get; private init; }  // owned by the vertex buffer
-    public MeshData IndexImage { get; private init; }   // owned by the index buffer, null when not indexed
-    public float FirstFloat { get; private init; }      // first float of the mesh's vertices in the vertex image
-    public float FirstIndex { get; private init; }
+    public float FirstFloat { get; private init; }      // first float of the range in the vertex image
     public int VerticesPerRow { get; private init; }    // in the packed images, a power of two
-    public int PackedRows { get; private init; }        // rows of vertices (the fp16 image has them twice: hi, lo)
-    public SKVertices[] Vertices { get; private set; }  // per chunk, set when positions are the "position" attribute
+    public int Rows { get; private init; }              // rows of vertices (the fp16 image has them twice: hi, lo)
 
-    int _available;
-    SKPoint[][] _texCoords;
-
-    // Packed fp16 hi/lo image for the draw program, made on the context it is drawn with (null: raster).
+    // fp16 hi/lo for the draw program, made on the context it is drawn with (null: raster).
     SKImage _packed;
     SKShader _packedShader;
     IntPtr _packedContext;
-    // Packed F32 image (raster) for the vertex program run on the CPU.
+    // F32 (raster) for the vertex program run on the CPU.
     SKImage _packedF32;
     SKShader _packedF32Shader;
-
-    // Vertex program output (one RGBA F32 pixel per vertex), kept with the geometry: every mesh made from the
-    // same vertex bytes (a strip redrawn with new uniforms each frame) runs its vertex program into it.
-    int _perRow, _rows;
 
     int _refs = 1;
 
@@ -586,72 +629,35 @@ sealed class MeshGeometry
     {
         if (Interlocked.Decrement(ref _refs) != 0)
             return;
-        if (Vertices != null)
-            foreach (var v in Vertices)
-                v.Dispose();
         _packedShader?.Dispose();
         _packed?.Dispose();
         _packedF32Shader?.Dispose();
         _packedF32?.Dispose();
     }
 
-    public static MeshGeometry Build(Key key, SKMeshVertexBuffer buffer)
+    public static PackedVertices Build(Key key, SKMeshVertexBuffer buffer)
     {
-        var spec = key.Spec;
-        bool indexed = key.IndexBuffer != null;
-        int count = indexed ? key.IndexCount : key.VertexCount;
-        int triangles = key.Mode == SKMeshMode.Triangles ? count / 3 : Math.Max(0, count - 2);
-        // Vertices the mesh can reach: the counted range, or for indices, everything the buffer holds past the offset.
-        int available = indexed ? (buffer.Size - key.VertexOffset) / spec.Stride : key.VertexCount;
-        if (triangles == 0 || available <= 0)
-            return null;
-
         var vertexImage = buffer.GetImage();
-        var indexImage = indexed ? key.IndexBuffer.GetImage() : null;
-        if (vertexImage == null || (indexed && indexImage == null))
+        if (vertexImage == null)
             return null;
-
-        int texels = spec.TexelsPerVertex;
+        int texels = key.Spec.TexelsPerVertex;
         int perRow = 1;
         while (perRow * 2 * texels <= SKMeshSpecification.MaxTextureSide)
             perRow *= 2;
-        int rows = (available + perRow - 1) / perRow;
+        int rows = (key.Available + perRow - 1) / perRow;
         if (rows * 2 > SKMeshSpecification.MaxTextureSide)
             return null;
-
-        int w = (int)Math.Ceiling(Math.Sqrt(triangles)); // keeps texCoords small: their fraction is the barycentric
-        var g = new MeshGeometry
+        return new PackedVertices
         {
             Id = key,
-            CellsPerRow = w,
             VertexImage = vertexImage,
-            IndexImage = indexImage,
             FirstFloat = key.VertexOffset / 4,
-            FirstIndex = key.IndexOffset / 2,
             VerticesPerRow = perRow,
-            PackedRows = rows,
-            _available = available,
-            _texCoords = TexCoords(triangles, w),
+            Rows = rows,
         };
-
-        if (spec.PositionEffect == null)
-        {
-            // The vertex program copies the "position" attribute: positions straight from the bytes.
-            var floats = MemoryMarshal.Cast<byte, float>(buffer.Bytes.Slice(0, buffer.Size & ~3));
-            g.Vertices = g.MakeVertices(floats, key.VertexOffset / 4 + spec.PositionAttributeFloat, spec.Stride / 4);
-        }
-        else
-        {
-            g._perRow = Math.Min(available, SKMeshSpecification.MaxTextureSide);
-            g._rows = (available + g._perRow - 1) / g._perRow;
-            if (g._rows > SKMeshSpecification.MaxTextureSide)
-                return null;
-        }
-        return g;
     }
 
-    // The draw program's input on `context` (null: a raster or recording canvas): made by the convert program,
-    // on the GPU when there is one, once per context.
+    // The draw program's input on `context` (null: a raster or recording canvas), once per context.
     public SKShader GetPacked(GRRecordingContext context)
     {
         var handle = context?.Handle ?? IntPtr.Zero;
@@ -671,17 +677,29 @@ sealed class MeshGeometry
         }
     }
 
-    static readonly SKSamplingOptions Nearest = new(SKFilterMode.Nearest, SKMipmapMode.None);
+    // The vertex program's input on the CPU.
+    public SKShader GetPackedF32()
+    {
+        lock (this)
+        {
+            if (_packedF32Shader == null)
+            {
+                _packedF32 = Convert(null, true);
+                _packedF32Shader = _packedF32?.ToRawShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, Nearest);
+            }
+            return _packedF32Shader;
+        }
+    }
 
     // Runs the convert program into a new image: fp16 hi + lo rows, or one F32 block (`plain`, raster only).
     SKImage Convert(GRRecordingContext context, bool plain)
     {
         var spec = Id.Spec;
         int width = VerticesPerRow * spec.TexelsPerVertex;
-        int height = plain ? PackedRows : PackedRows * 2;
+        int height = plain ? Rows : Rows * 2;
         // Premul: an Unpremul GPU surface is refused. The program writes with Src, so values are stored as they are.
         var info = new SKImageInfo(width, height, plain ? SKColorType.RgbaF32 : SKColorType.RgbaF16, SKAlphaType.Premul);
-        ref var pass = ref (plain ? ref t_convertF32 : ref t_convert);
+        ref var pass = ref (plain ? ref MeshGeometry.t_convertF32 : ref MeshGeometry.t_convert);
         if (!pass.Acquire(context, info) && (context == null || !pass.Acquire(null, info)))
             return null;
         SKShader shader;
@@ -689,15 +707,95 @@ sealed class MeshGeometry
         {
             var uniforms = spec.ConvertUniforms;
             uniforms["_sm_vtx"] = (ReadOnlySpan<float>)stackalloc float[] { FirstFloat, VertexImage.Width, 1f / VertexImage.Width, 0 };
-            uniforms["_sm_cv"] = (ReadOnlySpan<float>)stackalloc float[] { VerticesPerRow, PackedRows, plain ? 1 : 0, 0 };
+            uniforms["_sm_cv"] = (ReadOnlySpan<float>)stackalloc float[] { VerticesPerRow, Rows, plain ? 1 : 0, 0 };
             var children = spec.ConvertChildren;
             children["_sm_attr"] = VertexImage.Shader;
             shader = spec.ConvertEffect.ToShader(uniforms, children);
             children.Reset();
         }
         using (shader)
-            PassSurface.Fill(pass.Canvas, shader, width, height);
+            MeshGeometry.PassSurface.Fill(pass.Canvas, shader, width, height);
         return pass.Surface.Snapshot();
+    }
+}
+
+// What a mesh draws with that depends on its vertex range, mode and indices: the packed vertices (shared with
+// every mesh of the same vertex range), the DrawVertices texCoords, and the positions when the vertex program
+// copies the "position" attribute. Reference counted: the buffer and every mesh using it.
+//
+// No per-float work on the CPU: the app's bytes go to the GPU as they are and the convert program packs them
+// there, once per vertex range. Triangle i covers texCoord cell (i % w, i / w); the draw program finds the
+// vertex of each of its corners.
+sealed class MeshGeometry
+{
+    internal readonly record struct Key(SKMeshSpecification Spec, SKMeshMode Mode, int VertexCount, int VertexOffset,
+        SKMeshIndexBuffer IndexBuffer, int IndexCount, int IndexOffset);
+
+    // Triangles per SKVertices: its SKPoint arrays stay under the large object heap threshold (85 KB).
+    const int ChunkTriangles = 3000;
+
+    public Key Id { get; private init; }
+    public PackedVertices Packed { get; private init; }
+    public int CellsPerRow { get; private init; }
+    public MeshData IndexImage { get; private init; }   // owned by the index buffer, null when not indexed
+    public float FirstIndex { get; private init; }
+    public SKVertices[] Vertices { get; private set; }  // per chunk, set when positions are the "position" attribute
+
+    int _available, _triangles;
+    SKPoint[][] _texCoords;
+
+    int _refs = 1;
+
+    public void AddRef() => Interlocked.Increment(ref _refs);
+
+    public void Release()
+    {
+        if (Interlocked.Decrement(ref _refs) != 0)
+            return;
+        if (Vertices != null)
+            foreach (var v in Vertices)
+                v.Dispose();
+        Packed.Release();
+    }
+
+    public static MeshGeometry Build(Key key, SKMeshVertexBuffer buffer)
+    {
+        var spec = key.Spec;
+        bool indexed = key.IndexBuffer != null;
+        int count = indexed ? key.IndexCount : key.VertexCount;
+        int triangles = key.Mode == SKMeshMode.Triangles ? count / 3 : Math.Max(0, count - 2);
+        // Vertices the mesh can reach: the counted range, or for indices, everything the buffer holds past the offset.
+        int available = indexed ? (buffer.Size - key.VertexOffset) / spec.Stride : key.VertexCount;
+        if (triangles == 0 || available <= 0)
+            return null;
+
+        var indexImage = indexed ? key.IndexBuffer.GetImage() : null;
+        if (indexed && indexImage == null)
+            return null;
+        var packed = buffer.AcquirePacked(new PackedVertices.Key(spec, key.VertexOffset, available));
+        if (packed == null)
+            return null;
+
+        int w = (int)Math.Ceiling(Math.Sqrt(triangles)); // keeps texCoords small: their fraction is the barycentric
+        var g = new MeshGeometry
+        {
+            Id = key,
+            Packed = packed,
+            CellsPerRow = w,
+            IndexImage = indexImage,
+            FirstIndex = key.IndexOffset / 2,
+            _available = available,
+            _triangles = triangles,
+            _texCoords = TexCoords(triangles, w),
+        };
+
+        if (spec.PositionEffect == null)
+        {
+            // The vertex program copies the "position" attribute: positions straight from the bytes.
+            var floats = MemoryMarshal.Cast<byte, float>(buffer.Bytes.Slice(0, buffer.Size & ~3));
+            g.Vertices = g.MakeVertices(floats, key.VertexOffset / 4 + spec.PositionAttributeFloat, spec.Stride / 4);
+        }
+        return g;
     }
 
     // DrawVertices triangles of the whole mesh, corner positions read from `src` (vertex v's x at
@@ -734,6 +832,22 @@ sealed class MeshGeometry
                 points[j + 1] = new SKPoint(src[f1], src[f1 + 1]);
                 points[j + 2] = new SKPoint(src[f2], src[f2 + 1]);
             }
+            result[c] = SKVertices.CreateCopy(SKVertexMode.Triangles, points, texs, null);
+        }
+        return result;
+    }
+
+    // DrawVertices triangles from positions already in triangle-list corner order (the GPU read-back).
+    SKVertices[] MakeVertices(ReadOnlySpan<SKPoint> corners)
+    {
+        var result = new SKVertices[_texCoords.Length];
+        int o = 0;
+        for (int c = 0; c < _texCoords.Length; c++)
+        {
+            var texs = _texCoords[c];
+            var points = Scratch(texs.Length);
+            corners.Slice(o, texs.Length).CopyTo(points);
+            o += texs.Length;
             result[c] = SKVertices.CreateCopy(SKVertexMode.Triangles, points, texs, null);
         }
         return result;
@@ -782,10 +896,22 @@ sealed class MeshGeometry
         }
     }
 
-    // DrawVertices needs positions on the CPU: the vertex program runs once per vertex, with the mesh's uniforms,
-    // and the positions are read back. On the canvas's GPU when it has one (input: the packed fp16 image the
-    // draw program uses; output: each position float as its 4 IEEE bytes in an RGBA8 target, since Skia renders
-    // no F32 on the GPU), else on a raster F32 surface (input: packed F32). Both give the floats bit-exact.
+    // Uniforms that place the mesh's corners in the packed and index images, for the draw and position programs.
+    public void SetCornerUniforms(SKRuntimeEffectUniforms uniforms, float alpha)
+    {
+        var idx = IndexImage ?? Packed.VertexImage; // any image when not indexed: never read
+        uniforms["_sm_grid"] = (ReadOnlySpan<float>)stackalloc float[]
+            { CellsPerRow, alpha, Id.Mode == SKMeshMode.TriangleStrip ? 1 : 0, IndexImage != null ? 1 : 0 };
+        uniforms["_sm_ix"] = (ReadOnlySpan<float>)stackalloc float[] { FirstIndex, idx.Width, 1f / idx.Width, 0 };
+    }
+
+    public SKShader IndexShader => (IndexImage ?? Packed.VertexImage).Shader;
+
+    // DrawVertices needs positions on the CPU: the vertex program runs with the mesh's uniforms and the positions
+    // are read back. On the canvas's GPU when it has one: one pixel pair per triangle-list corner (input: the
+    // packed fp16 image the draw program uses; output: each position float as its 4 IEEE bytes in an RGBA8
+    // target, since Skia renders no F32 on the GPU), so the read-back bytes are the DrawVertices positions in
+    // order. Else on a raster F32 surface, one pixel per vertex (input: packed F32). Both give the floats bit-exact.
     public SKVertices[] RunVertexProgram(byte[] uniformData, GRRecordingContext context)
     {
         lock (this)
@@ -795,39 +921,39 @@ sealed class MeshGeometry
             // ponytail: fixed vertex threshold; measure per device if meshes of ~1000 vertices matter.
             if (context != null && _available >= GpuVertexProgramMinVertices)
             {
-                // 2 pixels per vertex: x then y.
-                int perRow = Math.Min(_available, SKMeshSpecification.MaxTextureSide / 2);
-                int rows = (_available + perRow - 1) / perRow;
-                var packed = GetPacked(context);
+                int corners = _triangles * 3;
+                int perRow = Math.Min(corners, SKMeshSpecification.MaxTextureSide / 2); // 2 pixels per corner: x, y
+                int rows = (corners + perRow - 1) / perRow;
+                var packed = Packed.GetPacked(context);
                 if (packed != null && rows <= SKMeshSpecification.MaxTextureSide)
                 {
                     var info = new SKImageInfo(perRow * 2, rows, SKColorType.Rgba8888, SKAlphaType.Premul); // read back as written
                     if (t_gpuPositions.Acquire(context, info))
                     {
                         var readBack = ReadBack(info.BytesSize);
-                        if (RunVertexProgram(t_gpuPositions.Canvas, uniformData, packed, PackedRows, perRow, rows * 1f, true)
+                        if (RunVertexProgram(t_gpuPositions.Canvas, uniformData, packed, Packed.Rows, perRow, rows, true)
                             && t_gpuPositions.Surface.ReadPixels(info, Marshal.UnsafeAddrOfPinnedArrayElement(readBack, 0), info.RowBytes, 0, 0))
-                            return MakeVertices(MemoryMarshal.Cast<byte, float>(readBack.AsSpan(0, info.BytesSize)), 0, 2);
+                            return MakeVertices(MemoryMarshal.Cast<byte, SKPoint>(readBack.AsSpan(0, corners * 8)));
                     }
                 }
             }
 
-            var rasterInfo = new SKImageInfo(_perRow, _rows, SKColorType.RgbaF32, SKAlphaType.Premul);
-            var output = ReadBack(rasterInfo.BytesSize);
-            if (!t_rasterPositions.Acquire(null, rasterInfo, Marshal.UnsafeAddrOfPinnedArrayElement(output, 0)))
+            int vPerRow = Math.Min(_available, SKMeshSpecification.MaxTextureSide);
+            int vRows = (_available + vPerRow - 1) / vPerRow;
+            if (vRows > SKMeshSpecification.MaxTextureSide)
                 return null;
-            if (_packedF32Shader == null)
-            {
-                _packedF32 = Convert(null, true);
-                if (_packedF32 == null)
-                    return null;
-                _packedF32Shader = _packedF32.ToRawShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, Nearest);
-            }
-            if (!RunVertexProgram(t_rasterPositions.Canvas, uniformData, _packedF32Shader, 0, _perRow, _rows, false)) // raster: written at once
+            var input = Packed.GetPackedF32();
+            var rasterInfo = new SKImageInfo(vPerRow, vRows, SKColorType.RgbaF32, SKAlphaType.Premul);
+            var output = ReadBack(rasterInfo.BytesSize);
+            if (input == null || !t_rasterPositions.Acquire(null, rasterInfo, Marshal.UnsafeAddrOfPinnedArrayElement(output, 0)))
+                return null;
+            if (!RunVertexProgram(t_rasterPositions.Canvas, uniformData, input, 0, vPerRow, vRows, false)) // raster: written at once
                 return null;
             return MakeVertices(MemoryMarshal.Cast<byte, float>(output.AsSpan(0, rasterInfo.BytesSize)), 0, 4);
         }
     }
+
+    const int GpuVertexProgramMinVertices = 1024;
 
     // Read-back memory, one per thread, reused by every mesh (a mesh rebuilt each frame allocates none):
     // consumed by MakeVertices before RunVertexProgram returns.
@@ -839,10 +965,9 @@ sealed class MeshGeometry
             t_readBack = GC.AllocateUninitializedArray<byte>(Math.Max(bytes, (t_readBack?.Length ?? 0) * 2), pinned: true);
         return t_readBack;
     }
-    const int GpuVertexProgramMinVertices = 1024;
 
-    // `loRows`: rows of the high half block of an fp16 hi/lo input, 0 for F32. `bytes`: the RGBA8 output.
-    bool RunVertexProgram(SKCanvas canvas, byte[] uniformData, SKShader input, int loRows, int perRow, float rows, bool bytes)
+    // `loRows`: rows of the high half block of an fp16 hi/lo input, 0 for F32. `corners`: the GPU RGBA8 output.
+    bool RunVertexProgram(SKCanvas canvas, byte[] uniformData, SKShader input, int loRows, int perRow, int rows, bool corners)
     {
         var spec = Id.Spec;
         SKShader shader;
@@ -850,25 +975,28 @@ sealed class MeshGeometry
         {
             var uniforms = spec.PositionUniforms;
             SetUniforms(uniforms, spec.VertexUniforms, uniformData);
-            uniforms["_sm_pk"] = (ReadOnlySpan<float>)stackalloc float[] { 0, VerticesPerRow, 1f / VerticesPerRow, loRows };
-            uniforms["_sm_pos"] = (ReadOnlySpan<float>)stackalloc float[] { perRow, bytes ? 1 : 0, 0, 0 };
+            uniforms["_sm_pk"] = (ReadOnlySpan<float>)stackalloc float[] { 0, Packed.VerticesPerRow, 1f / Packed.VerticesPerRow, loRows };
+            uniforms["_sm_pos"] = (ReadOnlySpan<float>)stackalloc float[] { perRow, corners ? 1 : 0, _available, 0 };
+            SetCornerUniforms(uniforms, 1);
             var children = spec.PositionChildren;
             children["_sm_attr"] = input;
+            children["_sm_idx"] = IndexShader;
             shader = spec.PositionEffect.ToShader(uniforms, children);
             children.Reset();
         }
         if (shader == null)
             return false;
         using (shader)
-            PassSurface.Fill(canvas, shader, bytes ? perRow * 2 : perRow, rows);
+            PassSurface.Fill(canvas, shader, corners ? perRow * 2 : perRow, rows);
         return true;
     }
 
     // The stand-in's own pass targets, one of each per thread, reused while size, format, context and memory
     // stay the same: a mesh rebuilt every frame then creates none (SkiaSharp's SKCanvas wrapper alone is ~2 KB).
-    [ThreadStatic] static PassSurface t_convert, t_convertF32, t_gpuPositions, t_rasterPositions;
+    [ThreadStatic] internal static PassSurface t_convert, t_convertF32;
+    [ThreadStatic] static PassSurface t_gpuPositions, t_rasterPositions;
 
-    struct PassSurface
+    internal struct PassSurface
     {
         [ThreadStatic] static SKPaint t_paint;
 

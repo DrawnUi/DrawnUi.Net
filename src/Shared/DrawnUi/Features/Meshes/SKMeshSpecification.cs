@@ -305,7 +305,8 @@ public sealed class SKMeshSpecification : IDisposable
         // Input: the packed image, F32, or fp16 hi + lo rows when _sm_pk.w (rows of the high halves) is set.
         // _sm_pos.y = 0 (raster F32 target): pixel (x, y) = vertex y * _sm_pos.x + x, its position in .xy.
         // _sm_pos.y = 1 (GPU RGBA8 target, where F32 cannot be rendered): pixel (x, y) = the 4 IEEE bytes of
-        // position.x (x even) or .y (x odd) of vertex y * _sm_pos.x + x / 2, so the read-back bytes ARE the floats.
+        // position.x (x even) or .y (x odd) at corner y * _sm_pos.x + x / 2 of the triangle list, so the read-back
+        // bytes ARE the DrawVertices positions, in order.
         // The bytes are built with exact float math (powers of two by squaring): bit-exact on any GPU.
         var positionSource = new StringBuilder()
             .Append(structs).Append('\n').Append(vs).Append('\n')
@@ -338,9 +339,15 @@ public sealed class SKMeshSpecification : IDisposable
             .Append("  float b2 = floor(f * 0.0000152587890625) + mod(be, 2.0) * 128.0;\n")
             .Append("  float b3 = floor(be * 0.5) + (x < 0.0 ? 128.0 : 0.0);\n")
             .Append("  return float4(b0, b1, b2, b3) / 255.0;\n}\n")
+            .Append(CornerSource)
             .Append("half4 main(float2 p) {\n  float x = floor(p.x);\n  float y = floor(p.y);\n")
             .Append("  if (_sm_pos.y > 0.5) {\n    float h = floor(x * 0.5);\n")
-            .Append("    Varyings w = _sm_vs(_sm_vload(y * _sm_pos.x + h));\n")
+            // corner c of the triangle list (triangle t, corner k), its vertex found like the draw program does;
+            // a triangle with an index past the vertices (_sm_pos.z) gets 0 at all corners: drawn empty
+            .Append("    float c = y * _sm_pos.x + h;\n    float t = floor((c + 0.5) / 3.0);\n    float k = c - t * 3.0;\n")
+            .Append("    float v0 = _sm_corner(t, 0.0);\n    float v1 = _sm_corner(t, 1.0);\n    float v2 = _sm_corner(t, 2.0);\n")
+            .Append("    if (max(v0, max(v1, v2)) >= _sm_pos.z) { return half4(0.0); }\n")
+            .Append("    Varyings w = _sm_vs(_sm_vload(k < 0.5 ? v0 : (k < 1.5 ? v1 : v2)));\n")
             .Append("    return half4(_sm_enc(x - h * 2.0 < 0.5 ? w.position.x : w.position.y));\n  }\n")
             .Append("  Varyings v = _sm_vs(_sm_vload(y * _sm_pos.x + x));\n")
             .Append("  return half4(half2(v.position), 0.0, 1.0);\n}\n")
@@ -590,6 +597,17 @@ public sealed class SKMeshSpecification : IDisposable
     internal const float CornerLow = 0.125f;
     internal const float CornerHigh = 0.875f;
 
+    // _sm_corner(t, k): the vertex of corner k of triangle t. _sm_grid.z: 1 for a triangle strip, .w: 1 when
+    // indexed. _sm_ix.x: first index, .y: index image width (a power of two), .z: 1 / width. The index image
+    // holds the index bytes as they are, 2 indices per texel.
+    const string CornerSource =
+        "uniform float4 _sm_grid;\nuniform float4 _sm_ix;\nuniform shader _sm_idx;\n" +
+        "float _sm_corner(float t, float k) {\n  float c = _sm_grid.z > 0.5 ? t + k : t * 3.0 + k;\n" +
+        "  if (_sm_grid.w > 0.5) {\n    c += _sm_ix.x;\n    float h = floor(c * 0.5);\n    float y = floor(h * _sm_ix.z);\n" +
+        "    float4 b = floor(float4(_sm_idx.eval(float2(h - y * _sm_ix.y + 0.5, y + 0.5))) * 255.0 + 0.5);\n" +
+        "    c = c - h * 2.0 > 0.5 ? b.z + b.w * 256.0 : b.x + b.y * 256.0;\n  }\n" +
+        "  return c;\n}\n";
+
     static string BuildDrawMain(SKMeshSpecificationAttribute[] attrs, SKMeshSpecificationVarying[] varys, int[] floatIndex,
         int texels, string colorType, SKAlphaType alphaType)
     {
@@ -597,19 +615,13 @@ public sealed class SKMeshSpecification : IDisposable
         // _sm_grid.x: triangle cells per texCoord row, .y: paint alpha applied on top, .z: 1 for a triangle strip,
         // .w: 1 when indexed. _sm_ix.x: first index, .y: index image width (a power of two), .z: 1 / width.
         // _sm_pk: the packed fp16 image (see BuildLoad), .w: rows of its high half block (the low halves follow).
-        sb.Append("uniform float4 _sm_grid;\nuniform float4 _sm_ix;\nuniform float4 _sm_pk;\n")
-          .Append("uniform shader _sm_attr;\nuniform shader _sm_idx;\nuniform shader _sm_paint;\n");
+        sb.Append("uniform float4 _sm_pk;\nuniform shader _sm_attr;\nuniform shader _sm_paint;\n");
         if (colorType != null)
             sb.Append("uniform blender _sm_blend;\n");
         sb.Append("float4 _sm_t(float x, float y) {\n  float2 c = float2(x + 0.5, y + 0.5);\n")
           .Append("  return float4(_sm_attr.eval(c)) + float4(_sm_attr.eval(float2(c.x, c.y + _sm_pk.w)));\n}\n");
         sb.Append(BuildLoad(attrs, floatIndex, texels));
-        // Vertex of corner k of triangle t. The index image holds the index bytes as they are, 2 per texel.
-        sb.Append("float _sm_corner(float t, float k) {\n  float c = _sm_grid.z > 0.5 ? t + k : t * 3.0 + k;\n")
-          .Append("  if (_sm_grid.w > 0.5) {\n    c += _sm_ix.x;\n    float h = floor(c * 0.5);\n    float y = floor(h * _sm_ix.z);\n")
-          .Append("    float4 b = floor(float4(_sm_idx.eval(float2(h - y * _sm_ix.y + 0.5, y + 0.5))) * 255.0 + 0.5);\n")
-          .Append("    c = c - h * 2.0 > 0.5 ? b.z + b.w * 256.0 : b.x + b.y * 256.0;\n  }\n")
-          .Append("  return c;\n}\n");
+        sb.Append(CornerSource);
 
         sb.Append("Varyings _sm_mix(Varyings a, Varyings b, Varyings c, float3 w) {\n  Varyings v;\n");
         var fields = new List<(string name, bool half)> { ("position", false) };
