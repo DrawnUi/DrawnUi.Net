@@ -101,7 +101,7 @@
         try
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, "media/rocket.obj");
-            request.SetBrowserRequestCache(BrowserRequestCache.NoCache); // a replaced model file shows on the next visit
+            request.SetBrowserRequestCache(BrowserRequestCache.NoStore); // always the file on disk: the dev server keeps the ETag of build time
             using var response = await Http.SendAsync(request);
             response.EnsureSuccessStatusCode();
             var objText = await response.Content.ReadAsStringAsync();
