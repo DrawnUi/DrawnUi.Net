@@ -141,7 +141,10 @@
         private float[] _triangleData = Array.Empty<float>();  // static, FloatsPerTriangle per triangle
         private float[] _centers = Array.Empty<float>();       // static, 3 per triangle
         private float[] _frameData = Array.Empty<float>();     // the triangles in this frame's draw order
-        private float[] _keys = Array.Empty<float>();
+        private const int DepthSlots = 4096;
+        private float[] _depth = Array.Empty<float>();
+        private int[] _slot = Array.Empty<int>();
+        private readonly int[] _slotStart = new int[DepthSlots + 1];
         private int[] _order = Array.Empty<int>();
         private double _phase;
         private bool _reportedReady;
@@ -186,7 +189,8 @@
             _triangleData = data;
             _centers = centers;
             _frameData = new float[data.Length];
-            _keys = new float[count];
+            _depth = new float[count];
+            _slot = new int[count];
             _order = new int[count];
             _model = model;
             _reportedReady = false;
@@ -247,14 +251,34 @@
                 var ry = Rotate(new Vec3(0, 1, 0), yaw, pitch, roll);
                 var rz = Rotate(new Vec3(0, 0, 1), yaw, pitch, roll);
 
-                // No depth buffer: triangles are drawn farthest first, by the depth of their center.
+                // No depth buffer: triangles are drawn farthest first, by the depth of their center. A counting sort
+                // over DepthSlots depth steps allocates nothing (Array.Sort allocates every call in a Debug build).
                 var count = _model.Triangles.Count;
+                var minZ = float.MaxValue;
+                var maxZ = float.MinValue;
                 for (var t = 0; t < count; t++)
                 {
-                    _keys[t] = -(_centers[t * 3] * rx.Z + _centers[t * 3 + 1] * ry.Z + _centers[t * 3 + 2] * rz.Z);
-                    _order[t] = t;
+                    var z = _centers[t * 3] * rx.Z + _centers[t * 3 + 1] * ry.Z + _centers[t * 3 + 2] * rz.Z;
+                    _depth[t] = z;
+                    if (z < minZ) minZ = z;
+                    if (z > maxZ) maxZ = z;
                 }
-                Array.Sort(_keys, _order);
+                var toSlot = (DepthSlots - 1) / Math.Max(1e-6f, maxZ - minZ);
+                Array.Clear(_slotStart);
+                for (var t = 0; t < count; t++)
+                {
+                    var slot = (int)((maxZ - _depth[t]) * toSlot); // farthest (largest z) in slot 0
+                    _slot[t] = slot;
+                    _slotStart[slot + 1]++;
+                }
+                for (var i = 1; i <= DepthSlots; i++)
+                {
+                    _slotStart[i] += _slotStart[i - 1];
+                }
+                for (var t = 0; t < count; t++)
+                {
+                    _order[_slotStart[_slot[t]]++] = t;
+                }
                 for (var k = 0; k < count; k++)
                 {
                     Array.Copy(_triangleData, _order[k] * FloatsPerTriangle, _frameData, k * FloatsPerTriangle, FloatsPerTriangle);
