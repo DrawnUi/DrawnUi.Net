@@ -83,18 +83,27 @@
     .xaml-a11y-overlay {
         position: absolute;
         pointer-events: none;
+        -webkit-user-select: none;
+        user-select: none;
     }
 
+    /* never seen and never selected (Ctrl+A or a drag from page text included); readers still read it */
     .xaml-a11y-element {
         position: absolute;
         background: transparent;
         color: transparent;
         pointer-events: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    .xaml-a11y-element::selection {
+        background: transparent;
+        color: transparent;
     }
 
     .xaml-a11y-interactive {
         font-size: 0px;
-        user-select: none;
     }
 
     .xaml-a11y-interactive:focus-visible {
