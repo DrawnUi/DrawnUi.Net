@@ -1,8 +1,10 @@
+using System.Numerics;
+
 namespace Add3dGallery;
 
 /// <summary>
 /// 3D next to normal UI: a plain sign-up form with the avatar beside it as one more control. It looks at the field
-/// being typed in (and along the text as it grows), shuts its eyes behind its hands while the password field has the keyboard, waves
+/// being typed in (and along the text as it grows), folds its ears over its eyes while the password field has the keyboard, waves
 /// when the form is sent and shakes its head when something is missing.
 /// </summary>
 public partial class GalleryPage
@@ -53,8 +55,9 @@ public partial class GalleryPage
             Stage(new SkiaModel3D(Theme.Avatar)
                     {
                         Animation = "CharacterArmature|Idle",
-                        Yaw = -28,
-                        Pitch = 6,
+                        // The camera on the mascot's left: it faces the form at screen left (a view turn, no mirror).
+                        Yaw = 32,
+                        Pitch = 8,
                         Orbit = false,
                         HorizontalOptions = LayoutOptions.Fill,
                         VerticalOptions = LayoutOptions.Fill,
@@ -114,28 +117,16 @@ public partial class GalleryPage
     void Watch()
     {
         _handsTo = _formFocus == 2 ? 1 : 0;
-        if (_formFocus == 2)
-        {
-            // Hiding: head down into its hands.
-            _headYawTo = 0;
-            _headPitchTo = 18;
-            return;
-        }
         if (_formFocus is 0 or 1)
         {
             var field = _formFocus == 0 ? _nameField : _emailField;
-            // Along the text: from the field's start to its end as the text grows.
-            var along = Math.Clamp((field.Text?.Length ?? 0) / 30f, 0, 1);
-            // The form is on the mascot's right (screen left): from the field's start toward its end, down a little
-            // more for the lower field.
-            _headYawTo = -50 + 25 * along;
-            _headPitchTo = _formFocus == 0 ? 2 : 10;
+            // Along the text: from the field's start toward its end as the text grows (DrawnUI for Rust's numbers).
+            _headYawTo = -30 + 20 * MathF.Min((field.Text?.Length ?? 0) / 30f, 1);
+            _headPitchTo = _formFocus == 0 ? 10 : 22;
+            _lookTo = 1;
         }
         else
-        {
-            _headYawTo = 0;
-            _headPitchTo = 0;
-        }
+            _lookTo = 0;
     }
 
     void SignUp()
@@ -164,7 +155,21 @@ public partial class GalleryPage
         _mascot.PlayOnce("CharacterArmature|Wave");
     }
 
-    /// <summary>Each frame: the head and the hands ease toward where the form wants them.</summary>
+    // The bones' own rest turns in avatar.glb: the poses are made on top of them (rest * turn), as in DrawnUI for Rust.
+    static readonly Quaternion HeadRest = new(-0.0561773f, -0.00027504f, 0.0000154335f, 0.998420775f);
+    static readonly Quaternion Ear1LRest = new(0.0947101936f, -0.0489338711f, -0.193506643f, 0.97529f);
+    static readonly Quaternion Ear1RRest = new(0.0948166773f, 0.0494704843f, 0.193454459f, 0.97526294f);
+    static readonly Quaternion Ear2LRest = new(-0.237358987f, -0.0338113457f, -0.0107185887f, 0.970774233f);
+    static readonly Quaternion Ear2RRest = new(-0.223375544f, 0.0275211222f, 0.0118607497f, 0.974271655f);
+    static readonly Quaternion ArmLRest = new(0.526785612f, 0.503608823f, 0.47415754f, -0.494013935f);
+    static readonly Quaternion ArmRRest = new(0.526785672f, -0.503608882f, -0.474157482f, -0.494013816f);
+    static readonly Quaternion ForearmLRest = new(-0.02938167f, 0.261505067f, -0.280782908f, 0.922991216f);
+    static readonly Quaternion ForearmRRest = new(-0.0293817f, -0.261505097f, 0.280782908f, 0.922991216f);
+
+    /// <summary>How far the head is turned toward a field, 0 (its own animation) to 1.</summary>
+    float _look, _lookTo;
+
+    /// <summary>Each frame: the head and the hiding pose ease toward where the form wants them.</summary>
     void FormFrame(float delta)
     {
         if (!_mascot.WasInLastFrame())
@@ -172,11 +177,11 @@ public partial class GalleryPage
         var k = MathF.Min(1, delta * 8);
         _headYaw += (_headYawTo - _headYaw) * k;
         _headPitch += (_headPitchTo - _headPitch) * k;
+        _look += (_lookTo - _look) * k;
         _hands += (_handsTo - _hands) * k;
-        // The head bone rests tilted 10 degrees down (its turn in the idle animation); yaw is its own Y.
-        if (MathF.Abs(_headYaw) > 0.2f || MathF.Abs(_headPitch) > 0.2f)
+        if (_look > 0.01f)
         {
-            _mascot.SetNodeRotation(HeadBone, -10 + _headPitch, _headYaw, 0);
+            Turn(HeadBone, HeadRest, _headPitch, _headYaw, 0, _look);
             _headSet = true;
         }
         else if (_headSet)
@@ -186,37 +191,49 @@ public partial class GalleryPage
         }
         if (_hands > 0.01f)
         {
-            // From the arms' rest turns (the idle pose) to the fists up before the face, as high as its short arms
-            // reach (found by a search over the bones); the right arm mirrors the left.
-            if (!_handsSet)
-                CloseEyes(true);
+            // Hiding from the password: the ears fold down over the eyes, the hands go to the cheeks.
             _handsSet = true;
-            float h = _hands;
-            _mascot.SetNodeRotation(ArmL, Lerp(-94, -120, h), 0, Lerp(-88, -230, h));
-            _mascot.SetNodeRotation(ArmR, Lerp(-94, -120, h), 0, Lerp(88, 230, h));
-            _mascot.SetNodeRotation(ForearmL, Lerp(6, 0, h), Lerp(30, 0, h), Lerp(-30, 15, h));
-            _mascot.SetNodeRotation(ForearmR, Lerp(6, 0, h), Lerp(-30, 0, h), Lerp(30, -15, h));
+            Turn("Ear1.L", Ear1LRest, 150, 0, 0, _hands);
+            Turn("Ear1.R", Ear1RRest, 150, 0, 0, _hands);
+            Turn("Ear2.L", Ear2LRest, -30, 0, 0, _hands);
+            Turn("Ear2.R", Ear2RRest, -30, 0, 0, _hands);
+            Turn(ArmL, ArmLRest, -150, -150, 60, _hands);
+            Turn(ForearmL, ForearmLRest, 0, 0, 60, _hands);
+            Turn(ArmR, ArmRRest, 30, 30, 120, _hands);
+            Turn(ForearmR, ForearmRRest, 0, 0, -60, _hands);
         }
         else if (_handsSet)
         {
             _handsSet = false;
-            CloseEyes(false);
-            _mascot.ResetNode(ArmL);
-            _mascot.ResetNode(ArmR);
-            _mascot.ResetNode(ForearmL);
-            _mascot.ResetNode(ForearmR);
+            foreach (var bone in new[] { "Ear1.L", "Ear1.R", "Ear2.L", "Ear2.R", ArmL, ArmR, ForearmL, ForearmR })
+                _mascot.ResetNode(bone);
         }
     }
 
-    static float Lerp(float a, float b, float t) => a + (b - a) * t;
-
-    /// <summary>The face's color, for eyes shut: avatar.glb's Main_Light.</summary>
-    static readonly Color Skin = Color.FromRgb(209, 166, 103);
-
-    /// <summary>Shut eyes: the eyes' materials take the face's color; open: the file's own.</summary>
-    void CloseEyes(bool shut)
+    /// <summary>A bone turned to rest * (x, y, z) degrees (XYZ), the way there by <paramref name="t"/> (0 = rest).</summary>
+    void Turn(string bone, Quaternion rest, float x, float y, float z, float t)
     {
-        foreach (var material in new[] { "EyeColor", "Black", "White" })
-            _mascot.SetMaterialColor(material, shut ? Skin : null);
+        var q = Quaternion.Slerp(rest, rest * Euler(x, y, z), t);
+        var (ex, ey, ez) = ToEuler(q);
+        _mascot.SetNodeRotation(bone, ex, ey, ez);
+    }
+
+    /// <summary>Rotations around x, then y, then z, in degrees (glTF / glam XYZ: x * y * z).</summary>
+    static Quaternion Euler(float x, float y, float z)
+    {
+        const float r = MathF.PI / 180;
+        return Quaternion.CreateFromAxisAngle(Vector3.UnitX, x * r)
+               * Quaternion.CreateFromAxisAngle(Vector3.UnitY, y * r)
+               * Quaternion.CreateFromAxisAngle(Vector3.UnitZ, z * r);
+    }
+
+    /// <summary>The XYZ angles, in degrees, of a turn: the inverse of <see cref="Euler"/>.</summary>
+    static (float X, float Y, float Z) ToEuler(Quaternion q)
+    {
+        float x = q.X, y = q.Y, z = q.Z, w = q.W;
+        const float d = 180 / MathF.PI;
+        return (MathF.Atan2(-2 * (y * z - w * x), 1 - 2 * (x * x + y * y)) * d,
+            MathF.Asin(Math.Clamp(2 * (x * z + w * y), -1, 1)) * d,
+            MathF.Atan2(-2 * (x * y - w * z), 1 - 2 * (y * y + z * z)) * d);
     }
 }

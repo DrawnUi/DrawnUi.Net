@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.Loop.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\GalleryPage.Shapes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\PerfProbe.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pages\Scenery.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\Theme.cs" />
   </ItemGroup>
   <!-- The models and the Earth map (CC0 / public domain, Assets/MODELS-LICENSE.txt) ship inside the app, read once at startup. -->

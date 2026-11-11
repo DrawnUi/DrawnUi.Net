@@ -10,56 +10,34 @@ public partial class GalleryPage
     const int ListRows = 30;
     const float ListHeight = 440, RowHeight = 84, ThumbSize = 68;
 
-    /// <summary>A product of the list: its name, its variants (name and color) and its base price.</summary>
-    record Product(string Name, string Detail, (string Name, Color Color)[] Variants, int Price, Func<SkiaModel3D> Make, Action<SkiaModel3D, int, Color> Paint);
+    /// <summary>The shop's pieces (Poly Haven, CC0): file, name, detail and base price; the same as DrawnUI for Rust's gallery3d.</summary>
+    static readonly (byte[] Model, string Name, string Detail, int Price)[] Pieces =
+    {
+        (Theme.Sofa, "Walnut sofa", "Three-seater, carved walnut frame", 1190),
+        (Theme.LoungeChair, "Lounge chair", "Leather on a bent plywood shell", 890),
+        (Theme.Armchair, "Armchair", "Carved frame, linen seat", 640),
+        (Theme.Ottoman, "Ottoman", "Soft leather on wooden feet", 290),
+        (Theme.CoffeeTable, "Coffee table", "Stone top on an oak frame", 420),
+        (Theme.DrawerCabinet, "Drawer cabinet", "Six drawers with brass pulls", 760),
+    };
+
+    /// <summary>Finishes: name, the tint over the piece's own colors (null = as it is), what it adds to the price.</summary>
+    static readonly (string Name, Color Tint, int Extra)[] Finishes =
+    {
+        ("Natural", null, 0),
+        ("Honey", Color.FromRgb(255, 232, 196), 20),
+        ("Smoke", Color.FromRgb(190, 196, 210), 40),
+        ("Sage", Color.FromRgb(204, 232, 210), 60),
+        ("Espresso", Color.FromRgb(150, 134, 122), 80),
+    };
 
     SkiaScroll _listScroll;
     SkiaLabel _listCount;
     readonly SkiaModel3D[] _thumbs = new SkiaModel3D[ListRows];
     int _thumbsDrawn = -1;
 
-    Product[] Products()
-    {
-        _labels ??= Labels();
-        static SkiaModel3D Thumb(SkiaModel3D model, float yaw, float pitch)
-        {
-            model.Yaw = yaw;
-            model.Pitch = pitch;
-            model.LockPitch = true;
-            model.HorizontalOptions = LayoutOptions.Fill;
-            model.VerticalOptions = LayoutOptions.Fill;
-            return model;
-        }
-        // One model each, shared by every row that shows it (read once).
-        Model3D box = ProductBox(), medal = Medal(), heart = HeartModel();
-        return new[]
-        {
-            new Product("Office chair", "Mesh back, five-star base",
-                new[] { ("Navy", (Color)null), ("Graphite", Fabrics[1].Color), ("Coral", Fabrics[2].Color) }, 249,
-                () => Thumb(new SkiaModel3D(Theme.Chair), 30, 10), (m, v, c) => m.SetMaterialColor("Chair", v == 0 ? null : Fabrics[v].Color)),
-            new Product("Snack box", "Twelve bars, recyclable box",
-                new[] { ("Berry", (Color)null), ("Mint", (Color)null), ("Sun", (Color)null) }, 12,
-                () => Thumb(new SkiaModel3D(box), 28, 16), (m, v, c) => m.SetMaterialImage("box", _labels[v])),
-            new Product("Medal", "Solid metal, engraved on the back",
-                new[] { ("Gold", (Color)null), ("Silver", Color.FromRgb(200, 205, 214)), ("Bronze", Color.FromRgb(205, 127, 50)) }, 39,
-                () => Thumb(new SkiaModel3D(medal), 0, 8), (m, v, c) =>
-                {
-                    m.SetMaterialColor("disc", v == 0 ? null : c);
-                    m.SetMaterialColor("inner", v == 0 ? null : Theme.Lighter(c, 0.3f));
-                }),
-            new Product("Heart cushion", "Soft velvet, 40 cm",
-                new[] { ("Rose", (Color)null), ("Peach", Color.FromRgb(255, 160, 122)), ("Violet", Color.FromRgb(155, 110, 245)) }, 29,
-                () => Thumb(new SkiaModel3D(heart), -20, 10), (m, v, c) => m.SetMaterialColor("heart", v == 0 ? null : c)),
-            new Product("Treasure chest", "Storage box with a lid",
-                new[] { ("Oak", (Color)null), ("Walnut", Color.FromRgb(110, 70, 45)), ("Ebony", Color.FromRgb(60, 50, 50)) }, 59,
-                () => Thumb(new SkiaModel3D(Theme.Chest) { Animation = "Chest_Close", IsPlaying = false }, 30, 18),
-                (m, v, c) => m.SetMaterialColor("Wood", v == 0 ? null : c)),
-        };
-    }
-
     SkiaControl ListCard()
     {
-        var products = Products();
         return WideCard(new SkiaStack
         {
             Spacing = 10,
@@ -99,7 +77,7 @@ public partial class GalleryPage
                                 Spacing = 0,
                                 AccessibilityRole = Aria.RoleList,
                                 AccessibilityLabel = "Products",
-                                Children = Enumerable.Range(0, ListRows).Select(i => ProductRow(i, products)).ToList(),
+                                Children = Enumerable.Range(0, ListRows).Select(ProductRow).ToList(),
                             }
                         }.Assign(out _listScroll),
                     }
@@ -109,17 +87,24 @@ public partial class GalleryPage
     }
 
     /// <summary>One row: the 3D thumbnail, name and detail, price, the cart button.</summary>
-    SkiaControl ProductRow(int index, Product[] products)
+    SkiaControl ProductRow(int index)
     {
-        var product = products[index % products.Length];
-        var variant = index / products.Length % product.Variants.Length;
-        var large = index >= products.Length * product.Variants.Length;
-        var name = $"{product.Name}, {product.Variants[variant].Name}";
-        var price = product.Price + variant * 4 + (large ? product.Price / 2 : 0);
-        var model = product.Make();
-        product.Paint(model, variant, product.Variants[variant].Color);
-        // Each row starts at its own turn, so the list does not spin in step.
-        model.Yaw += index * 37 % 360;
+        var piece = Pieces[index % Pieces.Length];
+        var finish = Finishes[index / Pieces.Length % Finishes.Length];
+        var large = index >= 15;
+        var name = $"{piece.Name}, {finish.Name}";
+        var price = piece.Price + finish.Extra + (large ? 120 : 0);
+        var model = new SkiaModel3D(piece.Model)
+        {
+            Yaw = 32,
+            Pitch = 14,
+            LockPitch = true,
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+        };
+        // Each piece is one material (the sofa: its upholstery first): the finish tints it.
+        if (finish.Tint != null && model.MaterialNames.Count > 0)
+            model.SetMaterialColor(model.MaterialNames[0], finish.Tint);
         _thumbs[index] = model;
         var added = false;
         return new SkiaShape
@@ -157,10 +142,10 @@ public partial class GalleryPage
                                         Children =
                                         {
                                             new SkiaLabel(name) { FontSize = 16, FontFamily = Theme.Title, TextColor = Theme.Ink },
-                                            new SkiaLabel(large ? $"{product.Detail} · large" : product.Detail) { FontSize = 13, TextColor = Theme.Muted },
+                                            new SkiaLabel(large ? $"{piece.Detail} · large" : piece.Detail) { FontSize = 13, TextColor = Theme.Muted },
                                         }
                                     },
-                                    new SkiaLabel($"${price}")
+                                    new SkiaLabel(Dollars(price))
                                     {
                                         FontSize = 17, FontFamily = Theme.Title, TextColor = Theme.Ink, VerticalOptions = LayoutOptions.Center,
                                         WidthRequest = 80, HorizontalTextAlignment = DrawTextAlignment.End,

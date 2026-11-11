@@ -3,20 +3,22 @@ using System.Numerics;
 namespace Add3dGallery;
 
 /// <summary>
-/// The product viewer: an office chair from a .glb, shipped in the app or loaded from a link (with a placeholder while
-/// it loads and an error card when it cannot), turned by dragging, zoomed by pinch or wheel, reset by a double tap;
-/// dots anchored to points of the model open a note on that part; swatches recolor its fabric.
+/// The product viewer: a walnut sofa (Poly Haven, CC0) shipped in the app or loaded from the site by its address (a
+/// placeholder while it loads, an error card when it cannot), turned by dragging, zoomed by pinch or wheel, reset by a
+/// double tap; dots anchored to points of the sofa open a note on that part; the upholstery swatches put another
+/// fabric image on the sofa (SetMaterialImage) with its own shine (SetMaterialRoughness) and its own price. The same
+/// files, points and strings as DrawnUI for Rust's gallery3d.
 /// </summary>
 public partial class GalleryPage
 {
     const float ViewerWidth = 620, ViewerHeight = 420, PinSize = 26, NoteWidth = 210;
 
-    /// <summary>Where the model comes from.</summary>
+    /// <summary>Where the sofa comes from.</summary>
     enum Source
     {
         /// <summary>The .glb shipped inside the app.</summary>
         App,
-        /// <summary>The same model at its address on the web.</summary>
+        /// <summary>The same file at its address on the app's site.</summary>
         Link,
         /// <summary>An address with nothing behind it: the error card.</summary>
         Broken,
@@ -29,36 +31,43 @@ public partial class GalleryPage
         (Source.Broken, "Broken link"),
     };
 
-    /// <summary>Parts of the chair worth a note: name, note and the point in the model's own units.</summary>
+    const string SofaUrl = "assets/sofa.glb", BrokenUrl = "assets/no-such-sofa.glb";
+
+    /// <summary>Parts of the sofa worth a note: name, note and the point in the model's own units, a hair above its surface.</summary>
     static readonly (string Name, string Note, Vector3 At)[] Hotspots =
     {
-        ("Backrest", "A curved back that follows your spine.", new Vector3(0, 0.9f, -0.22f)),
-        ("Seat", "Deep foam, 48 cm wide.", new Vector3(0, 0.495f, 0.1f)),
-        ("Armrest", "Padded, at elbow height.", new Vector3(0.355f, 0.6f, 0)),
+        ("Seat", "Feather-wrapped cushions", new Vector3(0.3f, 0.386f, 0.05f)),
+        ("Back", "Hand-sewn, deep buttoned", new Vector3(0, 0.65f, -0.252f)),
+        ("Frame", "Carved walnut", new Vector3(0.76f, 0.5f, 0.183f)),
     };
 
-    /// <summary>The fabric colors; null = the file's own navy.</summary>
-    static readonly (string Name, Color Color, Color Shown)[] Fabrics =
+    /// <summary>
+    /// The upholstery, cheapest first: name, its fabric image (Poly Haven CC0), how matte it is (leather shines a
+    /// little), the swatch's color and the sofa's price in it.
+    /// </summary>
+    static readonly (string Name, byte[] Image, float Roughness, Color Swatch, int Price)[] Fabrics =
     {
-        ("Navy", null, Color.FromRgb(58, 106, 157)),
-        ("Graphite", Color.FromRgb(74, 79, 92), Color.FromRgb(74, 79, 92)),
-        ("Coral", Color.FromRgb(232, 115, 90), Color.FromRgb(232, 115, 90)),
+        ("Linen", Theme.Linen, 1.0f, Color.FromRgb(140, 172, 206), 1190),
+        ("Wool", Theme.Wool, 0.95f, Color.FromRgb(122, 120, 114), 1290),
+        ("Velvet", Theme.Velvet, 0.7f, Color.FromRgb(180, 40, 62), 1490),
+        ("Leather", Theme.Leather, 0.42f, Color.FromRgb(92, 52, 26), 1890),
     };
 
-    const string BrokenUrl = "https://static.poly.pizza/no-such-model.glb";
-
-    static readonly HttpClient Http = new();
+    /// <summary>The fabric images, decoded once.</summary>
+    static Texture3D[] _fabricImages;
 
     SkiaLayer _viewerHost, _loading, _failed;
     SkiaModel3D _viewer;
-    SkiaLabel _failedText, _fabricName;
+    SkiaLabel _failedText, _price;
     SkiaShape _note;
     SkiaLabel _noteTitle, _noteText;
     readonly SkiaShape[] _pins = new SkiaShape[Hotspots.Length];
     readonly UiButton[] _sourceButtons = new UiButton[Sources.Length];
     readonly SkiaShape[] _swatches = new SkiaShape[Fabrics.Length];
-    int _fabric, _openSpot = -1, _loadVersion;
+    int _fabric = -1, _openSpot = -1;
     Source _source;
+
+    static string Dollars(int amount) => "$" + amount.ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
 
     SkiaControl ViewerCard() => WideCard(new SkiaRow
     {
@@ -68,7 +77,7 @@ public partial class GalleryPage
             new SkiaShape
             {
                 CornerRadius = 12,
-                // At rest the chair shows its last render and the dots stand still: one GPU blit. Turning, zooming or a
+                // At rest the sofa shows its last render and the dots stand still: one GPU blit. Turning, zooming or a
                 // note draws it again.
                 UseCache = SkiaCacheType.GPU,
                 BackgroundColor = Theme.Stage,
@@ -77,7 +86,7 @@ public partial class GalleryPage
                 Children =
                 {
                     new SkiaLayer { VerticalOptions = LayoutOptions.Fill }.Assign(out _viewerHost),
-                    // The dots and the note follow their points of the model every frame.
+                    // The dots and the note follow their points of the model.
                     new SkiaLayer
                     {
                         VerticalOptions = LayoutOptions.Fill,
@@ -95,43 +104,64 @@ public partial class GalleryPage
             new SkiaStack
             {
                 Spacing = 14,
-                // Still beside a stage that draws every frame: blitted, drawn again only when a choice changes.
-                UseCache = SkiaCacheType.Image,
                 WidthRequest = WideWidth - ViewerWidth - 24,
                 Children =
                 {
+                    // Uncached: the price cross-fades.
                     new SkiaStack
                     {
                         Spacing = 2,
+                        Children =
+                        {
+                            new SkiaLabel("Walnut sofa") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new SkiaLabel("Three-seater, carved walnut frame") { FontSize = 14, TextColor = Theme.Muted },
+                            new SkiaLabel(Dollars(Fabrics[0].Price))
+                                {
+                                    FontSize = 22, FontFamily = Theme.Title, TextColor = Theme.Accent, Margin = new Thickness(0, 6, 0, 0),
+                                    AccessibilityRole = Aria.RoleText,
+                                }
+                                .WithAccessibilityLive()
+                                .Assign(out _price),
+                        }
+                    },
+                    new SkiaStack
+                    {
+                        Spacing = 14,
+                        // Still beside a stage that draws every frame: blitted, drawn again only when a choice changes.
                         UseCache = SkiaCacheType.Image,
                         Children =
                         {
-                            new SkiaLabel("Office chair") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                            new SkiaLabel("Ergonomic task chair, five-star base") { FontSize = 14, TextColor = Theme.Muted },
-                            new SkiaLabel("$249") { FontSize = 22, FontFamily = Theme.Title, TextColor = Theme.Accent, Margin = new Thickness(0, 6, 0, 0) },
+                            PanelLabel("UPHOLSTERY"),
+                            new SkiaRow
+                            {
+                                Spacing = 10,
+                                AccessibilityRole = Aria.RoleRadioGroup,
+                                AccessibilityLabel = "Upholstery",
+                                Children = Fabrics.Select((f, i) => (SkiaControl)new SkiaStack
+                                {
+                                    Spacing = 4,
+                                    WidthRequest = 60,
+                                    Children =
+                                    {
+                                        Swatch($"{f.Name}, {Dollars(f.Price)}", f.Swatch).Assign(out _swatches[i]).OnTapped(_ => SetFabric(i)),
+                                        new SkiaLabel(f.Name) { FontSize = 12, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center },
+                                    }
+                                }).ToList(),
+                            },
+                            PanelLabel("MODEL"),
+                            new SkiaWrap
+                            {
+                                Spacing = 8,
+                                AccessibilityRole = Aria.RoleRadioGroup,
+                                AccessibilityLabel = "Load the model",
+                                Children = Sources.Select((s, i) => (SkiaControl)new UiButton(s.Caption, Theme.Quiet, 108) { AccessibilityRole = Aria.RoleRadio }
+                                    .Assign(out _sourceButtons[i])
+                                    .OnTapped(_ => LoadViewer(s.Source))).ToList(),
+                            },
+                            new UiButton("Reset view", Theme.Quiet, 140) { AccessibilityHint = "Turns the sofa back to the front" }
+                                .OnTapped(_ => _viewer?.ResetView()),
                         }
                     },
-                    PanelLabel("MODEL"),
-                    new SkiaWrap
-                    {
-                        Spacing = 8,
-                        AccessibilityRole = Aria.RoleRadioGroup,
-                        AccessibilityLabel = "Load the model",
-                        Children = Sources.Select((s, i) => (SkiaControl)new UiButton(s.Caption, Theme.Quiet, 108) { AccessibilityRole = Aria.RoleRadio }
-                            .Assign(out _sourceButtons[i])
-                            .OnTapped(_ => LoadViewer(s.Source))).ToList(),
-                    },
-                    PanelLabel("FABRIC"),
-                    new SkiaRow
-                    {
-                        Spacing = 12,
-                        AccessibilityRole = Aria.RoleRadioGroup,
-                        AccessibilityLabel = "Fabric color",
-                        Children = Fabrics.Select((f, i) => (SkiaControl)Swatch(f.Name, f.Shown).Assign(out _swatches[i]).OnTapped(_ => SetFabric(i))).ToList(),
-                    },
-                    new SkiaLabel(Fabrics[0].Name) { FontSize = 14, TextColor = Theme.Ink }.Assign(out _fabricName),
-                    new UiButton("Reset view", Theme.Quiet, 140) { AccessibilityHint = "Turns the chair back to the front" }
-                        .OnTapped(_ => _viewer?.ResetView()),
                 }
             },
         }
@@ -223,7 +253,7 @@ public partial class GalleryPage
                             HorizontalOptions = LayoutOptions.Center,
                         }
                         .AnimateRotation(0, 360, seconds: 0.9, repeat: -1),
-                    new SkiaLabel("Loading the chair…") { FontSize = 14, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RoleText }
+                    new SkiaLabel("Loading the sofa…") { FontSize = 14, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RoleText }
                         .WithAccessibilityLive(),
                 }
             }
@@ -243,7 +273,7 @@ public partial class GalleryPage
                 Spacing = 10,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
-                WidthRequest = 320,
+                WidthRequest = 340,
                 Children =
                 {
                     new SkiaShape
@@ -270,37 +300,58 @@ public partial class GalleryPage
         }
     };
 
-    /// <summary>A round color swatch: a ring shows the chosen one.</summary>
-    static SkiaShape Swatch(string name, Color color)
-    {
-        return new SkiaShape
+    /// <summary>A round swatch: a ring shows the chosen one.</summary>
+    static SkiaShape Swatch(string name, Color color) => new SkiaShape
+        {
+            Type = ShapeType.Circle,
+            WidthRequest = 44,
+            HeightRequest = 44,
+            StrokeWidth = 3,
+            StrokeColor = Colors.Transparent,
+            Padding = new Thickness(5),
+            HorizontalOptions = LayoutOptions.Center,
+            AccessibilityRole = Aria.RoleRadio,
+            AccessibilityLabel = name,
+            Children =
             {
-                Type = ShapeType.Circle,
-                WidthRequest = 40,
-                HeightRequest = 40,
-                StrokeWidth = 3,
-                StrokeColor = Colors.Transparent,
-                Padding = new Thickness(6),
-                AccessibilityRole = Aria.RoleRadio,
-                AccessibilityLabel = name,
-                Children =
-                {
-                    new SkiaShape { Type = ShapeType.Circle, BackgroundColor = color, HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill },
-                }
+                new SkiaShape { Type = ShapeType.Circle, BackgroundColor = color, HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill },
             }
-            .OnHovered((me, on) => me.BackgroundColor = on ? Theme.Lighter(Theme.Card, 0.12f) : Colors.Transparent);
-    }
+        }
+        .OnHovered((me, on) => me.BackgroundColor = on ? Theme.Lighter(Theme.Card, 0.12f) : Colors.Transparent);
 
     void SetFabric(int index)
     {
+        var changed = _fabric != index;
         _fabric = index;
         for (var i = 0; i < _swatches.Length; i++)
         {
             _swatches[i].StrokeColor = i == index ? Theme.Ink : Colors.Transparent;
             _swatches[i].AccessibilityIsPressed = i == index;
         }
-        _fabricName.Text = Fabrics[index].Name;
-        _viewer?.SetMaterialColor("Chair", Fabrics[index].Color);
+        if (changed)
+            ShowPrice(Dollars(Fabrics[index].Price));
+        Dress(_viewer);
+    }
+
+    /// <summary>The price for the chosen fabric, cross-faded.</summary>
+    async void ShowPrice(string text)
+    {
+        if (_price.Text == text)
+            return;
+        await _price.FadeToAsync(0, 90);
+        _price.Text = text;
+        await _price.FadeToAsync(1, 140);
+    }
+
+    /// <summary>The upholstery's image and shine for the chosen fabric.</summary>
+    void Dress(SkiaModel3D sofa)
+    {
+        if (sofa == null || _fabric < 0)
+            return;
+        _fabricImages ??= Fabrics.Select(f => Texture3D.Decode(f.Image)).ToArray();
+        sofa.SetMaterialImage("upholstery", _fabricImages[_fabric]);
+        sofa.SetMaterialColor("upholstery", Colors.White);
+        sofa.SetMaterialRoughness("upholstery", Fabrics[_fabric].Roughness);
     }
 
     void ToggleNote(int index)
@@ -308,18 +359,16 @@ public partial class GalleryPage
         _openSpot = _openSpot == index ? -1 : index;
         for (var i = 0; i < _pins.Length; i++)
             _pins[i].AccessibilityIsPressed = i == _openSpot;
-        if (_openSpot < 0)
+        if (_openSpot >= 0)
         {
-            _note.IsVisible = false;
-            return;
+            _noteTitle.Text = Hotspots[index].Name;
+            _noteText.Text = Hotspots[index].Note;
         }
-        _noteTitle.Text = Hotspots[index].Name;
-        _noteText.Text = Hotspots[index].Note;
-        _note.IsVisible = true;
+        PlaceSpots();
     }
 
-    /// <summary>Loads the chair from where the buttons say: a placeholder meanwhile, the error card when it fails.</summary>
-    async void LoadViewer(Source source)
+    /// <summary>Shows the sofa from where the buttons say: from the app at once, from an address through its loading states.</summary>
+    void LoadViewer(Source source)
     {
         _source = source;
         for (var i = 0; i < Sources.Length; i++)
@@ -328,60 +377,40 @@ public partial class GalleryPage
             _sourceButtons[i].Fill = on ? Theme.Accent : Theme.Quiet;
             _sourceButtons[i].AccessibilityIsPressed = on;
         }
-        var version = ++_loadVersion;
-        ShowViewer(null);
-        _failed.IsVisible = false;
-        _loading.IsVisible = true;
-
-        byte[] bytes = null;
-        string problem = null;
-        if (source == Source.App)
-            bytes = Theme.Chair;
-        else
+        var sofa = source == Source.App ? new SkiaModel3D(Theme.Sofa) : new SkiaModel3D();
+        sofa.Yaw = 28;
+        sofa.Pitch = 14;
+        sofa.Zoom = 0.95f;
+        sofa.PinchZoom = true;
+        sofa.MinZoom = 0.55f;
+        sofa.MaxZoom = 1.8f;
+        sofa.ResetOnDoubleTap = true;
+        sofa.Antialias = true;
+        sofa.HorizontalOptions = LayoutOptions.Fill;
+        sofa.VerticalOptions = LayoutOptions.Fill;
+        sofa.ViewChanged += (_, _) => PlaceSpots();
+        sofa.LoadStateChanged += (me, state) =>
         {
-            try
-            {
-                bytes = await Http.GetByteArrayAsync(source == Source.Link ? Theme.ChairUrl : BrokenUrl);
-            }
-            catch (HttpRequestException e)
-            {
-                problem = e.StatusCode is { } code ? $"The server answered {(int)code} {code}." : "There was no answer from the server.";
-            }
-            catch (Exception e)
-            {
-                problem = e.Message;
-            }
-        }
-        if (version != _loadVersion)
-            return;
-
-        if (bytes != null)
-        {
-            var model = new SkiaModel3D(bytes)
-            {
-                Yaw = 35,
-                Pitch = 12,
-                PinchZoom = true,
-                MinZoom = 0.55f,
-                MaxZoom = 1.8f,
-                ResetOnDoubleTap = true,
-                Antialias = true,
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
-            };
-            if (model.Error == null)
-            {
-                model.SetMaterialColor("Chair", Fabrics[_fabric].Color);
-                ShowViewer(model);
-                _loading.IsVisible = false;
+            if (!ReferenceEquals(me, _viewer))
                 return;
-            }
-            problem = $"The file is not a model this viewer reads: {model.Error}";
-            model.Dispose();
-        }
-        _loading.IsVisible = false;
-        _failedText.Text = $"{problem}\nCheck the link, or show the copy shipped with the app.";
-        _failed.IsVisible = true;
+            ShowLoadState(state, ((SkiaModel3D)me).Error);
+            if (state == LoadState3D.Ready)
+                Dress((SkiaModel3D)me);
+        };
+        Dress(sofa);
+        ShowViewer(sofa);
+        ShowLoadState(sofa.LoadState, sofa.Error);
+        if (source != Source.App)
+            sofa.Source = source == Source.Link ? SofaUrl : BrokenUrl;
+    }
+
+    void ShowLoadState(LoadState3D state, string error)
+    {
+        _loading.IsVisible = state == LoadState3D.Loading;
+        _failed.IsVisible = state == LoadState3D.Failed;
+        if (state == LoadState3D.Failed)
+            _failedText.Text = $"{(_source == Source.Broken ? BrokenUrl : SofaUrl)}: {error}.\nCheck the link, or show the copy shipped with the app.";
+        PlaceSpots();
     }
 
     void ShowViewer(SkiaModel3D model)
@@ -393,39 +422,38 @@ public partial class GalleryPage
             _viewerHost.DisposeObject(_viewer);
         }
         _viewer = model;
-        if (model != null)
-            _viewerHost.AddSubView(model);
+        _viewerHost.AddSubView(model);
         _openSpot = -1;
-        _note.IsVisible = false;
         foreach (var pin in _pins)
-        {
-            pin.IsVisible = false;
             pin.AccessibilityIsPressed = false;
-        }
+        PlaceSpots();
     }
 
-    /// <summary>Each frame: the dots and the open note go where their points of the turning chair show.</summary>
-    void ViewerFrame()
+    /// <summary>The dots and the open note go where their points of the sofa show (when its view moves, and on changes).</summary>
+    void PlaceSpots()
     {
-        if (_viewer == null || !_viewer.WasInLastFrame())
-            return;
+        var ready = _viewer is { LoadState: LoadState3D.Ready };
         for (var i = 0; i < Hotspots.Length; i++)
         {
             var pin = _pins[i];
-            var at = _viewer.ScreenPosition(Hotspots[i].At);
+            var at = ready ? _viewer.ScreenPosition(Hotspots[i].At) : null;
             var shown = at is { Occluded: false };
             if (pin.IsVisible != shown)
                 pin.IsVisible = shown;
-            if (at == null)
-                continue;
-            Move(pin, at.Value.X - PinSize / 2, at.Value.Y - PinSize / 2);
+            if (shown)
+                Move(pin, at.Value.X - PinSize / 2, at.Value.Y - PinSize / 2);
             if (i != _openSpot)
                 continue;
-            _note.IsVisible = shown;
+            if (_note.IsVisible != shown)
+                _note.IsVisible = shown;
+            if (!shown)
+                continue;
             var height = (float)_note.MeasuredSize.Units.Height;
             Move(_note, Math.Clamp(at.Value.X - NoteWidth / 2, 8, ViewerWidth - NoteWidth - 8),
                 MathF.Max(8, at.Value.Y - PinSize / 2 - height - 8));
         }
+        if (_openSpot < 0 && _note.IsVisible)
+            _note.IsVisible = false;
     }
 
     /// <summary>Moves a control drawn over another to a point, skipping changes under a quarter point.</summary>

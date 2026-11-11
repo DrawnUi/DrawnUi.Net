@@ -1,14 +1,26 @@
-All models: Public Domain (CC0 1.0), from poly.pizza.
+Quaternius models, Public Domain (CC0 1.0), from poly.pizza:
 dragon.glb  "Dragon Evolved" by Quaternius (Ultimate Monsters) https://poly.pizza/m/LlwD0QNUPj
                                                                https://quaternius.com/packs/ultimatemonsters.html
 gift.glb    "Chest" by Quaternius                         https://poly.pizza/m/eEcIqgJzJ1
 avatar.glb  "Animated Platformer Character" by Quaternius https://poly.pizza/m/kKtL4zvS3n
 mob.glb     "Pink Slime" by Quaternius                    https://poly.pizza/m/AyP8sQmDLh
-chair.glb   "Office Chair" by Quaternius                  https://poly.pizza/m/UfKvrZBK6C
-            (the viewer also loads it from https://static.poly.pizza/ac2301f3-af86-435a-885a-d8f1a32f9f76.glb)
 
-earth.jpg: Public domain, NASA Earth Observatory "Blue Marble" (land_shallow_topo_2048), 1280 x 640 copy
-            https://commons.wikimedia.org/wiki/File:Land_shallow_topo_2048.jpg
-            https://visibleearth.nasa.gov/images/57752/blue-marble-land-surface-shallow-water-and-shaded-topography
-The medal, heart and confetti are made in code (Pages/GalleryPage.Shapes.cs); the product box, the loyalty card and
-the globe are shapes made in code with images drawn in code or the Earth map above.
+Poly Haven, Public Domain (CC0 1.0), https://polyhaven.com (the same files as DrawnUI for Rust's gallery3d):
+sofa.glb     "Sofa 01" (https://polyhaven.com/a/Sofa_01), re-packed as one GLB with two materials,
+             "upholstery" and "frame" (the wood keeps the model's own image, 512 px). The viewer also loads it
+             from the app's site (wwwroot/assets/sofa.glb in each web head).
+leather.jpg  "Brown Leather" (https://polyhaven.com/a/brown_leather), diffuse, 512 px
+wool.jpg     "Poly Wool Herringbone" (https://polyhaven.com/a/poly_wool_herringbone), diffuse, 512 px
+velvet.jpg   "Velour Velvet" (https://polyhaven.com/a/velour_velvet), diffuse, 512 px
+linen.jpg    "Rough Linen" (https://polyhaven.com/a/rough_linen), diffuse, 512 px
+lounge_chair.glb    "Mid Century Lounge Chair" (https://polyhaven.com/a/mid_century_lounge_chair)
+armchair.glb        "Arm Chair 01" (https://polyhaven.com/a/ArmChair_01)
+ottoman.glb         "Ottoman 01" (https://polyhaven.com/a/Ottoman_01)
+coffee_table.glb    "Modern Coffee Table 01" (https://polyhaven.com/a/modern_coffee_table_01)
+drawer_cabinet.glb  "Vintage Wooden Drawer 01" (https://polyhaven.com/a/vintage_wooden_drawer_01)
+                    each its 1k glTF with only the base color image, 512 px, in one GLB
+
+earth.jpg: NASA Blue Marble, "Land_ocean_ice_2048.jpg", public domain (NASA Goddard Space Flight Center, Visible
+Earth), https://commons.wikimedia.org/wiki/File:Land_ocean_ice_2048.jpg
+
+The heart, medal, confetti, product box labels, card faces and the mobs' scenery are made in code.

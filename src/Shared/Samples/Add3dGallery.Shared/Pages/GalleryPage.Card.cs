@@ -14,8 +14,6 @@ public partial class GalleryPage
     bool _flipped;
     /// <summary>The half turn: where it is and where it goes (0 = front, 180 = back), degrees.</summary>
     float _cardTurn, _cardTurnTo;
-    /// <summary>The lean toward the pointer, degrees, now and wanted.</summary>
-    float _leanX, _leanY, _leanToX, _leanToY;
 
     static SKPath CardOutline()
     {
@@ -111,6 +109,8 @@ public partial class GalleryPage
                         Yaw = 0,
                         Pitch = 0,
                         Zoom = 0.82f,
+                        // Leans toward the mouse or the finger, up to 14 degrees at the stage's edge.
+                        TiltToPointer = 14,
                         Antialias = true,
                         HorizontalOptions = LayoutOptions.Fill,
                         VerticalOptions = LayoutOptions.Fill,
@@ -122,30 +122,7 @@ public partial class GalleryPage
                 .WithWidth(ViewerWidth)
                 .WithHeight(340)
                 // Still between moves (the card shows its last render): one GPU blit.
-                .WithCache(SkiaCacheType.GPU)
-                // The pointer's place over the stage leans the card toward it; leaving lets it settle.
-                .WithGestures((me, args, apply) =>
-                {
-                    if (args.Type is TouchActionResult.Pointer or TouchActionResult.Panning)
-                    {
-                        var at = me.GetOffsetInsideControlInPoints(new System.Drawing.PointF(apply.MappedLocation.X, apply.MappedLocation.Y), apply.ChildOffset);
-                        var w = me.DrawingRect.Width / me.RenderingScale;
-                        var h = me.DrawingRect.Height / me.RenderingScale;
-                        if (w > 0 && h > 0)
-                        {
-                            _leanToX = (float)Math.Clamp((at.X / w - 0.5) * 2, -1, 1) * 16;
-                            _leanToY = (float)Math.Clamp((at.Y / h - 0.5) * 2, -1, 1) * 12;
-                        }
-                    }
-                    else if (args.Type == TouchActionResult.Up)
-                        _leanToX = _leanToY = 0;
-                    return null;
-                })
-                .OnHovered((_, on) =>
-                {
-                    if (!on)
-                        _leanToX = _leanToY = 0;
-                }),
+                .WithCache(SkiaCacheType.GPU),
             new SkiaStack
             {
                 Spacing = 14,
@@ -182,24 +159,15 @@ public partial class GalleryPage
         _flipButton.Text = _flipped ? "Show the front" : "Show the back";
     }
 
-    /// <summary>Each frame: the half turn eases toward its side, the lean follows the pointer.</summary>
+    /// <summary>Each frame: the half turn eases toward its side (the view's home yaw: the lean toward the pointer stays on top).</summary>
     void CardFrame(float delta)
     {
-        if (!_card.WasInLastFrame())
+        if (_cardTurn == _cardTurnTo || !_card.WasInLastFrame())
             return;
-        var k = MathF.Min(1, delta * 10);
-        _leanX += (_leanToX - _leanX) * k;
-        _leanY += (_leanToY - _leanY) * k;
         // About half a second for the half turn, slowing into its side.
         _cardTurn += (_cardTurnTo - _cardTurn) * MathF.Min(1, delta * 7);
         if (MathF.Abs(_cardTurnTo - _cardTurn) < 0.05f)
             _cardTurn = _cardTurnTo;
-        // Leaning toward the pointer: the card's near edge comes to it. Seen from the back, the sideways lean turns over.
-        var yaw = _cardTurn + _leanX;
-        var pitch = -_leanY;
-        if (MathF.Abs(_card.Yaw - yaw) > 0.01f)
-            _card.Yaw = yaw;
-        if (MathF.Abs(_card.Pitch - pitch) > 0.01f)
-            _card.Pitch = pitch;
+        _card.Yaw = _cardTurn;
     }
 }

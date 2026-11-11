@@ -26,6 +26,7 @@ public partial class GalleryPage : DrawnGame
     SkiaScroll _scroll;
     SkiaModel3D _medal, _heart, _avatar, _chest;
     SkiaScene3D _rain, _field;
+    Scenery _scenery;
     UiButton _medalButton, _likeButton, _chestButton;
     readonly UiButton[] _mobButtons = new UiButton[MobCounts.Length];
 
@@ -66,10 +67,10 @@ public partial class GalleryPage : DrawnGame
                             }
                         },
 
-                        Theme.Section("Product viewer", "A real product model on a shop page: turn it, zoom in, tap the dots, pick a color."),
+                        Theme.Section("Product viewer", "A real product on a shop page: turn it, zoom in, tap the dots, try another upholstery."),
                         ViewerCard(),
 
-                        Theme.Section("3D in a scrolling list", "Thirty products, each with a live 3D thumbnail: point at a row to turn it, or drag a thumbnail sideways. Rows off screen draw nothing."),
+                        Theme.Section("3D in a scrolling list", "Thirty pieces of furniture, each with a live 3D thumbnail: point at a row to turn it, or drag a thumbnail sideways. Rows off screen draw nothing."),
                         ListCard(),
 
                         Theme.Section("Card flip", "A loyalty card in 3D: it leans toward the pointer and turns over to show its back."),
@@ -245,9 +246,10 @@ public partial class GalleryPage : DrawnGame
                 HeightRequest = FieldHeight,
                 UseCache = SkiaCacheType.None,
                 CornerRadius = 10,
-                BackgroundColor = Color.FromRgb(58, 98, 74),
                 Children =
                 {
+                    // A side-scroller scene behind the mobs, its layers moving at their own pace.
+                    new Scenery { HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill }.Assign(out _scenery),
                     new SkiaScene3D
                         {
                             Tilt = 30,

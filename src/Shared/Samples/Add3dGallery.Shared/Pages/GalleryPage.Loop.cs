@@ -59,8 +59,9 @@ public partial class GalleryPage
         _time += delta;
         var t = _time;
 
-        ViewerFrame();
         ListFrame();
+        if (_field.WasInLastFrame())
+            _scenery.Scroll = _time * 24;
         CardFrame(delta);
         GlobeFrame(delta);
         FormFrame(delta);
@@ -109,7 +110,8 @@ public partial class GalleryPage
             {
                 var w = new Walker
                 {
-                    X = _dice.Next() * FieldWidth, Y = 70 + _dice.Next() * (FieldHeight - 80),
+                    // On the ground strip, below the hills.
+                    X = _dice.Next() * FieldWidth, Y = Scenery.GroundTop + 12 + _dice.Next() * (FieldHeight - Scenery.GroundTop - 16),
                     Speed = (_dice.Next() < 0.5f ? -1 : 1) * (30 + _dice.Next() * 50),
                 };
                 _field.Add(MobNames[i], "slime", w.X, w.Y, 46);

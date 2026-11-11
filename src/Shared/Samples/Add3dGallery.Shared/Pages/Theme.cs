@@ -32,10 +32,19 @@ public static class Theme
     public static readonly byte[] Avatar = Model("avatar.glb");
     public static readonly byte[] Chest = Model("gift.glb");
     public static readonly byte[] Mob = Model("mob.glb");
-    public static readonly byte[] Chair = Model("chair.glb");
+    /// <summary>The shop's other pieces (Poly Haven, CC0).</summary>
+    public static readonly byte[] LoungeChair = Model("lounge_chair.glb");
+    public static readonly byte[] Armchair = Model("armchair.glb");
+    public static readonly byte[] Ottoman = Model("ottoman.glb");
+    public static readonly byte[] CoffeeTable = Model("coffee_table.glb");
+    public static readonly byte[] DrawerCabinet = Model("drawer_cabinet.glb");
 
-    /// <summary>The product viewer's chair at its address on poly.pizza (CC0), loaded over the network.</summary>
-    public const string ChairUrl = "https://static.poly.pizza/ac2301f3-af86-435a-885a-d8f1a32f9f76.glb";
+    /// <summary>The product viewer's sofa (Poly Haven Sofa_01, CC0) and its upholstery images (Poly Haven, CC0).</summary>
+    public static readonly byte[] Sofa = Model("sofa.glb");
+    public static readonly byte[] Linen = Model("linen.jpg");
+    public static readonly byte[] Wool = Model("wool.jpg");
+    public static readonly byte[] Velvet = Model("velvet.jpg");
+    public static readonly byte[] Leather = Model("leather.jpg");
 
     /// <summary>NASA's Blue Marble (public domain), an equirectangular map for the globe.</summary>
     public static readonly byte[] Earth = Model("earth.jpg");
