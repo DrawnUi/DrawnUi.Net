@@ -424,7 +424,7 @@ public sealed class SKMesh : IDisposable
             if (!_built)
             {
                 _built = true;
-                Build();
+                Build(canvas.Context);
             }
             if (_vertices == null)
                 return;
@@ -440,7 +440,7 @@ public sealed class SKMesh : IDisposable
         }
     }
 
-    void Build()
+    void Build(GRRecordingContext context)
     {
         var key = new MeshGeometry.Key(_spec, _mode, _vertexCount, _vertexOffset, _indexBuffer, _indexCount, _indexOffset);
         _geometry = _vertexBuffer.AcquireGeometry(key, () => MeshGeometry.Build(key, _vertexBuffer));
@@ -448,7 +448,7 @@ public sealed class SKMesh : IDisposable
             return;
         // Positions copied from the "position" attribute, else the vertex program runs on the CPU with this
         // mesh's uniforms.
-        _vertices = _geometry.Vertices ?? (_ownVertices = _geometry.RunVertexProgram(_uniforms));
+        _vertices = _geometry.Vertices ?? (_ownVertices = _geometry.RunVertexProgram(_uniforms, context));
     }
 
     SKShader GetShader(SKBlender blender, SKPaint paint, GRRecordingContext context)
@@ -578,7 +578,6 @@ sealed class MeshGeometry
     // same vertex bytes (a strip redrawn with new uniforms each frame) runs its vertex program into it.
     int _perRow, _rows;
     SKSurface _outputSurface;
-    SKPaint _outputPaint;
     float[] _output; // pinned
 
     int _refs = 1;
@@ -593,7 +592,6 @@ sealed class MeshGeometry
             foreach (var v in Vertices)
                 v.Dispose();
         _outputSurface?.Dispose();
-        _outputPaint?.Dispose();
         _packedShader?.Dispose();
         _packed?.Dispose();
         _packedF32Shader?.Dispose();
@@ -788,21 +786,45 @@ sealed class MeshGeometry
         }
     }
 
-    // DrawVertices needs positions on the CPU: the vertex program runs once per vertex on a raster F32
-    // surface, with the mesh's uniforms, and the positions are read from its pixels.
-    public SKVertices[] RunVertexProgram(byte[] uniformData)
+    // DrawVertices needs positions on the CPU: the vertex program runs once per vertex, with the mesh's uniforms,
+    // and the positions are read back. On the canvas's GPU when it has one (input: the packed fp16 image the
+    // draw program uses; output: each position float as its 4 IEEE bytes in an RGBA8 target, since Skia renders
+    // no F32 on the GPU), else on a raster F32 surface (input: packed F32). Both give the floats bit-exact.
+    public SKVertices[] RunVertexProgram(byte[] uniformData, GRRecordingContext context)
     {
-        var spec = Id.Spec;
         lock (this)
         {
+            // The GPU path waits for the GPU once per draw (the read-back), about half a millisecond: small meshes
+            // (a strip of a few dozen vertices, often drawn many times a frame) run on the CPU instead.
+            // ponytail: fixed vertex threshold; measure per device if meshes of ~1000 vertices matter.
+            if (context != null && _available >= GpuVertexProgramMinVertices)
+            {
+                // 2 pixels per vertex: x then y.
+                int perRow = Math.Min(_available, SKMeshSpecification.MaxTextureSide / 2);
+                int rows = (_available + perRow - 1) / perRow;
+                var packed = GetPacked(context);
+                if (packed != null && rows <= SKMeshSpecification.MaxTextureSide)
+                {
+                    var info = new SKImageInfo(perRow * 2, rows, SKColorType.Rgba8888, SKAlphaType.Premul); // read back as written
+                    using var surface = SKSurface.Create(context, true, info);
+                    if (surface != null)
+                    {
+                        if (_bytes == null || _bytes.Length < info.BytesSize)
+                            _bytes = GC.AllocateArray<byte>(info.BytesSize, pinned: true);
+                        if (RunVertexProgram(surface, uniformData, packed, PackedRows, perRow, rows * 1f, true)
+                            && surface.ReadPixels(info, Marshal.UnsafeAddrOfPinnedArrayElement(_bytes, 0), info.RowBytes, 0, 0))
+                            return MakeVertices(MemoryMarshal.Cast<byte, float>(_bytes.AsSpan(0, info.BytesSize)), 0, 2);
+                    }
+                }
+            }
+
+            var rasterInfo = new SKImageInfo(_perRow, _rows, SKColorType.RgbaF32, SKAlphaType.Premul);
             if (_outputSurface == null)
             {
-                var outInfo = new SKImageInfo(_perRow, _rows, SKColorType.RgbaF32, SKAlphaType.Premul);
                 _output = GC.AllocateArray<float>(_perRow * _rows * 4, pinned: true);
-                _outputSurface = SKSurface.Create(outInfo, Marshal.UnsafeAddrOfPinnedArrayElement(_output, 0), outInfo.RowBytes);
+                _outputSurface = SKSurface.Create(rasterInfo, Marshal.UnsafeAddrOfPinnedArrayElement(_output, 0), rasterInfo.RowBytes);
                 if (_outputSurface == null)
                     return null;
-                _outputPaint = new SKPaint { BlendMode = SKBlendMode.Src };
             }
             if (_packedF32Shader == null)
             {
@@ -811,27 +833,37 @@ sealed class MeshGeometry
                     return null;
                 _packedF32Shader = _packedF32.ToRawShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, Nearest);
             }
-
-            SKShader shader;
-            lock (spec.EffectLock)
-            {
-                var uniforms = spec.PositionUniforms;
-                SetUniforms(uniforms, spec.VertexUniforms, uniformData);
-                uniforms["_sm_pk"] = (ReadOnlySpan<float>)stackalloc float[] { 0, VerticesPerRow, 1f / VerticesPerRow, 0 };
-                uniforms["_sm_pos"] = (ReadOnlySpan<float>)stackalloc float[] { _perRow, 0, 0, 0 };
-                var children = spec.PositionChildren;
-                children["_sm_attr"] = _packedF32Shader;
-                shader = spec.PositionEffect.ToShader(uniforms, children);
-                children.Reset();
-            }
-            using (shader)
-            {
-                _outputPaint.Shader = shader;
-                _outputSurface.Canvas.DrawRect(0, 0, _perRow, _rows, _outputPaint); // raster: written at once
-                _outputPaint.Shader = null;
-            }
+            if (!RunVertexProgram(_outputSurface, uniformData, _packedF32Shader, 0, _perRow, _rows, false)) // raster: written at once
+                return null;
             return MakeVertices(_output, 0, 4);
         }
+    }
+
+    byte[] _bytes; // pinned, GPU read-back
+    const int GpuVertexProgramMinVertices = 1024;
+
+    // `loRows`: rows of the high half block of an fp16 hi/lo input, 0 for F32. `bytes`: the RGBA8 output.
+    bool RunVertexProgram(SKSurface surface, byte[] uniformData, SKShader input, int loRows, int perRow, float rows, bool bytes)
+    {
+        var spec = Id.Spec;
+        SKShader shader;
+        lock (spec.EffectLock)
+        {
+            var uniforms = spec.PositionUniforms;
+            SetUniforms(uniforms, spec.VertexUniforms, uniformData);
+            uniforms["_sm_pk"] = (ReadOnlySpan<float>)stackalloc float[] { 0, VerticesPerRow, 1f / VerticesPerRow, loRows };
+            uniforms["_sm_pos"] = (ReadOnlySpan<float>)stackalloc float[] { perRow, bytes ? 1 : 0, 0, 0 };
+            var children = spec.PositionChildren;
+            children["_sm_attr"] = input;
+            shader = spec.PositionEffect.ToShader(uniforms, children);
+            children.Reset();
+        }
+        if (shader == null)
+            return false;
+        using (shader)
+        using (var paint = new SKPaint { Shader = shader, BlendMode = SKBlendMode.Src })
+            surface.Canvas.DrawRect(0, 0, bytes ? perRow * 2 : perRow, rows, paint);
+        return true;
     }
 
     public static void SetUniforms(SKRuntimeEffectUniforms target, SKMeshSpecification.UniformSlot[] slots, byte[] data)

@@ -302,14 +302,47 @@ public sealed class SKMeshSpecification : IDisposable
 
         // Vertex program alone: checked first so its errors carry the "VS:" prefix, and used on the CPU for
         // positions when the vertex program does more than copy the "position" attribute.
-        // Output pixel (x, y) = vertex y * _sm_pos.x + x, read from the F32 packed image.
+        // Input: the packed image, F32, or fp16 hi + lo rows when _sm_pk.w (rows of the high halves) is set.
+        // _sm_pos.y = 0 (raster F32 target): pixel (x, y) = vertex y * _sm_pos.x + x, its position in .xy.
+        // _sm_pos.y = 1 (GPU RGBA8 target, where F32 cannot be rendered): pixel (x, y) = the 4 IEEE bytes of
+        // position.x (x even) or .y (x odd) of vertex y * _sm_pos.x + x / 2, so the read-back bytes ARE the floats.
+        // The bytes are built with exact float math (powers of two by squaring): bit-exact on any GPU.
         var positionSource = new StringBuilder()
             .Append(structs).Append('\n').Append(vs).Append('\n')
             .Append("uniform shader _sm_attr;\nuniform float4 _sm_pk;\nuniform float4 _sm_pos;\n")
-            .Append("float4 _sm_t(float x, float y) { return float4(_sm_attr.eval(float2(x + 0.5, y + 0.5))); }\n")
+            .Append("float4 _sm_t(float x, float y) {\n  float2 c = float2(x + 0.5, y + 0.5);\n  float4 r = float4(_sm_attr.eval(c));\n")
+            .Append("  if (_sm_pk.w > 0.0) { r += float4(_sm_attr.eval(float2(c.x, c.y + _sm_pk.w))); }\n  return r;\n}\n")
             .Append(BuildLoad(attrs, floatIndex, texels))
-            .Append("half4 main(float2 p) {\n")
-            .Append("  Varyings v = _sm_vs(_sm_vload(floor(p.y) * _sm_pos.x + floor(p.x)));\n")
+            .Append("float4 _sm_enc(float x) {\n  float a = abs(x);\n  if (a < 1.17549435e-38) { return float4(0.0); }\n")
+            .Append("  float p = 1.0;\n  float ip = 1.0;\n  float e = 0.0;\n")
+            .Append("  if (a >= 1.0) {\n")
+            .Append("    float s = 2.0;\n    float r = 0.5;\n")
+            // squares 2^1 .. 2^64, tried from the largest
+            .Append("    float s1 = s; float s2 = s1 * s1; float s4 = s2 * s2; float s8 = s4 * s4; float s16 = s8 * s8; float s32 = s16 * s16; float s64 = s32 * s32;\n")
+            .Append("    float r1 = r; float r2 = r1 * r1; float r4 = r2 * r2; float r8 = r4 * r4; float r16 = r8 * r8; float r32 = r16 * r16; float r64 = r32 * r32;\n")
+            .Append("    if (p * s64 <= a) { p *= s64; ip *= r64; e += 64.0; }\n    if (p * s32 <= a) { p *= s32; ip *= r32; e += 32.0; }\n")
+            .Append("    if (p * s16 <= a) { p *= s16; ip *= r16; e += 16.0; }\n    if (p * s8 <= a) { p *= s8; ip *= r8; e += 8.0; }\n")
+            .Append("    if (p * s4 <= a) { p *= s4; ip *= r4; e += 4.0; }\n    if (p * s2 <= a) { p *= s2; ip *= r2; e += 2.0; }\n")
+            .Append("    if (p * s1 <= a) { p *= s1; ip *= r1; e += 1.0; }\n  } else {\n")
+            // smallest power of two above a, then half of it
+            .Append("    float s = 0.5;\n    float r = 2.0;\n")
+            .Append("    float s1 = s; float s2 = s1 * s1; float s4 = s2 * s2; float s8 = s4 * s4; float s16 = s8 * s8; float s32 = s16 * s16; float s64 = s32 * s32;\n")
+            .Append("    float r1 = r; float r2 = r1 * r1; float r4 = r2 * r2; float r8 = r4 * r4; float r16 = r8 * r8; float r32 = r16 * r16; float r64 = r32 * r32;\n")
+            .Append("    if (p * s64 > a) { p *= s64; ip *= r64; e -= 64.0; }\n    if (p * s32 > a) { p *= s32; ip *= r32; e -= 32.0; }\n")
+            .Append("    if (p * s16 > a) { p *= s16; ip *= r16; e -= 16.0; }\n    if (p * s8 > a) { p *= s8; ip *= r8; e -= 8.0; }\n")
+            .Append("    if (p * s4 > a) { p *= s4; ip *= r4; e -= 4.0; }\n    if (p * s2 > a) { p *= s2; ip *= r2; e -= 2.0; }\n")
+            .Append("    if (p * s1 > a) { p *= s1; ip *= r1; e -= 1.0; }\n")
+            .Append("    p *= 0.5;\n    ip *= 2.0;\n    e -= 1.0;\n  }\n")
+            .Append("  float f = (a * ip - 1.0) * 8388608.0;\n  float be = e + 127.0;\n")
+            .Append("  float b0 = mod(f, 256.0);\n  float b1 = mod(floor(f * 0.00390625), 256.0);\n")
+            .Append("  float b2 = floor(f * 0.0000152587890625) + mod(be, 2.0) * 128.0;\n")
+            .Append("  float b3 = floor(be * 0.5) + (x < 0.0 ? 128.0 : 0.0);\n")
+            .Append("  return float4(b0, b1, b2, b3) / 255.0;\n}\n")
+            .Append("half4 main(float2 p) {\n  float x = floor(p.x);\n  float y = floor(p.y);\n")
+            .Append("  if (_sm_pos.y > 0.5) {\n    float h = floor(x * 0.5);\n")
+            .Append("    Varyings w = _sm_vs(_sm_vload(y * _sm_pos.x + h));\n")
+            .Append("    return half4(_sm_enc(x - h * 2.0 < 0.5 ? w.position.x : w.position.y));\n  }\n")
+            .Append("  Varyings v = _sm_vs(_sm_vload(y * _sm_pos.x + x));\n")
             .Append("  return half4(half2(v.position), 0.0, 1.0);\n}\n")
             .ToString();
 
