@@ -263,15 +263,7 @@ public static partial class WebInput
         KeyboardManager.KeyboardReleased(MapCode(code), forOtherElement);
     }
 
-    private static InputKey MapCode(string? code)
-    {
-        if (string.IsNullOrWhiteSpace(code))
-            return InputKey.Unknown;
-
-        return Enum.TryParse<InputKey>(code, ignoreCase: false, out var mapped)
-            ? mapped
-            : InputKey.Unknown;
-    }
+    private static InputKey MapCode(string? code) => KeyboardManager.MapBrowserCode(code);
 
     private static TouchActionEventArgs MakeTouchArgs(long pointerId, TouchActionType type, PointF location)
     {

@@ -159,7 +159,7 @@ internal static partial class WebAccessibility
 
     // arrows, Home / End, PageUp / PageDown: the node first (a slider steps), else its group
     private static bool OnKey(int id, string key) =>
-        Enum.TryParse(key, out InputKey inputKey) && SkiaAccessibilityManager.Key(Find(id), inputKey);
+        KeyboardManager.MapBrowserCode(key) is var inputKey && inputKey != InputKey.Unknown && SkiaAccessibilityManager.Key(Find(id), inputKey);
 
     // the focused element is the canvas keyboard focus (ring, scroll bars) and the screen reader's node; a node off
     // screen is scrolled into view

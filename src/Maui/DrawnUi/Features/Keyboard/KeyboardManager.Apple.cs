@@ -111,6 +111,7 @@ public partial class KeyboardManager
         case 2228: return InputKey.ControlRight;
         case 2224: return InputKey.ControlLeft;
         case 2040: return InputKey.Enter;
+        case 2088: return InputKey.Enter; // the keypad's Enter, as on the desktop heads
         case 2043: return InputKey.Tab;
         case 2042: return InputKey.Backspace;
         case 2046: return InputKey.Equal;
