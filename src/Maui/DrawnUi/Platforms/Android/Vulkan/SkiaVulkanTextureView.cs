@@ -99,6 +99,9 @@ public unsafe class SkiaVulkanTextureView : TextureView, TextureView.ISurfaceTex
     /// <inheritdoc cref="VkInstance"/>
     public uint VkQueueFamily => _gpu?.QueueFamily ?? 0;
 
+    /// <summary>The device has samplerAnisotropy on: samplers made on it may set anisotropyEnable (see VulkanGpu.SamplerAnisotropy).</summary>
+    public bool VkSamplerAnisotropy => _gpu?.SamplerAnisotropy ?? false;
+
     /// <summary>
     /// The device was created with the Android hardware buffer import extensions
     /// (VK_ANDROID_external_memory_android_hardware_buffer and its dependencies): importing them is allowed.

@@ -44,6 +44,12 @@ internal sealed unsafe class VulkanGpu : IDisposable
 
     public IntPtr Instance => _instance;
     public IntPtr PhysicalDevice => _physicalDevice;
+
+    /// <summary>
+    /// The device was created with the samplerAnisotropy feature on (only where the GPU offers it), so samplers made on
+    /// it may filter anisotropically. False where the GPU lacks it: the device is then created as without the feature.
+    /// </summary>
+    public bool SamplerAnisotropy { get; private set; }
     public uint QueueFamily => _queueFamily;
     public IntPtr Device { get; private set; }
     public IntPtr Queue { get; private set; }
@@ -221,17 +227,31 @@ internal sealed unsafe class VulkanGpu : IDisposable
                 Super.Log("[Vulkan] Android hardware buffer import enabled");
         }
 
-        var device = CreateDevice(&queueInfo, _enabledDeviceExtensions);
+        // samplerAnisotropy on only where the GPU reports it; without it the device is created exactly as before
+        var features = stackalloc uint[Vk.PhysicalDeviceFeaturesCount];
+        Vk.vkGetPhysicalDeviceFeatures(_physicalDevice, features);
+        var anisotropy = features[Vk.FeatureSamplerAnisotropy] != 0;
+
+        var device = CreateDevice(&queueInfo, _enabledDeviceExtensions, anisotropy);
+        if (device == IntPtr.Zero && anisotropy)
+        {
+            // never lose the canvas over an optional feature
+            Super.Log("[Vulkan] device with sampler anisotropy failed, created without it");
+            anisotropy = false;
+            device = CreateDevice(&queueInfo, _enabledDeviceExtensions, false);
+        }
         if (device == IntPtr.Zero && _hardwareBuffers)
         {
             // never lose the canvas over the extra extensions: the device as before
             Super.Log("[Vulkan] device with hardware buffer import failed, created without it");
             _hardwareBuffers = false;
             _enabledDeviceExtensions = DeviceExtensions;
-            device = CreateDevice(&queueInfo, _enabledDeviceExtensions);
+            device = CreateDevice(&queueInfo, _enabledDeviceExtensions, anisotropy);
         }
         if (device == IntPtr.Zero)
             return false;
+
+        SamplerAnisotropy = anisotropy;
 
         Device = device;
         Vk.vkGetDeviceQueue(device, _queueFamily, 0, out var queue);
@@ -253,11 +273,13 @@ internal sealed unsafe class VulkanGpu : IDisposable
         return Context != null;
     }
 
-    private static IntPtr CreateDevice(Vk.DeviceQueueCreateInfo* queueInfo, string[] deviceExtensions)
+    private static IntPtr CreateDevice(Vk.DeviceQueueCreateInfo* queueInfo, string[] deviceExtensions, bool samplerAnisotropy)
     {
         var extensions = AllocStrings(deviceExtensions);
         try
         {
+            var features = stackalloc uint[Vk.PhysicalDeviceFeaturesCount];
+            features[Vk.FeatureSamplerAnisotropy] = 1;
             var info = new Vk.DeviceCreateInfo
             {
                 sType = Vk.STRUCTURE_TYPE_DEVICE_CREATE_INFO,
@@ -265,6 +287,7 @@ internal sealed unsafe class VulkanGpu : IDisposable
                 pQueueCreateInfos = queueInfo,
                 enabledExtensionCount = (uint)deviceExtensions.Length,
                 ppEnabledExtensionNames = extensions,
+                pEnabledFeatures = samplerAnisotropy ? (IntPtr)features : IntPtr.Zero,
             };
             return Vk.vkCreateDevice(_physicalDevice, &info, IntPtr.Zero, out var device) == Vk.SUCCESS ? device : IntPtr.Zero;
         }
