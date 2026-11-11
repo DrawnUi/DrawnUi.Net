@@ -1138,7 +1138,7 @@ public partial class SkiaControl
             return false; // background bake owns painting this control right now — do not race it
 
         CreateRenderingObjectAndPaint(context, recordArea,
-            (ctx) => { PaintWithEffects(ctx.WithDestination(DrawingRect)); });
+            _paintAtDrawingRect ??= ctx => PaintWithEffects(ctx.WithDestination(DrawingRect)));
 
         return RenderObject != null;
     }
@@ -1767,6 +1767,9 @@ public partial class SkiaControl
     }
 
 
+    // The paint callbacks of a record, made once per control: a record does not allocate a new delegate.
+    Action<DrawingContext> _paintAtDrawingRect, _recordPaint;
+
     public void PrepareOffscreenCache(DrawingContext clone, SKRect recordArea)
     {
         //use cloned struct in another thread
@@ -1817,7 +1820,7 @@ public partial class SkiaControl
             else
             {
                 CreateRenderingObjectAndPaint(painting, recordArea,
-                    (ctx) => { PaintWithEffects(ctx.WithDestination(DrawingRect)); });
+                    _paintAtDrawingRect ??= ctx => PaintWithEffects(ctx.WithDestination(DrawingRect)));
             }
 
             return false;
@@ -1855,7 +1858,7 @@ public partial class SkiaControl
                 if (RenderObject == null || !CheckCachedObjectValid(RenderObject, recordArea, clone.Context))
                 {
                     cache = CreateRenderingObject(clone, recordArea, RenderObjectPrevious, UsingCacheType,
-                        (ctx) => { PaintWithEffects(ctx); });
+                        _recordPaint ??= PaintWithEffects);
                 }
 
                 node.Cache = cache;
