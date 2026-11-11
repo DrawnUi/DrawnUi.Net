@@ -1,4 +1,5 @@
 #nullable disable
+using System.Net.Http;
 using System.Numerics;
 using AppoMobi.Gestures;
 using DrawnUi;
@@ -26,14 +27,21 @@ public class SkiaModel3D : SkiaControl
         public Quaternion R;
     }
 
-    readonly Scene3D _scene;
-    readonly Player3D _player;
+    Scene3D _scene;
+    Player3D _player;
     readonly RenderTarget _target = new();
-    readonly NodeOverride[] _nodes;
-    readonly MaterialOverride[] _materials;
-    readonly NodeTransform[] _locals;
-    readonly Matrix4x4[] _pose;
-    readonly bool[] _ownHidden, _hidden;
+    NodeOverride[] _nodes;
+    MaterialOverride[] _materials;
+    NodeTransform[] _locals;
+    Matrix4x4[] _pose;
+    bool[] _ownHidden, _hidden;
+    string _source;
+    int _loadVersion;
+    /// <summary>The leaning toward the pointer (<see cref="TiltToPointer"/>): degrees at the edge, the pointer's place from -1 to 1, on or not.</summary>
+    float _tilt, _tiltX, _tiltY;
+    bool _tiltOn;
+    /// <summary>The view at the last <see cref="ViewChanged"/>.</summary>
+    float _shownYaw = float.NaN, _shownPitch, _shownZoom;
     readonly RenderItem[] _items = new RenderItem[1];
     bool _hiddenDirty = true;
     ActionOnTickAnimator _loop;
@@ -72,26 +80,143 @@ public class SkiaModel3D : SkiaControl
     {
     }
 
+    /// <summary>An empty model that shows the .glb its <see cref="Source"/> names once it is loaded.</summary>
+    public SkiaModel3D() : this((Scene3D)null, null)
+    {
+    }
+
     SkiaModel3D(Scene3D scene, string error)
     {
-        _scene = scene;
+        _player = new Player3D(null);
+        Attach(scene);
         Error = error;
-        _player = new Player3D(scene);
+        if (error != null)
+            Super.Log($"[SkiaModel3D] {error}");
+    }
+
+    /// <summary>Shows a scene: its own pose, node and material slots; the playing state and speed carry over.</summary>
+    void Attach(Scene3D scene)
+    {
+        var old = _player;
+        _scene = scene;
+        _player = new Player3D(scene) { Playing = old.Playing, Speed = old.Speed, Fade = old.Fade };
         var nodes = scene?.Nodes.Length ?? 0;
         _nodes = new NodeOverride[nodes];
         _locals = new NodeTransform[nodes];
         _pose = new Matrix4x4[nodes];
         _ownHidden = new bool[nodes];
         _hidden = new bool[nodes];
+        _hiddenDirty = true;
         _materials = new MaterialOverride[scene?.Materials.Length ?? 0];
-        if (error != null)
-            Super.Log($"[SkiaModel3D] {error}");
+        if (scene != null && _animation != null && scene.AnimationNamed(_animation) is var a and >= 0)
+        {
+            _player.Play(a);
+            _player.FadeNow();
+        }
     }
 
     #region PROPERTIES
 
-    /// <summary>The file could not be read: why (null when it was).</summary>
-    public string Error { get; }
+    /// <summary>The file could not be read, or loading <see cref="Source"/> failed: why (null when it was read).</summary>
+    public string Error { get; private set; }
+
+    /// <summary>
+    /// The .glb to show, loaded in the background: a file shipped with the app (a name or path, as for images) or an
+    /// http(s) address. <see cref="LoadState"/> and <see cref="LoadStateChanged"/> follow it; the app draws its own
+    /// placeholder and error from them (the reason is in <see cref="Error"/>). Node and material changes made before
+    /// the model is ready do not carry over: make them on Ready. Same as DrawnUI for Rust's source.
+    /// </summary>
+    public string Source
+    {
+        get => _source;
+        set
+        {
+            _source = value;
+            _ = Load(value, ++_loadVersion);
+        }
+    }
+
+    /// <summary>Where loading <see cref="Source"/> stands; Ready for a model given as bytes or made in code.</summary>
+    public LoadState3D LoadState { get; private set; } = LoadState3D.Ready;
+
+    /// <summary>Loading <see cref="Source"/> started (Loading), ended (Ready), or failed (Failed, the reason in <see cref="Error"/>).</summary>
+    public event EventHandler<LoadState3D> LoadStateChanged;
+
+    void SetLoadState(LoadState3D state)
+    {
+        if (LoadState == state)
+            return;
+        LoadState = state;
+        LoadStateChanged?.Invoke(this, state);
+    }
+
+    async Task Load(string source, int version)
+    {
+        SetLoadState(LoadState3D.Loading);
+        byte[] bytes = null;
+        string problem = null;
+        try
+        {
+            using var stream = await SkiaImageManager.OpenStreamAsync(source);
+            if (stream == null)
+                problem = "no file";
+            else
+            {
+                using var copy = new MemoryStream();
+                await stream.CopyToAsync(copy);
+                bytes = copy.ToArray();
+            }
+        }
+        catch (HttpRequestException e)
+        {
+            problem = e.StatusCode is { } code ? $"the server answered {(int)code} {code}" : "there was no answer from the server";
+        }
+        catch (Exception e)
+        {
+            problem = e.Message;
+        }
+        Scene3D scene = null;
+        if (bytes != null)
+            scene = Scene3D.Shared(bytes, out problem);
+        // The scene goes in before the next frame draws, on the drawing thread.
+        SafeAction(() =>
+        {
+            if (version != _loadVersion || IsDisposed)
+                return;
+            if (scene == null)
+            {
+                Error = problem ?? "the file could not be read";
+                Super.Log($"[SkiaModel3D] {source}: {Error}");
+                Attach(null);
+                SetLoadState(LoadState3D.Failed);
+            }
+            else
+            {
+                Error = null;
+                Attach(scene);
+                SetLoadState(LoadState3D.Ready);
+            }
+            Changed();
+        });
+    }
+
+    /// <summary>
+    /// Leans the model toward the mouse over it or the finger on it, up to this many degrees at the control's edge
+    /// (0 = off, the default); it glides home when the pointer leaves or the finger lifts. On, drags do not turn it.
+    /// The app may move the home view meanwhile (a card flip animates Yaw) and the lean follows.
+    /// </summary>
+    public float TiltToPointer
+    {
+        get => _tilt;
+        set
+        {
+            _tilt = MathF.Max(0, value);
+            ReceivesHover = _tilt > 0;
+            if (_tilt == 0)
+                _tiltOn = false;
+            Changed();
+        }
+    }
 
     /// <summary>The names of the scene's animations, in file order.</summary>
     public IReadOnlyList<string> Animations => _scene?.Animations.Select(a => a.Name).ToArray() ?? Array.Empty<string>();
@@ -308,6 +433,12 @@ public class SkiaModel3D : SkiaControl
     public event EventHandler<string> AnimationEnded;
 
     /// <summary>
+    /// The view moved (turn, tilt or zoom: a drag, the auto rotation, a pinch, a reset, the app), at most once per
+    /// frame, raised as the model draws: the place to move labels kept on its points (<see cref="ScreenPosition"/>).
+    /// </summary>
+    public event EventHandler ViewChanged;
+
+    /// <summary>
     /// A tap landed on the scene's surface (not on empty space around it): the node, the material and the point it hit.
     /// </summary>
     public event EventHandler<ModelHit> Tapped3D;
@@ -467,6 +598,21 @@ public class SkiaModel3D : SkiaControl
         return true;
     }
 
+    /// <summary>
+    /// How matte a material is, 0 (glossy: leather, lacquer) to 1 (matte: no highlight, the default); null = the
+    /// file's own roughness. Lit look only. False when there is no such material.
+    /// </summary>
+    public bool SetMaterialRoughness(string name, float? roughness)
+    {
+        var i = _scene?.MaterialNamed(name) ?? -1;
+        if (i < 0)
+            return false;
+        _materials[i].HasRoughness = roughness.HasValue;
+        _materials[i].Roughness = Math.Clamp(roughness ?? 1, 0, 1);
+        Update();
+        return true;
+    }
+
     /// <summary>Shows or hides every surface with this material. False when there is none such.</summary>
     public bool SetMaterialVisible(string name, bool visible)
     {
@@ -506,7 +652,21 @@ public class SkiaModel3D : SkiaControl
         Update();
     }
 
-    bool WantsFrames => _scene != null && (_autoRotate != 0 || _reset < 1 || _player.Busy);
+    bool WantsFrames => _scene != null && (_autoRotate != 0 || _reset < 1 || _player.Busy || TiltMoving);
+
+    /// <summary>The lean toward the pointer has not reached where the pointer says.</summary>
+    bool TiltMoving
+    {
+        get
+        {
+            if (_tilt <= 0)
+                return false;
+            var (yaw, pitch) = TiltTarget();
+            return MathF.Abs(yaw - _yaw) > 0.02f || MathF.Abs(pitch - _pitch) > 0.02f;
+        }
+    }
+
+    (float Yaw, float Pitch) TiltTarget() => _tiltOn ? (_homeYaw - _tiltX * _tilt, _homePitch + _tiltY * _tilt) : (_homeYaw, _homePitch);
 
     void UpdateTicking()
     {
@@ -552,6 +712,14 @@ public class SkiaModel3D : SkiaControl
         if (_scene == null)
             return;
         _yaw = (_yaw + _autoRotate * delta) % 360;
+        if (_tilt > 0)
+        {
+            // Pointer moves come in bursts: the lean chases where they point, reaching it in about 0.15 s.
+            var (yaw, pitch) = TiltTarget();
+            var k = MathF.Min(1, delta * 14);
+            _yaw += (yaw - _yaw) * k;
+            _pitch += (pitch - _pitch) * k;
+        }
         if (_reset < 1)
         {
             _reset = MathF.Min(1, _reset + delta / 0.3f);
@@ -633,6 +801,26 @@ public class SkiaModel3D : SkiaControl
         {
             switch (args.Type)
             {
+                case TouchActionResult.Pointer or TouchActionResult.Down or TouchActionResult.Panning when _tilt > 0:
+                    {
+                        var pointer = PointInside(apply);
+                        var (w, h) = SizeInPoints();
+                        if (w > 0 && h > 0)
+                        {
+                            _tiltX = Math.Clamp(pointer.X / w * 2 - 1, -1, 1);
+                            _tiltY = Math.Clamp(pointer.Y / h * 2 - 1, -1, 1);
+                            _tiltOn = true;
+                            Changed();
+                        }
+                        if (args.Type == TouchActionResult.Pointer)
+                            break;
+                        base.ProcessGestures(args, apply);
+                        return this;
+                    }
+                case TouchActionResult.Up when _tilt > 0:
+                    _tiltOn = false;
+                    Changed();
+                    break;
                 case TouchActionResult.Down when _orbit || _pinchZoom || _resetOnDoubleTap || Tapped3D != null:
                     _panAxis = 0;
                     base.ProcessGestures(args, apply);
@@ -657,7 +845,9 @@ public class SkiaModel3D : SkiaControl
                     }
                     var scale = MathF.Max(RenderingScale, 0.1f);
                     _reset = 1;
-                    _yaw += args.Event.Distance.Delta.X / scale * 0.5f;
+                    // The surface follows the finger: a drag to the right turns the near side to the right (the camera
+                    // goes the other way round), in points whatever the density. Same as DrawnUI for Rust.
+                    _yaw -= args.Event.Distance.Delta.X / scale * 0.5f;
                     if (!_lockPitch)
                         _pitch = Math.Clamp(_pitch + args.Event.Distance.Delta.Y / scale * 0.3f, -60, 80);
                     Update();
@@ -705,6 +895,13 @@ public class SkiaModel3D : SkiaControl
         _painted = true;
         if (WantsFrames && _loop is not { IsRunning: true })
             UpdateTicking();
+        if (_yaw != _shownYaw || _pitch != _shownPitch || _zoom != _shownZoom)
+        {
+            _shownYaw = _yaw;
+            _shownPitch = _pitch;
+            _shownZoom = _zoom;
+            ViewChanged?.Invoke(this, EventArgs.Empty);
+        }
         var gr = Superview?.GetGRContext();
         if (gr == null)
             return;
@@ -722,6 +919,18 @@ public class SkiaModel3D : SkiaControl
         var image = Renderer3D.Draw(Superview, gr, _target, _items, 1, style, Camera(w, h), w, h);
         if (image != null)
             ctx.Context.Canvas.DrawImage(image, SKRect.Create(dest.Left, dest.Top, w, h));
+    }
+
+    /// <inheritdoc />
+    public override bool OnHover(bool state)
+    {
+        if (!state && _tiltOn)
+        {
+            // The pointer left: the lean glides home.
+            _tiltOn = false;
+            Changed();
+        }
+        return base.OnHover(state);
     }
 
     /// <inheritdoc />

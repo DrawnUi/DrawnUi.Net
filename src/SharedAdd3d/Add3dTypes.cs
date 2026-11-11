@@ -27,6 +27,17 @@ public enum Look
 /// <param name="Point">Where the ray met the surface, in scene units.</param>
 public sealed record ModelHit(string Node, string Material, Vector3 Point);
 
+/// <summary>Where loading a model's <see cref="SkiaModel3D.Source"/> stands.</summary>
+public enum LoadState3D
+{
+    /// <summary>The file is on its way.</summary>
+    Loading,
+    /// <summary>The model is shown (also a model given as bytes or made in code).</summary>
+    Ready,
+    /// <summary>It could not be loaded or read: the reason is in <see cref="SkiaModel3D.Error"/>.</summary>
+    Failed,
+}
+
 /// <summary>
 /// Where a 3D point of a model shows in its control (<see cref="SkiaModel3D.ScreenPosition"/>): points from the control's
 /// top left, and whether the model's own surface hides it (a pin on the far side of a globe, a hotspot behind the
@@ -73,6 +84,9 @@ internal struct MaterialOverride
     public bool Hidden;
     /// <summary>An image in place of the file's own, null = the file's.</summary>
     public Texture3D Image;
+    public bool HasRoughness;
+    /// <summary>0 glossy .. 1 matte, in place of the file's roughness.</summary>
+    public float Roughness;
 }
 
 /// <summary>

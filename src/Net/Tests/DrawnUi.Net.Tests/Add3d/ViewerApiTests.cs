@@ -302,4 +302,113 @@ public class ViewerApiTests
         }
         Assert.True(hits > 50, $"enough rays met the shapes: {hits}");
     }
+
+    /// <summary>The surface follows the finger: a drag right moves the near side right, a drag down moves it down.</summary>
+    [Fact]
+    public void A_drag_moves_the_near_side_with_the_finger()
+    {
+        using var host = new HeadlessCanvasHost(400, 300, 1f, Colors.Black);
+        var model = Model();
+        host.Canvas.Content = new SkiaLayer { VerticalOptions = LayoutOptions.Fill, Children = { model } };
+        Frames(host, 3);
+        var near = new Vector3(0, 0, 1);
+        var before = model.ScreenPosition(near).Value;
+        var robot = new GestureRobot(host);
+        robot.Pan(200, 150, 240, 150, 200, 8);
+        Frames(host, 2);
+        var after = model.ScreenPosition(near).Value;
+        Assert.True(after.X > before.X + 5, $"right: {before.X} -> {after.X}");
+        robot.Pan(200, 150, 200, 190, 200, 8);
+        Frames(host, 2);
+        var down = model.ScreenPosition(near).Value;
+        Assert.True(down.Y > after.Y + 5, $"down: {after.Y} -> {down.Y}");
+    }
+
+    static void Until(HeadlessCanvasHost host, Func<bool> done)
+    {
+        for (var i = 0; i < 400 && !done(); i++)
+        {
+            Thread.Sleep(5);
+            host.RenderFrame(16.7);
+        }
+    }
+
+    [Fact]
+    public void Source_loads_a_file_and_reports_its_states()
+    {
+        using var host = new HeadlessCanvasHost(400, 300, 1f, Colors.Black);
+        var states = new List<LoadState3D>();
+        var model = new SkiaModel3D { HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill };
+        model.LoadStateChanged += (_, state) => states.Add(state);
+        host.Canvas.Content = new SkiaLayer { VerticalOptions = LayoutOptions.Fill, Children = { model } };
+        Frames(host, 2);
+        model.Source = "Assets/Add3d/dragon.glb";
+        Until(host, () => model.LoadState != LoadState3D.Loading);
+        Assert.Equal(new[] { LoadState3D.Loading, LoadState3D.Ready }, states);
+        Assert.Null(model.Error);
+        Assert.Contains(Add3dAssets.Idle, model.Animations);
+        Assert.NotNull(model.ScreenPosition(Vector3.Zero));
+
+        model.Source = "Assets/Add3d/no-such-model.glb";
+        Until(host, () => model.LoadState != LoadState3D.Loading);
+        Assert.Equal(LoadState3D.Failed, model.LoadState);
+        Assert.NotNull(model.Error);
+        Assert.Empty(model.Animations);
+    }
+
+    [Fact]
+    public void TiltToPointer_leans_toward_the_finger_and_glides_home()
+    {
+        using var host = new HeadlessCanvasHost(400, 300, 1f, Colors.Black);
+        var model = Model();
+        model.Yaw = 10;
+        model.Pitch = 5;
+        model.TiltToPointer = 14;
+        host.Canvas.Content = new SkiaLayer { VerticalOptions = LayoutOptions.Fill, Children = { model } };
+        Frames(host, 3);
+        var robot = new GestureRobot(host);
+        // At the right edge and the bottom: yaw = home - 14, pitch = home + 14.
+        robot.PointerDown(399, 299);
+        robot.PointerHold(40);
+        Assert.Equal(10 - 14, model.Yaw, 0);
+        Assert.Equal(5 + 14, model.Pitch, 0);
+        robot.PointerUp();
+        Frames(host, 40);
+        Assert.Equal(10, model.Yaw, 1);
+        Assert.Equal(5, model.Pitch, 1);
+        Assert.False(model.IsAnimating);
+    }
+
+    [Fact]
+    public void ViewChanged_comes_at_most_once_a_frame_and_only_when_the_view_moves()
+    {
+        using var host = new HeadlessCanvasHost(400, 300, 1f, Colors.Black);
+        var model = Model();
+        var count = 0;
+        model.ViewChanged += (_, _) => count++;
+        host.Canvas.Content = new SkiaLayer { VerticalOptions = LayoutOptions.Fill, Children = { model } };
+        Frames(host, 5);
+        count = 0;
+        Frames(host, 10);
+        Assert.Equal(0, count);
+        model.AutoRotate = 90;
+        Frames(host, 10);
+        Assert.InRange(count, 8, 10);
+        model.AutoRotate = 0;
+        Frames(host, 2);
+        count = 0;
+        model.Zoom = 1.4f;
+        model.Yaw = 33;
+        Frames(host, 3);
+        Assert.Equal(1, count);
+    }
+
+    [Fact]
+    public void SetMaterialRoughness_takes_known_materials_only()
+    {
+        var model = Model();
+        Assert.True(model.SetMaterialRoughness("ball", 0.4f));
+        Assert.True(model.SetMaterialRoughness("ball", null));
+        Assert.False(model.SetMaterialRoughness("nothing", 0.4f));
+    }
 }

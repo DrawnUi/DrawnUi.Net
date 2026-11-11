@@ -44,6 +44,8 @@ internal sealed class Material3D
     /// <summary>Linear RGBA.</summary>
     public Vector4 Color = Vector4.One;
     public int Texture = -1;
+    /// <summary>glTF roughnessFactor: 1 = matte (no highlight), toward 0 = glossy.</summary>
+    public float Roughness = 1;
     public bool DoubleSided;
     public bool Blend;
 }

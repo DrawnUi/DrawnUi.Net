@@ -35,6 +35,7 @@ uniform float u_outline;
 uniform vec2 u_viewport;
 out vec3 v_nrm;
 out vec2 v_uv;
+out vec3 v_wpos;
 void main() {
     mat4 skin = mat4(1.0);
     if (u_skinned) {
@@ -44,7 +45,9 @@ void main() {
     mat4 m = u_model * skin;
     v_nrm = mat3(m) * a_nrm;
     v_uv = a_uv;
-    gl_Position = u_view_proj * m * vec4(a_pos, 1.0);
+    vec4 world = m * vec4(a_pos, 1.0);
+    v_wpos = world.xyz;
+    gl_Position = u_view_proj * world;
     if (u_outline > 0.0) {
         // The outline pass: the back faces pushed out along their smoothed normals (one per
         // position, so hard edges do not split), a fixed number of pixels on screen.
@@ -59,10 +62,13 @@ void main() {
 
     const string Fs = """
 #version 300 es
-precision mediump float;
+precision highp float;
 in vec3 v_nrm;
 in vec2 v_uv;
+in vec3 v_wpos;
 uniform vec4 u_color;
+uniform float u_roughness;
+uniform vec4 u_eye;
 uniform bool u_textured;
 uniform sampler2D u_texture;
 uniform vec3 u_light;
@@ -83,7 +89,18 @@ void main() {
     vec3 lit;
     if (u_look == 2) lit = c.rgb;                                  // flat: the color as it is
     else if (u_look == 1) lit = c.rgb * (sun > 0.35 ? 1.0 : 0.62);  // toon: lit and shade, two tones
-    else lit = c.rgb * (0.30 + 0.25 * sky + 0.70 * sun);
+    else {
+        // Lit (DrawnUI for Rust's render.rs): a key light, a soft fill from the other side, the sky, and a
+        // highlight that only glossy materials get (roughness below 1).
+        float fill = max(dot(n, normalize(vec3(-u_light.x, 0.3, -u_light.z))), 0.0);
+        lit = c.rgb * (0.24 + 0.20 * sky + 0.68 * sun + 0.22 * fill);
+        float gloss = 1.0 - clamp(u_roughness, 0.0, 1.0);
+        if (gloss > 0.01 && sun > 0.0) {
+            vec3 v = u_eye.w > 0.5 ? normalize(u_eye.xyz - v_wpos) : normalize(u_eye.xyz);
+            float s = pow(max(dot(n, normalize(u_light + v)), 0.0), mix(6.0, 90.0, gloss * gloss));
+            lit += 0.55 * gloss * gloss * s;
+        }
+    }
     o_color = vec4(pow(lit, vec3(1.0 / 2.2)) * c.a, c.a);
 }
 """;
@@ -102,7 +119,7 @@ void main() {
 
     struct Uniforms
     {
-        public int Model, ViewProj, Joints, Skinned, Color, Textured, Texture, Light, Look, Outline, Viewport, OutlinePass, OutlineColor;
+        public int Model, ViewProj, Joints, Skinned, Color, Textured, Texture, Light, Look, Outline, Viewport, OutlinePass, OutlineColor, Roughness, Eye;
     }
 
     /// <summary>One model on the GPU: per mesh, per primitive its vertex array and index count; its textures.</summary>
@@ -154,6 +171,21 @@ void main() {
     DrawState _state;
 
     static readonly Vector3 Light = Vector3.Normalize(new Vector3(0.4f, 0.8f, 0.6f));
+
+    /// <summary>
+    /// Where the light's highlight is seen from, for the shader: the eye as a point (w = 1) for a perspective camera,
+    /// else the direction toward the viewer (w = 0, orthographic: SkiaScene3D). The same rule as DrawnUI for Rust.
+    /// </summary>
+    internal static Vector4 Eye(in Matrix4x4 viewProj)
+    {
+        if (!Matrix4x4.Invert(viewProj, out var inverse))
+            return new Vector4(0, 0, 1, 0);
+        var e = Vector4.Transform(new Vector4(0, 0, 1, 0), inverse);
+        if (MathF.Abs(e.W) > 1e-6f)
+            return new Vector4(e.X / e.W, e.Y / e.W, e.Z / e.W, 1);
+        var toward = new Vector3(-e.X, -e.Y, -e.Z);
+        return new Vector4(toward.LengthSquared() > 0 ? Vector3.Normalize(toward) : Vector3.UnitZ, 0);
+    }
 
     /// <summary>Frees a control's texture and buffers at the next draw.</summary>
     public static void Release(RenderTarget target)
@@ -237,6 +269,8 @@ void main() {
             Viewport = Location("u_viewport"),
             OutlinePass = Location("u_outline_pass"),
             OutlineColor = Location("u_outline_color"),
+            Roughness = Location("u_roughness"),
+            Eye = Location("u_eye"),
         };
     }
 
@@ -271,7 +305,29 @@ void main() {
         Gl.glGenerateMipmap(TEXTURE_2D);
         Gl.glTexParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, (int)LINEAR_MIPMAP_LINEAR);
         Gl.glTexParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, (int)LINEAR);
+        // Text and fine lines on a surface at an angle (a tilted card) stay sharp.
+        var most = Anisotropy();
+        if (most > 1)
+            Gl.glTexParameteri(TEXTURE_2D, 0x84FE, most); // TEXTURE_MAX_ANISOTROPY_EXT (whole samples)
         return t;
+    }
+
+    static int _anisotropy = -1;
+
+    /// <summary>
+    /// How sharp a texture stays seen at a slant (anisotropic filtering, up to 8 samples); 0 when the GPU has no such
+    /// filtering (the query then leaves 0). Asked once. The same as DrawnUI for Rust.
+    /// </summary>
+    static int Anisotropy()
+    {
+        if (_anisotropy >= 0)
+            return _anisotropy;
+        // ponytail: asked without reading the extension list (that needs another GL import on the web heads); a GPU
+        // without the extension answers nothing and the texture keeps plain trilinear filtering.
+        int max = 0;
+        Gl.glGetIntegerv(0x84FF, &max); // MAX_TEXTURE_MAX_ANISOTROPY_EXT
+        _anisotropy = Math.Clamp(max, 0, 8);
+        return _anisotropy;
     }
 
     /// <summary>The texture of an image put on a material, uploaded the first time it is drawn in this context.</summary>
@@ -492,6 +548,8 @@ void main() {
         Gl.glUniformMatrix4fv(_u.ViewProj, 1, 0, (float*)&vp);
         var light = Light;
         Gl.glUniform3fv(_u.Light, 1, (float*)&light);
+        var eye = Eye(viewProj);
+        Gl.glUniform4fv(_u.Eye, 1, (float*)&eye);
         Gl.glUniform1i(_u.Texture, 0);
         Gl.glUniform1i(_u.Look, (int)style.Look);
         Gl.glUniform2f(_u.Viewport, w, h);
@@ -594,6 +652,7 @@ void main() {
                     _state.Cull = cull ? 1 : 2;
                 }
                 Gl.glUniform4fv(_u.Color, 1, (float*)&color);
+                Gl.glUniform1f(_u.Roughness, changed.HasRoughness ? changed.Roughness : material?.Roughness ?? 1);
                 if (_state.Texture != texture + 1)
                 {
                     Gl.glUniform1i(_u.Textured, texture != 0 ? 1 : 0);

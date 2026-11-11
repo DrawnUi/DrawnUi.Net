@@ -147,6 +147,8 @@ internal sealed partial class Scene3D
             {
                 if (Floats(pbr, "baseColorFactor") is { Length: 4 } c)
                     material.Color = new Vector4(c[0], c[1], c[2], c[3]);
+                if (pbr.TryGetProperty("roughnessFactor", out var rough) && rough.ValueKind == JsonValueKind.Number)
+                    material.Roughness = Math.Clamp(rough.GetSingle(), 0, 1);
                 if (pbr.TryGetProperty("baseColorTexture", out var bct))
                 {
                     var texture = Int(bct, "index");
