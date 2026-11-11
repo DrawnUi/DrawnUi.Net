@@ -202,7 +202,11 @@ internal sealed unsafe class VulkanRenderer3D
         {
             sType = STRUCTURE_TYPE_SAMPLER_CREATE_INFO, magFilter = FILTER_LINEAR, minFilter = FILTER_LINEAR, mipmapMode = SAMPLER_MIPMAP_MODE_LINEAR,
             addressModeU = SAMPLER_ADDRESS_MODE_REPEAT, addressModeV = SAMPLER_ADDRESS_MODE_REPEAT, addressModeW = SAMPLER_ADDRESS_MODE_REPEAT,
-            maxAnisotropy = 1, maxLod = 16,
+            maxLod = 16,
+            // Text and fine lines on a surface at an angle (a tilted card) stay sharp, as on GL and Metal: up to 8 samples
+            // where the device has the feature on (a GPU that has it offers at least 16).
+            anisotropyEnable = view.VkSamplerAnisotropy ? 1u : 0u,
+            maxAnisotropy = view.VkSamplerAnisotropy ? 8 : 1,
         };
         fixed (ulong* p = &_sampler)
             Check(vkCreateSampler(_device, &sInfo, IntPtr.Zero, p), "sampler");
