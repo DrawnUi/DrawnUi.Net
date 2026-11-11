@@ -90,7 +90,18 @@ public class SkiaLabelFps : SkiaLabel, ISkiaAnimator
         if (Superview == null)
             return;
 
-        Text = $"{Superview.FPS:00.0}";
+        // formatted into a buffer: a new text (a string, a new layout) only when what it shows changes
+        Span<char> buffer = stackalloc char[32];
+        if (Superview.FPS.TryFormat(buffer, out var written, "00.0"))
+        {
+            var shown = buffer.Slice(0, written);
+            if (!shown.SequenceEqual(Text.AsSpan()))
+                Text = new string(shown);
+        }
+        else
+        {
+            Text = $"{Superview.FPS:00.0}";
+        }
 
         UpdateForceRefresh();
  
