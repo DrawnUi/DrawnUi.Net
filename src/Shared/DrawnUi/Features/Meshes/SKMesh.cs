@@ -400,22 +400,27 @@ public sealed class SKMesh : IDisposable
             source = _colorShader;
         }
 
-        var effect = _spec.DrawEffect;
-        using var uniforms = new SKRuntimeEffectUniforms(effect);
-        MeshGeometry.SetUniforms(uniforms, _spec.Uniforms, _uniforms);
-        float alpha = paintShader == null ? 1f : paintColor.Alpha / 255f;
-        uniforms["_sm_grid"] = (ReadOnlySpan<float>)stackalloc float[] { _geometry.HiRows, alpha, 0, 0 };
+        SKShader shader;
+        lock (_spec.EffectLock)
+        {
+            var uniforms = _spec.DrawUniforms;
+            MeshGeometry.SetUniforms(uniforms, _spec.Uniforms, _uniforms);
+            float alpha = paintShader == null ? 1f : paintColor.Alpha / 255f;
+            uniforms["_sm_grid"] = (ReadOnlySpan<float>)stackalloc float[] { _geometry.HiRows, alpha, 0, 0 };
 
-        using var children = new SKRuntimeEffectChildren(effect);
-        for (int i = 0; i < _spec.Children.Length; i++)
-            children[_spec.Children[i].Name] = _children[i].Value == null ? (SKRuntimeEffectChild?)null : _children[i];
-        children["_sm_attr"] = _geometry.AttributeShader;
-        children["_sm_paint"] = source;
-        if (blender != null)
-            children["_sm_blend"] = blender;
+            var children = _spec.DrawChildren;
+            for (int i = 0; i < _spec.Children.Length; i++)
+                children[_spec.Children[i].Name] = _children[i].Value == null ? (SKRuntimeEffectChild?)null : _children[i];
+            children["_sm_attr"] = _geometry.AttributeShader;
+            children["_sm_paint"] = source;
+            if (blender != null)
+                children["_sm_blend"] = blender;
+            shader = _spec.DrawEffect.ToShader(uniforms, children);
+            children.Reset(); // holds no mesh's objects between draws
+        }
 
         _shader?.Dispose();
-        _shader = effect.ToShader(uniforms, children);
+        _shader = shader;
         _shaderPaintShader = paintShader;
         _shaderPaintColor = paintColor;
         _shaderBlender = blender;
@@ -491,6 +496,8 @@ sealed class MeshGeometry
         AttributeImage?.Dispose();
         _positionInputShader?.Dispose();
         _positionInput?.Dispose();
+        _outputSurface?.Dispose();
+        _outputPaint?.Dispose();
     }
 
     public static MeshGeometry Build(Key key, SKMeshSpecification spec, SKMeshMode mode, ReadOnlySpan<byte> vertexData, int vertexCount,
@@ -629,46 +636,47 @@ sealed class MeshGeometry
 
     // DrawVertices needs positions on the CPU: the vertex program runs once per vertex on a raster F32 surface,
     // with the mesh's uniforms, and the positions are read back.
+    // The surface drawing into _output, kept with the geometry: every mesh made from the same vertex bytes
+    // (a strip redrawn with new uniforms each frame) runs its vertex program into it.
+    SKSurface _outputSurface;
+    SKPaint _outputPaint;
+    float[] _output; // pinned
+
     public SKPoint[] RunVertexProgram(SKMeshSpecification spec, byte[] uniformData)
     {
-        var outInfo = new SKImageInfo(_perRow, _rows, SKColorType.RgbaF32, SKAlphaType.Premul);
-        using var surface = SKSurface.Create(outInfo);
-        if (surface == null)
-            return null;
-
-        var effect = spec.PositionEffect;
-        using (var uniforms = new SKRuntimeEffectUniforms(effect))
-        using (var children = new SKRuntimeEffectChildren(effect))
+        lock (this)
         {
-            SetUniforms(uniforms, spec.VertexUniforms, uniformData);
-            children["_sm_attr"] = _positionInputShader;
-            using var shader = effect.ToShader(uniforms, children);
-            using var paint = new SKPaint { Shader = shader, BlendMode = SKBlendMode.Src };
-            surface.Canvas.DrawRect(0, 0, _perRow, _rows, paint);
-        }
-
-        int floats = _perRow * _rows * 4;
-        var result = ArrayPool<float>.Shared.Rent(floats);
-        try
-        {
-            var handle = GCHandle.Alloc(result, GCHandleType.Pinned);
-            try
+            if (_outputSurface == null)
             {
-                if (!surface.ReadPixels(outInfo, handle.AddrOfPinnedObject(), outInfo.RowBytes, 0, 0))
+                var outInfo = new SKImageInfo(_perRow, _rows, SKColorType.RgbaF32, SKAlphaType.Premul);
+                _output = GC.AllocateArray<float>(_perRow * _rows * 4, pinned: true);
+                _outputSurface = SKSurface.Create(outInfo, Marshal.UnsafeAddrOfPinnedArrayElement(_output, 0), outInfo.RowBytes);
+                if (_outputSurface == null)
                     return null;
+                _outputPaint = new SKPaint { BlendMode = SKBlendMode.Src };
             }
-            finally
+
+            SKShader shader;
+            lock (spec.EffectLock)
             {
-                handle.Free();
+                var uniforms = spec.PositionUniforms;
+                SetUniforms(uniforms, spec.VertexUniforms, uniformData);
+                var children = spec.PositionChildren;
+                children["_sm_attr"] = _positionInputShader;
+                shader = spec.PositionEffect.ToShader(uniforms, children);
+                children.Reset();
             }
+            using (shader)
+            {
+                _outputPaint.Shader = shader;
+                _outputSurface.Canvas.DrawRect(0, 0, _perRow, _rows, _outputPaint); // raster: written at once
+                _outputPaint.Shader = null;
+            }
+
             var positions = new SKPoint[_available];
             for (int v = 0; v < positions.Length; v++)
-                positions[v] = new SKPoint(result[v * 4], result[v * 4 + 1]);
+                positions[v] = new SKPoint(_output[v * 4], _output[v * 4 + 1]);
             return positions;
-        }
-        finally
-        {
-            ArrayPool<float>.Shared.Return(result);
         }
     }
 

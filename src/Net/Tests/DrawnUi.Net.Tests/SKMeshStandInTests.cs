@@ -120,6 +120,36 @@ public class SKMeshStandInTests
         Assert.Equal(SKColors.Red, second.GetPixel(70, 70));
     }
 
+    [Fact]
+    public void MeshesOfOneSpecification_DrawnOnSeveralThreads_KeepTheirOwnUniforms()
+    {
+        // Program inputs are shared by every mesh of a specification and every mesh of a vertex buffer:
+        // draws running at the same time must not take each other's uniforms.
+        using var spec = Spec(new[] { Pos }, 8, Array.Empty<SKMeshSpecificationVarying>(),
+            "uniform float2 uShift; Varyings main(const Attributes a) { Varyings v; v.position = a.position + uShift; return v; }",
+            "uniform half4 uColor; float2 main(const Varyings v, out half4 color) { color = uColor; return v.position; }");
+        using var vb = Vb(0, 0, 0, 10, 10, 0, 10, 10);
+        int failures = 0;
+        Parallel.For(0, 8, new ParallelOptions { MaxDegreeOfParallelism = 8 }, t =>
+        {
+            for (int i = 0; i < 40; i++)
+            {
+                int k = (t * 40 + i) % 9;
+                var expected = new SKColor((byte)(k * 28), (byte)(255 - k * 28), 128);
+                using var mesh = SKMesh.Make(spec, SKMeshMode.TriangleStrip, vb, 4, 0,
+                    Uniforms(k * 10, k * 10, expected.Red / 255f, expected.Green / 255f, expected.Blue / 255f, 1),
+                    new SKRect(0, 0, 100, 100), out _)!;
+                using var paint = new SKPaint { Color = SKColors.White };
+                using var bmp = Render(100, 100, c => c.DrawMesh(mesh, paint));
+                var px = bmp.GetPixel(k * 10 + 5, k * 10 + 5);
+                if (Math.Abs(px.Red - expected.Red) > 1 || Math.Abs(px.Green - expected.Green) > 1 || Math.Abs(px.Blue - expected.Blue) > 1
+                    || (k > 0 && bmp.GetPixel(5, 5) != SKColors.Black))
+                    Interlocked.Increment(ref failures);
+            }
+        });
+        Assert.Equal(0, failures);
+    }
+
     [Theory]
     [InlineData("Varyings main(const Attributes a) { Varyings v; v.position = a.position; return v; }", true)]
     [InlineData("Varyings main(const Attributes attrs) {\n Varyings o;\n o.position = attrs.position; // copy\n o.uv = attrs.uv;\n return o;\n}", true)]

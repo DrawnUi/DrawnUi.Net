@@ -122,6 +122,16 @@ public sealed class SKMeshSpecification : IDisposable
     internal SKRuntimeEffect PositionEffect { get; }
     internal int PositionAttributeFloat { get; } = -1; // float index of the "position" attribute in a packed vertex
 
+    // Uniform and child holders of both programs, made once and refilled for every shader (ToShader copies
+    // them), under EffectLock: building them per draw cost more than the shader itself.
+    internal readonly object EffectLock = new();
+    SKRuntimeEffectUniforms _drawUniforms, _positionUniforms;
+    SKRuntimeEffectChildren _drawChildren, _positionChildren;
+    internal SKRuntimeEffectUniforms DrawUniforms => _drawUniforms ??= new SKRuntimeEffectUniforms(DrawEffect);
+    internal SKRuntimeEffectChildren DrawChildren => _drawChildren ??= new SKRuntimeEffectChildren(DrawEffect);
+    internal SKRuntimeEffectUniforms PositionUniforms => _positionUniforms ??= new SKRuntimeEffectUniforms(PositionEffect);
+    internal SKRuntimeEffectChildren PositionChildren => _positionChildren ??= new SKRuntimeEffectChildren(PositionEffect);
+
     internal UniformSlot[] Uniforms { get; }          // user uniforms of the draw program, in mesh layout order
     internal UniformSlot[] VertexUniforms { get; }     // same, for the position program (vertex program uniforms only)
     internal ChildSlot[] Children { get; }             // user children, fragment program order
@@ -591,6 +601,15 @@ public sealed class SKMeshSpecification : IDisposable
     /// <summary>Releases the compiled programs.</summary>
     public void Dispose()
     {
+        lock (EffectLock)
+        {
+            _drawUniforms?.Dispose();
+            _drawChildren?.Dispose();
+            _positionUniforms?.Dispose();
+            _positionChildren?.Dispose();
+            _drawUniforms = _positionUniforms = null;
+            _drawChildren = _positionChildren = null;
+        }
         DrawEffect?.Dispose();
         PositionEffect?.Dispose();
     }
