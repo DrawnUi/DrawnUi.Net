@@ -548,7 +548,8 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
             // Step 3: Sync state and build uniforms/children. The engine caches these
             // instances — do NOT dispose them here. Only the final SKShader returned
             // below is per-frame and owned by the caller.
-            SyncEngineState(destination, source.Bounds);
+            // No input texture (UseBackground Never): iOffset is where the control is drawn, as with one.
+            SyncEngineState(destination, source.IsValid ? source.Bounds : destination);
 
             SKShader primaryTextureShader = engine.CreateTextureShader(source.Image);
             var textureUniforms = CreateTexturesUniforms(ctx.Context, destination, primaryTextureShader);
