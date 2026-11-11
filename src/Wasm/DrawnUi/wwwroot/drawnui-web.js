@@ -257,10 +257,12 @@ export function putImageData(elementId, pixels, width, height) {
 let canvas = null;
 let ctx = null;
 
-export function initCanvas(targetWidth, targetHeight) {
-    canvas = document.getElementById('drawnui-canvas');
+// The canvas RunAsync was given (its element id); the old (width, height) call means "drawnui-canvas".
+export function initCanvas(elementId) {
+    const id = typeof elementId === 'string' ? elementId : 'drawnui-canvas';
+    canvas = document.getElementById(id);
     if (!canvas) {
-        console.error('Canvas element with id "drawnui-canvas" not found');
+        console.error(`Canvas element with id "${id}" not found`);
         return;
     }
     // Do NOT acquire a 2D context here: a canvas can only ever hold ONE context

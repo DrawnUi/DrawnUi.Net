@@ -41,7 +41,7 @@ public static partial class BrowserHost
         Super.SetClipboardText ??= text => _ = JsInterop.WriteClipboardText(text);
 
         // Wire DOM input listeners + read the element's CSS size / device pixel ratio.
-        JsInterop.InitCanvas(0, 0);
+        JsInterop.InitCanvas(elementId);
         JsInterop.UpdateCanvasSize();
         WebInput.RenderingScale = (float)JsInterop.DevicePixelRatio;
 
