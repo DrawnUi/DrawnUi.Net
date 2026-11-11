@@ -329,14 +329,16 @@ public sealed class SKMesh : IDisposable
     SKVertices[] _ownVertices; // positions from the vertex program run with this mesh's uniforms
     SKVertices[] _vertices;
 
+    // The paint color as a shader, for draws whose paint has none.
+    [ThreadStatic] static SKShader t_colorShader;
+    [ThreadStatic] static SKColor t_colorShaderColor;
+
     // Last draw shader, reused while the paint shader, color and blender stay the same.
     SKShader _shader;
     SKShader _shaderPaintShader;
     SKColor _shaderPaintColor;
     SKBlender _shaderBlender;
     SKShader _shaderPacked;
-    SKShader _colorShader;
-    SKColor _colorShaderColor;
 
     SKMesh(SKMeshSpecification spec, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer, int vertexCount, int vertexOffset,
         SKMeshIndexBuffer indexBuffer, int indexCount, int indexOffset, byte[] uniforms, SKRuntimeEffectChild[] children,
@@ -493,11 +495,22 @@ public sealed class SKMesh : IDisposable
             if (shader == null)
                 return;
 
-            using var drawPaint = paint.Clone();
-            drawPaint.Shader = shader;
-            drawPaint.Color = SKColors.White; // paint color and alpha are applied inside the shader, as SkMesh does
-            foreach (var vertices in _vertices)
-                canvas.DrawVertices(vertices, SKBlendMode.Modulate, drawPaint);
+            // The caller's paint draws, with the mesh shader and white for the draw only (paint color and alpha are
+            // applied inside the shader, as SkMesh does): no paint copy per draw.
+            var paintShader = paint.Shader;
+            var paintColor = paint.Color;
+            paint.Shader = shader;
+            paint.Color = SKColors.White;
+            try
+            {
+                foreach (var vertices in _vertices)
+                    canvas.DrawVertices(vertices, SKBlendMode.Modulate, paint);
+            }
+            finally
+            {
+                paint.Shader = paintShader;
+                paint.Color = paintColor;
+            }
         }
     }
 
@@ -531,13 +544,14 @@ public sealed class SKMesh : IDisposable
         SKShader source = paintShader;
         if (source == null)
         {
-            if (_colorShader == null || _colorShaderColor != paintColor)
+            // one per thread and color, not one per mesh: a mesh made every frame draws with the same paint color
+            if (t_colorShader == null || t_colorShaderColor != paintColor)
             {
-                _colorShader?.Dispose();
-                _colorShader = SKShader.CreateColor(paintColor);
-                _colorShaderColor = paintColor;
+                t_colorShader?.Dispose(); // shaders made with it keep their own reference
+                t_colorShader = SKShader.CreateColor(paintColor);
+                t_colorShaderColor = paintColor;
             }
-            source = _colorShader;
+            source = t_colorShader;
         }
 
         var g = _geometry;
@@ -578,8 +592,6 @@ public sealed class SKMesh : IDisposable
         {
             _shader?.Dispose();
             _shader = null;
-            _colorShader?.Dispose();
-            _colorShader = null;
             if (_ownVertices != null)
                 foreach (var v in _ownVertices)
                     v.Dispose();

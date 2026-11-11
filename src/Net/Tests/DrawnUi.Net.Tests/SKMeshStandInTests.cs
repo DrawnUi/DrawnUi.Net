@@ -580,6 +580,25 @@ public class SKMeshStandInTests
     }
 
     [Fact]
+    public void DrawMesh_LeavesThePaintAsItWas()
+    {
+        // The stand-in draws with the caller's paint (no copy per draw): its shader and color come back after the draw.
+        using var spec = Spec(new[] { Pos }, 8, Array.Empty<SKMeshSpecificationVarying>(), PassVs, RedFs);
+        var data = new float[] { 0, 0, 30, 0, 0, 30 };
+        using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(data.AsSpan()));
+        using var mesh = SKMesh.Make(spec, SKMeshMode.Triangles, vb, 3, 0, null, new SKRect(0, 0, 32, 32), out _);
+        using var bmp = new SKBitmap(new SKImageInfo(32, 32, SKColorType.Rgba8888, SKAlphaType.Premul));
+        using var canvas = new SKCanvas(bmp);
+        using var shader = SKShader.CreateColor(SKColors.Blue);
+        using var paint = new SKPaint { Color = new SKColor(10, 20, 30, 128), Shader = shader };
+
+        canvas.DrawMesh(mesh!, paint);
+
+        Assert.Equal(new SKColor(10, 20, 30, 128), paint.Color);
+        Assert.Equal(shader.Handle, paint.Shader?.Handle);
+    }
+
+    [Fact]
     public void MeshWhoseTriangleCountChangesEveryFrame_AllocatesNearlyNothingPerDraw()
     {
         // A scene projected and clipped on the CPU every frame (Dungeon Run's corridor) makes a few triangles more or
