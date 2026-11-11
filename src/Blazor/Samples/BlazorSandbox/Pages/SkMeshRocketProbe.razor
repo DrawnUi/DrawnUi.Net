@@ -3,6 +3,7 @@
 @using DrawnUi.Views
 @using DrawnUi
 @using SkiaSharp
+@using DrawnUi.Draw.Meshes
 @using System.Globalization
 @using System.Net.Http
 @using System.Runtime.InteropServices
@@ -17,7 +18,7 @@
 <Canvas Content="_canvasContent"
     WidthRequest="420"
     HeightRequest="560"
-    BackgroundColor="#060A12"
+    BackgroundColor="@Color.Parse("#060A12")"
     Margin="0,16,0,32"
     RenderingMode="@RenderingModeType.Accelerated"
      />

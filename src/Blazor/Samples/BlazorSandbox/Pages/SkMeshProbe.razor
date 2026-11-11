@@ -3,6 +3,7 @@
 @using DrawnUi.Views
 @using DrawnUi
 @using SkiaSharp
+@using DrawnUi.Draw.Meshes
 @using System.Runtime.InteropServices
 
 <PageTitle>SKMesh Probe</PageTitle>
@@ -14,7 +15,7 @@
 <Canvas Content="@_canvasContent"
     WidthRequest="420"
     HeightRequest="900"
-    BackgroundColor="#1A1A2E"
+    BackgroundColor="@Color.Parse("#1A1A2E")"
     Margin="0,16,0,32"
     RenderingMode="@RenderingModeType.Accelerated"
      />
