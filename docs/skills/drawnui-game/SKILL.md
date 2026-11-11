@@ -533,6 +533,30 @@ public class MyGame : DrawnUi.Gaming.DrawnGame
 
 ---
 
+## Sprites moved by Left / Top stay cached
+
+**Rule:** `Left` and `Top` position a control only when it is cached (any `UseCache` other than `None`). A sprite moved by `Left`/`Top` with `UseCache = None` draws at the top-left corner of its parent and never moves. Never drop the cache of such a sprite, even for a cheap shape or one whose child animates every frame. Concrete case (Bricks Breaker, 2026-11-07): power-ups set to `SkiaCacheType.None` "to save redraws" all sat motionless at the top-left corner.
+
+## Hidden pop-ups: switch them off, never "park" them at a near-zero opacity
+
+Keeping pop-up labels drawn every frame at Opacity 0.004 (so their first show costs no first draw) is a trap: about 20 styled labels plus 3 ray images drawn every frame took a phone (BV8800, Android Debug) from 90 to 23 fps, and labels that had been shown once kept costing even at Opacity 0. Pattern that works (Bricks Breaker d99a148d, measured): put the pop-ups in their own small Fill layer, cache them as Image, let them be drawn during the first ~1.5 s (cache made), then park them with `SkipRendering = true` while not showing and `false` just before showing. `SkipRendering` keeps the control's layout and its cache; `IsVisible` toggling re-runs layout and drops the cache, so every show records the pop-up again (Bricks Breaker, Blazor WASM Debug, 2026-11-09). `SkipRendering` is a plain property that requests no redraw: the game loop redraws every frame anyway; outside a loop call `Repaint()` after setting it. Never toggle IsVisible on a child of the big game field (that relayout was the original "EDGE!" hitch).
+
+Park with `SkipRendering` only a control that was laid out and drawn once. A control with `SkipRendering = true` from the start is left out of the measure: its `MeasuredSize` and `DrawingRect` stay 0, and setting `SkipRendering = false` later does not lay it out, so it never appears.
+
+Opacity 0 does not skip drawing: children at `Opacity = 0` are still drawn every frame, their caches included. A victory screen whose parts (title, score plate, 3 chips, button) waited at Opacity 0 cost ~55 ms in its first frame and ~10 ms per frame afterwards, against 7-8 ms when they were not drawn (Bricks Breaker, Blazor WASM Debug, 2026-11-09).
+
+**Build a big overlay over several game frames.** Build part of the tree in one frame, the rest in the next, and `AddSubView` it in a third: await a `TaskCompletionSource` that the game loop completes each frame, and keep a show counter so a dismiss in between drops the half-built screen. If your game loop drains a queue of posted actions, take the count first and run only the actions queued before the frame started (`for (var pending = queue.Count; pending > 0 && queue.TryDequeue(out var a); pending--) a();`): a drain-until-empty loop runs an action that posts itself again in the same frame. Measured: the victory screen's single ~200 ms frame became ~38 / 20 / 85 ms (Bricks Breaker e38c74f2, Blazor WASM Debug, 2026-11-09).
+
+## A cached layer moved by Left: its children's GetHitBox goes stale
+
+Children of a cached layer (ImageCompositeGPU) are not drawn again when only the layer moves, so their own `GetHitBox()` stays where they were last drawn. Compute their hit boxes from the layer's own `GetHitBox()` (the layer itself is drawn every frame) plus the child's Left/Top. Move such a layer with `Left`, not `TranslationX` (TranslationX moves the picture only). Measured on Windows, Bricks Breaker sliding row (e848affe).
+
+Removing a child from an `ImageCompositeGPU` layer costs one partial redraw of that layer (~2-3 ms on Blazor WASM Debug, Bricks Breaker brick wall, 2026-11-09). Remove it directly: setting `Opacity = 0` first and removing it later costs two partial redraws.
+
+## Slow idle motion: animate Scale, not Translation
+
+An `Image`-cached control animated by `TranslationY` (or X) is drawn at whole pixels: its edge pixels stay identical and jump 1 px at a time. A slow, small move (a ±4 pt "float" over 1.4 s) then steps every 70-140 ms and looks jaggy. The same control animated by `Scale` renders at subpixel precision (its edge pixels change smoothly from frame to frame). Measured on the OpenTK head, DrawnUi 1.10.8.25, Bricks Breaker victory chips (2026-11-08). For idle "alive" effects use a scale pulse, opacity, or lights drawn with float transforms (DrawAtlas); keep translations for fast moves, where whole-pixel steps happen every frame and do not show.
+
 ## Sprite pooling
 
 **Rule:** Pre-allocate all sprites before gameplay starts. Never `new` during `GameLoop`.
@@ -815,6 +839,16 @@ public class GhostSprite : SkiaSpriteSet
 
 **Never** set GPU cache nested inside a parent that already has GPU cache unless you know that subtree is fully stable.
 
+**Spin the cached sprite, not its child.** A child's transform (a letter with `RotationX` += per frame inside an `Operations`-cached SkiaShape) costs the sprite a cache re-record every frame: cheap on Android Release (BV8800: 5-10 falling power-ups = 11.1-11.4 ms/frame, a steady 90 FPS), ~1.5 ms per sprite on Blazor WASM Debug. `RotationX` on the cached sprite itself costs no re-record and draws correctly with `Operations` (Bricks Breaker power-ups, 2026-11-09); collisions are unaffected because `GetHitBox()` uses the layout box. A label with `Image` cache drew nothing under a 3D `RotationX`; `Operations` draws it. Before calling a cache setting slow, A/B ONE variable with the sprites behaving normally: a stress phase that also spawns many sprites and bursts in one frame, or sprites stuck in a corner (see "Sprites moved by Left / Top stay cached"), confounds the measurement.
+
+**Timed effects (level reveal etc.) run on their own animator, not the game loop** (`control.AnimateRangeAsync(v => ..., 0, 1, ms, easing, cancel: token)`): a level can be built while the loop is stopped (new game, reset). Cancelling that token fires the callback once more SYNCHRONOUSLY — a stop method called from the callback must clear its fields BEFORE cancelling, or the nested call races it (2026-11-07: NRE left a disposed SkiaShaderEffect attached → the whole bricks layer drew nothing). Remove + dispose the effect when done so normal play blits the plain cache. Example: Bricks Breaker `StartLevelReveal` / `StopLevelReveal` + `LevelRevealEffect.cs`.
+
+**Particles / glow bursts:** one overlay control with fixed struct pools, drawn with ONE `canvas.DrawAtlas(sheet, sprites[], RSXform[], colors[], SKBlendMode.Modulate, paint{BlendMode=Plus})` from a single WHITE sprite sheet tinted per sprite (dead slots = zero-scale RSXform). Per-sprite `DrawImage` cost ~1 ms CPU/frame for ~190 sprites on Android; the atlas ~0.1 ms. Never bake per-color textures at runtime (first use hitched 228 ms; colors that change per hit grow the cache). Draw the atlas once in black on the first frame to warm the GPU path. `SKRotationScaleMatrix` ctor = `(scale*cos, scale*sin, tx, ty)` (no `CreateScaleTranslation` in SkiaSharp 4.148). Example: Bricks Breaker `src/Shared/Game/Sprites/BrickBurstFx.cs`.
+
+**Text that changes every frame (score count-up) inside a cached plate:** with the plate on `Image`, every text change re-rasters the whole plate (12 ms per frame on Blazor WASM Debug). Put the plate on `Operations` and give its static labels their own `Operations` caches: a text change then costs 6 ms and idle frames 0.4-0.8 ms (Bricks Breaker a4a3b191, 2026-11-09).
+
+**Blurred art (light rays, glows): bake the blur once, tint at draw time.** A control with `UseCache = Image` whose content draws with a blur `MaskFilter` paints the blur again every time its cache is made, so each show cost a 20-109 ms frame on Blazor WASM Debug. Instead, paint the blurred art once per pixel size into a shared static WHITE `SKImage`, and in the control's `Paint` override draw only that image, tinted: `_paint.ColorFilter = SKColorFilter.CreateBlendMode(tint, SKBlendMode.Modulate); ctx.Context.Canvas.DrawImage(image, ctx.Destination, _paint);`. Keep the filter in a field and rebuild it only when the tint changes (release the old one with `DisposeObject`). Keep `UseCache = Operations` on the control: its cache records only that one `DrawImage`, it re-records cheaply on a tint change, and `Left`/`Top` keep placing it (see "Sprites moved by Left / Top stay cached"). The first frame of a burst went to 16-19 ms (Bricks Breaker b5f88e57, 2026-11-09).
+
 ---
 
 ## Asset preloading (Blazor WASM)
@@ -889,6 +923,8 @@ void UpdateScore()
 // In GameLoop, call UpdateScore() last
 ```
 
+Set only `Text`, and only when it differs from the current one. Never assign style objects (a new `FillGradient`, shadows) in the same callback: a new object re-measures and redraws the label and its cached layer every time, even with equal contents. Style the label once, or observe the rarely changing property separately (see the `drawnui` skill, Invalidation).
+
 ---
 
 ## Android-specific
@@ -906,6 +942,7 @@ Frame-skip is already the default on Android (`DrawnGame.FrameInterpolatorDisabl
 - **`UseCache = GPU` on scrolling parallax layer** → cache invalidated every frame = wasted GPU upload.
 - **Not waiting for `Superview.HasHandler`** → premature GPU operations crash.
 - **Not calling `UpdateState(LastFrameTimeNanos)` before collision checks** → stale hitboxes.
+- **Positioning a pooled sprite from its own `Width`/`Height`** → a sprite never laid out yet reports `-1` (`SkiaControl._width = -1` until its first arrange), so its first spawn lands off by half the other sprite's size, later spawns are right ("happens only sometimes"). Measured 2026-11-06 in Bricks Breaker: `bullet.Left = Paddle.Left + (Paddle.Width - bullet.Width)/2` sent every fresh bullet ~43 units right of the paddle. When spawner and sprite share the same alignment (both `HorizontalOptions.Center`), `Left`/`Top` are offsets from that anchor: copy the offset (`bullet.Left = Paddle.Left`) and use `WidthRequest`/`HeightRequest` for size math.
 - **Setting `BindingContext` to `this` inside MAUI game** - parent may override it; re-assert in `OnBindingContextChanged`.
 
 ---
