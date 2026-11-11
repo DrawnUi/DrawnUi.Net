@@ -181,15 +181,65 @@ public partial class GalleryPage : DrawnGame
     /// <summary>The rounded panel a 3D piece stands on.</summary>
     static SkiaShape Stage(SkiaControl piece) => new()
     {
-        CornerRadius = 12,
+        CornerRadius = 14,
         UseCache = SkiaCacheType.None,
         BackgroundColor = Theme.Stage,
         HorizontalOptions = LayoutOptions.Fill,
         Children = { piece },
     };
 
+    /// <summary>Two-column cards stay side by side while their content is at least this wide; narrower, the 3D view goes on top.</summary>
+    const float TwoColumnsMin = 720;
+    /// <summary>A list row keeps its button beside the text while the card's content is at least this wide.</summary>
+    const float RowBesideMin = 420;
+    /// <summary>The mascot's view height when the form and the mascot stack.</summary>
+    const float StackedView = 320;
+
+    /// <summary>Layout changes that follow the page's width (the same thresholds as DrawnUI for Rust's gallery3d).</summary>
+    readonly List<Action<float>> _adapt = new();
+    float _width = -1;
+
+    /// <summary>The width a card's content has on a page <paramref name="width"/> points wide, at most the desktop card.</summary>
+    static float CardInner(float width) => MathF.Min(width - 2 * 24 - 2 * 21, WideWidth);
+
+    static bool TwoColumns(float width) => width <= 0 || CardInner(width) >= TwoColumnsMin;
+
+    /// <inheritdoc />
+    protected override void OnMeasured()
+    {
+        base.OnMeasured();
+        var width = (float)MeasuredSize.Units.Width;
+        if (width <= 0 || float.IsInfinity(width) || width == _width)
+            return;
+        _width = width;
+        foreach (var adapt in _adapt)
+            adapt(width);
+    }
+
+    /// <summary>
+    /// A two-column card body: the 3D view (<paramref name="viewWidth"/> x <paramref name="viewHeight"/>) beside its panel;
+    /// when the card is narrow, stacked, the view on top at full width and its desktop proportions.
+    /// </summary>
+    SkiaLayout Split(SkiaLayout row, float viewWidth, float viewHeight)
+    {
+        _adapt.Add(width =>
+        {
+            var wide = TwoColumns(width);
+            row.Type = wide ? LayoutType.Row : LayoutType.Column;
+            row.HorizontalOptions = LayoutOptions.Fill;
+            var view = row.Children[0];
+            var side = row.Children[1];
+            view.WidthRequest = wide ? viewWidth : -1;
+            view.HorizontalOptions = wide ? LayoutOptions.Start : LayoutOptions.Fill;
+            view.HeightRequest = wide ? viewHeight : MathF.Round(CardInner(width) * viewHeight / viewWidth);
+            side.WidthRequest = wide ? CardInner(width) - viewWidth - 24 : -1;
+            side.HorizontalOptions = wide ? LayoutOptions.Start : LayoutOptions.Fill;
+        });
+        return row;
+    }
+
     /// <summary>A wide card for one demo: its title, a caption, and what it shows.</summary>
-    static SkiaShape WideCard(string title, string caption, SkiaControl content) => new()
+    SkiaShape WideCard(string title, string caption, SkiaControl content) => new SkiaShape
     {
         // Holds 3D that draws every frame: a recorded cache would be made again each frame.
         UseCache = SkiaCacheType.None,
@@ -199,7 +249,7 @@ public partial class GalleryPage : DrawnGame
         StrokeWidth = 1,
         Padding = new Thickness(20),
         HorizontalOptions = LayoutOptions.Center,
-        WidthRequest = WideWidth + 40,
+        WidthRequest = WideWidth + 42,
         Children =
         {
             new SkiaStack
@@ -213,7 +263,9 @@ public partial class GalleryPage : DrawnGame
                 }
             },
         },
-    };
+    }
+    // The page's width up to the desktop card.
+    .Adapt(card => _adapt.Add(width => card.WidthRequest = MathF.Min(width - 2 * 24, WideWidth + 42)));
 
     /// <summary>The medal's resting turn: it spins from here and lands here.</summary>
     const float MedalYaw = 20;
@@ -237,27 +289,38 @@ public partial class GalleryPage : DrawnGame
         Spacing = 10,
         Children =
         {
+            // The whole field scaled down to the card when the card is narrower than it.
             new SkiaShape
-            {
-                WidthRequest = FieldWidth,
-                HeightRequest = FieldHeight,
-                UseCache = SkiaCacheType.None,
-                CornerRadius = 10,
-                Children =
                 {
-                    // A side-scroller scene behind the mobs, its layers moving at their own pace.
-                    new Scenery { HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill }.Assign(out _scenery),
-                    new SkiaScene3D
+                    HorizontalOptions = LayoutOptions.Fill,
+                    MaximumWidthRequest = FieldWidth,
+                    HeightRequest = FieldHeight,
+                    UseCache = SkiaCacheType.None,
+                    CornerRadius = 10,
+                    Children =
+                    {
+                        new RescalingLayout
                         {
-                            Tilt = 30,
-                            HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
-                        }
-                        .Model("slime", Theme.Mob)
-                        .Assign(out _field)
-                        .OnTapped3D((me, hit) => me.PlayOnce(hit.Object, "CharacterArmature|HitRecieve")),
+                            LogicalWidth = FieldWidth,
+                            LogicalHeight = FieldHeight,
+                            Children =
+                            {
+                                // A side-scroller scene behind the mobs, its layers moving at their own pace.
+                                new Scenery { HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill }.Assign(out _scenery),
+                                new SkiaScene3D
+                                    {
+                                        Tilt = 30,
+                                        HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
+                                    }
+                                    .Model("slime", Theme.Mob)
+                                    .Assign(out _field)
+                                    .OnTapped3D((me, hit) => me.PlayOnce(hit.Object, "CharacterArmature|HitRecieve")),
+                            }
+                        },
+                    }
                 }
-            },
-            new SkiaRow
+                .Adapt(me => _adapt.Add(width => me.HeightRequest = MathF.Round(FieldHeight * MathF.Min(CardInner(width), FieldWidth) / FieldWidth))),
+            new SkiaWrap
             {
                 Spacing = 8,
                 AccessibilityRole = Aria.RoleRadioGroup,

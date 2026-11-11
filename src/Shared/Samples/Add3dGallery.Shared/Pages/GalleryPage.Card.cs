@@ -110,7 +110,7 @@ public partial class GalleryPage
         canvas.DrawText(text, x, y, align, font, paint);
     }
 
-    SkiaControl FlipCard() => WideCard("Card flip", "A loyalty card in 3D: it leans toward the pointer and turns over to show its back.", new SkiaRow
+    SkiaControl FlipCard() => WideCard("Card flip", "A loyalty card in 3D: it leans toward the pointer and turns over to show its back.", Split(new SkiaRow
     {
         Spacing = 24,
         Children =
@@ -132,7 +132,7 @@ public partial class GalleryPage
                     .Assign(out _card)
                     .OnTapped3D((_, _) => Flip()))
                 .WithWidth(ViewerWidth)
-                .WithHeight(340)
+                .WithHeight(ViewerHeight)
                 // Still between moves (the card shows its last render): one GPU blit.
                 .WithCache(SkiaCacheType.GPU),
             new SkiaStack
@@ -162,7 +162,7 @@ public partial class GalleryPage
                 }
             },
         }
-    });
+    }, ViewerWidth, ViewerHeight));
 
     void Flip()
     {

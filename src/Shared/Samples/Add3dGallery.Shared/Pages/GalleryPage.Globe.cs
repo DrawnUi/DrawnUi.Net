@@ -9,7 +9,7 @@ namespace Add3dGallery;
 /// </summary>
 public partial class GalleryPage
 {
-    const float GlobeHeight = 400;
+    const float GlobeHeight = 420;
     /// <summary>The pin's size, its tip (the city's point) from its top left, the chip's size and how far above the point it sits.</summary>
     const float PinW = 32, PinH = 48, PinTipX = 16, PinTipY = 43, ChipW = 130, ChipH = 30, ChipRise = 78;
 
@@ -53,14 +53,14 @@ public partial class GalleryPage
     static (float Yaw, float Pitch) Facing(Vector3 p) =>
         (MathF.Atan2(p.X, p.Z) * 180 / MathF.PI, Math.Clamp(MathF.Asin(Math.Clamp(p.Y / p.Length(), -1, 1)) * 180 / MathF.PI, -55, 75));
 
-    SkiaControl GlobeCard() => WideCard("Globe with pins", "Drag the Earth to turn it. Pins stay on their cities and hide behind the globe; tap one for its name.", new SkiaRow
+    SkiaControl GlobeCard() => WideCard("Globe with pins", "Drag the Earth to turn it. Pins stay on their cities and hide behind the globe; tap one for its name.", Split(new SkiaRow
     {
         Spacing = 24,
         Children =
         {
             new SkiaShape
             {
-                CornerRadius = 12,
+                CornerRadius = 14,
                 UseCache = SkiaCacheType.None,
                 WidthRequest = ViewerWidth,
                 HeightRequest = GlobeHeight,
@@ -126,7 +126,7 @@ public partial class GalleryPage
                 }
             },
         }
-    });
+    }, ViewerWidth, GlobeHeight));
 
     /// <summary>A map pin: a glossy teardrop with a soft shadow, a white dot inside and a ring pulsing where it stands.</summary>
     SkiaLayer CityPin(int index, string name) => new SkiaLayer

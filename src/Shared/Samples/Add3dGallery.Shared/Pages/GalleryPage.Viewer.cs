@@ -69,14 +69,14 @@ public partial class GalleryPage
 
     static string Dollars(int amount) => "$" + amount.ToString("N0", System.Globalization.CultureInfo.InvariantCulture);
 
-    SkiaControl ViewerCard() => WideCard("Product viewer", "A real product model on a shop page: turn it, zoom in, tap the dots, pick a fabric.", new SkiaRow
+    SkiaControl ViewerCard() => WideCard("Product viewer", "A real product model on a shop page: turn it, zoom in, tap the dots, pick a fabric.", Split(new SkiaRow
     {
         Spacing = 24,
         Children =
         {
             new SkiaShape
             {
-                CornerRadius = 12,
+                CornerRadius = 14,
                 // At rest the sofa shows its last render and the dots stand still: one GPU blit. Turning, zooming or a
                 // note draws it again.
                 UseCache = SkiaCacheType.GPU,
@@ -133,7 +133,7 @@ public partial class GalleryPage
                         Children =
                         {
                             PanelLabel("FABRIC"),
-                            new SkiaRow
+                            new SkiaWrap
                             {
                                 Spacing = 10,
                                 AccessibilityRole = Aria.RoleRadioGroup,
@@ -166,7 +166,7 @@ public partial class GalleryPage
                 }
             },
         }
-    }).Initialize(_ =>
+    }, ViewerWidth, ViewerHeight)).Initialize(_ =>
     {
         SetFabric(0);
         LoadViewer(Source.App);

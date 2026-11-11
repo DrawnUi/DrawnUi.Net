@@ -9,7 +9,7 @@ namespace Add3dGallery;
 /// </summary>
 public partial class GalleryPage
 {
-    const float FormWidth = 440;
+    const float FormWidth = 420;
 
     // The avatar's bones and moves (glTF names of avatar.glb).
     const string HeadBone = "Head", ArmL = "UpperArm.L", ArmR = "UpperArm.R", ForearmL = "LowerArm.L", ForearmR = "LowerArm.R";
@@ -24,52 +24,71 @@ public partial class GalleryPage
     bool _headSet, _handsSet;
 
     SkiaControl FormCard() => WideCard("3D next to normal UI", "A plain sign-up form with a 3D mascot beside it: it watches what you type and looks away from your password.", new SkiaRow
-    {
-        Spacing = 24,
-        Children =
         {
-            new SkiaStack
+            Spacing = 24,
+            Children =
             {
-                Spacing = 8,
-                // The form beside a mascot that moves every frame: blitted, drawn again when a field changes.
-                UseCache = SkiaCacheType.Image,
-                WidthRequest = FormWidth,
-                VerticalOptions = LayoutOptions.Center,
-                Children =
+                new SkiaShape
                 {
-                    new SkiaLabel("Create your account") { FontSize = 22, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                    new SkiaLabel("It takes a minute. Our mascot will not peek at your password.") { FontSize = 13, TextColor = Theme.Muted, Margin = new Thickness(0, 0, 0, 8) },
-                    FieldLabel("Name"),
-                    Field("Your name", false, 0).Assign(out _nameField),
-                    FieldLabel("Email"),
-                    Field("you@example.com", false, 1).Assign(out _emailField),
-                    FieldLabel("Password"),
-                    Field("At least 6 characters", true, 2).Assign(out _passwordField),
-                    new UiButton("Sign up", Theme.Accent, FormWidth) { Margin = new Thickness(0, 12, 0, 0), HeightRequest = 44 }
-                        .OnTapped(_ => SignUp()),
-                    new SkiaLabel { FontSize = 13, TextColor = Theme.Muted, HeightRequest = 20, AccessibilityRole = Aria.RoleText }
-                        .WithAccessibilityLive()
-                        .Assign(out _formStatus),
-                }
-            },
-            Stage(new SkiaModel3D(Theme.Avatar)
+                    CornerRadius = 14,
+                    BackgroundColor = Theme.Page,
+                    Padding = new Thickness(24),
+                    WidthRequest = FormWidth,
+                    VerticalOptions = LayoutOptions.Start,
+                    // The form beside a mascot that moves every frame: blitted, drawn again when a field changes.
+                    UseCache = SkiaCacheType.Image,
+                    Children =
                     {
-                        Animation = "CharacterArmature|Idle",
-                        // The camera on the mascot's left: it faces the form at screen left (a view turn, no mirror).
-                        Yaw = 32,
-                        Pitch = 8,
-                        Orbit = false,
-                        HorizontalOptions = LayoutOptions.Fill,
-                        VerticalOptions = LayoutOptions.Fill,
+                        new SkiaStack
+                        {
+                            Spacing = 12,
+                            Children =
+                            {
+                                new SkiaLabel("Create your account") { FontSize = 22, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                                new SkiaLabel("It takes a minute. Our mascot will not peek at your password.") { FontSize = 13, TextColor = Theme.Muted },
+                                Field("Name", false, 0).Assign(out _nameField),
+                                Field("Email", false, 1).Assign(out _emailField),
+                                Field("Password", true, 2).Assign(out _passwordField),
+                                new UiButton("Sign up", Theme.Accent) { HorizontalOptions = LayoutOptions.Fill, WidthRequest = -1 }
+                                    .OnTapped(_ => SignUp()),
+                                new SkiaLabel { FontSize = 14, TextColor = Theme.Gold, HeightRequest = 20, AccessibilityRole = Aria.RoleText }
+                                    .WithAccessibilityLive()
+                                    .Assign(out _formStatus),
+                            }
+                        },
                     }
-                    .Assign(out _mascot)
-                    .OnTapped3D((me, _) => me.PlayOnce("CharacterArmature|Wave")))
-                .WithWidth(WideWidth - FormWidth - 24)
-                .WithHeight(400),
+                },
+                Stage(new SkiaModel3D(Theme.Avatar)
+                        {
+                            Animation = "CharacterArmature|Idle",
+                            // The camera on the mascot's left: it faces the form at screen left (a view turn, no mirror).
+                            Yaw = 32,
+                            Pitch = 8,
+                            Orbit = false,
+                            HorizontalOptions = LayoutOptions.Fill,
+                            VerticalOptions = LayoutOptions.Fill,
+                        }
+                        .Assign(out _mascot)
+                        .OnTapped3D((me, _) => me.PlayOnce("CharacterArmature|Wave")))
+                    .WithWidth(WideWidth - FormWidth - 24)
+                    .WithHeight(ViewerHeight),
+            }
         }
-    });
+        // Side by side on a wide card; narrow, the form on top at full width and the mascot under it.
+        .Adapt(row => _adapt.Add(width =>
+        {
+            var wide = TwoColumns(width);
+            row.Type = wide ? LayoutType.Row : LayoutType.Column;
+            row.HorizontalOptions = LayoutOptions.Fill;
+            var form = row.Children[0];
+            var stage = row.Children[1];
+            form.WidthRequest = wide ? FormWidth : -1;
+            form.HorizontalOptions = wide ? LayoutOptions.Start : LayoutOptions.Fill;
+            stage.WidthRequest = wide ? CardInner(width) - FormWidth - 24 : -1;
+            stage.HorizontalOptions = wide ? LayoutOptions.Start : LayoutOptions.Fill;
+            stage.HeightRequest = wide ? ViewerHeight : StackedView;
+        })));
 
-    static SkiaLabel FieldLabel(string text) => new(text) { FontSize = 13, FontFamily = Theme.Title, TextColor = Theme.Muted, Margin = new Thickness(0, 4, 0, 0) };
 
     /// <summary>A one-line text field in the app's style; the mascot follows its focus and its text.</summary>
     SkiaEditor Field(string placeholder, bool password, int index)
@@ -86,9 +105,10 @@ public partial class GalleryPage
             FontSize = 15,
             FontFamily = "FontText",
             HorizontalOptions = LayoutOptions.Fill,
-            Padding = new Thickness(12, 11),
+            Padding = new Thickness(12, 10),
+            HeightRequest = 44,
             CornerRadius = 10,
-            BackgroundColor = Theme.Field,
+            BackgroundColor = Theme.Stage,
             StrokeColor = Theme.Line,
             StrokeWidth = 1.55,
             AccessibilityLabel = index switch { 0 => "Name", 1 => "Email", _ => "Password" },

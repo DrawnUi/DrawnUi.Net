@@ -29,6 +29,7 @@ public class GalleryRoot : SkiaLayer
                         {
                             BackgroundColor = Theme.Header,
                             HeightRequest = 64,
+                            Spacing = 10,
                             Padding = new Thickness(24, 0),
                             // Static chrome over pages that draw every frame: blitted, not drawn again.
                             UseCache = SkiaCacheType.Image,
@@ -85,7 +86,7 @@ public class GalleryRoot : SkiaLayer
                                     }
                                 },
                             }
-                        }.SetGrid(0, 0),
+                        }.Assign(out _header).SetGrid(0, 0),
                         new SkiaLayer
                         {
                             VerticalOptions = LayoutOptions.Fill,
@@ -111,6 +112,28 @@ public class GalleryRoot : SkiaLayer
             },
         };
         Show(0);
+    }
+
+    /// <summary>Narrower canvases put the tabs under the app's name.</summary>
+    const float HeaderOneLine = 560;
+
+    SkiaLayout _header;
+    bool? _oneLine;
+
+    /// <inheritdoc />
+    protected override void OnMeasured()
+    {
+        base.OnMeasured();
+        var width = (float)MeasuredSize.Units.Width;
+        if (width <= 0 || float.IsInfinity(width))
+            return;
+        var oneLine = width >= HeaderOneLine;
+        if (_oneLine == oneLine)
+            return;
+        _oneLine = oneLine;
+        _header.Type = oneLine ? LayoutType.Absolute : LayoutType.Column;
+        _header.HeightRequest = oneLine ? 64 : -1;
+        _header.Padding = oneLine ? new Thickness(24, 0) : new Thickness(16, 12);
     }
 
     /// <summary>Shows one screen; the hidden one asks for no frames.</summary>

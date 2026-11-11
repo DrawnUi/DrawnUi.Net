@@ -52,7 +52,6 @@ public static class Theme
     public static readonly byte[] Earth = Model("earth.jpg");
 
     public static readonly Color Bad = Color.FromRgb(255, 99, 132);
-    public static readonly Color Field = Color.FromRgb(31, 35, 52);
 
     /// <summary>A color moved toward white by <paramref name="amount"/> (0..1): the hover lift.</summary>
     public static Color Lighter(Color c, float amount) =>

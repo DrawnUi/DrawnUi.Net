@@ -60,7 +60,9 @@ public partial class GalleryPage
                             }
                             .Assign(out _listCount),
                     }
-                },
+                }
+                // Narrow, the count goes under the title.
+                .Adapt(header => _adapt.Add(width => header.Type = CardInner(width) >= RowBesideMin ? LayoutType.Row : LayoutType.Wrap)),
                 new SkiaShape
                 {
                     CornerRadius = 12,
@@ -112,7 +114,7 @@ public partial class GalleryPage
         var added = false;
         return new SkiaRow
             {
-                HeightRequest = RowHeight,
+                MinimumHeightRequest = RowHeight,
                 HorizontalOptions = LayoutOptions.Fill,
                 Spacing = 16,
                 Padding = new Thickness(12, 8),
@@ -157,7 +159,9 @@ public partial class GalleryPage
                 }
             }
             // The row under the mouse turns its piece; the others stay still and are only blitted.
-            .OnHovered((_, on) => model.AutoRotate = on ? 40 : 0);
+            .OnHovered((_, on) => model.AutoRotate = on ? 40 : 0)
+            // Narrow, the button goes under the text.
+            .Adapt(row => _adapt.Add(width => row.Type = CardInner(width) >= RowBesideMin ? LayoutType.Row : LayoutType.Wrap));
     }
 
     /// <summary>Each frame: how many thumbnails are on screen now, shown above the list (the rest cost nothing).</summary>
