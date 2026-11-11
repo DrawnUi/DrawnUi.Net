@@ -776,7 +776,10 @@ sealed class MeshGeometry
         if (packed == null)
             return null;
 
-        int w = (int)Math.Ceiling(Math.Sqrt(triangles)); // keeps texCoords small: their fraction is the barycentric
+        // DrawVertices arrays are made for a padded count (the extra triangles are empty, at 0,0): a mesh whose count
+        // changes every frame reuses the arrays of its size class instead of making new ones for each count.
+        int padded = PaddedTriangles(triangles);
+        int w = (int)Math.Ceiling(Math.Sqrt(padded)); // keeps texCoords small: their fraction is the barycentric
         var g = new MeshGeometry
         {
             Id = key,
@@ -786,7 +789,7 @@ sealed class MeshGeometry
             FirstIndex = key.IndexOffset / 2,
             _available = available,
             _triangles = triangles,
-            _texCoords = TexCoords(triangles, w),
+            _texCoords = TexCoords(padded, w),
         };
 
         if (spec.PositionEffect == null)
@@ -818,6 +821,11 @@ sealed class MeshGeometry
             var points = Scratch(texs.Length);
             for (int j = 0; j < texs.Length; j += 3, t++)
             {
+                if (t >= _triangles)
+                {
+                    points[j] = points[j + 1] = points[j + 2] = default; // padding: an empty triangle
+                    continue;
+                }
                 int a = strip ? t : t * 3;
                 int v0 = indexed ? indices[a] : a;
                 int v1 = indexed ? indices[a + 1] : a + 1;
@@ -846,23 +854,48 @@ sealed class MeshGeometry
         {
             var texs = _texCoords[c];
             var points = Scratch(texs.Length);
-            corners.Slice(o, texs.Length).CopyTo(points);
-            o += texs.Length;
+            int real = Math.Clamp(corners.Length - o, 0, texs.Length);
+            corners.Slice(o, real).CopyTo(points);
+            points.AsSpan(real).Clear(); // padding: empty triangles
+            o += real;
             result[c] = SKVertices.CreateCopy(SKVertexMode.Triangles, points, texs, null);
         }
         return result;
     }
 
-    // DrawVertices copies the points: one array per thread and length is reused for every mesh.
-    [ThreadStatic] static SKPoint[] t_full, t_tail;
+    // DrawVertices copies the points: one array per thread and length (lengths are padded counts) is reused for
+    // every mesh.
+    [ThreadStatic] static Dictionary<int, SKPoint[]> t_scratch;
 
     static SKPoint[] Scratch(int length)
     {
-        if (length == ChunkTriangles * 3)
-            return t_full ??= new SKPoint[length];
-        if (t_tail == null || t_tail.Length != length)
-            t_tail = new SKPoint[length];
-        return t_tail;
+        var scratch = t_scratch ??= new Dictionary<int, SKPoint[]>();
+        if (!scratch.TryGetValue(length, out var points))
+        {
+            if (scratch.Count >= SizeClassesKept) // ponytail: drops all at once, as the texCoords cache
+                scratch.Clear();
+            scratch[length] = points = new SKPoint[length];
+        }
+        return points;
+    }
+
+    // Size classes whose arrays are kept: a range of counts 1 to 8 times wide (a corridor from near to far, a model
+    // from close to far) stays within it.
+    const int SizeClassesKept = 32;
+
+    // The triangle count with its last chunk rounded up to its size class (at most 1/16 more, 64 under 1024
+    // triangles), never past the chunk: padding adds no chunk.
+    static int PaddedTriangles(int triangles)
+    {
+        int full = triangles / ChunkTriangles * ChunkTriangles;
+        int tail = triangles - full;
+        if (tail == 0)
+            return triangles;
+        int pow2 = 1;
+        while (pow2 < tail)
+            pow2 <<= 1;
+        int step = Math.Max(64, pow2 / 16);
+        return full + Math.Min((tail + step - 1) / step * step, ChunkTriangles);
     }
 
     // TexCoords depend only on the triangle count: shared by every mesh of that size (a mesh rebuilt each
@@ -889,7 +922,7 @@ sealed class MeshGeometry
                     chunk[j + 2] = new SKPoint(cx + SKMeshSpecification.CornerLow, cy + SKMeshSpecification.CornerHigh);
                 }
             }
-            if (s_texCoords.Count >= 16) // ponytail: drops all sizes at once; an LRU if apps cycle more sizes
+            if (s_texCoords.Count >= SizeClassesKept) // ponytail: drops all sizes at once; an LRU if apps cycle more sizes
                 s_texCoords.Clear();
             s_texCoords[triangles] = texs;
             return texs;

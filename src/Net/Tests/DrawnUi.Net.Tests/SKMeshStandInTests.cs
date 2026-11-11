@@ -580,6 +580,43 @@ public class SKMeshStandInTests
     }
 
     [Fact]
+    public void MeshWhoseTriangleCountChangesEveryFrame_AllocatesNearlyNothingPerDraw()
+    {
+        // A scene projected and clipped on the CPU every frame (Dungeon Run's corridor) makes a few triangles more or
+        // less each frame: the per-size work memory must not be made again for every new count.
+        using var spec = Spec(new[] { Pos }, 8, Array.Empty<SKMeshSpecificationVarying>(), PassVs, RedFs);
+        const int most = 560;
+        var data = new float[most * 6];
+        for (int t = 0; t < most; t++)
+        {
+            float x = t % 24, y = t / 24;
+            (data[t * 6], data[t * 6 + 1], data[t * 6 + 2], data[t * 6 + 3], data[t * 6 + 4], data[t * 6 + 5]) = (x, y, x + 1, y, x, y + 1);
+        }
+        using var bmp = new SKBitmap(new SKImageInfo(32, 32, SKColorType.Rgba8888, SKAlphaType.Premul));
+        using var canvas = new SKCanvas(bmp);
+        using var paint = new SKPaint { Color = SKColors.White };
+
+        void Frame(int i)
+        {
+            int triangles = 480 + i * 7 % 80; // 80 different counts, in no order
+            using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(data.AsSpan(0, triangles * 6)));
+            using var mesh = SKMesh.Make(spec, SKMeshMode.Triangles, vb, triangles * 3, 0, null, new SKRect(0, 0, 32, 32), out _);
+            canvas.DrawMesh(mesh!, paint);
+        }
+
+        for (int i = 0; i < 80; i++)
+            Frame(i);
+        const int frames = 80;
+        long before = GC.GetAllocatedBytesForCurrentThread();
+        for (int i = 0; i < frames; i++)
+            Frame(i + 1);
+        long perFrame = (GC.GetAllocatedBytesForCurrentThread() - before) / frames;
+
+        Assert.Equal(SKColors.Red, bmp.GetPixel(10, 10));
+        Assert.True(perFrame < 4096, $"{perFrame} bytes per frame");
+    }
+
+    [Fact]
     public void NewIndicesEachFrame_ReuseThePackedVertices()
     {
         // A page that keeps its vertex buffer and gives a new draw order (index buffer) every frame: the vertex
