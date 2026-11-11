@@ -534,4 +534,48 @@ public class SKMeshStandInTests
         Assert.NotNull(SKMesh.MakeIndexed(spec, SKMeshMode.Triangles, vb, 0, 0, ib, 3, 0, b, out _));
         Assert.Throws<ArgumentNullException>(() => SKMesh.MakeIndexed(spec, SKMeshMode.Triangles, vb, 4, 0, null!, 3, 0, b, out _));
     }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void MeshRebuiltEveryFrame_AllocatesNearlyNothingPerDraw(bool moving)
+    {
+        // A page that copies its triangles into a new vertex buffer every frame and draws one mesh of the same
+        // size: the stand-in reuses its per-size work memory, so drawing puts (almost) nothing on the GC heap.
+        var vs = moving
+            ? "uniform float2 uShift; Varyings main(const Attributes a) { Varyings v; v.position = a.position + uShift; return v; }"
+            : PassVs;
+        using var spec = Spec(new[] { Pos }, 8, Array.Empty<SKMeshSpecificationVarying>(), vs, RedFs);
+        const int triangles = 3000;
+        var data = new float[triangles * 6];
+        for (int t = 0; t < triangles; t++)
+        {
+            float x = t % 60, y = t / 60;
+            (data[t * 6], data[t * 6 + 1], data[t * 6 + 2], data[t * 6 + 3], data[t * 6 + 4], data[t * 6 + 5]) = (x, y, x + 1, y, x, y + 1);
+        }
+        var bytes = MemoryMarshal.AsBytes(data.AsSpan()).ToArray();
+        var uniforms = moving ? Uniforms(1, 1) : null;
+        using var bmp = new SKBitmap(new SKImageInfo(64, 64, SKColorType.Rgba8888, SKAlphaType.Premul));
+        using var canvas = new SKCanvas(bmp);
+        using var paint = new SKPaint { Color = SKColors.White };
+
+        void Frame()
+        {
+            using var vb = SKMeshVertexBuffer.Make(bytes);
+            using var mesh = SKMesh.Make(spec, SKMeshMode.Triangles, vb, triangles * 3, 0, uniforms, new SKRect(0, 0, 64, 64), out _);
+            canvas.DrawMesh(mesh!, paint);
+        }
+
+        for (int i = 0; i < 5; i++)
+            Frame();
+        const int frames = 20;
+        long before = GC.GetAllocatedBytesForCurrentThread();
+        for (int i = 0; i < frames; i++)
+            Frame();
+        long perFrame = (GC.GetAllocatedBytesForCurrentThread() - before) / frames;
+
+        Assert.Equal(SKColors.Red, bmp.GetPixel(10, 10));
+        // What is left: SkiaSharp's own wrapper objects (surfaces, images, shaders, vertices), each a few dozen bytes.
+        Assert.True(perFrame < 4096, $"{perFrame} bytes per frame");
+    }
 }

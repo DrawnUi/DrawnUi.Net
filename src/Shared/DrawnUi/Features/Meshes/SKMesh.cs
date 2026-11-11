@@ -102,13 +102,13 @@ public sealed class SKMeshVertexBuffer : IDisposable
     // The buffer is immutable, so what depends only on its bytes (image, texCoords, and positions when the
     // vertex program copies them) is built once and reused by every mesh drawing the same range: a static
     // mesh redrawn with new uniforms each frame uploads nothing new.
-    internal MeshGeometry AcquireGeometry(in MeshGeometry.Key key, Func<MeshGeometry> build)
+    internal MeshGeometry AcquireGeometry(in MeshGeometry.Key key)
     {
         lock (_lock)
         {
             if (_geometry == null || !_geometry.Id.Equals(key))
             {
-                var built = build();
+                var built = MeshGeometry.Build(key, this);
                 if (built == null)
                     return null;
                 _geometry?.Release();
@@ -443,7 +443,7 @@ public sealed class SKMesh : IDisposable
     void Build(GRRecordingContext context)
     {
         var key = new MeshGeometry.Key(_spec, _mode, _vertexCount, _vertexOffset, _indexBuffer, _indexCount, _indexOffset);
-        _geometry = _vertexBuffer.AcquireGeometry(key, () => MeshGeometry.Build(key, _vertexBuffer));
+        _geometry = _vertexBuffer.AcquireGeometry(key);
         if (_geometry == null)
             return;
         // Positions copied from the "position" attribute, else the vertex program runs on the CPU with this
@@ -577,8 +577,6 @@ sealed class MeshGeometry
     // Vertex program output (one RGBA F32 pixel per vertex), kept with the geometry: every mesh made from the
     // same vertex bytes (a strip redrawn with new uniforms each frame) runs its vertex program into it.
     int _perRow, _rows;
-    SKSurface _outputSurface;
-    float[] _output; // pinned
 
     int _refs = 1;
 
@@ -591,7 +589,6 @@ sealed class MeshGeometry
         if (Vertices != null)
             foreach (var v in Vertices)
                 v.Dispose();
-        _outputSurface?.Dispose();
         _packedShader?.Dispose();
         _packed?.Dispose();
         _packedF32Shader?.Dispose();
@@ -684,8 +681,8 @@ sealed class MeshGeometry
         int height = plain ? PackedRows : PackedRows * 2;
         // Premul: an Unpremul GPU surface is refused. The program writes with Src, so values are stored as they are.
         var info = new SKImageInfo(width, height, plain ? SKColorType.RgbaF32 : SKColorType.RgbaF16, SKAlphaType.Premul);
-        using var surface = (context != null ? SKSurface.Create(context, true, info) : null) ?? SKSurface.Create(info);
-        if (surface == null)
+        ref var pass = ref (plain ? ref t_convertF32 : ref t_convert);
+        if (!pass.Acquire(context, info) && (context == null || !pass.Acquire(null, info)))
             return null;
         SKShader shader;
         lock (spec.EffectLock)
@@ -699,9 +696,8 @@ sealed class MeshGeometry
             children.Reset();
         }
         using (shader)
-        using (var paint = new SKPaint { Shader = shader, BlendMode = SKBlendMode.Src })
-            surface.Canvas.DrawRect(0, 0, width, height, paint);
-        return surface.Snapshot();
+            PassSurface.Fill(pass.Canvas, shader, width, height);
+        return pass.Surface.Snapshot();
     }
 
     // DrawVertices triangles of the whole mesh, corner positions read from `src` (vertex v's x at
@@ -806,26 +802,20 @@ sealed class MeshGeometry
                 if (packed != null && rows <= SKMeshSpecification.MaxTextureSide)
                 {
                     var info = new SKImageInfo(perRow * 2, rows, SKColorType.Rgba8888, SKAlphaType.Premul); // read back as written
-                    using var surface = SKSurface.Create(context, true, info);
-                    if (surface != null)
+                    if (t_gpuPositions.Acquire(context, info))
                     {
-                        if (_bytes == null || _bytes.Length < info.BytesSize)
-                            _bytes = GC.AllocateArray<byte>(info.BytesSize, pinned: true);
-                        if (RunVertexProgram(surface, uniformData, packed, PackedRows, perRow, rows * 1f, true)
-                            && surface.ReadPixels(info, Marshal.UnsafeAddrOfPinnedArrayElement(_bytes, 0), info.RowBytes, 0, 0))
-                            return MakeVertices(MemoryMarshal.Cast<byte, float>(_bytes.AsSpan(0, info.BytesSize)), 0, 2);
+                        var readBack = ReadBack(info.BytesSize);
+                        if (RunVertexProgram(t_gpuPositions.Canvas, uniformData, packed, PackedRows, perRow, rows * 1f, true)
+                            && t_gpuPositions.Surface.ReadPixels(info, Marshal.UnsafeAddrOfPinnedArrayElement(readBack, 0), info.RowBytes, 0, 0))
+                            return MakeVertices(MemoryMarshal.Cast<byte, float>(readBack.AsSpan(0, info.BytesSize)), 0, 2);
                     }
                 }
             }
 
             var rasterInfo = new SKImageInfo(_perRow, _rows, SKColorType.RgbaF32, SKAlphaType.Premul);
-            if (_outputSurface == null)
-            {
-                _output = GC.AllocateArray<float>(_perRow * _rows * 4, pinned: true);
-                _outputSurface = SKSurface.Create(rasterInfo, Marshal.UnsafeAddrOfPinnedArrayElement(_output, 0), rasterInfo.RowBytes);
-                if (_outputSurface == null)
-                    return null;
-            }
+            var output = ReadBack(rasterInfo.BytesSize);
+            if (!t_rasterPositions.Acquire(null, rasterInfo, Marshal.UnsafeAddrOfPinnedArrayElement(output, 0)))
+                return null;
             if (_packedF32Shader == null)
             {
                 _packedF32 = Convert(null, true);
@@ -833,17 +823,26 @@ sealed class MeshGeometry
                     return null;
                 _packedF32Shader = _packedF32.ToRawShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, Nearest);
             }
-            if (!RunVertexProgram(_outputSurface, uniformData, _packedF32Shader, 0, _perRow, _rows, false)) // raster: written at once
+            if (!RunVertexProgram(t_rasterPositions.Canvas, uniformData, _packedF32Shader, 0, _perRow, _rows, false)) // raster: written at once
                 return null;
-            return MakeVertices(_output, 0, 4);
+            return MakeVertices(MemoryMarshal.Cast<byte, float>(output.AsSpan(0, rasterInfo.BytesSize)), 0, 4);
         }
     }
 
-    byte[] _bytes; // pinned, GPU read-back
+    // Read-back memory, one per thread, reused by every mesh (a mesh rebuilt each frame allocates none):
+    // consumed by MakeVertices before RunVertexProgram returns.
+    [ThreadStatic] static byte[] t_readBack;
+
+    static byte[] ReadBack(int bytes)
+    {
+        if (t_readBack == null || t_readBack.Length < bytes)
+            t_readBack = GC.AllocateUninitializedArray<byte>(Math.Max(bytes, (t_readBack?.Length ?? 0) * 2), pinned: true);
+        return t_readBack;
+    }
     const int GpuVertexProgramMinVertices = 1024;
 
     // `loRows`: rows of the high half block of an fp16 hi/lo input, 0 for F32. `bytes`: the RGBA8 output.
-    bool RunVertexProgram(SKSurface surface, byte[] uniformData, SKShader input, int loRows, int perRow, float rows, bool bytes)
+    bool RunVertexProgram(SKCanvas canvas, byte[] uniformData, SKShader input, int loRows, int perRow, float rows, bool bytes)
     {
         var spec = Id.Spec;
         SKShader shader;
@@ -861,9 +860,46 @@ sealed class MeshGeometry
         if (shader == null)
             return false;
         using (shader)
-        using (var paint = new SKPaint { Shader = shader, BlendMode = SKBlendMode.Src })
-            surface.Canvas.DrawRect(0, 0, bytes ? perRow * 2 : perRow, rows, paint);
+            PassSurface.Fill(canvas, shader, bytes ? perRow * 2 : perRow, rows);
         return true;
+    }
+
+    // The stand-in's own pass targets, one of each per thread, reused while size, format, context and memory
+    // stay the same: a mesh rebuilt every frame then creates none (SkiaSharp's SKCanvas wrapper alone is ~2 KB).
+    [ThreadStatic] static PassSurface t_convert, t_convertF32, t_gpuPositions, t_rasterPositions;
+
+    struct PassSurface
+    {
+        [ThreadStatic] static SKPaint t_paint;
+
+        public SKSurface Surface { get; private set; }
+        public SKCanvas Canvas { get; private set; }
+        SKImageInfo _info;
+        IntPtr _context, _pixels;
+
+        // `pixels`: raster memory to draw into (rows of info.RowBytes), else a GPU surface on `context` or raster.
+        public bool Acquire(GRRecordingContext context, SKImageInfo info, IntPtr pixels = default)
+        {
+            var handle = context?.Handle ?? IntPtr.Zero;
+            if (Surface != null && _info == info && _context == handle && _pixels == pixels)
+                return true;
+            Surface?.Dispose();
+            Surface = pixels != IntPtr.Zero ? SKSurface.Create(info, pixels, info.RowBytes)
+                : context != null ? SKSurface.Create(context, true, info)
+                : SKSurface.Create(info);
+            Canvas = Surface?.Canvas;
+            (_info, _context, _pixels) = (info, handle, pixels);
+            return Surface != null;
+        }
+
+        // Writes `shader` over (0, 0, width, height) as it is (Src).
+        public static void Fill(SKCanvas canvas, SKShader shader, float width, float height)
+        {
+            var paint = t_paint ??= new SKPaint { BlendMode = SKBlendMode.Src };
+            paint.Shader = shader;
+            canvas.DrawRect(0, 0, width, height, paint);
+            paint.Shader = null;
+        }
     }
 
     public static void SetUniforms(SKRuntimeEffectUniforms target, SKMeshSpecification.UniformSlot[] slots, byte[] data)
