@@ -885,14 +885,16 @@ public sealed class SKMeshSpecification : IDisposable
           .Append("    p = p * (1.0 - bit) + (p * s) * bit;\n    s *= s;\n    a = h;\n  }\n")
           .Append("  float4 x = (m * 0.00000011920928955078125 + 1.0) * p * (1.0 - step(e, float4(0.5)));\n")
           .Append("  return x * (1.0 - 2.0 * step(float4(128.0), bw));\n}\n")
-          // x rounded to 11 significant bits per lane; under 2^-14 (fp16 subnormals): 0, all in the low part
-          .Append("float4 _sm_hi4(float4 x) {\n  float4 a = abs(x);\n  float4 big = step(float4(1.0), a);\n")
+          // x rounded to 11 significant bits per lane; under 2^-14 (fp16 subnormals): 0, all in the low part. The power of
+          // two is searched for at least 2^-14 (sa): for 0 the search reached 2^128, infinite, and 0 x infinity is NaN on
+          // Mali (desktop GPUs and the CPU happened to give 0)
+          .Append("float4 _sm_hi4(float4 x) {\n  float4 a = abs(x);\n  float4 sa = max(a, float4(0.00006103515625));\n  float4 big = step(float4(1.0), a);\n")
           .Append("  float4 s1 = 0.5 + 1.5 * big; float4 s2 = s1 * s1; float4 s4 = s2 * s2; float4 s8 = s4 * s4; float4 s16 = s8 * s8; float4 s32 = s16 * s16; float4 s64 = s32 * s32;\n")
           .Append("  float4 r1 = 2.0 - 1.5 * big; float4 r2 = r1 * r1; float4 r4 = r2 * r2; float4 r8 = r4 * r4; float4 r16 = r8 * r8; float4 r32 = r16 * r16; float4 r64 = r32 * r32;\n")
           .Append("  float4 p = float4(1.0);\n  float4 ip = float4(1.0);\n  float4 t;\n  float4 c;\n");
         // big lanes: largest power of two <= a; small lanes: smallest power of two > a (halved below)
         foreach (var k in new[] { 64, 32, 16, 8, 4, 2, 1 })
-            sb.Append($"  t = p * s{k};\n  c = big * step(t, a) + (1.0 - big) * (1.0 - step(t, a));\n")
+            sb.Append($"  t = p * s{k};\n  c = big * step(t, sa) + (1.0 - big) * (1.0 - step(t, sa));\n")
               .Append($"  p = p * (1.0 - c) + t * c;\n  ip = ip * (1.0 - c) + (ip * r{k}) * c;\n");
         sb.Append("  p = p * big + (p * 0.5) * (1.0 - big);\n  ip = ip * big + (ip * 2.0) * (1.0 - big);\n")
           .Append("  float4 h = floor(a * ip * 1024.0 + 0.5) * 0.0009765625 * p * step(float4(0.00006103515625), a);\n")

@@ -318,6 +318,27 @@ public class SKMeshStandInTests
         Assert.True(maxHalf < 2e-3, $"Half varying: max error {maxHalf}");
     }
 
+    [Fact]
+    public void ZeroVaryings_StayZero()
+    {
+        // A Float varying of exactly 0 (most of the Dungeon's lanes): its high and low parts must be 0, never NaN
+        // (0 times an overflowed power of two is NaN on Mali and on the CPU raster pipeline).
+        var attrs = new[] { Pos, new SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType.Float4, 8, "c") };
+        var vary = new[] { new SKMeshSpecificationVarying(SKMeshSpecificationVaryingType.Float4, "c") };
+        using var spec = Spec(attrs, 24, vary,
+            "Varyings main(const Attributes a) { Varyings v; v.position = a.position; v.c = a.c; return v; }",
+            "float2 main(const Varyings v, out float4 color) { color = float4(v.c.x + 0.25, v.c.y, v.c.z + 0.75, 1.0); return v.position; }");
+        using var vb = Vb(0, 0, 0, 0.5f, 0, 1, 64, 0, 0, 0.5f, 0, 1, 0, 64, 0, 0.5f, 0, 1);
+        using var mesh = SKMesh.Make(spec, SKMeshMode.Triangles, vb, 3, 0, null, new SKRect(0, 0, 64, 64), out var e);
+        Assert.True(mesh != null, e);
+        using var paint = new SKPaint { Color = SKColors.White };
+        using var bmp = Render(64, 64, c => c.DrawMesh(mesh!, paint), SKColorType.RgbaF32);
+        var px = MemoryMarshal.Cast<byte, float>(bmp.GetPixelSpan()).Slice((16 * 64 + 16) * 4, 4).ToArray();
+        Assert.Equal(0.25, px[0], 3);
+        Assert.Equal(0.5, px[1], 3);
+        Assert.Equal(0.75, px[2], 3);
+    }
+
     static double Cross(SKPoint a, SKPoint b, SKPoint c) => (b.X - a.X) * (c.Y - a.Y) - (b.Y - a.Y) * (c.X - a.X);
 
     [Fact]
