@@ -162,7 +162,7 @@ public partial class GalleryPage
                 }
             },
         }
-    }, ViewerWidth, ViewerHeight));
+    }, ViewerWidth, ViewerHeight), still: true);
 
     void Flip()
     {

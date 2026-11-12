@@ -166,7 +166,7 @@ public partial class GalleryPage
                 }
             },
         }
-    }, ViewerWidth, ViewerHeight)).Initialize(_ =>
+    }, ViewerWidth, ViewerHeight), still: true).Initialize(_ =>
     {
         SetFabric(0);
         LoadViewer(Source.App);

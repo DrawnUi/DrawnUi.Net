@@ -239,11 +239,15 @@ public partial class GalleryPage : DrawnGame
         return row;
     }
 
-    /// <summary>A wide card for one demo: its title, a caption, and what it shows.</summary>
-    SkiaShape WideCard(string title, string caption, SkiaControl content) => new SkiaShape
+    /// <summary>
+    /// A wide card for one demo: its title, a caption, and what it shows. A <paramref name="still"/> card (its 3D at
+    /// rest until touched: the viewer, the card) is one GPU blit while the page scrolls or another card
+    /// moves; a card whose 3D moves all the time (globe, mascot, mobs) is drawn live, a cache would be made again
+    /// each frame. The shop scrolls inside its card, so it stays live too.
+    /// </summary>
+    SkiaShape WideCard(string title, string caption, SkiaControl content, bool still = false) => new SkiaShape
     {
-        // Holds 3D that draws every frame: a recorded cache would be made again each frame.
-        UseCache = SkiaCacheType.None,
+        UseCache = still ? SkiaCacheType.GPU : SkiaCacheType.None,
         CornerRadius = 16,
         BackgroundColor = Theme.Card,
         StrokeColor = Theme.Line,
