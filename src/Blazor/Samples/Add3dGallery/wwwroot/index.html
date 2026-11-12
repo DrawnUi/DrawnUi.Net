@@ -15,13 +15,47 @@
         html, body { margin: 0; height: 100%; overflow: hidden; background: #0E1018; }
         #app, .drawn-host { height: 100%; display: flex; flex-direction: column; }
         .drawn-host > * { flex: 1 1 auto; min-height: 0; }
-        .boot { margin: auto; color: #A9B4C6; font: 14px system-ui, sans-serif; }
+        /* The loading screen, as the DrawnUI for Rust gallery (add3d.drawnui.net): the title over a glow, the download
+           progress, gone with the app's first drawn frame. */
+        .loader { position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column; align-items: center;
+                  justify-content: center; gap: 22px; transition: opacity 0.35s;
+                  background: radial-gradient(ellipse at 50% 55%, #241f45 0%, #0e1018 65%); }
+        .loader.done { opacity: 0; pointer-events: none; }
+        .loader-title { font: 800 44px system-ui, sans-serif; letter-spacing: 2px; text-align: center; padding: 0 16px;
+                        background: linear-gradient(#ffffff, #c9c0ff 55%, #7c6cf2);
+                        -webkit-background-clip: text; background-clip: text; color: transparent;
+                        animation: loader-glow 1.6s ease-in-out infinite; }
+        .loader-bar { width: min(260px, 60vw); height: 4px; border-radius: 2px; overflow: hidden; background: #221f3a; }
+        .loader-fill { height: 100%; width: var(--blazor-load-percentage, 0%); transition: width 0.2s;
+                       background: linear-gradient(90deg, #7c6cf2, #c9c0ff); box-shadow: 0 0 10px #7c6cf2; }
+        .loader-text { font: 12px system-ui, sans-serif; letter-spacing: 3px; color: #8b86a8; }
+        .loader-text::after { content: " " var(--blazor-load-percentage-text, ""); }
+        @keyframes loader-glow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(124, 108, 242, 0.45)); }
+            35% { filter: drop-shadow(0 0 22px rgba(124, 108, 242, 0.8)); }
+            60% { filter: drop-shadow(0 0 14px rgba(124, 108, 242, 0.55)); }
+        }
+        @media (prefers-reduced-motion: reduce) { .loader-title { animation: none; } }
     </style>
     <script type="importmap"></script>
 </head>
 
 <body>
-    <div id="app"><div class="boot">Loading 3D…</div></div>
+    <div id="app"></div>
+    <div class="loader" role="progressbar" aria-label="Loading DrawnUI 3D Demo" aria-valuemin="0" aria-valuemax="100">
+        <div class="loader-title">DRAWNUI 3D DEMO</div>
+        <div class="loader-bar"><div class="loader-fill"></div></div>
+        <div class="loader-text">LOADING</div>
+    </div>
+    <script>
+        // The loading screen's exit; Blazor fills --blazor-load-percentage as its files arrive. Exit (called by the app after its first drawn frame).
+        window.add3dLoaderDone = () => {
+            const loader = document.querySelector(".loader");
+            if (!loader) return;
+            loader.classList.add("done");
+            setTimeout(() => loader.remove(), 400);
+        };
+    </script>
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
 </body>
 

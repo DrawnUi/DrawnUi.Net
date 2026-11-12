@@ -27,7 +27,7 @@ public static partial class Program
             var query = JSHost.GlobalThis.GetPropertyAsJSObject("location").GetPropertyAsString("search") ?? "";
             if (query.Contains("perf", StringComparison.OrdinalIgnoreCase))
                 PerfProbe.Start(root.Gallery, query);
-            return new Canvas
+            var canvas = new Canvas
             {
                 BackgroundColor = Theme.Page,
                 RenderingMode = RenderingModeType.Accelerated,
@@ -36,5 +36,17 @@ public static partial class Program
                 VerticalOptions = LayoutOptions.Fill,
                 Content = root,
             };
+            // The loading screen (wwwroot/index.html) fades out with the first frame drawn.
+            EventHandler<SkiaDrawingContext> drawn = null;
+            drawn = (_, _) =>
+            {
+                canvas.WasDrawn -= drawn;
+                LoaderDone();
+            };
+            canvas.WasDrawn += drawn;
+            return canvas;
         });
+
+    [JSImport("globalThis.add3dLoaderDone")]
+    static partial void LoaderDone();
 }

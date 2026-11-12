@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Add3dGallery;
 
@@ -13,10 +14,29 @@ public partial class MainPage
 
     [Inject] NavigationManager Navigation { get; set; }
 
+    [Inject] IJSRuntime JS { get; set; }
+
+    Canvas _canvas;
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
         if (new Uri(Navigation.Uri).Query.Contains("perf", StringComparison.OrdinalIgnoreCase))
             PerfProbe.Start(_content.Gallery, new Uri(Navigation.Uri).Query);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if (!firstRender || _canvas == null)
+            return;
+        // The loading screen (wwwroot/index.html) fades out with the first frame drawn.
+        EventHandler<SkiaDrawingContext> drawn = null;
+        drawn = (_, _) =>
+        {
+            _canvas.WasDrawn -= drawn;
+            _ = JS.InvokeVoidAsync("add3dLoaderDone");
+        };
+        _canvas.WasDrawn += drawn;
     }
 }

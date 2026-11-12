@@ -2,7 +2,7 @@
 // Loads the .NET runtime, wires DrawnUI.Web callbacks, runs the app.
 
 import { dotnet } from './_framework/dotnet.js';
-import { setModuleExports, showLoader, hideLoader, showError } from './_content/DrawnUi.Web/drawnui-web.js';
+import { setModuleExports, showError } from './_content/DrawnUi.Web/drawnui-web.js';
 
 // Recursively find the [JSExport] Main in an exports tree (no per-app namespace hardcode).
 function findExport(obj, name) {
@@ -22,11 +22,11 @@ console.log('Add3dGalleryWeb: Starting...');
 // Expose dotnet runtime globally so drawnui-web.js can find Emscripten GL module
 globalThis.dotnet = dotnet;
 
-showLoader();
-
 try {
     const { getAssemblyExports, getConfig } = await dotnet
         .withDiagnosticTracing(false)
+        // the page's loading screen shows the share of the runtime's files that arrived
+        .withModuleConfig({ onDownloadResourceProgress: (loaded, total) => globalThis.add3dLoaderProgress?.(loaded, total) })
         .withApplicationArgumentsFromQuery()
         .create();
 
@@ -58,7 +58,6 @@ try {
     if (!main) throw new Error(`No [JSExport] Main found in ${config.mainAssemblyName}`);
     main();
 
-    hideLoader();
     console.log('Add3dGalleryWeb: Ready!');
 
 } catch (error) {
