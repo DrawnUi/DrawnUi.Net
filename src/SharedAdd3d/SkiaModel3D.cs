@@ -969,8 +969,9 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         if (gr == null)
             return;
         // Nothing changed since the last render (a parent redraws: the page scrolls, a sibling changes): its image
-        // again, no 3D pass. GL keeps one texture per control; other GPU backends render every time.
-        if (!_stale && gr.Backend == GRBackend.OpenGL && _target.Image != null && _target.Context == gr && _target.Width == w && _target.Height == h)
+        // again, no 3D pass. Every renderer (GL, Vulkan, Metal) keeps one image per control until a resize or a new
+        // device, and records the context it belongs to.
+        if (!_stale && _target.Image != null && _target.Context == gr && _target.Width == w && _target.Height == h)
         {
             ctx.Context.Canvas.DrawImage(_target.Image, SKRect.Create(dest.Left, dest.Top, w, h));
             return;
