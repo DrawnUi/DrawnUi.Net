@@ -81,7 +81,7 @@
         <PackageReference Include="CommonMark.NET" Version="0.15.1" />
         <!-- the DrawnUI Designer agent: flows to apps, its buildTransitive targets attach it to Debug builds only -->
         <PackageReference Include="DrawnUi.Designer.Agent" Version="0.1.0-preview.11" />
-        <PackageReference Include="Plugin.Maui.ApplePlatform" Version="1.0.0">
+        <PackageReference Include="Plugin.Maui.ApplePlatform" Version="1.0.0.1">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
