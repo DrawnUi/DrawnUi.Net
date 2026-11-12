@@ -1,4 +1,4 @@
-﻿---
+---
 name: drawnui-fluent
 description: "Use when writing DrawnUI C# code-behind with fluent extensions. Covers inline control construction, .Assign(out _field), .Initialize(), .OnTapped(), .OnHovered(), .OnTextChanged(), .ObserveProperty(), .ObserveProperties(), .ObservePropertyTwoWay() (two-way binding), .Adapt(), .WhenPaint(), .ObserveSelf(), layout aliases (SkiaStack/SkiaRow/SkiaLayer), one-shot and looping animations, gradients, colors, shadows, SkiaLottie, SkiaImageTiles, and SkiaBackdrop code-behind patterns. Load before any DrawnUI C# composition task."
 version: 1.3.1
@@ -684,6 +684,62 @@ public class PresetCell : SkiaDynamicDrawnCell
 - A custom range control overrides `GetAccessibilityValue()` (now, min, max, step, optional spoken text) and `OnAccessibilitySetValue(double)`, and steps on ArrowUp / ArrowDown in `OnAccessibilityKey`: screen readers then adjust and set it.
 - To hide a part of a recycled cell from the pointer and the keyboard, use `Opacity = 0` plus `InputTransparent = true`: opacity alone still takes input.
 - Rules: `drawnui` skill, keyboard bullets.
+
+### On-screen keyboard over a form (MAUI phones)
+
+The page is a `DrawnUiBasePage` (`KeyboardSize`; on iOS the app subtracts the bottom inset, Android's value already leaves it out), the form's `SkiaScroll` adapts to the focused control, a spacer at the end of its content gives the last fields room. Rules: `drawnui` skill, "Keyboard over a form".
+
+```csharp
+public class FormPage : DrawnUiBasePage
+{
+    Canvas _canvas;
+    SkiaScroll _scroll;
+    SkiaControl _keyboardSpacer;
+
+    public FormPage()
+    {
+        Content = new Canvas
+        {
+            RenderingMode = RenderingModeType.Accelerated,
+            Gestures = GesturesMode.Enabled,
+            Content = new SkiaScroll
+            {
+                AdaptToKeyboardGap = 8, // the default: points between the field and the keyboard
+                Content = new SkiaStack
+                {
+                    Children =
+                    {
+                        new SkiaEditor { PlaceholderText = "Name", MaxLines = 1 },
+                        new SkiaEditor { PlaceholderText = "Email", MaxLines = 1 },
+                        new SkiaControl { HorizontalOptions = LayoutOptions.Fill, IsVisible = false }.Assign(out _keyboardSpacer),
+                    }
+                }
+            }.Assign(out _scroll)
+        }.Assign(out _canvas);
+        // the next field focused while the keyboard stays open
+        _canvas.FocusedItemChanged += (_, _) => FollowKeyboard(KeyboardSize);
+    }
+
+    public override double OnKeyboardResized(double size)
+    {
+        var raw = base.OnKeyboardResized(size);
+        FollowKeyboard(raw);
+        return raw;
+    }
+
+    void FollowKeyboard(double raw)
+    {
+        var keyboard = raw;
+#if IOS
+        keyboard = Math.Max(0, raw - Super.Screen.BottomInset); // iOS reports it down to the screen's bottom
+#endif
+        _keyboardSpacer.HeightRequest = keyboard;
+        _keyboardSpacer.IsVisible = keyboard > 0;
+        _scroll.AdaptToKeyboardFor = keyboard > 0 ? _canvas.FocusedChild as SkiaControl : null;
+        _scroll.AdaptToKeyboardSize = keyboard;
+    }
+}
+```
 
 ## XAML → Code-Behind Porting
 

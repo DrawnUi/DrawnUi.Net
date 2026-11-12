@@ -58,6 +58,7 @@ public class SKMeshAllocationTests
         }
 
         int frame = 0;
+        AllocationMeasure.OptimizeUniformWrites(); // the frames write uniforms: measure them with the optimized writer
         long perFrame = AllocationMeasure.MinBytesPerFrame(() => Frame(frame++), warmup: 80, frames: 80);
         _output.WriteLine($"{perFrame} B per frame");
 

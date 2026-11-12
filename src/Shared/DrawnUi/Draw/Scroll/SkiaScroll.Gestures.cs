@@ -302,6 +302,72 @@ public partial class SkiaScroll
         return offset > end + 0.5f; // dragged on, toward the end
     }
 
+    // Wheel chaining, the same rule as the drags above and as browsers: a plain wheel over a scroll inside this one on
+    // the same axis goes to that scroll while it can move that way; at its end this scroll moves. Decided once per wheel
+    // gesture (events less than WheelGestureGapMs apart) and held for it: never a hand-over in the middle of a spin.
+    // Only scrolls get it first; a zoomable view keeps zooming on Ctrl/Cmd + wheel or a pinch only.
+
+    /// <summary>Wheel events closer than this (milliseconds) are one wheel gesture, which keeps the scroll it started on.</summary>
+    public static double WheelGestureGapMs = 300;
+
+    SkiaScroll _wheelOwner;
+    long _lastWheelNanos;
+
+    /// <summary>The scroll this wheel event goes to: a scroll inside this one under the pointer, or this one.</summary>
+    SkiaScroll WheelTarget(SkiaGesturesParameters args)
+    {
+        var now = args.ArrivedTimeNanos != 0 ? args.ArrivedTimeNanos : Super.GetCurrentTimeNanos();
+        var latched = _wheelOwner != null && now - _lastWheelNanos < WheelGestureGapMs * 1_000_000;
+        _lastWheelNanos = now;
+        if (latched)
+            return _wheelOwner;
+
+        _wheelOwner = this;
+        var wheel = args.Event.Wheel;
+        if (wheel == null || wheel.Delta == 0)
+            return this;
+        var vertical = !wheel.IsHorizontal;
+        if (vertical ? Orientation != ScrollOrientation.Vertical : Orientation != ScrollOrientation.Horizontal)
+            return this;
+
+        var inner = FindInnerScrollAt(Content, new SKPoint(args.Event.Location.X, args.Event.Location.Y));
+        if (inner != null && inner.Orientation == Orientation && inner.CanWheelMove(wheel.Delta, vertical))
+            _wheelOwner = inner;
+        return _wheelOwner;
+    }
+
+    /// <summary>The nearest scroll inside <paramref name="control"/> drawn under the point (canvas pixels).</summary>
+    // ponytail: walks the children lists, so a scroll inside a recycled template cell is not found; walk the cells too
+    // if lists of scrolling rows appear.
+    static SkiaScroll FindInnerScrollAt(SkiaControl control, SKPoint point)
+    {
+        if (control == null || !control.CanDraw)
+            return null;
+        if (control is SkiaScroll scroll)
+        {
+            if (!scroll.RespondsToGestures || scroll.ScrollLocked || scroll.InputTransparent)
+                return null;
+            return scroll.GetAccessibilityPixelRect().Contains(point) ? scroll : null;
+        }
+        foreach (var child in control.Views)
+        {
+            var found = FindInnerScrollAt(child, point);
+            if (found != null)
+                return found;
+        }
+        return null;
+    }
+
+    /// <summary>This scroll can move with a wheel of this sign on that axis (up / left = toward the start).</summary>
+    bool CanWheelMove(float delta, bool vertical)
+    {
+        var bounds = ContentOffsetBounds;
+        var offset = vertical ? ViewportOffsetY : ViewportOffsetX;
+        var start = vertical ? bounds.Bottom : bounds.Right; // offset 0: the content's top / left
+        var end = vertical ? bounds.Top : bounds.Left;
+        return delta > 0 ? offset < start - 0.5f : offset > end + 0.5f;
+    }
+
     public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     {
         if (TouchEffect.LogEnabled)
@@ -390,6 +456,16 @@ public partial class SkiaScroll
             // the scroll inside keeps the drag to its end: never a hand-over in the middle of a drag
             var inner = PassToChildren();
             return inner == this ? consumedDefault : inner ?? consumedDefault;
+        }
+
+        if (args.Type == TouchActionResult.Wheel && args.Event.Wheel?.IsZoom != true
+            && !KeyboardManager.IsControlPressed && !KeyboardManager.IsMetaPressed
+            && WheelTarget(args) is var wheelTarget && wheelTarget != this)
+        {
+            // ponytail: handed straight to the scroll inside, not through the controls between (none of them may take
+            // a plain wheel before it); its wheel never uses the dispatch offsets.
+            wheelTarget.ProcessGestures(args, apply);
+            return this; // this scroll keeps the wheel gesture: its next events are decided here again
         }
 
         if (args.Type == TouchActionResult.Wheel

@@ -3047,14 +3047,16 @@ namespace DrawnUi.Draw
             typeof(IDrawnBase),
             typeof(SkiaControl),
             default(IDrawnBase),
-            propertyChanged: OnControlParentChanged);
+            propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._parent = (IDrawnBase)n; OnControlParentChanged(b, o, n); });
+
+        IDrawnBase _parent;
 
         /// <summary>
         /// Do not set this directly if you don't know what you are doing, use SetParent()
         /// </summary>
         public new IDrawnBase Parent
         {
-            get { return (IDrawnBase)GetValue(ParentProperty); }
+            get { return _parent; }
             set { SetValue(ParentProperty, value); }
         }
 
@@ -3670,29 +3672,35 @@ namespace DrawnUi.Draw
         public static readonly BindableProperty SkewXProperty
             = BindableProperty.Create(nameof(SkewX),
                 typeof(float), typeof(SkiaControl),
-                0.0f, propertyChanged: NeedRepaint);
+                0.0f, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._skewX = (float)n; NeedRepaint(b, o, n); });
+
+        float _skewX = 0.0f;
 
         public float SkewX
         {
-            get { return (float)GetValue(SkewXProperty); }
+            get { return _skewX; }
             set { SetValue(SkewXProperty, value); }
         }
 
         public static readonly BindableProperty SkewYProperty
             = BindableProperty.Create(nameof(SkewY),
                 typeof(float), typeof(SkiaControl),
-                0.0f, propertyChanged: NeedRepaint);
+                0.0f, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._skewY = (float)n; NeedRepaint(b, o, n); });
+
+        float _skewY = 0.0f;
 
         public float SkewY
         {
-            get { return (float)GetValue(SkewYProperty); }
+            get { return _skewY; }
             set { SetValue(SkewYProperty, value); }
         }
 
         public static readonly BindableProperty TranslationZProperty
             = BindableProperty.Create(nameof(TranslationZ),
                 typeof(double), typeof(SkiaControl),
-                0.0, propertyChanged: NeedRepaint);
+                0.0, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._translationZ = (double)n; NeedRepaint(b, o, n); });
+
+        double _translationZ = 0.0;
 
         /// <summary>
         /// Gets or sets Z-perspective translation. This is a bindable property.
@@ -3700,14 +3708,16 @@ namespace DrawnUi.Draw
         /// <remarks>Rotation is applied relative to <see cref="VisualElement.AnchorX"/> and <see cref="VisualElement.AnchorY" />.</remarks>
         public double TranslationZ
         {
-            get { return (double)GetValue(TranslationZProperty); }
+            get { return _translationZ; }
             set { SetValue(TranslationZProperty, value); }
         }
 
         public static readonly BindableProperty RotationZProperty
             = BindableProperty.Create(nameof(RotationZ),
                 typeof(double), typeof(SkiaControl),
-                0.0, propertyChanged: NeedRepaint);
+                0.0, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._rotationZ = (double)n; NeedRepaint(b, o, n); });
+
+        double _rotationZ = 0.0;
 
         /// <summary>
         /// Gets or sets the rotation (in degrees) about the Z-axis (perspective rotation) when the element is rendered. This is a bindable property.
@@ -3715,7 +3725,7 @@ namespace DrawnUi.Draw
         /// <remarks>Rotation is applied relative to <see cref="VisualElement.AnchorX"/> and <see cref="VisualElement.AnchorY" />.</remarks>
         public double RotationZ
         {
-            get { return (double)GetValue(RotationZProperty); }
+            get { return _rotationZ; }
             set { SetValue(RotationZProperty, value); }
         }
 
@@ -3746,22 +3756,26 @@ namespace DrawnUi.Draw
         public static readonly BindableProperty Perspective1Property
             = BindableProperty.Create(nameof(Perspective1),
                 typeof(float), typeof(SkiaControl),
-                0.0f, propertyChanged: NeedRepaint);
+                0.0f, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._perspective1 = (float)n; NeedRepaint(b, o, n); });
+
+        float _perspective1 = 0.0f;
 
         public float Perspective1
         {
-            get { return (float)GetValue(Perspective1Property); }
+            get { return _perspective1; }
             set { SetValue(Perspective1Property, value); }
         }
 
         public static readonly BindableProperty Perspective2Property
             = BindableProperty.Create(nameof(Perspective2),
                 typeof(float), typeof(SkiaControl),
-                0.0f, propertyChanged: NeedRepaint);
+                0.0f, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._perspective2 = (float)n; NeedRepaint(b, o, n); });
+
+        float _perspective2 = 0.0f;
 
         public float Perspective2
         {
-            get { return (float)GetValue(Perspective2Property); }
+            get { return _perspective2; }
             set { SetValue(Perspective2Property, value); }
         }
 
@@ -3939,11 +3953,13 @@ namespace DrawnUi.Draw
             nameof(AddTranslationY),
             typeof(double),
             typeof(SkiaControl),
-            0.0, propertyChanged: NeedRepaint);
+            0.0, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._addTranslationY = (double)n; NeedRepaint(b, o, n); });
+
+        double _addTranslationY;
 
         public double AddTranslationY
         {
-            get { return (double)GetValue(AddTranslationYProperty); }
+            get { return _addTranslationY; }
             set { SetValue(AddTranslationYProperty, value); }
         }
 
@@ -3951,11 +3967,13 @@ namespace DrawnUi.Draw
             nameof(AddTranslationX),
             typeof(double),
             typeof(SkiaControl),
-            0.0, propertyChanged: NeedRepaint);
+            0.0, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._addTranslationX = (double)n; NeedRepaint(b, o, n); });
+
+        double _addTranslationX;
 
         public double AddTranslationX
         {
-            get { return (double)GetValue(AddTranslationXProperty); }
+            get { return _addTranslationX; }
             set { SetValue(AddTranslationXProperty, value); }
         }
 
@@ -4114,7 +4132,9 @@ namespace DrawnUi.Draw
 
         public static readonly BindableProperty RenderingScaleProperty = BindableProperty.Create(nameof(RenderingScale),
             typeof(float), typeof(SkiaControl),
-            -1.0f, propertyChanged: NeedUpdateScale);
+            -1.0f, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._renderingScale = (float)n; NeedUpdateScale(b, o, n); });
+
+        float _renderingScale = -1f;
 
         private static void NeedUpdateScale(BindableObject bindable, object oldValue, object newValue)
         {
@@ -4128,16 +4148,7 @@ namespace DrawnUi.Draw
         {
             get
             {
-                var value = -1f;
-                try
-                {
-                    value = (float)GetValue(RenderingScaleProperty);
-                }
-                catch (Exception e)
-                {
-                    Super.Log(e); //catching Nullable object must have a value, is this because of NET8?
-                }
-
+                var value = _renderingScale;
                 if (value <= 0)
                 {
                     return GetDensity();
@@ -4147,10 +4158,12 @@ namespace DrawnUi.Draw
             }
             set
             {
+                // set on every draw: an unchanged scale returns before the lock, SetValue would do nothing either
+                if (_renderingScale == value)
+                    return;
                 lock (lockMeasured)
                 {
-                    // set on every draw: an unchanged scale returns before boxing, SetValue would do nothing either
-                    if (GetValue(RenderingScaleProperty) is float current && current == value)
+                    if (_renderingScale == value)
                         return;
 
                     SetValue(RenderingScaleProperty, value);
@@ -10237,14 +10250,16 @@ namespace DrawnUi.Draw
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate),
             typeof(DataTemplate),
             typeof(DataTemplate), null,
-            propertyChanged: ItemTemplateChanged);
+            propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._itemTemplate = (DataTemplate)n; ItemTemplateChanged(b, o, n); });
+
+        DataTemplate _itemTemplate;
 
         /// <summary>
         /// Kind of BindableLayout.DrawnTemplate
         /// </summary>
         public DataTemplate ItemTemplate
         {
-            get { return (DataTemplate)GetValue(ItemTemplateProperty); }
+            get { return _itemTemplate; }
             set { SetValue(ItemTemplateProperty, value); }
         }
 

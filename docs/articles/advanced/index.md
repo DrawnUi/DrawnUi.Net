@@ -18,6 +18,7 @@ This section covers advanced features and concepts for DrawnUi development.
 ## Interaction
 
 - [Handling Gestures](../gestures.md) - Handling complex touch interactions
+- [On-screen Keyboard over a Form](keyboard.md) - Keeping the focused field above the phone keyboard
 
 ## Specialized Use Cases
 

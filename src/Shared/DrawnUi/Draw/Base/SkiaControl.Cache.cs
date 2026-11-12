@@ -415,14 +415,17 @@ public partial class SkiaControl
         typeof(SkiaCacheType),
         typeof(SkiaControl),
         SkiaCacheType.None,
-        propertyChanged: NeedDraw);
+        propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._useCache = (SkiaCacheType)n; NeedDraw(b, o, n); });
+
+    // the property read on every draw keeps its value here too (a bindable read is a lookup)
+    SkiaCacheType _useCache = SkiaCacheType.None;
 
     /// <summary>
     /// Never reuse the rendering result. Actually true for ScrollLooped SkiaLayout viewport container to redraw its content several times for creating a looped aspect.
     /// </summary>
     public SkiaCacheType UseCache
     {
-        get { return (SkiaCacheType)GetValue(UseCacheProperty); }
+        get { return _useCache; }
         set { SetValue(UseCacheProperty, value); }
     }
 
@@ -430,14 +433,16 @@ public partial class SkiaControl
         typeof(bool),
         typeof(SkiaControl),
         true,
-        propertyChanged: NeedDraw);
+        propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._allowCaching = (bool)n; NeedDraw(b, o, n); });
+
+    bool _allowCaching = true;
 
     /// <summary>
     /// Might want to set this to False for certain cases.
     /// </summary>
     public bool AllowCaching
     {
-        get { return (bool)GetValue(AllowCachingProperty); }
+        get { return _allowCaching; }
         set { SetValue(AllowCachingProperty, value); }
     }
 

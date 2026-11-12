@@ -5166,7 +5166,8 @@ namespace DrawnUi.Draw
                         return null; // touch: a long press selects, a drag keeps scrolling
 
                     var index = IndexAt(point);
-                    var now = Environment.TickCount64;
+                    // when the click happened (stamped at arrival), not when a frame got to process it
+                    var now = args.Event.Timestamp.Ticks / TimeSpan.TicksPerMillisecond;
                     var second = now - _lastClickMs < 450
                                  && SKPoint.Distance(point, _lastClickPoint) < 8 * RenderingScale;
                     _lastClickMs = second ? 0 : now;
