@@ -56,6 +56,9 @@ namespace DrawnUi.Draw
 
             // the safe area changes with a rotation, a status bar shown or hidden, a split view: the key window reports it
             UIWindow.Notifications.ObserveDidBecomeKey((sender, args) => WatchSafeArea(args.Notification.Object as UIWindow));
+            // a window already key: MAUI makes its window key before the app's FinishedLaunching handlers run
+            foreach (var window in AppWindows())
+                WatchSafeArea(window);
 
             if (UseDisplaySync)
             {
@@ -133,6 +136,38 @@ namespace DrawnUi.Draw
         /// <summary>
         /// Puts a <see cref="SafeAreaWatcher"/> into the window once and reads its safe area now.
         /// </summary>
+        /// <summary>
+        /// The app's key window: the one of its connected scenes, or the key window of an app without scenes. Only the
+        /// key window: a scene also lists other windows (the one Init reads the first insets from), whose safe area is
+        /// not the app's.
+        /// </summary>
+        static IEnumerable<UIWindow> AppWindows()
+        {
+            var found = false;
+            foreach (var scene in UIApplication.SharedApplication.ConnectedScenes)
+            {
+                if (scene is UIWindowScene windowScene)
+                {
+                    foreach (var window in windowScene.Windows)
+                    {
+                        if (!window.IsKeyWindow)
+                            continue;
+                        found = true;
+                        yield return window;
+                    }
+                }
+            }
+
+            if (!found)
+            {
+#pragma warning disable CA1422 // KeyWindow: the only handle on the window of an app without scenes
+                var key = UIApplication.SharedApplication.KeyWindow;
+#pragma warning restore CA1422
+                if (key != null)
+                    yield return key;
+            }
+        }
+
         static void WatchSafeArea(UIWindow window)
         {
             if (window == null)

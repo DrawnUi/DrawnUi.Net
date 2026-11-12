@@ -30,15 +30,24 @@ public partial class Super
     /// <param name="link"></param>
     public static void OpenLink(string link)
     {
-        try
+        // UIApplication.open(_:options:completionHandler:), on the main thread: since iOS 18 the old openURL: returns
+        // NO and opens nothing (iOS and Mac Catalyst).
+        MainThread.BeginInvokeOnMainThread(() =>
         {
-            var url = new NSUrl(link);
-            var res = UIApplication.SharedApplication.OpenUrl(url);
-        }
-        catch (Exception e)
-        {
-            Super.Log(e);
-        }
+            try
+            {
+                var url = new NSUrl(link);
+                UIApplication.SharedApplication.OpenUrl(url, new UIApplicationOpenUrlOptions(), ok =>
+                {
+                    if (!ok)
+                        Super.Log($"[OpenLink] the system did not open {link}");
+                });
+            }
+            catch (Exception e)
+            {
+                Super.Log(e);
+            }
+        });
     }
 
     /// <summary>
