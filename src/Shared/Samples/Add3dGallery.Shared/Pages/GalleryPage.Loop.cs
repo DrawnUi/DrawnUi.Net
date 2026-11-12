@@ -62,7 +62,8 @@ public partial class GalleryPage
         PriceFrame(delta);
         ListFrame();
         // The scene pans: every layer slides by its share, the ground (and the mobs on it) the most.
-        _pan += Scenery.PanSpeed * delta;
+        // Wrapped where every layer is back at its start (100000 pt, 50 min), so the float keeps its fractions.
+        _pan = (_pan + Scenery.PanSpeed * delta) % 100_000;
         if (_field.WasInLastFrame())
             _scenery.Pan = _pan;
         CardFrame(delta);

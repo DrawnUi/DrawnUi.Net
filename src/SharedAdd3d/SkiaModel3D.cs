@@ -335,8 +335,8 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     }
 
     /// <summary>
-    /// Two fingers pinching and the mouse wheel zoom the view, between <see cref="MinZoom"/> and <see cref="MaxZoom"/>
-    /// (off by default; on, the wheel over the model zooms instead of scrolling the page).
+    /// Two fingers pinching and Ctrl (Cmd) + mouse wheel zoom the view, between <see cref="MinZoom"/> and
+    /// <see cref="MaxZoom"/> (off by default). A plain wheel over the model still scrolls the page.
     /// </summary>
     public bool PinchZoom
     {
@@ -366,8 +366,9 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     }
 
     /// <summary>
-    /// Drags turn the model only around its vertical axis, and a drag that starts vertical is left to the parent: a
-    /// model in a scrolling list turns sideways while the list still scrolls (off by default).
+    /// Drags turn the model only around its vertical axis, and a drag that starts vertical is left to the parent, also
+    /// outside a scroll (off by default). Inside a vertical <see cref="SkiaScroll"/> a drag that starts vertical always
+    /// scrolls; without LockPitch a sideways one turns and tilts the model.
     /// </summary>
     public bool LockPitch
     {
@@ -794,6 +795,32 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         return new SKPoint((float)((apply.MappedLocation.X + offset.X) / RenderingScale - X), (float)((apply.MappedLocation.Y + offset.Y) / RenderingScale - Y));
     }
 
+    /// <summary>
+    /// Which way the drag goes, decided once per drag: 1 = this model's (sideways, or any drag when nothing around it
+    /// scrolls vertically), 2 = the parent's (it started mostly vertical inside a vertical scroll, or with
+    /// <see cref="LockPitch"/>), 0 = not moved past the slop yet. As Google's model-viewer (touch-action pan-y): a
+    /// model inside a scrolling page never traps the vertical drags that scroll it.
+    /// </summary>
+    int DragAxis(SkiaGesturesParameters args)
+    {
+        if (_panAxis != 0)
+            return _panAxis;
+        if (!_lockPitch && !InVerticalScroll())
+            return _panAxis = 1;
+        var total = args.Event.Distance.Total;
+        if (MathF.Abs(total.X) + MathF.Abs(total.Y) < 2)
+            return 0;
+        return _panAxis = MathF.Abs(total.Y) > MathF.Abs(total.X) ? 2 : 1;
+    }
+
+    bool InVerticalScroll()
+    {
+        for (var parent = Parent as SkiaControl; parent != null; parent = parent.Parent as SkiaControl)
+            if (parent is SkiaScroll { Orientation: ScrollOrientation.Vertical or ScrollOrientation.Both })
+                return true;
+        return false;
+    }
+
     /// <inheritdoc />
     public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     {
@@ -803,6 +830,20 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
             {
                 case TouchActionResult.Pointer or TouchActionResult.Down or TouchActionResult.Panning when _tilt > 0:
                     {
+                        if (args.Type == TouchActionResult.Down)
+                            _panAxis = 0;
+                        else if (args.Type == TouchActionResult.Panning)
+                        {
+                            var axis = DragAxis(args);
+                            if (axis == 0)
+                                return this;
+                            if (axis == 2)
+                            {
+                                _tiltOn = false;
+                                Changed();
+                                return null;
+                            }
+                        }
                         var pointer = PointInside(apply);
                         var (w, h) = SizeInPoints();
                         if (w > 0 && h > 0)
@@ -831,16 +872,11 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
                     Update();
                     return this;
                 case TouchActionResult.Panning when _orbit:
-                    if (_lockPitch)
+                    switch (DragAxis(args))
                     {
-                        if (_panAxis == 0)
-                        {
-                            var total = args.Event.Distance.Total;
-                            if (MathF.Abs(total.X) + MathF.Abs(total.Y) < 2)
-                                return this;
-                            _panAxis = MathF.Abs(total.Y) > MathF.Abs(total.X) ? 2 : 1;
-                        }
-                        if (_panAxis == 2)
+                        case 0:
+                            return this;
+                        case 2:
                             return null;
                     }
                     var scale = MathF.Max(RenderingScale, 0.1f);
@@ -852,7 +888,8 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
                         _pitch = Math.Clamp(_pitch + args.Event.Distance.Delta.Y / scale * 0.3f, -60, 80);
                     Update();
                     return this;
-                case TouchActionResult.Wheel when _pinchZoom && args.Event.Wheel != null:
+                // A plain wheel scrolls the page; Ctrl (Cmd) + wheel zooms, as maps and Google's model-viewer.
+                case TouchActionResult.Wheel when _pinchZoom && args.Event.Wheel != null && (KeyboardManager.IsControlPressed || KeyboardManager.IsMetaPressed):
                     var perNotch = Superview?.WheelDeltaPerNotch ?? 0;
                     var notches = perNotch > 0 ? args.Event.Wheel.Delta / perNotch : MathF.Sign(args.Event.Wheel.Delta);
                     _reset = 1;

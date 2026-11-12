@@ -13,6 +13,13 @@ namespace DrawnUi.Net.Tests.Add3d;
 /// (ScreenPosition / screen_position), pinch and wheel zoom (PinchZoom), the view glided home (ResetView,
 /// ResetOnDoubleTap), yaw-only drags that leave vertical ones to the list (LockPitch), and no frames off screen.
 /// </summary>
+/// <summary>Tests that hold a key in the process-wide KeyboardManager (Ctrl for the wheel zoom).</summary>
+[CollectionDefinition("GlobalKeyboard", DisableParallelization = true)]
+public class GlobalKeyboardCollection
+{
+}
+
+[Collection("GlobalKeyboard")]
 public class ViewerApiTests
 {
     static readonly Model3D Ball = new Model3D().Part("ball", Mesh3D.Sphere(1), Colors.White);
@@ -71,14 +78,26 @@ public class ViewerApiTests
     }
 
     [Fact]
-    public void The_wheel_zooms_only_with_PinchZoom_and_stays_in_range()
+    public void Ctrl_wheel_zooms_only_with_PinchZoom_and_stays_in_range()
     {
         using var host = new HeadlessCanvasHost(400, 300, 1f, Colors.Black);
         var model = Model();
         host.Canvas.Content = new SkiaLayer { VerticalOptions = LayoutOptions.Fill, Children = { model } };
         Frames(host, 3);
         var robot = new GestureRobot(host);
+        KeyboardManager.KeyboardPressed(InputKey.ControlLeft);
+        try
+        {
+            CtrlWheel(host, robot, model);
+        }
+        finally
+        {
+            KeyboardManager.KeyboardReleased(InputKey.ControlLeft);
+        }
+    }
 
+    static void CtrlWheel(HeadlessCanvasHost host, GestureRobot robot, SkiaModel3D model)
+    {
         robot.WheelScroll(200, 150, 100);
         Frames(host, 2);
         Assert.Equal(1, model.Zoom, 3);
@@ -111,7 +130,9 @@ public class ViewerApiTests
         var robot = new GestureRobot(host);
 
         robot.Pan(150, 100, 300, 200, 200, 12);
+        KeyboardManager.KeyboardPressed(InputKey.ControlLeft);
         robot.WheelScroll(200, 150, 100);
+        KeyboardManager.KeyboardReleased(InputKey.ControlLeft);
         Frames(host, 2);
         Assert.NotEqual(30, model.Yaw, 1);
         Assert.NotEqual(10, model.Pitch, 1);
@@ -187,6 +208,61 @@ public class ViewerApiTests
         robot.SettleFling(scroll);
         Assert.True(MathF.Abs(model.Yaw) > 20, $"turned: {model.Yaw}");
         Assert.Equal(10, model.Pitch, 1);
+        Assert.Equal(0, scroll.ViewportOffsetY, 1);
+    }
+
+    /// <summary>
+    /// A viewer on a scrolling page (no LockPitch) never traps the page: a vertical drag scrolls it and leaves the model
+    /// alone, a sideways one turns the model (its vertical part tilts it) and does not scroll. Tilt cards the same.
+    /// </summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void On_a_scrolling_page_vertical_drags_scroll_and_sideways_ones_turn(bool tiltCard)
+    {
+        using var host = new HeadlessCanvasHost(400, 600, 1f, Colors.Black);
+        SkiaModel3D model;
+        SkiaScroll scroll;
+        host.Canvas.Content = new SkiaScroll
+        {
+            HorizontalOptions = LayoutOptions.Fill,
+            VerticalOptions = LayoutOptions.Fill,
+            Content = new SkiaStack
+            {
+                Children =
+                {
+                    new SkiaModel3D(Ball) { Yaw = 0, Pitch = 10, PinchZoom = true, HeightRequest = 300, HorizontalOptions = LayoutOptions.Fill }
+                        .Adapt(m => { if (tiltCard) { m.Orbit = false; m.TiltToPointer = 20; } })
+                        .Assign(out model),
+                    new SkiaControl { HeightRequest = 2000 },
+                }
+            }
+        }.Assign(out scroll);
+        Frames(host, 3);
+        var robot = new GestureRobot(host);
+
+        robot.Pan(200, 250, 210, 80, 200, 12);
+        robot.SettleFling(scroll);
+        Assert.True(scroll.ViewportOffsetY < -60, $"the page scrolled: {scroll.ViewportOffsetY}");
+        Assert.Equal(0, model.Yaw, 1);
+        Assert.Equal(10, model.Pitch, 1);
+
+        // A plain wheel over the viewer scrolls the page too; the view keeps its zoom.
+        var offset = scroll.ViewportOffsetY;
+        for (var i = 0; i < 3; i++)
+            robot.WheelScroll(200, 100, -120);
+        robot.SettleFling(scroll);
+        Assert.True(scroll.ViewportOffsetY < offset - 40, $"the wheel scrolled: {offset} -> {scroll.ViewportOffsetY}");
+        Assert.Equal(1, model.Zoom, 3);
+
+        if (tiltCard)
+            return;
+        scroll.ScrollTo(0, 0, 0, true);
+        Frames(host, 3);
+        robot.Pan(100, 100, 300, 160, 200, 12);
+        robot.SettleFling(scroll);
+        Assert.True(MathF.Abs(model.Yaw) > 20, $"turned: {model.Yaw}");
+        Assert.NotEqual(10, model.Pitch, 1);
         Assert.Equal(0, scroll.ViewportOffsetY, 1);
     }
 

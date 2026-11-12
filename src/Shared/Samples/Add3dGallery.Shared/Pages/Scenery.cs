@@ -3,10 +3,9 @@ namespace Add3dGallery;
 /// <summary>
 /// The mobs' field: a side-scroller scene drawn in code with gradients and smooth outlines, the same as DrawnUI for
 /// Rust's gallery3d: a still sky and sun, then clouds, far hills, near hills and the grass with its dirt path, each
-/// sliding at its own share of the pan (parallax). Every moving layer repeats every 1000 points and is drawn twice side
-/// by side, its slide snapped to whole device pixels so the copies meet without a seam. The shapes are made once per
-/// size and painted once into a GPU image per layer (the sky and sun into one more); a frame only draws those images at
-/// their slide (<see cref="Pan"/>, in points), as DrawnUI for Rust's cached layer pictures.
+/// sliding at its own share of the pan (parallax). Every moving layer repeats every 1000 points. The shapes are made
+/// once per size and painted once into a GPU image per layer (the sky and sun into one more); a frame draws each layer
+/// as that image repeated sideways, at its exact slide (<see cref="Pan"/>, in points), fractions of a pixel included.
 /// </summary>
 public class Scenery : SkiaControl
 {
@@ -17,7 +16,7 @@ public class Scenery : SkiaControl
     public const float GroundTop = 196, GroundBottom = 262;
 
     /// <summary>How fast the scene pans, points per second, and each layer's share of it (far ones move less).</summary>
-    public const float PanSpeed = 22;
+    public const float PanSpeed = 33;
 
     static readonly float[] Parallax = { 0.08f, 0.2f, 0.45f, 1.0f };
 
@@ -80,9 +79,11 @@ public class Scenery : SkiaControl
         return (path, Vertical(top, bottom, from, to, s), from);
     }
 
-    /// <summary>The still sky and sun, then one tile of each moving layer, as GPU images of the canvas's context.</summary>
+    /// <summary>The still sky and sun, then one tile of each moving layer, as GPU images of the canvas's context; each
+    /// tile also as a shader that repeats it sideways, so a layer is one draw at any fraction of a pixel, without a seam.</summary>
     SKImage _backdrop;
     readonly SKImage[] _images = new SKImage[4];
+    readonly SKShader[] _tiles = new SKShader[4];
     GRContext _imagesContext;
 
     void PaintImages(GRContext gr, int w, int h)
@@ -105,6 +106,7 @@ public class Scenery : SkiaControl
             surface.Canvas.Clear(SKColors.Transparent);
             PaintLayer(surface.Canvas, i);
             _images[i] = surface.Snapshot();
+            _tiles[i] = _images[i].ToShader(SKShaderTileMode.Repeat, SKShaderTileMode.Decal, new SKSamplingOptions(SKFilterMode.Linear));
         }
     }
 
@@ -136,6 +138,8 @@ public class Scenery : SkiaControl
         _backdrop = null;
         for (var i = 0; i < _images.Length; i++)
         {
+            _tiles[i]?.Dispose();
+            _tiles[i] = null;
             _images[i]?.Dispose();
             _images[i] = null;
         }
@@ -191,7 +195,7 @@ public class Scenery : SkiaControl
         var images = gr != null && _backdrop != null && _images[^1] != null;
         canvas.Save();
         canvas.ClipRect(dest);
-        // Whole device pixels: the field's corner and every slide, so the two copies meet on a pixel edge.
+        // The field's corner on a whole device pixel: the backdrop image maps one to one.
         canvas.Translate(MathF.Round(dest.Left), MathF.Round(dest.Top));
 
         if (images)
@@ -199,20 +203,29 @@ public class Scenery : SkiaControl
         else
             PaintBackdrop(canvas, dest.Width, dest.Height, s);
 
+        // Every slide keeps its fraction of a pixel: a layer snapped to whole pixels steps 0 or 1 pixel on alternate
+        // frames at these speeds (the ground moves under one pixel a frame), which reads as a stutter.
         var tile = MathF.Round(TileWidth * s);
         for (var i = 0; i < _layers.Length; i++)
         {
-            var shift = MathF.Round(((_pan * Parallax[i]) % TileWidth) * s);
+            var shift = (_pan * Parallax[i] * s) % tile;
+            if (images)
+            {
+                // One draw of the repeating tile shader: no edge between copies to keep on a pixel.
+                _paint.Shader = _tiles[i];
+                _paint.Color = SKColors.White; // a shader takes the paint's alpha: keep it opaque
+                canvas.Save();
+                canvas.Translate(-shift, 0);
+                canvas.DrawRect(shift, 0, dest.Width, dest.Height, _paint);
+                canvas.Restore();
+                _paint.Shader = null;
+                continue;
+            }
+            // No GPU context: the shapes twice, side by side; they overlap by a pixel at each end, so no gap opens.
             for (var copy = 0; copy < 2; copy++)
             {
-                var x = copy * tile - shift;
-                if (images)
-                {
-                    canvas.DrawImage(_images[i], x, 0);
-                    continue;
-                }
                 canvas.Save();
-                canvas.Translate(x, 0);
+                canvas.Translate(copy * tile - shift, 0);
                 PaintLayer(canvas, i);
                 canvas.Restore();
             }

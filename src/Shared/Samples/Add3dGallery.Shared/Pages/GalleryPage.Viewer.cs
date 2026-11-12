@@ -92,7 +92,7 @@ public partial class GalleryPage
                         VerticalOptions = LayoutOptions.Fill,
                         Children = Hotspots.Select((spot, i) => (SkiaControl)Pin(i, spot.Name)).Append(Note()).ToList(),
                     },
-                    new SkiaLabel("Drag to turn  ·  pinch or scroll to zoom  ·  double-tap to reset")
+                    new SkiaLabel("Drag to turn  ·  pinch or Ctrl+scroll to zoom  ·  double-tap to reset")
                     {
                         FontSize = 12, TextColor = Theme.Muted, Margin = new Thickness(0, 0, 0, 12),
                         HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.End, InputTransparent = true,

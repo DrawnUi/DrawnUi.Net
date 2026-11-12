@@ -12,6 +12,8 @@ internal static class Renderer3D
 {
     public static SKImage? Draw(DrawnView canvas, GRContext gr, RenderTarget target, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h) => null;
 
+    public static bool StartProgram(GRContext gr) => false;
+
     public static void Release(RenderTarget target)
     {
     }
