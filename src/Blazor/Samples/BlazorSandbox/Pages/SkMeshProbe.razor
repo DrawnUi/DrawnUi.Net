@@ -10,7 +10,7 @@
 
 <h1>SKMesh Probe</h1>
 <p>Three SKMesh demos: solid triangle, indexed UV-gradient quad, animated wave with time uniform.</p>
-<p>Drawn with the <code>SKMesh</code> API from <code>DrawnUi.Draw.Meshes</code>, which runs on the current SkiaSharp. When SkiaSharp ships its own <code>SKMesh</code>, removing that one <code>using</code> switches to it.</p>
+<p><strong>Note:</strong> this page uses DrawnUI's own <code>SKMesh</code> (<code>DrawnUi.Draw.Meshes</code>), a temporary implementation that runs on the current SkiaSharp until SkiaSharp ships its <code>SKMesh</code> API. The API is the same, so switching to SkiaSharp's then means removing one <code>using</code>.</p>
 
 <Canvas Content="@_canvasContent"
     WidthRequest="420"
