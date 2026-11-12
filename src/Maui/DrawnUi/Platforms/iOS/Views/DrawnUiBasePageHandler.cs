@@ -129,7 +129,9 @@ public class DrawnUiBasePageHandler : PageHandler
         CGSize keyboardSize = result.RectangleFValue.Size;
         if (VirtualView is DrawnUiBasePage control)
         {
-            control.KeyboardResized(keyboardSize.Height);
+            // The keyboard's frame reaches the screen's bottom, through the home indicator's inset that the page's
+            // content ends above: KeyboardSize is the part over the content, as on Android.
+            control.KeyboardResized(Math.Max(0, keyboardSize.Height - Super.Screen.BottomInset));
             //Element.Margin = new Thickness(0, 0, 0, keyboardSize.Height); //push the entry up to keyboard height when keyboard is activated
         }
     }
