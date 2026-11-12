@@ -29,6 +29,7 @@ public partial class SkiaEditor
         if (!focus && IsFocused)
             return;
         SubscribeToKeyboard(focus);
+        WebTextInput.Focus(this, focus); // the page's text input: on-screen keyboard, input methods, key repeat, paste
     }
 
     private void SubscribeToKeyboard(bool subscribe)
@@ -69,7 +70,22 @@ public partial class SkiaEditor
             case InputKey.Home: StubMoveCursor(-CursorPosition, shift); break;
             case InputKey.End: StubMoveCursor((Text?.Length ?? 0) - CursorPosition, shift); break;
             case InputKey.KeyA when ctrl: StubSelectAll(); break;
+            case InputKey.KeyC when ctrl: CopySelectionToClipboard(); break;
+            case InputKey.KeyX when ctrl:
+                if (CopySelectionToClipboard())
+                    CutSelection();
+                break;
+            // Ctrl / Cmd + V: the browser's paste event types the text (WebTextInput)
         }
+    }
+
+    bool CopySelectionToClipboard()
+    {
+        var text = GetSelectedText();
+        if (string.IsNullOrEmpty(text))
+            return false;
+        Super.SetClipboardText?.Invoke(text);
+        return true;
     }
 
     private void OnKeyboardChar(object sender, string text)

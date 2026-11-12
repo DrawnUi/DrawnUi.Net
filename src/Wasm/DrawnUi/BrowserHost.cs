@@ -26,6 +26,7 @@ public static partial class BrowserHost
         // against the page's base (<base href>), the same module main.js imports, so a site hosted under a
         // sub-path (GitHub Pages, /app/) finds it too.
         await JSHost.ImportAsync("drawnui-web", ModuleUrl("_content/DrawnUi.Web/drawnui-web.js"));
+        WebTextInput.Init();
         Super.Init();
         await builder.BuildAsync();
 
