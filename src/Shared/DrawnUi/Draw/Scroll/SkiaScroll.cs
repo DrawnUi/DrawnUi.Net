@@ -4194,8 +4194,21 @@ namespace DrawnUi.Draw
             }
         }
 
-        /// <summary>Points kept between the focused field and the keyboard's top.</summary>
-        const double AddPadding = 8;
+        public static readonly BindableProperty AdaptToKeyboardGapProperty = BindableProperty.Create(
+            nameof(AdaptToKeyboardGap),
+            typeof(double),
+            typeof(SkiaScroll),
+            8.0);
+
+        /// <summary>
+        /// Points kept between the bottom of <see cref="AdaptToKeyboardFor"/> and the keyboard's top when the scroll
+        /// brings the field above the keyboard (8 by default).
+        /// </summary>
+        public double AdaptToKeyboardGap
+        {
+            get { return (double)GetValue(AdaptToKeyboardGapProperty); }
+            set { SetValue(AdaptToKeyboardGapProperty, value); }
+        }
 
         /// <summary>The offset that brings the focused field above the keyboard; NaN = nothing to move.</summary>
         private double _scrollTo = double.NaN;
@@ -4228,7 +4241,7 @@ namespace DrawnUi.Draw
                 var keyboardTop = (float)((Superview.Height - AdaptToKeyboardSize) * scale);
                 var visibleBottom = Math.Min(viewport.Bottom, keyboardTop);
 
-                var needScrollMore = (field.Bottom - visibleBottom) / scale + AddPadding;
+                var needScrollMore = (field.Bottom - visibleBottom) / scale + AdaptToKeyboardGap;
                 if (needScrollMore > 0)
                     _scrollTo = this.ViewportOffsetY - needScrollMore;
             }

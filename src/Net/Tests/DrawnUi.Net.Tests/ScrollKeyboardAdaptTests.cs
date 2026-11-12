@@ -152,6 +152,56 @@ public class ScrollKeyboardAdaptTests
         Assert.Equal(-1000, scroll.ViewportOffsetY, 1);
     }
 
+    /// <summary>
+    /// The iPhone 14 (844 pt, keyboard top at 536) with the form low on screen: Name, covered by the keyboard, ends
+    /// AdaptToKeyboardGap points above it (8 by default, 0 = touching).
+    /// </summary>
+    [Theory]
+    [InlineData(8)]
+    [InlineData(0)]
+    public void A_covered_field_ends_the_gap_above_the_keyboard(double gap)
+    {
+        using var host = new HeadlessCanvasHost(390, 844, 1f, Colors.Black);
+        SkiaScroll scroll;
+        SkiaControl name;
+        host.Canvas.Content = new SkiaLayer
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new SkiaScroll
+                {
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill,
+                    Content = new SkiaStack
+                    {
+                        Spacing = 0,
+                        Children =
+                        {
+                            new SkiaControl { HeightRequest = 1700, HorizontalOptions = LayoutOptions.Fill },
+                            new SkiaShape { HeightRequest = 44, HorizontalOptions = LayoutOptions.Fill }.Assign(out name),
+                            new SkiaControl { HeightRequest = 2000, HorizontalOptions = LayoutOptions.Fill },
+                        }
+                    }
+                }.Assign(out scroll),
+                new SkiaShape { HeightRequest = 155, HorizontalOptions = LayoutOptions.Fill, BackgroundColor = Colors.DarkBlue },
+            }
+        };
+        if (gap != 8)
+            scroll.AdaptToKeyboardGap = gap;
+        for (var i = 0; i < 3; i++)
+            host.RenderFrame(16.7);
+        scroll.ScrollTo(0, -1000, 0, true);
+        Settle(host);
+        Assert.Equal(700, name.GetAccessibilityPixelRect().Top, 1);
+
+        scroll.AdaptToKeyboardFor = name;
+        scroll.AdaptToKeyboardSize = 844 - 536;
+        Settle(host);
+
+        Assert.Equal(536 - gap, Bottom(name), 1);
+    }
+
     [Fact]
     public void The_keyboard_closing_leaves_the_page_where_it_is()
     {
