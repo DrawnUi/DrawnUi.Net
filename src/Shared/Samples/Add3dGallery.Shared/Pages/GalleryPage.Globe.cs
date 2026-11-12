@@ -167,12 +167,16 @@ public partial class GalleryPage
         .OnHovered((me, on) => me.Scale = on ? 1.15 : 1)
         .OnTapped(_ => ToggleCity(index));
 
-    /// <summary>A clean name chip over a pin.</summary>
+    /// <summary>
+    /// A clean name chip over a pin. The globe under it draws every frame, the chip never changes: one image, its blurred
+    /// shadow and text made once and blitted where the city shows.
+    /// </summary>
     SkiaShape CityLabel(int index, string name) => new SkiaShape
     {
         WidthRequest = ChipW,
         HeightRequest = ChipH,
         CornerRadius = 15,
+        UseCache = SkiaCacheType.Image,
         BackgroundColor = Color.FromRgb(250, 250, 252),
         Shadows = new List<SkiaShadow> { new() { Blur = 6, Y = 2, Opacity = 0.35, Color = Colors.Black } },
         IsVisible = false,

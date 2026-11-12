@@ -7,7 +7,7 @@ namespace Add3dGallery;
 /// <c>?perf</c> = the top of the page at rest, <c>?perf=scroll</c> = the page scrolled down at a steady 600 pt/s,
 /// <c>?perf=list</c> = the 3D product list scrolled, <c>?perf=mobs</c> = 100 mobs on the field, scrolled to it
 /// (<c>?perf=mobsdrawn</c>: the same in the Drawn look),
-/// <c>?perf=globe</c> = the turning globe with its pins at the top.
+/// <c>?perf=globe</c> = the turning globe with its pins at the top (<c>?perf=globechip</c>: with a pin's name chip open; <c>globechipraw</c>: the chip drawn live, not cached).
 /// Per frame: the CPU time of drawing (canvas WillDraw to WasDrawn: layout, drawing, the 3D GL calls; Skia's GPU flush
 /// comes after it), the managed bytes allocated on the UI thread from one frame to the next, and the frame interval.
 /// 2 s warm-up, then 5 s of frames: median, p99, frames over 12 ms, allocations per frame, gen-0 collections.
@@ -47,8 +47,11 @@ public static class PerfProbe
         _canvas = canvas;
         if (_mode is "mobs" or "mobsdrawn")
             _page.ProbeScroll(false, -1);
-        else if (_mode == "globe")
-            _page.ProbeShowGlobe();
+        else if (_mode is "globe" or "globechip" or "globechipraw")
+        {
+            GalleryPage.ProbeChipsUncached = _mode == "globechipraw";
+            _page.ProbeShowGlobe(_mode != "globe");
+        }
         _start = Stopwatch.GetTimestamp();
         canvas.WillDraw += OnWillDraw;
         canvas.WasDrawn += OnWasDrawn;

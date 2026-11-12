@@ -385,9 +385,38 @@ public partial class GalleryPage : DrawnGame
 
     SkiaControl _globeCard;
 
-    /// <summary>For <see cref="PerfProbe"/>: puts the globe's card at the top of the page.</summary>
-    internal void ProbeShowGlobe()
+    /// <summary>For <see cref="PerfProbe"/> (mode globechipraw): the name chips drawn live, for the comparison.</summary>
+    internal static bool ProbeChipsUncached;
+
+    /// <summary>For <see cref="PerfProbe"/>: every half second for <paramref name="times"/> times, a name chip stays open on a
+    /// pin facing the eye (the turning globe carries the open one away).</summary>
+    void KeepChipOpen(int times)
     {
+        if (times <= 0)
+            return;
+        Tasks.StartDelayed(TimeSpan.FromMilliseconds(500), () =>
+        {
+            if (_openCity < 0 || !_cityLabels[_openCity].IsVisible)
+                for (var i = 0; i < Cities.Length; i++)
+                    if (_cityPins[i].IsVisible)
+                    {
+                        _openCity = -1;
+                        ToggleCity(i);
+                        break;
+                    }
+            KeepChipOpen(times - 1);
+        });
+    }
+
+    /// <summary>For <see cref="PerfProbe"/>: puts the globe's card at the top of the page; with a chip, opens the name of the
+    /// first pin facing the eye while the globe keeps turning (as a tap on that pin).</summary>
+    internal void ProbeShowGlobe(bool chip = false)
+    {
+        if (chip)
+            KeepChipOpen(20);
+        if (ProbeChipsUncached)
+            foreach (var label in _cityLabels)
+                label.UseCache = SkiaCacheType.None;
         if (_scroll.Content is not SkiaLayout page)
             return;
         foreach (var cell in page.GetStackStructure().GetChildren())

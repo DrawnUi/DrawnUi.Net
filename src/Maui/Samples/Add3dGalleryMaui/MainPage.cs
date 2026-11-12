@@ -7,6 +7,10 @@ public class MainPage : DrawnUiBasePage
     readonly Canvas _canvas;
     readonly GalleryRoot _root;
 
+    /// <summary>A PerfProbe run to start (globe, globechip, mobs...): the ADD3D_PERF environment variable on the desktop,
+    /// the "perf" intent extra on Android (adb shell am start ... --es perf globechip). Results go to the console / logcat.</summary>
+    public static string PerfRequest = Environment.GetEnvironmentVariable("ADD3D_PERF");
+
     /// <summary>Builds the page.</summary>
     public MainPage()
     {
@@ -28,6 +32,8 @@ public class MainPage : DrawnUiBasePage
         };
         // a field focused while the keyboard shows (Tab, a tap on the next field) is scrolled above it too
         _canvas.FocusedItemChanged += (_, _) => FollowKeyboard();
+        if (!string.IsNullOrEmpty(PerfRequest))
+            PerfProbe.Start(_root.Gallery, "perf=" + PerfRequest);
     }
 
     /// <inheritdoc />
