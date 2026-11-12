@@ -228,6 +228,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             _window.Closed += OnWindowClosed;
             _window.Deactivated += OnWindowDeactivated;
             _window.Activated += OnWindowActivated;
+            _window.StateChanged += OnWindowStateChanged;
 
             // menus and dropdowns in windows of their own, the mouse over them coming back into the canvas
             var popupPressed = false;
@@ -489,6 +490,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             _window.Closed -= OnWindowClosed;
             _window.Deactivated -= OnWindowDeactivated;
             _window.Activated -= OnWindowActivated;
+            _window.StateChanged -= OnWindowStateChanged;
             _window = null;
         }
 
@@ -565,10 +567,13 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     // and asks the UI thread for a frame. WPF's own frame clock (CompositionTarget.Rendering) is not locked to the
     // display: it skipped ticks and the canvas drew 56-59 frames a second on a 60 Hz display while OpenTK, paced by
     // DWM, held 60. Where DWM gives no pacing (DwmFlush fails: composition off), Rendering drives the frames as before.
+    // One thread per element, ended when the element unloads or is disposed. It stops asking the UI thread while the
+    // canvas stays idle and sleeps while the window is minimized.
     private int _framesGeneration;
     private int _vsyncPosted; // 1 while a tick waits on the dispatcher: a busy UI thread gets one tick, not a queue
     private long _vsyncNanos;
     private bool _renderingSubscribed;
+    private readonly AutoResetEvent _frameWanted = new(false);
 
     [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
     private static extern int DwmFlush();
@@ -582,6 +587,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     private void StopFrames()
     {
         _framesGeneration++; // the frame thread ends after its current wait
+        _frameWanted.Set(); // a thread asleep on a minimized window wakes and sees it is over
         if (_renderingSubscribed)
         {
             _renderingSubscribed = false;
@@ -592,8 +598,17 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     private void VsyncLoop(int generation)
     {
         long last = 0;
+        var fastReturns = 0;
         while (generation == _framesGeneration)
         {
+            // the window minimized: sleep until it is shown again
+            if (_minimized)
+            {
+                _frameWanted.WaitOne();
+                last = 0;
+                continue;
+            }
+
             if (DwmFlush() != 0)
             {
                 Dispatcher.InvokeAsync(() =>
@@ -608,24 +623,48 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             }
 
             var now = Super.GetCurrentTimeNanos();
-            // With nothing to compose DWM can return at once: wait out the rest of a frame instead of spinning.
+            // DWM returns at once when it composes nothing: a display that sleeps or a locked session while this
+            // canvas keeps changing. Then frames are spaced 100 ms apart (nobody sees them; WPF's own clock drops to
+            // about 5 a second there), otherwise the rest of a frame is waited out instead of spinning.
             if (last != 0 && now - last < 4_000_000)
             {
-                Thread.Sleep(Math.Max(1, (int)((16_000_000 - (now - last)) / 1_000_000)));
+                var period = ++fastReturns >= 3 ? 100_000_000 : 16_000_000;
+                Thread.Sleep(Math.Max(1, (int)((period - (now - last)) / 1_000_000)));
                 now = Super.GetCurrentTimeNanos();
+            }
+            else
+            {
+                fastReturns = 0;
             }
             last = now;
 
             _vsyncNanos = now;
-            if (Interlocked.Exchange(ref _vsyncPosted, 1) == 0)
+            // the UI thread is asked every frame while the canvas is active; after half a second without anything to
+            // draw only when the canvas is dirty again, so an idle canvas costs the UI thread nothing
+            if ((Volatile.Read(ref _idleFrames) < 30 || Canvas.IsDirty) && Interlocked.Exchange(ref _vsyncPosted, 1) == 0)
                 Dispatcher.InvokeAsync(OnVsyncFrame, System.Windows.Threading.DispatcherPriority.Render);
         }
     }
 
+    private volatile bool _minimized;
+
+    private void OnWindowStateChanged(object sender, EventArgs e)
+    {
+        _minimized = _window?.WindowState == WindowState.Minimized;
+        if (!_minimized)
+        {
+            Canvas.Update(); // shown again: draw the latest state
+            _frameWanted.Set();
+        }
+    }
+
+    private int _idleFrames;
+
     private void OnVsyncFrame()
     {
+        _idleFrames = DrawFrame(_vsyncNanos) ? 0 : Math.Min(_idleFrames + 1, 1000);
+        // after the frame: the thread decides idle from the dirty state the frame left (animators keep it dirty)
         Interlocked.Exchange(ref _vsyncPosted, 0);
-        DrawFrame(_vsyncNanos);
     }
 
     private void OnCompositionRendering(object sender, EventArgs e)
@@ -645,10 +684,10 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     }
 
     /// <summary>Draws one frame when the canvas needs it, with <paramref name="frameTime"/> as its timestamp.</summary>
-    private void DrawFrame(long frameTime)
+    private bool DrawFrame(long frameTime)
     {
         if (!_running || !Canvas.CheckCanDraw() || !Canvas.CanDraw)
-            return;
+            return false;
 
         if (_gpuView != null)
         {
@@ -663,7 +702,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
                 {
                     InvalidateVisual();
                     Canvas.Update(); // the canvas is clean after that frame: ask for the GPU one
-                    return;
+                    return true;
                 }
             }
 
@@ -673,10 +712,11 @@ public class DrawnUiElement : FrameworkElement, IDisposable
                 InvalidateVisual();
             }
 
-            return;
+            return true;
         }
 
         DrawSoftwareFrame(frameTime);
+        return true;
     }
 
     private bool _prerenderAttempted;
