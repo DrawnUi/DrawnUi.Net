@@ -23,6 +23,13 @@ function isForOtherElement(event) {
         && !(t.closest && t.closest(".xaml-canvas"));
 }
 
+const FIELD_KEYS = new Set(["Space", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"]);
+
+function isTextFieldElement(t) {
+    return !!t && t.nodeType === 1 && !!(t.closest && t.closest(".xaml-a11y-overlay"))
+        && (t.getAttribute("role") === "textbox" || t.getAttribute("role") === "searchbox");
+}
+
 export function attachGlobalKeyboard() {
     const state = getState();
     if (state.keyDownHandler && state.keyUpHandler) {
@@ -42,6 +49,11 @@ export function attachGlobalKeyboard() {
 
     state.keyDownHandler = event => {
         const other = isForOtherElement(event);
+        // a drawn text field whose overlay element has the page focus: the keys that would scroll the page are the
+        // field's (a space, the caret keys)
+        if (isTextFieldElement(event.target) && FIELD_KEYS.has(event.code)) {
+            event.preventDefault();
+        }
         invoke("HandleGlobalKeyDown", event.code || null, other);
         if (event.key && event.key.length === 1 && !event.ctrlKey && !event.altKey && !event.metaKey) {
             invoke("HandleGlobalKeyChar", event.key, other);

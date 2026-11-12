@@ -554,8 +554,12 @@ function a11yCreate(id) {
         const r = el.getBoundingClientRect(), o = a.overlay.getBoundingClientRect();
         if (onContextMenu?.(r.left + r.width / 2 - o.left, r.top + r.height / 2 - o.top, 'keyboard')) e.preventDefault();
     });
-    el.addEventListener('focus', () => { if (_a11y && !_a11y.updating) _a11y.onFocus(id); });
-    el.addEventListener('blur', () => { if (_a11y && !_a11y.updating) _a11y.onBlur(id); });
+    // Tab from a focused editor passes through its element without focusing the editor again (see editorKeyDown);
+    // the editor's own text input taking the page focus keeps the editor focused
+    el.addEventListener('focus', () => { if (_a11y && !_a11y.updating && !tabbingFromEditor) _a11y.onFocus(id); });
+    el.addEventListener('blur', e => {
+        if (_a11y && !_a11y.updating && !(textInputEl && e.relatedTarget === textInputEl)) _a11y.onBlur(id);
+    });
     return el;
 }
 
@@ -757,6 +761,8 @@ function keyIsForDrawnUi(e) {
 // repeats a held key. What it types goes to the editor as text (onTextInput) or as an editing key (onTextKey); the
 // textarea keeps two spaces with its caret at the end, so a Backspace always has something to delete and is reported.
 let textInputEl = null;
+let textInputOwner = -1; // the overlay node id of the focused editor
+let tabbingFromEditor = false;
 let onTextInput = null;
 let onTextKey = null;
 let editorFocused = false;
@@ -764,7 +770,7 @@ let composing = '';
 const TEXT_INPUT_REST = '  ';
 // Keys the editor handles itself: the textarea does nothing with them (no deletion, no caret move, no focus move)
 const EDITOR_KEYS = new Set([
-    'Backspace', 'Delete', 'Enter', 'NumpadEnter', 'Tab',
+    'Backspace', 'Delete', 'Enter', 'NumpadEnter',
     'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown',
 ]);
 
@@ -792,6 +798,16 @@ function applyComposition(next) {
 
 function editorKeyDown(e, used) {
     if (e.isComposing || e.keyCode === 229) return; // the input method has the key
+    if (e.code === 'Tab') {
+        // Tab and Shift+Tab move on from the editor's own overlay element, in the overlay's order: the page focus goes
+        // there first, then the browser moves it as for any Tab (the editor gives its caret back when it leaves)
+        const owner = _a11y?.map.get(textInputOwner);
+        if (owner) {
+            tabbingFromEditor = true;
+            try { owner.focus({ preventScroll: true }); } finally { tabbingFromEditor = false; }
+        }
+        return;
+    }
     const shortcut = e.ctrlKey || e.metaKey;
     if (EDITOR_KEYS.has(e.code) || (shortcut && e.code === 'KeyA')) e.preventDefault();
     onKeyDown?.(e.code, false, used, null); // its text comes from the textarea's input
@@ -864,9 +880,13 @@ export function textInputAttach(onText, onKey) {
     });
 }
 
-/** A SkiaEditor took (true) or gave back (false) the keyboard: the textarea takes or gives back the page focus. */
-export function textInputFocus(focus) {
+/**
+ * A SkiaEditor took (true) or gave back (false) the keyboard: the textarea takes or gives back the page focus.
+ * ownerId: the editor's overlay node, where Tab moves on from.
+ */
+export function textInputFocus(focus, ownerId) {
     editorFocused = focus;
+    textInputOwner = focus ? ownerId : -1;
     const el = ensureTextInput();
     composing = '';
     if (focus) {

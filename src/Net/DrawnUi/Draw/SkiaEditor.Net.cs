@@ -25,8 +25,8 @@ public partial class SkiaEditor
 
     public void SetFocusNative(bool focus)
     {
-        // a late defocus after a refocus keeps the keys
-        if (!focus && IsFocused)
+        // a late request that no longer matches the focus (a defocus after a refocus, a focus after Tab left) is stale
+        if (focus != IsFocused)
             return;
         SubscribeToKeyboard(focus);
         WebTextInput.Focus(this, focus); // the page's text input: on-screen keyboard, input methods, key repeat, paste
