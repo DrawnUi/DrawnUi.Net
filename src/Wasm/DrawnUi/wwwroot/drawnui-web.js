@@ -134,7 +134,17 @@ function createWebGLContext(htmlCanvas) {
         contextAttributes.minorVersion = 0;
         ctx = GL.createContext(htmlCanvas, contextAttributes);
     }
+    if (ctx) enableRendererInfo(GL.getContext(ctx)?.GLctx);
     return ctx;
+}
+
+// Skia asks for the GPU's name (UNMASKED_RENDERER_WEBGL) when it makes its GPU context: a valid query only once this
+// extension is enabled, else the browser logs INVALID_ENUM (an error in WebKit). Enabled again on a restored context.
+function enableRendererInfo(gl) {
+    try {
+        if (gl && gl.getSupportedExtensions()?.includes('WEBGL_debug_renderer_info'))
+            gl.getExtension('WEBGL_debug_renderer_info');
+    } catch { /* no such extension here: Skia's query stays as it was */ }
 }
 
 // ============================================================================
@@ -198,6 +208,7 @@ export function initGL(elementId, callback, restoredCallback) {
         GL.deleteContext(view.glInfo.context); // before registering: it clears canvas.GLctxObject
         const handle = GL.registerContext(gl, attributes);
         GL.makeContextCurrent(handle);
+        enableRendererInfo(gl);
         view.glInfo.context = handle;
         view.contextLost = false;
         if (restoredCallback) restoredCallback();
@@ -360,6 +371,11 @@ function setupInputHandlers() {
     canvas.addEventListener('wheel', e => { const used = moduleOnWheel?.(e.deltaX, e.deltaY, e.deltaMode, relX(e), relY(e), e.ctrlKey || e.metaKey); if (!_shareInput || used) e.preventDefault(); }, { passive: false });
     // right click / long press / Menu key: a control that handles ContextMenu suppresses the browser menu
     canvas.addEventListener('contextmenu', e => { if (onContextMenu?.(relX(e), relY(e), e.pointerType ?? 'mouse')) e.preventDefault(); });
+    // while an editor's text input has the page focus (a tap's pointerup may just have given it), a press on the canvas
+    // leaves it there: the drawn controls decide whether the editor keeps its focus. A touch makes no mouse events, whose
+    // press would take the focus back to the page and close the on-screen keyboard.
+    canvas.addEventListener('touchend', e => { if (textInputEl && document.activeElement === textInputEl) e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('mousedown', e => { if (textInputEl && document.activeElement === textInputEl) e.preventDefault(); });
     watchCanvasSize();
 }
 

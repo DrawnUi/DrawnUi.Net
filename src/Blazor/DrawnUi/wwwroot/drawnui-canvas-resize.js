@@ -10,10 +10,35 @@ const observers = new WeakMap();
 let skiaCanvasPatch = null;
 let skiaHtmlCanvas = null;
 
+// Skia asks for the GPU's name (UNMASKED_RENDERER_WEBGL) when it makes its GPU context: a valid query only once this
+// extension is enabled, else the browser logs INVALID_ENUM (an error in WebKit). Enabled on every WebGL context
+// SkiaSharp makes, on one it made already, and again on a restored context.
+function enableRendererInfo(gl) {
+    try {
+        if (gl && gl.getSupportedExtensions()?.includes('WEBGL_debug_renderer_info'))
+            gl.getExtension('WEBGL_debug_renderer_info');
+    } catch { /* no such extension here: Skia's query stays as it was */ }
+}
+
+function patchRendererInfo(SKHtmlCanvas) {
+    if (!SKHtmlCanvas || SKHtmlCanvas.createWebGLContext?.drawnUiRendererInfo) return;
+    const original = SKHtmlCanvas.createWebGLContext;
+    const patched = function (htmlCanvas) {
+        const ctx = original.call(this, htmlCanvas);
+        if (ctx) enableRendererInfo(SKHtmlCanvas.getGL().getContext(ctx)?.GLctx);
+        return ctx;
+    };
+    patched.drawnUiRendererInfo = true;
+    SKHtmlCanvas.createWebGLContext = patched;
+    for (const canvas of document.querySelectorAll('canvas'))
+        enableRendererInfo(canvas.GLctxObject?.GLctx);
+}
+
 function patchSkiaCanvasResize() {
     skiaCanvasPatch ??= import(new URL('./_content/SkiaSharp.Views.Blazor/SKHtmlCanvas.js', document.baseURI).href)
         .then(({ SKHtmlCanvas }) => {
             skiaHtmlCanvas = SKHtmlCanvas;
+            patchRendererInfo(SKHtmlCanvas);
             const proto = SKHtmlCanvas?.prototype;
             if (!proto || proto.requestAnimationFrame.drawnUiResizePatch) return;
             const original = proto.requestAnimationFrame;
@@ -153,6 +178,7 @@ async function onContextRestored(e, dotNetRef) {
     GL.deleteContext(view.glInfo.context); // before registering: it clears canvas.GLctxObject
     const handle = GL.registerContext(gl, attributes);
     GL.makeContextCurrent(handle);
+    enableRendererInfo(gl);
     view.glInfo.context = handle;
     await dotNetRef.invokeMethodAsync('OnWebGLContextRestored');
     view.drawnUiContextLost = false;

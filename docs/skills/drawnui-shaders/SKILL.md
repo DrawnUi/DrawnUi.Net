@@ -1,6 +1,6 @@
 ---
 name: drawnui-shaders
-description: Writing SkSL shaders for DrawnUI and porting GLSL / Shadertoy / CodePen shaders to it — SkiaShaderEffect in VisualEffects (inline ShaderCode or a ShaderSource file), the standard uniforms every shader must declare, custom uniforms, sampling the control's picture, compile errors, time-driven shaders, resolution-independent patterns (preview vs full photo), film grain that keeps a picture alive (and the hash trap behind it), warming shaders up before their first use (the GPU compile spike, worst on the web), backdrop / glass effects, shader slide transitions, and the performance rules. Load before writing, porting or debugging any shader used in a DrawnUI app.
+description: Writing SkSL shaders for DrawnUI and porting GLSL / Shadertoy / CodePen shaders to it — SkiaShaderEffect in VisualEffects (inline ShaderCode or a ShaderSource file), the standard uniforms (declare the ones a shader uses, with their types), custom uniforms, sampling the control's picture, compile errors, time-driven shaders, resolution-independent patterns (preview vs full photo), film grain that keeps a picture alive (and the hash trap behind it), warming shaders up before their first use (the GPU compile spike, worst on the web), backdrop / glass effects, shader slide transitions, and the performance rules. Load before writing, porting or debugging any shader used in a DrawnUI app.
 triggers:
   - sksl
   - shader

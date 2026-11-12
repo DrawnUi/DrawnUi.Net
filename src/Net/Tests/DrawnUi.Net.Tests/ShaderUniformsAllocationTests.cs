@@ -76,35 +76,33 @@ half4 main(float2 fragCoord)
     /// <summary>The effect with its uniforms step reachable: what one draw of it writes, measured alone.</summary>
     sealed class ProbeEffect : SkiaShaderEffect
     {
-        public void MakeUniforms(SKRect destination) => CreateUniforms(destination);
-    }
-
-    // The uniforms step of one draw, called directly after the effect was drawn (compiled) a few times: no frame
-    // scheduling, snapshot or other test in the count, only the writes into the uniforms holder.
-    static long BytesPerUniformsStep(bool changeUniformEveryDraw)
-    {
-        using var scene = new Scene();
-        var destination = new SKRect(0, 0, 40, 30);
-        int i = 0;
-        return AllocationMeasure.MinBytesPerFrame(() =>
-        {
-            if (changeUniformEveryDraw)
-                scene.TintValues[3] = ++i; // changed in place, without SetUniform
-            ((ProbeEffect)scene.Effect).MakeUniforms(destination);
-        }, warmup: 10, frames: 50);
+        public SKRuntimeEffectUniforms MakeUniforms(SKRect destination) => CreateUniforms(destination);
     }
 
     [Fact]
     public void UnchangedUniforms_AreNotWrittenAgain()
     {
-        long still = BytesPerUniformsStep(false);
-        long changing = BytesPerUniformsStep(true);
-        _output.WriteLine($"{still} B per draw with uniforms unchanged, {changing} B with one uniform changed every draw");
-        // nothing is written when nothing changed (every write allocates in SkiaSharp: 7 writes, 336 B, before the fix);
-        // a uniform changed in place is still written
+        // The uniforms step of one draw, called directly after the effect was drawn (compiled) a few times: no frame
+        // scheduling, snapshot or other test in the count, only the writes into the uniforms holder.
+        using var scene = new Scene();
+        var effect = (ProbeEffect)scene.Effect;
+        var destination = new SKRect(0, 0, 40, 30);
+        long still = AllocationMeasure.MinBytesPerFrame(() => effect.MakeUniforms(destination), warmup: 10, frames: 50);
+        _output.WriteLine($"{still} B per draw with uniforms unchanged");
+        // nothing is written when nothing changed (7 writes, 336 B per draw before the fix)
         Assert.Equal(0, still);
-        Assert.True(changing >= 40, $"one changed uniform: {changing} B per draw");
+
+        // A uniform changed in place, without SetUniform, is still written: read from the holder itself. What a
+        // write allocates depends on the JIT tier of SkiaSharp's writer (48 B unoptimized, 0 once optimized), so it
+        // can't tell whether the write happened.
+        for (int i = 1; i <= 3; i++)
+        {
+            scene.TintValues[3] = 100 + i;
+            using var data = effect.MakeUniforms(destination).ToData();
+            Assert.Contains(100f + i, System.Runtime.InteropServices.MemoryMarshal.Cast<byte, float>(data.AsSpan()).ToArray());
+        }
     }
+
     [Fact]
     public void EveryFrameDrawsThisFramesContentAndValues()
     {
