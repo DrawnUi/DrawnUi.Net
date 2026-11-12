@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using DrawnUi.Draw;
 using DrawnUi.Models;
 using DrawnUi.Testing;
@@ -226,10 +227,17 @@ public class AccessibilityModalTests
         host.Canvas.Content = shell;
         host.AdvanceFrames(4);
 
-        async Task Run(Task task)
+        async Task Run(Task task, string step)
         {
-            for (var i = 0; i < 120 && !task.IsCompleted; i++)
+            // frames until the step is done: an unfinished task is reported, never awaited (that hangs the run)
+            var frames = 0;
+            for (var wait = Stopwatch.StartNew(); !task.IsCompleted && wait.ElapsedMilliseconds < 10000; frames++)
+            {
                 host.AdvanceFrames(1);
+                if (frames > 120)
+                    Thread.Sleep(1);
+            }
+            Assert.True(task.IsCompleted, $"{step} did not finish after {frames} frames");
             await task;
             host.AdvanceFrames(4);
         }
@@ -249,7 +257,7 @@ public class AccessibilityModalTests
         // Enter on Help: the dialog opens, the app hides its HUD under it
         var opening = shell.OpenPopupAsync(Named("HOW TO PLAY", "Link", "OK"), showOverlay: false);
         hud.IsVisible = false;
-        await Run(opening);
+        await Run(opening, "help open");
         Assert.Equal("Link", Focused(host));
 
         // Escape: the help closes and the pause opens
@@ -257,17 +265,17 @@ public class AccessibilityModalTests
         {
             var closing = shell.ClosePopupAsync(animated: false);
             var pausing = shell.OpenPopupAsync(Named("PAUSED", "Resume", "Home"), showOverlay: false);
-            await Run(Task.WhenAll(closing, pausing));
+            await Run(Task.WhenAll(closing, pausing), "help close + pause open");
         }
         else
         {
-            await Run(shell.ClosePopupAsync());
-            await Run(shell.OpenPopupAsync(Named("PAUSED", "Resume", "Home"), showOverlay: false));
+            await Run(shell.ClosePopupAsync(), "help close");
+            await Run(shell.OpenPopupAsync(Named("PAUSED", "Resume", "Home"), showOverlay: false), "pause open");
         }
         Assert.Equal("Resume", Focused(host));
 
         // Escape again: the pause closes, the app shows its HUD after the close
-        await Run(shell.ClosePopupAsync());
+        await Run(shell.ClosePopupAsync(), "pause close");
         hud.IsVisible = true;
         host.AdvanceFrames(6);
         Assert.Equal("Help", Focused(host));
