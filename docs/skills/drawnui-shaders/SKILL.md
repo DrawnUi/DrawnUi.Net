@@ -1,6 +1,6 @@
 ---
 name: drawnui-shaders
-description: Writing SkSL shaders for DrawnUI and porting GLSL / Shadertoy / CodePen shaders to it — SkiaShaderEffect in VisualEffects (inline ShaderCode or a ShaderSource file), the standard uniforms every shader must declare, custom uniforms, sampling the control's picture, compile errors, time-driven shaders, resolution-independent patterns (preview vs full photo), backdrop / glass effects, shader slide transitions, and the performance rules. Load before writing, porting or debugging any shader used in a DrawnUI app.
+description: Writing SkSL shaders for DrawnUI and porting GLSL / Shadertoy / CodePen shaders to it — SkiaShaderEffect in VisualEffects (inline ShaderCode or a ShaderSource file), the standard uniforms every shader must declare, custom uniforms, sampling the control's picture, compile errors, time-driven shaders, resolution-independent patterns (preview vs full photo), film grain that keeps a picture alive (and the hash trap behind it), warming shaders up before their first use (the GPU compile spike, worst on the web), backdrop / glass effects, shader slide transitions, and the performance rules. Load before writing, porting or debugging any shader used in a DrawnUI app.
 triggers:
   - sksl
   - shader
@@ -41,7 +41,7 @@ half4 main(float2 fragCoord) {
 new SkiaImage
 {
     Source = "photo.jpg",
-    UseCache = SkiaCacheType.Image,          // the cache IS the effect's input picture, see section 6
+    UseCache = SkiaCacheType.Image,          // the cache IS the effect's input picture, see section 7
     VisualEffects =
     {
         new SkiaShaderEffect { ShaderCode = Desaturate }
@@ -135,7 +135,31 @@ float valueNoise(float2 p) {
 - **Reference**: pick one (720 above) per app; `min(...)` keeps the look when preview and photo differ in orientation. Below the reference (thumbnails) cells become sub-pixel.
 - **Grain on the output grid**: put grain on `inputCoord`, not on distorted sampling coordinates, or it drifts off the pixel grid and averages away on the photo.
 
-## 6. Performance
+## 6. Film grain: a living picture for games and apps
+
+A faint random speckle added to the final picture, new every frame, like film grain. Barely visible on its own, it takes away the flat "computer" look, hides banding in gradients and makes a still picture feel alive. Put it at the end of a full-screen post shader (games) or of a look (photo and camera apps), after the color is computed:
+
+```glsl
+uniform float iTime;   // seconds since the scene started (DrawnUI's iTime counts from the first shader frame)
+
+float hash(float2 p) {
+    float3 q = fract(float3(p.x, p.y, p.x) * float3(0.1031, 0.1030, 0.0973));
+    q += dot(q, float3(q.y, q.x, q.z) + 33.33);
+    return fract((q.x + q.y) * q.z);
+}
+
+// ... col = the finished color ...
+float g = hash(floor(fragCoord) + floor(fract(iTime * 7.0) * 64.0) * float2(37.0, 17.0));
+col += half3((g - 0.5) * 0.035);
+```
+
+- **Strength**: 0.035 is subtle; 0.02 to 0.06 is the useful range. Above that it reads as noise, not film.
+- **New every frame**: the `floor(fract(iTime * 7.0) * 64.0)` offset picks one of 64 grain patterns, switching about 7 times a second. For a still result (a saved photo), pass a fixed time.
+- **Size**: one grain per output pixel, which is what film grain on a screen should look like. For grain that has to scale with a photo instead, see section 5.
+
+**Keep every hash input small: no `sin`-based hash on big numbers.** The common one-liner `fract(sin(dot(p, float2(12.9898, 78.233))) * 43758.5453)` works only while the `sin` argument stays small. Pixel coordinates on a 3x phone already put it near 200,000, and a clock added to it grows all the time. The GPU's float32 and its fast `sin` then lose the fraction: the grain turns into frozen diagonal stripes after about an hour, and disappears after hours. Use the `sin`-free hash above, on the whole pixel coordinate plus a small per-frame offset, and feed shaders a time that stays small: seconds since the scene or run began, never since the app or device started.
+
+## 7. Performance
 
 - **A shader effect re-runs every frame the canvas draws**: a control with `VisualEffects` skips its cached blit, builds the uniforms and draws the shader each frame, then flushes the canvas. The cost scales with the NUMBER of shader-carrying controls on screen more than with the shader's length: a strip of ~8 live shader thumbnails over a camera preview took a high-end Windows GPU from 60 to 36 fps.
 - **Keep an image cache on the shaded control.** With an `Image` / `GPU` cache the effect reads that cache as its input; without one (or with `Operations`, which stores no image) it snapshots the canvas every frame (`Canvas.Flush()` + snapshot). Removing the cache makes the control much more expensive.
@@ -143,18 +167,61 @@ float valueNoise(float2 p) {
 - **Content that changes far slower than the frame rate gets no live effect**: render the shaded result once per change into an `SKImage` and show it in a plain cached `SkiaImage`.
 - **Count texture reads**: `iImage1.eval` is the main cost of most picture effects. When comparing two versions on a desktop, render both alternately several times; a single run is noisy, and desktop CPU timings never stand in for the cost on a phone GPU: measure on the device.
 
-## 7. Backdrop and glass
+## 8. Warm up shaders before their first use
+
+`SkSl.PrecompileAsync(files)` loads the `.sksl` files and builds each `SKRuntimeEffect` on the CPU. The GPU program for a shader is still built the first time that shader actually draws. In the browser (WebGL; ANGLE on Windows) that first draw is a visible spike: the first time an effect appears in play, the game or app stutters. Native GPU backends (Metal, Vulkan, desktop GL) pay less, but they compile on first draw as well.
+
+The fix is a warm-up DRAW, not another precompile:
+
+- **Draw every effect once, set up exactly as the app uses it**: the same effect class, the same host control and cache type (for example a GPU-cached layer whose cache is the effect's input), the same `BlendMode`, the same `UseBackground` and input texture source. A different setup can need a different GPU program, which then still compiles at first real use.
+- **Hide it under something opaque.** DrawnUI does not cull content that something else covers, so controls under an opaque overlay still draw and nobody sees them.
+- **Let it draw for the effect's duration** (call `Play()` on animated effects), then remove and dispose the warm-up controls.
+- **Do it in the UI tree.** GPU work happens only while the canvas draws, so a background `Task` cannot warm anything up.
+- **Await `SkSl.PrecompileAsync` first**: in the browser an effect with `ShaderSource` draws nothing until its file has arrived.
+
+When:
+
+- **Web**: right after the startup resources load, under the loading screen. The compile time is hidden there, at the cost of a slightly longer loading screen.
+- **Native (iOS, Android, desktop)**: when the first screen appears, or under the splash. It costs a few heavy frames while that screen is still, where nobody notices.
+
+```csharp
+await SkSl.PrecompileAsync("Shaders/preview.sksl", "Shaders/clear.sksl");
+
+// the app's own effect classes, with the settings it uses in play
+var preview = new PreviewEffect { ShaderSource = "Shaders/preview.sksl", BlendMode = SKBlendMode.SrcOver };
+var clear = new ClearEffect { ShaderSource = "Shaders/clear.sksl", DurationMs = 400 };
+
+SkiaLayout warmup;
+screen.AddSubView(new SkiaLayout
+{
+    Type = LayoutType.Absolute,
+    ZIndex = loadingOverlay.ZIndex - 1,          // drawn every frame, hidden by the opaque overlay
+    Children =
+    {
+        // one host per effect, cached and sized like the real one
+        new SkiaLayout { UseCache = SkiaCacheType.GPU, WidthRequest = 100, HeightRequest = 100, VisualEffects = { preview } },
+        new SkiaLayout { UseCache = SkiaCacheType.GPU, Left = 100, WidthRequest = 100, HeightRequest = 100, VisualEffects = { clear } },
+    }
+}.Assign(out warmup));
+
+clear.Play();
+await Task.Delay((int)clear.DurationMs + 300);   // the longest effect, plus a few frames
+screen.RemoveSubView(warmup);
+warmup.Dispose();
+```
+
+## 9. Backdrop and glass
 
 - `SkiaBackdrop` + a `SkiaShaderEffect` in its `VisualEffects` shades whatever is drawn BEHIND it (it snapshots the canvas surface; on OpenTK that includes raw GL content). Set `SkiaBackdrop.Blur = 0` when the shader does its own blur.
 - Liquid glass panel: the backdrop as the first child inside the `SkiaShape`; no Image / GPU cache on that shape unless what shows through the glass is inside it (the snapshot would hold only that cache). Its default picture cache (`Operations`) keeps the backdrop's copy until the cache is recorded again: decide by what shows through the glass. Something moves behind it after the cache is recorded (an animated equalizer, a scrolling list, a panel moving over content, a picture still loading) = set `UseCache = None` on that shape and on every other picture-cached ancestor, so the glass copies and shades on every frame. Only a still, already-loaded background behind it = keep the cache: same look, no per-frame cost. The library always leaves your caches as you set them. Shader uniforms are in pixels: a corner radius in points goes in multiplied by `RenderingScale`.
 - A backdrop copies the screen area it really covers, also inside a scaled, moved, turned or 3D-turned parent (a zooming popup): the layout rect is mapped through the canvas matrix, copied and drawn back 1:1, clipped to the backdrop's own shape, so `Blur` stays the same on screen while the parent scales. A picture-cached ancestor (Operations / OperationsFull, the default of SkiaShape, so a frosted SkiaShape panel) freezes the backdrop: the picture records its copy of the screen once and replays it on every frame, so a zooming panel would keep the glass of its first frame. Set `UseCache = None` on such ancestors yourself whenever what is behind or the panel itself moves after the cache is recorded; a one-time log names a backdrop recorded into a picture. Inside an Image / GPU cached ancestor it copies that cache's own surface, not the screen behind: right when what shows through the glass is inside the same cache (the hello apps' Shell card does this on purpose), wrong when it should show content outside it (then keep such ancestors uncached).
 - Inside a `SkiaShell` modal a backdrop snapshots the screen UNDER the modal, not the modal's own picture: when the picture behind the glass is your own content, put the effect on the cached layer that draws it (`UseBackground = Always` reads its own cache) and pass the panel rect as a uniform.
 
-## 8. Shader slide transitions
+## 10. Shader slide transitions
 
 `SkiaShaderCarousel` (`DrawnUi.Controls`) blends the from / to slides with a gl-transitions style shader (`vec4 transition(vec2 uv)` using `getFromColor(uv)` / `getToColor(uv)`, uniforms `progress` and `ratio`): `TransitionShader` (file), `TransitionShaderCode` (inline) or a custom `TransitionTemplate`. Cell templates must use `UseCache = Image` (the effect samples the cells' caches). A swipe during a transition finishes it in `InterruptedTransitionMs` (default 50), then plays the next.
 
-## 9. Checking a shader without a device
+## 11. Checking a shader without a device
 
 A single-file console compiles and renders a shader with SkiaSharp in seconds:
 

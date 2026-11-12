@@ -240,10 +240,12 @@ public static partial class WebInput
     /// (e.g. "ArrowLeft", "Space", "Enter"), parsed into <see cref="InputKey"/>. <paramref name="forOtherElement"/>:
     /// a page element outside the canvas has the key, see <see cref="KeyboardManager.IsKeyForOtherElement"/>.
     /// <paramref name="usedByCanvas"/>: a node of the accessibility overlay used it first (activated, stepped, moved
-    /// focus in its group), see <see cref="KeyboardManager.IsKeyHandled"/>.
+    /// focus in its group), see <see cref="KeyboardManager.IsKeyHandled"/>. <paramref name="text"/>: what the key types
+    /// (the DOM <c>KeyboardEvent.key</c> of a character key), null for other keys and shortcuts; raised right after the
+    /// key as <see cref="KeyboardManager.KeyChar"/>, which a focused drawn editor types.
     /// </summary>
     [JSExport]
-    public static void OnKeyDown(string code, bool forOtherElement, bool usedByCanvas)
+    public static void OnKeyDown(string code, bool forOtherElement, bool usedByCanvas, string text)
     {
         var key = MapCode(code);
 
@@ -254,6 +256,8 @@ public static partial class WebInput
         if (usedByCanvas)
             KeyboardManager.MarkKeyHandled(key);
         KeyboardManager.KeyboardPressed(key, forOtherElement);
+        if (!string.IsNullOrEmpty(text))
+            KeyboardManager.KeyboardChar(text, forOtherElement);
     }
 
     /// <summary>
