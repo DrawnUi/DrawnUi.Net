@@ -5,7 +5,8 @@ namespace Add3dGallery;
 /// <summary>
 /// Measures the gallery in the browser, results in the console. Address options:
 /// <c>?perf</c> = the top of the page at rest, <c>?perf=scroll</c> = the page scrolled down at a steady 600 pt/s,
-/// <c>?perf=list</c> = the 3D product list scrolled, <c>?perf=mobs</c> = 100 mobs on the field, scrolled to it,
+/// <c>?perf=list</c> = the 3D product list scrolled, <c>?perf=mobs</c> = 100 mobs on the field, scrolled to it
+/// (<c>?perf=mobsdrawn</c>: the same in the Drawn look),
 /// <c>?perf=globe</c> = the turning globe with its pins at the top.
 /// Per frame: the CPU time of drawing (canvas WillDraw to WasDrawn: layout, drawing, the 3D GL calls; Skia's GPU flush
 /// comes after it), the managed bytes allocated on the UI thread from one frame to the next, and the frame interval.
@@ -29,8 +30,10 @@ public static class PerfProbe
         _page = page;
         var at = query.IndexOf("perf=", StringComparison.OrdinalIgnoreCase);
         _mode = at < 0 ? "rest" : query[(at + 5)..].Split('&')[0].ToLowerInvariant();
-        if (_mode == "mobs")
+        if (_mode is "mobs" or "mobsdrawn")
             page.SetMobs(100);
+        if (_mode == "mobsdrawn")
+            page.SetDrawnMobs(true);
         Tasks.StartDelayed(TimeSpan.FromMilliseconds(1500), Attach);
     }
 
@@ -42,7 +45,7 @@ public static class PerfProbe
             return;
         }
         _canvas = canvas;
-        if (_mode == "mobs")
+        if (_mode is "mobs" or "mobsdrawn")
             _page.ProbeScroll(false, -1);
         else if (_mode == "globe")
             _page.ProbeShowGlobe();
