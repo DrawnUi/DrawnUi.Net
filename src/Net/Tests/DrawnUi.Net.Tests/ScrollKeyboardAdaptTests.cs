@@ -7,7 +7,7 @@ namespace DrawnUi.Net.Tests;
 
 /// <summary>
 /// SkiaScroll.AdaptToKeyboardFor / AdaptToKeyboardSize (the on-screen keyboard over a form): the focused field's bottom
-/// lands just above the keyboard's top, a field already above it does not move the page, and the keyboard closing
+/// lands 8 points above the keyboard's top, a field already above it does not move the page, and the keyboard closing
 /// leaves the page where it is.
 /// </summary>
 public class ScrollKeyboardAdaptTests
@@ -77,7 +77,7 @@ public class ScrollKeyboardAdaptTests
         scroll.AdaptToKeyboardSize = Keyboard;
         Settle(host);
 
-        Assert.Equal(800 - Keyboard, Bottom(field), 2);
+        Assert.Equal(800 - Keyboard - 8, Bottom(field), 2); // 8 points above the keyboard
     }
 
     [Fact]
@@ -93,6 +93,63 @@ public class ScrollKeyboardAdaptTests
 
         Assert.Equal(offset, scroll.ViewportOffsetY, 1);
         Assert.Equal(440, Bottom(upper), 1);
+    }
+
+    /// <summary>
+    /// The iPhone 14 report (844 pt screen, keyboard top at 536): Name, Email and Password at 365, 420 and 476, all
+    /// above the keyboard. Focusing each one, and the keyboard closing, moves nothing.
+    /// </summary>
+    [Fact]
+    public void A_form_already_above_the_keyboard_stays_put()
+    {
+        using var host = new HeadlessCanvasHost(390, 844, 1f, Colors.Black);
+        SkiaScroll scroll;
+        SkiaControl name, email, password;
+        host.Canvas.Content = new SkiaLayer
+        {
+            VerticalOptions = LayoutOptions.Fill,
+            Children =
+            {
+                new SkiaScroll
+                {
+                    HorizontalOptions = LayoutOptions.Fill,
+                    VerticalOptions = LayoutOptions.Fill,
+                    Content = new SkiaStack
+                    {
+                        Spacing = 0,
+                        Children =
+                        {
+                            new SkiaControl { HeightRequest = 1365, HorizontalOptions = LayoutOptions.Fill },
+                            new SkiaShape { HeightRequest = 44, HorizontalOptions = LayoutOptions.Fill }.Assign(out name),
+                            new SkiaControl { HeightRequest = 11, HorizontalOptions = LayoutOptions.Fill },
+                            new SkiaShape { HeightRequest = 44, HorizontalOptions = LayoutOptions.Fill }.Assign(out email),
+                            new SkiaControl { HeightRequest = 12, HorizontalOptions = LayoutOptions.Fill },
+                            new SkiaShape { HeightRequest = 44, HorizontalOptions = LayoutOptions.Fill }.Assign(out password),
+                            new SkiaControl { HeightRequest = 2000, HorizontalOptions = LayoutOptions.Fill },
+                        }
+                    }
+                }.Assign(out scroll),
+                new SkiaShape { HeightRequest = 155, HorizontalOptions = LayoutOptions.Fill, BackgroundColor = Colors.DarkBlue },
+            }
+        };
+        for (var i = 0; i < 3; i++)
+            host.RenderFrame(16.7);
+        scroll.ScrollTo(0, -1000, 0, true);
+        Settle(host);
+        Assert.Equal(365, name.GetAccessibilityPixelRect().Top, 1);
+        Assert.Equal(476, password.GetAccessibilityPixelRect().Top, 1);
+
+        foreach (var field in new[] { name, email, password })
+        {
+            scroll.AdaptToKeyboardFor = field;
+            scroll.AdaptToKeyboardSize = 844 - 536;
+            Settle(host);
+            Assert.Equal(-1000, scroll.ViewportOffsetY, 1);
+        }
+        scroll.AdaptToKeyboardFor = null;
+        scroll.AdaptToKeyboardSize = 0;
+        Settle(host);
+        Assert.Equal(-1000, scroll.ViewportOffsetY, 1);
     }
 
     [Fact]
