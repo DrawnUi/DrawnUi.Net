@@ -748,7 +748,133 @@ const PREVENT_DEFAULT_KEYS = new Set([
 function keyIsForDrawnUi(e) {
     const t = e.target;
     return !t || t === document.body || t === document.documentElement || t === window || t.tagName === 'CANVAS'
-        || !!(t.closest && t.closest('.drawnui-a11y-overlay'));
+        || t === textInputEl || !!(t.closest && t.closest('.drawnui-a11y-overlay'));
+}
+
+// --- Text input for drawn editors ---
+// A focused SkiaEditor has a real, invisible textarea with the page focus: a phone shows its on-screen keyboard, an
+// input method (Chinese, Japanese, Korean, a phone keyboard's word suggestions) composes into it, and the browser
+// repeats a held key. What it types goes to the editor as text (onTextInput) or as an editing key (onTextKey); the
+// textarea keeps two spaces with its caret at the end, so a Backspace always has something to delete and is reported.
+let textInputEl = null;
+let onTextInput = null;
+let onTextKey = null;
+let editorFocused = false;
+let composing = '';
+const TEXT_INPUT_REST = '  ';
+// Keys the editor handles itself: the textarea does nothing with them (no deletion, no caret move, no focus move)
+const EDITOR_KEYS = new Set([
+    'Backspace', 'Delete', 'Enter', 'NumpadEnter', 'Tab',
+    'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown',
+]);
+
+function graphemes(s) {
+    if (typeof Intl !== 'undefined' && Intl.Segmenter)
+        return [...new Intl.Segmenter().segment(s)].map(x => x.segment);
+    return [...s];
+}
+
+function restTextInput() {
+    textInputEl.value = TEXT_INPUT_REST;
+    textInputEl.setSelectionRange(TEXT_INPUT_REST.length, TEXT_INPUT_REST.length);
+}
+
+// The composition shown in the editor follows the input method: what changed since its last text is deleted and
+// typed again, so the editor always shows the word being composed.
+function applyComposition(next) {
+    const before = graphemes(composing), after = graphemes(next);
+    let same = 0;
+    while (same < before.length && same < after.length && before[same] === after[same]) same++;
+    for (let i = before.length - same; i > 0; i--) onTextKey?.('Backspace');
+    if (after.length > same) onTextInput?.(after.slice(same).join(''));
+    composing = next;
+}
+
+function editorKeyDown(e, used) {
+    if (e.isComposing || e.keyCode === 229) return; // the input method has the key
+    const shortcut = e.ctrlKey || e.metaKey;
+    if (EDITOR_KEYS.has(e.code) || (shortcut && e.code === 'KeyA')) e.preventDefault();
+    onKeyDown?.(e.code, false, used, null); // its text comes from the textarea's input
+}
+
+function ensureTextInput() {
+    if (textInputEl) return textInputEl;
+    const el = document.createElement('textarea');
+    el.className = 'drawnui-text-input';
+    for (const [name, value] of [['autocomplete', 'off'], ['autocorrect', 'off'], ['autocapitalize', 'off'],
+        ['spellcheck', 'false'], ['aria-hidden', 'true'], ['tabindex', '-1']])
+        el.setAttribute(name, value);
+    // 16px: iOS zooms the page into a focused field with a smaller font
+    el.style.cssText = 'position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;border:0;padding:0;margin:0;'
+        + 'resize:none;overflow:hidden;font-size:16px;color:transparent;background:transparent;caret-color:transparent;'
+        + 'pointer-events:none;z-index:-1';
+    el.addEventListener('beforeinput', e => {
+        switch (e.inputType) {
+            case 'insertText':
+                if (e.data) onTextInput?.(e.data);
+                e.preventDefault();
+                break;
+            case 'insertLineBreak':
+            case 'insertParagraph':
+                onTextKey?.('Enter');
+                e.preventDefault();
+                break;
+            case 'deleteContentBackward':
+                if (!composing) {
+                    onTextKey?.('Backspace');
+                    e.preventDefault();
+                }
+                break;
+            case 'deleteContentForward':
+                onTextKey?.('Delete');
+                e.preventDefault();
+                break;
+            case 'insertFromPaste':
+            case 'insertFromDrop':
+                e.preventDefault(); // the paste event typed it
+                break;
+        }
+    });
+    el.addEventListener('compositionstart', () => { composing = ''; });
+    el.addEventListener('compositionupdate', e => applyComposition(e.data || ''));
+    el.addEventListener('compositionend', e => {
+        applyComposition(e.data || '');
+        composing = '';
+        restTextInput();
+    });
+    document.body.appendChild(el);
+    textInputEl = el;
+    restTextInput();
+    return el;
+}
+
+/**
+ * The editor's text callbacks, from C#: onText(text) types text, onKey(code) presses an editing key (a DOM
+ * KeyboardEvent.code: Backspace, Delete, Enter).
+ */
+export function textInputAttach(onText, onKey) {
+    onTextInput = onText;
+    onTextKey = onKey;
+    // Ctrl / Cmd + V in a focused editor: the browser's paste event carries the text, no permission needed
+    document.addEventListener('paste', e => {
+        if (!editorFocused || !keyIsForDrawnUi(e)) return;
+        const text = e.clipboardData && e.clipboardData.getData('text/plain');
+        e.preventDefault();
+        if (text) onTextInput?.(text);
+    });
+}
+
+/** A SkiaEditor took (true) or gave back (false) the keyboard: the textarea takes or gives back the page focus. */
+export function textInputFocus(focus) {
+    editorFocused = focus;
+    const el = ensureTextInput();
+    composing = '';
+    if (focus) {
+        if (document.activeElement !== el) el.focus({ preventScroll: true });
+        restTextInput();
+    } else if (document.activeElement === el) {
+        el.blur();
+    }
 }
 
 // The text a key types (one character: a letter, a digit, a space, an emoji, an AltGr character), null for other
@@ -769,6 +895,10 @@ function setupKeyboardHandlers() {
     window.addEventListener('keydown', e => {
         const used = a11yUsedKey === e.code;
         a11yUsedKey = null;
+        if (e.target === textInputEl) {
+            editorKeyDown(e, used);
+            return;
+        }
         if (e.repeat) return;
         const forDrawnUi = keyIsForDrawnUi(e);
         if (PREVENT_DEFAULT_KEYS.has(e.code) && forDrawnUi) e.preventDefault();
@@ -809,11 +939,12 @@ if (_first) {
     a11yDetach = _first.a11yDetach; a11yUpdate = _first.a11yUpdate; a11yFocus = _first.a11yFocus;
     a11yLive = _first.a11yLive; showLoader = _first.showLoader; hideLoader = _first.hideLoader;
     showError = _first.showError; setModuleExports = _first.setModuleExports;
+    textInputAttach = _first.textInputAttach; textInputFocus = _first.textInputFocus;
 } else {
     globalThis.__drawnuiWeb = {
         initGL, initRaster, deinit, requestAnimationFrame, setEnableRenderLoop, putImageData, initCanvas,
         getCanvasWidth, getCanvasHeight, getDevicePixelRatio, getBaseUrl, requestAnimationFrameLegacy,
         applyGestureStyle, a11yAttach, watchSystemTheme, watchWindowFocus, a11yDetach, a11yUpdate, a11yFocus,
-        a11yLive, showLoader, hideLoader, showError, setModuleExports,
+        a11yLive, showLoader, hideLoader, showError, setModuleExports, textInputAttach, textInputFocus,
     };
 }
