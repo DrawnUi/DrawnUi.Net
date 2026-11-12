@@ -281,8 +281,17 @@ public partial class GalleryPage : DrawnGame
                 Spacing = 10,
                 Children =
                 {
-                    new SkiaLabel(title) { FontSize = 20, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                    new SkiaLabel(caption) { FontSize = 14, TextColor = Theme.Muted },
+                    new SkiaStack
+                    {
+                        Spacing = 10,
+                        // Static text over a card that may redraw every frame: one blit (the still card's GPU cache holds it anyway).
+                        UseCache = still ? SkiaCacheType.None : SkiaCacheType.Image,
+                        Children =
+                        {
+                            new SkiaLabel(title) { FontSize = 20, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new SkiaLabel(caption) { FontSize = 14, TextColor = Theme.Muted },
+                        }
+                    },
                     content.WithMargin(0, 6, 0, 0),
                 }
             },

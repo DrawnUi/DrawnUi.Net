@@ -89,6 +89,9 @@ public class UiButton : SkiaShape
     public UiButton(string text, Color fill, double width = 150)
     {
         _fill = fill;
+        // Still between its state changes: one bitmap blit inside cards that redraw every frame around a moving 3D
+        // view, not its shape and caption replayed each frame.
+        UseCache = SkiaCacheType.Image;
         CornerRadius = 10;
         WidthRequest = width;
         if (width < 0)
