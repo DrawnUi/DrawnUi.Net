@@ -1,0 +1,11 @@
+<!--
+  Your own signing for an iPhone build. Copy this file to Signing.local.props (ignored by git) and fill in your values.
+  Find your signing identities with: security find-identity -v -p codesigning
+-->
+<Project>
+    <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+        <CodesignKey>Apple Development: Your Name (XXXXXXXXXX)</CodesignKey>
+        <!-- optional: the provisioning profile's name; without it the SDK picks one that matches the app id -->
+        <!-- <CodesignProvision>Your Profile Name</CodesignProvision> -->
+    </PropertyGroup>
+</Project>

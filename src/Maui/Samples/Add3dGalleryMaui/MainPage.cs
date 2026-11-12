@@ -1,7 +1,8 @@
 namespace Add3dGallery;
 
-/// <summary>The MAUI host of the shared app (src/Shared/Samples/Add3dGallery.Shared): one canvas filling the window.</summary>
-public class MainPage : ContentPage
+/// <summary>The MAUI host of the shared app (src/Shared/Samples/Add3dGallery.Shared): one canvas filling the window.
+/// DrawnUiBasePage hands it the Mac keyboard and the on-screen keyboard insets on phones (the sign-up form).</summary>
+public class MainPage : DrawnUiBasePage
 {
     /// <summary>Builds the page.</summary>
     public MainPage()

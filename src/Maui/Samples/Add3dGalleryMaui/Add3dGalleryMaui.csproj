@@ -26,14 +26,12 @@
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</TargetPlatformMinVersion>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net*-ios|AnyCPU'">
-        <CreatePackage>false</CreatePackage>
-        <CodesignKey>iPhone Developer</CodesignKey>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="$(TargetFramework.Contains('ios')) == true">
-        <ProvisioningType>manual</ProvisioningType>
-    </PropertyGroup>
+    <!--
+    No signing settings here: a Debug build for Mac Catalyst needs none, and a Debug build for an iPhone signs with the
+    developer identity the Mac has. To sign with your own identity, pass -p:CodesignKey=... -p:CodesignProvision=... on
+    the command line, or copy Signing.local.props.example to Signing.local.props next to this file (ignored by git).
+    -->
+    <Import Project="Signing.local.props" Condition="Exists('Signing.local.props')" />
 
     <ItemGroup>
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#0E1018" />
