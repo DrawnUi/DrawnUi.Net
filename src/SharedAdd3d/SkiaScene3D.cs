@@ -247,8 +247,8 @@ public class SkiaScene3D : SkiaControl, IPrefetch3D
         return true;
     }
 
-    /// <summary>Removes every object.</summary>
-    public void Clear()
+    /// <summary>Removes every object (named so it does not hide SkiaControl.Clear).</summary>
+    public void ClearObjects()
     {
         _objects.Clear();
         _byName.Clear();

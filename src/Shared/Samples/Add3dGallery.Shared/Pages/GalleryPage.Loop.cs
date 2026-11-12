@@ -116,7 +116,7 @@ public partial class GalleryPage
         if (_walkersOnField != _mobs)
         {
             _walkersOnField = _mobs;
-            _field.Clear();
+            _field.ClearObjects();
             for (var i = 0; i < _mobs; i++)
             {
                 var w = new Walker
