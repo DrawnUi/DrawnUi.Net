@@ -50,18 +50,20 @@ uniform float2 iOffset;          // canvas position of the texture's top-left pi
 uniform float4 iMouse;           // xy = current position, zw = start position, pixels
 ```
 
-You do not populate them — the engine writes every one of them on every frame.
-That is why the five non-texture uniforms (`iResolution`, `iImageResolution`,
-`iTime`, `iOffset`, `iMouse`) are **mandatory declarations**, even when your
-shader never reads them:
+You do not populate them: the engine writes the ones your shader declares, on
+every frame. Declare only those you use; an unused declared uniform costs
+nothing either.
 
-- Writing a uniform the compiled shader does not declare throws
-  `ArgumentOutOfRangeException` ("Variable was not found for name").
-- Declaring one with a different type throws too ("Unable to write a ... value
-  to a ... uniform"). `iMouse` must be `float4`, not `float2`.
-
-The exception escapes the effect's `Render` on every frame, so the control
-stops drawing correctly. An unused declared uniform costs nothing.
+- Declare each one with the type shown above: a different type throws
+  ("Unable to write a ... value to a ... uniform"). `iMouse` must be `float4`,
+  not `float2`.
+- A generative shader that reads no input may leave out `iImage1`: then no
+  texture is bound.
+- On DrawnUi 1.10.8.25 and earlier, the five non-texture uniforms
+  (`iResolution`, `iImageResolution`, `iTime`, `iOffset`, `iMouse`) are
+  mandatory declarations, even when your shader never reads them: those
+  versions write every one of them, and a missing one stops the control from
+  drawing correctly.
 
 `iImage1` must be declared whenever the effect passes a texture, which is every
 `UseBackground` mode except `Never` (see below).
@@ -221,7 +223,7 @@ sourced:
 |---|---|---|
 | `Always` | Uses the control's own cache image when it has one; otherwise snapshots the drawn area every frame. | Live effects over animated content. |
 | `Once` | Takes the texture on first render, freezes, and keeps feeding the same image. Reset with `AquiredBackground = false`. | One-shot transitions, reveal animations. |
-| `Never` | Passes no texture; `iImage1` is not set. | Generative shaders (noise, gradients, procedural patterns). |
+| `Never` | Passes no texture; `iImage1` is not set. `iOffset` is the control's corner, so a shader that places itself by `iOffset` draws inside its control (DrawnUi 1.10.8.25 and earlier pass 0 there). | Generative shaders (noise, gradients, procedural patterns). |
 
 > **Tip:** For `Always` mode, set a cache type on the control that carries the
 > effect (`Image` works well), so the effect reuses the already-rasterised image
