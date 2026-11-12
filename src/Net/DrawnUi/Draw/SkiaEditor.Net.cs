@@ -13,6 +13,72 @@ public partial class SkiaEditor
         _stubSelectionStop = stop;
     }
 
+#if WEB
+    // The pure WebAssembly head has no host that types into the focused editor (OpenTK and WPF call the canvas's
+    // desktop editor methods): a focused editor takes the page's keys from KeyboardManager, as on Blazor.
+    private bool _isSubscribedToKeyboard;
+
+    public void DisposePlatform()
+    {
+        SubscribeToKeyboard(false);
+    }
+
+    public void SetFocusNative(bool focus)
+    {
+        // a late defocus after a refocus keeps the keys
+        if (!focus && IsFocused)
+            return;
+        SubscribeToKeyboard(focus);
+    }
+
+    private void SubscribeToKeyboard(bool subscribe)
+    {
+        if (subscribe == _isSubscribedToKeyboard)
+            return;
+        _isSubscribedToKeyboard = subscribe;
+        if (subscribe)
+        {
+            KeyboardManager.KeyDown += OnKeyboardKeyDown;
+            KeyboardManager.KeyChar += OnKeyboardChar;
+        }
+        else
+        {
+            KeyboardManager.KeyDown -= OnKeyboardKeyDown;
+            KeyboardManager.KeyChar -= OnKeyboardChar;
+        }
+    }
+
+    private void OnKeyboardKeyDown(object sender, InputKey key)
+    {
+        // a page element next to the canvas has the keyboard (an input, a button): its keys are not typing here
+        if (KeyboardManager.IsKeyForOtherElement)
+            return;
+
+        var shift = KeyboardManager.IsShiftPressed;
+        var ctrl = KeyboardManager.IsControlPressed || KeyboardManager.IsMetaPressed;
+        var alt = KeyboardManager.IsAltPressed;
+        switch (key)
+        {
+            case InputKey.Backspace: StubBackspace(); break;
+            case InputKey.Delete: StubDelete(); break;
+            case InputKey.Enter: StubPressEnter(alt, shift); break;
+            case InputKey.ArrowLeft: StubArrow(false, shift); break;
+            case InputKey.ArrowRight: StubArrow(true, shift); break;
+            case InputKey.ArrowUp when IsMultiline: HandleVerticalArrow(true); break;
+            case InputKey.ArrowDown when IsMultiline: HandleVerticalArrow(false); break;
+            case InputKey.Home: StubMoveCursor(-CursorPosition, shift); break;
+            case InputKey.End: StubMoveCursor((Text?.Length ?? 0) - CursorPosition, shift); break;
+            case InputKey.KeyA when ctrl: StubSelectAll(); break;
+        }
+    }
+
+    private void OnKeyboardChar(object sender, string text)
+    {
+        if (KeyboardManager.IsKeyForOtherElement)
+            return;
+        StubTypeText(text);
+    }
+#else
     public void DisposePlatform()
     {
     }
@@ -20,6 +86,7 @@ public partial class SkiaEditor
     public void SetFocusNative(bool focus)
     {
     }
+#endif
 
     // No native text input here: keyboard type, password mode and IsSpellCheckEnabled
     // have no platform counterpart to apply.

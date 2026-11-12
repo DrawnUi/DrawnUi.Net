@@ -751,6 +751,16 @@ function keyIsForDrawnUi(e) {
         || !!(t.closest && t.closest('.drawnui-a11y-overlay'));
 }
 
+// The text a key types (one character: a letter, a digit, a space, an emoji, an AltGr character), null for other
+// keys, shortcuts with Ctrl / Alt / Cmd and keys an input method composes.
+function typedText(e) {
+    const k = e.key;
+    if (!k || e.isComposing || [...k].length !== 1) return null;
+    const altGr = e.getModifierState && e.getModifierState('AltGraph');
+    if (!altGr && (e.ctrlKey || e.altKey || e.metaKey)) return null;
+    return k;
+}
+
 let keyboardAttached = false;
 function setupKeyboardHandlers() {
     if (keyboardAttached) return;
@@ -762,7 +772,7 @@ function setupKeyboardHandlers() {
         if (e.repeat) return;
         const forDrawnUi = keyIsForDrawnUi(e);
         if (PREVENT_DEFAULT_KEYS.has(e.code) && forDrawnUi) e.preventDefault();
-        onKeyDown?.(e.code, !forDrawnUi, used);
+        onKeyDown?.(e.code, !forDrawnUi, used, typedText(e));
     });
     window.addEventListener('keyup', e => {
         const forDrawnUi = keyIsForDrawnUi(e);
