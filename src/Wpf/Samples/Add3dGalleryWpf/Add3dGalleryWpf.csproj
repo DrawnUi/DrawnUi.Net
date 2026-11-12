@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+        <RootNamespace>Add3dGallery</RootNamespace>
+        <AssemblyName>Add3dGalleryWpf</AssemblyName>
+        <Title>DrawnUI 3D for WPF</Title>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- window and taskbar icon -->
+        <Resource Include="icon.ico" />
+        <!-- WPF's implicit usings leave System.IO out -->
+        <Using Include="System.IO" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Drawnui.Wpf\DrawnUi.Wpf.csproj" />
+        <ProjectReference Include="..\..\Addons\DrawnUi.Wpf.Game\DrawnUi.Wpf.Game.csproj" />
+        <ProjectReference Include="..\..\Addons\DrawnUi.Wpf.Add3d\DrawnUi.Wpf.Add3d.csproj" />
+    </ItemGroup>
+
+    <!-- Fonts resolve relative to the output folder on this head: CopyToOutputDirectory is mandatory. -->
+    <ItemGroup>
+        <Content Include="..\..\..\Maui\Samples\Add3dGalleryMaui\Resources\Fonts\*.ttf" Link="fonts\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <!-- The app itself (pages and models), shared with the web, MAUI and OpenTK heads. -->
+    <Import Project="..\..\..\Shared\Samples\Add3dGallery.Shared\Add3dGallery.Shared.projitems" Label="Shared" />
+
+</Project>

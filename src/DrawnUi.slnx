@@ -11,6 +11,7 @@
     <Project Path="Maui/Addons/DrawnUi.Maui.Game/DrawnUi.Maui.Game.csproj" />
     <Project Path="Maui/Addons/DrawnUi.Maui.MapsUi/DrawnUi.Maui.MapsUi.csproj" />
     <Project Path="Maui/Addons/DrawnUi.MauiGraphics/DrawnUi.MauiGraphics.csproj" />
+    <Project Path="OpenTk/Addons/DrawnUi.OpenTk.Add3d/DrawnUi.OpenTk.Add3d.csproj" />
     <Project Path="OpenTk/Addons/DrawnUi.OpenTk.Game/DrawnUi.OpenTk.Game.csproj" />
     <Project Path="SharedAdd3d/SharedAdd3d.shproj" />
     <Project Path="SharedGame/SharedGame.shproj" />
@@ -39,6 +40,7 @@
   </Folder>
   <Folder Name="/Lib/WPF/">
     <Project Path="Wpf/Drawnui.Wpf/DrawnUi.Wpf.csproj" />
+    <Project Path="Wpf/Addons/DrawnUi.Wpf.Add3d/DrawnUi.Wpf.Add3d.csproj" />
     <Project Path="Wpf/Addons/DrawnUi.Wpf.Game/DrawnUi.Wpf.Game.csproj" />
   </Folder>
   <Folder Name="/Samples/" />
@@ -74,6 +76,7 @@
   <Folder Name="/Samples/OpenTK/">
     <Project Path="OpenTk/Samples/OpenTkGpuHost/OpenTkGpuHost.csproj" />
     <Project Path="OpenTk/Samples/OpenTkOverlay/OpenTkOverlay.csproj" />
+    <Project Path="OpenTk/Samples/Add3dGalleryOpenTk/Add3dGalleryOpenTk.csproj" />
     <Project Path="OpenTk/Samples/HelloOpenTk/HelloOpenTk.csproj" />
     <Project Path="OpenTk/Samples/OpenTkPong/OpenTkPong.csproj" />
   </Folder>
@@ -86,6 +89,7 @@
     <Project Path="Wasm/Samples/PongWeb/PongWeb.csproj" />
   </Folder>
   <Folder Name="/Samples/WPF/">
+    <Project Path="Wpf/Samples/Add3dGalleryWpf/Add3dGalleryWpf.csproj" />
     <Project Path="Wpf/Samples/HelloWpf/HelloWpf.csproj" />
     <Project Path="Wpf/Samples/WpfPong/WpfPong.csproj" />
     <Project Path="Wpf/Samples/WpfSandbox/WpfSandbox.csproj" />

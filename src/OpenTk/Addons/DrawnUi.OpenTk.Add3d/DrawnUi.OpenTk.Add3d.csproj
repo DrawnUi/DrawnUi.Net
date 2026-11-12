@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!--using Directory.Build.props-->
+
+    <PropertyGroup>
+        <Title>3D add-on to DrawnUI for OpenTK</Title>
+        <PackageId>DrawnUi.OpenTk.Add3d</PackageId>
+        <Description>3D models in a DrawnUI screen with OpenTK on Windows and Linux: glTF scenes with skeleton animations, many objects on one game field, shapes made in code, shaded, cartoon or flat looks.</Description>
+        <PackageTags>opentk drawnui skia skiasharp 3d gltf glb opengl game desktop linux windows</PackageTags>
+        <Packable>true</Packable>
+        <CreatePackage>false</CreatePackage>
+        <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
+        <RootNamespace>DrawnUi.Add3d</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <!-- OPENTK: desktop OpenGL entry points through GLFW (SharedAdd3d/Gl.cs). -->
+        <DefineConstants>$(DefineConstants);OPENTK;NET;DRAWNUI_NET</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <WarningsAsErrors>$(WarningsAsErrors);CS0108</WarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\DrawnUi\DrawnUi.OpenTk.csproj" />
+    </ItemGroup>
+
+    <Import Project="..\..\..\SharedAdd3d\SharedAdd3d.projitems" Label="Shared" />
+
+</Project>

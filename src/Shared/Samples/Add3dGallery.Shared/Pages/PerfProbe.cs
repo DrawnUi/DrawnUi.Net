@@ -120,6 +120,9 @@ public static class PerfProbe
         // Steady scrolling from the end of the warm-up: 600 points a second, 10 per frame at 60 FPS.
         if (since >= WarmupSeconds && _mode is "scroll" or "list")
             _page.ProbeScroll(_mode == "list", (float)(since - WarmupSeconds) * 600);
+        // The page's end, held through the warm-up: sections below may still be measured after the first jump.
+        else if (since < WarmupSeconds && _mode is "mobs" or "mobsdrawn")
+            _page.ProbeScroll(false, -1);
     }
 
     static void OnWasDrawn(object sender, SkiaDrawingContext ctx)

@@ -226,6 +226,9 @@ void main() {
     static uint Shader(uint kind, string source)
     {
         var s = Gl.glCreateShader(kind);
+        // Desktop OpenGL compiles the same program as GLSL 330 core (precision qualifiers are accepted and ignored there).
+        if (Gl.Desktop)
+            source = source.Replace("#version 300 es", "#version 330 core");
         var bytes = Encoding.UTF8.GetBytes(source);
         fixed (byte* p = bytes)
         {

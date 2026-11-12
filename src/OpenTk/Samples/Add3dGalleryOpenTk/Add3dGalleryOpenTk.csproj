@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+        <RootNamespace>Add3dGallery</RootNamespace>
+        <AssemblyName>Add3dGalleryOpenTk</AssemblyName>
+        <Title>DrawnUI 3D for OpenTK</Title>
+        <ApplicationIcon>icon.ico</ApplicationIcon>
+        <RuntimeIdentifiers>win-x64;linux-x64;linux-arm64</RuntimeIdentifiers>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- title-bar icon, loaded at startup (ApplicationIcon covers Explorer and the taskbar) -->
+        <EmbeddedResource Include="icon.ico" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Addons\DrawnUi.OpenTk.Game\DrawnUi.OpenTk.Game.csproj" />
+        <ProjectReference Include="..\..\Addons\DrawnUi.OpenTk.Add3d\DrawnUi.OpenTk.Add3d.csproj" />
+        <!-- native Skia for the Linux build -->
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.148.0" />
+    </ItemGroup>
+
+    <!-- Fonts resolve relative to the output folder on this head: CopyToOutputDirectory is mandatory. -->
+    <ItemGroup>
+        <Content Include="..\..\..\Maui\Samples\Add3dGalleryMaui\Resources\Fonts\*.ttf" Link="fonts\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <!-- The app itself (pages and models), shared with the web and MAUI heads. -->
+    <Import Project="..\..\..\Shared\Samples\Add3dGallery.Shared\Add3dGallery.Shared.projitems" Label="Shared" />
+
+    <!-- no pdb files in a published build -->
+    <Target Name="ExcludePdbsFromPublish" AfterTargets="ComputeFilesToPublish">
+        <ItemGroup>
+            <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.pdb'" />
+        </ItemGroup>
+    </Target>
+
+</Project>

@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <!--using Directory.Build.props-->
+
+    <PropertyGroup>
+        <Title>3D add-on to DrawnUI for WPF</Title>
+        <PackageId>DrawnUi.Wpf.Add3d</PackageId>
+        <Description>3D models in a DrawnUI screen inside a WPF window: glTF scenes with skeleton animations, many objects on one game field, shapes made in code, shaded, cartoon or flat looks.</Description>
+        <PackageTags>wpf drawnui skia skiasharp 3d gltf glb game desktop windows</PackageTags>
+        <Packable>true</Packable>
+        <CreatePackage>false</CreatePackage>
+        <TargetFrameworks>net9.0-windows;net10.0-windows</TargetFrameworks>
+        <UseWPF>true</UseWPF>
+        <RootNamespace>DrawnUi.Add3d</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+        <PackageIcon>icon128.png</PackageIcon>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DefineConstants>$(DefineConstants);WPF;NET;DRAWNUI_NET</DefineConstants>
+        <!-- Same as DrawnUi.Wpf: the net*-windows TFM must not read as the MAUI WinUI head in shared code. -->
+        <DefineConstants>;$(DefineConstants);</DefineConstants>
+        <DefineConstants>$(DefineConstants.Replace(';ONPLATFORM;', ';'))</DefineConstants>
+    </PropertyGroup>
+
+    <Target Name="DrawnUiStripMauiWindowsDefine" BeforeTargets="CoreCompile">
+        <PropertyGroup>
+            <DefineConstants>;$(DefineConstants);</DefineConstants>
+            <DefineConstants>$(DefineConstants.Replace(';WINDOWS;', ';'))</DefineConstants>
+        </PropertyGroup>
+    </Target>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <WarningsAsErrors>$(WarningsAsErrors);CS0108</WarningsAsErrors>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\..\..\icon128.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- WPF's implicit usings leave System.IO out -->
+        <Using Include="System.IO" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\Drawnui.Wpf\DrawnUi.Wpf.csproj" />
+    </ItemGroup>
+
+    <Import Project="..\..\..\SharedAdd3d\SharedAdd3d.projitems" Label="Shared" />
+
+</Project>
