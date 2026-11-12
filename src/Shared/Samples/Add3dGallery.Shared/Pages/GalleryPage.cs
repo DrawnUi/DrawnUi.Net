@@ -385,6 +385,16 @@ public partial class GalleryPage : DrawnGame
 
     SkiaControl _globeCard;
 
+    /// <summary>For <see cref="PerfProbe"/> (globetaps): a tap on a city of the list, as the button does it.</summary>
+    internal void ProbeTapCity(int n) => GoToCity(n % Cities.Length);
+
+    /// <summary>For <see cref="PerfProbe"/> (globetaps): what could pile up per tap.</summary>
+    internal string ProbeGlobeCounts()
+    {
+        var viewChanged = typeof(SkiaModel3D).GetField("ViewChanged", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)?.GetValue(_globe) as Delegate;
+        return $"viewChanged handlers {viewChanged?.GetInvocationList().Length ?? 0}, globe animating {_globe.IsAnimating}, spin {_globe.AutoRotate}";
+    }
+
     /// <summary>For <see cref="PerfProbe"/> (mode globechipraw): the name chips drawn live, for the comparison.</summary>
     internal static bool ProbeChipsUncached;
 

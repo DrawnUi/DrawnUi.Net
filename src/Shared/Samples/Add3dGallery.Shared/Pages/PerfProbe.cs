@@ -45,6 +45,11 @@ public static class PerfProbe
             return;
         }
         _canvas = canvas;
+        if (_mode == "globetaps")
+        {
+            GlobeTaps();
+            return;
+        }
         if (_mode is "mobs" or "mobsdrawn")
             _page.ProbeScroll(false, -1);
         else if (_mode is "globe" or "globechip" or "globechipraw")
@@ -56,6 +61,56 @@ public static class PerfProbe
         canvas.WillDraw += OnWillDraw;
         canvas.WasDrawn += OnWasDrawn;
         Console.WriteLine($"[perf] {_mode}: {WarmupSeconds} s warm-up, {MeasureSeconds} s of frames");
+    }
+
+    /// <summary>
+    /// globetaps: the globe at the top, then batches of taps on the city list (1, 5, 10, 20, 40 in all, a tap every
+    /// 0.7 s); after each batch 2 s of frames: FPS, draw median, and the canvas's running animators.
+    /// </summary>
+    static void GlobeTaps()
+    {
+        _page.ProbeShowGlobe();
+        var frames = new List<double>();
+        long start = 0, frameStart = 0;
+        var measuring = false;
+        _canvas.WillDraw += (_, _) => frameStart = Stopwatch.GetTimestamp();
+        _canvas.WasDrawn += (_, _) =>
+        {
+            if (measuring && frameStart != 0)
+                frames.Add(Stopwatch.GetElapsedTime(frameStart).TotalMilliseconds);
+        };
+        int[] batches = { 1, 5, 10, 20, 40 };
+        var taps = 0;
+        var batch = 0;
+        void Next()
+        {
+            if (batch >= batches.Length)
+            {
+                Console.WriteLine("[perf] globetaps done");
+                return;
+            }
+            if (taps < batches[batch])
+            {
+                _page.ProbeTapCity(taps);
+                taps++;
+                Tasks.StartDelayed(TimeSpan.FromMilliseconds(700), Next);
+                return;
+            }
+            frames.Clear();
+            start = Stopwatch.GetTimestamp();
+            measuring = true;
+            Tasks.StartDelayed(TimeSpan.FromSeconds(2), () =>
+            {
+                measuring = false;
+                var f = frames.ToArray();
+                Array.Sort(f);
+                var fps = f.Length / Stopwatch.GetElapsedTime(start).TotalSeconds;
+                Console.WriteLine($"[perf] globetaps after {taps} taps: {fps:0.0} FPS, draw median {(f.Length > 0 ? f[f.Length / 2] : 0):0.00} ms, animators {_canvas.AnimatingControls.Count}, {_page.ProbeGlobeCounts()}");
+                batch++;
+                Next();
+            });
+        }
+        Tasks.StartDelayed(TimeSpan.FromSeconds(2), Next);
     }
 
     static void OnWillDraw(object sender, SkiaDrawingContext ctx)
