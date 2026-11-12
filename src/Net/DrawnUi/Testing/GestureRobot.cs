@@ -292,31 +292,74 @@ public sealed class GestureRobot
     /// </summary>
     public void Pinch(double x, double y, float[] factors, int steps = 8, double frameMs = 16.0)
     {
-        var id = ++_pointerId;
-        var px = ToPixels(x, y);
-        var down = MakeArgs(id, TouchActionType.Pressed, px, px);
-        down.IsInContact = true;
-        Send(TouchActionType.Pressed, down, TouchActionResult.Down, frameMs);
+        // Two fingers on a horizontal line through the center, 80 points apart, each moving symmetrically. As on the
+        // devices, every finger sends its own events (its own location), the scale comes with each move, and the
+        // fingers lift one after the other: the last one left moves once more on its own.
+        var center = ToPixels(x, y);
+        var half = 40 * _scale;
+        var idA = ++_pointerId;
+        var idB = ++_pointerId;
+        float ax = center.X - half, bx = center.X + half;
+        PointF A() => new(ax, center.Y);
+        PointF B() => new(bx, center.Y);
+
+        var downA = MakeArgs(idA, TouchActionType.Pressed, A(), A());
+        downA.IsInContact = true;
+        Send(TouchActionType.Pressed, downA, TouchActionResult.Down, frameMs);
+        var downB = MakeArgs(idB, TouchActionType.Pressed, B(), B());
+        downB.IsInContact = true;
+        downB.NumberOfTouches = 2;
+        Send(TouchActionType.Pressed, downB, TouchActionResult.Down, frameMs);
+
+        TouchActionEventArgs previous = downB;
+        double radius = half;
         double total = 0;
         foreach (var factor in factors)
         {
             var step = MathF.Pow(factor, 1f / steps);
             for (var i = 0; i < steps; i++)
             {
-                Advance(frameMs);
-                total += step - 1;
-                var move = MakeArgs(id, TouchActionType.Moved, px, px);
-                move.IsInContact = true;
-                move.NumberOfTouches = 2;
-                move.Manipulation = new TouchActionEventArgs.ManipulationInfo(px, px, step - 1, 0, total, 0, 2);
-                TouchActionEventArgs.FillDistanceInfo(move, down);
-                Send(TouchActionType.Moved, move, TouchActionResult.Panning, frameMs);
+                half *= step;
+                // finger A moves first, then B: each event carries the change of the radius it made
+                for (var finger = 0; finger < 2; finger++)
+                {
+                    Advance(frameMs / 2);
+                    if (finger == 0)
+                        ax = center.X - half;
+                    else
+                        bx = center.X + half;
+                    var newRadius = (bx - ax) / 2;
+                    var scale = newRadius / radius - 1;
+                    radius = newRadius;
+                    total += scale;
+                    var at = finger == 0 ? A() : B();
+                    var move = MakeArgs(finger == 0 ? idA : idB, TouchActionType.Moved, at, finger == 0 ? downA.Location : downB.Location);
+                    move.IsInContact = true;
+                    move.NumberOfTouches = 2;
+                    move.Manipulation = new TouchActionEventArgs.ManipulationInfo(center, center, scale, 0, total, 0, 2);
+                    TouchActionEventArgs.FillDistanceInfo(move, previous);
+                    Send(TouchActionType.Moved, move, TouchActionResult.Panning, frameMs / 2);
+                    previous = move;
+                }
             }
         }
+
         Advance(frameMs);
-        var up = MakeArgs(id, TouchActionType.Released, px, px);
-        TouchActionEventArgs.FillDistanceInfo(up, down);
-        Send(TouchActionType.Released, up, TouchActionResult.Up, frameMs);
+        var upB = MakeArgs(idB, TouchActionType.Released, B(), downB.Location);
+        upB.NumberOfTouches = 1;
+        TouchActionEventArgs.FillDistanceInfo(upB, previous);
+        Send(TouchActionType.Released, upB, TouchActionResult.Up, frameMs);
+        // the finger left moves a hair: its delta is taken from the last event, the other finger's
+        Advance(frameMs);
+        var last = MakeArgs(idA, TouchActionType.Moved, new PointF(A().X + 1, A().Y), downA.Location);
+        last.IsInContact = true;
+        TouchActionEventArgs.FillDistanceInfo(last, previous);
+        Send(TouchActionType.Moved, last, TouchActionResult.Panning, frameMs);
+        Advance(frameMs);
+        var upA = MakeArgs(idA, TouchActionType.Released, last.Location, downA.Location);
+        upA.NumberOfTouches = 0;
+        TouchActionEventArgs.FillDistanceInfo(upA, last);
+        Send(TouchActionType.Released, upA, TouchActionResult.Up, frameMs);
     }
 
     private TouchActionEventArgs MakeArgs(long id, TouchActionType type, PointF pixelLocation, PointF startingPixel)

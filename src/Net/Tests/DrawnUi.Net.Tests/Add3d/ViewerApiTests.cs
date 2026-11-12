@@ -122,6 +122,32 @@ public class ViewerApiTests
         Assert.Equal(model.MinZoom, model.Zoom, 3);
     }
 
+    /// <summary>
+    /// A two-finger gesture never turns the model: not its fingers' own moves, not the jump between the two fingers'
+    /// events, and not the last finger left after the other lifted. Turning is a one-finger drag.
+    /// </summary>
+    [Fact]
+    public void A_pinch_does_not_turn_the_model()
+    {
+        using var host = new HeadlessCanvasHost(400, 300, 1f, Colors.Black);
+        var model = Model();
+        model.PinchZoom = true;
+        host.Canvas.Content = new SkiaLayer { VerticalOptions = LayoutOptions.Fill, Children = { model } };
+        Frames(host, 3);
+        var robot = new GestureRobot(host);
+
+        robot.Pinch(200, 150, new[] { 1 / 1.5f });
+        Frames(host, 2);
+        Assert.Equal(1.5f, model.Zoom, 3);
+        Assert.Equal(0, model.Yaw, 1);
+        Assert.Equal(0, model.Pitch, 1);
+
+        // and a one-finger drag after it still turns
+        robot.Pan(150, 150, 300, 150, 200, 12);
+        Frames(host, 2);
+        Assert.True(MathF.Abs(model.Yaw) > 20, $"turned: {model.Yaw}");
+    }
+
     /// <summary>A touchpad pinch reaches a browser as a Ctrl wheel with no key held (IsZoom): it zooms, a plain wheel does not.</summary>
     [Fact]
     public void A_touchpad_pinch_zooms_without_a_key()

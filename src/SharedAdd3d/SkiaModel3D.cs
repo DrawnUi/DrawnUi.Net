@@ -61,6 +61,8 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     /// <summary>The pinch so far as one factor (0 = no pinch going on), and the zoom it started from.</summary>
     double _pinch;
     float _pinchFrom;
+    /// <summary>The gesture going on has had two fingers or more.</summary>
+    bool _multiTouch;
     long _lastTapMs;
     /// <summary>Drawn since the last frame tick: a model that was not (off screen) stops asking for frames.</summary>
     bool _painted;
@@ -831,6 +833,12 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         {
             if (args.Type is TouchActionResult.Down or TouchActionResult.Up)
                 _pinch = 0;
+            // A gesture that had two fingers on it never turns the model, up to its last finger: the jump between the
+            // fingers' events and the move of the finger left after the other lifted are not a drag.
+            if (args.Event.NumberOfTouches > 1)
+                _multiTouch = true;
+            else if (args.Type == TouchActionResult.Down)
+                _multiTouch = false;
             switch (args.Type)
             {
                 case TouchActionResult.Pointer or TouchActionResult.Down or TouchActionResult.Panning when _tilt > 0:
@@ -886,6 +894,8 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
                     Update();
                     return this;
                 case TouchActionResult.Panning when _orbit:
+                    if (_multiTouch)
+                        return this;
                     switch (DragAxis(args))
                     {
                         case 0:
