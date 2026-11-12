@@ -97,6 +97,8 @@
     {
         // compiled once: a specification compiles its SkSL programs, far too slow for every frame
         static SKMeshSpecification _spec;
+        SKMesh _mesh;
+        SKRect _meshFor;
 
         private bool _ranOnce;
 
@@ -126,12 +128,18 @@
                     vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out specErr);
                 if (spec == null) { LogOnce("triangle spec FAIL: " + specErr); return; }
 
-                var verts = new float[] { cx, cy - r,  cx + r, cy + r,  cx - r, cy + r };
-                using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(verts.AsSpan()));
-                var bounds = new SKRect(cx - r, cy - r, cx + r, cy + r);
-
-                using var mesh = SKMesh.Make(spec, SKMeshMode.Triangles, vb, 3, 0, bounds, out var meshErr);
-                if (mesh == null) { LogOnce("triangle mesh FAIL: " + meshErr); return; }
+                // made again only when the control's size or place changes: the triangle never moves
+                if (_mesh == null || _meshFor != dest)
+                {
+                    _mesh?.Dispose();
+                    var verts = new float[] { cx, cy - r,  cx + r, cy + r,  cx - r, cy + r };
+                    using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(verts.AsSpan()));
+                    var bounds = new SKRect(cx - r, cy - r, cx + r, cy + r);
+                    _mesh = SKMesh.Make(spec, SKMeshMode.Triangles, vb, 3, 0, bounds, out var meshErr);
+                    _meshFor = dest;
+                    if (_mesh == null) { LogOnce("triangle mesh FAIL: " + meshErr); return; }
+                }
+                var mesh = _mesh;
 
                 using var paint = new SKPaint { IsAntialias = true, Color = SKColors.White };
                 canvas.DrawMesh(mesh, paint);
@@ -155,6 +163,8 @@
     {
         // compiled once: a specification compiles its SkSL programs, far too slow for every frame
         static SKMeshSpecification _spec;
+        SKMesh _mesh;
+        SKRect _meshFor;
 
         private bool _ranOnce;
 
@@ -198,26 +208,32 @@
                     vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out specErr);
                 if (spec == null) { LogOnce("uvquad spec FAIL: " + specErr); return; }
 
-                // NOTE: SKMesh.MakeIndexed crashes the WASM Mono interpreter
-                // (ves_pinvoke_method / get_build_args_from_sig_info). Use non-indexed
-                // Make on Blazor WASM until that PInvoke signature is fixed in SkiaSharp.
-                // Two triangles, 6 verts, no index buffer. posX posY uvX uvY
-                var verts = new float[]
+                // made again only when the control's size or place changes: the quad never moves
+                if (_mesh == null || _meshFor != dest)
                 {
-                    l, t,  0f, 0f,
-                    r, t,  1f, 0f,
-                    r, b,  1f, 1f,
+                    _mesh?.Dispose();
+                    // NOTE: SKMesh.MakeIndexed crashes the WASM Mono interpreter
+                    // (ves_pinvoke_method / get_build_args_from_sig_info). Use non-indexed
+                    // Make on Blazor WASM until that PInvoke signature is fixed in SkiaSharp.
+                    // Two triangles, 6 verts, no index buffer. posX posY uvX uvY
+                    var verts = new float[]
+                    {
+                        l, t,  0f, 0f,
+                        r, t,  1f, 0f,
+                        r, b,  1f, 1f,
 
-                    l, t,  0f, 0f,
-                    r, b,  1f, 1f,
-                    l, b,  0f, 1f,
-                };
-                using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(verts.AsSpan()));
-
-                using var mesh = SKMesh.Make(
-                    spec, SKMeshMode.Triangles, vb, 6, 0,
-                    new SKRect(l, t, r, b), out var meshErr);
-                if (mesh == null) { LogOnce("uvquad mesh FAIL: " + meshErr); return; }
+                        l, t,  0f, 0f,
+                        r, b,  1f, 1f,
+                        l, b,  0f, 1f,
+                    };
+                    using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(verts.AsSpan()));
+                    _mesh = SKMesh.Make(
+                        spec, SKMeshMode.Triangles, vb, 6, 0,
+                        new SKRect(l, t, r, b), out var meshErr);
+                    _meshFor = dest;
+                    if (_mesh == null) { LogOnce("uvquad mesh FAIL: " + meshErr); return; }
+                }
+                var mesh = _mesh;
 
                 using var paint = new SKPaint { IsAntialias = true, Color = SKColors.White };
                 canvas.DrawMesh(mesh, paint);
