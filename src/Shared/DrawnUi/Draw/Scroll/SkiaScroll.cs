@@ -4194,7 +4194,8 @@ namespace DrawnUi.Draw
             }
         }
 
-        double AddPadding = 0;
+        /// <summary>Points kept between the focused field and the keyboard's top.</summary>
+        const double AddPadding = 8;
 
         /// <summary>The offset that brings the focused field above the keyboard; NaN = nothing to move.</summary>
         private double _scrollTo = double.NaN;
