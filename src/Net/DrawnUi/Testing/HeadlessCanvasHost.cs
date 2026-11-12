@@ -26,8 +26,11 @@ public sealed class HeadlessCanvasHost : IDisposable
     /// <param name="height">Surface height in pixels.</param>
     /// <param name="scale">Rendering scale (density). 1 means points == pixels.</param>
     /// <param name="background">Canvas background color. Defaults to transparent.</param>
-    public HeadlessCanvasHost(int width, int height, float scale = 1f, DrawnUi.Color? background = null)
+    /// <param name="startNanos">The synthetic clock's start, in nanoseconds. A device's frame clock counts from its
+    /// boot, so a large value stands for a device that has been on for days.</param>
+    public HeadlessCanvasHost(int width, int height, float scale = 1f, DrawnUi.Color? background = null, long startNanos = 0)
     {
+        _frameNanos = startNanos;
         lock (_superLock)
         {
             if (!_superInitialized)

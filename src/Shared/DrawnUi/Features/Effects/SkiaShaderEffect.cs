@@ -442,7 +442,7 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
         var engine = GetEngine();
         var paint = engine.GetPaint();
 
-        TimeSeconds = ctx.Context.FrameTimeNanos * NanosecondsToSeconds;
+        TimeSeconds = GetShaderTime(ctx.Context.FrameTimeNanos);
 
         var texture = GetPrimaryTexture(ctx.Context, ctx.Destination);
         bool shouldDisposeImage = ShouldDisposePreviousTexture(texture);
@@ -581,6 +581,32 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
     public float TimeSeconds { get; set; }
 
     const float NanosecondsToSeconds = 1e-9f; // 1 / 1,000,000,000
+
+    /// <summary>
+    /// The frame time that iTime counts from, in nanoseconds: the first frame a shader effect renders in this
+    /// process, so iTime is the time since the app started drawing shaders (as Shadertoy's), the same clock for
+    /// every effect. Frame times count from the device's boot, and a float of days of uptime moves in steps of a
+    /// tenth of a second, which made animated shaders jump. A host with its own clock may set it before the first frame.
+    /// </summary>
+    public static long ShaderTimeOriginNanos
+    {
+        get => Interlocked.Read(ref _shaderTimeOriginNanos);
+        set => Interlocked.Exchange(ref _shaderTimeOriginNanos, value);
+    }
+
+    static long _shaderTimeOriginNanos = long.MinValue;
+
+    /// <summary>
+    /// Seconds since <see cref="ShaderTimeOriginNanos"/> for a frame time in nanoseconds: the iTime the engine writes.
+    /// The difference is taken in whole nanoseconds before it becomes a float, so it keeps its precision.
+    /// </summary>
+    public static float GetShaderTime(long frameNanos)
+    {
+        var origin = Interlocked.CompareExchange(ref _shaderTimeOriginNanos, frameNanos, long.MinValue);
+        if (origin == long.MinValue)
+            origin = frameNanos;
+        return (float)((frameNanos - origin) * 1e-9);
+    }
 
     /// <summary>
     /// Shadertoy conventions current mouse position (or drag position)
