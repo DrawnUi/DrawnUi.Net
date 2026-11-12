@@ -23,7 +23,7 @@ public static partial class Program
         })
         .RunAsync("drawnui-canvas", () =>
         {
-            var root = new GalleryRoot("The Add3d add-on for the web");
+            var root = new GalleryRoot("Add3D addon to DrawnUI for WebAssembly");
             var query = JSHost.GlobalThis.GetPropertyAsJSObject("location").GetPropertyAsString("search") ?? "";
             if (query.Contains("perf", StringComparison.OrdinalIgnoreCase))
                 PerfProbe.Start(root.Gallery, query);

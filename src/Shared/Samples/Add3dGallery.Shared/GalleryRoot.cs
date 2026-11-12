@@ -62,7 +62,7 @@ public class GalleryRoot : SkiaLayer
                                             VerticalOptions = LayoutOptions.Center,
                                             Children =
                                             {
-                                                new SkiaLabel("DrawnUI 3D") { FontSize = 17, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                                                new SkiaLabel("DrawnUI 3D Demo") { FontSize = 17, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
                                                 new SkiaLabel(subtitle) { FontSize = 12, TextColor = Theme.Muted },
                                             }
                                         },
@@ -115,7 +115,7 @@ public class GalleryRoot : SkiaLayer
     }
 
     /// <summary>Narrower canvases put the tabs under the app's name.</summary>
-    const float HeaderOneLine = 560;
+    const float HeaderOneLine = 620;
 
     SkiaLayout _header;
     bool? _oneLine;

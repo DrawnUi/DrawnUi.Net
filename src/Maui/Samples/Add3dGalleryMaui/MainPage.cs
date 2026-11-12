@@ -26,7 +26,7 @@ public class MainPage : DrawnUiBasePage
                     Gestures = GesturesMode.Enabled,
                     HorizontalOptions = LayoutOptions.Fill,
                     VerticalOptions = LayoutOptions.Fill,
-                    Content = new GalleryRoot("The Add3d add-on for .NET MAUI").Assign(out _root),
+                    Content = new GalleryRoot("Add3D addon to DrawnUI for .NET MAUI").Assign(out _root),
                 }.Assign(out _canvas)
             }
         };

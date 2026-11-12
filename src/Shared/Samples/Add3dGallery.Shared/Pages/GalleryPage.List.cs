@@ -77,8 +77,10 @@ public partial class GalleryPage
                             AutoCache = false,
                             HorizontalOptions = LayoutOptions.Fill,
                             VerticalOptions = LayoutOptions.Fill,
-                            // Where the list is and how much is left; the thumb can be dragged.
+                            // Where the list is and how much is left, shown at rest too (the list scrolls); the
+                            // thumb can be dragged.
                             ScrollBar = new SkiaScrollBar { IsDraggable = true, Thickness = 6 },
+                            KeepScrollBarsVisible = true,
                             ScrollBarThumbColor = Theme.Muted,
                             ScrollBarTrackColor = Color.FromRgba(255, 255, 255, 18),
                             Content = new SkiaStack

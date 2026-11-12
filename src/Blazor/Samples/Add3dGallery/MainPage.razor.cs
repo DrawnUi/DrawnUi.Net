@@ -9,7 +9,7 @@ namespace Add3dGallery;
 /// </summary>
 public partial class MainPage
 {
-    readonly GalleryRoot _content = new("The Add3d add-on for Blazor");
+    readonly GalleryRoot _content = new("Add3D addon to DrawnUI for Blazor");
 
     [Inject] NavigationManager Navigation { get; set; }
 
