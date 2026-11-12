@@ -284,6 +284,41 @@ public sealed class GestureRobot
         _heldPrev = null;
     }
 
+    /// <summary>
+    /// A two-finger pinch centered at (<paramref name="x"/>, <paramref name="y"/>): the distance between the fingers
+    /// changes by each of <paramref name="factors"/> in turn (in one gesture), <paramref name="steps"/> Panning events each, carrying
+    /// <see cref="TouchActionEventArgs.ManipulationInfo"/> (Scale = this step's ratio - 1), as the gesture tracker sends
+    /// them, then the fingers lift. A factor above 1 spreads them.
+    /// </summary>
+    public void Pinch(double x, double y, float[] factors, int steps = 8, double frameMs = 16.0)
+    {
+        var id = ++_pointerId;
+        var px = ToPixels(x, y);
+        var down = MakeArgs(id, TouchActionType.Pressed, px, px);
+        down.IsInContact = true;
+        Send(TouchActionType.Pressed, down, TouchActionResult.Down, frameMs);
+        double total = 0;
+        foreach (var factor in factors)
+        {
+            var step = MathF.Pow(factor, 1f / steps);
+            for (var i = 0; i < steps; i++)
+            {
+                Advance(frameMs);
+                total += step - 1;
+                var move = MakeArgs(id, TouchActionType.Moved, px, px);
+                move.IsInContact = true;
+                move.NumberOfTouches = 2;
+                move.Manipulation = new TouchActionEventArgs.ManipulationInfo(px, px, step - 1, 0, total, 0, 2);
+                TouchActionEventArgs.FillDistanceInfo(move, down);
+                Send(TouchActionType.Moved, move, TouchActionResult.Panning, frameMs);
+            }
+        }
+        Advance(frameMs);
+        var up = MakeArgs(id, TouchActionType.Released, px, px);
+        TouchActionEventArgs.FillDistanceInfo(up, down);
+        Send(TouchActionType.Released, up, TouchActionResult.Up, frameMs);
+    }
+
     private TouchActionEventArgs MakeArgs(long id, TouchActionType type, PointF pixelLocation, PointF startingPixel)
     {
         // Scale == host scale so SkiaGesturesParameters.Create does NOT rescale our pixel coords.

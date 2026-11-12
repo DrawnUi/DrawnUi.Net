@@ -90,6 +90,38 @@ public class ViewerApiTests
         }
     }
 
+    /// <summary>
+    /// A pinch zooms by the ratio of the finger distances; spreading past the nearest zoom and pinching back the same
+    /// amount in one gesture returns to the start (the limit applies to the result, not to each step).
+    /// </summary>
+    [Fact]
+    public void A_pinch_in_and_back_out_returns_to_the_start()
+    {
+        using var host = new HeadlessCanvasHost(400, 300, 1f, Colors.Black);
+        var model = Model();
+        model.PinchZoom = true;
+        host.Canvas.Content = new SkiaLayer { VerticalOptions = LayoutOptions.Fill, Children = { model } };
+        Frames(host, 3);
+        var robot = new GestureRobot(host);
+
+        robot.Pinch(200, 150, new[] { 1.5f });
+        Frames(host, 2);
+        Assert.Equal(1 / 1.5f, model.Zoom, 3);
+
+        robot.Pinch(200, 150, new[] { 1 / 1.5f });
+        Frames(host, 2);
+        Assert.Equal(1, model.Zoom, 3);
+
+        // past the limit (MinZoom 0.5) and back in the same gesture
+        robot.Pinch(200, 150, new[] { 4f, 0.25f });
+        Frames(host, 2);
+        Assert.Equal(1, model.Zoom, 3);
+
+        robot.Pinch(200, 150, new[] { 4f });
+        Frames(host, 2);
+        Assert.Equal(model.MinZoom, model.Zoom, 3);
+    }
+
     /// <summary>A touchpad pinch reaches a browser as a Ctrl wheel with no key held (IsZoom): it zooms, a plain wheel does not.</summary>
     [Fact]
     public void A_touchpad_pinch_zooms_without_a_key()

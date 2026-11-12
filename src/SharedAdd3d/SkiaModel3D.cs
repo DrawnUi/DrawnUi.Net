@@ -58,6 +58,9 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     float _minZoom = 0.5f, _maxZoom = 2.5f;
     /// <summary>This gesture's drag: 0 not decided yet, 1 turns the model, 2 left to the parent (vertical, pitch locked).</summary>
     int _panAxis;
+    /// <summary>The pinch so far as one factor (0 = no pinch going on), and the zoom it started from.</summary>
+    double _pinch;
+    float _pinchFrom;
     long _lastTapMs;
     /// <summary>Drawn since the last frame tick: a model that was not (off screen) stops asking for frames.</summary>
     bool _painted;
@@ -826,6 +829,8 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     {
         if (_scene != null)
         {
+            if (args.Type is TouchActionResult.Down or TouchActionResult.Up)
+                _pinch = 0;
             switch (args.Type)
             {
                 case TouchActionResult.Pointer or TouchActionResult.Down or TouchActionResult.Panning when _tilt > 0:
@@ -868,7 +873,16 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
                     return this;
                 case TouchActionResult.Panning when _pinchZoom && args.Event.Manipulation != null:
                     _reset = 1;
-                    _zoom = Math.Clamp(_zoom / MathF.Max(0.2f, 1 + (float)args.Event.Manipulation.Scale), _minZoom, _maxZoom);
+                    // The whole pinch from where it started, clamped only at the end: spreading the fingers past the
+                    // nearest zoom and back returns to the start (each step clamped on its own would lose what passed
+                    // the limit).
+                    if (_pinch <= 0)
+                    {
+                        _pinch = 1;
+                        _pinchFrom = _zoom;
+                    }
+                    _pinch *= Math.Max(0.2, 1 + args.Event.Manipulation.Scale);
+                    _zoom = Math.Clamp(_pinchFrom / (float)_pinch, _minZoom, _maxZoom);
                     Update();
                     return this;
                 case TouchActionResult.Panning when _orbit:

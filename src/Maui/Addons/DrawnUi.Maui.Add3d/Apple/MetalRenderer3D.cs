@@ -474,17 +474,16 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
             Eye = Renderer3D.Eye(viewProj),
         };
         var state = new EncoderState { Cull = -1 };
-        var firstPass = style.Outline > 0 ? 0 : 1;
-        for (var pass = firstPass; pass < 3; pass++)
+        // Opaque surfaces, each primitive with its outline right before it (the outline hull is pushed behind the
+        // surface and depth tested, so the picture is the one of a separate outline pass), then the blended ones.
+        // One pass over the objects instead of two: the joints, buffers and texture are bound once per primitive.
+        for (var pass = 0; pass < 2; pass++)
         {
-            var outlinePass = pass == 0;
-            var blendPass = pass == 2;
-            block.OutlinePass = outlinePass ? 1 : 0;
-            block.Params.X = outlinePass ? style.Outline : 0;
+            var blendPass = pass == 1;
             encoder.SetRenderPipelineState(t.Samples > 1 ? blendPass ? _blendMsaa : _opaqueMsaa : blendPass ? _blend : _opaque);
             encoder.SetDepthStencilState(blendPass ? _depthRead : _depthWrite);
             for (var o = 0; o < count; o++)
-                DrawItem(encoder, queue, items[o], outlinePass, blendPass, ref block, ref state);
+                DrawItem(encoder, queue, items[o], !blendPass ? style.Outline : 0, blendPass, ref block, ref state);
         }
 
         encoder.EndEncoding();
@@ -499,7 +498,16 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
         public IntPtr Texture;
     }
 
-    static void DrawItem(IMTLRenderCommandEncoder encoder, IMTLCommandQueue queue, in RenderItem item, bool outlinePass, bool blendPass,
+    static void SetCull(IMTLRenderCommandEncoder encoder, ref EncoderState state, MTLCullMode mode)
+    {
+        if (state.Cull == (int)mode)
+            return;
+        encoder.SetCullMode(mode);
+        state.Cull = (int)mode;
+    }
+
+    /// <param name="outline">The outline width in pixels drawn before each primitive (0 = none).</param>
+    static void DrawItem(IMTLRenderCommandEncoder encoder, IMTLCommandQueue queue, in RenderItem item, float outline, bool blendPass,
         ref DrawBlock block, ref EncoderState state)
     {
         var scene = item.Scene;
@@ -538,16 +546,7 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
                     : material != null && material.Texture >= 0 && material.Texture < gpu.Textures.Length ? gpu.Textures[material.Texture] : null;
                 block.Textured = texture != null ? 1 : 0;
                 block.Skinned = skinned && p.Joints.Length > 0 ? 1 : 0;
-                var b = block;
-                encoder.SetVertexBytes((IntPtr)(&b), (nuint)sizeof(DrawBlock), 6);
-                encoder.SetFragmentBytes((IntPtr)(&b), (nuint)sizeof(DrawBlock), 0);
 
-                var cull = (int)(outlinePass ? MTLCullMode.Front : (material?.DoubleSided ?? false) ? MTLCullMode.None : MTLCullMode.Back);
-                if (state.Cull != cull)
-                {
-                    encoder.SetCullMode((MTLCullMode)cull);
-                    state.Cull = cull;
-                }
                 var bound = texture ?? _white;
                 if (state.Texture != bound.Handle)
                 {
@@ -557,7 +556,27 @@ fragment float4 model_fragment(VertexOut i [[stage_in]], bool front [[front_faci
                 var at = gpu.Offsets[node.Mesh][k];
                 for (var a = 0; a < 6; a++)
                     encoder.SetVertexBuffer(gpu.Buffer, at[a], (nuint)a);
-                encoder.DrawIndexedPrimitives(MTLPrimitiveType.Triangle, (nuint)gpu.Counts[node.Mesh][k], MTLIndexType.UInt32, gpu.Buffer, at[6]);
+                var indices = (nuint)gpu.Counts[node.Mesh][k];
+
+                if (outline > 0)
+                {
+                    // The outline: the back faces pushed out, in the outline color.
+                    block.OutlinePass = 1;
+                    block.Params.X = outline;
+                    var ob = block;
+                    encoder.SetVertexBytes((IntPtr)(&ob), (nuint)sizeof(DrawBlock), 6);
+                    encoder.SetFragmentBytes((IntPtr)(&ob), (nuint)sizeof(DrawBlock), 0);
+                    SetCull(encoder, ref state, MTLCullMode.Front);
+                    encoder.DrawIndexedPrimitives(MTLPrimitiveType.Triangle, indices, MTLIndexType.UInt32, gpu.Buffer, at[6]);
+                    block.OutlinePass = 0;
+                    block.Params.X = 0;
+                }
+
+                var b = block;
+                encoder.SetVertexBytes((IntPtr)(&b), (nuint)sizeof(DrawBlock), 6);
+                encoder.SetFragmentBytes((IntPtr)(&b), (nuint)sizeof(DrawBlock), 0);
+                SetCull(encoder, ref state, (material?.DoubleSided ?? false) ? MTLCullMode.None : MTLCullMode.Back);
+                encoder.DrawIndexedPrimitives(MTLPrimitiveType.Triangle, indices, MTLIndexType.UInt32, gpu.Buffer, at[6]);
             }
         }
     }
