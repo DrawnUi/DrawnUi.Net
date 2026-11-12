@@ -95,6 +95,9 @@
 
     private class SolidTriangleMesh : SkiaControl
     {
+        // compiled once: a specification compiles its SkSL programs, far too slow for every frame
+        static SKMeshSpecification _spec;
+
         private bool _ranOnce;
 
         protected override void Paint(DrawingContext ctx)
@@ -117,9 +120,10 @@
                 const string vert = "Varyings main(const Attributes attrs) { Varyings v; v.position = attrs.position; return v; }";
                 const string frag = "float2 main(const Varyings v, out half4 color) { color = half4(1.0, 0.85, 0.2, 1.0); return v.position; }";
 
-                using var spec = SKMeshSpecification.Make(
+                string specErr = null;
+                var spec = _spec ??= SKMeshSpecification.Make(
                     attrs, sizeof(float) * 2, Array.Empty<SKMeshSpecificationVarying>(),
-                    vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out var specErr);
+                    vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out specErr);
                 if (spec == null) { LogOnce("triangle spec FAIL: " + specErr); return; }
 
                 var verts = new float[] { cx, cy - r,  cx + r, cy + r,  cx - r, cy + r };
@@ -149,6 +153,9 @@
 
     private class IndexedUvQuadMesh : SkiaControl
     {
+        // compiled once: a specification compiles its SkSL programs, far too slow for every frame
+        static SKMeshSpecification _spec;
+
         private bool _ranOnce;
 
         protected override void Paint(DrawingContext ctx)
@@ -185,9 +192,10 @@
                         return v.position;
                     }";
 
-                using var spec = SKMeshSpecification.Make(
+                string specErr = null;
+                var spec = _spec ??= SKMeshSpecification.Make(
                     attrs, sizeof(float) * 4, varyings,
-                    vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out var specErr);
+                    vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out specErr);
                 if (spec == null) { LogOnce("uvquad spec FAIL: " + specErr); return; }
 
                 // NOTE: SKMesh.MakeIndexed crashes the WASM Mono interpreter
@@ -231,6 +239,9 @@
 
     private class AnimatedWaveMesh : SkiaControl
     {
+        // compiled once: a specification compiles its SkSL programs, far too slow for every frame
+        static SKMeshSpecification _spec;
+
         private bool _ranOnce;
         private PerpetualPendulumAnimator _animator;
         private double _phase;
@@ -302,9 +313,10 @@
                         return v.position;
                     }";
 
-                using var spec = SKMeshSpecification.Make(
+                string specErr = null;
+                var spec = _spec ??= SKMeshSpecification.Make(
                     attrs, sizeof(float) * 4, varyings,
-                    vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out var specErr);
+                    vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out specErr);
                 if (spec == null) { LogOnce("wave spec FAIL: " + specErr); return; }
 
                 // Build a strip of (Cols+1) * 2 vertices forming Cols quads (TriangleStrip mesh)
