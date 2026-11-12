@@ -29,6 +29,8 @@ public partial class GalleryPage : DrawnGame
     Scenery _scenery;
     UiButton _medalButton, _likeButton, _chestButton;
     readonly UiButton[] _mobButtons = new UiButton[MobCounts.Length];
+    readonly UiButton[] _lookButtons = new UiButton[2];
+    bool _drawnMobs;
 
     public GalleryPage()
     {
@@ -331,8 +333,25 @@ public partial class GalleryPage : DrawnGame
                 AccessibilityRole = Aria.RoleRadioGroup,
                 AccessibilityLabel = "Mobs on the field",
                 Children = MobCounts.Select((n, i) => (SkiaControl)new UiButton($"{n} mobs", Theme.Quiet, 110) { AccessibilityRole = Aria.RoleRadio }
-                    .Assign(out _mobButtons[i])
-                    .OnTapped(_ => SetMobs(n))).ToList(),
+                        .Assign(out _mobButtons[i])
+                        .OnTapped(_ => SetMobs(n)))
+                    .Append(new SkiaRow
+                    {
+                        Spacing = 8,
+                        Margin = new Thickness(16, 0, 0, 0),
+                        AccessibilityRole = Aria.RoleRadioGroup,
+                        AccessibilityLabel = "Mob look",
+                        Children =
+                        {
+                            new UiButton("3D", Theme.Quiet, 90) { AccessibilityRole = Aria.RoleRadio }
+                                .Assign(out _lookButtons[0])
+                                .OnTapped(_ => SetDrawnMobs(false)),
+                            new UiButton("Drawn", Theme.Quiet, 90) { AccessibilityRole = Aria.RoleRadio }
+                                .Assign(out _lookButtons[1])
+                                .OnTapped(_ => SetDrawnMobs(true)),
+                        }
+                    })
+                    .ToList(),
             },
         }
     });
@@ -428,5 +447,25 @@ public partial class GalleryPage : DrawnGame
             _mobButtons[i].Fill = on ? Theme.Accent : Theme.Quiet;
             _mobButtons[i].AccessibilityIsPressed = on;
         }
+        for (var i = 0; i < _lookButtons.Length; i++)
+        {
+            var on = (i == 1) == _drawnMobs;
+            _lookButtons[i].Fill = on ? Theme.Accent : Theme.Quiet;
+            _lookButtons[i].AccessibilityIsPressed = on;
+        }
+    }
+
+    /// <summary>The drawn look of the mobs: toon shading and an ink outline, as a cartoon (same in DrawnUI for Rust).</summary>
+    const float DrawnOutline = 2;
+    static readonly Color DrawnInk = Color.FromRgb(42, 20, 32);
+
+    /// <summary>The mobs as lit 3D models, or drawn as a cartoon.</summary>
+    internal void SetDrawnMobs(bool drawn)
+    {
+        _drawnMobs = drawn;
+        _field.Look = drawn ? Look.Toon : Look.Lit;
+        _field.OutlineWidth = drawn ? DrawnOutline : 0;
+        _field.OutlineColor = DrawnInk;
+        UpdateMobButtons();
     }
 }
