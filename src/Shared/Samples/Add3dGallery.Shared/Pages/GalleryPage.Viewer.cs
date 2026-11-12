@@ -85,7 +85,10 @@ public partial class GalleryPage
                 HeightRequest = ViewerHeight,
                 Children =
                 {
-                    new SkiaLayer { VerticalOptions = LayoutOptions.Fill }.Assign(out _viewerHost),
+                    new SkiaLayer { VerticalOptions = LayoutOptions.Fill }
+                        .Assign(out _viewerHost)
+                        // Narrow, the hint below wraps to two lines: the model keeps clear of it.
+                        .Adapt(me => _adapt.Add(width => me.Margin = new Thickness(0, 0, 0, TwoColumns(width) ? 0 : 44))),
                     // The dots and the note follow their points of the model.
                     new SkiaLayer
                     {
@@ -94,7 +97,7 @@ public partial class GalleryPage
                     },
                     new SkiaLabel("Drag to turn  ·  pinch or Ctrl+scroll to zoom  ·  double-tap to reset")
                     {
-                        FontSize = 12, TextColor = Theme.Muted, Margin = new Thickness(0, 0, 0, 12),
+                        FontSize = 12, TextColor = Theme.Muted, Margin = new Thickness(0, 0, 0, 12), HorizontalTextAlignment = DrawTextAlignment.Center,
                         HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.End, InputTransparent = true,
                     },
                     Loading().Assign(out _loading),
