@@ -35,9 +35,27 @@
         {
             get
             {
-                return NeedAutoSize;
+                return SizeFollowsContent;
             }
         }
+
+        /// <summary>
+        /// The width of this control depends on its content: it has no width of its own, or it fills a parent whose
+        /// width depends on its content (a parent sized by content measures its Fill children at their content size).
+        /// </summary>
+        protected bool WidthFollowsContent =>
+            NeedAutoWidth || NeedFillX && Parent is SkiaControl parent && parent.WidthFollowsContent;
+
+        /// <summary>
+        /// The height of this control depends on its content, see <see cref="WidthFollowsContent"/>.
+        /// </summary>
+        protected bool HeightFollowsContent =>
+            NeedAutoHeight || NeedFillY && Parent is SkiaControl parent && parent.HeightFollowsContent;
+
+        /// <summary>
+        /// The size of this control depends on its content, so a child that changes size must measure it again.
+        /// </summary>
+        protected bool SizeFollowsContent => NeedAutoSize || WidthFollowsContent || HeightFollowsContent;
 
 
 
