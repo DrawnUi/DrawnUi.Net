@@ -137,6 +137,29 @@ public sealed class SKMeshSpecification : IDisposable
     internal CachedUniforms PositionUniforms => _positionUniforms ??= new CachedUniforms(PositionEffect);
     internal SKRuntimeEffectChildren PositionChildren => _positionChildren ??= new SKRuntimeEffectChildren(PositionEffect);
     internal CachedUniforms ConvertUniforms => _convertUniforms ??= new CachedUniforms(ConvertEffect);
+
+    // The draw program for a paint without a shader (a plain color): the color is read at one point, so the local
+    // coords (the "position" varying) are unused and the GPU compiler drops their texel reads. Compiled at its
+    // first use; null if it does not compile (the draw program is used then).
+    string _drawSource;
+    bool _solidTried;
+    SKRuntimeEffect _drawSolidEffect;
+    CachedUniforms _drawSolidUniforms;
+    SKRuntimeEffectChildren _drawSolidChildren;
+    internal SKRuntimeEffect DrawSolidEffect
+    {
+        get
+        {
+            if (!_solidTried)
+            {
+                _solidTried = true;
+                _drawSolidEffect = SKRuntimeEffect.CreateShader(_drawSource.Replace("_sm_paint.eval(lc)", "_sm_paint.eval(float2(0.0))"), out _);
+            }
+            return _drawSolidEffect;
+        }
+    }
+    internal CachedUniforms DrawSolidUniforms => _drawSolidUniforms ??= new CachedUniforms(DrawSolidEffect);
+    internal SKRuntimeEffectChildren DrawSolidChildren => _drawSolidChildren ??= new SKRuntimeEffectChildren(DrawSolidEffect);
     internal SKRuntimeEffectChildren ConvertChildren => _convertChildren ??= new SKRuntimeEffectChildren(ConvertEffect);
 
     // A program's uniform holder that writes a value only when it differs from the one it holds (each write allocates
@@ -331,20 +354,40 @@ public sealed class SKMeshSpecification : IDisposable
         vs = MainRegex.Replace(vs, "_sm_vs(");
         fs = MainRegex.Replace(fs, "_sm_fs(");
 
-        // Packed attribute floats: attribute i at float floatIndex[i] of its vertex's texels.
+        // Packed attribute floats: attribute i at float floatIndex[i] of its vertex's texels. No attribute straddles
+        // two texels (largest first, first texel with room), and "position" gets a texel of its own, last: a draw
+        // whose fragment program does not read the position (local coords unused with a plain paint color) reads
+        // none of it, the GPU compiler drops those texel reads.
         var attrs = attributes.ToArray();
         var varys = varyings.ToArray();
-        int floats = 0;
         int positionFloat = -1;
+        int positionAttr = -1;
         var floatIndex = new int[attrs.Length];
-        for (int i = 0; i < attrs.Length; i++)
+        var room = new List<int>(); // free floats per texel
+        foreach (int i in Enumerable.Range(0, attrs.Length).OrderByDescending(i => AttributeFloats(attrs[i].Type)).ThenBy(i => i))
         {
-            floatIndex[i] = floats;
             if (attrs[i].Name == "position" && attrs[i].Type == SKMeshSpecificationAttributeType.Float2)
+            {
                 positionFloat = attrs[i].Offset / 4; // in the vertex bytes
-            floats += AttributeFloats(attrs[i].Type);
+                positionAttr = i;
+                continue;
+            }
+            int n = AttributeFloats(attrs[i].Type);
+            int t = room.FindIndex(free => free >= n);
+            if (t < 0)
+            {
+                room.Add(4);
+                t = room.Count - 1;
+            }
+            floatIndex[i] = t * 4 + 4 - room[t];
+            room[t] -= n;
         }
-        int texels = (floats + 3) / 4;
+        if (positionAttr >= 0)
+        {
+            floatIndex[positionAttr] = room.Count * 4;
+            room.Add(2);
+        }
+        int texels = room.Count;
 
         var structs = BuildStructs(attrs, varys);
 
@@ -461,7 +504,7 @@ public sealed class SKMeshSpecification : IDisposable
         }
 
         return new SKMeshSpecification(vertexStride, attrs, texels, hasColor, convertEffect, drawEffect, positionEffect, positionFloat,
-            uniforms.ToArray(), vertexUniforms, uniformSize, children);
+            uniforms.ToArray(), vertexUniforms, uniformSize, children) { _drawSource = drawSource };
     }
 
     static int UniformBytes(string type, string array, out bool isInt)
@@ -784,9 +827,12 @@ public sealed class SKMeshSpecification : IDisposable
             _positionChildren?.Dispose();
             _convertUniforms?.Dispose();
             _convertChildren?.Dispose();
-            _drawUniforms = _positionUniforms = _convertUniforms = null;
-            _drawChildren = _positionChildren = _convertChildren = null;
+            _drawSolidUniforms?.Dispose();
+            _drawSolidChildren?.Dispose();
+            _drawUniforms = _positionUniforms = _convertUniforms = _drawSolidUniforms = null;
+            _drawChildren = _positionChildren = _convertChildren = _drawSolidChildren = null;
         }
+        _drawSolidEffect?.Dispose();
         ConvertEffect?.Dispose();
         DrawEffect?.Dispose();
         PositionEffect?.Dispose();

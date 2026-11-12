@@ -572,13 +572,16 @@ public sealed class SKMesh : IDisposable
         SKShader shader;
         lock (_spec.EffectLock)
         {
-            var uniforms = _spec.DrawUniforms;
+            // a plain paint color: the program that never reads the local coords (no position texel reads)
+            bool solid = paintShader == null && _spec.DrawSolidEffect != null;
+            var effect = solid ? _spec.DrawSolidEffect : _spec.DrawEffect;
+            var uniforms = solid ? _spec.DrawSolidUniforms : _spec.DrawUniforms;
             MeshGeometry.SetUniforms(uniforms, _spec.Uniforms, _uniforms);
             float alpha = paintShader == null ? 1f : paintColor.Alpha / 255f;
             g.SetCornerUniforms(uniforms, alpha);
             uniforms.Set("_sm_pk", stackalloc float[] { 0, g.Packed.VerticesPerRow, 1f / g.Packed.VerticesPerRow, g.Packed.Rows });
 
-            var children = _spec.DrawChildren;
+            var children = solid ? _spec.DrawSolidChildren : _spec.DrawChildren;
             for (int i = 0; i < _spec.Children.Length; i++)
                 children[_spec.Children[i].Name] = _children[i].Value == null ? (SKRuntimeEffectChild?)null : _children[i];
             children["_sm_attr"] = packed;
@@ -586,7 +589,7 @@ public sealed class SKMesh : IDisposable
             children["_sm_paint"] = source;
             if (blender != null)
                 children["_sm_blend"] = blender;
-            shader = _spec.DrawEffect.ToShader(uniforms.Holder, children);
+            shader = effect.ToShader(uniforms.Holder, children);
             children.Reset(); // holds no mesh's objects between draws
         }
 
