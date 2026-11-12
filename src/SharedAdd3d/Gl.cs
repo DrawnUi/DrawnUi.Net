@@ -1,5 +1,7 @@
 using System.Runtime.InteropServices;
 
+#if !(IOS || MACCATALYST) // Apple heads draw with Metal only: no GL entry points, no OpenGLES framework linked
+
 namespace DrawnUi.Add3d;
 
 /// <summary>
@@ -75,3 +77,4 @@ internal static unsafe class Gl
     [DllImport(Lib)] public static extern void glUniform2f(int location, float x, float y);
     [DllImport(Lib)] public static extern void glDrawElements(uint mode, int count, uint type, nint offset);
 }
+#endif

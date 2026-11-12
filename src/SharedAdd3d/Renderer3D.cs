@@ -105,6 +105,9 @@ void main() {
 }
 """;
 
+#if !(IOS || MACCATALYST)
+    // Apple heads draw with Metal only (MetalRenderer3D): no GL code is compiled there, so the app links no OpenGLES
+    // (Mac Catalyst has none).
     const uint ARRAY_BUFFER = 0x8892, ELEMENT_ARRAY_BUFFER = 0x8893, STATIC_DRAW = 0x88E4;
     const uint FLOAT = 0x1406, UNSIGNED_BYTE = 0x1401, UNSIGNED_INT = 0x1405;
     const uint TEXTURE_2D = 0x0DE1, RGBA = 0x1908, RGBA8 = 0x8058;
@@ -169,6 +172,7 @@ void main() {
     }
 
     DrawState _state;
+#endif
 
     static readonly Vector3 Light = Vector3.Normalize(new Vector3(0.4f, 0.8f, 0.6f));
 
@@ -207,12 +211,18 @@ void main() {
 #endif
         target.Image?.Dispose();
         target.Image = null;
+#if !(IOS || MACCATALYST)
         // Its GL objects are deleted by the renderer of the context that made them, at its next draw.
         if (target.Context is GRContext gr && Renderers.TryGetValue(gr, out var owner))
             lock (owner._released)
                 owner._released.Add(target);
+#endif
     }
 
+#if IOS || MACCATALYST
+    /// <summary>Metal compiles its pipeline at the first draw: nothing to start ahead.</summary>
+    internal static bool StartProgram(GRContext gr) => false;
+#else
     static uint Shader(uint kind, string source)
     {
         var s = Gl.glCreateShader(kind);
@@ -529,6 +539,7 @@ void main() {
             _released.Clear();
         }
     }
+#endif
 
     /// <summary>
     /// Draws the objects into the control's texture in one pass and returns the image Skia shows of it (null when
@@ -549,6 +560,10 @@ void main() {
 #endif
             return null;
         }
+#if IOS || MACCATALYST
+        return null;
+    }
+#else
 #if ANDROID
         if (target.Native != null)
         {
@@ -709,5 +724,6 @@ void main() {
             }
         }
     }
+#endif
 }
 
