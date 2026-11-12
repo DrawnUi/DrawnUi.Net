@@ -39,10 +39,17 @@ public class MainPage : DrawnUiBasePage
     }
 
     /// <summary>
-    /// The focused field stays above the on-screen keyboard: the gallery's scroll adapts to it. KeyboardSize is the
-    /// keyboard's raw height, down to the screen's bottom; the page's content ends above the bottom inset (the home
-    /// indicator), so the part over the content is KeyboardSize minus that inset (as Nick's apps do it).
+    /// The focused field stays above the on-screen keyboard: the gallery's scroll adapts to it. On iOS KeyboardSize is
+    /// the keyboard's raw height, down to the screen's bottom, and the page's content ends above the bottom inset (the
+    /// home indicator), so the part over the content is KeyboardSize minus that inset; Android's KeyboardSize already
+    /// leaves the inset out.
     /// </summary>
-    void FollowKeyboard(double? height = null) =>
-        _root.Gallery.OnKeyboard(Math.Max(0, (height ?? KeyboardSize) - Super.Screen.BottomInset), _canvas.FocusedChild as SkiaControl);
+    void FollowKeyboard(double? height = null)
+    {
+        var keyboard = height ?? KeyboardSize;
+#if IOS
+        keyboard = Math.Max(0, keyboard - Super.Screen.BottomInset);
+#endif
+        _root.Gallery.OnKeyboard(keyboard, _canvas.FocusedChild as SkiaControl);
+    }
 }
