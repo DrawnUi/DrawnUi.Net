@@ -134,7 +134,17 @@ function createWebGLContext(htmlCanvas) {
         contextAttributes.minorVersion = 0;
         ctx = GL.createContext(htmlCanvas, contextAttributes);
     }
+    if (ctx) enableRendererInfo(GL.getContext(ctx)?.GLctx);
     return ctx;
+}
+
+// Skia asks for the GPU's name (UNMASKED_RENDERER_WEBGL) when it makes its GPU context: a valid query only once this
+// extension is enabled, else the browser logs INVALID_ENUM (an error in WebKit). Enabled again on a restored context.
+function enableRendererInfo(gl) {
+    try {
+        if (gl && gl.getSupportedExtensions()?.includes('WEBGL_debug_renderer_info'))
+            gl.getExtension('WEBGL_debug_renderer_info');
+    } catch { /* no such extension here: Skia's query stays as it was */ }
 }
 
 // ============================================================================
@@ -198,6 +208,7 @@ export function initGL(elementId, callback, restoredCallback) {
         GL.deleteContext(view.glInfo.context); // before registering: it clears canvas.GLctxObject
         const handle = GL.registerContext(gl, attributes);
         GL.makeContextCurrent(handle);
+        enableRendererInfo(gl);
         view.glInfo.context = handle;
         view.contextLost = false;
         if (restoredCallback) restoredCallback();
