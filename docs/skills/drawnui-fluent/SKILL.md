@@ -685,6 +685,59 @@ public class PresetCell : SkiaDynamicDrawnCell
 - To hide a part of a recycled cell from the pointer and the keyboard, use `Opacity = 0` plus `InputTransparent = true`: opacity alone still takes input.
 - Rules: `drawnui` skill, keyboard bullets.
 
+### On-screen keyboard over a form (MAUI phones)
+
+The page is a `DrawnUiBasePage` (raw `KeyboardSize`; the app subtracts the bottom inset), the form's `SkiaScroll` adapts to the focused control, a spacer at the end of its content gives the last fields room. Rules: `drawnui` skill, "Keyboard over a form".
+
+```csharp
+public class FormPage : DrawnUiBasePage
+{
+    Canvas _canvas;
+    SkiaScroll _scroll;
+    SkiaControl _keyboardSpacer;
+
+    public FormPage()
+    {
+        Content = new Canvas
+        {
+            RenderingMode = RenderingModeType.Accelerated,
+            Gestures = GesturesMode.Enabled,
+            Content = new SkiaScroll
+            {
+                AdaptToKeyboardGap = 8, // the default: points between the field and the keyboard
+                Content = new SkiaStack
+                {
+                    Children =
+                    {
+                        new SkiaEditor { PlaceholderText = "Name", MaxLines = 1 },
+                        new SkiaEditor { PlaceholderText = "Email", MaxLines = 1 },
+                        new SkiaControl { HorizontalOptions = LayoutOptions.Fill, IsVisible = false }.Assign(out _keyboardSpacer),
+                    }
+                }
+            }.Assign(out _scroll)
+        }.Assign(out _canvas);
+        // the next field focused while the keyboard stays open
+        _canvas.FocusedItemChanged += (_, _) => FollowKeyboard(KeyboardSize);
+    }
+
+    public override double OnKeyboardResized(double size)
+    {
+        var raw = base.OnKeyboardResized(size);
+        FollowKeyboard(raw);
+        return raw;
+    }
+
+    void FollowKeyboard(double raw)
+    {
+        var keyboard = Math.Max(0, raw - Super.Screen.BottomInset); // the part over the content
+        _keyboardSpacer.HeightRequest = keyboard;
+        _keyboardSpacer.IsVisible = keyboard > 0;
+        _scroll.AdaptToKeyboardFor = keyboard > 0 ? _canvas.FocusedChild as SkiaControl : null;
+        _scroll.AdaptToKeyboardSize = keyboard;
+    }
+}
+```
+
 ## XAML → Code-Behind Porting
 
 Check platform availability first — some controls are MAUI-only on other heads (`SkiaMauiElement`, `SkiaCamera`; verify others by grepping the class in `src/Shared/DrawnUi/Shared.projitems` and the target head's csproj excludes).

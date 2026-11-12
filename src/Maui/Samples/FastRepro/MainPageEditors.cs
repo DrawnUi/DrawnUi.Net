@@ -203,7 +203,7 @@ namespace Sandbox
                             {
                                 if (s == nameof(this.KeyboardSize))
                                 {
-                                    me.HeightRequest = KeyboardSize;
+                                    me.HeightRequest = Math.Max(0, KeyboardSize - Super.Screen.BottomInset); // the raw keyboard height reaches the screen's bottom
                                 }
                             })
 
@@ -215,7 +215,7 @@ namespace Sandbox
                         if (s == nameof(this.KeyboardSize))
                         {
                             me.AdaptToKeyboardFor = Canvas.FocusedChild as SkiaControl;
-                            me.AdaptToKeyboardSize = KeyboardSize;
+                            me.AdaptToKeyboardSize = Math.Max(0, KeyboardSize - Super.Screen.BottomInset);
                         }
                     })
             };
