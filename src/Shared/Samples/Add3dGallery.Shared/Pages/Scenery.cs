@@ -5,7 +5,8 @@ namespace Add3dGallery;
 /// Rust's gallery3d: a still sky and sun, then clouds, far hills, near hills and the grass with its dirt path, each
 /// sliding at its own share of the pan (parallax). Every moving layer repeats every 1000 points and is drawn twice side
 /// by side, its slide snapped to whole device pixels so the copies meet without a seam. The shapes are made once per
-/// size; a frame only slides them (<see cref="Pan"/>, in points).
+/// size and painted once into a GPU image per layer (the sky and sun into one more); a frame only draws those images at
+/// their slide (<see cref="Pan"/>, in points), as DrawnUI for Rust's cached layer pictures.
 /// </summary>
 public class Scenery : SkiaControl
 {
@@ -79,9 +80,72 @@ public class Scenery : SkiaControl
         return (path, Vertical(top, bottom, from, to, s), from);
     }
 
+    /// <summary>The still sky and sun, then one tile of each moving layer, as GPU images of the canvas's context.</summary>
+    SKImage _backdrop;
+    readonly SKImage[] _images = new SKImage[4];
+    GRContext _imagesContext;
+
+    void PaintImages(GRContext gr, int w, int h)
+    {
+        DisposeImages();
+        _imagesContext = gr;
+        var tile = (int)MathF.Round(TileWidth * _builtScale);
+        using (var surface = SKSurface.Create(gr, false, new SKImageInfo(w, h, SKColorType.Rgba8888, SKAlphaType.Premul)))
+        {
+            if (surface == null)
+                return;
+            PaintBackdrop(surface.Canvas, w, h, _builtScale);
+            _backdrop = surface.Snapshot();
+        }
+        for (var i = 0; i < _layers.Length; i++)
+        {
+            using var surface = SKSurface.Create(gr, false, new SKImageInfo(tile, h, SKColorType.Rgba8888, SKAlphaType.Premul));
+            if (surface == null)
+                return;
+            surface.Canvas.Clear(SKColors.Transparent);
+            PaintLayer(surface.Canvas, i);
+            _images[i] = surface.Snapshot();
+        }
+    }
+
+    void PaintBackdrop(SKCanvas canvas, float w, float h, float s)
+    {
+        _paint.Shader = _sky;
+        canvas.DrawRect(0, 0, w, h, _paint);
+        _paint.Shader = null;
+        // The sun: a soft glow, then its disc.
+        canvas.DrawCircle(795 * s, 69 * s, 38 * s, _glow);
+        _paint.Color = new SKColor(255, 236, 170);
+        canvas.DrawCircle(795 * s, 69 * s, 35 * s, _paint);
+    }
+
+    void PaintLayer(SKCanvas canvas, int i)
+    {
+        foreach (var (path, shader, color) in _layers[i].Parts)
+        {
+            _paint.Shader = shader;
+            _paint.Color = color;
+            canvas.DrawPath(path, _paint);
+        }
+        _paint.Shader = null;
+    }
+
+    void DisposeImages()
+    {
+        _backdrop?.Dispose();
+        _backdrop = null;
+        for (var i = 0; i < _images.Length; i++)
+        {
+            _images[i]?.Dispose();
+            _images[i] = null;
+        }
+        _imagesContext = null;
+    }
+
     void Build(float h, float s)
     {
         DisposeShapes();
+        DisposeImages();
         _builtH = h;
         _builtScale = s;
         _sky = Vertical(0, h, new SKColor(92, 164, 232), new SKColor(214, 238, 250), s);
@@ -120,36 +184,39 @@ public class Scenery : SkiaControl
         if (h != _builtH || s != _builtScale)
             Build(h, s);
         var canvas = ctx.Context.Canvas;
+        var gr = Superview?.GetGRContext();
+        int w = (int)MathF.Round(dest.Width), hp = (int)MathF.Round(dest.Height);
+        if (gr != null && (_imagesContext != gr || _backdrop == null || _backdrop.Width != w || _backdrop.Height != hp))
+            PaintImages(gr, w, hp);
+        var images = gr != null && _backdrop != null && _images[^1] != null;
         canvas.Save();
         canvas.ClipRect(dest);
-        canvas.Translate(dest.Left, dest.Top);
+        // Whole device pixels: the field's corner and every slide, so the two copies meet on a pixel edge.
+        canvas.Translate(MathF.Round(dest.Left), MathF.Round(dest.Top));
 
-        _paint.Shader = _sky;
-        canvas.DrawRect(0, 0, dest.Width, dest.Height, _paint);
-        _paint.Shader = null;
-        // The sun: a soft glow, then its disc.
-        canvas.DrawCircle(795 * s, 69 * s, 38 * s, _glow);
-        _paint.Color = new SKColor(255, 236, 170);
-        canvas.DrawCircle(795 * s, 69 * s, 35 * s, _paint);
+        if (images)
+            canvas.DrawImage(_backdrop, 0, 0);
+        else
+            PaintBackdrop(canvas, dest.Width, dest.Height, s);
 
+        var tile = MathF.Round(TileWidth * s);
         for (var i = 0; i < _layers.Length; i++)
         {
-            // Whole device pixels: the two copies meet on a pixel edge, with no blended seam.
             var shift = MathF.Round(((_pan * Parallax[i]) % TileWidth) * s);
             for (var copy = 0; copy < 2; copy++)
             {
-                canvas.Save();
-                canvas.Translate(copy * MathF.Round(TileWidth * s) - shift, 0);
-                foreach (var (path, shader, color) in _layers[i].Parts)
+                var x = copy * tile - shift;
+                if (images)
                 {
-                    _paint.Shader = shader;
-                    _paint.Color = color;
-                    canvas.DrawPath(path, _paint);
+                    canvas.DrawImage(_images[i], x, 0);
+                    continue;
                 }
+                canvas.Save();
+                canvas.Translate(x, 0);
+                PaintLayer(canvas, i);
                 canvas.Restore();
             }
         }
-        _paint.Shader = null;
         canvas.Restore();
     }
 
@@ -165,6 +232,7 @@ public class Scenery : SkiaControl
     /// <inheritdoc />
     public override void OnDisposing()
     {
+        DisposeImages();
         DisposeShapes();
         _paint.Dispose();
         _glow.Dispose();

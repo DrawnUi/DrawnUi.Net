@@ -107,7 +107,7 @@ public class GalleryRoot : SkiaLayer
                 FontSize = 12,
                 BackgroundColor = Color.FromRgb(139, 0, 0),
                 TextColor = Colors.White,
-                UseCache = SkiaCacheType.GPU,
+                // Its text changes every frame: recorded (Operations, the label default), not a GPU surface made again each frame.
                 ZIndex = 110,
             },
         };
