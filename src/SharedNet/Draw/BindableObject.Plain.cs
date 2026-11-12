@@ -1,4 +1,4 @@
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Metrics;
@@ -13,25 +13,35 @@ namespace DrawnUi.Draw
         private readonly PropertyValues _values = new();
 
         /// <summary>
-        /// Values by property id: open addressing with linear probing over arrays sized a power of two, ids start at 1
-        /// so 0 marks a free slot. Used under <see cref="_valuesLock"/> only.
+        /// Values by property id: open addressing with linear probing over an array sized a power of two, ids start at
+        /// 1 so 0 marks a free slot. Writes run under <see cref="_valuesLock"/>; reads take no lock. A slot only ever
+        /// holds one property: its value is stored before its key, a removed property leaves a tombstone that is never
+        /// reused, and a grown table is published whole, so a read on another thread (an off-thread cache bake) sees
+        /// the property's old or new value, never another property's.
         /// </summary>
         private sealed class PropertyValues
         {
-            private int[] _keys = new int[8];
-            private object[] _items = new object[8];
-            private int _count;
+            private const int Tombstone = -1;
+
+            private struct Entry
+            {
+                public int Key;
+                public object Value;
+            }
+
+            private Entry[] _entries = new Entry[8];
+            private int _used; // keys and tombstones
 
             public bool TryGetValue(int id, out object value)
             {
-                var keys = _keys;
-                var mask = keys.Length - 1;
+                var entries = Volatile.Read(ref _entries);
+                var mask = entries.Length - 1;
                 for (var i = id & mask; ; i = (i + 1) & mask)
                 {
-                    var key = keys[i];
+                    var key = Volatile.Read(ref entries[i].Key);
                     if (key == id)
                     {
-                        value = _items[i];
+                        value = Volatile.Read(ref entries[i].Value);
                         return true;
                     }
 
@@ -47,22 +57,23 @@ namespace DrawnUi.Draw
             {
                 set
                 {
-                    var mask = _keys.Length - 1;
+                    var entries = _entries;
+                    var mask = entries.Length - 1;
                     for (var i = id & mask; ; i = (i + 1) & mask)
                     {
-                        var key = _keys[i];
+                        var key = entries[i].Key;
                         if (key == id)
                         {
-                            _items[i] = value;
+                            Volatile.Write(ref entries[i].Value, value);
                             return;
                         }
 
                         if (key == 0)
                         {
-                            _keys[i] = id;
-                            _items[i] = value;
+                            entries[i].Value = value;
+                            Volatile.Write(ref entries[i].Key, id);
                             // grow at three quarters, so a probe always reaches a free slot
-                            if (++_count * 4 > _keys.Length * 3)
+                            if (++_used * 4 > entries.Length * 3)
                                 Grow();
                             return;
                         }
@@ -72,11 +83,11 @@ namespace DrawnUi.Draw
 
             public bool Remove(int id, out object value)
             {
-                var mask = _keys.Length - 1;
-                var i = id & mask;
-                while (true)
+                var entries = _entries;
+                var mask = entries.Length - 1;
+                for (var i = id & mask; ; i = (i + 1) & mask)
                 {
-                    var key = _keys[i];
+                    var key = entries[i].Key;
                     if (key == 0)
                     {
                         value = null;
@@ -84,45 +95,45 @@ namespace DrawnUi.Draw
                     }
 
                     if (key == id)
-                        break;
-                    i = (i + 1) & mask;
-                }
-
-                value = _items[i];
-                _count--;
-                // backward shift: entries after the freed slot that probed past it move back, so lookups never stop
-                // early at a hole
-                var hole = i;
-                for (var j = (i + 1) & mask; _keys[j] != 0; j = (j + 1) & mask)
-                {
-                    var home = _keys[j] & mask;
-                    // the entry at j may fill the hole when its home is not in the cyclic range (hole, j]
-                    var inRange = hole <= j ? home > hole && home <= j : home > hole || home <= j;
-                    if (!inRange)
                     {
-                        _keys[hole] = _keys[j];
-                        _items[hole] = _items[j];
-                        hole = j;
+                        value = entries[i].Value;
+                        // the value stays for a read already past the key
+                        Volatile.Write(ref entries[i].Key, Tombstone);
+                        return true;
                     }
                 }
-
-                _keys[hole] = 0;
-                _items[hole] = null;
-                return true;
             }
 
             private void Grow()
             {
-                var keys = _keys;
-                var items = _items;
-                _keys = new int[keys.Length * 2];
-                _items = new object[keys.Length * 2];
-                _count = 0;
-                for (var i = 0; i < keys.Length; i++)
+                var entries = _entries;
+                var live = 0;
+                for (var i = 0; i < entries.Length; i++)
                 {
-                    if (keys[i] != 0)
-                        this[keys[i]] = items[i];
+                    if (entries[i].Key > 0)
+                        live++;
                 }
+
+                // only tombstones filled it: same size, rebuilt without them
+                var size = entries.Length;
+                while (live * 2 > size)
+                    size *= 2;
+
+                var grown = new Entry[size];
+                var mask = size - 1;
+                for (var i = 0; i < entries.Length; i++)
+                {
+                    var key = entries[i].Key;
+                    if (key <= 0)
+                        continue;
+                    var j = key & mask;
+                    while (grown[j].Key != 0)
+                        j = (j + 1) & mask;
+                    grown[j] = entries[i];
+                }
+
+                _used = live;
+                Volatile.Write(ref _entries, grown);
             }
         }
         private object _bindingContext;
@@ -170,10 +181,9 @@ namespace DrawnUi.Draw
         }
 
         // _values is read by the off-thread plane bake (Draw -> GetValue) WHILE the render/main thread writes
-        // it (SetValue, or GetValue's own store-on-miss). A plain Dictionary corrupts under concurrent
-        // read+write -> "concurrent operations" crash. Guard every structural access with this lock. Callbacks
-        // (PropertyChanged / OnPropertyChanged) run OUTSIDE the lock to avoid reentrant/cross-control deadlock.
-        // Uncontended (single render thread, e.g. plain CellsStack) the lock is ~20ns -> no measurable cost.
+        // it (SetValue, or GetValue's own store-on-miss). Every write takes this lock; reads take none (see
+        // PropertyValues). Callbacks (PropertyChanged / OnPropertyChanged) run OUTSIDE the lock to avoid
+        // reentrant/cross-control deadlock.
         private readonly object _valuesLock = new();
 
         // Lazily created on first explicit SetValue: GetValue's store-on-miss writes the DEFAULT into
@@ -200,17 +210,17 @@ namespace DrawnUi.Draw
             if (property == null)
                 throw new ArgumentNullException(nameof(property));
 
-            lock (_valuesLock)
-            {
-                if (_values.TryGetValue(property.Id, out var value))
-                    return value;
-            }
+            if (_values.TryGetValue(property.Id, out var value))
+                return value;
 
             var defaultValue = property.GetDefaultValue(this);
             if (defaultValue != null || property.HasExplicitDefaultValue)
             {
                 lock (_valuesLock)
                 {
+                    // set meanwhile on another thread: that value stays
+                    if (_values.TryGetValue(property.Id, out value))
+                        return value;
                     _values[property.Id] = defaultValue;
                 }
             }
