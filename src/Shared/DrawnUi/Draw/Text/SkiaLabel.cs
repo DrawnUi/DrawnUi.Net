@@ -1762,14 +1762,6 @@ namespace DrawnUi.Draw
                 return (0.0f, null);
 
             var paintTypeface = font.Typeface ?? SkiaFontManager.DefaultTypeface;
-            var glyphSpacing = (float)(scale * (CharacterSpacing - 1)); // part of the measured width, so part of the cache key
-
-            if (GlyphMeasurementCache.TryGetValue(paintTypeface, font, needsShaping, glyphSpacing, text, out var cachedResult))
-            {
-                if (!NeedsGlyphPositions || cachedResult.Glyphs != null)
-                    return cachedResult;
-                // have a width-only cache entry but glyphs needed — fall through to full measurement
-            }
 
             var glyphs = GetGlyphs(text, paintTypeface);
 
@@ -1788,7 +1780,6 @@ namespace DrawnUi.Draw
                     : GetShapedText(Shaper, text, 0, 0, paint, font);
                 if (result == null)
                 {
-                    GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, 0f, null);
                     return (0.0f, null);
                 }
 
@@ -1800,12 +1791,10 @@ namespace DrawnUi.Draw
                 // so the cursor stays stuck (e.g. after inserting "play😉"). Build them here.
                 if (!NeedsGlyphPositions)
                 {
-                    GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, measured.Width, null);
                     return (measured.Width, null);
                 }
 
                 var shapedGlyphs = BuildGlyphsFromShaping(result, text, pens);
-                GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, measured.Width, shapedGlyphs);
                 return (measured.Width, shapedGlyphs);
             }
 
@@ -1845,7 +1834,6 @@ namespace DrawnUi.Draw
                 }
 
                 var arr = positions.ToArray();
-                GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, value, arr);
                 return (value, arr);
             }
 
@@ -1886,13 +1874,11 @@ namespace DrawnUi.Draw
 
                 var finalWidth = value - spacingModifier;
                 var arr2 = positions.ToArray();
-                GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, finalWidth, arr2);
                 return (finalWidth, arr2);
             }
 
             var simpleValue = MeasureTextWidthWithAdvance(paint, font, text);
 
-            GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, simpleValue, null);
             return (simpleValue, null);
         }
 

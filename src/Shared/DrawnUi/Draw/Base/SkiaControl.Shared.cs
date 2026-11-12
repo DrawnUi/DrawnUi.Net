@@ -4758,6 +4758,7 @@ namespace DrawnUi.Draw
                 _drawingRect = value;
                 var dirty = value;
                 var expand = GetRenderingExpandPixels();
+                _drawingRectExpand = expand;
                 if (expand.Left != 0 || expand.Top != 0 || expand.Right != 0 || expand.Bottom != 0)
                 {
                     dirty = new(
@@ -4773,6 +4774,9 @@ namespace DrawnUi.Draw
         }
 
         public SKRect DirtyRegion { get; set; }
+
+        // the effects expansion DirtyRegion was made with
+        private Thickness _drawingRectExpand;
 
         /// <summary>
         /// Overriding VisualElement property, use DrawingRect instead.
@@ -5730,6 +5734,20 @@ namespace DrawnUi.Draw
         /// <param name="scale"></param>
         public virtual void Arrange(SKRect destination, float widthRequest, float heightRequest, float scale)
         {
+            // Arranged into the same box as last time and nothing changed since (no measure, no layout change, the
+            // same effects expansion): every rect it has is already the result, so the arrange pass is skipped. A still
+            // control is arranged again on every frame its parent draws.
+            if (_arrangedStill && !IsLayoutDirty && destination == _stillDestination && scale == _stillScale
+                && widthRequest == _stillWidthRequest && heightRequest == _stillHeightRequest
+                && measuredForWidthConstraint == _stillMeasuredForWidth && measuredForHeightConstraint == _stillMeasuredForHeight
+                && measuredForScale == _stillMeasuredForScale && !NeedToMeasureSelf() && CanDraw
+                && GetRenderingExpandPixels() == _drawingRectExpand)
+            {
+                return;
+            }
+
+            _arrangedStill = false;
+
             // Arranged into a different box than measured for on a Fill axis: re-measure with the final box
             // (MAUI ArrangeOverride(finalSize) parity). Otherwise the control's internal layout — children
             // positions, centered rows, text wrapping — stays frozen at the measure-time constraint while the
@@ -5764,7 +5782,25 @@ namespace DrawnUi.Draw
                 : MeasuredSize.Units.Height;
 
             PostArrange(destination, width, height, scale);
+
+            if (!IsLayoutDirty)
+            {
+                _arrangedStill = true;
+                _stillDestination = destination;
+                _stillScale = scale;
+                _stillWidthRequest = widthRequest;
+                _stillHeightRequest = heightRequest;
+                _stillMeasuredForWidth = measuredForWidthConstraint;
+                _stillMeasuredForHeight = measuredForHeightConstraint;
+                _stillMeasuredForScale = measuredForScale;
+            }
         }
+
+        // the inputs of the last full arrange, see Arrange
+        private bool _arrangedStill;
+        private SKRect _stillDestination;
+        private float _stillScale, _stillWidthRequest, _stillHeightRequest;
+        private float _stillMeasuredForWidth, _stillMeasuredForHeight, _stillMeasuredForScale;
 
         /// <summary>
         /// Arranges the control and updates its cache's LastDestination property.

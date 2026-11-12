@@ -63,31 +63,11 @@ namespace DrawnUi.Draw
             }
 
             /// <summary>
-            /// Measures partial text width using span-based operations where possible
-            /// Falls back to string conversion only for cache compatibility
+            /// Measures partial text width with span-based operations
             /// </summary>
             public static float MeasurePartialTextWidthSpan(SKFont font, SKPaint paint, ReadOnlySpan<char> textSpan,
                 bool needsShaping, float scale, SKTypeface paintTypeface)
             {
-                // For simple cases, measure directly with span
-                if (!needsShaping && textSpan.Length <= 32) // Small text threshold
-                {
-                    return MeasureTextWidthWithAdvanceSpan(font, paint, textSpan);
-                }
-
-                // For complex cases or cache lookup, we need string conversion
-                // This is the controlled fallback to maintain cache compatibility
-                string text = SpanToStringForCache(textSpan);
-
-                // Check cache first
-                // plain advance measure: no character spacing in this path
-                if (GlyphMeasurementCache.TryGetValue(paintTypeface, font, needsShaping, 0f, text, out var cachedResult))
-                {
-                    return cachedResult.Width;
-                }
-
-                // For cache miss, we need to fall back to string-based measurement
-                // This maintains exact compatibility with existing cache behavior
                 return MeasureTextWidthWithAdvanceSpan(font, paint, textSpan);
             }
 

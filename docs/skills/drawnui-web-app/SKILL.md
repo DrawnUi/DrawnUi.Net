@@ -289,6 +289,7 @@ Validate fonts/assets are served (e.g. `curl -I http://localhost:<port>/fonts/My
 - `<base href>` mismatch → relative font/asset fetch 404; check `document.baseURI`.
 - Flipping `RenderingMode` after attach → blank canvas.
 - SkiaSharp/HarfBuzz native versions diverge from `DrawnUi.Web` → native load failure.
+- `drawnui-web.js` imported under two URLs (main.js with a cache-busting `?v=` stamp, DrawnUi.Web's C# by its plain path `./_content/DrawnUi.Web/drawnui-web.js` against `document.baseURI`): the browser loads two module copies. DrawnUi.Web makes every copy after the first hand its exports to the first one (shared through `globalThis.__drawnuiWeb`), so input, resize and the `setModuleExports` callbacks stay wired. Packages without that (`drawnui-web.js` has no `__drawnuiWeb`) split the copies: taps do nothing and a resized window keeps its first layout size at the top-left. With those, cache-bust with an import map before the module script (`{"imports": {"./_content/DrawnUi.Web/drawnui-web.js": "./_content/DrawnUi.Web/drawnui-web.js?v=<hash>"}}`), which maps both imports to one URL.
 
 ---
 
