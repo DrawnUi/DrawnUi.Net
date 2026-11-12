@@ -225,15 +225,25 @@ namespace DrawnUi.Draw
                 return;
 
             var disp = DeviceDisplay.Current.MainDisplayInfo;
+            var screenWidth = disp.Width / disp.Density;
+            var screenHeight = disp.Height / disp.Density;
 
-            // move to screen center
-            var x = (disp.Width / disp.Density- window.Width) / 2.0;
-            var y = (disp.Height / disp.Density - window.Height) / 2.0;
+            // The asked size, but never larger than the screen: a window wider or taller than the screen opened with
+            // its edges off it. The margins keep it clear of the menu bar and the dock / taskbar.
+            // ponytail: margins instead of the screen's work area, which MAUI does not report; read the platform's
+            // visible area if a head needs it exact.
+            double w = width, h = height;
+            if (screenWidth > 0 && screenHeight > 0)
+            {
+                w = Math.Min(w, screenWidth * 0.94);
+                h = Math.Min(h, screenHeight * 0.86);
+            }
 
-            window.Width = width;
-            window.Height = height;
-            window.X = x;
-            window.Y = y;
+            window.Width = w;
+            window.Height = h;
+            // centered on the screen with the size it gets now (the old size was used before)
+            window.X = Math.Max(0, (screenWidth - w) / 2.0);
+            window.Y = Math.Max(0, (screenHeight - h) / 2.0);
 
 #if WINDOWS
 
