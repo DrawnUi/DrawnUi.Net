@@ -110,7 +110,7 @@ internal static partial class WebAccessibility
 
             // the active modal: the overlay itself becomes the dialog (role, name, aria-modal), so readers leave the page
             // around the canvas alone; its controls are the overlay's other elements, all inside it
-            if (node.Source != null && ReferenceEquals(node.Source, manager.ActiveModal))
+            if (node.Source != null && ReferenceEquals(node.Source, manager.ActiveModalNode))
                 flags |= 128;
 
             var o = i * 7;

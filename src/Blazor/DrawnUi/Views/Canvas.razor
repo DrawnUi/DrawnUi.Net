@@ -237,7 +237,7 @@
     // the node of the active modal, which the overlay itself stands for while it is shown
     private AccessibilityNode? A11yModal()
     {
-        var modal = AccessibilityManager.ActiveModal;
+        var modal = AccessibilityManager.ActiveModalNode; // the one named dialog readers meet (drawnui-cross 6bs)
         return modal == null ? null : Array.Find(_accessibilityNodes, n => ReferenceEquals(n.Source, modal));
     }
 

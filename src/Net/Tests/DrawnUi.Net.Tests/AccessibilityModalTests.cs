@@ -152,6 +152,60 @@ public class AccessibilityModalTests
         Assert.Contains(snapshot, n => n.Role == Aria.RoleHeading && n.Label == "Settings");
     }
 
+    /// <summary>
+    /// A popup host without a name (SkiaShell's layer) around a named dialog: readers meet one dialog, the named one
+    /// (drawnui-cross 6bs). The heads' overlay becomes ActiveModalNode.
+    /// </summary>
+    [Fact]
+    public void UnnamedModalAroundNamedDialog_IsOneNamedDialog()
+    {
+        using var host = Scene(out var page);
+        var help = Dialog("Back", "OK");
+        help.AccessibilityModal = false;
+        help.AccessibilityRole = Aria.RoleDialog;
+        help.AccessibilityLabel = "HOW TO PLAY";
+        var wrapper = new SkiaLayer { AccessibilityModal = true, Children = { help } };
+        page.AddSubView(wrapper);
+        host.AdvanceFrames(4);
+
+        var manager = host.Canvas.AccessibilityManager;
+        var dialogs = manager.Snapshot.Where(n => n.Role == Aria.RoleDialog).ToArray();
+        Assert.Single(dialogs);
+        Assert.Equal("HOW TO PLAY", dialogs[0].Label);
+        Assert.Same(wrapper, manager.ActiveModal);
+        Assert.Same(help, manager.ActiveModalNode);
+        Assert.Equal(new[] { "Back", "OK" }, Labels(host));
+    }
+
+    /// <summary>
+    /// The keyboard goes back to the control that opened the dialog also when the app shows that control again only after
+    /// the close (the Dungeon hides its HUD under a dialog): the return waits for it.
+    /// </summary>
+    [Fact]
+    public void Close_ReturnsToTheOpener_ShownAgainAfterTheClose()
+    {
+        using var host = Scene(out var page);
+        Tab(host);
+        Tab(host);
+        Assert.Equal("Settings", Focused(host));
+        var menu = (SkiaStack)page.Views[0];
+
+        var dialog = Dialog("Sound", "Close");
+        page.AddSubView(dialog);
+        host.AdvanceFrames(2);
+        menu.IsVisible = false; // the app hides what is under its dialog
+        host.AdvanceFrames(4);
+        Assert.Equal("Sound", Focused(host));
+
+        page.RemoveSubView(dialog);
+        dialog.Dispose();
+        host.AdvanceFrames(10); // the close fades: the menu comes back a little later
+        menu.IsVisible = true;
+        host.AdvanceFrames(6);
+
+        Assert.Equal("Settings", Focused(host));
+    }
+
     [Fact]
     public async Task ShellPopup_KeepsReadersAndTabInside()
     {
