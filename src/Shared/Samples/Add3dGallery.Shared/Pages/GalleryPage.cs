@@ -30,6 +30,20 @@ public partial class GalleryPage : DrawnGame
     UiButton _medalButton, _likeButton, _chestButton;
     readonly UiButton[] _mobButtons = new UiButton[MobCounts.Length];
     readonly UiButton[] _lookButtons = new UiButton[2];
+    SkiaControl _keyboardSpacer;
+
+    /// <summary>
+    /// The on-screen keyboard's height in points (0 = hidden) and the focused control: the page scrolls that control
+    /// above the keyboard (SkiaScroll.AdaptToKeyboardFor / AdaptToKeyboardSize), the spacer lets the last fields go
+    /// that high. Called by the MAUI head from DrawnUiBasePage.KeyboardSize and when the focus moves.
+    /// </summary>
+    public void OnKeyboard(double height, SkiaControl focused)
+    {
+        _keyboardSpacer.HeightRequest = height;
+        _keyboardSpacer.IsVisible = height > 0;
+        _scroll.AdaptToKeyboardFor = height > 0 ? focused : null;
+        _scroll.AdaptToKeyboardSize = height;
+    }
     bool _drawnMobs;
 
     public GalleryPage()
@@ -138,6 +152,9 @@ public partial class GalleryPage : DrawnGame
 
                         Theme.Section("Games", "Many 3D characters on one field, moved like sprites and drawn by one layer in one pass."),
                         MobsCard(),
+
+                        // As tall as the on-screen keyboard while it shows (phones): the last fields can scroll above it.
+                        new SkiaControl { HorizontalOptions = LayoutOptions.Fill, IsVisible = false }.Assign(out _keyboardSpacer),
                     }
                 }
             }.Assign(out _scroll)
