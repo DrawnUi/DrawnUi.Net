@@ -798,7 +798,11 @@ namespace DrawnUi.Views
 
         private bool NavigateWithKey(InputKey key, bool shift)
         {
-            var current = KeyboardFocusNode ?? AccessibilityManager.FocusedNode;
+            // drawn focus and keyboard focus are one: an editor that has the caret (a click focused it) is where Tab
+            // moves on from
+            var current = FocusedChild is SkiaEditor { IsFocused: true } editing
+                ? editing
+                : KeyboardFocusNode ?? AccessibilityManager.FocusedNode;
             if (AccessibilityManager.IsOutsideModal(current))
                 current = null; // a control behind a dialog (tapped before it opened): navigation starts in the dialog
 

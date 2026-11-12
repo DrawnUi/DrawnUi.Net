@@ -76,6 +76,13 @@ namespace DrawnUi.Draw
 
             public override bool ShouldChangeText(UITextView textView, NSRange range, string text)
             {
+                // a Tab that reached the text (no key command took it): it moves to the next control, it is never typed
+                if (text == "\t")
+                {
+                    _editor.TabOut(false);
+                    return false;
+                }
+
                 // Multiline + ReturnType.Send: return key submits instead of inserting a break.
                 // Hardware Shift+Enter is not distinguishable here (no modifier info in this
                 // delegate); soft keyboards have no Shift+Enter, so Send wins for "\n".
@@ -155,6 +162,7 @@ namespace DrawnUi.Draw
                 Frame = new CGRect(-10, -10, 1, 1),
                 AccessibilityIdentifier = "NativeEntry" + GenerateUniqueId(),
                 ScrollEnabled = false,
+                TabPressed = TabOut,
             };
 
             Control.TextContainerInset = UIEdgeInsets.Zero;
@@ -374,9 +382,51 @@ namespace DrawnUi.Draw
             return null;
         }
 
+        /// <summary>
+        /// Tab or Shift+Tab in the field (a hardware keyboard: Mac Catalyst, iPad): the drawn focus moves to the next or
+        /// previous control in the accessibility order, as on the other heads; this field gives up its caret.
+        /// </summary>
+        void TabOut(bool shift)
+        {
+            Superview?.HandleKeyboardNavigation(InputKey.Tab, shift);
+            KeyboardManager.KeyboardPressed(InputKey.Tab); // the app still gets Tab, as on the other platforms
+            KeyboardManager.KeyboardReleased(InputKey.Tab);
+        }
+
         public class NativeEntryView : UITextView
         {
             public bool IsFocused { get; set; }
+
+            /// <summary>Tab (false) or Shift+Tab (true) pressed while this field has the keyboard.</summary>
+            public Action<bool> TabPressed { get; set; }
+
+            UIKeyCommand[] _tabCommands;
+
+            // ahead of the text input and of the system focus navigation, so Tab never goes into the text
+            public override UIKeyCommand[] KeyCommands
+            {
+                get
+                {
+                    if (TabPressed == null || !(OperatingSystem.IsIOSVersionAtLeast(15) || OperatingSystem.IsMacCatalystVersionAtLeast(15)))
+                        return base.KeyCommands;
+                    if (_tabCommands == null)
+                    {
+                        var forward = UIKeyCommand.Create((NSString)"\t", 0, new ObjCRuntime.Selector("drawnUiEditorTab:"));
+                        var backward = UIKeyCommand.Create((NSString)"\t", UIKeyModifierFlags.Shift,
+                            new ObjCRuntime.Selector("drawnUiEditorShiftTab:"));
+                        forward.WantsPriorityOverSystemBehavior = true;
+                        backward.WantsPriorityOverSystemBehavior = true;
+                        _tabCommands = base.KeyCommands is { Length: > 0 } own ? [..own, forward, backward] : [forward, backward];
+                    }
+                    return _tabCommands;
+                }
+            }
+
+            [Export("drawnUiEditorTab:")]
+            void OnTabCommand(UIKeyCommand command) => TabPressed?.Invoke(false);
+
+            [Export("drawnUiEditorShiftTab:")]
+            void OnShiftTabCommand(UIKeyCommand command) => TabPressed?.Invoke(true);
 
             public override bool CanResignFirstResponder => !IsFocused;
 
