@@ -121,6 +121,7 @@ public static partial class WebInput
             var threshold = TouchEffect.TappedCancelMoveThresholdPoints * Math.Max(0.1f, TouchEffect.Density);
             if (Math.Abs(args.Distance.Total.X) < threshold && Math.Abs(args.Distance.Total.Y) < threshold)
             {
+                WebTextInput.FocusOnTap(TargetCanvas, x, y); // inside the browser event: iOS raises its keyboard
                 TargetCanvas?.OnGestureEvent(TouchActionType.Released, args, TouchActionResult.Tapped);
             }
         }

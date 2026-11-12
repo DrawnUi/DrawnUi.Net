@@ -37,6 +37,43 @@ public static partial class WebTextInput
         FocusTextInput(focus, editor is ISkiaAccessibilityNode node ? node.AccessibilityId : -1);
     }
 
+    /// <summary>
+    /// A tap at (<paramref name="x"/>, <paramref name="y"/>), in points over the canvas, on an editor: the text input takes
+    /// the page focus now, inside the tap's own browser event, which is when iOS Safari raises the on-screen keyboard
+    /// (the editor itself takes its focus with the tap's gesture, on a later frame). A tap the editor does not take as
+    /// focus gives the page focus back.
+    /// </summary>
+    internal static void FocusOnTap(Canvas canvas, double x, double y)
+    {
+        var manager = canvas?.AccessibilityManager;
+        if (manager == null)
+            return;
+
+        var snapshot = manager.Snapshot;
+        for (var i = snapshot.Length - 1; i >= 0; i--)
+        {
+            var node = snapshot[i];
+            if (node.Source is not SkiaEditor editor || !node.CanInteract || manager.IsOutsideModal(editor)
+                || !node.Rect.Contains((float)x, (float)y))
+                continue;
+
+            if (!editor.IsFocused || !ReferenceEquals(_owner, editor))
+            {
+                _owner = editor;
+                FocusTextInput(true, editor.AccessibilityId);
+                _ = GiveBackIfNotTaken(editor);
+            }
+            return;
+        }
+    }
+
+    static async Task GiveBackIfNotTaken(SkiaEditor editor)
+    {
+        await Task.Delay(500);
+        if (ReferenceEquals(_owner, editor) && !editor.IsFocused)
+            Focus(editor, false);
+    }
+
     internal static void Init() => Attach(OnText, OnKey);
 
     static void OnText(string text)

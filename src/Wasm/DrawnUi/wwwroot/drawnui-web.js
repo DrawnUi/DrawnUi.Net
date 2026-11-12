@@ -360,6 +360,11 @@ function setupInputHandlers() {
     canvas.addEventListener('wheel', e => { const used = moduleOnWheel?.(e.deltaX, e.deltaY, e.deltaMode, relX(e), relY(e)); if (!_shareInput || used) e.preventDefault(); }, { passive: false });
     // right click / long press / Menu key: a control that handles ContextMenu suppresses the browser menu
     canvas.addEventListener('contextmenu', e => { if (onContextMenu?.(relX(e), relY(e), e.pointerType ?? 'mouse')) e.preventDefault(); });
+    // while an editor's text input has the page focus (a tap's pointerup may just have given it), a press on the canvas
+    // leaves it there: the drawn controls decide whether the editor keeps its focus. A touch makes no mouse events, whose
+    // press would take the focus back to the page and close the on-screen keyboard.
+    canvas.addEventListener('touchend', e => { if (textInputEl && document.activeElement === textInputEl) e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('mousedown', e => { if (textInputEl && document.activeElement === textInputEl) e.preventDefault(); });
     watchCanvasSize();
 }
 
