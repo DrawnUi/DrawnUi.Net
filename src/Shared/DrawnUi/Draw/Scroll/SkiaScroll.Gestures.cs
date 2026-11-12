@@ -392,6 +392,15 @@ public partial class SkiaScroll
             return inner == this ? consumedDefault : inner ?? consumedDefault;
         }
 
+        if (args.Type == TouchActionResult.Wheel && (KeyboardManager.IsControlPressed || KeyboardManager.IsMetaPressed))
+        {
+            // Ctrl/Cmd + wheel asks for zoom: the control under the pointer gets it first (a zoomable view zooms and
+            // the scroll stays still); when no child takes it, the scroll handles it as any wheel.
+            var child = PassToChildren();
+            if (child != null && child != this)
+                return child;
+        }
+
         bool wrongDirection = false;
         var velocityDirection = ReverseGestures ? -1 : 1;
 
