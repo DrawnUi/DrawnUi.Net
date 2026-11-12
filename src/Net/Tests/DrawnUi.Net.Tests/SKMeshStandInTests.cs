@@ -257,6 +257,67 @@ public class SKMeshStandInTests
         Assert.True(maxError < 2e-3, $"max error {maxError}");
     }
 
+    [Fact]
+    public void VaryingsOfAVertexProgramWithoutUniforms_KeepFloatPrecisionAndHalfValues()
+    {
+        // A vertex program without uniforms runs once per vertex (varyings pass): a Float varying far from 0 still
+        // interpolates to ~22 bits (fract of 4096 + x), a Half varying keeps its value to fp16.
+        var attrs = new[] { Pos, new SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType.Float4, 8, "c") };
+        var vary = new[]
+        {
+            new SKMeshSpecificationVarying(SKMeshSpecificationVaryingType.Float2, "far"),
+            new SKMeshSpecificationVarying(SKMeshSpecificationVaryingType.Half4, "h"),
+        };
+        using var spec = Spec(attrs, 24, vary,
+            "Varyings main(const Attributes a) { Varyings v; v.position = a.position; v.far = a.position * 0.25 + 4096.0; v.h = half4(a.c); return v; }",
+            "uniform float which; float2 main(const Varyings v, out float4 color) { color = which < 0.5 ? float4(fract(v.far), 0, 1) : float4(v.h); return v.position; }");
+        var p = new[] { new SKPoint(2, 3), new SKPoint(62, 6), new SKPoint(8, 61) };
+        var c = new[] { new[] { 0.9f, 0.1f, 0.3f, 1f }, new[] { 0.2f, 0.8f, 0.5f, 1f }, new[] { 0.4f, 0.3f, 0.95f, 1f } };
+        var floats = new List<float>();
+        for (int k = 0; k < 3; k++)
+        {
+            floats.Add(p[k].X);
+            floats.Add(p[k].Y);
+            floats.AddRange(c[k]);
+        }
+        using var vb = Vb(floats.ToArray());
+        double area = Cross(p[0], p[1], p[2]);
+        double maxFar = 0, maxHalf = 0;
+        int checkedPixels = 0;
+        for (int which = 0; which < 2; which++)
+        {
+            using var mesh = SKMesh.Make(spec, SKMeshMode.Triangles, vb, 3, 0, Uniforms(which), new SKRect(0, 0, 64, 64), out var e);
+            Assert.True(mesh != null, e);
+            using var paint = new SKPaint { Color = SKColors.White };
+            using var bmp = Render(64, 64, cv => cv.DrawMesh(mesh!, paint), SKColorType.RgbaF32);
+            var pixels = MemoryMarshal.Cast<byte, float>(bmp.GetPixelSpan());
+            for (int y = 0; y < 64; y++)
+                for (int x = 0; x < 64; x++)
+                {
+                    var q = new SKPoint(x + 0.5f, y + 0.5f);
+                    double w0 = Cross(q, p[1], p[2]) / area, w1 = Cross(p[0], q, p[2]) / area, w2 = Cross(p[0], p[1], q) / area;
+                    if (w0 < 0.02 || w1 < 0.02 || w2 < 0.02)
+                        continue;
+                    int at = (y * 64 + x) * 4;
+                    if (which == 0)
+                    {
+                        // fract(4096 + q / 4) = fract(q / 4): the varying's value at the pixel center, ~1e-3 of a pixel off
+                        double fx = (q.X * 0.25) % 1, fy = (q.Y * 0.25) % 1;
+                        if (fx < 0.01 || fx > 0.99 || fy < 0.01 || fy > 0.99)
+                            continue; // at a wrap of fract: either side is right
+                        maxFar = Math.Max(maxFar, Math.Max(Math.Abs(pixels[at] - fx), Math.Abs(pixels[at + 1] - fy)));
+                    }
+                    else
+                        for (int ch = 0; ch < 3; ch++)
+                            maxHalf = Math.Max(maxHalf, Math.Abs(pixels[at + ch] - (w0 * c[0][ch] + w1 * c[1][ch] + w2 * c[2][ch])));
+                    checkedPixels++;
+                }
+        }
+        Assert.True(checkedPixels > 2000, $"checked {checkedPixels}");
+        Assert.True(maxFar < 2e-3, $"Float varying at 4096: max error {maxFar}"); // one fp16 alone: ~1
+        Assert.True(maxHalf < 2e-3, $"Half varying: max error {maxHalf}");
+    }
+
     static double Cross(SKPoint a, SKPoint b, SKPoint c) => (b.X - a.X) * (c.Y - a.Y) - (b.Y - a.Y) * (c.X - a.X);
 
     [Fact]

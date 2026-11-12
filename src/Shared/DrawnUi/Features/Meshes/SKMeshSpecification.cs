@@ -120,8 +120,13 @@ public sealed class SKMeshSpecification : IDisposable
     // Convert program: once per vertex range, rebuilds each float from its bytes and packs a vertex's
     // attributes into TexelsPerVertex texels, as fp16 hi + lo rows (draw) or F32 (vertex program on the CPU).
     internal SKRuntimeEffect ConvertEffect { get; }
-    // Draw program: vertex program run 3 times per pixel + fragment program, fed by DrawVertices texCoords.
+    // Draw program: vertex program run 3 times per pixel + fragment program, fed by DrawVertices texCoords; or,
+    // when Varyings is set, the varyings the varyings pass computed per vertex, mixed per pixel.
     internal SKRuntimeEffect DrawEffect { get; }
+    // Varyings pass (a vertex program without uniforms): packed attributes -> vertex program -> varyings packed
+    // per vertex as the draw program reads them. Null when the draw program runs the vertex program itself.
+    internal SKRuntimeEffect VaryingsEffect { get; private init; }
+    internal VaryingLayout Varyings { get; private init; }
     // Vertex program alone, run on the CPU (raster) to get the vertex positions DrawVertices needs.
     // Null when the vertex program copies the "position" attribute as is.
     internal SKRuntimeEffect PositionEffect { get; }
@@ -137,6 +142,10 @@ public sealed class SKMeshSpecification : IDisposable
     internal CachedUniforms PositionUniforms => _positionUniforms ??= new CachedUniforms(PositionEffect);
     internal SKRuntimeEffectChildren PositionChildren => _positionChildren ??= new SKRuntimeEffectChildren(PositionEffect);
     internal CachedUniforms ConvertUniforms => _convertUniforms ??= new CachedUniforms(ConvertEffect);
+    CachedUniforms _varyingsUniforms;
+    SKRuntimeEffectChildren _varyingsChildren;
+    internal CachedUniforms VaryingsUniforms => _varyingsUniforms ??= new CachedUniforms(VaryingsEffect);
+    internal SKRuntimeEffectChildren VaryingsChildren => _varyingsChildren ??= new SKRuntimeEffectChildren(VaryingsEffect);
 
     // The draw program for a paint without a shader (a plain color): the color is read at one point, so the local
     // coords (the "position" varying) are unused and the GPU compiler drops their texel reads. Compiled at its
@@ -453,9 +462,15 @@ public sealed class SKMeshSpecification : IDisposable
 
         bool passthrough = positionFloat >= 0 && copiesPosition;
 
+        // A vertex program without uniforms gives the same varyings at every draw: they are computed once per vertex
+        // range (varyings pass) and the draw program reads them, so it runs no vertex program per pixel and a Half
+        // varying costs one fp16 read instead of two (Float: high + low half).
+        bool drawsVaryings = !vsUniforms.Any(u => !u.IsChild);
+        VaryingLayout layout = drawsVaryings ? VaryingLayout.Of(varys) : null;
+
         var drawSource = new StringBuilder()
             .Append(structs).Append('\n').Append(vs).Append('\n').Append(fs).Append('\n')
-            .Append(BuildDrawMain(attrs, varys, floatIndex, texels, colorType, alphaType))
+            .Append(BuildDrawMain(attrs, varys, floatIndex, texels, colorType, alphaType, layout))
             .ToString();
 
         var drawEffect = SKRuntimeEffect.CreateShader(drawSource, out var fsErrors);
@@ -466,11 +481,29 @@ public sealed class SKMeshSpecification : IDisposable
             return null;
         }
 
+        SKRuntimeEffect varyingsEffect = null;
+        if (layout != null)
+        {
+            var varyingsSource = new StringBuilder()
+                .Append(structs).Append('\n').Append(vs).Append('\n')
+                .Append(BuildVaryingsPass(attrs, vertexStride / 4, layout))
+                .ToString();
+            varyingsEffect = SKRuntimeEffect.CreateShader(varyingsSource, out var varyingsErrors);
+            if (varyingsEffect == null)
+            {
+                positionEffect.Dispose();
+                drawEffect.Dispose();
+                errors = "DrawnUi SKMesh stand-in: " + varyingsErrors;
+                return null;
+            }
+        }
+
         var convertEffect = SKRuntimeEffect.CreateShader(BuildConvert(attrs, floatIndex, texels, vertexStride / 4), out var convertErrors);
         if (convertEffect == null)
         {
             positionEffect.Dispose();
             drawEffect.Dispose();
+            varyingsEffect?.Dispose();
             errors = "DrawnUi SKMesh stand-in: " + convertErrors;
             return null;
         }
@@ -487,6 +520,7 @@ public sealed class SKMeshSpecification : IDisposable
                 positionEffect.Dispose();
                 drawEffect.Dispose();
                 convertEffect.Dispose();
+                varyingsEffect?.Dispose();
                 errors = $"Uniform {u.Name}: type '{u.Type}{u.Array}' is not supported by the DrawnUi SKMesh stand-in.";
                 return null;
             }
@@ -504,7 +538,7 @@ public sealed class SKMeshSpecification : IDisposable
         }
 
         return new SKMeshSpecification(vertexStride, attrs, texels, hasColor, convertEffect, drawEffect, positionEffect, positionFloat,
-            uniforms.ToArray(), vertexUniforms, uniformSize, children) { _drawSource = drawSource };
+            uniforms.ToArray(), vertexUniforms, uniformSize, children) { _drawSource = drawSource, VaryingsEffect = varyingsEffect, Varyings = layout };
     }
 
     static int UniformBytes(string type, string array, out bool isInt)
@@ -700,9 +734,11 @@ public sealed class SKMeshSpecification : IDisposable
         "  return c;\n}\n";
 
     static string BuildDrawMain(SKMeshSpecificationAttribute[] attrs, SKMeshSpecificationVarying[] varys, int[] floatIndex,
-        int texels, string colorType, SKAlphaType alphaType)
+        int texels, string colorType, SKAlphaType alphaType, VaryingLayout layout)
     {
         var sb = new StringBuilder();
+        if (layout != null)
+            return BuildDrawVaryingsMain(varys, colorType, alphaType, layout);
         // _sm_grid.x: triangle cells per texCoord row, .y: paint alpha applied on top, .z: 1 for a triangle strip,
         // .w: 1 when indexed. _sm_ix.x: first index, .y: index image width (a power of two), .z: 1 / width.
         // _sm_pk: the packed fp16 image (see BuildLoad), .w: rows of its high half block (the low halves follow).
@@ -713,7 +749,15 @@ public sealed class SKMeshSpecification : IDisposable
           .Append("  return float4(_sm_attr.eval(c)) + float4(_sm_attr.eval(float2(c.x, c.y + _sm_pk.w)));\n}\n");
         sb.Append(BuildLoad(attrs, floatIndex, texels));
         sb.Append(CornerSource);
+        sb.Append(BuildMixAndMain(varys, colorType, alphaType, "_sm_vs(_sm_vload(_sm_corner(t, K)))"));
+        return sb.ToString();
+    }
 
+    // _sm_mix and main: the varyings of the 3 corners (`corner`, with t the triangle and K the corner) mixed by the
+    // barycentrics, then the fragment program and the paint.
+    static string BuildMixAndMain(SKMeshSpecificationVarying[] varys, string colorType, SKAlphaType alphaType, string corner)
+    {
+        var sb = new StringBuilder();
         sb.Append("Varyings _sm_mix(Varyings a, Varyings b, Varyings c, float3 w) {\n  Varyings v;\n");
         var fields = new List<(string name, bool half)> { ("position", false) };
         foreach (var v in varys)
@@ -736,7 +780,7 @@ public sealed class SKMeshSpecification : IDisposable
           .Append($"  float b1 = (p.x - cx - {low}) * {inv};\n  float b2 = (p.y - cy - {low}) * {inv};\n")
           .Append("  float3 w = float3(1.0 - b1 - b2, b1, b2);\n")
           .Append("  float t = cy * _sm_grid.x + cx;\n")
-          .Append("  Varyings v = _sm_mix(_sm_vs(_sm_vload(_sm_corner(t, 0.0))), _sm_vs(_sm_vload(_sm_corner(t, 1.0))), _sm_vs(_sm_vload(_sm_corner(t, 2.0))), w);\n");
+          .Append($"  Varyings v = _sm_mix({corner.Replace("K", "0.0")}, {corner.Replace("K", "1.0")}, {corner.Replace("K", "2.0")}, w);\n");
         if (colorType == null)
         {
             sb.Append("  float2 lc = _sm_fs(v);\n")
@@ -752,6 +796,182 @@ public sealed class SKMeshSpecification : IDisposable
                 sb.Append("  color.rgb *= color.a;\n");
             sb.Append("  return _sm_blend.eval(_sm_paint.eval(lc), half4(color)) * half(_sm_grid.y);\n}\n");
         }
+        return sb.ToString();
+    }
+
+    // Where the varyings pass stores each varying of a vertex: its texels side by side, the high texels first (Float
+    // varyings rounded to fp16, Half varyings as they are), then the low texels (the rest of each Float varying, so
+    // high + low gives ~22 bits). No varying straddles two texels; "position" has a texel of its own in both parts,
+    // last, so a draw that does not read the position reads none of it.
+    internal sealed class VaryingLayout
+    {
+        public readonly record struct Field(string Name, int Floats, bool Half, int Hi, int Lo); // Hi, Lo: float index in the vertex, Lo -1 for Half
+
+        public Field[] Fields { get; private init; }
+        public int HiTexels { get; private init; }
+        public int Texels { get; private init; } // high + low
+
+        public static VaryingLayout Of(SKMeshSpecificationVarying[] varys)
+        {
+            var named = varys.Where(v => v.Name != "position")
+                .Select(v => (v.Name, n: VaryingFloats(v.Type), half: v.Type >= SKMeshSpecificationVaryingType.Half)).ToList();
+            var hiRoom = new List<int>();
+            var loRoom = new List<int>();
+            static int Place(List<int> room, int n)
+            {
+                int t = room.FindIndex(free => free >= n);
+                if (t < 0)
+                {
+                    room.Add(4);
+                    t = room.Count - 1;
+                }
+                int at = t * 4 + 4 - room[t];
+                room[t] -= n;
+                return at;
+            }
+            var hi = new Dictionary<string, int>();
+            var lo = new Dictionary<string, int>();
+            foreach (var f in named.OrderByDescending(f => f.n))
+            {
+                hi[f.Name] = Place(hiRoom, f.n);
+                if (!f.half)
+                    lo[f.Name] = Place(loRoom, f.n);
+            }
+            int positionHi = hiRoom.Count * 4;
+            hiRoom.Add(2);
+            int positionLo = loRoom.Count * 4;
+            loRoom.Add(2);
+            int hiTexels = hiRoom.Count;
+            var fields = new List<Field> { new("position", 2, false, positionHi, hiTexels * 4 + positionLo) };
+            foreach (var f in named)
+                fields.Add(new Field(f.Name, f.n, f.half, hi[f.Name], f.half ? -1 : hiTexels * 4 + lo[f.Name]));
+            return new VaryingLayout { Fields = fields.ToArray(), HiTexels = hiTexels, Texels = hiTexels + loRoom.Count };
+        }
+
+        static int VaryingFloats(SKMeshSpecificationVaryingType type) => type switch
+        {
+            SKMeshSpecificationVaryingType.Float or SKMeshSpecificationVaryingType.Half => 1,
+            SKMeshSpecificationVaryingType.Float2 or SKMeshSpecificationVaryingType.Half2 => 2,
+            SKMeshSpecificationVaryingType.Float3 or SKMeshSpecificationVaryingType.Half3 => 3,
+            _ => 4,
+        };
+    }
+
+    // Varyings pass: output texel (x, y) = texel x % Texels of vertex y * _sm_vy.x + x / Texels, the vertex program run
+    // on the vertex bytes as they are (RGBA8 image, one float per texel, rebuilt exactly as in BuildConvert; _sm_vtx as
+    // there). Each texel runs the vertex program in its own branch, so the GPU compiler keeps only the attribute reads
+    // that texel's varyings need. A high texel of a Float varying holds the value rounded to 11 significant bits (exact
+    // in fp16), its low texel the rest; both are written as they are into an RgbaF16 target. The rounding finds the
+    // exponent with exact float math (powers of two by squaring): the same on every GPU.
+    static string BuildVaryingsPass(SKMeshSpecificationAttribute[] attrs, int strideFloats, VaryingLayout layout)
+    {
+        const string xyzw = "xyzw";
+        var sb = new StringBuilder("uniform shader _sm_attr;\nuniform float4 _sm_vtx;\nuniform float4 _sm_vy;\n");
+        sb.Append("float4 _sm_b(float i) {\n  float y = floor(i * _sm_vtx.z);\n")
+          .Append("  return floor(float4(_sm_attr.eval(float2(i - y * _sm_vtx.y + 0.5, y + 0.5))) * 255.0 + 0.5);\n}\n")
+          .Append("float _sm_f(float i) {\n  float4 b = _sm_b(i);\n")
+          .Append("  float e = mod(b.w, 128.0) * 2.0 + floor(b.z * 0.0078125);\n")
+          .Append("  if (e == 0.0) { return 0.0; }\n")
+          .Append("  float m = mod(b.z, 128.0) * 65536.0 + b.y * 256.0 + b.x;\n")
+          .Append("  float d = e - 127.0;\n  float a = abs(d);\n  float s = d < 0.0 ? 0.5 : 2.0;\n  float p = 1.0;\n")
+          .Append("  for (int k = 0; k < 7; k++) {\n")
+          .Append("    float h = floor(a * 0.5);\n    if (a - h * 2.0 > 0.5) { p *= s; }\n    s *= s;\n    a = h;\n  }\n")
+          .Append("  float x = (m * 0.00000011920928955078125 + 1.0) * p;\n")
+          .Append("  return b.w >= 128.0 ? -x : x;\n}\n")
+          .Append("Attributes _sm_rload(float i) {\n  Attributes a;\n");
+        foreach (var attr in attrs)
+        {
+            int f = attr.Offset / 4;
+            int n = AttributeFloats(attr.Type);
+            sb.Append("  a.").Append(attr.Name).Append(" = ");
+            if (attr.Type == SKMeshSpecificationAttributeType.Ubyte4Unorm)
+                sb.Append($"half4(_sm_b(i + {f}.0) / 255.0)");
+            else
+            {
+                var parts = Enumerable.Range(f, n).Select(x => $"_sm_f(i + {x}.0)");
+                sb.Append(n == 1 ? parts.First() : $"{AttributeSkslType(attr.Type)}({string.Join(", ", parts)})");
+            }
+            sb.Append(";\n");
+        }
+        sb.Append("  return a;\n}\n")
+          // x rounded to 11 significant bits; values under 2^-14 (fp16 subnormals) keep 0 high, all in the low part
+          .Append("float _sm_hi(float x) {\n  float a = abs(x);\n  if (a < 0.00006103515625) { return 0.0; }\n")
+          .Append("  float p = 1.0;\n  float ip = 1.0;\n")
+          .Append("  float s1 = a >= 1.0 ? 2.0 : 0.5; float s2 = s1 * s1; float s4 = s2 * s2; float s8 = s4 * s4; float s16 = s8 * s8; float s32 = s16 * s16; float s64 = s32 * s32;\n")
+          .Append("  float r1 = a >= 1.0 ? 0.5 : 2.0; float r2 = r1 * r1; float r4 = r2 * r2; float r8 = r4 * r4; float r16 = r8 * r8; float r32 = r16 * r16; float r64 = r32 * r32;\n")
+          .Append("  if (a >= 1.0) {\n")
+          .Append("    if (p * s64 <= a) { p *= s64; ip *= r64; }\n    if (p * s32 <= a) { p *= s32; ip *= r32; }\n")
+          .Append("    if (p * s16 <= a) { p *= s16; ip *= r16; }\n    if (p * s8 <= a) { p *= s8; ip *= r8; }\n")
+          .Append("    if (p * s4 <= a) { p *= s4; ip *= r4; }\n    if (p * s2 <= a) { p *= s2; ip *= r2; }\n")
+          .Append("    if (p * s1 <= a) { p *= s1; ip *= r1; }\n  } else {\n")
+          .Append("    if (p * s64 > a) { p *= s64; ip *= r64; }\n    if (p * s32 > a) { p *= s32; ip *= r32; }\n")
+          .Append("    if (p * s16 > a) { p *= s16; ip *= r16; }\n    if (p * s8 > a) { p *= s8; ip *= r8; }\n")
+          .Append("    if (p * s4 > a) { p *= s4; ip *= r4; }\n    if (p * s2 > a) { p *= s2; ip *= r2; }\n")
+          .Append("    if (p * s1 > a) { p *= s1; ip *= r1; }\n")
+          .Append("    p *= 0.5;\n    ip *= 2.0;\n  }\n")
+          .Append("  float h = floor(a * ip * 1024.0 + 0.5) * 0.0009765625 * p;\n")
+          .Append("  return x < 0.0 ? -h : h;\n}\n");
+
+        // texel j's 4 lanes
+        var lanes = new string[layout.Texels * 4];
+        for (int q = 0; q < lanes.Length; q++)
+            lanes[q] = "0.0";
+        foreach (var f in layout.Fields)
+            for (int c = 0; c < f.Floats; c++)
+            {
+                var value = f.Floats == 1 ? $"float(v.{f.Name})" : $"float(v.{f.Name}.{xyzw[c]})";
+                if (f.Half)
+                    lanes[f.Hi + c] = value;
+                else
+                {
+                    lanes[f.Hi + c] = $"_sm_hi({value})";
+                    lanes[f.Lo + c] = $"({value} - _sm_hi({value}))";
+                }
+            }
+
+        int t = layout.Texels;
+        sb.Append("half4 main(float2 p) {\n  float x = floor(p.x);\n  float y = floor(p.y);\n")
+          .Append($"  float vx = floor((x + 0.5) / {t}.0);\n  float j = x - vx * {t}.0;\n")
+          .Append($"  float i = _sm_vtx.x + (y * _sm_vy.x + vx) * {strideFloats}.0;\n")
+          .Append("  float4 r = float4(0.0);\n");
+        for (int k = 0; k < t; k++)
+            sb.Append(k == 0 ? "  if (j < 0.5) " : $"  else if (j < {k}.5) ")
+              .Append($"{{\n    Varyings v = _sm_vs(_sm_rload(i));\n    r = float4({lanes[k * 4]}, {lanes[k * 4 + 1]}, {lanes[k * 4 + 2]}, {lanes[k * 4 + 3]});\n  }}\n");
+        sb.Append("  return half4(r);\n}\n");
+        return sb.ToString();
+    }
+
+    // Draw program reading the varyings image (_sm_attr; _sm_pk.y vertices per row, a power of two, .z = 1 / that).
+    static string BuildDrawVaryingsMain(SKMeshSpecificationVarying[] varys, string colorType, SKAlphaType alphaType, VaryingLayout layout)
+    {
+        const string xyzw = "xyzw";
+        var sb = new StringBuilder("uniform float4 _sm_pk;\nuniform shader _sm_attr;\nuniform shader _sm_paint;\n");
+        if (colorType != null)
+            sb.Append("uniform blender _sm_blend;\n");
+        sb.Append("Varyings _sm_vary(float v) {\n  float y = floor(v * _sm_pk.z);\n")
+          .Append($"  float x = (v - y * _sm_pk.y) * {layout.Texels}.0 + 0.5;\n  y += 0.5;\n");
+        for (int k = 0; k < layout.Texels; k++)
+            sb.Append($"  float4 t{k} = float4(_sm_attr.eval(float2(x + {k}.0, y)));\n");
+        sb.Append("  Varyings o;\n");
+        foreach (var f in layout.Fields)
+        {
+            var parts = Enumerable.Range(0, f.Floats).Select(c =>
+            {
+                int h = f.Hi + c;
+                var hi = $"t{h / 4}.{xyzw[h % 4]}";
+                if (f.Half)
+                    return hi;
+                int l = f.Lo + c;
+                return $"({hi} + t{l / 4}.{xyzw[l % 4]})";
+            }).ToArray();
+            var type = varys.FirstOrDefault(v => v.Name == f.Name) is { Name: not null } decl && f.Name != "position"
+                ? VaryingSkslType(decl.Type)
+                : "float2";
+            sb.Append($"  o.{f.Name} = {(f.Floats == 1 ? $"{type}({parts[0]})" : $"{type}({string.Join(", ", parts)})")};\n");
+        }
+        sb.Append("  return o;\n}\n");
+        sb.Append(CornerSource);
+        sb.Append(BuildMixAndMain(varys, colorType, alphaType, "_sm_vary(_sm_corner(t, K))"));
         return sb.ToString();
     }
 
@@ -829,10 +1049,15 @@ public sealed class SKMeshSpecification : IDisposable
             _convertChildren?.Dispose();
             _drawSolidUniforms?.Dispose();
             _drawSolidChildren?.Dispose();
+            _varyingsUniforms?.Dispose();
+            _varyingsChildren?.Dispose();
+            _varyingsUniforms = null;
+            _varyingsChildren = null;
             _drawUniforms = _positionUniforms = _convertUniforms = _drawSolidUniforms = null;
             _drawChildren = _positionChildren = _convertChildren = _drawSolidChildren = null;
         }
         _drawSolidEffect?.Dispose();
+        VaryingsEffect?.Dispose();
         ConvertEffect?.Dispose();
         DrawEffect?.Dispose();
         PositionEffect?.Dispose();
