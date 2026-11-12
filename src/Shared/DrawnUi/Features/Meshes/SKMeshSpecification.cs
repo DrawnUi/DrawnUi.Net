@@ -150,7 +150,7 @@ public sealed class SKMeshSpecification : IDisposable
     // The draw program for a paint without a shader (a plain color): the color is read at one point, so the local
     // coords (the "position" varying) are unused and the GPU compiler drops their texel reads. Compiled at its
     // first use; null if it does not compile (the draw program is used then).
-    string _drawSource;
+    string _drawSource, _varyingsSource; // kept for diagnostics (the generated SkSL)
     bool _solidTried;
     SKRuntimeEffect _drawSolidEffect;
     CachedUniforms _drawSolidUniforms;
@@ -482,9 +482,10 @@ public sealed class SKMeshSpecification : IDisposable
         }
 
         SKRuntimeEffect varyingsEffect = null;
+        string varyingsSource = null;
         if (layout != null)
         {
-            var varyingsSource = new StringBuilder()
+            varyingsSource = new StringBuilder()
                 .Append(structs).Append('\n').Append(vs).Append('\n')
                 .Append(BuildVaryingsPass(attrs, vertexStride / 4, layout))
                 .ToString();
@@ -538,7 +539,7 @@ public sealed class SKMeshSpecification : IDisposable
         }
 
         return new SKMeshSpecification(vertexStride, attrs, texels, hasColor, convertEffect, drawEffect, positionEffect, positionFloat,
-            uniforms.ToArray(), vertexUniforms, uniformSize, children) { _drawSource = drawSource, VaryingsEffect = varyingsEffect, Varyings = layout };
+            uniforms.ToArray(), vertexUniforms, uniformSize, children) { _drawSource = drawSource, _varyingsSource = varyingsSource, VaryingsEffect = varyingsEffect, Varyings = layout };
     }
 
     static int UniformBytes(string type, string array, out bool isInt)
@@ -857,28 +858,47 @@ public sealed class SKMeshSpecification : IDisposable
         };
     }
 
-    // Varyings pass: output texel (x, y) = texel x % Texels of vertex y * _sm_vy.x + x / Texels, the vertex program run
-    // on the vertex bytes as they are (RGBA8 image, one float per texel, rebuilt exactly as in BuildConvert; _sm_vtx as
-    // there). Each texel runs the vertex program in its own branch, so the GPU compiler keeps only the attribute reads
-    // that texel's varyings need. A high texel of a Float varying holds the value rounded to 11 significant bits (exact
-    // in fp16), its low texel the rest; both are written as they are into an RgbaF16 target. The rounding finds the
-    // exponent with exact float math (powers of two by squaring): the same on every GPU.
+    // Varyings pass: output texel (x, y) = texel x % Texels of vertex y * _sm_vy.x + x / Texels: the vertex program run
+    // once on the vertex bytes as they are (RGBA8 image, one float per texel; _sm_vtx as in BuildConvert), then the
+    // texel's 4 lanes picked. A high lane of a Float varying holds the value rounded to 11 significant bits (exact in
+    // fp16), its low lane the rest; both are written as they are into an RgbaF16 target. Floats are rebuilt from
+    // their bytes and split with exact float math (powers of two by squaring, choices made by multiplying with 0 or
+    // 1): the same on every GPU. Everything works on 4 floats at once and runs once per pixel: a small program
+    // (a vertex program per branch made one too big for Mali's compiler).
     static string BuildVaryingsPass(SKMeshSpecificationAttribute[] attrs, int strideFloats, VaryingLayout layout)
     {
         const string xyzw = "xyzw";
         var sb = new StringBuilder("uniform shader _sm_attr;\nuniform float4 _sm_vtx;\nuniform float4 _sm_vy;\n");
         sb.Append("float4 _sm_b(float i) {\n  float y = floor(i * _sm_vtx.z);\n")
           .Append("  return floor(float4(_sm_attr.eval(float2(i - y * _sm_vtx.y + 0.5, y + 0.5))) * 255.0 + 0.5);\n}\n")
-          .Append("float _sm_f(float i) {\n  float4 b = _sm_b(i);\n")
-          .Append("  float e = mod(b.w, 128.0) * 2.0 + floor(b.z * 0.0078125);\n")
-          .Append("  if (e == 0.0) { return 0.0; }\n")
-          .Append("  float m = mod(b.z, 128.0) * 65536.0 + b.y * 256.0 + b.x;\n")
-          .Append("  float d = e - 127.0;\n  float a = abs(d);\n  float s = d < 0.0 ? 0.5 : 2.0;\n  float p = 1.0;\n")
+          // floats i .. i + 3 of the vertex bytes (zero and subnormals: 0)
+          .Append("float4 _sm_f4(float i) {\n")
+          .Append("  float4 b0 = _sm_b(i);\n  float4 b1 = _sm_b(i + 1.0);\n  float4 b2 = _sm_b(i + 2.0);\n  float4 b3 = _sm_b(i + 3.0);\n")
+          .Append("  float4 bx = float4(b0.x, b1.x, b2.x, b3.x);\n  float4 by = float4(b0.y, b1.y, b2.y, b3.y);\n")
+          .Append("  float4 bz = float4(b0.z, b1.z, b2.z, b3.z);\n  float4 bw = float4(b0.w, b1.w, b2.w, b3.w);\n")
+          .Append("  float4 e = mod(bw, 128.0) * 2.0 + floor(bz * 0.0078125);\n")
+          .Append("  float4 m = mod(bz, 128.0) * 65536.0 + by * 256.0 + bx;\n")
+          .Append("  float4 d = e - 127.0;\n  float4 a = abs(d);\n")
+          .Append("  float4 s = 2.0 - 1.5 * step(d, float4(-0.5));\n  float4 p = float4(1.0);\n")
           .Append("  for (int k = 0; k < 7; k++) {\n")
-          .Append("    float h = floor(a * 0.5);\n    if (a - h * 2.0 > 0.5) { p *= s; }\n    s *= s;\n    a = h;\n  }\n")
-          .Append("  float x = (m * 0.00000011920928955078125 + 1.0) * p;\n")
-          .Append("  return b.w >= 128.0 ? -x : x;\n}\n")
-          .Append("Attributes _sm_rload(float i) {\n  Attributes a;\n");
+          .Append("    float4 h = floor(a * 0.5);\n    float4 bit = a - h * 2.0;\n")
+          .Append("    p = p * (1.0 - bit) + (p * s) * bit;\n    s *= s;\n    a = h;\n  }\n")
+          .Append("  float4 x = (m * 0.00000011920928955078125 + 1.0) * p * (1.0 - step(e, float4(0.5)));\n")
+          .Append("  return x * (1.0 - 2.0 * step(float4(128.0), bw));\n}\n")
+          // x rounded to 11 significant bits per lane; under 2^-14 (fp16 subnormals): 0, all in the low part
+          .Append("float4 _sm_hi4(float4 x) {\n  float4 a = abs(x);\n  float4 big = step(float4(1.0), a);\n")
+          .Append("  float4 s1 = 0.5 + 1.5 * big; float4 s2 = s1 * s1; float4 s4 = s2 * s2; float4 s8 = s4 * s4; float4 s16 = s8 * s8; float4 s32 = s16 * s16; float4 s64 = s32 * s32;\n")
+          .Append("  float4 r1 = 2.0 - 1.5 * big; float4 r2 = r1 * r1; float4 r4 = r2 * r2; float4 r8 = r4 * r4; float4 r16 = r8 * r8; float4 r32 = r16 * r16; float4 r64 = r32 * r32;\n")
+          .Append("  float4 p = float4(1.0);\n  float4 ip = float4(1.0);\n  float4 t;\n  float4 c;\n");
+        // big lanes: largest power of two <= a; small lanes: smallest power of two > a (halved below)
+        foreach (var k in new[] { 64, 32, 16, 8, 4, 2, 1 })
+            sb.Append($"  t = p * s{k};\n  c = big * step(t, a) + (1.0 - big) * (1.0 - step(t, a));\n")
+              .Append($"  p = p * (1.0 - c) + t * c;\n  ip = ip * (1.0 - c) + (ip * r{k}) * c;\n");
+        sb.Append("  p = p * big + (p * 0.5) * (1.0 - big);\n  ip = ip * big + (ip * 2.0) * (1.0 - big);\n")
+          .Append("  float4 h = floor(a * ip * 1024.0 + 0.5) * 0.0009765625 * p * step(float4(0.00006103515625), a);\n")
+          .Append("  return h * sign(x);\n}\n");
+
+        sb.Append("Attributes _sm_rload(float i) {\n  Attributes a;\n");
         foreach (var attr in attrs)
         {
             int f = attr.Offset / 4;
@@ -887,56 +907,42 @@ public sealed class SKMeshSpecification : IDisposable
             if (attr.Type == SKMeshSpecificationAttributeType.Ubyte4Unorm)
                 sb.Append($"half4(_sm_b(i + {f}.0) / 255.0)");
             else
-            {
-                var parts = Enumerable.Range(f, n).Select(x => $"_sm_f(i + {x}.0)");
-                sb.Append(n == 1 ? parts.First() : $"{AttributeSkslType(attr.Type)}({string.Join(", ", parts)})");
-            }
+                sb.Append($"_sm_f4(i + {f}.0){(n == 4 ? "" : "." + xyzw.Substring(0, n))}");
             sb.Append(";\n");
         }
-        sb.Append("  return a;\n}\n")
-          // x rounded to 11 significant bits; values under 2^-14 (fp16 subnormals) keep 0 high, all in the low part
-          .Append("float _sm_hi(float x) {\n  float a = abs(x);\n  if (a < 0.00006103515625) { return 0.0; }\n")
-          .Append("  float p = 1.0;\n  float ip = 1.0;\n")
-          .Append("  float s1 = a >= 1.0 ? 2.0 : 0.5; float s2 = s1 * s1; float s4 = s2 * s2; float s8 = s4 * s4; float s16 = s8 * s8; float s32 = s16 * s16; float s64 = s32 * s32;\n")
-          .Append("  float r1 = a >= 1.0 ? 0.5 : 2.0; float r2 = r1 * r1; float r4 = r2 * r2; float r8 = r4 * r4; float r16 = r8 * r8; float r32 = r16 * r16; float r64 = r32 * r32;\n")
-          .Append("  if (a >= 1.0) {\n")
-          .Append("    if (p * s64 <= a) { p *= s64; ip *= r64; }\n    if (p * s32 <= a) { p *= s32; ip *= r32; }\n")
-          .Append("    if (p * s16 <= a) { p *= s16; ip *= r16; }\n    if (p * s8 <= a) { p *= s8; ip *= r8; }\n")
-          .Append("    if (p * s4 <= a) { p *= s4; ip *= r4; }\n    if (p * s2 <= a) { p *= s2; ip *= r2; }\n")
-          .Append("    if (p * s1 <= a) { p *= s1; ip *= r1; }\n  } else {\n")
-          .Append("    if (p * s64 > a) { p *= s64; ip *= r64; }\n    if (p * s32 > a) { p *= s32; ip *= r32; }\n")
-          .Append("    if (p * s16 > a) { p *= s16; ip *= r16; }\n    if (p * s8 > a) { p *= s8; ip *= r8; }\n")
-          .Append("    if (p * s4 > a) { p *= s4; ip *= r4; }\n    if (p * s2 > a) { p *= s2; ip *= r2; }\n")
-          .Append("    if (p * s1 > a) { p *= s1; ip *= r1; }\n")
-          .Append("    p *= 0.5;\n    ip *= 2.0;\n  }\n")
-          .Append("  float h = floor(a * ip * 1024.0 + 0.5) * 0.0009765625 * p;\n")
-          .Append("  return x < 0.0 ? -h : h;\n}\n");
+        sb.Append("  return a;\n}\n");
 
-        // texel j's 4 lanes
-        var lanes = new string[layout.Texels * 4];
-        for (int q = 0; q < lanes.Length; q++)
-            lanes[q] = "0.0";
-        foreach (var f in layout.Fields)
-            for (int c = 0; c < f.Floats; c++)
-            {
-                var value = f.Floats == 1 ? $"float(v.{f.Name})" : $"float(v.{f.Name}.{xyzw[c]})";
-                if (f.Half)
-                    lanes[f.Hi + c] = value;
-                else
-                {
-                    lanes[f.Hi + c] = $"_sm_hi({value})";
-                    lanes[f.Lo + c] = $"({value} - _sm_hi({value}))";
-                }
-            }
-
+        // the varyings once, the high parts of each Float varying once, then texel j's 4 lanes
         int t = layout.Texels;
         sb.Append("half4 main(float2 p) {\n  float x = floor(p.x);\n  float y = floor(p.y);\n")
           .Append($"  float vx = floor((x + 0.5) / {t}.0);\n  float j = x - vx * {t}.0;\n")
-          .Append($"  float i = _sm_vtx.x + (y * _sm_vy.x + vx) * {strideFloats}.0;\n")
-          .Append("  float4 r = float4(0.0);\n");
+          .Append($"  Varyings v = _sm_vs(_sm_rload(_sm_vtx.x + (y * _sm_vy.x + vx) * {strideFloats}.0));\n");
+        var lanes = new string[t * 4];
+        for (int q = 0; q < lanes.Length; q++)
+            lanes[q] = "0.0";
+        int index = 0;
+        foreach (var f in layout.Fields)
+        {
+            string Comp(int c) => f.Floats == 1 ? $"float(v.{f.Name})" : $"float(v.{f.Name}.{xyzw[c]})";
+            if (f.Half)
+            {
+                for (int c = 0; c < f.Floats; c++)
+                    lanes[f.Hi + c] = Comp(c);
+                continue;
+            }
+            var hi = $"_sm_h{index++}";
+            var padded = string.Join(", ", Enumerable.Range(0, 4).Select(c => c < f.Floats ? Comp(c) : "0.0"));
+            sb.Append($"  float4 {hi} = _sm_hi4(float4({padded}));\n");
+            for (int c = 0; c < f.Floats; c++)
+            {
+                lanes[f.Hi + c] = $"{hi}.{xyzw[c]}";
+                lanes[f.Lo + c] = $"({Comp(c)} - {hi}.{xyzw[c]})";
+            }
+        }
+        sb.Append("  float4 r = float4(0.0);\n");
         for (int k = 0; k < t; k++)
             sb.Append(k == 0 ? "  if (j < 0.5) " : $"  else if (j < {k}.5) ")
-              .Append($"{{\n    Varyings v = _sm_vs(_sm_rload(i));\n    r = float4({lanes[k * 4]}, {lanes[k * 4 + 1]}, {lanes[k * 4 + 2]}, {lanes[k * 4 + 3]});\n  }}\n");
+              .Append($"{{ r = float4({lanes[k * 4]}, {lanes[k * 4 + 1]}, {lanes[k * 4 + 2]}, {lanes[k * 4 + 3]}); }}\n");
         sb.Append("  return half4(r);\n}\n");
         return sb.ToString();
     }
