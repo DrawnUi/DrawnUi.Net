@@ -278,7 +278,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         }
 
         Canvas.Update();
-        CompositionTarget.Rendering += OnCompositionRendering;
+        StartFrames();
     }
 
     private bool DrawGpuFrame(SKSurface surface, SKRect rect)
@@ -455,7 +455,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
 
         _running = false;
         AttachWindowMessages(false);
-        CompositionTarget.Rendering -= OnCompositionRendering;
+        StopFrames();
         Canvas.CloseTooltipOnInput();
         ReleaseSurface();
     }
@@ -479,7 +479,7 @@ public class DrawnUiElement : FrameworkElement, IDisposable
         _disposed = true;
         _running = false;
         Super.RemoveHotReloadListener(this);
-        CompositionTarget.Rendering -= OnCompositionRendering;
+        StopFrames();
         _a11yRefresh?.Stop();
         Canvas.AccessibilityManager.RebuildSkipped -= OnAccessibilityRebuildSkipped;
         Canvas.AccessibilityManager.ReaderRefocusRequested -= OnAccessibilityReaderRefocus;
@@ -561,6 +561,73 @@ public class DrawnUiElement : FrameworkElement, IDisposable
     /// canvas asked for one (<c>Update()</c> → <c>IsDirty</c>) — the same gate the Net and OpenTK
     /// heads use. An idle tree costs nothing per tick.
     /// </summary>
+    // Frames are paced by the desktop compositor (DWM): a background thread waits for each composition pass (DwmFlush)
+    // and asks the UI thread for a frame. WPF's own frame clock (CompositionTarget.Rendering) is not locked to the
+    // display: it skipped ticks and the canvas drew 56-59 frames a second on a 60 Hz display while OpenTK, paced by
+    // DWM, held 60. Where DWM gives no pacing (DwmFlush fails: composition off), Rendering drives the frames as before.
+    private int _framesGeneration;
+    private int _vsyncPosted; // 1 while a tick waits on the dispatcher: a busy UI thread gets one tick, not a queue
+    private long _vsyncNanos;
+    private bool _renderingSubscribed;
+
+    [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
+    private static extern int DwmFlush();
+
+    private void StartFrames()
+    {
+        var generation = ++_framesGeneration;
+        new Thread(() => VsyncLoop(generation)) { IsBackground = true, Name = "DrawnUi frames" }.Start();
+    }
+
+    private void StopFrames()
+    {
+        _framesGeneration++; // the frame thread ends after its current wait
+        if (_renderingSubscribed)
+        {
+            _renderingSubscribed = false;
+            CompositionTarget.Rendering -= OnCompositionRendering;
+        }
+    }
+
+    private void VsyncLoop(int generation)
+    {
+        long last = 0;
+        while (generation == _framesGeneration)
+        {
+            if (DwmFlush() != 0)
+            {
+                Dispatcher.InvokeAsync(() =>
+                {
+                    if (generation == _framesGeneration && !_renderingSubscribed)
+                    {
+                        _renderingSubscribed = true;
+                        CompositionTarget.Rendering += OnCompositionRendering;
+                    }
+                });
+                return;
+            }
+
+            var now = Super.GetCurrentTimeNanos();
+            // With nothing to compose DWM can return at once: wait out the rest of a frame instead of spinning.
+            if (last != 0 && now - last < 4_000_000)
+            {
+                Thread.Sleep(Math.Max(1, (int)((16_000_000 - (now - last)) / 1_000_000)));
+                now = Super.GetCurrentTimeNanos();
+            }
+            last = now;
+
+            _vsyncNanos = now;
+            if (Interlocked.Exchange(ref _vsyncPosted, 1) == 0)
+                Dispatcher.InvokeAsync(OnVsyncFrame, System.Windows.Threading.DispatcherPriority.Render);
+        }
+    }
+
+    private void OnVsyncFrame()
+    {
+        Interlocked.Exchange(ref _vsyncPosted, 0);
+        DrawFrame(_vsyncNanos);
+    }
+
     private void OnCompositionRendering(object sender, EventArgs e)
     {
         if (!_running || !Canvas.CheckCanDraw() || !Canvas.CanDraw)
@@ -574,7 +641,14 @@ public class DrawnUiElement : FrameworkElement, IDisposable
             _lastRenderingTime = args.RenderingTime;
         }
 
-        var frameTime = FrameClock(e);
+        DrawFrame(FrameClock(e));
+    }
+
+    /// <summary>Draws one frame when the canvas needs it, with <paramref name="frameTime"/> as its timestamp.</summary>
+    private void DrawFrame(long frameTime)
+    {
+        if (!_running || !Canvas.CheckCanDraw() || !Canvas.CanDraw)
+            return;
 
         if (_gpuView != null)
         {
