@@ -6,6 +6,9 @@
 //   Raster (CPU)— 2D context + putImageData from pinned byte[] buffer.
 //
 // Export-friendly: designed so this could be contributed back as SkiaSharp.Views.Web.
+//
+// EVERY NEW EXPORT also goes into both __drawnuiWeb lists at the end of this file, or a page that loads this module
+// twice runs that export on the second copy, which nothing wired.
 
 // --- Emscripten aliases (resolved at runtime, not import-time) ---
 function getGL() {
@@ -783,6 +786,7 @@ let onKeyUp = null;
 // cache-busting ?v= stamp on one of them) the browser loads it twice. Every copy after the first hands each of its
 // exports over to the first copy's, so the callbacks main.js wires and the canvas, input and resize state C# sets up
 // live in one place. Bound once at load: no cost per call.
+// Keep both lists below complete: every export of this module is in each of them.
 const _first = globalThis.__drawnuiWeb;
 if (_first) {
     initGL = _first.initGL; initRaster = _first.initRaster; deinit = _first.deinit;
