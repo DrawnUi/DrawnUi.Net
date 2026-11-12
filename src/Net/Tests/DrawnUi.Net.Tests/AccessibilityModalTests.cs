@@ -206,6 +206,73 @@ public class AccessibilityModalTests
         Assert.Equal("Settings", Focused(host));
     }
 
+    /// <summary>
+    /// The Dungeon's hand-over (drawnui-cross 6bs): Help opens "HOW TO PLAY" with the keyboard, Escape closes it and opens
+    /// "PAUSED" in the same step, Escape again closes that one, and the keyboard is back on Help, which the app hides
+    /// while a dialog is shown.
+    /// </summary>
+    [Theory]
+    [InlineData(true)]  // the pause opens in the same step as the help closes
+    [InlineData(false)] // the help fades out first, the pause opens after
+    public async Task DialogHandsOverToAnother_ClosingTheLast_ReturnsToTheOpener(bool sameStep)
+    {
+        using var host = new HeadlessCanvasHost(400, 400);
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
+        SkiaStack hud;
+        var shell = new SkiaShell
+        {
+            RootContent = new SkiaStack { Spacing = 4, Children = { Button("Play"), Button("Help") } }.Assign(out hud),
+        };
+        host.Canvas.Content = shell;
+        host.AdvanceFrames(4);
+
+        async Task Run(Task task)
+        {
+            for (var i = 0; i < 120 && !task.IsCompleted; i++)
+                host.AdvanceFrames(1);
+            await task;
+            host.AdvanceFrames(4);
+        }
+
+        static SkiaLayer Named(string title, string a, string b) => new()
+        {
+            AccessibilityRole = Aria.RoleDialog,
+            AccessibilityLabel = title,
+            WidthRequest = 220,
+            Children = { new SkiaStack { Spacing = 4, Children = { Button(a), Button(b) } } },
+        };
+
+        Tab(host);
+        Tab(host);
+        Assert.Equal("Help", Focused(host));
+
+        // Enter on Help: the dialog opens, the app hides its HUD under it
+        var opening = shell.OpenPopupAsync(Named("HOW TO PLAY", "Link", "OK"), showOverlay: false);
+        hud.IsVisible = false;
+        await Run(opening);
+        Assert.Equal("Link", Focused(host));
+
+        // Escape: the help closes and the pause opens
+        if (sameStep)
+        {
+            var closing = shell.ClosePopupAsync(animated: false);
+            var pausing = shell.OpenPopupAsync(Named("PAUSED", "Resume", "Home"), showOverlay: false);
+            await Run(Task.WhenAll(closing, pausing));
+        }
+        else
+        {
+            await Run(shell.ClosePopupAsync());
+            await Run(shell.OpenPopupAsync(Named("PAUSED", "Resume", "Home"), showOverlay: false));
+        }
+        Assert.Equal("Resume", Focused(host));
+
+        // Escape again: the pause closes, the app shows its HUD after the close
+        await Run(shell.ClosePopupAsync());
+        hud.IsVisible = true;
+        host.AdvanceFrames(6);
+        Assert.Equal("Help", Focused(host));
+    }
+
     [Fact]
     public async Task ShellPopup_KeepsReadersAndTabInside()
     {

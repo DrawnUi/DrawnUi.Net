@@ -299,10 +299,19 @@ namespace DrawnUi.Views
                 return;
 
             var keyboard = canvas.KeyboardFocusNode;
-            if (next != null && keyboard != null && !IsDescendantOrSelf(keyboard, next))
+            // a return to an opener still on its way (a dialog just closed) means the keyboard is in use too
+            var inUse = keyboard ?? Volatile.Read(ref _focusReturn);
+            if (next != null && inUse != null && !IsDescendantOrSelf(inUse, next))
             {
-                // the keyboard is in use: into the modal, and back here when it goes
-                _modalReturns[next] = keyboard;
+                // the keyboard is in use: into the modal, and back here when it goes. A dialog handing over to another
+                // (How to play, then Paused) passes on where the keyboard came from: the closing one's way back, in the
+                // same frame or still on its way.
+                var cameFrom = inUse;
+                if (previous != null && IsDescendantOrSelf(inUse, previous) && _modalReturns.TryGetValue(previous, out var previousBack))
+                    cameFrom = previousBack;
+                else if (Volatile.Read(ref _focusReturn) is { } returning)
+                    cameFrom = returning;
+                _modalReturns[next] = cameFrom;
                 RequestFocusInside(next);
             }
 

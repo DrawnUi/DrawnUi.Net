@@ -64,4 +64,39 @@ public class EditorTabNavigationTests
         Assert.True(name.IsFocused, "Shift+Tab did not go back to Name");
         Assert.False(email.IsFocused);
     }
+
+    /// <summary>
+    /// An editor reached with Tab draws its caret and what is typed at once: the canvas asks for a frame, as a real head
+    /// draws only then (a Mac showed the typed letter 2.5 s late).
+    /// </summary>
+    [Fact]
+    public void TabReachedEditor_TypedText_AsksForAFrameAtOnce()
+    {
+        var (host, name, email, _) = Form();
+        using var _ = host;
+        var robot = new GestureRobot(host);
+        var r = name.DrawingRect;
+        robot.Tap(r.MidX, r.MidY);
+        Settle(host);
+
+        Assert.True(host.Canvas.HandleKeyboardNavigation(InputKey.Tab, false));
+        // the editor takes its focus a moment later, as on the heads
+        for (var i = 0; i < 20 && !email.IsFocused; i++)
+        {
+            Thread.Sleep(15);
+            if (host.NeedsFrame)
+                host.RenderFrame(16);
+        }
+        Assert.True(email.IsFocused);
+        // draw what the head would draw: only the frames asked for
+        for (var i = 0; i < 10 && host.NeedsFrame; i++)
+            host.RenderFrame(16);
+
+        email.StubTypeText("e");
+        Assert.True(host.NeedsFrame, "typing into the Tab-reached editor asked for no frame");
+        for (var i = 0; i < 10 && host.NeedsFrame; i++)
+            host.RenderFrame(16);
+        Assert.Equal("e", email.Label.Lines?.FirstOrDefault()?.Value?.TrimEnd());
+        Assert.True(email.Cursor.IsVisible, "no caret in the Tab-reached editor");
+    }
 }
