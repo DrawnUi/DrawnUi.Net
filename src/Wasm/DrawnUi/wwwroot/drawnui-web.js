@@ -778,3 +778,28 @@ let onContextMenu = null;
 let onCanvasResize = null;
 let onKeyDown = null;
 let onKeyUp = null;
+
+// One copy per page. The app's main.js and DrawnUi.Web's C# both import this module; when their URLs differ (a
+// cache-busting ?v= stamp on one of them) the browser loads it twice. Every copy after the first hands each of its
+// exports over to the first copy's, so the callbacks main.js wires and the canvas, input and resize state C# sets up
+// live in one place. Bound once at load: no cost per call.
+const _first = globalThis.__drawnuiWeb;
+if (_first) {
+    initGL = _first.initGL; initRaster = _first.initRaster; deinit = _first.deinit;
+    requestAnimationFrame = _first.requestAnimationFrame; setEnableRenderLoop = _first.setEnableRenderLoop;
+    putImageData = _first.putImageData; initCanvas = _first.initCanvas; getCanvasWidth = _first.getCanvasWidth;
+    getCanvasHeight = _first.getCanvasHeight; getDevicePixelRatio = _first.getDevicePixelRatio;
+    getBaseUrl = _first.getBaseUrl; requestAnimationFrameLegacy = _first.requestAnimationFrameLegacy;
+    applyGestureStyle = _first.applyGestureStyle; a11yAttach = _first.a11yAttach;
+    watchSystemTheme = _first.watchSystemTheme; watchWindowFocus = _first.watchWindowFocus;
+    a11yDetach = _first.a11yDetach; a11yUpdate = _first.a11yUpdate; a11yFocus = _first.a11yFocus;
+    a11yLive = _first.a11yLive; showLoader = _first.showLoader; hideLoader = _first.hideLoader;
+    showError = _first.showError; setModuleExports = _first.setModuleExports;
+} else {
+    globalThis.__drawnuiWeb = {
+        initGL, initRaster, deinit, requestAnimationFrame, setEnableRenderLoop, putImageData, initCanvas,
+        getCanvasWidth, getCanvasHeight, getDevicePixelRatio, getBaseUrl, requestAnimationFrameLegacy,
+        applyGestureStyle, a11yAttach, watchSystemTheme, watchWindowFocus, a11yDetach, a11yUpdate, a11yFocus,
+        a11yLive, showLoader, hideLoader, showError, setModuleExports,
+    };
+}
