@@ -96,6 +96,26 @@ public class ViewerApiTests
         }
     }
 
+    /// <summary>A touchpad pinch reaches a browser as a Ctrl wheel with no key held (IsZoom): it zooms, a plain wheel does not.</summary>
+    [Fact]
+    public void A_touchpad_pinch_zooms_without_a_key()
+    {
+        using var host = new HeadlessCanvasHost(400, 300, 1f, Colors.Black);
+        var model = Model();
+        model.PinchZoom = true;
+        host.Canvas.Content = new SkiaLayer { VerticalOptions = LayoutOptions.Fill, Children = { model } };
+        Frames(host, 3);
+        var robot = new GestureRobot(host);
+
+        robot.WheelScroll(200, 150, 100);
+        Frames(host, 2);
+        Assert.Equal(1, model.Zoom, 3);
+
+        robot.WheelScroll(200, 150, 100, zoom: true);
+        Frames(host, 2);
+        Assert.True(model.Zoom < 0.95f, $"closer after a pinch: {model.Zoom}");
+    }
+
     static void CtrlWheel(HeadlessCanvasHost host, GestureRobot robot, SkiaModel3D model)
     {
         robot.WheelScroll(200, 150, 100);

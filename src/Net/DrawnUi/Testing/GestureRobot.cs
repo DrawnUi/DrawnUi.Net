@@ -201,12 +201,13 @@ public sealed class GestureRobot
     /// Emits a mouse-wheel event (<c>delta</c> px) at the given point. Note: <see cref="SkiaScroll"/>
     /// routes the wheel to zoom unless <c>ZoomLocked</c> is true — set that to make the wheel scroll.
     /// </summary>
-    public void WheelScroll(double x, double y, float delta, double frameMs = 16.0)
+    /// <param name="zoom">The event asks for zoom (<see cref="WheelEventArgs.IsZoom"/>): Ctrl or Cmd held, or a touchpad pinch.</param>
+    public void WheelScroll(double x, double y, float delta, double frameMs = 16.0, bool zoom = false)
     {
         var id = ++_pointerId;
         var px = ToPixels(x, y);
         var args = MakeArgs(id, TouchActionType.Wheel, px, px);
-        args.Wheel = new WheelEventArgs { Delta = delta, Scale = 1f, Center = px };
+        args.Wheel = new WheelEventArgs { Delta = delta, Scale = 1f, Center = px, IsZoom = zoom };
         Send(TouchActionType.Wheel, args, TouchActionResult.Wheel, frameMs);
     }
 

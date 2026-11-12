@@ -888,8 +888,10 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
                         _pitch = Math.Clamp(_pitch + args.Event.Distance.Delta.Y / scale * 0.3f, -60, 80);
                     Update();
                     return this;
-                // A plain wheel scrolls the page; Ctrl (Cmd) + wheel zooms, as maps and Google's model-viewer.
-                case TouchActionResult.Wheel when _pinchZoom && args.Event.Wheel != null && (KeyboardManager.IsControlPressed || KeyboardManager.IsMetaPressed):
+                // A plain wheel scrolls the page; Ctrl (Cmd) + wheel or a touchpad pinch zooms, as maps and Google's
+                // model-viewer (a browser reports the pinch as a Ctrl wheel with no key held: IsZoom).
+                case TouchActionResult.Wheel when _pinchZoom && args.Event.Wheel != null
+                                                  && (args.Event.Wheel.IsZoom || KeyboardManager.IsControlPressed || KeyboardManager.IsMetaPressed):
                     var perNotch = Superview?.WheelDeltaPerNotch ?? 0;
                     var notches = perNotch > 0 ? args.Event.Wheel.Delta / perNotch : MathF.Sign(args.Event.Wheel.Delta);
                     _reset = 1;

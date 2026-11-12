@@ -203,8 +203,9 @@ public static partial class WebInput
     /// <param name="deltaMode">0 = pixel, 1 = line, 2 = page.</param>
     /// <param name="x">Cursor X in CSS pixels.</param>
     /// <param name="y">Cursor Y in CSS pixels.</param>
+    /// <param name="zoom">Ctrl or Cmd was held, or a touchpad pinch (the browser sets ctrlKey on it): <see cref="WheelEventArgs.IsZoom"/>.</param>
     [JSExport]
-    public static bool OnWheel(double deltaX, double deltaY, int deltaMode, double x, double y)
+    public static bool OnWheel(double deltaX, double deltaY, int deltaMode, double x, double y, bool zoom)
     {
         // Normalize line/page modes to an approximate pixel magnitude (sign preserved).
         var factor = deltaMode switch
@@ -225,6 +226,7 @@ public static partial class WebInput
             Delta = (float)(-dominant * factor),
             Scale = 1f,
             Center = location,
+            IsZoom = zoom,
         };
 
         if (TargetCanvas != null)

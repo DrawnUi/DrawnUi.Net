@@ -357,7 +357,7 @@ function setupInputHandlers() {
     canvas.addEventListener('pointerup', e => { onPointerUp?.(e.pointerId, relX(e), relY(e), e.button, e.buttons, e.pointerType ?? 'mouse'); if (e.pointerType !== 'mouse') _updateTouchAction?.(); });
     canvas.addEventListener('pointercancel', e => { onPointerCancel?.(e.pointerId); if (e.pointerType !== 'mouse') _updateTouchAction?.(); });
     // Gestures="Enabled" shares the wheel with the page: the default is prevented only when a control used it
-    canvas.addEventListener('wheel', e => { const used = moduleOnWheel?.(e.deltaX, e.deltaY, e.deltaMode, relX(e), relY(e)); if (!_shareInput || used) e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('wheel', e => { const used = moduleOnWheel?.(e.deltaX, e.deltaY, e.deltaMode, relX(e), relY(e), e.ctrlKey || e.metaKey); if (!_shareInput || used) e.preventDefault(); }, { passive: false });
     // right click / long press / Menu key: a control that handles ContextMenu suppresses the browser menu
     canvas.addEventListener('contextmenu', e => { if (onContextMenu?.(relX(e), relY(e), e.pointerType ?? 'mouse')) e.preventDefault(); });
     watchCanvasSize();
