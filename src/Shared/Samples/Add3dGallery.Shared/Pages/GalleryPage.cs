@@ -335,20 +335,30 @@ public partial class GalleryPage : DrawnGame
                 Children = MobCounts.Select((n, i) => (SkiaControl)new UiButton($"{n} mobs", Theme.Quiet, 110) { AccessibilityRole = Aria.RoleRadio }
                         .Assign(out _mobButtons[i])
                         .OnTapped(_ => SetMobs(n)))
-                    .Append(new SkiaRow
+                    // How they look, switched in place: a segmented 3D | Drawn on a plate (as DrawnUI for Rust).
+                    .Append(new SkiaShape
                     {
-                        Spacing = 8,
-                        Margin = new Thickness(16, 0, 0, 0),
+                        CornerRadius = 12,
+                        BackgroundColor = Theme.Stage,
+                        Padding = new Thickness(3),
+                        Margin = new Thickness(8, 0, 0, 0),
                         AccessibilityRole = Aria.RoleRadioGroup,
-                        AccessibilityLabel = "Mob look",
+                        AccessibilityLabel = "Look",
                         Children =
                         {
-                            new UiButton("3D", Theme.Quiet, 90) { AccessibilityRole = Aria.RoleRadio }
-                                .Assign(out _lookButtons[0])
-                                .OnTapped(_ => SetDrawnMobs(false)),
-                            new UiButton("Drawn", Theme.Quiet, 90) { AccessibilityRole = Aria.RoleRadio }
-                                .Assign(out _lookButtons[1])
-                                .OnTapped(_ => SetDrawnMobs(true)),
+                            new SkiaRow
+                            {
+                                Spacing = 3,
+                                Children =
+                                {
+                                    new UiButton("3D", Theme.Quiet, 90) { AccessibilityRole = Aria.RoleRadio }
+                                        .Assign(out _lookButtons[0])
+                                        .OnTapped(_ => SetDrawnMobs(false)),
+                                    new UiButton("Drawn", Theme.Quiet, 90) { AccessibilityRole = Aria.RoleRadio }
+                                        .Assign(out _lookButtons[1])
+                                        .OnTapped(_ => SetDrawnMobs(true)),
+                                }
+                            },
                         }
                     })
                     .ToList(),
@@ -455,9 +465,9 @@ public partial class GalleryPage : DrawnGame
         }
     }
 
-    /// <summary>The drawn look of the mobs: toon shading and an ink outline, as a cartoon (same in DrawnUI for Rust).</summary>
+    /// <summary>The drawn look of the mobs: toon shading and the gallery's ink outline (same in DrawnUI for Rust).</summary>
     const float DrawnOutline = 2;
-    static readonly Color DrawnInk = Color.FromRgb(42, 20, 32);
+    static readonly Color DrawnInk = Color.FromRgb(43, 37, 64); // #2B2540
 
     /// <summary>The mobs as lit 3D models, or drawn as a cartoon.</summary>
     internal void SetDrawnMobs(bool drawn)
