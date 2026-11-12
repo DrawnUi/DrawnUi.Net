@@ -4,7 +4,7 @@ On phones (MAUI, iOS and Android) the on-screen keyboard covers the bottom of th
 
 ## What you get
 
-- The focused field's bottom lands 8 points above the keyboard's top.
+- The focused field's bottom lands `AdaptToKeyboardGap` points above the keyboard's top (8 by default).
 - A field that is already visible above the keyboard does not move the page.
 - When the keyboard closes, the page stays where it is.
 - Moving to the next field while the keyboard stays open scrolls that field into view too.
@@ -15,12 +15,15 @@ On iOS, MAUI's own keyboard scrolling (`KeyboardAutoManagerScroll`) is switched 
 
 Derive the page from `DrawnUiBasePage` (a `SkiaShell` page already is one). It sets `KeyboardSize` to the keyboard height in points whenever the keyboard opens, resizes or closes, and you can adjust that value by overriding `OnKeyboardResized`.
 
-`KeyboardSize` is the keyboard's full height, down to the bottom of the screen. Your canvas content usually ends above the bottom inset (the home indicator or the navigation bar), so subtract it:
+Your canvas content usually ends above the bottom inset. On Android, `KeyboardSize` already leaves that inset out. On iOS it is the keyboard's full height, down to the bottom of the screen, so subtract the inset (the home indicator) there:
 
 ```csharp
 public override double OnKeyboardResized(double size)
 {
-    return Math.Max(0, size - Super.Screen.BottomInset);
+#if IOS
+    size -= Super.Screen.BottomInset;
+#endif
+    return Math.Max(0, size);
 }
 ```
 
@@ -34,6 +37,8 @@ Set two properties on the form's `SkiaScroll`:
 
 - `AdaptToKeyboardFor`: the focused control (`Canvas.FocusedChild`).
 - `AdaptToKeyboardSize`: the keyboard height from step 1.
+
+`AdaptToKeyboardGap` sets the space between the field and the keyboard, in points (8 by default).
 
 Set them when the keyboard height changes and again when the focus moves to another field (`Canvas.FocusedItemChanged`), because moving between fields does not change the keyboard height.
 
@@ -56,6 +61,7 @@ public class FormPage : DrawnUiBasePage
             {
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
+                AdaptToKeyboardGap = 8, // the default
                 Content = new SkiaStack
                 {
                     Spacing = 16,
@@ -83,7 +89,10 @@ public class FormPage : DrawnUiBasePage
 
     public override double OnKeyboardResized(double size)
     {
-        return Math.Max(0, size - Super.Screen.BottomInset);
+#if IOS
+        size -= Super.Screen.BottomInset;
+#endif
+        return Math.Max(0, size);
     }
 
     void FollowFocus()
