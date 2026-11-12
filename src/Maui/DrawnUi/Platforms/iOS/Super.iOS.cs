@@ -136,7 +136,11 @@ namespace DrawnUi.Draw
         /// <summary>
         /// Puts a <see cref="SafeAreaWatcher"/> into the window once and reads its safe area now.
         /// </summary>
-        /// <summary>The app's windows: those of its connected scenes, or the key window of an app without scenes.</summary>
+        /// <summary>
+        /// The app's key window: the one of its connected scenes, or the key window of an app without scenes. Only the
+        /// key window: a scene also lists other windows (the one Init reads the first insets from), whose safe area is
+        /// not the app's.
+        /// </summary>
         static IEnumerable<UIWindow> AppWindows()
         {
             var found = false;
@@ -146,6 +150,8 @@ namespace DrawnUi.Draw
                 {
                     foreach (var window in windowScene.Windows)
                     {
+                        if (!window.IsKeyWindow)
+                            continue;
                         found = true;
                         yield return window;
                     }
