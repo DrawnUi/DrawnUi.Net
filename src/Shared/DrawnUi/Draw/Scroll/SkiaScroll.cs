@@ -4195,38 +4195,39 @@ namespace DrawnUi.Draw
         }
 
         double AddPadding = 0;
-        private double _scrollTo;
 
+        /// <summary>The offset that brings the focused field above the keyboard; NaN = nothing to move.</summary>
+        private double _scrollTo = double.NaN;
+
+        bool _keyboardAdaptPending;
+
+        /// <summary>
+        /// Where the scroll must go so the bottom of <see cref="AdaptToKeyboardFor"/> sits just above the keyboard's
+        /// top (<see cref="AdaptToKeyboardSize"/> points from the canvas bottom), measured where both are on screen
+        /// now; NaN when the field is already above it, or there is no keyboard or field.
+        /// </summary>
         public void CalculateNeededScrollForKeyboard()
         {
-            _scrollTo = -1;
+            _scrollTo = double.NaN;
 
             try
             {
-                if (AdaptToKeyboardFor == null || AdaptToKeyboardSize == 0 || !this.LayoutReady)
+                if (AdaptToKeyboardFor == null || AdaptToKeyboardSize <= 0 || !this.LayoutReady || Superview == null)
                 {
                     return;
                 }
 
                 StopScrolling();
 
-                if (AdaptToKeyboardFor.VisualLayer == null || VisualLayer == null)
-                {
+                var scale = RenderingScale;
+                var field = AdaptToKeyboardFor.GetAccessibilityPixelRect();
+                if (field.IsEmpty || scale <= 0)
                     return;
-                }
+                var viewport = SKRect.Create(GetSelfDrawingPosition(), LastDrawnAt.Size);
+                var keyboardTop = (float)((Superview.Height - AdaptToKeyboardSize) * scale);
+                var visibleBottom = Math.Min(viewport.Bottom, keyboardTop);
 
-                var myPos = AdaptToKeyboardFor.VisualLayer.HitBoxWithTransforms.Units.Location;
-                var scrollPos =
-                    VisualLayer.HitBoxWithTransforms.Units.Location; //this.GetPositionOnCanvasInPoints();
-
-                var scrollRect = new SKRect(0, scrollPos.Y, 10, (float)this.Height + scrollPos.Y);
-                var parentHeight = Superview.Height;
-                var screenRect = new SKRect(0, 0, 10, (float)(parentHeight - AdaptToKeyboardSize));
-                var viewportRect = scrollRect.IntersectWith(screenRect);
-                var elementRect = new SKRect(0, myPos.Y, 10, (float)AdaptToKeyboardFor.Height + myPos.Y);
-
-                var needScrollMore = elementRect.Bottom - viewportRect.Bottom + AddPadding;
-
+                var needScrollMore = (field.Bottom - visibleBottom) / scale + AddPadding;
                 if (needScrollMore > 0)
                     _scrollTo = this.ViewportOffsetY - needScrollMore;
             }
@@ -4236,16 +4237,24 @@ namespace DrawnUi.Draw
             }
         }
 
+        /// <summary>
+        /// After the keyboard or the focused field changed: scrolls so the field shows above the keyboard. A field
+        /// already visible, or the keyboard closing, leaves the page where it is.
+        /// </summary>
         public virtual void AdaptToKeyboard()
         {
+            // One adaptation for the field and the size set together: a second one would measure the field where it
+            // was drawn before the first moved it (no frame in between) and scroll the same distance again.
+            if (_keyboardAdaptPending)
+                return;
+            _keyboardAdaptPending = true;
             Tasks.StartDelayed(TimeSpan.FromMilliseconds(150), () =>
             {
+                _keyboardAdaptPending = false;
                 CalculateNeededScrollForKeyboard();
 
-                //scroll to show on screen
-                if (LayoutReady && _scrollTo < 0)
+                if (LayoutReady && !double.IsNaN(_scrollTo))
                 {
-                    //Debug.WriteLine($"[SCROLLING] to {_scrollTo} actual offset {this.OffsetY}, last {lastOffsetY}");
                     ViewportOffsetY = (float)_scrollTo;
                 }
             });
