@@ -11,6 +11,17 @@ namespace Sandbox
 
     public class MainPageEditors : BasePageReloadable, IDisposable
     {
+        /// <summary>The keyboard's height over the page's content: iOS reports it down to the screen's bottom, through
+        /// the bottom inset the content ends above; Android's KeyboardSize already leaves the inset out.</summary>
+        double KeyboardOverContent()
+        {
+#if IOS
+            return Math.Max(0, KeyboardSize - Super.Screen.BottomInset);
+#else
+            return KeyboardSize;
+#endif
+        }
+
         Canvas Canvas;
         SkiaLabel _liveDisplayLabel;
         int _tapCount;
@@ -203,7 +214,7 @@ namespace Sandbox
                             {
                                 if (s == nameof(this.KeyboardSize))
                                 {
-                                    me.HeightRequest = Math.Max(0, KeyboardSize - Super.Screen.BottomInset); // the raw keyboard height reaches the screen's bottom
+                                    me.HeightRequest = KeyboardOverContent();
                                 }
                             })
 
@@ -215,7 +226,7 @@ namespace Sandbox
                         if (s == nameof(this.KeyboardSize))
                         {
                             me.AdaptToKeyboardFor = Canvas.FocusedChild as SkiaControl;
-                            me.AdaptToKeyboardSize = Math.Max(0, KeyboardSize - Super.Screen.BottomInset);
+                            me.AdaptToKeyboardSize = KeyboardOverContent();
                         }
                     })
             };

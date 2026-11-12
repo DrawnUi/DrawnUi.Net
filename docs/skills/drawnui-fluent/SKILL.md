@@ -1,4 +1,4 @@
-﻿---
+---
 name: drawnui-fluent
 description: "Use when writing DrawnUI C# code-behind with fluent extensions. Covers inline control construction, .Assign(out _field), .Initialize(), .OnTapped(), .OnHovered(), .OnTextChanged(), .ObserveProperty(), .ObserveProperties(), .ObservePropertyTwoWay() (two-way binding), .Adapt(), .WhenPaint(), .ObserveSelf(), layout aliases (SkiaStack/SkiaRow/SkiaLayer), one-shot and looping animations, gradients, colors, shadows, SkiaLottie, SkiaImageTiles, and SkiaBackdrop code-behind patterns. Load before any DrawnUI C# composition task."
 version: 1.3.1
@@ -687,7 +687,7 @@ public class PresetCell : SkiaDynamicDrawnCell
 
 ### On-screen keyboard over a form (MAUI phones)
 
-The page is a `DrawnUiBasePage` (raw `KeyboardSize`; the app subtracts the bottom inset), the form's `SkiaScroll` adapts to the focused control, a spacer at the end of its content gives the last fields room. Rules: `drawnui` skill, "Keyboard over a form".
+The page is a `DrawnUiBasePage` (`KeyboardSize`; on iOS the app subtracts the bottom inset, Android's value already leaves it out), the form's `SkiaScroll` adapts to the focused control, a spacer at the end of its content gives the last fields room. Rules: `drawnui` skill, "Keyboard over a form".
 
 ```csharp
 public class FormPage : DrawnUiBasePage
@@ -729,7 +729,10 @@ public class FormPage : DrawnUiBasePage
 
     void FollowKeyboard(double raw)
     {
-        var keyboard = Math.Max(0, raw - Super.Screen.BottomInset); // the part over the content
+        var keyboard = raw;
+#if IOS
+        keyboard = Math.Max(0, raw - Super.Screen.BottomInset); // iOS reports it down to the screen's bottom
+#endif
         _keyboardSpacer.HeightRequest = keyboard;
         _keyboardSpacer.IsVisible = keyboard > 0;
         _scroll.AdaptToKeyboardFor = keyboard > 0 ? _canvas.FocusedChild as SkiaControl : null;
