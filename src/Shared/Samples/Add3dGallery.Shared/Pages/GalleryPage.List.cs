@@ -77,9 +77,15 @@ public partial class GalleryPage
                             AutoCache = false,
                             HorizontalOptions = LayoutOptions.Fill,
                             VerticalOptions = LayoutOptions.Fill,
+                            // Where the list is and how much is left; the thumb can be dragged.
+                            ScrollBar = new SkiaScrollBar { IsDraggable = true, Thickness = 6 },
+                            ScrollBarThumbColor = Theme.Muted,
+                            ScrollBarTrackColor = Color.FromRgba(255, 255, 255, 18),
                             Content = new SkiaStack
                             {
                                 Spacing = 2,
+                                // room for the scroll bar at the right edge
+                                Padding = new Thickness(0, 0, 10, 0),
                                 AccessibilityRole = Aria.RoleList,
                                 AccessibilityLabel = "Products",
                                 Children = Enumerable.Range(0, ListRows).Select(ProductRow).ToList(),
