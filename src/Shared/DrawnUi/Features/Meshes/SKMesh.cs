@@ -659,6 +659,8 @@ sealed class PackedVertices
     IntPtr _varyingsContext;
     public int VaryingsPerRow { get; private init; }     // in the varyings image, a power of two
     public int VaryingsRows { get; private init; }
+    // Vertex program runs on this range (under the geometry lock of each mesh: a race only picks a path)
+    public int VertexProgramRuns;
 
     int _refs = 1;
 
@@ -1048,12 +1050,16 @@ sealed class MeshGeometry
     {
         lock (this)
         {
-            // The GPU path waits for the GPU once per draw (the read-back), about half a millisecond: small meshes
-            // (a strip of a few dozen vertices, often drawn many times a frame) run on the CPU instead.
-            // ponytail: fixed vertex threshold; measure per device if meshes of ~1000 vertices matter.
+            // The GPU path waits for the GPU once per draw (the read-back): about 0.5 ms on desktop GL, more on WebGL.
+            // The CPU path first converts the vertex range to F32 on the CPU (raster pipeline, slow, worst in Wasm),
+            // then runs the vertex program per draw. So the CPU path only pays off for a small mesh over a vertex
+            // range drawn again (a strip redrawn with new uniforms, many times a frame); a range drawn once (a mesh
+            // made every frame) or a big mesh runs on the GPU. Measured, a 194-vertex wave made every frame: desktop
+            // GL 0.8 ms GPU against 3.6 ms CPU; Blazor Wasm 6 ms GPU against 17-23 ms CPU.
             // The targets are made for a padded row width (as the DrawVertices arrays): a mesh whose count changes every
             // frame keeps its target instead of making a new surface for each count. Only the real width is run and read.
-            if (context != null && _available >= GpuVertexProgramMinVertices)
+            bool reused = Packed.VertexProgramRuns++ > 0;
+            if (context != null && (_available >= GpuVertexProgramMinVertices || !reused))
             {
                 int corners = _triangles * 3;
                 int perRow = Math.Min(PaddedCount(corners), SKMeshSpecification.MaxTextureSide / 2); // 2 pixels per corner: x, y
