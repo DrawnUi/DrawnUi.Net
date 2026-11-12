@@ -315,6 +315,7 @@
             AccessibilityManager.KeyboardFocusRequested += OnA11yKeyboardFocusRequested;
             AccessibilityManager.ReaderRefocusRequested += OnA11yReaderRefocus;
             KeyboardManager.KeyDown += OnArrowStartsNavigation;
+            FocusedItemChanged += OnFocusedItemChangedA11y;
         }
 
         if (_pendingA11yFocusId is { } focusId && _a11yElements.TryGetValue(focusId, out var element))
@@ -1065,6 +1066,7 @@
         AccessibilityManager.Changed -= OnA11yChanged;
         AccessibilityManager.KeyboardFocusRequested -= OnA11yKeyboardFocusRequested;
         AccessibilityManager.ReaderRefocusRequested -= OnA11yReaderRefocus;
+        FocusedItemChanged -= OnFocusedItemChangedA11y;
         KeyboardManager.KeyDown -= OnArrowStartsNavigation;
 
         OnDisposing();
@@ -1126,11 +1128,35 @@
     private static string? Expanded(AccessibilityNode node) => node.IsExpanded is { } expanded ? expanded ? "true" : "false" : null;
     private static string? HasPopup(AccessibilityNode node) => node.IsExpanded.HasValue && node.Role == DrawnUi.Models.Aria.RoleMenuItem ? "menu" : null;
 
+    private ISkiaAccessibilityNode? _a11yDomFocus; // the node whose overlay element has the page focus
+
+    // Drawn focus and page focus stay one: a control a tap or code focused (a text field) gives its overlay element the
+    // page focus, so Tab and Shift+Tab move on from it in the overlay's order and its keys go to the control
+    private void OnFocusedItemChangedA11y(object? sender, FocusedItemChangedArgs e)
+    {
+        if (!e.IsFocused || e.Item is not ISkiaAccessibilityNode node || ReferenceEquals(_a11yDomFocus, node))
+            return;
+        _ = FocusOverlayElementAfterPointer(node);
+    }
+
+    // after the pointer events of the tap: the browser moves the page focus on the pointer press (to the page, the canvas
+    // takes none), which would take it right back from an element focused during it
+    private async Task FocusOverlayElementAfterPointer(ISkiaAccessibilityNode node)
+    {
+        await Task.Delay(1);
+        if (!ReferenceEquals(FocusedChild, node) || ReferenceEquals(_a11yDomFocus, node))
+            return;
+        _pendingA11yFocusId = node.AccessibilityId;
+        _accessibilityNodes = AccessibilityManager.Snapshot;
+        await InvokeAsync(StateHasChanged);
+    }
+
     // the focused overlay element is the canvas keyboard focus: scroll bars around it stay visible
     private void OnA11yFocus(AccessibilityNode node)
     {
         if (!node.CanInteract)
             return;
+        _a11yDomFocus = node.Source;
         AccessibilityManager.NotifyFocused(node.Source);
         AccessibilityManager.NotifyReaderFocused(node.Source);
         KeyboardFocusNode = node.Source;
@@ -1141,6 +1167,8 @@
 
     private void OnA11yBlur(AccessibilityNode node)
     {
+        if (ReferenceEquals(_a11yDomFocus, node.Source))
+            _a11yDomFocus = null;
         if (ReferenceEquals(AccessibilityManager.ReaderNode, node.Source))
             AccessibilityManager.NotifyReaderFocused(null); // focus left the canvas: never pull it back later
         node.Source?.OnAccessibilityFocused(false); // Tab left the element: a text field releases the caret

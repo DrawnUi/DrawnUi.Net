@@ -17,13 +17,14 @@ public static partial class WebTextInput
         [JSMarshalAs<JSType.Function<JSType.String>>] Action<string> onKey);
 
     [JSImport("textInputFocus", "drawnui-web")]
-    private static partial void FocusTextInput(bool focus);
+    private static partial void FocusTextInput(bool focus, int ownerId);
 
     static object _owner;
 
     /// <summary>
     /// <paramref name="editor"/> takes (true) or gives back (false) the keyboard. Giving it back does nothing when another
-    /// editor took it meanwhile (a tap from one field to the next).
+    /// editor took it meanwhile (a tap from one field to the next). Tab and Shift+Tab move on from the editor's overlay
+    /// element, in the overlay's order.
     /// </summary>
     public static void Focus(object editor, bool focus)
     {
@@ -33,7 +34,7 @@ public static partial class WebTextInput
             _owner = null;
         else
             return;
-        FocusTextInput(focus);
+        FocusTextInput(focus, editor is ISkiaAccessibilityNode node ? node.AccessibilityId : -1);
     }
 
     internal static void Init() => Attach(OnText, OnKey);
