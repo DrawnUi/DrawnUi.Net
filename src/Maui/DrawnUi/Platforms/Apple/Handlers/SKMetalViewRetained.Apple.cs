@@ -261,6 +261,12 @@ namespace DrawnUi.Views
             if (context == null)
                 return;
 
+            // The GPU still has MaxFramesInFlight of our frames: render nothing and take no drawable this tick.
+            // Taking one would block the main thread in nextDrawable until the GPU frees one (seconds of late input
+            // on a Mac with heavy 3D). The canvas stays dirty, so the next tick draws the latest state.
+            if (Volatile.Read(ref _framesInFlight) >= MaxFramesInFlight)
+                return;
+
             try
             {
                 inQueue++;
@@ -553,9 +559,15 @@ namespace DrawnUi.Views
                 drawable.Texture, 0, 0, new MTLOrigin(0, 0, 0));
             blitEncoder.EndEncoding();
 
+            // Same queue as the Skia render of this frame, so completion means the whole frame is done.
+            Interlocked.Increment(ref _framesInFlight);
+            commandBuffer.AddCompletedHandler(_ => Interlocked.Decrement(ref _framesInFlight));
             commandBuffer.PresentDrawable(drawable);
             commandBuffer.Commit();
         }
+
+        const int MaxFramesInFlight = 2;
+        int _framesInFlight;
 
         /// <summary>
         /// Forces the view to redraw its contents.
