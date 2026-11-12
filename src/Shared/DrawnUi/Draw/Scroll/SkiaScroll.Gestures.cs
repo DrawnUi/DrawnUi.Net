@@ -392,10 +392,12 @@ public partial class SkiaScroll
             return inner == this ? consumedDefault : inner ?? consumedDefault;
         }
 
-        if (args.Type == TouchActionResult.Wheel && (KeyboardManager.IsControlPressed || KeyboardManager.IsMetaPressed))
+        if (args.Type == TouchActionResult.Wheel
+            && (args.Event.Wheel?.IsZoom == true || KeyboardManager.IsControlPressed || KeyboardManager.IsMetaPressed))
         {
-            // Ctrl/Cmd + wheel asks for zoom: the control under the pointer gets it first (a zoomable view zooms and
-            // the scroll stays still); when no child takes it, the scroll handles it as any wheel.
+            // Ctrl/Cmd + wheel, or a touchpad pinch (IsZoom), asks for zoom: the control under the pointer gets it
+            // first (a zoomable view zooms and the scroll stays still); when no child takes it, the scroll handles it
+            // as any wheel.
             var child = PassToChildren();
             if (child != null && child != this)
                 return child;

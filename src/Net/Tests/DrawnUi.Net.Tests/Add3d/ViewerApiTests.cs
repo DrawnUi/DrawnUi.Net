@@ -13,13 +13,7 @@ namespace DrawnUi.Net.Tests.Add3d;
 /// (ScreenPosition / screen_position), pinch and wheel zoom (PinchZoom), the view glided home (ResetView,
 /// ResetOnDoubleTap), yaw-only drags that leave vertical ones to the list (LockPitch), and no frames off screen.
 /// </summary>
-/// <summary>Tests that hold a key in the process-wide KeyboardManager (Ctrl for the wheel zoom).</summary>
-[CollectionDefinition("GlobalKeyboard", DisableParallelization = true)]
-public class GlobalKeyboardCollection
-{
-}
-
-[Collection("GlobalKeyboard")]
+[Collection("GlobalKeyboard")] // holds Ctrl in the process-wide KeyboardManager (ScrollZoomWheelTests.cs)
 public class ViewerApiTests
 {
     static readonly Model3D Ball = new Model3D().Part("ball", Mesh3D.Sphere(1), Colors.White);
@@ -274,6 +268,26 @@ public class ViewerApiTests
         robot.SettleFling(scroll);
         Assert.True(scroll.ViewportOffsetY < offset - 40, $"the wheel scrolled: {offset} -> {scroll.ViewportOffsetY}");
         Assert.Equal(1, model.Zoom, 3);
+
+        // Ctrl + wheel, then a touchpad pinch (IsZoom, no key), over the viewer zoom it; the page stays.
+        scroll.ScrollTo(0, 0, 0, true);
+        Frames(host, 3);
+        KeyboardManager.KeyboardPressed(InputKey.ControlLeft);
+        try
+        {
+            robot.WheelScroll(200, 100, 120);
+        }
+        finally
+        {
+            KeyboardManager.KeyboardReleased(InputKey.ControlLeft);
+        }
+        Frames(host, 3);
+        var zoomed = model.Zoom;
+        Assert.True(zoomed < 0.95f, $"Ctrl + wheel zoomed: {zoomed}");
+        robot.WheelScroll(200, 100, 120, zoom: true);
+        Frames(host, 3);
+        Assert.True(model.Zoom < zoomed - 0.02f, $"a pinch zoomed: {zoomed} -> {model.Zoom}");
+        Assert.Equal(0, scroll.ViewportOffsetY, 1);
 
         if (tiltCard)
             return;
