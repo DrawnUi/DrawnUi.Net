@@ -243,6 +243,65 @@ public partial class SkiaScroll
 
     #endregion
 
+    // Scroll chaining (a scroll inside another one on the same axis), decided once, when a drag starts: the scroll inside
+    // that got this gesture's touch keeps the drag to its end unless it is already at its end in the drag's direction,
+    // then the scroll around takes the whole drag. The same rule as DrawnUI for Rust and React.
+    SkiaScroll _touchedInnerScroll;
+    bool _dragDecided;
+    bool _dragOwnedByInner;
+
+    SkiaScroll FindScrollAround()
+    {
+        var parent = Parent as SkiaControl;
+        while (parent != null)
+        {
+            if (parent is SkiaScroll scroll)
+                return scroll;
+            parent = parent.Parent as SkiaControl;
+        }
+        return null;
+    }
+
+    void SetTouchedInnerScroll(SkiaScroll inner) => _touchedInnerScroll = inner;
+
+    /// <summary>
+    /// The scroll inside that got this gesture's touch takes this drag: it moves on our axis, and it is not at its end
+    /// in the drag's direction (at its start dragged back, at its end dragged on), or it pulls to refresh there.
+    /// </summary>
+    bool InnerScrollKeepsDrag(SkiaGesturesParameters args)
+    {
+        var inner = _touchedInnerScroll;
+        if (inner == null || !inner.InContact || !inner.RespondsToGestures || inner.ScrollLocked || !inner.CanDraw)
+            return false;
+
+        bool vertical;
+        if (Orientation == ScrollOrientation.Vertical && inner.Orientation == ScrollOrientation.Vertical)
+            vertical = true;
+        else if (Orientation == ScrollOrientation.Horizontal && inner.Orientation == ScrollOrientation.Horizontal)
+            vertical = false;
+        else
+            return false; // same axis only
+
+        // the scroll around must move on that axis, or the inner one keeps its own edge
+        var around = ContentOffsetBounds;
+        if ((vertical ? around.Height : around.Width) <= 0)
+            return true;
+
+        var delta = (vertical ? args.Event.Distance.Delta.Y : args.Event.Distance.Delta.X) * (inner.ReverseGestures ? -1 : 1);
+        if (delta == 0)
+            return true;
+
+        var bounds = inner.ContentOffsetBounds;
+        var offset = vertical ? inner.ViewportOffsetY : inner.ViewportOffsetX;
+        var start = vertical ? bounds.Bottom : bounds.Right; // offset 0: the start, the content's top / left
+        var end = vertical ? bounds.Top : bounds.Left;
+
+        if (delta > 0) // dragged back, toward the start
+            return offset < start - 0.5f || inner.RefreshEnabled;
+
+        return offset > end + 0.5f; // dragged on, toward the end
+    }
+
     public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     {
         if (TouchEffect.LogEnabled)
@@ -272,6 +331,13 @@ public partial class SkiaScroll
             lockHeader = false;
             InContact = true;
             HadDown = true;
+
+            // scroll chaining: a new gesture, decided again when it starts to drag
+            _touchedInnerScroll = null;
+            _dragDecided = false;
+            _dragOwnedByInner = false;
+            if (RespondsToGestures)
+                FindScrollAround()?.SetTouchedInnerScroll(this);
         }
         else if (args.Type == TouchActionResult.Up)
         {
@@ -318,6 +384,13 @@ public partial class SkiaScroll
             return base.ProcessGestures(args, apply);
         }
 
+
+        if (_dragOwnedByInner && args.Type == TouchActionResult.Panning)
+        {
+            // the scroll inside keeps the drag to its end: never a hand-over in the middle of a drag
+            var inner = PassToChildren();
+            return inner == this ? consumedDefault : inner ?? consumedDefault;
+        }
 
         bool wrongDirection = false;
         var velocityDirection = ReverseGestures ? -1 : 1;
@@ -451,6 +524,18 @@ public partial class SkiaScroll
                     if (lockHeader && !CanScrollUsingHeader || !HadDown)
                     {
                         canPan = false;
+                    }
+
+                    if (canPan && !IsUserPanning && !_dragDecided)
+                    {
+                        _dragDecided = true;
+                        if (InnerScrollKeepsDrag(args))
+                        {
+                            _dragOwnedByInner = true;
+                            ChildWasPanning = true;
+                            var inner = PassToChildren();
+                            return inner == this ? consumedDefault : inner ?? consumedDefault;
+                        }
                     }
 
                     if (canPan)
