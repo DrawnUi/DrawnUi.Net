@@ -81,7 +81,7 @@ The non-indexed `SKMesh.Make(...)` path works fine. The crash is on the PInvoke 
 - Use `SKMesh.Make(spec, SKMeshMode.Triangles, vb, vertexCount, 0, bounds, out err)` and duplicate shared vertices (6 verts for a quad instead of 4 + indices).
 - For triangle strips a contiguous strip via `SKMesh.Make(spec, SKMeshMode.TriangleStrip, ...)` is also fine.
 
-This restriction is WASM-specific. MAUI / desktop AOT paths can still use `MakeIndexed`.
+This restriction is WASM-specific. MAUI / desktop AOT paths can still use `MakeIndexed`. A Release Blazor publish (interpreter, no AOT, `RootMode="All"`) draws the indexed quad of the sandbox probe correctly (`SKMeshIndexBuffer.Make` + `SKMesh.MakeIndexed`, 4.147.0-pr.3779.2, 2026-11-11); the crash above is from a Debug build, so test the indexed path in the build type you ship.
 
 ## Backend support - CRITICAL
 
@@ -120,11 +120,11 @@ Fix - add to the host `.csproj` (e.g. `BlazorSandbox.csproj`):
 
 ```xml
 <ItemGroup>
-  <TrimmerRootAssembly Include="SkiaSharp" RootMode="EntireAssembly" />
+  <TrimmerRootAssembly Include="SkiaSharp" RootMode="All" />
 </ItemGroup>
 ```
 
-Do NOT use `<TrimmerRootAssembly Include="SkiaSharp" />` alone - without `RootMode="EntireAssembly"` the assembly is rooted but individual unused types are still pruned, so the symptom persists. After changing this you usually have to **delete `bin/` and `obj/` of the Blazor host project** before rebuilding because the webcil output is content-hashed and the cached trimmed copy is otherwise reused.
+Do NOT use `<TrimmerRootAssembly Include="SkiaSharp" />` alone - without `RootMode="All"` (the valid ILLink value; `EntireAssembly` fails a Release publish with `IL1037: Invalid assembly root mode`, and Debug builds do not trim so they never show it) the assembly is rooted but individual unused types are still pruned, so the symptom persists. After changing this you usually have to **delete `bin/` and `obj/` of the Blazor host project** before rebuilding because the webcil output is content-hashed and the cached trimmed copy is otherwise reused.
 
 ## Practical workflow
 
@@ -132,7 +132,7 @@ When asked to implement or debug mesh drawing:
 
 1. Verify package/branch availability first.
 2. Verify host is rendering on a GPU surface (Accelerated mode, WebGL canvas, hardware MAUI canvas) - raster = silent no-op.
-3. For Blazor WASM, verify trimmer is rooting `SkiaSharp` (`TrimmerRootAssembly` with `RootMode="EntireAssembly"`).
+3. For Blazor WASM, verify trimmer is rooting `SkiaSharp` (`TrimmerRootAssembly` with `RootMode="All"`).
 4. Start from a tiny non-indexed triangle.
 5. Keep the first spec minimal: one `Float2` position attribute, no custom varyings.
 6. Make the fragment shader output a solid color first - and use the `Make` overload with `SKColorSpace` + `SKAlphaType` because `out half4 color` requires it.
@@ -143,7 +143,7 @@ When asked to implement or debug mesh drawing:
 
 Symptom-first triage when "mesh doesn't draw":
 
-1. `System.TypeLoadException` for any `SKMesh*` type -> trimmer stripped types. Apply `TrimmerRootAssembly RootMode="EntireAssembly"` and clean `bin/`+`obj/`.
+1. `System.TypeLoadException` for any `SKMesh*` type -> trimmer stripped types. Apply `TrimmerRootAssembly RootMode="All"` and clean `bin/`+`obj/`.
 2. Mono interp crash with `ves_pinvoke_method` / `get_build_args_from_sig_info` after a successful unrelated mesh draw -> indexed-mesh PInvoke broken on Blazor WASM. Switch to non-indexed `SKMesh.Make`.
 3. `spec == null`, error contains `Must provide a color space if FS returns a color` -> switch to color-space overload of `SKMeshSpecification.Make`.
 4. `spec == null`, other shader text -> SkSL syntax / missing varying / wrong main signature.
