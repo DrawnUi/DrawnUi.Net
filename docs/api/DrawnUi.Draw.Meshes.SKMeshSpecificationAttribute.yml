@@ -1,0 +1,568 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute
+  commentId: T:DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute
+  id: SKMeshSpecificationAttribute
+  parent: DrawnUi.Draw.Meshes
+  children:
+  - DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.#ctor(DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType,System.Int32,System.String)
+  - DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Name
+  - DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Offset
+  - DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Type
+  langs:
+  - csharp
+  - vb
+  name: SKMeshSpecificationAttribute
+  nameWithType: SKMeshSpecificationAttribute
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute
+  type: Struct
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SKMeshSpecificationAttribute
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 60
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: "One vertex attribute: its type, byte offset inside a vertex and its SkSL name (stand-in for SkiaSharp's struct)."
+  example: []
+  syntax:
+    content: public struct SKMeshSpecificationAttribute
+    content.vb: Public Structure SKMeshSpecificationAttribute
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.#ctor(DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType,System.Int32,System.String)
+  commentId: M:DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.#ctor(DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType,System.Int32,System.String)
+  id: '#ctor(DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType,System.Int32,System.String)'
+  parent: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute
+  langs:
+  - csharp
+  - vb
+  name: SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType, int, string)
+  nameWithType: SKMeshSpecificationAttribute.SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType, int, string)
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.SKMeshSpecificationAttribute(DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType, int, string)
+  type: Constructor
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: .ctor
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 63
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Creates an attribute.
+  example: []
+  syntax:
+    content: public SKMeshSpecificationAttribute(SKMeshSpecificationAttributeType type, int offset, string name)
+    parameters:
+    - id: type
+      type: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+    - id: offset
+      type: System.Int32
+    - id: name
+      type: System.String
+    content.vb: Public Sub New(type As SKMeshSpecificationAttributeType, offset As Integer, name As String)
+  overload: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.#ctor*
+  nameWithType.vb: SKMeshSpecificationAttribute.New(SKMeshSpecificationAttributeType, Integer, String)
+  fullName.vb: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.New(DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType, Integer, String)
+  name.vb: New(SKMeshSpecificationAttributeType, Integer, String)
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Type
+  commentId: P:DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Type
+  id: Type
+  parent: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: SKMeshSpecificationAttribute.Type
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Type
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Type
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 71
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Attribute type.
+  example: []
+  syntax:
+    content: public SKMeshSpecificationAttributeType Type { readonly get; set; }
+    parameters: []
+    return:
+      type: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+    content.vb: Public Property Type As SKMeshSpecificationAttributeType
+  overload: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Type*
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Offset
+  commentId: P:DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Offset
+  id: Offset
+  parent: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute
+  langs:
+  - csharp
+  - vb
+  name: Offset
+  nameWithType: SKMeshSpecificationAttribute.Offset
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Offset
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Offset
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 73
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Byte offset inside a vertex, a multiple of 4.
+  example: []
+  syntax:
+    content: public int Offset { readonly get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Offset As Integer
+  overload: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Offset*
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Name
+  commentId: P:DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Name
+  id: Name
+  parent: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: SKMeshSpecificationAttribute.Name
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Name
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Name
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 75
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Field name in the SkSL <code>Attributes</code> struct.
+  example: []
+  syntax:
+    content: public string Name { readonly get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Name As String
+  overload: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Name*
+references:
+- uid: DrawnUi.Draw.Meshes
+  commentId: N:DrawnUi.Draw.Meshes
+  href: DrawnUi.html
+  name: DrawnUi.Draw.Meshes
+  nameWithType: DrawnUi.Draw.Meshes
+  fullName: DrawnUi.Draw.Meshes
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  - name: .
+  - uid: DrawnUi.Draw.Meshes
+    name: Meshes
+    href: DrawnUi.Draw.Meshes.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  - name: .
+  - uid: DrawnUi.Draw.Meshes
+    name: Meshes
+    href: DrawnUi.Draw.Meshes.html
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.#ctor*
+  commentId: Overload:DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.#ctor
+  href: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.html#DrawnUi_Draw_Meshes_SKMeshSpecificationAttribute__ctor_DrawnUi_Draw_Meshes_SKMeshSpecificationAttributeType_System_Int32_System_String_
+  name: SKMeshSpecificationAttribute
+  nameWithType: SKMeshSpecificationAttribute.SKMeshSpecificationAttribute
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.SKMeshSpecificationAttribute
+  nameWithType.vb: SKMeshSpecificationAttribute.New
+  fullName.vb: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.New
+  name.vb: New
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+  commentId: T:DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+  parent: DrawnUi.Draw.Meshes
+  href: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.html
+  name: SKMeshSpecificationAttributeType
+  nameWithType: SKMeshSpecificationAttributeType
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Type*
+  commentId: Overload:DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Type
+  href: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.html#DrawnUi_Draw_Meshes_SKMeshSpecificationAttribute_Type
+  name: Type
+  nameWithType: SKMeshSpecificationAttribute.Type
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Type
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Offset*
+  commentId: Overload:DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Offset
+  href: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.html#DrawnUi_Draw_Meshes_SKMeshSpecificationAttribute_Offset
+  name: Offset
+  nameWithType: SKMeshSpecificationAttribute.Offset
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Offset
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Name*
+  commentId: Overload:DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Name
+  href: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.html#DrawnUi_Draw_Meshes_SKMeshSpecificationAttribute_Name
+  name: Name
+  nameWithType: SKMeshSpecificationAttribute.Name
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute.Name

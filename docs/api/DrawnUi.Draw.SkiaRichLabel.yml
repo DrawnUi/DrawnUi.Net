@@ -52,6 +52,7 @@ items:
   - DrawnUi.Draw.SkiaRichLabel.RenderInline(CommonMark.Syntax.Inline)
   - DrawnUi.Draw.SkiaRichLabel.RenderOrderedListItem(CommonMark.Syntax.Block,System.Int32)
   - DrawnUi.Draw.SkiaRichLabel.SetTextInternal
+  - DrawnUi.Draw.SkiaRichLabel.SourceIndexes
   - DrawnUi.Draw.SkiaRichLabel.SpanWithAttributes(DrawnUi.Draw.TextSpan,Microsoft.Maui.Controls.FontAttributes)
   - DrawnUi.Draw.SkiaRichLabel.StrikeoutColor
   - DrawnUi.Draw.SkiaRichLabel.StrikeoutColorProperty
@@ -189,6 +190,7 @@ items:
   - DrawnUi.Draw.SkiaLabel.UnicodeNeedsShaping(System.Int32)
   - DrawnUi.Draw.SkiaLabel.NeedsRTL(System.String)
   - DrawnUi.Draw.SkiaLabel.SpaceBetweenParagraphs
+  - DrawnUi.Draw.SkiaLabel.GetLinesHeightPixels(System.Int32)
   - DrawnUi.Draw.SkiaLabel.GetSpaceBetweenLines(System.Single)
   - DrawnUi.Draw.SkiaLabel.ResetTextCalculations
   - DrawnUi.Draw.SkiaLabel.OnFontUpdated
@@ -411,6 +413,9 @@ items:
   - DrawnUi.Draw.SkiaControl.DisableEffects
   - DrawnUi.Draw.SkiaControl.InvalidateInternal
   - DrawnUi.Draw.SkiaControl.ShouldInvalidateByChildren
+  - DrawnUi.Draw.SkiaControl.WidthFollowsContent
+  - DrawnUi.Draw.SkiaControl.HeightFollowsContent
+  - DrawnUi.Draw.SkiaControl.SizeFollowsContent
   - DrawnUi.Draw.SkiaControl.InvalidateParents
   - DrawnUi.Draw.SkiaControl.InvalidatedParent
   - DrawnUi.Draw.SkiaControl.InvalidateParent
@@ -548,6 +553,7 @@ items:
   - DrawnUi.Draw.SkiaControl.SkipRenderingOutOfBoundsProperty
   - DrawnUi.Draw.SkiaControl.SkipRenderingOutOfBounds
   - DrawnUi.Draw.SkiaControl.SendContextMenu(System.Object,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  - DrawnUi.Draw.SkiaControl.IsPrimaryPointer(DrawnUi.Draw.SkiaGesturesParameters)
   - DrawnUi.Draw.SkiaControl.SendTapped(System.Object,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo,System.Boolean)
   - DrawnUi.Draw.SkiaControl.SendLongPressing(System.Object,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo,System.Boolean)
   - DrawnUi.Draw.SkiaControl.ChildTapped
@@ -726,6 +732,7 @@ items:
   - DrawnUi.Draw.SkiaControl.ApplyTransforms(SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.GetTransformedDirtyBounds
   - DrawnUi.Draw.SkiaControl.RenderTransformMatrix
+  - DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(SkiaSharp.SKRect@)
   - DrawnUi.Draw.SkiaControl.InverseRenderTransformMatrix
   - DrawnUi.Draw.SkiaControl.ApplyTransformationMatrix(DrawnUi.Draw.SkiaDrawingContext)
   - DrawnUi.Draw.SkiaControl.CreateTransformationMatrix(DrawnUi.Draw.SkiaDrawingContext,SkiaSharp.SKRect)
@@ -910,6 +917,10 @@ items:
   - DrawnUi.Draw.SkiaControl._builtRenderTreeStamp
   - DrawnUi.Draw.SkiaControl.RenderTree
   - DrawnUi.Draw.SkiaControl.SetRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+  - DrawnUi.Draw.SkiaControl.RenderTreeEntry(System.Int32,DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect,SkiaSharp.SKRect,System.Int32,System.Int32,System.Object)
+  - DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+  - DrawnUi.Draw.SkiaControl.RentRenderTreeBuilder
+  - DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
   - DrawnUi.Draw.SkiaControl.Invalidated
   - DrawnUi.Draw.SkiaControl.NeedUpdate
   - DrawnUi.Draw.SkiaControl.Superview
@@ -1324,6 +1335,44 @@ items:
     content.vb: Protected Overrides Sub SetTextInternal()
   overridden: DrawnUi.Draw.SkiaLabel.SetTextInternal
   overload: DrawnUi.Draw.SkiaRichLabel.SetTextInternal*
+- uid: DrawnUi.Draw.SkiaRichLabel.SourceIndexes
+  commentId: P:DrawnUi.Draw.SkiaRichLabel.SourceIndexes
+  id: SourceIndexes
+  parent: DrawnUi.Draw.SkiaRichLabel
+  langs:
+  - csharp
+  - vb
+  name: SourceIndexes
+  nameWithType: SkiaRichLabel.SourceIndexes
+  fullName: DrawnUi.Draw.SkiaRichLabel.SourceIndexes
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SourceIndexes
+    path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
+    startLine: 100
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    For each character of the drawn text (the spans' text in order), its index in the markdown source
+
+    (<xref href="DrawnUi.Draw.SkiaLabel.Text" data-throw-if-not-resolved="false"></xref> as parsed), -1 for characters the markdown adds (list bullets, breaks between blocks).
+
+    Built only for an editor's label; null otherwise, when markdown is off or the text is empty. The editor uses it to
+
+    map its text index to the drawn character.
+  example: []
+  syntax:
+    content: public IReadOnlyList<int> SourceIndexes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.Int32}
+    content.vb: Public Property SourceIndexes As IReadOnlyList(Of Integer)
+  overload: DrawnUi.Draw.SkiaRichLabel.SourceIndexes*
 - uid: DrawnUi.Draw.SkiaRichLabel.RenderBlock(CommonMark.Syntax.Block,CommonMark.Syntax.Inline)
   commentId: M:DrawnUi.Draw.SkiaRichLabel.RenderBlock(CommonMark.Syntax.Block,CommonMark.Syntax.Inline)
   id: RenderBlock(CommonMark.Syntax.Block,CommonMark.Syntax.Inline)
@@ -1342,7 +1391,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderBlock
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
-    startLine: 86
+    startLine: 154
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1375,7 +1424,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderOrderedListItem
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
-    startLine: 206
+    startLine: 276
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1409,7 +1458,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderBulletListItem
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
-    startLine: 230
+    startLine: 300
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1438,7 +1487,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderInline
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
-    startLine: 254
+    startLine: 324
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1467,7 +1516,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderBlock
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
-    startLine: 327
+    startLine: 399
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1496,7 +1545,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddCodeSpan
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
-    startLine: 400
+    startLine: 474
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1525,7 +1574,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddLinkSpan
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
-    startLine: 412
+    startLine: 487
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1554,7 +1603,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetLinkLabelText
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
-    startLine: 429
+    startLine: 505
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1585,7 +1634,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateLineBreak
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
-    startLine: 450
+    startLine: 526
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1615,7 +1664,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateLiteral
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaMarkdownLabel.CommonMark.cs
-    startLine: 458
+    startLine: 534
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2127,7 +2176,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: standardSymbols
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 310
+    startLine: 311
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2154,7 +2203,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessSpanData
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 317
+    startLine: 318
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2192,7 +2241,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessSpanDataStatic
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 324
+    startLine: 325
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2228,7 +2277,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: hadParagraph
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 371
+    startLine: 372
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2255,7 +2304,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: isBold
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 372
+    startLine: 373
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2282,7 +2331,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: isItalic
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 373
+    startLine: 374
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2309,7 +2358,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: isCodeBlock
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 374
+    startLine: 375
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2336,7 +2385,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: isHeading1
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 375
+    startLine: 376
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2363,7 +2412,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: isHeading2
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 376
+    startLine: 377
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2390,7 +2439,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: isHeading3
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 377
+    startLine: 378
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2417,7 +2466,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: isStrikethrough
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 378
+    startLine: 379
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2444,7 +2493,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSpanTapped
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 387
+    startLine: 388
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2480,7 +2529,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLinkTappedProperty
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 395
+    startLine: 396
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2507,7 +2556,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLinkTapped
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 400
+    startLine: 401
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2536,7 +2585,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinkTapped
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 406
+    startLine: 407
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2563,7 +2612,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 408
+    startLine: 409
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2592,7 +2641,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLinkTapped
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 415
+    startLine: 416
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2626,7 +2675,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrikeoutColorProperty
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 425
+    startLine: 426
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2653,7 +2702,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrikeoutColor
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 432
+    startLine: 433
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2682,7 +2731,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinkColorProperty
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 438
+    startLine: 439
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2709,7 +2758,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinkColor
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 445
+    startLine: 446
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2738,7 +2787,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CodeTextColorProperty
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 451
+    startLine: 452
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2765,7 +2814,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CodeTextColor
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 458
+    startLine: 459
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2794,7 +2843,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HeadingTextColorProperty
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 464
+    startLine: 465
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2821,7 +2870,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HeadingTextColor
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 471
+    startLine: 472
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2850,7 +2899,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CodeBlockBackgroundColorProperty
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 477
+    startLine: 478
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2877,7 +2926,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CodeBlockBackgroundColor
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 484
+    startLine: 485
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2906,7 +2955,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CodeBackgroundColorProperty
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 490
+    startLine: 491
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2933,7 +2982,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CodeBackgroundColor
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 497
+    startLine: 498
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2962,7 +3011,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrefixBulletProperty
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 503
+    startLine: 504
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2989,7 +3038,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrefixBullet
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 510
+    startLine: 511
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3018,7 +3067,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrefixNumberedProperty
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 516
+    startLine: 517
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3045,7 +3094,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrefixNumbered
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 523
+    startLine: 524
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3074,7 +3123,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnderlineLinkProperty
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 529
+    startLine: 530
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3101,7 +3150,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnderlineLink
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 536
+    startLine: 537
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3130,7 +3179,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnderlineWidthProperty
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 542
+    startLine: 543
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3157,7 +3206,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnderlineWidth
     path: ../src/Shared/DrawnUi/Controls/Labels/SkiaRichLabel.cs
-    startLine: 552
+    startLine: 553
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -6139,6 +6188,37 @@ references:
   name: SpaceBetweenParagraphs
   nameWithType: SkiaLabel.SpaceBetweenParagraphs
   fullName: DrawnUi.Draw.SkiaLabel.SpaceBetweenParagraphs
+- uid: DrawnUi.Draw.SkiaLabel.GetLinesHeightPixels(System.Int32)
+  commentId: M:DrawnUi.Draw.SkiaLabel.GetLinesHeightPixels(System.Int32)
+  parent: DrawnUi.Draw.SkiaLabel
+  isExternal: true
+  href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_GetLinesHeightPixels_System_Int32_
+  name: GetLinesHeightPixels(int)
+  nameWithType: SkiaLabel.GetLinesHeightPixels(int)
+  fullName: DrawnUi.Draw.SkiaLabel.GetLinesHeightPixels(int)
+  nameWithType.vb: SkiaLabel.GetLinesHeightPixels(Integer)
+  fullName.vb: DrawnUi.Draw.SkiaLabel.GetLinesHeightPixels(Integer)
+  name.vb: GetLinesHeightPixels(Integer)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaLabel.GetLinesHeightPixels(System.Int32)
+    name: GetLinesHeightPixels
+    href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_GetLinesHeightPixels_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaLabel.GetLinesHeightPixels(System.Int32)
+    name: GetLinesHeightPixels
+    href: DrawnUi.Draw.SkiaLabel.html#DrawnUi_Draw_SkiaLabel_GetLinesHeightPixels_System_Int32_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
 - uid: DrawnUi.Draw.SkiaLabel.GetSpaceBetweenLines(System.Single)
   commentId: M:DrawnUi.Draw.SkiaLabel.GetSpaceBetweenLines(System.Single)
   parent: DrawnUi.Draw.SkiaLabel
@@ -9508,6 +9588,27 @@ references:
   name: ShouldInvalidateByChildren
   nameWithType: SkiaControl.ShouldInvalidateByChildren
   fullName: DrawnUi.Draw.SkiaControl.ShouldInvalidateByChildren
+- uid: DrawnUi.Draw.SkiaControl.WidthFollowsContent
+  commentId: P:DrawnUi.Draw.SkiaControl.WidthFollowsContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WidthFollowsContent
+  name: WidthFollowsContent
+  nameWithType: SkiaControl.WidthFollowsContent
+  fullName: DrawnUi.Draw.SkiaControl.WidthFollowsContent
+- uid: DrawnUi.Draw.SkiaControl.HeightFollowsContent
+  commentId: P:DrawnUi.Draw.SkiaControl.HeightFollowsContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HeightFollowsContent
+  name: HeightFollowsContent
+  nameWithType: SkiaControl.HeightFollowsContent
+  fullName: DrawnUi.Draw.SkiaControl.HeightFollowsContent
+- uid: DrawnUi.Draw.SkiaControl.SizeFollowsContent
+  commentId: P:DrawnUi.Draw.SkiaControl.SizeFollowsContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SizeFollowsContent
+  name: SizeFollowsContent
+  nameWithType: SkiaControl.SizeFollowsContent
+  fullName: DrawnUi.Draw.SkiaControl.SizeFollowsContent
 - uid: DrawnUi.Draw.SkiaControl.InvalidateParents
   commentId: M:DrawnUi.Draw.SkiaControl.InvalidateParents
   parent: DrawnUi.Draw.SkiaControl
@@ -13028,6 +13129,31 @@ references:
     name: GestureEventProcessingInfo
     href: DrawnUi.Draw.GestureEventProcessingInfo.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.IsPrimaryPointer(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Draw.SkiaControl.IsPrimaryPointer(DrawnUi.Draw.SkiaGesturesParameters)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsPrimaryPointer_DrawnUi_Draw_SkiaGesturesParameters_
+  name: IsPrimaryPointer(SkiaGesturesParameters)
+  nameWithType: SkiaControl.IsPrimaryPointer(SkiaGesturesParameters)
+  fullName: DrawnUi.Draw.SkiaControl.IsPrimaryPointer(DrawnUi.Draw.SkiaGesturesParameters)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.IsPrimaryPointer(DrawnUi.Draw.SkiaGesturesParameters)
+    name: IsPrimaryPointer
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsPrimaryPointer_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.IsPrimaryPointer(DrawnUi.Draw.SkiaGesturesParameters)
+    name: IsPrimaryPointer
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsPrimaryPointer_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.SendTapped(System.Object,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo,System.Boolean)
   commentId: M:DrawnUi.Draw.SkiaControl.SendTapped(System.Object,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo,System.Boolean)
   parent: DrawnUi.Draw.SkiaControl
@@ -15609,6 +15735,39 @@ references:
   name: RenderTransformMatrix
   nameWithType: SkiaControl.RenderTransformMatrix
   fullName: DrawnUi.Draw.SkiaControl.RenderTransformMatrix
+- uid: DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(SkiaSharp.SKRect@)
+  commentId: M:DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(SkiaSharp.SKRect@)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryGetDrawnDirtyBounds_SkiaSharp_SKRect__
+  name: TryGetDrawnDirtyBounds(out SKRect)
+  nameWithType: SkiaControl.TryGetDrawnDirtyBounds(out SKRect)
+  fullName: DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(out SkiaSharp.SKRect)
+  nameWithType.vb: SkiaControl.TryGetDrawnDirtyBounds(SKRect)
+  fullName.vb: DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(SkiaSharp.SKRect)
+  name.vb: TryGetDrawnDirtyBounds(SKRect)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(SkiaSharp.SKRect@)
+    name: TryGetDrawnDirtyBounds
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryGetDrawnDirtyBounds_SkiaSharp_SKRect__
+  - name: (
+  - name: out
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(SkiaSharp.SKRect@)
+    name: TryGetDrawnDirtyBounds
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryGetDrawnDirtyBounds_SkiaSharp_SKRect__
+  - name: (
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.InverseRenderTransformMatrix
   commentId: P:DrawnUi.Draw.SkiaControl.InverseRenderTransformMatrix
   parent: DrawnUi.Draw.SkiaControl
@@ -20233,6 +20392,212 @@ references:
   - uid: DrawnUi.Draw.SkiaControl.SetRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
     name: SetRenderingTree
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetRenderingTree_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
+  - name: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControlWithRect
+    name: SkiaControlWithRect
+    href: DrawnUi.Draw.SkiaControlWithRect.html
+  - name: )
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RenderTreeEntry(System.Int32,DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect,SkiaSharp.SKRect,System.Int32,System.Int32,System.Object)
+  commentId: M:DrawnUi.Draw.SkiaControl.RenderTreeEntry(System.Int32,DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect,SkiaSharp.SKRect,System.Int32,System.Int32,System.Object)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderTreeEntry_System_Int32_DrawnUi_Draw_SkiaControl_SkiaSharp_SKRect_SkiaSharp_SKRect_System_Int32_System_Int32_System_Object_
+  name: RenderTreeEntry(int, SkiaControl, SKRect, SKRect, int, int, object)
+  nameWithType: SkiaControl.RenderTreeEntry(int, SkiaControl, SKRect, SKRect, int, int, object)
+  fullName: DrawnUi.Draw.SkiaControl.RenderTreeEntry(int, DrawnUi.Draw.SkiaControl, SkiaSharp.SKRect, SkiaSharp.SKRect, int, int, object)
+  nameWithType.vb: SkiaControl.RenderTreeEntry(Integer, SkiaControl, SKRect, SKRect, Integer, Integer, Object)
+  fullName.vb: DrawnUi.Draw.SkiaControl.RenderTreeEntry(Integer, DrawnUi.Draw.SkiaControl, SkiaSharp.SKRect, SkiaSharp.SKRect, Integer, Integer, Object)
+  name.vb: RenderTreeEntry(Integer, SkiaControl, SKRect, SKRect, Integer, Integer, Object)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RenderTreeEntry(System.Int32,DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect,SkiaSharp.SKRect,System.Int32,System.Int32,System.Object)
+    name: RenderTreeEntry
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderTreeEntry_System_Int32_DrawnUi_Draw_SkiaControl_SkiaSharp_SKRect_SkiaSharp_SKRect_System_Int32_System_Int32_System_Object_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RenderTreeEntry(System.Int32,DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect,SkiaSharp.SKRect,System.Int32,System.Int32,System.Object)
+    name: RenderTreeEntry
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderTreeEntry_System_Int32_DrawnUi_Draw_SkiaControl_SkiaSharp_SKRect_SkiaSharp_SKRect_System_Int32_System_Int32_System_Object_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+  commentId: M:DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_PublishRenderingTree_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
+  name: PublishRenderingTree(List<SkiaControlWithRect>)
+  nameWithType: SkiaControl.PublishRenderingTree(List<SkiaControlWithRect>)
+  fullName: DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List<DrawnUi.Draw.SkiaControlWithRect>)
+  nameWithType.vb: SkiaControl.PublishRenderingTree(List(Of SkiaControlWithRect))
+  fullName.vb: DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List(Of DrawnUi.Draw.SkiaControlWithRect))
+  name.vb: PublishRenderingTree(List(Of SkiaControlWithRect))
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+    name: PublishRenderingTree
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_PublishRenderingTree_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
+  - name: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: DrawnUi.Draw.SkiaControlWithRect
+    name: SkiaControlWithRect
+    href: DrawnUi.Draw.SkiaControlWithRect.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+    name: PublishRenderingTree
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_PublishRenderingTree_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
+  - name: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControlWithRect
+    name: SkiaControlWithRect
+    href: DrawnUi.Draw.SkiaControlWithRect.html
+  - name: )
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RentRenderTreeBuilder
+  commentId: M:DrawnUi.Draw.SkiaControl.RentRenderTreeBuilder
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RentRenderTreeBuilder
+  name: RentRenderTreeBuilder()
+  nameWithType: SkiaControl.RentRenderTreeBuilder()
+  fullName: DrawnUi.Draw.SkiaControl.RentRenderTreeBuilder()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RentRenderTreeBuilder
+    name: RentRenderTreeBuilder
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RentRenderTreeBuilder
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RentRenderTreeBuilder
+    name: RentRenderTreeBuilder
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RentRenderTreeBuilder
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+  commentId: M:DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ReturnRenderTreeBuilder_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
+  name: ReturnRenderTreeBuilder(List<SkiaControlWithRect>)
+  nameWithType: SkiaControl.ReturnRenderTreeBuilder(List<SkiaControlWithRect>)
+  fullName: DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List<DrawnUi.Draw.SkiaControlWithRect>)
+  nameWithType.vb: SkiaControl.ReturnRenderTreeBuilder(List(Of SkiaControlWithRect))
+  fullName.vb: DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List(Of DrawnUi.Draw.SkiaControlWithRect))
+  name.vb: ReturnRenderTreeBuilder(List(Of SkiaControlWithRect))
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+    name: ReturnRenderTreeBuilder
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ReturnRenderTreeBuilder_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
+  - name: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: DrawnUi.Draw.SkiaControlWithRect
+    name: SkiaControlWithRect
+    href: DrawnUi.Draw.SkiaControlWithRect.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+    name: ReturnRenderTreeBuilder
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ReturnRenderTreeBuilder_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
   - name: (
   - uid: System.Collections.Generic.List`1
     name: List
@@ -42278,6 +42643,75 @@ references:
   name: SetTextInternal
   nameWithType: SkiaRichLabel.SetTextInternal
   fullName: DrawnUi.Draw.SkiaRichLabel.SetTextInternal
+- uid: DrawnUi.Draw.SkiaRichLabel.SourceIndexes*
+  commentId: Overload:DrawnUi.Draw.SkiaRichLabel.SourceIndexes
+  href: DrawnUi.Draw.SkiaRichLabel.html#DrawnUi_Draw_SkiaRichLabel_SourceIndexes
+  name: SourceIndexes
+  nameWithType: SkiaRichLabel.SourceIndexes
+  fullName: DrawnUi.Draw.SkiaRichLabel.SourceIndexes
+- uid: System.Collections.Generic.IReadOnlyList{System.Int32}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.Int32}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<int>
+  nameWithType: IReadOnlyList<int>
+  fullName: System.Collections.Generic.IReadOnlyList<int>
+  nameWithType.vb: IReadOnlyList(Of Integer)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of Integer)
+  name.vb: IReadOnlyList(Of Integer)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: DrawnUi.Draw.SkiaRichLabel.RenderBlock*
   commentId: Overload:DrawnUi.Draw.SkiaRichLabel.RenderBlock
   href: DrawnUi.Draw.SkiaRichLabel.html#DrawnUi_Draw_SkiaRichLabel_RenderBlock_CommonMark_Syntax_Block_CommonMark_Syntax_Inline_

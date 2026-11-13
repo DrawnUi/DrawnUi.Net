@@ -95,6 +95,8 @@ items:
   - DrawnUi.Draw.SkiaShaderEffect.CreateShader(DrawnUi.Draw.DrawingContext,DrawnUi.Draw.CachedTexture)
   - DrawnUi.Draw.SkiaShaderEffect.NeedApply
   - DrawnUi.Draw.SkiaShaderEffect.TimeSeconds
+  - DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
+  - DrawnUi.Draw.SkiaShaderEffect.GetShaderTime(System.Int64)
   - DrawnUi.Draw.SkiaShaderEffect.MouseCurrent
   - DrawnUi.Draw.SkiaShaderEffect.MouseInitial
   - DrawnUi.Draw.SkiaShaderEffect.Uniforms
@@ -1228,6 +1230,44 @@ references:
   name: TimeSeconds
   nameWithType: SkiaShaderEffect.TimeSeconds
   fullName: DrawnUi.Draw.SkiaShaderEffect.TimeSeconds
+- uid: DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
+  commentId: P:DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ShaderTimeOriginNanos
+  name: ShaderTimeOriginNanos
+  nameWithType: SkiaShaderEffect.ShaderTimeOriginNanos
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
+- uid: DrawnUi.Draw.SkiaShaderEffect.GetShaderTime(System.Int64)
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.GetShaderTime(System.Int64)
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_GetShaderTime_System_Int64_
+  name: GetShaderTime(long)
+  nameWithType: SkiaShaderEffect.GetShaderTime(long)
+  fullName: DrawnUi.Draw.SkiaShaderEffect.GetShaderTime(long)
+  nameWithType.vb: SkiaShaderEffect.GetShaderTime(Long)
+  fullName.vb: DrawnUi.Draw.SkiaShaderEffect.GetShaderTime(Long)
+  name.vb: GetShaderTime(Long)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.GetShaderTime(System.Int64)
+    name: GetShaderTime
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_GetShaderTime_System_Int64_
+  - name: (
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.GetShaderTime(System.Int64)
+    name: GetShaderTime
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_GetShaderTime_System_Int64_
+  - name: (
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: )
 - uid: DrawnUi.Draw.SkiaShaderEffect.MouseCurrent
   commentId: P:DrawnUi.Draw.SkiaShaderEffect.MouseCurrent
   parent: DrawnUi.Draw.SkiaShaderEffect
