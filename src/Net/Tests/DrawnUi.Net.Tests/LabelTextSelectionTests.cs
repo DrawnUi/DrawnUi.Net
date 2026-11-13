@@ -103,6 +103,24 @@ public class LabelTextSelectionTests
         Assert.Equal("wonderful", label.SelectedText);
     }
 
+    /// <summary>
+    /// A double click is judged by when the clicks happened, not when they were processed: a long frame between
+    /// two quick clicks (here 600 ms of processing delay) still selects the word.
+    /// </summary>
+    [Fact]
+    public void DoubleClick_ProcessedLate_StillSelectsTheWord()
+    {
+        var (host, label, robot) = Create(true, PointerDeviceType.Mouse);
+        using var _ = host;
+        var inside = At(label, 9);
+
+        robot.Tap(inside.X, inside.Y);
+        Thread.Sleep(600);
+        robot.Tap(inside.X, inside.Y);
+
+        Assert.Equal("wonderful", label.SelectedText);
+    }
+
     [Fact]
     public void CtrlC_CopiesThroughSuperSetClipboardText()
     {

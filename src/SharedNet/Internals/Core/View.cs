@@ -82,10 +82,13 @@ namespace DrawnUi.Draw
 
         public static readonly BindableProperty TranslationXProperty = BindableProperty.Create(nameof(TranslationX),
             typeof(double), typeof(SkiaControl),
-            0.0);
+            0.0, propertyChanged: (b, o, n) => { if (b is View c) c._translationX = (double)n; });
+
+        // read on every draw: the value is kept here too (a bindable read is a lookup)
+        double _translationX = 0.0;
         public double TranslationX
         {
-            get { return (double)GetValue(TranslationXProperty); }
+            get { return _translationX; }
             set
             {
                 SetValue(TranslationXProperty, value);
@@ -94,10 +97,13 @@ namespace DrawnUi.Draw
 
         public static readonly BindableProperty TranslationYProperty = BindableProperty.Create(nameof(TranslationY),
             typeof(double), typeof(SkiaControl),
-            0.0);
+            0.0, propertyChanged: (b, o, n) => { if (b is View c) c._translationY = (double)n; });
+
+        // read on every draw: the value is kept here too (a bindable read is a lookup)
+        double _translationY = 0.0;
         public double TranslationY
         {
-            get { return (double)GetValue(TranslationYProperty); }
+            get { return _translationY; }
             set { SetValue(TranslationYProperty, value); }
         }
 
@@ -113,35 +119,44 @@ namespace DrawnUi.Draw
 
         public static readonly BindableProperty OpacityProperty = BindableProperty.Create(nameof(Opacity),
             typeof(double), typeof(SkiaControl),
-            1.0);
+            1.0, propertyChanged: (b, o, n) => { if (b is View c) c._opacity = (double)n; });
+
+        // read on every draw: the value is kept here too (a bindable read is a lookup)
+        double _opacity = 1.0;
         /// <summary>
         /// This is used after RenderingObject is created along with other transforms like translation etc, so it's fast to be applied over a cached drawing result.
         /// </summary>
         public double Opacity
         {
-            get { return (double)GetValue(OpacityProperty); }
+            get { return _opacity; }
             set { SetValue(OpacityProperty, value); }
         }
 
         public static readonly BindableProperty RotationProperty = BindableProperty.Create(nameof(Rotation),
             typeof(double), typeof(SkiaControl),
-            0.0);
+            0.0, propertyChanged: (b, o, n) => { if (b is View c) c._rotation = (double)n; });
+
+        // read on every draw: the value is kept here too (a bindable read is a lookup)
+        double _rotation = 0.0;
 
         /// <summary>
         /// Rotation in degrees around AnchorX / AnchorY. Bindable, so a change repaints the control like the other transforms.
         /// </summary>
         public virtual double Rotation
         {
-            get { return (double)GetValue(RotationProperty); }
+            get { return _rotation; }
             set { SetValue(RotationProperty, value); }
         }
 
         public static readonly BindableProperty RotationXProperty = BindableProperty.Create(nameof(RotationX),
             typeof(double), typeof(SkiaControl),
-            0.0);
+            0.0, propertyChanged: (b, o, n) => { if (b is View c) c._rotationX = (double)n; });
+
+        // read on every draw: the value is kept here too (a bindable read is a lookup)
+        double _rotationX = 0.0;
         public double RotationX
         {
-            get { return (double)GetValue(RotationXProperty); }
+            get { return _rotationX; }
             set
             {
                 SetValue(RotationXProperty, value);
@@ -150,10 +165,13 @@ namespace DrawnUi.Draw
 
         public static readonly BindableProperty RotationYProperty = BindableProperty.Create(nameof(RotationY),
             typeof(double), typeof(SkiaControl),
-            0.0);
+            0.0, propertyChanged: (b, o, n) => { if (b is View c) c._rotationY = (double)n; });
+
+        // read on every draw: the value is kept here too (a bindable read is a lookup)
+        double _rotationY = 0.0;
         public double RotationY
         {
-            get { return (double)GetValue(RotationYProperty); }
+            get { return _rotationY; }
             set { SetValue(RotationYProperty, value); }
         }
 
@@ -180,10 +198,13 @@ namespace DrawnUi.Draw
 
         public static readonly BindableProperty ScaleXProperty = BindableProperty.Create(nameof(ScaleX),
             typeof(double), typeof(SkiaControl),
-            1.0);
+            1.0, propertyChanged: (b, o, n) => { if (b is View c) c._scaleX = (double)n; });
+
+        // read on every draw: the value is kept here too (a bindable read is a lookup)
+        double _scaleX = 1.0;
         public double ScaleX
         {
-            get { return (double)GetValue(ScaleXProperty); }
+            get { return _scaleX; }
             set
             {
                 SetValue(ScaleXProperty, value);
@@ -192,10 +213,13 @@ namespace DrawnUi.Draw
 
         public static readonly BindableProperty ScaleYProperty = BindableProperty.Create(nameof(ScaleY),
             typeof(double), typeof(SkiaControl),
-            1.0);
+            1.0, propertyChanged: (b, o, n) => { if (b is View c) c._scaleY = (double)n; });
+
+        // read on every draw: the value is kept here too (a bindable read is a lookup)
+        double _scaleY = 1.0;
         public double ScaleY
         {
-            get { return (double)GetValue(ScaleYProperty); }
+            get { return _scaleY; }
             set { SetValue(ScaleYProperty, value); }
         }
 

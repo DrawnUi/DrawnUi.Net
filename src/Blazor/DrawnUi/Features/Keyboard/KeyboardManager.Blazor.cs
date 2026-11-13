@@ -55,15 +55,5 @@ public partial class KeyboardManager
             KeyboardChar(ch, forOtherElement);
     }
 
-    public static InputKey MapToMaui(string? code)
-    {
-        if (string.IsNullOrWhiteSpace(code))
-        {
-            return InputKey.Unknown;
-        }
-
-        return Enum.TryParse<InputKey>(code, ignoreCase: false, out var mapped)
-            ? mapped
-            : InputKey.Unknown;
-    }
+    public static InputKey MapToMaui(string? code) => MapBrowserCode(code);
 }

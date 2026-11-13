@@ -108,6 +108,15 @@ public class DrawnUiWindow : GameWindow
             Super.OnFrame += OnSuperFrame;
         }
 
+        // The window's size is in points: on a scaled display (125 %) it gets the monitor's scale, and the canvas draws at
+        // that scale (the window is still hidden, so it never shows at the unscaled size).
+        ApplyContentScale(ReadContentScale());
+        unsafe
+        {
+            _contentScaleCallback = OnContentScaleChanged;
+            GLFW.SetWindowContentScaleCallback(WindowPtr, _contentScaleCallback);
+        }
+
         RecreateSurface(ClientSize.X, ClientSize.Y);
         PositionWindow();
 
@@ -161,6 +170,41 @@ public class DrawnUiWindow : GameWindow
             _atSpiProvider.SetActive(IsFocused);
             _atSpiProvider.Start();
         }
+    }
+
+    /// <summary>
+    /// The display scale the window draws at: points to pixels, 1.25 on a 125 % Windows display. The window's size is
+    /// set in points and follows this scale, also when the window moves to a monitor with another scale.
+    /// </summary>
+    public float ContentScale { get; private set; } = 1f;
+
+    // kept alive while the window lives: GLFW holds only the function pointer
+    private GLFWCallbacks.WindowContentScaleCallback? _contentScaleCallback;
+
+    private unsafe float ReadContentScale()
+    {
+        GLFW.GetWindowContentScale(WindowPtr, out var x, out var y);
+        return x > 0 && float.IsFinite(x) ? x : 1f;
+    }
+
+    private unsafe void OnContentScaleChanged(Window* window, float x, float y)
+    {
+        if (x > 0 && float.IsFinite(x))
+            ApplyContentScale(x);
+    }
+
+    // the window keeps its size in points: its pixels change by the ratio of the scales
+    private void ApplyContentScale(float scale)
+    {
+        if (Math.Abs(scale - ContentScale) < 0.001f)
+            return;
+        var ratio = scale / ContentScale;
+        ContentScale = scale;
+        Super.Screen.Density = scale;
+        // ponytail: min / max window sizes stay in pixels; scale them here if an app sets them
+        if (WindowState == WindowState.Normal)
+            ClientSize = new Vector2i((int)Math.Round(ClientSize.X * ratio), (int)Math.Round(ClientSize.Y * ratio));
+        _canvas.Repaint();
     }
 
     // the client area on screen, for the extents a screen reader asks for
@@ -309,8 +353,9 @@ public class DrawnUiWindow : GameWindow
         RenderScene();
         _grContext?.ResetContext();
 
-        _canvas.WidthRequest = ClientSize.X;
-        _canvas.HeightRequest = ClientSize.Y;
+        // the canvas in points: its rendering scale is the display's
+        _canvas.WidthRequest = ClientSize.X / ContentScale;
+        _canvas.HeightRequest = ClientSize.Y / ContentScale;
         _canvas.RenderExternalSurface(_surface!, new SKRect(0, 0, ClientSize.X, ClientSize.Y), frameTime);
 
         _surface!.Canvas.Flush();

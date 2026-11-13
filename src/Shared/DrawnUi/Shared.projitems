@@ -131,6 +131,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaEditorDocument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaEditorSelection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaRichEditor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Meshes\SKMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Meshes\SKMeshSpecification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\AnimatedShaderEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ChainDropShadowsEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ChainTintWithAlphaEffect.cs" />
@@ -393,7 +395,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\SkiaLabel.Bidi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\SkiaLabel.EmojiData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\SkiaLabel.ObjectPools.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\SkiaLabel.GlyphMeasurementCache.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\SkiaLabel.SpanMeasurement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Text\SkiaLabel.Line.cs" />
     <!-- Base -->

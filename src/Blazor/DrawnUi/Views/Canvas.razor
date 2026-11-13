@@ -78,20 +78,32 @@
         inset: 0;
     }
 
+    /* the overlay is for screen readers and the keyboard only: the mouse and touch go through to the canvas,
+       so every control gets its hover, taps and drags there, as on the other heads (pure WebAssembly does the same) */
     .xaml-a11y-overlay {
         position: absolute;
+        pointer-events: none;
+        -webkit-user-select: none;
+        user-select: none;
     }
 
+    /* never seen and never selected (Ctrl+A or a drag from page text included); readers still read it */
     .xaml-a11y-element {
         position: absolute;
+        background: transparent;
+        color: transparent;
+        pointer-events: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+    .xaml-a11y-element::selection {
         background: transparent;
         color: transparent;
     }
 
     .xaml-a11y-interactive {
         font-size: 0px;
-        user-select: none;
-        cursor: pointer;
     }
 
     .xaml-a11y-interactive:focus-visible {
@@ -145,61 +157,37 @@
                 {
                     continue;
                 }
-                @if (node.CanInteract)
-                {
-                    <div @key="node.Id"
-                         @ref="_a11yElements[node.Id]"
-                         role="@node.Role"
-                         aria-label="@node.Label"
-                         title="@node.Hint"
-                         aria-checked="@PressedState(node, "aria-checked")"
-                         aria-selected="@PressedState(node, "aria-selected")"
-                         aria-pressed="@PressedState(node, "aria-pressed")"
-                         aria-expanded="@Expanded(node)"
-                         aria-haspopup="@HasPopup(node)"
-                         aria-live="@node.Live"
-                         aria-valuenow="@ValueNow(node)"
-                         aria-valuemin="@ValueMin(node)"
-                         aria-valuemax="@ValueMax(node)"
-                         aria-valuetext="@node.Value?.Text"
-                         aria-orientation="@ValueOrientation(node)"
-                         tabindex="@(AccessibilityManager.IsTabStop(node.Source) ? 0 : -1)"
-                         class="xaml-a11y-element xaml-a11y-interactive"
-                         style="@A11yNodeStyle(node)"
-                         @onclick="() => OnA11yActivated(node)"
-                         @onkeydown="(e) => OnA11yKeyDown(e, node)"
-                         @onfocus="() => OnA11yFocus(node)"
-                         @onblur="() => OnA11yBlur(node)">
-                            @node.Label
-                    </div>
-                }
-                else
-                {
-                    @* tabindex -1: not a Tab stop, but the reader can be moved here when its node left (refocus);
-                       a control role that takes no input reads as unavailable (aria-disabled, drawnui-cross 6c rule 2) *@
-                    <div @key="node.Id"
-                         @ref="_a11yElements[node.Id]"
-                         role="@node.Role"
-                         aria-label="@node.Label"
-                         title="@node.Hint"
-                         aria-disabled="@(DrawnUi.Models.Aria.IsInteractiveRole(node.Role) ? "true" : null)"
-                         aria-checked="@PressedState(node, "aria-checked")"
-                         aria-selected="@PressedState(node, "aria-selected")"
-                         aria-pressed="@PressedState(node, "aria-pressed")"
-                         aria-expanded="@Expanded(node)"
-                         aria-haspopup="@HasPopup(node)"
-                         aria-live="@node.Live"
-                         aria-valuenow="@ValueNow(node)"
-                         aria-valuemin="@ValueMin(node)"
-                         aria-valuemax="@ValueMax(node)"
-                         aria-valuetext="@node.Value?.Text"
-                         aria-orientation="@ValueOrientation(node)"
-                         tabindex="-1"
-                         class="xaml-a11y-element"
-                         style="@A11yNodeStyle(node)">
-                        @node.Label
-                    </div>
-                }
+                @* One element whatever the node's state: a node whose input comes and goes (a pin hidden behind a turning model,
+                   InputTransparent switched) keeps its key, and an element of another shape under the same key made the Blazor
+                   diff throw (ElementReferenceCapture). Not interactive: not a Tab stop (tabindex -1), but the reader can be
+                   moved here when its node left (refocus); a control role that takes no input reads as unavailable
+                   (aria-disabled, drawnui-cross 6c rule 2); its click, key and focus handlers do nothing. *@
+                <div @key="node.Id"
+                     @ref="_a11yElements[node.Id]"
+                     role="@node.Role"
+                     aria-label="@node.Label"
+                     title="@node.Hint"
+                     aria-disabled="@(!node.CanInteract && DrawnUi.Models.Aria.IsInteractiveRole(node.Role) ? "true" : null)"
+                     aria-checked="@PressedState(node, "aria-checked")"
+                     aria-selected="@PressedState(node, "aria-selected")"
+                     aria-pressed="@PressedState(node, "aria-pressed")"
+                     aria-expanded="@Expanded(node)"
+                     aria-haspopup="@HasPopup(node)"
+                     aria-live="@node.Live"
+                     aria-valuenow="@ValueNow(node)"
+                     aria-valuemin="@ValueMin(node)"
+                     aria-valuemax="@ValueMax(node)"
+                     aria-valuetext="@node.Value?.Text"
+                     aria-orientation="@ValueOrientation(node)"
+                     tabindex="@(node.CanInteract && AccessibilityManager.IsTabStop(node.Source) ? 0 : -1)"
+                     class="@(node.CanInteract ? "xaml-a11y-element xaml-a11y-interactive" : "xaml-a11y-element")"
+                     style="@A11yNodeStyle(node)"
+                     @onclick="() => OnA11yActivated(node)"
+                     @onkeydown="(e) => OnA11yKeyDown(e, node)"
+                     @onfocus="() => OnA11yFocus(node)"
+                     @onblur="() => OnA11yBlur(node)">
+                    @node.Label
+                </div>
             }
         </div>
     }
@@ -249,7 +237,7 @@
     // the node of the active modal, which the overlay itself stands for while it is shown
     private AccessibilityNode? A11yModal()
     {
-        var modal = AccessibilityManager.ActiveModal;
+        var modal = AccessibilityManager.ActiveModalNode; // the one named dialog readers meet (drawnui-cross 6bs)
         return modal == null ? null : Array.Find(_accessibilityNodes, n => ReferenceEquals(n.Source, modal));
     }
 
@@ -327,6 +315,7 @@
             AccessibilityManager.KeyboardFocusRequested += OnA11yKeyboardFocusRequested;
             AccessibilityManager.ReaderRefocusRequested += OnA11yReaderRefocus;
             KeyboardManager.KeyDown += OnArrowStartsNavigation;
+            FocusedItemChanged += OnFocusedItemChangedA11y;
         }
 
         if (_pendingA11yFocusId is { } focusId && _a11yElements.TryGetValue(focusId, out var element))
@@ -1077,6 +1066,7 @@
         AccessibilityManager.Changed -= OnA11yChanged;
         AccessibilityManager.KeyboardFocusRequested -= OnA11yKeyboardFocusRequested;
         AccessibilityManager.ReaderRefocusRequested -= OnA11yReaderRefocus;
+        FocusedItemChanged -= OnFocusedItemChangedA11y;
         KeyboardManager.KeyDown -= OnArrowStartsNavigation;
 
         OnDisposing();
@@ -1098,6 +1088,8 @@
 
     private void OnA11yActivated(AccessibilityNode node)
     {
+        if (!node.CanInteract)
+            return;
         SkiaAccessibilityManager.Activate(node.Source);
     }
 
@@ -1136,9 +1128,35 @@
     private static string? Expanded(AccessibilityNode node) => node.IsExpanded is { } expanded ? expanded ? "true" : "false" : null;
     private static string? HasPopup(AccessibilityNode node) => node.IsExpanded.HasValue && node.Role == DrawnUi.Models.Aria.RoleMenuItem ? "menu" : null;
 
+    private ISkiaAccessibilityNode? _a11yDomFocus; // the node whose overlay element has the page focus
+
+    // Drawn focus and page focus stay one: a control a tap or code focused (a text field) gives its overlay element the
+    // page focus, so Tab and Shift+Tab move on from it in the overlay's order and its keys go to the control
+    private void OnFocusedItemChangedA11y(object? sender, FocusedItemChangedArgs e)
+    {
+        if (!e.IsFocused || e.Item is not ISkiaAccessibilityNode node || ReferenceEquals(_a11yDomFocus, node))
+            return;
+        _ = FocusOverlayElementAfterPointer(node);
+    }
+
+    // after the pointer events of the tap: the browser moves the page focus on the pointer press (to the page, the canvas
+    // takes none), which would take it right back from an element focused during it
+    private async Task FocusOverlayElementAfterPointer(ISkiaAccessibilityNode node)
+    {
+        await Task.Delay(1);
+        if (!ReferenceEquals(FocusedChild, node) || ReferenceEquals(_a11yDomFocus, node))
+            return;
+        _pendingA11yFocusId = node.AccessibilityId;
+        _accessibilityNodes = AccessibilityManager.Snapshot;
+        await InvokeAsync(StateHasChanged);
+    }
+
     // the focused overlay element is the canvas keyboard focus: scroll bars around it stay visible
     private void OnA11yFocus(AccessibilityNode node)
     {
+        if (!node.CanInteract)
+            return;
+        _a11yDomFocus = node.Source;
         AccessibilityManager.NotifyFocused(node.Source);
         AccessibilityManager.NotifyReaderFocused(node.Source);
         KeyboardFocusNode = node.Source;
@@ -1149,6 +1167,8 @@
 
     private void OnA11yBlur(AccessibilityNode node)
     {
+        if (ReferenceEquals(_a11yDomFocus, node.Source))
+            _a11yDomFocus = null;
         if (ReferenceEquals(AccessibilityManager.ReaderNode, node.Source))
             AccessibilityManager.NotifyReaderFocused(null); // focus left the canvas: never pull it back later
         node.Source?.OnAccessibilityFocused(false); // Tab left the element: a text field releases the caret
@@ -1165,6 +1185,8 @@
 
     private void OnA11yKeyDown(KeyboardEventArgs e, AccessibilityNode node)
     {
+        if (!node.CanInteract)
+            return;
         if (e.Key is "Enter" or " ")
             SkiaAccessibilityManager.Activate(node.Source);
         else if (e.Key is "ArrowLeft" or "ArrowRight" or "ArrowUp" or "ArrowDown" or "Home" or "End" or "PageUp" or "PageDown"

@@ -1,4 +1,4 @@
-﻿---
+---
 name: drawnui-fluent
 description: "Use when writing DrawnUI C# code-behind with fluent extensions. Covers inline control construction, .Assign(out _field), .Initialize(), .OnTapped(), .OnHovered(), .OnTextChanged(), .ObserveProperty(), .ObserveProperties(), .ObservePropertyTwoWay() (two-way binding), .Adapt(), .WhenPaint(), .ObserveSelf(), layout aliases (SkiaStack/SkiaRow/SkiaLayer), one-shot and looping animations, gradients, colors, shadows, SkiaLottie, SkiaImageTiles, and SkiaBackdrop code-behind patterns. Load before any DrawnUI C# composition task."
 version: 1.3.1
@@ -317,7 +317,7 @@ new SkiaShaderEffect
 ```
 
 - `SetUniform` is chainable and re-appliable at runtime (e.g. from a slider) — it redraws by itself: only the effect, the parent keeps its cache (since 1.10.7.14; `ShouldInvalidateParentCache = true` rebuilds the parent's cache each time; see the drawnui-shaders skill).
-- Standard uniforms auto-fed each frame: `iResolution`, `iImageResolution`, `iTime`, `iOffset`, `iMouse`, `iImage1` (input texture). DECLARE ALL OF THEM in the `.sksl` even if unused — the engine writes each one every frame unconditionally (`SkiaShader.cs:309-325`), and writing an undeclared uniform throws, which aborts shader creation and silently kills the effect. Sample with `iImage1.eval((fragCoord - iOffset) * iImageResolution / iResolution)`.
+- Standard uniforms auto-fed each frame: `iResolution`, `iImageResolution`, `iTime`, `iOffset`, `iMouse`, `iImage1` (input texture). Declare only the ones the shader uses: the engine feeds the standard uniforms (and `iImage1`) that the shader declares, looked up once per compile, the same as DrawnUI for Rust and React. On DrawnUi 1.10.8.25 and earlier, declare all of them, even unused ones: those versions write each one every frame, and an undeclared one stops the effect from drawing. Sample with `iImage1.eval((fragCoord - iOffset) * iImageResolution / iResolution)`.
 - A CUSTOM uniform behaves the opposite way: `SetUniform` values the shader does not declare are caught and logged, not thrown (`SkiaShaderEffect.cs:576-586`), so a typo there silently does nothing instead of killing the effect. A missing BUILT-IN kills it.
 - `SetUniform` also takes a `float[]` (`SkiaShaderEffect.cs:554`) for array uniforms; a one-element array is written as a scalar, since SkiaSharp rejects `float[1]` for a `float` uniform.
 - `UseBackground` defaults to `Always` (a live snapshot or the parent cache every frame). `Once` freezes the first one; reset `AquiredBackground` to re-capture.
@@ -684,6 +684,62 @@ public class PresetCell : SkiaDynamicDrawnCell
 - A custom range control overrides `GetAccessibilityValue()` (now, min, max, step, optional spoken text) and `OnAccessibilitySetValue(double)`, and steps on ArrowUp / ArrowDown in `OnAccessibilityKey`: screen readers then adjust and set it.
 - To hide a part of a recycled cell from the pointer and the keyboard, use `Opacity = 0` plus `InputTransparent = true`: opacity alone still takes input.
 - Rules: `drawnui` skill, keyboard bullets.
+
+### On-screen keyboard over a form (MAUI phones)
+
+The page is a `DrawnUiBasePage` (`KeyboardSize`; on iOS the app subtracts the bottom inset, Android's value already leaves it out), the form's `SkiaScroll` adapts to the focused control, a spacer at the end of its content gives the last fields room. Rules: `drawnui` skill, "Keyboard over a form".
+
+```csharp
+public class FormPage : DrawnUiBasePage
+{
+    Canvas _canvas;
+    SkiaScroll _scroll;
+    SkiaControl _keyboardSpacer;
+
+    public FormPage()
+    {
+        Content = new Canvas
+        {
+            RenderingMode = RenderingModeType.Accelerated,
+            Gestures = GesturesMode.Enabled,
+            Content = new SkiaScroll
+            {
+                AdaptToKeyboardGap = 8, // the default: points between the field and the keyboard
+                Content = new SkiaStack
+                {
+                    Children =
+                    {
+                        new SkiaEditor { PlaceholderText = "Name", MaxLines = 1 },
+                        new SkiaEditor { PlaceholderText = "Email", MaxLines = 1 },
+                        new SkiaControl { HorizontalOptions = LayoutOptions.Fill, IsVisible = false }.Assign(out _keyboardSpacer),
+                    }
+                }
+            }.Assign(out _scroll)
+        }.Assign(out _canvas);
+        // the next field focused while the keyboard stays open
+        _canvas.FocusedItemChanged += (_, _) => FollowKeyboard(KeyboardSize);
+    }
+
+    public override double OnKeyboardResized(double size)
+    {
+        var raw = base.OnKeyboardResized(size);
+        FollowKeyboard(raw);
+        return raw;
+    }
+
+    void FollowKeyboard(double raw)
+    {
+        var keyboard = raw;
+#if IOS
+        keyboard = Math.Max(0, raw - Super.Screen.BottomInset); // iOS reports it down to the screen's bottom
+#endif
+        _keyboardSpacer.HeightRequest = keyboard;
+        _keyboardSpacer.IsVisible = keyboard > 0;
+        _scroll.AdaptToKeyboardFor = keyboard > 0 ? _canvas.FocusedChild as SkiaControl : null;
+        _scroll.AdaptToKeyboardSize = keyboard;
+    }
+}
+```
 
 ## XAML → Code-Behind Porting
 

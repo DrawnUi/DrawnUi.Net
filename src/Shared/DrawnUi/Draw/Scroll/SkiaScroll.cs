@@ -3209,6 +3209,37 @@ namespace DrawnUi.Draw
             DrawViews(ctx);
         }
 
+        /// <summary>Parameters made by <see cref="AddViewportArguments"/>, with what they were made from.</summary>
+        sealed class MadeViewportArguments
+        {
+            public object From;
+            public float Scale;
+            public SKRect Rect;
+            public object Parameters;
+        }
+
+        // The same incoming parameters, zoom and content rect give the same dictionary (parameters are never changed
+        // once made). One object swapped whole, so a paint on another thread never mixes two of them.
+        MadeViewportArguments _viewportArguments;
+
+        /// <summary>The context for the content: the scroll's zoom and content rect added to the parameters.</summary>
+        DrawingContext AddViewportArguments(DrawingContext ctx)
+        {
+            var scale = _zoomedScale;
+            var rect = ContentRectWithOffset.Pixels;
+            var made = _viewportArguments;
+            if (made != null && ReferenceEquals(made.From, ctx.Parameters) && made.Scale.Equals(scale) && made.Rect == rect)
+            {
+                return ctx.WithParameters(made.Parameters);
+            }
+
+            var result = ctx.WithArguments(
+                new(nameof(ContextArguments.Scale), scale),
+                new(nameof(ContextArguments.Rect), rect));
+            _viewportArguments = new MadeViewportArguments { From = ctx.Parameters, Scale = scale, Rect = rect, Parameters = result.Parameters };
+            return result;
+        }
+
         protected override void Paint(DrawingContext ctx)
         {
             if (ctx.Destination.Width == 0 || ctx.Destination.Height == 0)
@@ -3216,9 +3247,7 @@ namespace DrawnUi.Draw
 
             base.Paint(ctx);
 
-            var c = ctx.WithArguments(
-                new(nameof(ContextArguments.Scale), _zoomedScale),
-                new(nameof(ContextArguments.Rect), ContentRectWithOffset.Pixels));
+            var c = AddViewportArguments(ctx);
 
             //Children containment, same pattern SkiaShape uses for its outline: the outer clip in
             //DrawWithClipAndTransforms is an EFFECTS concern (expanded by the subtree's aggregated
@@ -3592,6 +3621,8 @@ namespace DrawnUi.Draw
             }
         }
 
+        private List<SkiaControl> _drawViewsSpare;
+
         protected override int DrawViews(DrawingContext context)
         {
             if (context.Destination.Width <= 0 || context.Destination.Height <= 0)
@@ -3599,9 +3630,12 @@ namespace DrawnUi.Draw
                 return 0;
             }
 
+            // the views of one draw, in a list kept between draws; a draw at the same time makes its own
+            var drawViews = Interlocked.Exchange(ref _drawViewsSpare, null) ?? new List<SkiaControl>(5);
+
             int Render(DrawingContext ctx)
             {
-                var drawViews = new List<SkiaControl>(5) { Content };
+                drawViews.Add(Content);
                 var offsetFooter = 0f;
                 var translateContent = 0.0;
 
@@ -3799,7 +3833,16 @@ namespace DrawnUi.Draw
                 return RenderViewsList(ctx, drawViews);
             }
 
-            var drawn = Render(context);
+            int drawn;
+            try
+            {
+                drawn = Render(context);
+            }
+            finally
+            {
+                drawViews.Clear();
+                _drawViewsSpare = drawViews;
+            }
 
             if (Header != null && HeaderSticky && !HeaderBehind)
             {
@@ -4151,39 +4194,54 @@ namespace DrawnUi.Draw
             }
         }
 
-        double AddPadding = 0;
-        private double _scrollTo;
+        public static readonly BindableProperty AdaptToKeyboardGapProperty = BindableProperty.Create(
+            nameof(AdaptToKeyboardGap),
+            typeof(double),
+            typeof(SkiaScroll),
+            8.0);
 
+        /// <summary>
+        /// Points kept between the bottom of <see cref="AdaptToKeyboardFor"/> and the keyboard's top when the scroll
+        /// brings the field above the keyboard (8 by default).
+        /// </summary>
+        public double AdaptToKeyboardGap
+        {
+            get { return (double)GetValue(AdaptToKeyboardGapProperty); }
+            set { SetValue(AdaptToKeyboardGapProperty, value); }
+        }
+
+        /// <summary>The offset that brings the focused field above the keyboard; NaN = nothing to move.</summary>
+        private double _scrollTo = double.NaN;
+
+        bool _keyboardAdaptPending;
+
+        /// <summary>
+        /// Where the scroll must go so the bottom of <see cref="AdaptToKeyboardFor"/> sits just above the keyboard's
+        /// top (<see cref="AdaptToKeyboardSize"/> points from the canvas bottom), measured where both are on screen
+        /// now; NaN when the field is already above it, or there is no keyboard or field.
+        /// </summary>
         public void CalculateNeededScrollForKeyboard()
         {
-            _scrollTo = -1;
+            _scrollTo = double.NaN;
 
             try
             {
-                if (AdaptToKeyboardFor == null || AdaptToKeyboardSize == 0 || !this.LayoutReady)
+                if (AdaptToKeyboardFor == null || AdaptToKeyboardSize <= 0 || !this.LayoutReady || Superview == null)
                 {
                     return;
                 }
 
                 StopScrolling();
 
-                if (AdaptToKeyboardFor.VisualLayer == null || VisualLayer == null)
-                {
+                var scale = RenderingScale;
+                var field = AdaptToKeyboardFor.GetAccessibilityPixelRect();
+                if (field.IsEmpty || scale <= 0)
                     return;
-                }
+                var viewport = SKRect.Create(GetSelfDrawingPosition(), LastDrawnAt.Size);
+                var keyboardTop = (float)((Superview.Height - AdaptToKeyboardSize) * scale);
+                var visibleBottom = Math.Min(viewport.Bottom, keyboardTop);
 
-                var myPos = AdaptToKeyboardFor.VisualLayer.HitBoxWithTransforms.Units.Location;
-                var scrollPos =
-                    VisualLayer.HitBoxWithTransforms.Units.Location; //this.GetPositionOnCanvasInPoints();
-
-                var scrollRect = new SKRect(0, scrollPos.Y, 10, (float)this.Height + scrollPos.Y);
-                var parentHeight = Superview.Height;
-                var screenRect = new SKRect(0, 0, 10, (float)(parentHeight - AdaptToKeyboardSize));
-                var viewportRect = scrollRect.IntersectWith(screenRect);
-                var elementRect = new SKRect(0, myPos.Y, 10, (float)AdaptToKeyboardFor.Height + myPos.Y);
-
-                var needScrollMore = elementRect.Bottom - viewportRect.Bottom + AddPadding;
-
+                var needScrollMore = (field.Bottom - visibleBottom) / scale + AdaptToKeyboardGap;
                 if (needScrollMore > 0)
                     _scrollTo = this.ViewportOffsetY - needScrollMore;
             }
@@ -4193,16 +4251,24 @@ namespace DrawnUi.Draw
             }
         }
 
+        /// <summary>
+        /// After the keyboard or the focused field changed: scrolls so the field shows above the keyboard. A field
+        /// already visible, or the keyboard closing, leaves the page where it is.
+        /// </summary>
         public virtual void AdaptToKeyboard()
         {
+            // One adaptation for the field and the size set together: a second one would measure the field where it
+            // was drawn before the first moved it (no frame in between) and scroll the same distance again.
+            if (_keyboardAdaptPending)
+                return;
+            _keyboardAdaptPending = true;
             Tasks.StartDelayed(TimeSpan.FromMilliseconds(150), () =>
             {
+                _keyboardAdaptPending = false;
                 CalculateNeededScrollForKeyboard();
 
-                //scroll to show on screen
-                if (LayoutReady && _scrollTo < 0)
+                if (LayoutReady && !double.IsNaN(_scrollTo))
                 {
-                    //Debug.WriteLine($"[SCROLLING] to {_scrollTo} actual offset {this.OffsetY}, last {lastOffsetY}");
                     ViewportOffsetY = (float)_scrollTo;
                 }
             });

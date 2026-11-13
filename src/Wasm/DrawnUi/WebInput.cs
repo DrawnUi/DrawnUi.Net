@@ -121,6 +121,7 @@ public static partial class WebInput
             var threshold = TouchEffect.TappedCancelMoveThresholdPoints * Math.Max(0.1f, TouchEffect.Density);
             if (Math.Abs(args.Distance.Total.X) < threshold && Math.Abs(args.Distance.Total.Y) < threshold)
             {
+                WebTextInput.FocusOnTap(TargetCanvas, x, y); // inside the browser event: iOS raises its keyboard
                 TargetCanvas?.OnGestureEvent(TouchActionType.Released, args, TouchActionResult.Tapped);
             }
         }
@@ -238,10 +239,12 @@ public static partial class WebInput
     /// (e.g. "ArrowLeft", "Space", "Enter"), parsed into <see cref="InputKey"/>. <paramref name="forOtherElement"/>:
     /// a page element outside the canvas has the key, see <see cref="KeyboardManager.IsKeyForOtherElement"/>.
     /// <paramref name="usedByCanvas"/>: a node of the accessibility overlay used it first (activated, stepped, moved
-    /// focus in its group), see <see cref="KeyboardManager.IsKeyHandled"/>.
+    /// focus in its group), see <see cref="KeyboardManager.IsKeyHandled"/>. <paramref name="text"/>: what the key types
+    /// (the DOM <c>KeyboardEvent.key</c> of a character key), null for other keys and shortcuts; raised right after the
+    /// key as <see cref="KeyboardManager.KeyChar"/>, which a focused drawn editor types.
     /// </summary>
     [JSExport]
-    public static void OnKeyDown(string code, bool forOtherElement, bool usedByCanvas)
+    public static void OnKeyDown(string code, bool forOtherElement, bool usedByCanvas, string text)
     {
         var key = MapCode(code);
 
@@ -252,6 +255,8 @@ public static partial class WebInput
         if (usedByCanvas)
             KeyboardManager.MarkKeyHandled(key);
         KeyboardManager.KeyboardPressed(key, forOtherElement);
+        if (!string.IsNullOrEmpty(text))
+            KeyboardManager.KeyboardChar(text, forOtherElement);
     }
 
     /// <summary>
@@ -263,15 +268,7 @@ public static partial class WebInput
         KeyboardManager.KeyboardReleased(MapCode(code), forOtherElement);
     }
 
-    private static InputKey MapCode(string? code)
-    {
-        if (string.IsNullOrWhiteSpace(code))
-            return InputKey.Unknown;
-
-        return Enum.TryParse<InputKey>(code, ignoreCase: false, out var mapped)
-            ? mapped
-            : InputKey.Unknown;
-    }
+    private static InputKey MapCode(string? code) => KeyboardManager.MapBrowserCode(code);
 
     private static TouchActionEventArgs MakeTouchArgs(long pointerId, TouchActionType type, PointF location)
     {

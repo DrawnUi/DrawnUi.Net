@@ -233,6 +233,38 @@ namespace DrawnUi.Views
         /// </summary>
         public SkiaControl? ActiveModal { get; private set; }
 
+        /// <summary>
+        /// The one dialog readers meet for <see cref="ActiveModal"/>: the modal itself when it is named, else the first
+        /// named dialog / alertdialog inside it (a popup host around an app's dialog), else the modal. The heads' overlay
+        /// takes its role and name.
+        /// </summary>
+        public SkiaControl? ActiveModalNode { get; private set; }
+
+        /// <summary>See <see cref="ActiveModalNode"/>; the outermost named dialog inside a nameless modal.</summary>
+        private SkiaControl? FindModalNode(SkiaControl? modal)
+        {
+            if (modal == null || !string.IsNullOrEmpty(modal.AccessibilityLabel))
+                return modal;
+
+            SkiaControl? best = null;
+            var bestDepth = int.MaxValue;
+            foreach (var node in _nodes.Keys)
+            {
+                if (node is not SkiaControl control || ReferenceEquals(control, modal) || string.IsNullOrEmpty(control.AccessibilityLabel)
+                    || (control.AccessibilityRole != DrawnUi.Models.Aria.RoleDialog && control.AccessibilityRole != "alertdialog")
+                    || !control.IsVisible || control.Opacity <= 0 || control.IsDisposed || !IsDescendantOrSelf(control, modal)
+                    || IsHiddenByAncestor(control))
+                    continue;
+                var depth = PathFromRoot(control).Count;
+                if (depth < bestDepth)
+                {
+                    best = control;
+                    bestDepth = depth;
+                }
+            }
+            return best ?? modal;
+        }
+
         // where the keyboard was when each modal became active, to go back there when it goes
         private readonly Dictionary<SkiaControl, ISkiaAccessibilityNode> _modalReturns = new();
 
@@ -267,10 +299,19 @@ namespace DrawnUi.Views
                 return;
 
             var keyboard = canvas.KeyboardFocusNode;
-            if (next != null && keyboard != null && !IsDescendantOrSelf(keyboard, next))
+            // a return to an opener still on its way (a dialog just closed) means the keyboard is in use too
+            var inUse = keyboard ?? Volatile.Read(ref _focusReturn);
+            if (next != null && inUse != null && !IsDescendantOrSelf(inUse, next))
             {
-                // the keyboard is in use: into the modal, and back here when it goes
-                _modalReturns[next] = keyboard;
+                // the keyboard is in use: into the modal, and back here when it goes. A dialog handing over to another
+                // (How to play, then Paused) passes on where the keyboard came from: the closing one's way back, in the
+                // same frame or still on its way.
+                var cameFrom = inUse;
+                if (previous != null && IsDescendantOrSelf(inUse, previous) && _modalReturns.TryGetValue(previous, out var previousBack))
+                    cameFrom = previousBack;
+                else if (Volatile.Read(ref _focusReturn) is { } returning)
+                    cameFrom = returning;
+                _modalReturns[next] = cameFrom;
                 RequestFocusInside(next);
             }
 
@@ -366,6 +407,8 @@ namespace DrawnUi.Views
         private SkiaControl? _focusInside;
         private long _focusInsideDeadline;
         private ISkiaAccessibilityNode? _focusReturn;
+        private long _focusReturnDeadline;
+        private ISkiaAccessibilityNode? _focusReturnFrom; // the keyboard focus when the return was asked: moving it cancels
 
         /// <summary>A popup window opened from the keyboard: its first node takes the keyboard focus once it is drawn.</summary>
         internal void RequestFocusInside(SkiaControl root)
@@ -383,7 +426,12 @@ namespace DrawnUi.Views
             ReaderNode = node;
             if (Volatile.Read(ref _focusInside) == null // a menu opening next (Left / Right in a menu bar) wins
                 && !_appFocusRequested) // and so does the app's own SetAccessibilityFocus in this frame
+            {
+                // the control may take input only a moment later (an app that shows it again after the close): wait for it
+                _focusReturnDeadline = Environment.TickCount64 + 1000;
+                _focusReturnFrom = (node as SkiaControl)?.Superview?.KeyboardFocusNode;
                 Volatile.Write(ref _focusReturn, node);
+            }
         }
 
         private SkiaControl? _accessibilityFocusTarget;
@@ -457,12 +505,30 @@ namespace DrawnUi.Views
                 }
             }
 
-            var back = Interlocked.Exchange(ref _focusReturn, null);
-            if (back is SkiaControl { IsDisposed: false, AccessibilityCanInteract: true })
+            var back = Volatile.Read(ref _focusReturn);
+            if (back != null)
             {
-                Rebuild(scale); // the closed popup's nodes leave before the focus moves
-                if (IsInSnapshot((SkiaControl)back))
-                    FocusFromKeyboard(back, scale);
+                var canvas = (back as SkiaControl)?.Superview;
+                var moved = canvas?.KeyboardFocusNode is { } now && !ReferenceEquals(now, _focusReturnFrom)
+                                                                && !ReferenceEquals(now, back);
+                if (back is not SkiaControl { IsDisposed: false } control || moved
+                    || Environment.TickCount64 > _focusReturnDeadline)
+                {
+                    Interlocked.CompareExchange(ref _focusReturn, null, back); // gone, the keyboard went elsewhere, or too late
+                }
+                else
+                {
+                    Rebuild(scale); // the closed popup's nodes leave before the focus moves
+                    if (control.AccessibilityCanInteract && IsInSnapshot(control))
+                    {
+                        Interlocked.CompareExchange(ref _focusReturn, null, back);
+                        FocusFromKeyboard(back, scale);
+                    }
+                    else
+                    {
+                        canvas?.Update(); // not back on screen yet: look again next frame
+                    }
+                }
             }
         }
 
@@ -1060,9 +1126,15 @@ namespace DrawnUi.Views
 
             _sortBuffer.Clear();
             var modal = ActiveModal;
+            var modalNode = FindModalNode(modal);
+            ActiveModalNode = modalNode;
             foreach (var node in _nodes.Keys)
             {
-                if (node is not SkiaControl control || !control.IsVisible || control.IsDisposed)
+                // a nameless modal around a named dialog: readers meet the named one only (drawnui-cross 6bs)
+                if (modal != null && !ReferenceEquals(modalNode, modal) && ReferenceEquals(node, modal))
+                    continue;
+                // not drawn (hidden or transparent): not heard, as in DrawnUI for Rust and DrawnUi.React
+                if (node is not SkiaControl control || !control.IsVisible || control.Opacity <= 0 || control.IsDisposed)
                     continue;
                 // a modal overlay is shown: only its own nodes, and those of popup windows opened over it
                 if (modal != null && !IsDescendantOrSelf(control, modal) && !IsInPopupWindow(control))

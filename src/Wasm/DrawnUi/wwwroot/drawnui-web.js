@@ -6,6 +6,9 @@
 //   Raster (CPU)— 2D context + putImageData from pinned byte[] buffer.
 //
 // Export-friendly: designed so this could be contributed back as SkiaSharp.Views.Web.
+//
+// EVERY NEW EXPORT also goes into both __drawnuiWeb lists at the end of this file, or a page that loads this module
+// twice runs that export on the second copy, which nothing wired.
 
 // --- Emscripten aliases (resolved at runtime, not import-time) ---
 function getGL() {
@@ -131,7 +134,17 @@ function createWebGLContext(htmlCanvas) {
         contextAttributes.minorVersion = 0;
         ctx = GL.createContext(htmlCanvas, contextAttributes);
     }
+    if (ctx) enableRendererInfo(GL.getContext(ctx)?.GLctx);
     return ctx;
+}
+
+// Skia asks for the GPU's name (UNMASKED_RENDERER_WEBGL) when it makes its GPU context: a valid query only once this
+// extension is enabled, else the browser logs INVALID_ENUM (an error in WebKit). Enabled again on a restored context.
+function enableRendererInfo(gl) {
+    try {
+        if (gl && gl.getSupportedExtensions()?.includes('WEBGL_debug_renderer_info'))
+            gl.getExtension('WEBGL_debug_renderer_info');
+    } catch { /* no such extension here: Skia's query stays as it was */ }
 }
 
 // ============================================================================
@@ -195,6 +208,7 @@ export function initGL(elementId, callback, restoredCallback) {
         GL.deleteContext(view.glInfo.context); // before registering: it clears canvas.GLctxObject
         const handle = GL.registerContext(gl, attributes);
         GL.makeContextCurrent(handle);
+        enableRendererInfo(gl);
         view.glInfo.context = handle;
         view.contextLost = false;
         if (restoredCallback) restoredCallback();
@@ -257,10 +271,12 @@ export function putImageData(elementId, pixels, width, height) {
 let canvas = null;
 let ctx = null;
 
-export function initCanvas(targetWidth, targetHeight) {
-    canvas = document.getElementById('drawnui-canvas');
+// The canvas RunAsync was given (its element id); the old (width, height) call means "drawnui-canvas".
+export function initCanvas(elementId) {
+    const id = typeof elementId === 'string' ? elementId : 'drawnui-canvas';
+    canvas = document.getElementById(id);
     if (!canvas) {
-        console.error('Canvas element with id "drawnui-canvas" not found');
+        console.error(`Canvas element with id "${id}" not found`);
         return;
     }
     // Do NOT acquire a 2D context here: a canvas can only ever hold ONE context
@@ -297,14 +313,47 @@ function handleFrame(timestamp) {
     if (onBrowserFrame) onBrowserFrame(timestamp);
 }
 
+// The canvas's real box in device pixels, from a ResizeObserver; null where the browser does not report it (Safari).
+let _deviceBox = null;
+
+// The bitmap matches the device pixels the canvas covers, so the browser shows it 1:1 (a bitmap one pixel off is
+// resampled whole and every glyph goes soft at fractional display scales). Without the device box: the fractional
+// CSS size times the ratio, rounded.
 function reportCanvasSize() {
     if (!canvas) return;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    const pixelRatio = getDevicePixelRatio();
-    canvas.width = Math.floor(width * pixelRatio);
-    canvas.height = Math.floor(height * pixelRatio);
-    if (onCanvasResize) onCanvasResize(width, height, pixelRatio);
+    const rect = canvas.getBoundingClientRect();
+    let pixelRatio = getDevicePixelRatio();
+    let width = _deviceBox?.[0], height = _deviceBox?.[1];
+    if (!width || !height) {
+        width = Math.round(rect.width * pixelRatio);
+        height = Math.round(rect.height * pixelRatio);
+    } else if (rect.width > 0 && Math.abs(width / rect.width - pixelRatio) > pixelRatio * 0.02) {
+        // the box and devicePixelRatio disagree (DPR emulation, device mode, some zoom levels): the scale follows
+        // the box, or the layout would be wider or narrower than the page
+        pixelRatio = width / rect.width;
+    }
+    canvas.width = width;
+    canvas.height = height;
+    // the CSS size .NET multiplies back by the ratio and truncates: exactly this bitmap
+    if (onCanvasResize) onCanvasResize((width + 0.01) / pixelRatio, (height + 0.01) / pixelRatio, pixelRatio);
+}
+
+function watchCanvasSize() {
+    if (typeof ResizeObserver !== 'function') {
+        window.addEventListener('resize', reportCanvasSize);
+        return;
+    }
+    const observer = new ResizeObserver(entries => {
+        const box = entries[entries.length - 1].devicePixelContentBoxSize?.[0];
+        _deviceBox = box ? [box.inlineSize, box.blockSize] : null;
+        reportCanvasSize();
+    });
+    try {
+        observer.observe(canvas, { box: 'device-pixel-content-box' });
+    } catch {
+        observer.observe(canvas); // no device-pixel box: the content box, sized from the CSS size
+        window.addEventListener('resize', reportCanvasSize); // a ratio change without a CSS size change
+    }
 }
 
 function setupInputHandlers() {
@@ -322,7 +371,12 @@ function setupInputHandlers() {
     canvas.addEventListener('wheel', e => { const used = moduleOnWheel?.(e.deltaX, e.deltaY, e.deltaMode, relX(e), relY(e)); if (!_shareInput || used) e.preventDefault(); }, { passive: false });
     // right click / long press / Menu key: a control that handles ContextMenu suppresses the browser menu
     canvas.addEventListener('contextmenu', e => { if (onContextMenu?.(relX(e), relY(e), e.pointerType ?? 'mouse')) e.preventDefault(); });
-    window.addEventListener('resize', reportCanvasSize);
+    // while an editor's text input has the page focus (a tap's pointerup may just have given it), a press on the canvas
+    // leaves it there: the drawn controls decide whether the editor keeps its focus. A touch makes no mouse events, whose
+    // press would take the focus back to the page and close the on-screen keyboard.
+    canvas.addEventListener('touchend', e => { if (textInputEl && document.activeElement === textInputEl) e.preventDefault(); }, { passive: false });
+    canvas.addEventListener('mousedown', e => { if (textInputEl && document.activeElement === textInputEl) e.preventDefault(); });
+    watchCanvasSize();
 }
 
 // ============================================================================
@@ -516,8 +570,12 @@ function a11yCreate(id) {
         const r = el.getBoundingClientRect(), o = a.overlay.getBoundingClientRect();
         if (onContextMenu?.(r.left + r.width / 2 - o.left, r.top + r.height / 2 - o.top, 'keyboard')) e.preventDefault();
     });
-    el.addEventListener('focus', () => { if (_a11y && !_a11y.updating) _a11y.onFocus(id); });
-    el.addEventListener('blur', () => { if (_a11y && !_a11y.updating) _a11y.onBlur(id); });
+    // Tab from a focused editor passes through its element without focusing the editor again (see editorKeyDown);
+    // the editor's own text input taking the page focus keeps the editor focused
+    el.addEventListener('focus', () => { if (_a11y && !_a11y.updating && !tabbingFromEditor) _a11y.onFocus(id); });
+    el.addEventListener('blur', e => {
+        if (_a11y && !_a11y.updating && !(textInputEl && e.relatedTarget === textInputEl)) _a11y.onBlur(id);
+    });
     return el;
 }
 
@@ -710,7 +768,159 @@ const PREVENT_DEFAULT_KEYS = new Set([
 function keyIsForDrawnUi(e) {
     const t = e.target;
     return !t || t === document.body || t === document.documentElement || t === window || t.tagName === 'CANVAS'
-        || !!(t.closest && t.closest('.drawnui-a11y-overlay'));
+        || t === textInputEl || !!(t.closest && t.closest('.drawnui-a11y-overlay'));
+}
+
+// --- Text input for drawn editors ---
+// A focused SkiaEditor has a real, invisible textarea with the page focus: a phone shows its on-screen keyboard, an
+// input method (Chinese, Japanese, Korean, a phone keyboard's word suggestions) composes into it, and the browser
+// repeats a held key. What it types goes to the editor as text (onTextInput) or as an editing key (onTextKey); the
+// textarea keeps two spaces with its caret at the end, so a Backspace always has something to delete and is reported.
+let textInputEl = null;
+let textInputOwner = -1; // the overlay node id of the focused editor
+let tabbingFromEditor = false;
+let onTextInput = null;
+let onTextKey = null;
+let editorFocused = false;
+let composing = '';
+const TEXT_INPUT_REST = '  ';
+// Keys the editor handles itself: the textarea does nothing with them (no deletion, no caret move, no focus move)
+const EDITOR_KEYS = new Set([
+    'Backspace', 'Delete', 'Enter', 'NumpadEnter',
+    'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown',
+]);
+
+function graphemes(s) {
+    if (typeof Intl !== 'undefined' && Intl.Segmenter)
+        return [...new Intl.Segmenter().segment(s)].map(x => x.segment);
+    return [...s];
+}
+
+function restTextInput() {
+    textInputEl.value = TEXT_INPUT_REST;
+    textInputEl.setSelectionRange(TEXT_INPUT_REST.length, TEXT_INPUT_REST.length);
+}
+
+// The composition shown in the editor follows the input method: what changed since its last text is deleted and
+// typed again, so the editor always shows the word being composed.
+function applyComposition(next) {
+    const before = graphemes(composing), after = graphemes(next);
+    let same = 0;
+    while (same < before.length && same < after.length && before[same] === after[same]) same++;
+    for (let i = before.length - same; i > 0; i--) onTextKey?.('Backspace');
+    if (after.length > same) onTextInput?.(after.slice(same).join(''));
+    composing = next;
+}
+
+function editorKeyDown(e, used) {
+    if (e.isComposing || e.keyCode === 229) return; // the input method has the key
+    if (e.code === 'Tab') {
+        // Tab and Shift+Tab move on from the editor's own overlay element, in the overlay's order: the page focus goes
+        // there first, then the browser moves it as for any Tab (the editor gives its caret back when it leaves)
+        const owner = _a11y?.map.get(textInputOwner);
+        if (owner) {
+            tabbingFromEditor = true;
+            try { owner.focus({ preventScroll: true }); } finally { tabbingFromEditor = false; }
+        }
+        return;
+    }
+    const shortcut = e.ctrlKey || e.metaKey;
+    if (EDITOR_KEYS.has(e.code) || (shortcut && e.code === 'KeyA')) e.preventDefault();
+    onKeyDown?.(e.code, false, used, null); // its text comes from the textarea's input
+}
+
+function ensureTextInput() {
+    if (textInputEl) return textInputEl;
+    const el = document.createElement('textarea');
+    el.className = 'drawnui-text-input';
+    for (const [name, value] of [['autocomplete', 'off'], ['autocorrect', 'off'], ['autocapitalize', 'off'],
+        ['spellcheck', 'false'], ['aria-hidden', 'true'], ['tabindex', '-1']])
+        el.setAttribute(name, value);
+    // 16px: iOS zooms the page into a focused field with a smaller font
+    el.style.cssText = 'position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;border:0;padding:0;margin:0;'
+        + 'resize:none;overflow:hidden;font-size:16px;color:transparent;background:transparent;caret-color:transparent;'
+        + 'pointer-events:none;z-index:-1';
+    el.addEventListener('beforeinput', e => {
+        switch (e.inputType) {
+            case 'insertText':
+                if (e.data) onTextInput?.(e.data);
+                e.preventDefault();
+                break;
+            case 'insertLineBreak':
+            case 'insertParagraph':
+                onTextKey?.('Enter');
+                e.preventDefault();
+                break;
+            case 'deleteContentBackward':
+                if (!composing) {
+                    onTextKey?.('Backspace');
+                    e.preventDefault();
+                }
+                break;
+            case 'deleteContentForward':
+                onTextKey?.('Delete');
+                e.preventDefault();
+                break;
+            case 'insertFromPaste':
+            case 'insertFromDrop':
+                e.preventDefault(); // the paste event typed it
+                break;
+        }
+    });
+    el.addEventListener('compositionstart', () => { composing = ''; });
+    el.addEventListener('compositionupdate', e => applyComposition(e.data || ''));
+    el.addEventListener('compositionend', e => {
+        applyComposition(e.data || '');
+        composing = '';
+        restTextInput();
+    });
+    document.body.appendChild(el);
+    textInputEl = el;
+    restTextInput();
+    return el;
+}
+
+/**
+ * The editor's text callbacks, from C#: onText(text) types text, onKey(code) presses an editing key (a DOM
+ * KeyboardEvent.code: Backspace, Delete, Enter).
+ */
+export function textInputAttach(onText, onKey) {
+    onTextInput = onText;
+    onTextKey = onKey;
+    // Ctrl / Cmd + V in a focused editor: the browser's paste event carries the text, no permission needed
+    document.addEventListener('paste', e => {
+        if (!editorFocused || !keyIsForDrawnUi(e)) return;
+        const text = e.clipboardData && e.clipboardData.getData('text/plain');
+        e.preventDefault();
+        if (text) onTextInput?.(text);
+    });
+}
+
+/**
+ * A SkiaEditor took (true) or gave back (false) the keyboard: the textarea takes or gives back the page focus.
+ * ownerId: the editor's overlay node, where Tab moves on from.
+ */
+export function textInputFocus(focus, ownerId) {
+    editorFocused = focus;
+    textInputOwner = focus ? ownerId : -1;
+    const el = ensureTextInput();
+    composing = '';
+    if (focus) {
+        if (document.activeElement !== el) el.focus({ preventScroll: true });
+        restTextInput();
+    } else if (document.activeElement === el) {
+        el.blur();
+    }
+}
+
+// The text a key types (one character: a letter, a digit, a space, an emoji, an AltGr character), null for other
+// keys, shortcuts with Ctrl / Alt / Cmd and keys an input method composes.
+function typedText(e) {
+    const k = e.key;
+    if (!k || e.isComposing || [...k].length !== 1) return null;
+    const altGr = e.getModifierState && e.getModifierState('AltGraph');
+    if (!altGr && (e.ctrlKey || e.altKey || e.metaKey)) return null;
+    return k;
 }
 
 let keyboardAttached = false;
@@ -721,10 +931,14 @@ function setupKeyboardHandlers() {
     window.addEventListener('keydown', e => {
         const used = a11yUsedKey === e.code;
         a11yUsedKey = null;
+        if (e.target === textInputEl) {
+            editorKeyDown(e, used);
+            return;
+        }
         if (e.repeat) return;
         const forDrawnUi = keyIsForDrawnUi(e);
         if (PREVENT_DEFAULT_KEYS.has(e.code) && forDrawnUi) e.preventDefault();
-        onKeyDown?.(e.code, !forDrawnUi, used);
+        onKeyDown?.(e.code, !forDrawnUi, used, typedText(e));
     });
     window.addEventListener('keyup', e => {
         const forDrawnUi = keyIsForDrawnUi(e);
@@ -743,3 +957,30 @@ let onContextMenu = null;
 let onCanvasResize = null;
 let onKeyDown = null;
 let onKeyUp = null;
+
+// One copy per page. The app's main.js and DrawnUi.Web's C# both import this module; when their URLs differ (a
+// cache-busting ?v= stamp on one of them) the browser loads it twice. Every copy after the first hands each of its
+// exports over to the first copy's, so the callbacks main.js wires and the canvas, input and resize state C# sets up
+// live in one place. Bound once at load: no cost per call.
+// Keep both lists below complete: every export of this module is in each of them.
+const _first = globalThis.__drawnuiWeb;
+if (_first) {
+    initGL = _first.initGL; initRaster = _first.initRaster; deinit = _first.deinit;
+    requestAnimationFrame = _first.requestAnimationFrame; setEnableRenderLoop = _first.setEnableRenderLoop;
+    putImageData = _first.putImageData; initCanvas = _first.initCanvas; getCanvasWidth = _first.getCanvasWidth;
+    getCanvasHeight = _first.getCanvasHeight; getDevicePixelRatio = _first.getDevicePixelRatio;
+    getBaseUrl = _first.getBaseUrl; requestAnimationFrameLegacy = _first.requestAnimationFrameLegacy;
+    applyGestureStyle = _first.applyGestureStyle; a11yAttach = _first.a11yAttach;
+    watchSystemTheme = _first.watchSystemTheme; watchWindowFocus = _first.watchWindowFocus;
+    a11yDetach = _first.a11yDetach; a11yUpdate = _first.a11yUpdate; a11yFocus = _first.a11yFocus;
+    a11yLive = _first.a11yLive; showLoader = _first.showLoader; hideLoader = _first.hideLoader;
+    showError = _first.showError; setModuleExports = _first.setModuleExports;
+    textInputAttach = _first.textInputAttach; textInputFocus = _first.textInputFocus;
+} else {
+    globalThis.__drawnuiWeb = {
+        initGL, initRaster, deinit, requestAnimationFrame, setEnableRenderLoop, putImageData, initCanvas,
+        getCanvasWidth, getCanvasHeight, getDevicePixelRatio, getBaseUrl, requestAnimationFrameLegacy,
+        applyGestureStyle, a11yAttach, watchSystemTheme, watchWindowFocus, a11yDetach, a11yUpdate, a11yFocus,
+        a11yLive, showLoader, hideLoader, showError, setModuleExports, textInputAttach, textInputFocus,
+    };
+}

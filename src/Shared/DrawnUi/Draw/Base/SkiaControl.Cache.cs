@@ -187,6 +187,35 @@ public partial class SkiaControl
     /// control's area and redraws the child clipped to it.
     /// </summary>
     /// <param name="ctx"></param>
+    /// <summary>
+    /// A changed child's areas: where it is now and, when it moved since, where it was last drawn (moved by Left /
+    /// Top, its old place still holds its pixels).
+    /// </summary>
+    static void AddChildAreas(List<SKRect> areas, SkiaControl child)
+    {
+        var now = child.GetTransformedDirtyBounds();
+        areas.Add(now);
+        if (child.TryGetDrawnDirtyBounds(out var drawn) && drawn != now && !drawn.IsEmpty)
+            areas.Add(drawn);
+    }
+
+    static bool ChildAreasIntersect(SkiaControl child, SKRect bounds)
+    {
+        if (child.GetTransformedDirtyBounds().IntersectsWith(bounds))
+            return true;
+        return child.TryGetDrawnDirtyBounds(out var drawn) && drawn.IntersectsWith(bounds);
+    }
+
+    static bool IntersectsAny(SKRect[] areas, SKRect bounds)
+    {
+        if (areas == null)
+            return false;
+        foreach (var area in areas)
+            if (area.IntersectsWith(bounds))
+                return true;
+        return false;
+    }
+
     protected virtual void SetupRenderingWithComposition(DrawingContext ctx)
     {
         CompositionClip = null;
@@ -213,8 +242,12 @@ public partial class SkiaControl
                 var changed = new List<SkiaControl>();
                 var deep = false;
 
+                SKRect[] removedAreas = null;
                 lock (DirtyChildrenTracker)
                 {
+                    if (_compositeRemovedAreas is { Count: > 0 })
+                        removedAreas = _compositeRemovedAreas.ToArray();
+
                     var asSpans = CollectionsMarshal.AsSpan(DirtyChildrenTracker.GetList());
                     foreach (var item in asSpans)
                     {
@@ -231,12 +264,17 @@ public partial class SkiaControl
                         {
                             areas.RemoveRange(areasBefore, areas.Count - areasBefore);
                             changed.RemoveRange(changedBefore, changed.Count - changedBefore);
-                            areas.Add(item.GetTransformedDirtyBounds());
+                            AddChildAreas(areas, item);
                         }
                     }
                 }
 
                 var asSpan = RenderTree.AsSpans();
+                if (removedAreas != null)
+                {
+                    // where removed children were drawn is erased too, wherever those objects are now
+                    areas.AddRange(removedAreas);
+                }
                 if (deep)
                 {
                     // a sibling over the erased areas is redrawn too, inside them only
@@ -278,9 +316,9 @@ public partial class SkiaControl
                     {
                         //use full transform-aware bounds (handles rotation, scale, skew, perspective)
                         if (!DirtyChildrenInternal.Contains(cell.Control) &&
-                            DirtyChildrenInternal.Any(dirtyChild =>
-                                dirtyChild.GetTransformedDirtyBounds()
-                                    .IntersectsWith(cell.Control.GetTransformedDirtyBounds())))
+                            (DirtyChildrenInternal.Any(dirtyChild =>
+                                 ChildAreasIntersect(dirtyChild, cell.Control.GetTransformedDirtyBounds()))
+                             || IntersectsAny(removedAreas, cell.Control.GetTransformedDirtyBounds())))
                         {
                             DirtyChildrenInternal.Add(cell.Control);
                         }
@@ -289,7 +327,9 @@ public partial class SkiaControl
                     // the overlapping siblings are erased and redrawn whole as well
                     areas.Clear();
                     foreach (var dirtyChild in DirtyChildrenInternal)
-                        areas.Add(dirtyChild.GetTransformedDirtyBounds());
+                        AddChildAreas(areas, dirtyChild);
+                    if (removedAreas != null)
+                        areas.AddRange(removedAreas);
                 }
 
                 if (deep)
@@ -354,8 +394,7 @@ public partial class SkiaControl
     /// <summary>
     /// Cache sharing is supported for the Operations, Image and GPU cache types.
     /// </summary>
-    private bool IsSharedCacheEligible => UsingCacheType == SkiaCacheType.Operations ||
-                                          UsingCacheType == SkiaCacheType.Image || UsingCacheType == SkiaCacheType.GPU;
+    private bool IsSharedCacheEligible => UsingCacheType is SkiaCacheType.Operations or SkiaCacheType.Image or SkiaCacheType.GPU;
 
     public static readonly BindableProperty AutoCacheProperty = BindableProperty.Create(nameof(AutoCache),
         typeof(bool),
@@ -376,14 +415,17 @@ public partial class SkiaControl
         typeof(SkiaCacheType),
         typeof(SkiaControl),
         SkiaCacheType.None,
-        propertyChanged: NeedDraw);
+        propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._useCache = (SkiaCacheType)n; NeedDraw(b, o, n); });
+
+    // the property read on every draw keeps its value here too (a bindable read is a lookup)
+    SkiaCacheType _useCache = SkiaCacheType.None;
 
     /// <summary>
     /// Never reuse the rendering result. Actually true for ScrollLooped SkiaLayout viewport container to redraw its content several times for creating a looped aspect.
     /// </summary>
     public SkiaCacheType UseCache
     {
-        get { return (SkiaCacheType)GetValue(UseCacheProperty); }
+        get { return _useCache; }
         set { SetValue(UseCacheProperty, value); }
     }
 
@@ -391,14 +433,16 @@ public partial class SkiaControl
         typeof(bool),
         typeof(SkiaControl),
         true,
-        propertyChanged: NeedDraw);
+        propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._allowCaching = (bool)n; NeedDraw(b, o, n); });
+
+    bool _allowCaching = true;
 
     /// <summary>
     /// Might want to set this to False for certain cases.
     /// </summary>
     public bool AllowCaching
     {
-        get { return (bool)GetValue(AllowCachingProperty); }
+        get { return _allowCaching; }
         set { SetValue(AllowCachingProperty, value); }
     }
 
@@ -747,7 +791,7 @@ public partial class SkiaControl
 
     public bool IsCacheGPU
     {
-        get { return UsingCacheType == SkiaCacheType.GPU || UsingCacheType == SkiaCacheType.ImageCompositeGPU; }
+        get { return UsingCacheType is SkiaCacheType.GPU or SkiaCacheType.ImageCompositeGPU; }
     }
 
     public virtual SkiaCacheType UsingCacheType
@@ -759,48 +803,51 @@ public partial class SkiaControl
                 return SkiaCacheType.None;
             }
 
+            // read once: a bindable read takes a lock and a lookup, and this runs many times per control and frame
+            var useCache = UseCache;
+
             if (CanUseCacheDoubleBuffering && Super.Multithreaded)
             {
                 //if (Parent is SkiaControl)
                 {
-                    if (UseCache == SkiaCacheType.None)
+                    if (useCache == SkiaCacheType.None)
                         return SkiaCacheType.OperationsFull;
                 }
 
-                if (UseCache == SkiaCacheType.ImageDoubleBuffered || UseCache == SkiaCacheType.GPU)
+                if (useCache == SkiaCacheType.ImageDoubleBuffered || useCache == SkiaCacheType.GPU)
                     return SkiaCacheType.Image;
 
-                if (UseCache == SkiaCacheType.ImageComposite || UseCache == SkiaCacheType.ImageCompositeGPU)
+                if (useCache == SkiaCacheType.ImageComposite || useCache == SkiaCacheType.ImageCompositeGPU)
                     return SkiaCacheType.Operations;
             }
             // FIX: removed ImageDoubleBuffered->Image downgrade in the non-multithreaded else branch.
             // It defeated async double-buffering (Super.Multithreaded is false by default) -> recycled cells
             // rebaked synchronously on the render thread = scroll lag. (regression from "improvements for cells")
             //else
-            //if (UseCache == SkiaCacheType.ImageDoubleBuffered)
+            //if (useCache == SkiaCacheType.ImageDoubleBuffered)
             //    return SkiaCacheType.Image;
 
-            if (UseCache == SkiaCacheType.ImageDoubleBuffered && !CanUseCacheDoubleBuffering)
+            if (useCache == SkiaCacheType.ImageDoubleBuffered && !CanUseCacheDoubleBuffering)
                 return SkiaCacheType.Image;
 
-            if (UseCache == SkiaCacheType.Auto)
+            if (useCache == SkiaCacheType.Auto)
                 return SkiaCacheType.Image;
 
-            if (UseCache == SkiaCacheType.GPU && !Super.GpuCacheEnabled)
+            if (useCache == SkiaCacheType.GPU && !Super.GpuCacheEnabled)
                 return SkiaCacheType.Image;
 
-            if (UseCache == SkiaCacheType.ImageCompositeGPU && !Super.GpuCacheEnabled)
+            if (useCache == SkiaCacheType.ImageCompositeGPU && !Super.GpuCacheEnabled)
                 return SkiaCacheType.ImageComposite;
 
             //if (EffectPostRenderer != null 
-            //    && (UseCache == SkiaCacheType.None || UseCache == SkiaCacheType.Operations))
+            //    && (useCache == SkiaCacheType.None || useCache == SkiaCacheType.Operations))
             //    return SkiaCacheType.Image;
 
-            if (UseCache == SkiaCacheType.None && CanUseCacheDoubleBuffering && Super.Multithreaded &&
+            if (useCache == SkiaCacheType.None && CanUseCacheDoubleBuffering && Super.Multithreaded &&
                 Parent is SkiaControl)
                 return SkiaCacheType.Operations;
 
-            return UseCache;
+            return useCache;
         }
     }
 
@@ -808,7 +855,7 @@ public partial class SkiaControl
     {
         get
         {
-            return UsingCacheType == SkiaCacheType.ImageComposite || UsingCacheType == SkiaCacheType.ImageCompositeGPU;
+            return UsingCacheType is SkiaCacheType.ImageComposite or SkiaCacheType.ImageCompositeGPU;
         }
     }
 
@@ -1096,7 +1143,7 @@ public partial class SkiaControl
             return false; // background bake owns painting this control right now — do not race it
 
         CreateRenderingObjectAndPaint(context, recordArea,
-            (ctx) => { PaintWithEffects(ctx.WithDestination(DrawingRect)); });
+            _paintAtDrawingRect ??= ctx => PaintWithEffects(ctx.WithDestination(DrawingRect)));
 
         return RenderObject != null;
     }
@@ -1477,7 +1524,7 @@ public partial class SkiaControl
 
                 // drains the control's own action queue; per-control semaphore keeps this safe
                 // against a concurrent pump for the same control on another worker
-                control.ProcessOffscreenCacheRenderingAsync().GetAwaiter().GetResult();
+                control.ProcessOffscreenCacheRendering();
             }
             catch (Exception e)
             {
@@ -1507,6 +1554,23 @@ public partial class SkiaControl
     }
 
     protected SemaphoreSlim semaphoreOffsecreenProcess = new(1);
+
+    /// <summary>
+    /// The bake threads' pump: waits for the semaphore on the calling thread. An async wait for a control another bake
+    /// thread is pumping ends on the thread pool, so a busy pool held every bake thread.
+    /// </summary>
+    void ProcessOffscreenCacheRendering()
+    {
+        semaphoreOffsecreenProcess.Wait();
+        try
+        {
+            DrainOffscreenQueueInline();
+        }
+        finally
+        {
+            semaphoreOffsecreenProcess.Release();
+        }
+    }
 
     public async Task ProcessOffscreenCacheRenderingAsync()
     {
@@ -1708,6 +1772,9 @@ public partial class SkiaControl
     }
 
 
+    // The paint callbacks of a record, made once per control: a record does not allocate a new delegate.
+    Action<DrawingContext> _paintAtDrawingRect, _recordPaint;
+
     public void PrepareOffscreenCache(DrawingContext clone, SKRect recordArea)
     {
         //use cloned struct in another thread
@@ -1758,7 +1825,7 @@ public partial class SkiaControl
             else
             {
                 CreateRenderingObjectAndPaint(painting, recordArea,
-                    (ctx) => { PaintWithEffects(ctx.WithDestination(DrawingRect)); });
+                    _paintAtDrawingRect ??= ctx => PaintWithEffects(ctx.WithDestination(DrawingRect)));
             }
 
             return false;
@@ -1796,7 +1863,7 @@ public partial class SkiaControl
                 if (RenderObject == null || !CheckCachedObjectValid(RenderObject, recordArea, clone.Context))
                 {
                     cache = CreateRenderingObject(clone, recordArea, RenderObjectPrevious, UsingCacheType,
-                        (ctx) => { PaintWithEffects(ctx); });
+                        _recordPaint ??= PaintWithEffects);
                 }
 
                 node.Cache = cache;

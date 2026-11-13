@@ -540,7 +540,6 @@ namespace DrawnUi.Draw
                     canvas.DrawRect(rectDraw, PaintDeco);
                 }
 
-                bool baseLineCalculated = false;
                 int lineNb = 0;
 
                 TextLine[] processLines = (lines is TextLine[] arr) ? arr : lines.ToArray();
@@ -570,47 +569,46 @@ namespace DrawnUi.Draw
                 {
                     var line = processLines[lineIndex];
 
-                    if (!baseLineCalculated)
+                    // the line box: every line as tall as the tallest one (LineHeightUniform), or as its own fonts;
+                    // the baseline at its bottom minus the descent, LineHeight's extra space split above and below
+                    float lineHeight, lineDescent;
+                    if (LineHeightUniform)
                     {
-                        float PositionBaseline(float calcBaselineY)
-                        {
-                            float diff = (float)(rectDraw.Height - ContentSize.Pixels.Height);
-                            if (VerticalTextAlignment == TextAlignment.End && diff > 0)
-                            {
-                                calcBaselineY += diff;
-                            }
-                            else if (VerticalTextAlignment == TextAlignment.Center && diff > 0)
-                            {
-                                calcBaselineY += diff / 2f;
-                            }
+                        lineHeight = MeasuredLineHeight;
+                        lineDescent = FontMetrics.Descent;
+                    }
+                    else
+                    {
+                        lineHeight = line.Height;
+                        lineDescent = line.Descent;
+                    }
 
-                            return calcBaselineY;
+                    var add = lineHeight - lineHeight / LineHeight;
+                    var move = lineHeight - add / 2.0;
+                    var lineMoveToBaseline = (float)(move - lineDescent - strokeOffset - shadowOffset);
+
+                    if (lineNb == 0)
+                    {
+                        baselineY = rectDraw.Top + lineMoveToBaseline;
+                        float diff = (float)(rectDraw.Height - ContentSize.Pixels.Height);
+                        if (VerticalTextAlignment == TextAlignment.End && diff > 0)
+                        {
+                            baselineY += diff;
                         }
-
-                        if (!LineHeightUniform)
+                        else if (VerticalTextAlignment == TextAlignment.Center && diff > 0)
                         {
-                            useLineHeight = line.Height;
-                            moveToBaseline = useLineHeight - FontMetrics.Descent - strokeOffset - shadowOffset;
-                            if (lineNb == 0)
-                            {
-                                baselineY += PositionBaseline(rectDraw.Top + moveToBaseline);
-                            }
-                            else
-                            {
-                                baselineY += PositionBaseline(moveToBaseline) + FontMetrics.Descent;
-                            }
-                        }
-                        else
-                        {
-                            useLineHeight = MeasuredLineHeight;
-
-                            var add = useLineHeight - useLineHeight / LineHeight;
-                            var move = useLineHeight - add / 2.0;
-                            moveToBaseline = (float)(move - FontMetrics.Descent - strokeOffset - shadowOffset);
-                            baselineY = PositionBaseline(moveToBaseline + rectDraw.Top);
-                            baseLineCalculated = true;
+                            baselineY += diff / 2f;
                         }
                     }
+                    else
+                    {
+                        // the previous line moved baselineY by its own height and spacing: from its baseline to this line's
+                        // top plus its own baseline offset
+                        baselineY += lineMoveToBaseline - moveToBaseline;
+                    }
+
+                    moveToBaseline = lineMoveToBaseline;
+                    useLineHeight = lineHeight;
 
                     lineNb++;
 
@@ -773,7 +771,7 @@ namespace DrawnUi.Draw
                             if (lineSpan.Span != null && lineSpan.Span.BackgroundColor != Colors.Transparent)
                             {
                                 // the glyph path below draws it too: a highlighted Arabic or emoji span keeps its highlight
-                                float bgBottom = baselineY + FontMetrics.Descent;
+                                float bgBottom = baselineY + lineDescent;
                                 rectPrecalculatedSpanBounds = new SKRect(
                                     alignedLineDrawingStartX + offsetX,
                                     bgBottom - lineSpan.Size.Height,
@@ -829,7 +827,7 @@ namespace DrawnUi.Draw
                                 charIndex = 0;
 
                                 float bgHeight = lineSpan.Size.Height;
-                                float bgBottom = baselineY + FontMetrics.Descent;
+                                float bgBottom = baselineY + lineDescent;
                                 float bgTop = bgBottom - bgHeight;
                                 rectPrecalculatedSpanBounds = new SKRect(
                                     alignedLineDrawingStartX + offsetX,
@@ -881,7 +879,7 @@ namespace DrawnUi.Draw
                         if (lineSpan.Span != null)
                         {
                             float srHeight = lineSpan.Size.Height;
-                            float srBottom = baselineY + FontMetrics.Descent;
+                            float srBottom = baselineY + lineDescent;
                             float srTop = srBottom - srHeight;
                             var lineSpanRect = new SKRect(
                                 alignedLineDrawingStartX + offsetX - (lineSpan.Size.Width + offsetAdjustmentX),
@@ -899,10 +897,7 @@ namespace DrawnUi.Draw
                         break;
                     }
 
-                    if (LineHeightUniform)
-                        baselineY += (float)(useLineHeight + GetSpaceBetweenLines(useLineHeight));
-                    else
-                        baselineY += (float)GetSpaceBetweenLines(useLineHeight);
+                    baselineY += (float)(useLineHeight + GetSpaceBetweenLines(useLineHeight));
                 }
             }
         }
@@ -1421,29 +1416,18 @@ namespace DrawnUi.Draw
                         textWidthPixels = maxLineWidth;
 
                         // Ensure LineHeightPixels is the minimum line height
+                        float usedLineHeight =
+                            (LineHeightPixels > maxLineHeight) ? LineHeightPixels : maxLineHeight;
+                        MeasuredLineHeight = usedLineHeight;
                         if (LineHeightUniform)
                         {
-                            float usedLineHeight =
-                                (LineHeightPixels > maxLineHeight) ? LineHeightPixels : maxLineHeight;
-                            MeasuredLineHeight = usedLineHeight;
                             textHeightPixels = (float)(usedLineHeight * LinesCount
                                                        + (LinesCount - 1) * GetSpaceBetweenLines(usedLineHeight) +
                                                        addParagraphSpacings);
                         }
                         else
                         {
-                            MeasuredLineHeight = LineHeightPixels;
-                            textHeightPixels = 0f;
-                            for (int i = 0; i < LinesCount; i++)
-                            {
-                                var lineHeight = Lines[i].Height;
-                                if (LineHeightPixels > lineHeight)
-                                    lineHeight = LineHeightPixels;
-
-                                textHeightPixels += (float)(lineHeight + addParagraphSpacings);
-                                if (i < LinesCount - 1)
-                                    textHeightPixels += (float)GetSpaceBetweenLines(lineHeight);
-                            }
+                            textHeightPixels = GetLinesHeightPixels(LinesCount);
                         }
 
                         ContentSize = ScaledSize.FromPixels(textWidthPixels, textHeightPixels, scale);
@@ -1778,14 +1762,6 @@ namespace DrawnUi.Draw
                 return (0.0f, null);
 
             var paintTypeface = font.Typeface ?? SkiaFontManager.DefaultTypeface;
-            var glyphSpacing = (float)(scale * (CharacterSpacing - 1)); // part of the measured width, so part of the cache key
-
-            if (GlyphMeasurementCache.TryGetValue(paintTypeface, font, needsShaping, glyphSpacing, text, out var cachedResult))
-            {
-                if (!NeedsGlyphPositions || cachedResult.Glyphs != null)
-                    return cachedResult;
-                // have a width-only cache entry but glyphs needed — fall through to full measurement
-            }
 
             var glyphs = GetGlyphs(text, paintTypeface);
 
@@ -1804,7 +1780,6 @@ namespace DrawnUi.Draw
                     : GetShapedText(Shaper, text, 0, 0, paint, font);
                 if (result == null)
                 {
-                    GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, 0f, null);
                     return (0.0f, null);
                 }
 
@@ -1816,12 +1791,10 @@ namespace DrawnUi.Draw
                 // so the cursor stays stuck (e.g. after inserting "play😉"). Build them here.
                 if (!NeedsGlyphPositions)
                 {
-                    GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, measured.Width, null);
                     return (measured.Width, null);
                 }
 
                 var shapedGlyphs = BuildGlyphsFromShaping(result, text, pens);
-                GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, measured.Width, shapedGlyphs);
                 return (measured.Width, shapedGlyphs);
             }
 
@@ -1861,7 +1834,6 @@ namespace DrawnUi.Draw
                 }
 
                 var arr = positions.ToArray();
-                GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, value, arr);
                 return (value, arr);
             }
 
@@ -1902,13 +1874,11 @@ namespace DrawnUi.Draw
 
                 var finalWidth = value - spacingModifier;
                 var arr2 = positions.ToArray();
-                GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, finalWidth, arr2);
                 return (finalWidth, arr2);
             }
 
             var simpleValue = MeasureTextWidthWithAdvance(paint, font, text);
 
-            GlyphMeasurementCache.Add(paintTypeface, font, needsShaping, glyphSpacing, text, simpleValue, null);
             return (simpleValue, null);
         }
 
@@ -1937,15 +1907,16 @@ namespace DrawnUi.Draw
                     var fitWidth = maxWidth - firstLineOffset.X;
                     if (drawnMeasured.Pixels.Width > fitWidth)
                     {
-                        AddEmptyLine(result, span, drawnMeasured.Pixels.Height,
-                            MeasuredLineHeight,
+                        AddEmptyLine(result, span, null, drawnMeasured.Pixels.Height,
                             firstLineOffset.X == 0, needsShaping);
                     }
 
                     result.Add(new TextLine()
                     {
                         Width = drawnMeasured.Pixels.Width,
-                        Height = drawnMeasured.Pixels.Height,
+                        Height = Math.Max(drawnMeasured.Pixels.Height, LineHeightPixels),
+                        Ascent = -FontMetrics.Ascent,
+                        Descent = FontMetrics.Descent,
                         Value = span.TextFiltered,
                         Spans = new()
                         {
@@ -1968,8 +1939,6 @@ namespace DrawnUi.Draw
             bool isCut = false;
             float totalHeight = 0;
             var countLines = 0;
-
-            float lineMaxHeight = 0f;
 
             bool offsetFirstLine = false;
             var limitWidth = maxWidth;
@@ -2071,16 +2040,17 @@ namespace DrawnUi.Draw
                         var smartMeasure = MeasureLineGlyphs(paint, font, adding, needsShaping, scale);
 
                         var widthBlock = smartMeasure.Width; // unrounded: the same line widths as the other engines; drawing still snaps to pixels
+                        // the span and the label's own font share the baseline: the line takes the larger ascent and
+                        // the larger descent, rounded once
                         var spanMetrics = font.Metrics;
-                        var spanLineHeight =
-                            (float)Math.Round((-spanMetrics.Ascent + spanMetrics.Descent) * LineHeight);
-                        var heightBlock = spanLineHeight > LineHeightPixels ? spanLineHeight : LineHeightPixels;
+                        var lineAscent = Math.Max(-spanMetrics.Ascent, -FontMetrics.Ascent);
+                        var lineDescent = Math.Max(spanMetrics.Descent, FontMetrics.Descent);
+                        var heightBlock = TextLineHeight(lineAscent, lineDescent);
 
                         if (StrokeWidth > 0 && StrokeColor != TransparentColor)
                         {
                             float additionalWidth = (float)(StrokeWidth * 2 * RenderingScale);
                             widthBlock += additionalWidth * 2;
-                            heightBlock += additionalWidth * 2;
                         }
 
                         if (DropShadowSize > 0 && DropShadowColor != TransparentColor)
@@ -2088,9 +2058,6 @@ namespace DrawnUi.Draw
                             float additionalWidth =
                                 (float)(DropShadowSize * RenderingScale + DropShadowOffsetX * RenderingScale);
                             widthBlock += additionalWidth;
-                            float additionalHeight =
-                                (float)(DropShadowSize * RenderingScale + DropShadowOffsetY * RenderingScale);
-                            heightBlock += additionalHeight;
                         }
 
                         // the outline and shadow room belongs to the line, once: a span advances by its glyphs, so
@@ -2110,6 +2077,8 @@ namespace DrawnUi.Draw
                             IsNewParagraph = assingnIsNewParagraph,
                             Width = widthBlock,
                             Height = heightBlock,
+                            Ascent = lineAscent,
+                            Descent = lineDescent,
                             Spans = new() { chunk }
                         };
 
@@ -2118,8 +2087,6 @@ namespace DrawnUi.Draw
                             result[^1].IsLastInParagraph = addLine.IsNewParagraph;
                         }
 
-                        if (addLine.Height > lineMaxHeight)
-                            lineMaxHeight = addLine.Height;
                         result.Add(addLine);
 
                         if (assingnIsNewParagraph && result.Count > 1)
@@ -2173,11 +2140,8 @@ namespace DrawnUi.Draw
 
                 void AddEmptyLineInternal()
                 {
-                    totalHeight = AddEmptyLine(result, span, totalHeight, MeasuredLineHeight,
+                    totalHeight = AddEmptyLine(result, span, font, totalHeight,
                         isNewParagraph, needsShaping);
-
-                    if (MeasuredLineHeight > lineMaxHeight)
-                        lineMaxHeight = MeasuredLineHeight;
 
                     isNewParagraph = false;
                     width = 0;
@@ -2691,6 +2655,20 @@ namespace DrawnUi.Draw
             }
         }
 
+        /// <summary>
+        /// A text line's height in pixels from the largest ascent and descent of its fonts: times LineHeight, rounded
+        /// once, plus the outline and shadow room.
+        /// </summary>
+        float TextLineHeight(float ascent, float descent)
+        {
+            var height = (float)Math.Round((ascent + descent) * LineHeight);
+            if (StrokeWidth > 0 && StrokeColor != TransparentColor)
+                height += (float)(StrokeWidth * 2 * RenderingScale) * 2;
+            if (DropShadowSize > 0 && DropShadowColor != TransparentColor)
+                height += (float)(DropShadowSize * RenderingScale + DropShadowOffsetY * RenderingScale);
+            return height;
+        }
+
         public void MergeSpansForLines(
                 TextSpan span,
                 TextLine line,
@@ -2713,8 +2691,12 @@ namespace DrawnUi.Draw
                 line.Width = previousSpanLastLine.Width;
             }
 
-            if (previousSpanLastLine.Height > line.Height)
-                line.Height = previousSpanLastLine.Height;
+            // the spans share one baseline: the larger ascent and the larger descent, rounded once (a drawn span keeps
+            // its own height)
+            line.Ascent = Math.Max(line.Ascent, previousSpanLastLine.Ascent);
+            line.Descent = Math.Max(line.Descent, previousSpanLastLine.Descent);
+            line.Height = Math.Max(Math.Max(line.Height, previousSpanLastLine.Height),
+                TextLineHeight(line.Ascent, line.Descent));
 
             line.Spans = spans;
 
@@ -3297,15 +3279,24 @@ namespace DrawnUi.Draw
         /// </summary>
         /// <param name="result"></param>
         /// <param name="span"></param>
+        /// <param name="font">the span's font, null for the label's own: the line is as tall as the larger of them</param>
         /// <param name="totalHeight"></param>
-        /// <param name="heightBlock"></param>
         /// <param name="isNewParagraph"></param>
         /// <param name="needsShaping"></param>
-        float AddEmptyLine(List<TextLine> result, TextSpan span,
-            float totalHeight, float heightBlock, bool isNewParagraph, bool needsShaping)
+        float AddEmptyLine(List<TextLine> result, TextSpan span, SKFont font,
+            float totalHeight, bool isNewParagraph, bool needsShaping)
         {
             bool assingnIsNewParagraph = isNewParagraph;
             var widthBlock = 0;
+            var ascent = -FontMetrics.Ascent;
+            var descent = FontMetrics.Descent;
+            if (font != null)
+            {
+                var metrics = font.Metrics;
+                ascent = Math.Max(ascent, -metrics.Ascent);
+                descent = Math.Max(descent, metrics.Descent);
+            }
+            var heightBlock = TextLineHeight(ascent, descent);
 
             var chunk = new LineSpan()
             {
@@ -3322,7 +3313,9 @@ namespace DrawnUi.Draw
                 IsNewParagraph = assingnIsNewParagraph,
                 Width = widthBlock,
                 Spans = new() { chunk },
-                Height = heightBlock
+                Height = heightBlock,
+                Ascent = ascent,
+                Descent = descent
             };
 
             result.Add(addLine);
@@ -3342,6 +3335,29 @@ namespace DrawnUi.Draw
         public double SpaceBetweenParagraphs
         {
             get { return LineHeightWithSpacing * ParagraphSpacing; }
+        }
+
+        /// <summary>
+        /// Pixels the first <paramref name="count"/> lines take as drawn when each line has its own height
+        /// (<see cref="LineHeightUniform"/> false): their heights, the space between them and the paragraph spacing
+        /// above each paragraph after the first.
+        /// </summary>
+        public float GetLinesHeightPixels(int count)
+        {
+            var lines = Lines;
+            if (lines == null)
+                return 0;
+            count = Math.Min(count, lines.Length);
+            double height = 0;
+            for (int i = 0; i < count; i++)
+            {
+                height += lines[i].Height;
+                if (i > 0 && lines[i].IsNewParagraph)
+                    height += SpaceBetweenParagraphs;
+                if (i < count - 1)
+                    height += GetSpaceBetweenLines(lines[i].Height);
+            }
+            return (float)height;
         }
 
         public double GetSpaceBetweenLines(float lineHeight)
@@ -4413,7 +4429,9 @@ namespace DrawnUi.Draw
 
         protected override string? GetDefaultAccessibilityRole() => DefaultAccessibilityRole;
 
-        protected override string? DefaultAccessibilityLabel() => TextInternal;
+        /// <summary>What a screen reader reads: the spans' text joined when the label is made of spans, else its text.</summary>
+        protected override string? DefaultAccessibilityLabel() =>
+            Spans.Count > 0 ? string.Concat(Spans.Select(span => span.Text)) : TextInternal;
 
         public static readonly BindableProperty FallbackCharacterProperty = BindableProperty.Create(
             nameof(FallbackCharacter),
@@ -4445,10 +4463,11 @@ namespace DrawnUi.Draw
 
         public static readonly BindableProperty LineHeightUniformProperty = BindableProperty.Create(
             nameof(LineHeightUniform), typeof(bool), typeof(SkiaLabel),
-            true, propertyChanged: NeedInvalidateMeasure);
+            false, propertyChanged: NeedInvalidateMeasure);
 
         /// <summary>
-        /// Should we draw with the maximum line height when lines have different height.
+        /// Draw every line with the tallest line's height. Default is false: each line is as tall as its own content,
+        /// the largest ascent plus the largest descent of the fonts on it, as in browsers.
         /// </summary>
         public bool LineHeightUniform
         {
@@ -5147,7 +5166,8 @@ namespace DrawnUi.Draw
                         return null; // touch: a long press selects, a drag keeps scrolling
 
                     var index = IndexAt(point);
-                    var now = Environment.TickCount64;
+                    // when the click happened (stamped at arrival), not when a frame got to process it
+                    var now = args.Event.Timestamp.Ticks / TimeSpan.TicksPerMillisecond;
                     var second = now - _lastClickMs < 450
                                  && SKPoint.Distance(point, _lastClickPoint) < 8 * RenderingScale;
                     _lastClickMs = second ? 0 : now;

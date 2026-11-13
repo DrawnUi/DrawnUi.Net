@@ -10,10 +10,35 @@ const observers = new WeakMap();
 let skiaCanvasPatch = null;
 let skiaHtmlCanvas = null;
 
+// Skia asks for the GPU's name (UNMASKED_RENDERER_WEBGL) when it makes its GPU context: a valid query only once this
+// extension is enabled, else the browser logs INVALID_ENUM (an error in WebKit). Enabled on every WebGL context
+// SkiaSharp makes, on one it made already, and again on a restored context.
+function enableRendererInfo(gl) {
+    try {
+        if (gl && gl.getSupportedExtensions()?.includes('WEBGL_debug_renderer_info'))
+            gl.getExtension('WEBGL_debug_renderer_info');
+    } catch { /* no such extension here: Skia's query stays as it was */ }
+}
+
+function patchRendererInfo(SKHtmlCanvas) {
+    if (!SKHtmlCanvas || SKHtmlCanvas.createWebGLContext?.drawnUiRendererInfo) return;
+    const original = SKHtmlCanvas.createWebGLContext;
+    const patched = function (htmlCanvas) {
+        const ctx = original.call(this, htmlCanvas);
+        if (ctx) enableRendererInfo(SKHtmlCanvas.getGL().getContext(ctx)?.GLctx);
+        return ctx;
+    };
+    patched.drawnUiRendererInfo = true;
+    SKHtmlCanvas.createWebGLContext = patched;
+    for (const canvas of document.querySelectorAll('canvas'))
+        enableRendererInfo(canvas.GLctxObject?.GLctx);
+}
+
 function patchSkiaCanvasResize() {
     skiaCanvasPatch ??= import(new URL('./_content/SkiaSharp.Views.Blazor/SKHtmlCanvas.js', document.baseURI).href)
         .then(({ SKHtmlCanvas }) => {
             skiaHtmlCanvas = SKHtmlCanvas;
+            patchRendererInfo(SKHtmlCanvas);
             const proto = SKHtmlCanvas?.prototype;
             if (!proto || proto.requestAnimationFrame.drawnUiResizePatch) return;
             const original = proto.requestAnimationFrame;
@@ -38,6 +63,94 @@ function patchSkiaCanvasResize() {
         })
         .catch(() => { /* SkiaSharp not present or its layout changed: keep its own behavior */ });
     return skiaCanvasPatch;
+}
+
+// SkiaSharp.Views.Blazor sizes the canvas bitmap from clientWidth (whole CSS pixels) times the device pixel ratio,
+// truncated. At fractional display scales (1.25, 1.5) that is often one pixel off the device pixels the canvas covers,
+// so the browser resamples the whole bitmap and every glyph goes soft. Its size watcher now reports the CSS size that,
+// times the ratio and truncated, is exactly the canvas's device-pixel box (ResizeObserver devicePixelContentBoxSize;
+// where the browser lacks it, Safari, the fractional CSS size times the ratio, rounded). Where devicePixelRatio and
+// the box disagree by more than 2% (DPR emulation, DevTools device mode, some zoom levels) the ratio SkiaSharp scales
+// with (its DpiWatcher) is the box over the CSS size, so the layout keeps the page's width.
+let skiaSizePatch = null;
+
+function patchSkiaSizeWatcher() {
+    skiaSizePatch ??= Promise.all([
+        import(new URL('./_content/SkiaSharp.Views.Blazor/SizeWatcher.js', document.baseURI).href),
+        import(new URL('./_content/SkiaSharp.Views.Blazor/DpiWatcher.js', document.baseURI).href),
+    ])
+        .then(([{ SizeWatcher }, { DpiWatcher }]) => {
+            if (!SizeWatcher || !DpiWatcher || SizeWatcher.drawnUiDevicePixels) return;
+            SizeWatcher.drawnUiDevicePixels = true;
+
+            // the ratio of the last canvas reported; devicePixelRatio until a box disagrees with it
+            let pixelRatio = null;
+            const currentRatio = () => pixelRatio ?? (window.devicePixelRatio || 1);
+            DpiWatcher.getDpi = currentRatio;
+            DpiWatcher.update = () => {
+                if (!DpiWatcher.callback) return;
+                const current = currentRatio(), last = DpiWatcher.lastDpi;
+                DpiWatcher.lastDpi = current;
+                if (Math.abs(last - current) > 0.001) {
+                    if (typeof DpiWatcher.callback === 'function') DpiWatcher.callback(last, current);
+                    else DpiWatcher.callback.invokeMethod('Invoke', last, current);
+                }
+            };
+            DpiWatcher.start = (callback) => {
+                DpiWatcher.lastDpi = currentRatio();
+                DpiWatcher.timerId = window.setInterval(DpiWatcher.update, 1000);
+                DpiWatcher.callback = callback;
+                return DpiWatcher.lastDpi;
+            };
+            if (DpiWatcher.timerId) { // already started with the original update: poll with this one
+                window.clearInterval(DpiWatcher.timerId);
+                DpiWatcher.timerId = window.setInterval(DpiWatcher.update, 1000);
+            }
+
+            const invoke = (element) => {
+                const instance = element?.SizeWatcher;
+                if (!instance || !instance.callback) return;
+                const rect = element.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                let ratio = dpr;
+                let width = element.drawnUiDeviceBox?.[0], height = element.drawnUiDeviceBox?.[1];
+                if (!width || !height) {
+                    width = Math.round(rect.width * ratio);
+                    height = Math.round(rect.height * ratio);
+                } else if (rect.width > 0 && Math.abs(width / rect.width - dpr) > dpr * 0.02) {
+                    ratio = width / rect.width;
+                }
+                pixelRatio = ratio === dpr ? null : ratio;
+                DpiWatcher.update(); // the new ratio first, then the size, so the bitmap is the box
+                const cssWidth = (width + 0.01) / ratio, cssHeight = (height + 0.01) / ratio;
+                if (typeof instance.callback === 'function') instance.callback(cssWidth, cssHeight);
+                else instance.callback.invokeMethod('Invoke', cssWidth, cssHeight);
+            };
+
+            const observer = new ResizeObserver((entries) => {
+                for (const entry of entries) {
+                    const box = entry.devicePixelContentBoxSize?.[0];
+                    entry.target.drawnUiDeviceBox = box ? [box.inlineSize, box.blockSize] : null;
+                    invoke(entry.target);
+                }
+            });
+            const observe = (element) => {
+                try { observer.observe(element, { box: 'device-pixel-content-box' }); }
+                catch { observer.observe(element); }
+            };
+
+            // canvases already watched move to this observer, which reports them at once
+            const previous = SizeWatcher.observer;
+            SizeWatcher.elements ??= new Map();
+            SizeWatcher.invoke = invoke;
+            SizeWatcher.observer = { observe, unobserve: (element) => observer.unobserve(element) };
+            if (previous) {
+                previous.disconnect?.();
+                for (const element of SizeWatcher.elements.values()) if (element) observe(element);
+            }
+        })
+        .catch(() => { /* SkiaSharp not present or its layout changed: keep its own behavior */ });
+    return skiaSizePatch;
 }
 
 // A lost WebGL context (GPU reset, driver update, too many contexts) comes back only if the loss is
@@ -65,6 +178,7 @@ async function onContextRestored(e, dotNetRef) {
     GL.deleteContext(view.glInfo.context); // before registering: it clears canvas.GLctxObject
     const handle = GL.registerContext(gl, attributes);
     GL.makeContextCurrent(handle);
+    enableRendererInfo(gl);
     view.glInfo.context = handle;
     await dotNetRef.invokeMethodAsync('OnWebGLContextRestored');
     view.drawnUiContextLost = false;
@@ -134,6 +248,7 @@ export function isMobileBrowser() {
 export function attachCanvasHost(element, dotNetRef, allowSnapshot) {
     detachCanvasHost(element);
     patchSkiaCanvasResize();
+    patchSkiaSizeWatcher();
 
     const state = {
         resizeObserver: null,

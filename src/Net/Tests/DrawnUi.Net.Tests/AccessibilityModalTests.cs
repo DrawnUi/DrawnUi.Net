@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using DrawnUi.Draw;
 using DrawnUi.Models;
 using DrawnUi.Testing;
@@ -150,6 +151,134 @@ public class AccessibilityModalTests
         var snapshot = host.Canvas.AccessibilityManager.Snapshot;
         Assert.Contains(snapshot, n => n.Role == Aria.RoleDialog && n.Label == "Settings" && !n.NamedByChild);
         Assert.Contains(snapshot, n => n.Role == Aria.RoleHeading && n.Label == "Settings");
+    }
+
+    /// <summary>
+    /// A popup host without a name (SkiaShell's layer) around a named dialog: readers meet one dialog, the named one
+    /// (drawnui-cross 6bs). The heads' overlay becomes ActiveModalNode.
+    /// </summary>
+    [Fact]
+    public void UnnamedModalAroundNamedDialog_IsOneNamedDialog()
+    {
+        using var host = Scene(out var page);
+        var help = Dialog("Back", "OK");
+        help.AccessibilityModal = false;
+        help.AccessibilityRole = Aria.RoleDialog;
+        help.AccessibilityLabel = "HOW TO PLAY";
+        var wrapper = new SkiaLayer { AccessibilityModal = true, Children = { help } };
+        page.AddSubView(wrapper);
+        host.AdvanceFrames(4);
+
+        var manager = host.Canvas.AccessibilityManager;
+        var dialogs = manager.Snapshot.Where(n => n.Role == Aria.RoleDialog).ToArray();
+        Assert.Single(dialogs);
+        Assert.Equal("HOW TO PLAY", dialogs[0].Label);
+        Assert.Same(wrapper, manager.ActiveModal);
+        Assert.Same(help, manager.ActiveModalNode);
+        Assert.Equal(new[] { "Back", "OK" }, Labels(host));
+    }
+
+    /// <summary>
+    /// The keyboard goes back to the control that opened the dialog also when the app shows that control again only after
+    /// the close (the Dungeon hides its HUD under a dialog): the return waits for it.
+    /// </summary>
+    [Fact]
+    public void Close_ReturnsToTheOpener_ShownAgainAfterTheClose()
+    {
+        using var host = Scene(out var page);
+        Tab(host);
+        Tab(host);
+        Assert.Equal("Settings", Focused(host));
+        var menu = (SkiaStack)page.Views[0];
+
+        var dialog = Dialog("Sound", "Close");
+        page.AddSubView(dialog);
+        host.AdvanceFrames(2);
+        menu.IsVisible = false; // the app hides what is under its dialog
+        host.AdvanceFrames(4);
+        Assert.Equal("Sound", Focused(host));
+
+        page.RemoveSubView(dialog);
+        dialog.Dispose();
+        host.AdvanceFrames(10); // the close fades: the menu comes back a little later
+        menu.IsVisible = true;
+        host.AdvanceFrames(6);
+
+        Assert.Equal("Settings", Focused(host));
+    }
+
+    /// <summary>
+    /// The Dungeon's hand-over (drawnui-cross 6bs): Help opens "HOW TO PLAY" with the keyboard, Escape closes it and opens
+    /// "PAUSED" in the same step, Escape again closes that one, and the keyboard is back on Help, which the app hides
+    /// while a dialog is shown.
+    /// </summary>
+    [Theory]
+    [InlineData(true)]  // the pause opens in the same step as the help closes
+    [InlineData(false)] // the help fades out first, the pause opens after
+    public async Task DialogHandsOverToAnother_ClosingTheLast_ReturnsToTheOpener(bool sameStep)
+    {
+        using var host = new HeadlessCanvasHost(400, 400);
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
+        SkiaStack hud;
+        var shell = new SkiaShell
+        {
+            RootContent = new SkiaStack { Spacing = 4, Children = { Button("Play"), Button("Help") } }.Assign(out hud),
+        };
+        host.Canvas.Content = shell;
+        host.AdvanceFrames(4);
+
+        async Task Run(Task task, string step)
+        {
+            // frames until the step is done: an unfinished task is reported, never awaited (that hangs the run)
+            var frames = 0;
+            for (var wait = Stopwatch.StartNew(); !task.IsCompleted && wait.ElapsedMilliseconds < 10000; frames++)
+            {
+                host.AdvanceFrames(1);
+                if (frames > 120)
+                    Thread.Sleep(1);
+            }
+            Assert.True(task.IsCompleted, $"{step} did not finish after {frames} frames");
+            await task;
+            host.AdvanceFrames(4);
+        }
+
+        static SkiaLayer Named(string title, string a, string b) => new()
+        {
+            AccessibilityRole = Aria.RoleDialog,
+            AccessibilityLabel = title,
+            WidthRequest = 220,
+            Children = { new SkiaStack { Spacing = 4, Children = { Button(a), Button(b) } } },
+        };
+
+        Tab(host);
+        Tab(host);
+        Assert.Equal("Help", Focused(host));
+
+        // Enter on Help: the dialog opens, the app hides its HUD under it
+        var opening = shell.OpenPopupAsync(Named("HOW TO PLAY", "Link", "OK"), showOverlay: false);
+        hud.IsVisible = false;
+        await Run(opening, "help open");
+        Assert.Equal("Link", Focused(host));
+
+        // Escape: the help closes and the pause opens
+        if (sameStep)
+        {
+            var closing = shell.ClosePopupAsync(animated: false);
+            var pausing = shell.OpenPopupAsync(Named("PAUSED", "Resume", "Home"), showOverlay: false);
+            await Run(Task.WhenAll(closing, pausing), "help close + pause open");
+        }
+        else
+        {
+            await Run(shell.ClosePopupAsync(), "help close");
+            await Run(shell.OpenPopupAsync(Named("PAUSED", "Resume", "Home"), showOverlay: false), "pause open");
+        }
+        Assert.Equal("Resume", Focused(host));
+
+        // Escape again: the pause closes, the app shows its HUD after the close
+        await Run(shell.ClosePopupAsync(), "pause close");
+        hud.IsVisible = true;
+        host.AdvanceFrames(6);
+        Assert.Equal("Help", Focused(host));
     }
 
     [Fact]

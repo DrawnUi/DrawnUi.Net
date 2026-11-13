@@ -3,18 +3,19 @@
 @using DrawnUi.Views
 @using DrawnUi
 @using SkiaSharp
+@using DrawnUi.Draw.Meshes
 @using System.Runtime.InteropServices
 
 <PageTitle>SKMesh Probe</PageTitle>
 
 <h1>SKMesh Probe</h1>
 <p>Three SKMesh demos: solid triangle, indexed UV-gradient quad, animated wave with time uniform.</p>
-<p><strong>Requires SkiaSharp 4.147.0-pr.3779.2 (mesh-enabled build).</strong></p>
+<p><strong>Note:</strong> this page uses DrawnUI's own <code>SKMesh</code> (<code>DrawnUi.Draw.Meshes</code>), a temporary implementation that runs on the current SkiaSharp until SkiaSharp ships its <code>SKMesh</code> API. The API is the same, so switching to SkiaSharp's then means removing one <code>using</code>.</p>
 
 <Canvas Content="@_canvasContent"
     WidthRequest="420"
     HeightRequest="900"
-    BackgroundColor="#1A1A2E"
+    BackgroundColor="@Color.Parse("#1A1A2E")"
     Margin="0,16,0,32"
     RenderingMode="@RenderingModeType.Accelerated"
      />
@@ -94,6 +95,11 @@
 
     private class SolidTriangleMesh : SkiaControl
     {
+        // compiled once: a specification compiles its SkSL programs, far too slow for every frame
+        static SKMeshSpecification _spec;
+        SKMesh _mesh;
+        SKRect _meshFor;
+
         private bool _ranOnce;
 
         protected override void Paint(DrawingContext ctx)
@@ -116,17 +122,24 @@
                 const string vert = "Varyings main(const Attributes attrs) { Varyings v; v.position = attrs.position; return v; }";
                 const string frag = "float2 main(const Varyings v, out half4 color) { color = half4(1.0, 0.85, 0.2, 1.0); return v.position; }";
 
-                using var spec = SKMeshSpecification.Make(
+                string specErr = null;
+                var spec = _spec ??= SKMeshSpecification.Make(
                     attrs, sizeof(float) * 2, Array.Empty<SKMeshSpecificationVarying>(),
-                    vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out var specErr);
+                    vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out specErr);
                 if (spec == null) { LogOnce("triangle spec FAIL: " + specErr); return; }
 
-                var verts = new float[] { cx, cy - r,  cx + r, cy + r,  cx - r, cy + r };
-                using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(verts.AsSpan()));
-                var bounds = new SKRect(cx - r, cy - r, cx + r, cy + r);
-
-                using var mesh = SKMesh.Make(spec, SKMeshMode.Triangles, vb, 3, 0, bounds, out var meshErr);
-                if (mesh == null) { LogOnce("triangle mesh FAIL: " + meshErr); return; }
+                // made again only when the control's size or place changes: the triangle never moves
+                if (_mesh == null || _meshFor != dest)
+                {
+                    _mesh?.Dispose();
+                    var verts = new float[] { cx, cy - r,  cx + r, cy + r,  cx - r, cy + r };
+                    using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(verts.AsSpan()));
+                    var bounds = new SKRect(cx - r, cy - r, cx + r, cy + r);
+                    _mesh = SKMesh.Make(spec, SKMeshMode.Triangles, vb, 3, 0, bounds, out var meshErr);
+                    _meshFor = dest;
+                    if (_mesh == null) { LogOnce("triangle mesh FAIL: " + meshErr); return; }
+                }
+                var mesh = _mesh;
 
                 using var paint = new SKPaint { IsAntialias = true, Color = SKColors.White };
                 canvas.DrawMesh(mesh, paint);
@@ -148,6 +161,11 @@
 
     private class IndexedUvQuadMesh : SkiaControl
     {
+        // compiled once: a specification compiles its SkSL programs, far too slow for every frame
+        static SKMeshSpecification _spec;
+        SKMesh _mesh;
+        SKRect _meshFor;
+
         private bool _ranOnce;
 
         protected override void Paint(DrawingContext ctx)
@@ -184,31 +202,38 @@
                         return v.position;
                     }";
 
-                using var spec = SKMeshSpecification.Make(
+                string specErr = null;
+                var spec = _spec ??= SKMeshSpecification.Make(
                     attrs, sizeof(float) * 4, varyings,
-                    vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out var specErr);
+                    vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out specErr);
                 if (spec == null) { LogOnce("uvquad spec FAIL: " + specErr); return; }
 
-                // NOTE: SKMesh.MakeIndexed crashes the WASM Mono interpreter
-                // (ves_pinvoke_method / get_build_args_from_sig_info). Use non-indexed
-                // Make on Blazor WASM until that PInvoke signature is fixed in SkiaSharp.
-                // Two triangles, 6 verts, no index buffer. posX posY uvX uvY
-                var verts = new float[]
+                // made again only when the control's size or place changes: the quad never moves
+                if (_mesh == null || _meshFor != dest)
                 {
-                    l, t,  0f, 0f,
-                    r, t,  1f, 0f,
-                    r, b,  1f, 1f,
+                    _mesh?.Dispose();
+                    // NOTE: SKMesh.MakeIndexed crashes the WASM Mono interpreter
+                    // (ves_pinvoke_method / get_build_args_from_sig_info). Use non-indexed
+                    // Make on Blazor WASM until that PInvoke signature is fixed in SkiaSharp.
+                    // Two triangles, 6 verts, no index buffer. posX posY uvX uvY
+                    var verts = new float[]
+                    {
+                        l, t,  0f, 0f,
+                        r, t,  1f, 0f,
+                        r, b,  1f, 1f,
 
-                    l, t,  0f, 0f,
-                    r, b,  1f, 1f,
-                    l, b,  0f, 1f,
-                };
-                using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(verts.AsSpan()));
-
-                using var mesh = SKMesh.Make(
-                    spec, SKMeshMode.Triangles, vb, 6, 0,
-                    new SKRect(l, t, r, b), out var meshErr);
-                if (mesh == null) { LogOnce("uvquad mesh FAIL: " + meshErr); return; }
+                        l, t,  0f, 0f,
+                        r, b,  1f, 1f,
+                        l, b,  0f, 1f,
+                    };
+                    using var vb = SKMeshVertexBuffer.Make(MemoryMarshal.AsBytes(verts.AsSpan()));
+                    _mesh = SKMesh.Make(
+                        spec, SKMeshMode.Triangles, vb, 6, 0,
+                        new SKRect(l, t, r, b), out var meshErr);
+                    _meshFor = dest;
+                    if (_mesh == null) { LogOnce("uvquad mesh FAIL: " + meshErr); return; }
+                }
+                var mesh = _mesh;
 
                 using var paint = new SKPaint { IsAntialias = true, Color = SKColors.White };
                 canvas.DrawMesh(mesh, paint);
@@ -230,10 +255,13 @@
 
     private class AnimatedWaveMesh : SkiaControl
     {
+        // compiled once: a specification compiles its SkSL programs, far too slow for every frame
+        static SKMeshSpecification _spec;
+
         private bool _ranOnce;
         private PerpetualPendulumAnimator _animator;
         private double _phase;
-        private const int Cols = 24;
+        private const int Cols = 96;
         private const int Rows = 1;
 
         protected override void OnLayoutReady()
@@ -301,9 +329,10 @@
                         return v.position;
                     }";
 
-                using var spec = SKMeshSpecification.Make(
+                string specErr = null;
+                var spec = _spec ??= SKMeshSpecification.Make(
                     attrs, sizeof(float) * 4, varyings,
-                    vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out var specErr);
+                    vert, frag, SKColorSpace.CreateSrgb(), SKAlphaType.Premul, out specErr);
                 if (spec == null) { LogOnce("wave spec FAIL: " + specErr); return; }
 
                 // Build a strip of (Cols+1) * 2 vertices forming Cols quads (TriangleStrip mesh)

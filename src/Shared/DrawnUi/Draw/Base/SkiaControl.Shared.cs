@@ -3047,14 +3047,16 @@ namespace DrawnUi.Draw
             typeof(IDrawnBase),
             typeof(SkiaControl),
             default(IDrawnBase),
-            propertyChanged: OnControlParentChanged);
+            propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._parent = (IDrawnBase)n; OnControlParentChanged(b, o, n); });
+
+        IDrawnBase _parent;
 
         /// <summary>
         /// Do not set this directly if you don't know what you are doing, use SetParent()
         /// </summary>
         public new IDrawnBase Parent
         {
-            get { return (IDrawnBase)GetValue(ParentProperty); }
+            get { return _parent; }
             set { SetValue(ParentProperty, value); }
         }
 
@@ -3670,29 +3672,35 @@ namespace DrawnUi.Draw
         public static readonly BindableProperty SkewXProperty
             = BindableProperty.Create(nameof(SkewX),
                 typeof(float), typeof(SkiaControl),
-                0.0f, propertyChanged: NeedRepaint);
+                0.0f, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._skewX = (float)n; NeedRepaint(b, o, n); });
+
+        float _skewX = 0.0f;
 
         public float SkewX
         {
-            get { return (float)GetValue(SkewXProperty); }
+            get { return _skewX; }
             set { SetValue(SkewXProperty, value); }
         }
 
         public static readonly BindableProperty SkewYProperty
             = BindableProperty.Create(nameof(SkewY),
                 typeof(float), typeof(SkiaControl),
-                0.0f, propertyChanged: NeedRepaint);
+                0.0f, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._skewY = (float)n; NeedRepaint(b, o, n); });
+
+        float _skewY = 0.0f;
 
         public float SkewY
         {
-            get { return (float)GetValue(SkewYProperty); }
+            get { return _skewY; }
             set { SetValue(SkewYProperty, value); }
         }
 
         public static readonly BindableProperty TranslationZProperty
             = BindableProperty.Create(nameof(TranslationZ),
                 typeof(double), typeof(SkiaControl),
-                0.0, propertyChanged: NeedRepaint);
+                0.0, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._translationZ = (double)n; NeedRepaint(b, o, n); });
+
+        double _translationZ = 0.0;
 
         /// <summary>
         /// Gets or sets Z-perspective translation. This is a bindable property.
@@ -3700,14 +3708,16 @@ namespace DrawnUi.Draw
         /// <remarks>Rotation is applied relative to <see cref="VisualElement.AnchorX"/> and <see cref="VisualElement.AnchorY" />.</remarks>
         public double TranslationZ
         {
-            get { return (double)GetValue(TranslationZProperty); }
+            get { return _translationZ; }
             set { SetValue(TranslationZProperty, value); }
         }
 
         public static readonly BindableProperty RotationZProperty
             = BindableProperty.Create(nameof(RotationZ),
                 typeof(double), typeof(SkiaControl),
-                0.0, propertyChanged: NeedRepaint);
+                0.0, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._rotationZ = (double)n; NeedRepaint(b, o, n); });
+
+        double _rotationZ = 0.0;
 
         /// <summary>
         /// Gets or sets the rotation (in degrees) about the Z-axis (perspective rotation) when the element is rendered. This is a bindable property.
@@ -3715,7 +3725,7 @@ namespace DrawnUi.Draw
         /// <remarks>Rotation is applied relative to <see cref="VisualElement.AnchorX"/> and <see cref="VisualElement.AnchorY" />.</remarks>
         public double RotationZ
         {
-            get { return (double)GetValue(RotationZProperty); }
+            get { return _rotationZ; }
             set { SetValue(RotationZProperty, value); }
         }
 
@@ -3746,22 +3756,26 @@ namespace DrawnUi.Draw
         public static readonly BindableProperty Perspective1Property
             = BindableProperty.Create(nameof(Perspective1),
                 typeof(float), typeof(SkiaControl),
-                0.0f, propertyChanged: NeedRepaint);
+                0.0f, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._perspective1 = (float)n; NeedRepaint(b, o, n); });
+
+        float _perspective1 = 0.0f;
 
         public float Perspective1
         {
-            get { return (float)GetValue(Perspective1Property); }
+            get { return _perspective1; }
             set { SetValue(Perspective1Property, value); }
         }
 
         public static readonly BindableProperty Perspective2Property
             = BindableProperty.Create(nameof(Perspective2),
                 typeof(float), typeof(SkiaControl),
-                0.0f, propertyChanged: NeedRepaint);
+                0.0f, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._perspective2 = (float)n; NeedRepaint(b, o, n); });
+
+        float _perspective2 = 0.0f;
 
         public float Perspective2
         {
-            get { return (float)GetValue(Perspective2Property); }
+            get { return _perspective2; }
             set { SetValue(Perspective2Property, value); }
         }
 
@@ -3939,11 +3953,13 @@ namespace DrawnUi.Draw
             nameof(AddTranslationY),
             typeof(double),
             typeof(SkiaControl),
-            0.0, propertyChanged: NeedRepaint);
+            0.0, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._addTranslationY = (double)n; NeedRepaint(b, o, n); });
+
+        double _addTranslationY;
 
         public double AddTranslationY
         {
-            get { return (double)GetValue(AddTranslationYProperty); }
+            get { return _addTranslationY; }
             set { SetValue(AddTranslationYProperty, value); }
         }
 
@@ -3951,11 +3967,13 @@ namespace DrawnUi.Draw
             nameof(AddTranslationX),
             typeof(double),
             typeof(SkiaControl),
-            0.0, propertyChanged: NeedRepaint);
+            0.0, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._addTranslationX = (double)n; NeedRepaint(b, o, n); });
+
+        double _addTranslationX;
 
         public double AddTranslationX
         {
-            get { return (double)GetValue(AddTranslationXProperty); }
+            get { return _addTranslationX; }
             set { SetValue(AddTranslationXProperty, value); }
         }
 
@@ -4114,7 +4132,9 @@ namespace DrawnUi.Draw
 
         public static readonly BindableProperty RenderingScaleProperty = BindableProperty.Create(nameof(RenderingScale),
             typeof(float), typeof(SkiaControl),
-            -1.0f, propertyChanged: NeedUpdateScale);
+            -1.0f, propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._renderingScale = (float)n; NeedUpdateScale(b, o, n); });
+
+        float _renderingScale = -1f;
 
         private static void NeedUpdateScale(BindableObject bindable, object oldValue, object newValue)
         {
@@ -4128,16 +4148,7 @@ namespace DrawnUi.Draw
         {
             get
             {
-                var value = -1f;
-                try
-                {
-                    value = (float)GetValue(RenderingScaleProperty);
-                }
-                catch (Exception e)
-                {
-                    Super.Log(e); //catching Nullable object must have a value, is this because of NET8?
-                }
-
+                var value = _renderingScale;
                 if (value <= 0)
                 {
                     return GetDensity();
@@ -4147,10 +4158,12 @@ namespace DrawnUi.Draw
             }
             set
             {
+                // set on every draw: an unchanged scale returns before the lock, SetValue would do nothing either
+                if (_renderingScale == value)
+                    return;
                 lock (lockMeasured)
                 {
-                    // set on every draw: an unchanged scale returns before boxing, SetValue would do nothing either
-                    if (GetValue(RenderingScaleProperty) is float current && current == value)
+                    if (_renderingScale == value)
                         return;
 
                     SetValue(RenderingScaleProperty, value);
@@ -4758,6 +4771,7 @@ namespace DrawnUi.Draw
                 _drawingRect = value;
                 var dirty = value;
                 var expand = GetRenderingExpandPixels();
+                _drawingRectExpand = expand;
                 if (expand.Left != 0 || expand.Top != 0 || expand.Right != 0 || expand.Bottom != 0)
                 {
                     dirty = new(
@@ -4773,6 +4787,9 @@ namespace DrawnUi.Draw
         }
 
         public SKRect DirtyRegion { get; set; }
+
+        // the effects expansion DirtyRegion was made with
+        private Thickness _drawingRectExpand;
 
         /// <summary>
         /// Overriding VisualElement property, use DrawingRect instead.
@@ -4856,11 +4873,13 @@ namespace DrawnUi.Draw
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SKRect GetTransformedDirtyBounds()
         {
+            return TransformDirtyBounds((float)(Left * RenderingScale), (float)(Top * RenderingScale));
+        }
+
+        SKRect TransformDirtyBounds(float leftOffset, float topOffset)
+        {
             var rect = DirtyRegion;
             var m = RenderTransformMatrix;
-
-            var leftOffset = (float)(Left * RenderingScale);
-            var topOffset = (float)(Top * RenderingScale);
 
             // Fast path: matrix is pure translation (no rotation/scale/skew)
             if (m.ScaleX == 1 && m.ScaleY == 1 && m.SkewX == 0 && m.SkewY == 0 &&
@@ -4875,23 +4894,53 @@ namespace DrawnUi.Draw
                     rect.Bottom + offsetY);
             }
 
-            // Full transform path: map corners through matrix and compute AABB
-            var tl = m.MapPoint(rect.Left, rect.Top);
-            var tr = m.MapPoint(rect.Right, rect.Top);
-            var br = m.MapPoint(rect.Right, rect.Bottom);
-            var bl = m.MapPoint(rect.Left, rect.Bottom);
+            // Full transform path: the matrix turns around a pivot that already holds the Left / Top the control was
+            // drawn with, so the rect is placed there first, mapped, and then moved by any Left / Top change since
+            var dl = _drawnLeftOffset;
+            var dt = _drawnTopOffset;
+            var tl = m.MapPoint(rect.Left + dl, rect.Top + dt);
+            var tr = m.MapPoint(rect.Right + dl, rect.Top + dt);
+            var br = m.MapPoint(rect.Right + dl, rect.Bottom + dt);
+            var bl = m.MapPoint(rect.Left + dl, rect.Bottom + dt);
+            var moveX = leftOffset - dl;
+            var moveY = topOffset - dt;
 
             return new SKRect(
-                Math.Min(Math.Min(tl.X, tr.X), Math.Min(br.X, bl.X)) + leftOffset,
-                Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(br.Y, bl.Y)) + topOffset,
-                Math.Max(Math.Max(tl.X, tr.X), Math.Max(br.X, bl.X)) + leftOffset,
-                Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(br.Y, bl.Y)) + topOffset);
+                Math.Min(Math.Min(tl.X, tr.X), Math.Min(br.X, bl.X)) + moveX,
+                Math.Min(Math.Min(tl.Y, tr.Y), Math.Min(br.Y, bl.Y)) + moveY,
+                Math.Max(Math.Max(tl.X, tr.X), Math.Max(br.X, bl.X)) + moveX,
+                Math.Max(Math.Max(tl.Y, tr.Y), Math.Max(br.Y, bl.Y)) + moveY);
         }
 
         /// <summary>
         /// Stores the transformation matrix used during rendering for hit testing
         /// </summary>
-        public SKMatrix RenderTransformMatrix { get; protected set; } = SKMatrix.Identity;
+        public SKMatrix RenderTransformMatrix
+        {
+            get => _renderTransformMatrix;
+            protected set
+            {
+                _renderTransformMatrix = value;
+                // where Left / Top put it when it was drawn: a composite parent erases that place after a move
+                _drawnLeftOffset = (float)(Left * RenderingScale);
+                _drawnTopOffset = (float)(Top * RenderingScale);
+                _hasDrawnBounds = true;
+            }
+        }
+
+        private SKMatrix _renderTransformMatrix = SKMatrix.Identity;
+        private float _drawnLeftOffset, _drawnTopOffset;
+        private bool _hasDrawnBounds;
+
+        /// <summary>
+        /// Where the control was last drawn, in its parent's pixels: <see cref="GetTransformedDirtyBounds"/> with the
+        /// Left / Top it had then. Differs from the current bounds after Left / Top changed and before the next draw.
+        /// </summary>
+        public bool TryGetDrawnDirtyBounds(out SKRect bounds)
+        {
+            bounds = TransformDirtyBounds(_drawnLeftOffset, _drawnTopOffset);
+            return _hasDrawnBounds;
+        }
 
         /// <summary>
         /// Gets the inverse of the rendering transformation matrix for hit testing
@@ -4939,8 +4988,8 @@ namespace DrawnUi.Draw
 
             float pivotX = (float)(destination.Left + destination.Width * AnchorX);
             float pivotY = (float)(destination.Top + destination.Height * AnchorY);
-            var skewX = SkewX > 0 ? (float)Math.Tan(Math.PI * SkewX / 180f) : 0f;
-            var skewY = SkewY > 0 ? (float)Math.Tan(Math.PI * SkewY / 180f) : 0f;
+            var skewX = SkewX != 0 ? (float)Math.Tan(Math.PI * SkewX / 180f) : 0f; // negative skews too
+            var skewY = SkewY != 0 ? (float)Math.Tan(Math.PI * SkewY / 180f) : 0f;
 
             // Build transformation matrix step by step
 
@@ -5031,8 +5080,8 @@ namespace DrawnUi.Draw
 
             float pivotX = (float)(destination.Left + destination.Width * AnchorX);
             float pivotY = (float)(destination.Top + destination.Height * AnchorY);
-            var skewX = SkewX > 0 ? (float)Math.Tan(Math.PI * SkewX / 180f) : 0f;
-            var skewY = SkewY > 0 ? (float)Math.Tan(Math.PI * SkewY / 180f) : 0f;
+            var skewX = SkewX != 0 ? (float)Math.Tan(Math.PI * SkewX / 180f) : 0f; // negative skews too
+            var skewY = SkewY != 0 ? (float)Math.Tan(Math.PI * SkewY / 180f) : 0f;
 
             // Build transformation matrix step by step
 
@@ -5698,6 +5747,20 @@ namespace DrawnUi.Draw
         /// <param name="scale"></param>
         public virtual void Arrange(SKRect destination, float widthRequest, float heightRequest, float scale)
         {
+            // Arranged into the same box as last time and nothing changed since (no measure, no layout change, the
+            // same effects expansion): every rect it has is already the result, so the arrange pass is skipped. A still
+            // control is arranged again on every frame its parent draws.
+            if (_arrangedStill && !IsLayoutDirty && destination == _stillDestination && scale == _stillScale
+                && widthRequest == _stillWidthRequest && heightRequest == _stillHeightRequest
+                && measuredForWidthConstraint == _stillMeasuredForWidth && measuredForHeightConstraint == _stillMeasuredForHeight
+                && measuredForScale == _stillMeasuredForScale && !NeedToMeasureSelf() && CanDraw
+                && GetRenderingExpandPixels() == _drawingRectExpand)
+            {
+                return;
+            }
+
+            _arrangedStill = false;
+
             // Arranged into a different box than measured for on a Fill axis: re-measure with the final box
             // (MAUI ArrangeOverride(finalSize) parity). Otherwise the control's internal layout — children
             // positions, centered rows, text wrapping — stays frozen at the measure-time constraint while the
@@ -5732,7 +5795,25 @@ namespace DrawnUi.Draw
                 : MeasuredSize.Units.Height;
 
             PostArrange(destination, width, height, scale);
+
+            if (!IsLayoutDirty)
+            {
+                _arrangedStill = true;
+                _stillDestination = destination;
+                _stillScale = scale;
+                _stillWidthRequest = widthRequest;
+                _stillHeightRequest = heightRequest;
+                _stillMeasuredForWidth = measuredForWidthConstraint;
+                _stillMeasuredForHeight = measuredForHeightConstraint;
+                _stillMeasuredForScale = measuredForScale;
+            }
         }
+
+        // the inputs of the last full arrange, see Arrange
+        private bool _arrangedStill;
+        private SKRect _stillDestination;
+        private float _stillScale, _stillWidthRequest, _stillHeightRequest;
+        private float _stillMeasuredForWidth, _stillMeasuredForHeight, _stillMeasuredForScale;
 
         /// <summary>
         /// Arranges the control and updates its cache's LastDestination property.
@@ -7785,6 +7866,12 @@ namespace DrawnUi.Draw
         private bool _paintWithOpacityIsAntialias;
         private bool _paintWithOpacityIsDither;
         SKPath _preparedClipBounds = null;
+
+        /// <summary>
+        /// The rect <see cref="_preparedClipBounds"/> holds when the plain rect clip made it, else null. The same rect
+        /// again leaves the path as it is: a path changed makes SkiaSharp make a new path builder for it.
+        /// </summary>
+        SKRect? _preparedClipRect;
         private IAnimatorsManager _lastAnimatorManager;
         private Func<List<SkiaControl>> _createChildren;
 
@@ -7824,15 +7911,22 @@ namespace DrawnUi.Draw
 
             if (isClipping)
             {
-                _preparedClipBounds ??= new SKPath();
-                _preparedClipBounds.Reset();
+                if (_preparedClipBounds == null)
+                {
+                    _preparedClipBounds = new SKPath();
+                    _preparedClipRect = null;
+                }
 
                 if (HasPlatformClip())
                 {
+                    _preparedClipRect = null;
+                    _preparedClipBounds.Reset();
                     GetPlatformClip(_preparedClipBounds, ctx.Destination, RenderingScale);
                 }
                 else if (ClipWith != null)
                 {
+                    _preparedClipRect = null;
+                    _preparedClipBounds.Reset();
                     ClipWith.CreateClip(null, true, _preparedClipBounds);
                 }
                 else
@@ -7850,8 +7944,13 @@ namespace DrawnUi.Draw
                             clipRect.Bottom + (float)Math.Round(expand.Bottom));
                     }
 
-                    _preparedClipBounds.AddRect(clipRect);
-                    Clipping?.Invoke(_preparedClipBounds, ctx.Destination);
+                    if (Clipping != null || _preparedClipRect != clipRect)
+                    {
+                        _preparedClipBounds.Reset();
+                        _preparedClipBounds.AddRect(clipRect);
+                        Clipping?.Invoke(_preparedClipBounds, ctx.Destination);
+                        _preparedClipRect = Clipping == null ? clipRect : null;
+                    }
                 }
             }
 
@@ -8505,58 +8604,73 @@ namespace DrawnUi.Draw
                 return 0;
             var count = 0;
 
-            List<SkiaControlWithRect> tree = new();
+            // built in a list kept between draws; published as a copy only when it differs from the last frame's
+            var tree = RentRenderTreeBuilder();
 
             //actually base control has NO virtualization on purpose. implemented only for non-absolute layouts.
-            foreach (var child in skiaControls)
+            // a List is walked with its own enumerator (no boxed one per draw), anything else as given
+            if (skiaControls is List<SkiaControl> list)
             {
-                if (child != null)
-                {
-                    child.OptionalOnBeforeDrawing(); //could set IsVisible or whatever inside
-                    bool inTree = true;
-                    if (child.CanDraw) //still visible 
-                    {
-                        if (IsRenderingWithComposition)
-                        {
-                            if (DirtyChildrenInternal.Contains(child))
-                            {
-                                RenderCompositionChild(child, context);
-                            }
-                            else
-                            {
-                                //todo investigate if this helps or just slows us down
-                                child.Arrange(context.Destination, child.SizeRequest.Width,
-                                    child.SizeRequest.Height,
-                                    context.Scale);
-                            }
-                        }
-                        else
-                        {
-                            child.Render(context);
-                        }
-
-                        if (inTree)
-                        {
-                            tree.Add(new SkiaControlWithRect(child,
-                                context.Destination,
-                                child.CreateHitRect(),
-                                count,
-                                -1, // Default freeze index
-                                child.BindingContext)); // Capture current binding context
-                        }
-
-
-                        count++;
-                    }
-                }
+                foreach (var child in list)
+                    RenderViewsListChild(context, child, tree, ref count);
+            }
+            else
+            {
+                foreach (var child in skiaControls)
+                    RenderViewsListChild(context, child, tree, ref count);
             }
 
             // Clear dirty tracking since we've processed all changes
             ClearDirtyChildren();
 
-            SetRenderingTree(tree);
+            PublishRenderingTree(tree);
+            ReturnRenderTreeBuilder(tree);
 
             return count;
+        }
+
+        /// <summary>One child of <see cref="RenderViewsList"/>: drawn when it can be, and entered in the render tree.</summary>
+        void RenderViewsListChild(DrawingContext context, SkiaControl child, List<SkiaControlWithRect> tree, ref int count)
+        {
+            if (child != null)
+            {
+                child.OptionalOnBeforeDrawing(); //could set IsVisible or whatever inside
+                bool inTree = true;
+                if (child.CanDraw) //still visible 
+                {
+                    if (IsRenderingWithComposition)
+                    {
+                        if (DirtyChildrenInternal.Contains(child))
+                        {
+                            RenderCompositionChild(child, context);
+                        }
+                        else
+                        {
+                            //todo investigate if this helps or just slows us down
+                            child.Arrange(context.Destination, child.SizeRequest.Width,
+                                child.SizeRequest.Height,
+                                context.Scale);
+                        }
+                    }
+                    else
+                    {
+                        child.Render(context);
+                    }
+
+                    if (inTree)
+                    {
+                        tree.Add(RenderTreeEntry(tree.Count, child,
+                            context.Destination,
+                            child.CreateHitRect(),
+                            count,
+                            -1, // Default freeze index
+                            child.BindingContext)); // Capture current binding context
+                    }
+
+
+                    count++;
+                }
+            }
         }
 
         /// <summary>
@@ -8584,8 +8698,85 @@ namespace DrawnUi.Draw
 
         public virtual void SetRenderingTree(List<SkiaControlWithRect> tree)
         {
-            RenderTree = new(tree);
+            // the same list published again (a frame drawn again unchanged): the tree that holds it stays,
+            // unless a served cache moved it (Offset), which a new tree resets
+            var current = RenderTree;
+            if (current == null || !ReferenceEquals(current.Tree, tree) || current.Offset != default)
+            {
+                RenderTree = new(tree);
+            }
             _builtRenderTreeStamp = _measuredStamp;
+        }
+
+        /// <summary>
+        /// A render tree entry for this frame: the entry published last frame at <paramref name="position"/> when it holds
+        /// the same values (a frame drawn again unchanged keeps its entries), else a new one. Entries are immutable, so
+        /// an equal one is the same entry.
+        /// </summary>
+        protected SkiaControlWithRect RenderTreeEntry(int position, SkiaControl control, SKRect rect, SKRect hitRect,
+            int index, int freezeIndex, object freezeBindingContext)
+        {
+            var published = CollectionsMarshal.AsSpan(RenderTree?.Tree);
+            if (position < published.Length && published[position] is { } entry
+                && ReferenceEquals(entry.Control, control) && entry.Rect == rect && entry.HitRect == hitRect
+                && entry.Index == index && entry.FreezeIndex == freezeIndex
+                && ReferenceEquals(entry.FreezeBindingContext, freezeBindingContext))
+            {
+                return entry;
+            }
+
+            return new SkiaControlWithRect(control, rect, hitRect, index, freezeIndex, freezeBindingContext);
+        }
+
+        /// <summary>
+        /// Publishes a render tree built in a list the caller reuses: when it holds the same entries as the published
+        /// tree, that tree's list is published again; otherwise a copy of <paramref name="built"/>. Either way through
+        /// <see cref="SetRenderingTree"/>.
+        /// </summary>
+        protected void PublishRenderingTree(List<SkiaControlWithRect> built)
+        {
+            var current = RenderTree;
+            if (current != null && current.Offset == default)
+            {
+                var published = CollectionsMarshal.AsSpan(current.Tree);
+                var fresh = CollectionsMarshal.AsSpan(built);
+                if (published.Length == fresh.Length)
+                {
+                    var same = true;
+                    for (var i = 0; i < fresh.Length; i++)
+                    {
+                        if (!ReferenceEquals(published[i], fresh[i]))
+                        {
+                            same = false;
+                            break;
+                        }
+                    }
+
+                    if (same)
+                    {
+                        SetRenderingTree(current.Tree);
+                        return;
+                    }
+                }
+            }
+
+            SetRenderingTree(new List<SkiaControlWithRect>(built));
+        }
+
+        /// <summary>The list a render tree is built in, kept between draws; a draw running at the same time makes its own.</summary>
+        private List<SkiaControlWithRect> _renderTreeSpare;
+
+        /// <summary>Takes the list to build a render tree in; give it back with <see cref="ReturnRenderTreeBuilder"/>.</summary>
+        protected List<SkiaControlWithRect> RentRenderTreeBuilder()
+        {
+            return Interlocked.Exchange(ref _renderTreeSpare, null) ?? new List<SkiaControlWithRect>();
+        }
+
+        /// <summary>Gives back a list taken with <see cref="RentRenderTreeBuilder"/>, emptied.</summary>
+        protected void ReturnRenderTreeBuilder(List<SkiaControlWithRect> list)
+        {
+            list.Clear();
+            _renderTreeSpare = list;
         }
 
         #endregion
@@ -9791,6 +9982,7 @@ namespace DrawnUi.Draw
                 DirtyChildrenTracker.Clear();
                 _compositeWhole?.Clear();
                 _compositeDeep?.Clear();
+                _compositeRemovedAreas?.Clear();
             }
         }
 
@@ -9824,6 +10016,12 @@ namespace DrawnUi.Draw
         }
 
         private HashSet<SkiaControl> _compositeWhole;
+
+        /// <summary>
+        /// Where removed children were last drawn, taken when they were removed: a composite erases these areas even
+        /// when the same object comes back at another place before the next draw (pooled sprites).
+        /// </summary>
+        private List<SKRect> _compositeRemovedAreas;
         private Dictionary<SkiaControl, HashSet<SkiaControl>> _compositeDeep;
 
         public virtual void OnChildAdded(SkiaControl child)
@@ -9841,6 +10039,11 @@ namespace DrawnUi.Draw
         {
             if (IsCacheComposite)
             {
+                if (child.TryGetDrawnDirtyBounds(out var drawnAt) && !drawnAt.IsEmpty)
+                {
+                    lock (DirtyChildrenTracker)
+                        (_compositeRemovedAreas ??= new()).Add(drawnAt);
+                }
                 TrackChildAsDirty(child);
             }
 
@@ -10047,14 +10250,16 @@ namespace DrawnUi.Draw
         public static readonly BindableProperty ItemTemplateProperty = BindableProperty.Create(nameof(ItemTemplate),
             typeof(DataTemplate),
             typeof(DataTemplate), null,
-            propertyChanged: ItemTemplateChanged);
+            propertyChanged: (b, o, n) => { if (b is SkiaControl c) c._itemTemplate = (DataTemplate)n; ItemTemplateChanged(b, o, n); });
+
+        DataTemplate _itemTemplate;
 
         /// <summary>
         /// Kind of BindableLayout.DrawnTemplate
         /// </summary>
         public DataTemplate ItemTemplate
         {
-            get { return (DataTemplate)GetValue(ItemTemplateProperty); }
+            get { return _itemTemplate; }
             set { SetValue(ItemTemplateProperty, value); }
         }
 

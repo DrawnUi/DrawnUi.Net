@@ -55,6 +55,7 @@
 
     <!-- Net shim files for non-MAUI platforms -->
     <ItemGroup>
+      <Compile Include="..\..\Net\DrawnUi\Controls\SkiaShell.cs" Link="Controls\SkiaShell.cs" />
       <Compile Include="..\..\Net\DrawnUi\Draw\ReturnType.Net.cs" Link="Draw\ReturnType.Net.cs" />
       <Compile Include="..\..\Net\DrawnUi\Draw\SkiaControl.Net.cs" Link="Draw\SkiaControl.Net.cs" />
       <Compile Include="..\..\Net\DrawnUi\Draw\SkiaEditor.Net.cs" Link="Draw\SkiaEditor.Net.cs" />

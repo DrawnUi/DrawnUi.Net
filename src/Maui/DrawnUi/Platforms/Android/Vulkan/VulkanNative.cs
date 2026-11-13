@@ -287,6 +287,14 @@ internal static unsafe class Vk
     [DllImport(Lib)] public static extern void vkDestroyInstance(IntPtr instance, IntPtr allocator);
     [DllImport(Lib)] public static extern int vkEnumeratePhysicalDevices(IntPtr instance, ref uint count, IntPtr* devices);
     [DllImport(Lib)] public static extern void vkGetPhysicalDeviceProperties(IntPtr physicalDevice, byte* properties);
+
+    /// <summary>VkPhysicalDeviceFeatures: 55 VkBool32 in spec order.</summary>
+    public const int PhysicalDeviceFeaturesCount = 55;
+
+    /// <summary>Index of samplerAnisotropy in VkPhysicalDeviceFeatures.</summary>
+    public const int FeatureSamplerAnisotropy = 19;
+
+    [DllImport(Lib)] public static extern void vkGetPhysicalDeviceFeatures(IntPtr physicalDevice, uint* features);
     [DllImport(Lib)] public static extern void vkGetPhysicalDeviceQueueFamilyProperties(IntPtr physicalDevice, ref uint count, QueueFamilyProperties* properties);
     [DllImport(Lib)] public static extern int vkEnumerateDeviceExtensionProperties(IntPtr physicalDevice, IntPtr layerName, ref uint count, byte* properties);
     /// <summary>VkExtensionProperties: extensionName (256 chars), then specVersion.</summary>

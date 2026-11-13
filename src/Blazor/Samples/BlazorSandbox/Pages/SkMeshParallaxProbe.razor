@@ -4,6 +4,7 @@
 @using DrawnUi.Views
 @using DrawnUi
 @using SkiaSharp
+@using DrawnUi.Draw.Meshes
 @using System.Runtime.InteropServices
 @inject HttpClient Http
 
@@ -16,7 +17,7 @@
 <Canvas Content="_canvasContent" HorizontalOptions="@LayoutOptions.Fill"
     MaxWidthRequest="980"
     HeightRequest="520"
-    BackgroundColor="#060A12"
+    BackgroundColor="@Color.Parse("#060A12")"
     Margin="0,16,0,32"
     RenderingMode="@RenderingModeType.Accelerated"
      />
@@ -655,10 +656,10 @@
             {
                 Color = SKColor.Parse("#B7C8F7").WithAlpha(180),
                 IsAntialias = true,
-                TextSize = 12,
             };
+            using var font = new SKFont { Size = 12 };
 
-            canvas.DrawText($"phase {phase:F2}  layers {_layers.Count}  assets cold-corridors", dest.Left + 10, dest.Bottom - 12, paint);
+            canvas.DrawText($"phase {phase:F2}  layers {_layers.Count}  assets cold-corridors", dest.Left + 10, dest.Bottom - 12, SKTextAlign.Left, font, paint);
         }
 
         private sealed record LayerConfig(string Name, string Path, float Speed, float RepeatWidth, float Depth);

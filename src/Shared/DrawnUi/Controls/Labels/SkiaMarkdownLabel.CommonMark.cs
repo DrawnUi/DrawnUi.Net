@@ -25,6 +25,8 @@ public partial class SkiaRichLabel : SkiaLabel
 
                 // Markdown OFF: keep the rich (font-run/emoji) rendering but treat text as literal —
                 // one plain span, no CommonMark parse. This is the "unicode/emoji, no formatting" mode.
+                SourceIndexes = null;
+
                 if (!MarkdownEnabled)
                 {
                     Spans.Clear();
@@ -35,9 +37,11 @@ public partial class SkiaRichLabel : SkiaLabel
 
                 if (!string.IsNullOrEmpty(TextInternal))
                 {
-                    var markdownDocument = CommonMarkConverter.Parse(TextInternal, MarkdownSettings);
+                    var markdownDocument = CommonMarkConverter.Parse(TextInternal,
+                        TrackSourceIndexes ? MarkdownSettingsTracked : MarkdownSettings);
 
                     Spans.Clear();
+                    _sourceMap = TrackSourceIndexes ? new List<int>(TextInternal.Length) : null;
 
                     isBold = false;
                     isItalic = false;
@@ -57,6 +61,17 @@ public partial class SkiaRichLabel : SkiaLabel
                             block = block.NextSibling;
                         }
                     }
+
+                    if (_sourceMap != null)
+                    {
+                        // every drawn character got its source index, or the map is not trusted
+                        var drawn = 0;
+                        foreach (var span in Spans)
+                            drawn += span.Text?.Length ?? 0;
+                        if (drawn == _sourceMap.Count)
+                            SourceIndexes = _sourceMap;
+                        _sourceMap = null;
+                    }
                 }
                 else
                 {
@@ -69,15 +84,68 @@ public partial class SkiaRichLabel : SkiaLabel
         }
     }
 
+    List<int> _sourceMap;
+
+    /// <summary>
+    /// Build <see cref="SourceIndexes"/> when parsing: set by the editor that owns this label, display-only labels
+    /// parse without source positions.
+    /// </summary>
+    internal bool TrackSourceIndexes;
+
+    /// <summary>
+    /// For each character of the drawn text (the spans' text in order), its index in the markdown source
+    /// (<see cref="SkiaLabel.Text"/> as parsed), -1 for characters the markdown adds (list bullets, breaks between blocks).
+    /// Built only for an editor's label; null otherwise, when markdown is off or the text is empty. The editor uses it to
+    /// map its text index to the drawn character.
+    /// </summary>
+    public IReadOnlyList<int> SourceIndexes { get; private set; }
+
+    /// <summary>
+    /// Records the source index of each character of <paramref name="text"/> about to be drawn: the next equal
+    /// character of the source slice [<paramref name="start"/>, start + <paramref name="length"/>) from
+    /// <paramref name="from"/> on (markup in the slice is skipped), -1 when none. Returns the slice index after the last
+    /// match.
+    /// </summary>
+    int MapSource(string text, int start, int length, int from = -1)
+    {
+        var pos = from >= 0 ? from : start;
+        if (_sourceMap == null || text == null)
+            return pos;
+        var source = TextInternal ?? string.Empty;
+        var end = Math.Min(start + length, source.Length);
+        foreach (var c in text)
+        {
+            var at = -1;
+            for (var j = pos; j < end; j++)
+            {
+                if (source[j] == c)
+                {
+                    at = j;
+                    break;
+                }
+            }
+            if (at >= 0)
+                pos = at + 1;
+            _sourceMap.Add(at);
+        }
+        return pos;
+    }
+
     /// <summary>
     /// CommonMark parser settings: the defaults plus ~~strikethrough~~.
     /// </summary>
-    static readonly CommonMarkSettings MarkdownSettings = CreateMarkdownSettings();
+    static readonly CommonMarkSettings MarkdownSettings = CreateMarkdownSettings(false);
 
-    static CommonMarkSettings CreateMarkdownSettings()
+    /// <summary>
+    /// <see cref="MarkdownSettings"/> with source positions, for <see cref="SourceIndexes"/>.
+    /// </summary>
+    static readonly CommonMarkSettings MarkdownSettingsTracked = CreateMarkdownSettings(true);
+
+    static CommonMarkSettings CreateMarkdownSettings(bool trackSourcePosition)
     {
         var settings = CommonMarkSettings.Default.Clone();
         settings.AdditionalFeatures |= CommonMarkAdditionalFeatures.StrikethroughTilde;
+        settings.TrackSourcePosition = trackSourcePosition;
         return settings;
     }
 
@@ -153,6 +221,7 @@ public partial class SkiaRichLabel : SkiaLabel
 
             var content = block.StringContent.ToString();
             var lines = content.Split('\n');
+            var mapFrom = block.SourcePosition;
             for (int i = 0; i < lines.Length; i++)
             {
                 if (i > 0)
@@ -160,6 +229,7 @@ public partial class SkiaRichLabel : SkiaLabel
                     RenderInline(CreateLineBreak());
                 }
 
+                mapFrom = MapSource(lines[i], block.SourcePosition, block.SourceLength, mapFrom);
                 AddTextSpan(lines[i], (span) =>
                 {
                     span.TextColor = CodeTextColor;
@@ -262,6 +332,7 @@ public partial class SkiaRichLabel : SkiaLabel
         {
             case InlineTag.LineBreak:
             case InlineTag.SoftBreak:
+                MapSource("\n", inline.SourcePosition, inline.SourceLength);
                 var last = Spans.LastOrDefault();
                 if (last == null)
                 {
@@ -275,6 +346,7 @@ public partial class SkiaRichLabel : SkiaLabel
                 break;
 
             case InlineTag.String:
+                MapSource(inline.LiteralContent, inline.SourcePosition, inline.SourceLength);
                 AddTextSpan(inline.LiteralContent);
                 break;
 
@@ -335,6 +407,7 @@ public partial class SkiaRichLabel : SkiaLabel
         {
             case InlineTag.LineBreak:
             case InlineTag.SoftBreak:
+                MapSource("\n", inline.SourcePosition, inline.SourceLength);
                 var last = Spans.LastOrDefault();
                 if (last == null)
                 {
@@ -348,6 +421,7 @@ public partial class SkiaRichLabel : SkiaLabel
                 break;
 
             case InlineTag.String:
+                MapSource(inline.LiteralContent, inline.SourcePosition, inline.SourceLength);
                 AddTextSpan(inline.LiteralContent);
                 break;
 
@@ -402,6 +476,7 @@ public partial class SkiaRichLabel : SkiaLabel
     {
         string text = code.LiteralContent;
 
+        MapSource(text, code.SourcePosition, code.SourceLength);
         AddTextSpan(text, (span) =>
         {
             span.TextColor = this.CodeTextColor;
@@ -416,6 +491,7 @@ public partial class SkiaRichLabel : SkiaLabel
         if (string.IsNullOrEmpty(text))
             text = link.TargetUrl;
 
+        MapSource(text, link.SourcePosition, link.SourceLength);
         AddTextSpan(text, (span) =>
         {
             span.Tag = link.TargetUrl;

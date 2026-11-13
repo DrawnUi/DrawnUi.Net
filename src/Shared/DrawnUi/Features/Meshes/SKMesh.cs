@@ -1,0 +1,1223 @@
+#nullable disable
+using System.Buffers;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading;
+using SkiaSharp;
+
+namespace DrawnUi.Draw.Meshes;
+
+/// <summary>Raw vertex bytes of a mesh, copied at creation (stand-in for SkiaSharp's SKMeshVertexBuffer).</summary>
+public sealed class SKMeshVertexBuffer : IDisposable
+{
+    // Pooled: a mesh rebuilt every frame does not put its vertex copy on the large object heap. Returned to the
+    // pool when the buffer and every mesh made from it are disposed, and Skia let go of the image wrapping the
+    // bytes (never returned if one is not disposed: the GC takes it).
+    byte[] _data;
+    readonly int _size;
+    int _refs = 1;
+    bool _disposed;
+    readonly object _lock = new();
+    MeshGeometry _geometry; // last geometry built from these bytes, shared by the meshes that use the same range
+    MeshData _image;       // the bytes as the programs read them
+    PackedVertices _packed; // last packed vertex range, shared by the geometries over it
+
+    SKMeshVertexBuffer(int size)
+    {
+        _size = size;
+        _data = ArrayPool<byte>.Shared.Rent(MeshData.PaddedBytes(size));
+    }
+
+    internal ReadOnlySpan<byte> Bytes => _data.AsSpan(0, _size);
+
+    /// <summary>Size in bytes.</summary>
+    public int Size => _size;
+
+    /// <summary>Copies <paramref name="data"/> into a new vertex buffer.</summary>
+    public static SKMeshVertexBuffer Make(ReadOnlySpan<byte> data)
+    {
+        var vb = new SKMeshVertexBuffer(data.Length);
+        data.CopyTo(vb._data);
+        return vb;
+    }
+
+    /// <summary>Copies <paramref name="size"/> bytes from <paramref name="data"/> into a new vertex buffer.</summary>
+    public static SKMeshVertexBuffer Make(IntPtr data, int size)
+    {
+        if (size < 0 || (data == IntPtr.Zero && size > 0))
+            return null;
+        var vb = new SKMeshVertexBuffer(size);
+        if (size > 0)
+            Marshal.Copy(data, vb._data, 0, size);
+        return vb;
+    }
+
+    /// <summary>Creates a zero-filled vertex buffer of <paramref name="size"/> bytes.</summary>
+    public static SKMeshVertexBuffer Make(int size)
+    {
+        if (size < 0)
+            return null;
+        var vb = new SKMeshVertexBuffer(size);
+        vb._data.AsSpan(0, size).Clear();
+        return vb;
+    }
+
+    internal void AddRef()
+    {
+        if (_disposed && Volatile.Read(ref _refs) <= 0)
+            throw new ObjectDisposedException(nameof(SKMeshVertexBuffer));
+        Interlocked.Increment(ref _refs);
+    }
+
+    internal void Release()
+    {
+        if (Interlocked.Decrement(ref _refs) != 0)
+            return;
+        lock (_lock)
+        {
+            _geometry?.Release();
+            _geometry = null;
+            _packed?.Release();
+            _packed = null;
+            if (_image != null)
+                _image.Dispose(); // the bytes go back to the pool when Skia releases the image
+            else
+                ArrayPool<byte>.Shared.Return(_data);
+            _image = null;
+            _data = null;
+        }
+    }
+
+    // The bytes wrapped as they are (no copy) in an image the programs read.
+    internal MeshData GetImage()
+    {
+        lock (_lock)
+        {
+            if (_image == null && _data != null)
+            {
+                _image = MeshData.Wrap(_data, _size);
+            }
+            return _image;
+        }
+    }
+
+    // The buffer is immutable, so what depends only on its bytes (image, texCoords, and positions when the
+    // vertex program copies them) is built once and reused by every mesh drawing the same range: a static
+    // mesh redrawn with new uniforms each frame uploads nothing new.
+    internal MeshGeometry AcquireGeometry(in MeshGeometry.Key key)
+    {
+        lock (_lock)
+        {
+            if (_geometry == null || !_geometry.Id.Equals(key))
+            {
+                var built = MeshGeometry.Build(key, this);
+                if (built == null)
+                    return null;
+                _geometry?.Release();
+                _geometry = built; // the buffer's own reference
+            }
+            _geometry.AddRef();
+            return _geometry;
+        }
+    }
+
+    // Packed vertices of a range, kept across geometries: a mesh that only changes its indices each frame
+    // packs nothing again.
+    internal PackedVertices AcquirePacked(in PackedVertices.Key key)
+    {
+        lock (_lock)
+        {
+            if (_packed == null || !_packed.Id.Equals(key))
+            {
+                var built = PackedVertices.Build(key, this);
+                if (built == null)
+                    return null;
+                _packed?.Release();
+                _packed = built; // the buffer's own reference
+            }
+            _packed.AddRef();
+            return _packed;
+        }
+    }
+
+    /// <summary>Releases this reference to the bytes; meshes made from the buffer keep theirs.</summary>
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+        _disposed = true;
+        Release();
+    }
+}
+
+/// <summary>Raw 16-bit index bytes of a mesh, copied at creation (stand-in for SkiaSharp's SKMeshIndexBuffer).</summary>
+public sealed class SKMeshIndexBuffer : IDisposable
+{
+    // Pooled, padded to the image size the programs read (a new draw order every frame allocates nothing).
+    // Returned when the buffer and every mesh made from it are disposed, and Skia let go of its image.
+    internal byte[] Data;
+    readonly int _size;
+    readonly object _lock = new();
+    MeshData _image;
+    int _refs = 1;
+    bool _disposed;
+
+    SKMeshIndexBuffer(int size)
+    {
+        _size = size;
+        Data = ArrayPool<byte>.Shared.Rent(MeshData.PaddedBytes(size));
+    }
+
+    /// <summary>Size in bytes.</summary>
+    public int Size => _size;
+
+    /// <summary>Copies <paramref name="data"/> (ushort indices as bytes) into a new index buffer.</summary>
+    public static SKMeshIndexBuffer Make(ReadOnlySpan<byte> data)
+    {
+        var ib = new SKMeshIndexBuffer(data.Length);
+        data.CopyTo(ib.Data);
+        return ib;
+    }
+
+    /// <summary>Copies <paramref name="size"/> bytes from <paramref name="data"/> into a new index buffer.</summary>
+    public static SKMeshIndexBuffer Make(IntPtr data, int size)
+    {
+        if (size < 0 || (data == IntPtr.Zero && size > 0))
+            return null;
+        var ib = new SKMeshIndexBuffer(size);
+        if (size > 0)
+            Marshal.Copy(data, ib.Data, 0, size);
+        return ib;
+    }
+
+    /// <summary>Creates a zero-filled index buffer of <paramref name="size"/> bytes.</summary>
+    public static SKMeshIndexBuffer Make(int size)
+    {
+        if (size < 0)
+            return null;
+        var ib = new SKMeshIndexBuffer(size);
+        ib.Data.AsSpan(0, size).Clear();
+        return ib;
+    }
+
+    internal void AddRef()
+    {
+        if (_disposed && Volatile.Read(ref _refs) <= 0)
+            throw new ObjectDisposedException(nameof(SKMeshIndexBuffer));
+        Interlocked.Increment(ref _refs);
+    }
+
+    internal void Release()
+    {
+        if (Interlocked.Decrement(ref _refs) != 0)
+            return;
+        lock (_lock)
+        {
+            if (_image != null)
+                _image.Dispose(); // the bytes go back to the pool when Skia releases the image
+            else
+                ArrayPool<byte>.Shared.Return(Data);
+            _image = null;
+            Data = null;
+        }
+    }
+
+    // The bytes wrapped as they are (no copy) in an image the draw program reads.
+    internal MeshData GetImage()
+    {
+        lock (_lock)
+        {
+            if (_image == null && Data != null)
+            {
+                _image = MeshData.Wrap(Data, _size);
+            }
+            return _image;
+        }
+    }
+
+    /// <summary>Releases this reference to the indices; meshes made from the buffer keep theirs.</summary>
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+        _disposed = true;
+        Release();
+    }
+}
+
+// Mesh bytes as an RGBA8 image, one texel per 4 bytes, rows of a power-of-two width, wrapped without a copy.
+sealed class MeshData : IDisposable
+{
+    static readonly SKSamplingOptions Nearest = new(SKFilterMode.Nearest, SKMipmapMode.None);
+
+    public SKImage Image { get; private set; }
+    public SKShader Shader { get; private set; }
+    public int Width { get; private set; }
+
+    // The wrapped array, pinned while Skia reads it, back to the pool when Skia lets go of the image. One release
+    // delegate and one pixmap per thread for every image: wrapping makes no closures or pixmap wrappers.
+    byte[] _data;
+    GCHandle _pin;
+    static readonly SKImageRasterReleaseDelegate Released = (_, context) =>
+    {
+        var owner = (MeshData)context;
+        owner._pin.Free();
+        ArrayPool<byte>.Shared.Return(owner._data);
+        owner._data = null;
+    };
+    [ThreadStatic] static SKPixmap t_pixmap;
+
+    static int WidthFor(int bytes)
+    {
+        int texels = Math.Max(1, (bytes + 3) / 4);
+        int w = 1;
+        while (w < texels && w < SKMeshSpecification.MaxTextureSide)
+            w <<= 1;
+        return w;
+    }
+
+    // Bytes an array needs so the image's last row is complete.
+    public static int PaddedBytes(int bytes)
+    {
+        int w = WidthFor(bytes);
+        int rows = (Math.Max(1, (bytes + 3) / 4) + w - 1) / w;
+        return w * rows * 4;
+    }
+
+    // Null when the bytes need more rows than a texture may have (64 MB). The array (from ArrayPool) must stay
+    // untouched until Skia no longer needs the pixels; it is then returned to the pool. On null it stays the caller's.
+    public static MeshData Wrap(byte[] data, int size)
+    {
+        int w = WidthFor(size);
+        int rows = (Math.Max(1, (size + 3) / 4) + w - 1) / w;
+        if (rows > SKMeshSpecification.MaxTextureSide)
+            return null;
+        var info = new SKImageInfo(w, rows, SKColorType.Rgba8888, SKAlphaType.Unpremul);
+        var owner = new MeshData { _data = data, _pin = GCHandle.Alloc(data, GCHandleType.Pinned), Width = w };
+        var pixmap = t_pixmap ??= new SKPixmap();
+        pixmap.Reset(info, owner._pin.AddrOfPinnedObject(), info.RowBytes); // read by FromPixels, not kept
+        var image = SKImage.FromPixels(pixmap, Released, owner);
+        pixmap.Reset();
+        if (image == null)
+        {
+            owner._pin.Free();
+            return null;
+        }
+        owner.Image = image;
+        owner.Shader = image.ToRawShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, Nearest);
+        return owner;
+    }
+
+    public void Dispose()
+    {
+        Shader?.Dispose();
+        Image?.Dispose();
+    }
+}
+
+/// <summary>
+/// A custom mesh: specification, vertices, optional indices, uniforms and children, drawn with
+/// <see cref="SKMeshCanvasExtensions.DrawMesh(SKCanvas, SKMesh, SKPaint)"/> (stand-in for SkiaSharp's SKMesh).
+/// Drawn through <c>SKCanvas.DrawVertices</c> and one runtime shader, so it also draws on raster (CPU) canvases.
+/// </summary>
+public sealed class SKMesh : IDisposable
+{
+    static readonly SKBlender Modulate = SKBlender.CreateBlendMode(SKBlendMode.Modulate);
+
+    readonly SKMeshSpecification _spec;
+    readonly SKMeshMode _mode;
+    readonly SKMeshVertexBuffer _vertexBuffer;
+    readonly int _vertexCount;
+    readonly int _vertexOffset;
+    readonly SKMeshIndexBuffer _indexBuffer;
+    readonly int _indexCount;
+    readonly int _indexOffset;
+    readonly byte[] _uniforms;
+    readonly SKRuntimeEffectChild[] _children;
+    readonly object _lock = new();
+
+    // Built at the first draw.
+    bool _built;
+    bool _disposed;
+    MeshGeometry _geometry;
+    SKVertices[] _ownVertices; // positions from the vertex program run with this mesh's uniforms
+    SKVertices[] _vertices;
+
+    // The paint color as a shader, for draws whose paint has none.
+    [ThreadStatic] static SKShader t_colorShader;
+    [ThreadStatic] static SKColor t_colorShaderColor;
+
+    // Last draw shader, reused while the paint shader, color and blender stay the same.
+    SKShader _shader;
+    SKShader _shaderPaintShader;
+    SKColor _shaderPaintColor;
+    SKBlender _shaderBlender;
+    SKShader _shaderPacked;
+
+    SKMesh(SKMeshSpecification spec, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer, int vertexCount, int vertexOffset,
+        SKMeshIndexBuffer indexBuffer, int indexCount, int indexOffset, byte[] uniforms, SKRuntimeEffectChild[] children,
+        SKRect bounds)
+    {
+        _spec = spec;
+        _mode = mode;
+        _vertexBuffer = vertexBuffer;
+        _vertexCount = vertexCount;
+        _vertexOffset = vertexOffset;
+        _indexBuffer = indexBuffer;
+        _indexCount = indexCount;
+        _indexOffset = indexOffset;
+        _uniforms = uniforms;
+        _children = children;
+        Bounds = bounds;
+        vertexBuffer.AddRef();
+        indexBuffer?.AddRef();
+    }
+
+    /// <summary>True for every mesh <c>Make</c> / <c>MakeIndexed</c> returned.</summary>
+    public bool IsValid => _spec != null;
+
+    // Bounds given at creation, used to skip draws outside the clip (SkiaSharp does not expose them).
+    internal SKRect Bounds { get; }
+
+    /// <summary>Creates a mesh without uniforms or children. Returns null and the reason in <paramref name="errors"/> on failure.</summary>
+    public static SKMesh Make(SKMeshSpecification specification, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer,
+        int vertexCount, int vertexOffset, SKRect bounds, out string errors)
+        => Make(specification, mode, vertexBuffer, vertexCount, vertexOffset, null, default, bounds, out errors);
+
+    /// <summary>Creates a mesh with uniform data. Returns null and the reason in <paramref name="errors"/> on failure.</summary>
+    public static SKMesh Make(SKMeshSpecification specification, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer,
+        int vertexCount, int vertexOffset, SKData uniforms, SKRect bounds, out string errors)
+        => Make(specification, mode, vertexBuffer, vertexCount, vertexOffset, uniforms, default, bounds, out errors);
+
+    /// <summary>
+    /// Creates a mesh with uniform data and child effects (fragment program order). <paramref name="vertexOffset"/>
+    /// is in bytes. Returns null and the reason in <paramref name="errors"/> on failure.
+    /// </summary>
+    public static SKMesh Make(SKMeshSpecification specification, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer,
+        int vertexCount, int vertexOffset, SKData uniforms, ReadOnlySpan<SKRuntimeEffectChild> children, SKRect bounds,
+        out string errors)
+    {
+        if (specification == null)
+            throw new ArgumentNullException(nameof(specification));
+        if (vertexBuffer == null)
+            throw new ArgumentNullException(nameof(vertexBuffer));
+
+        errors = ValidateVertices(specification, mode, vertexBuffer, vertexCount, vertexOffset, false)
+                 ?? ValidateUniformsAndChildren(specification, uniforms, children);
+        if (errors != null)
+            return null;
+
+        return new SKMesh(specification, mode, vertexBuffer, vertexCount, vertexOffset, null, 0, 0,
+            CopyUniforms(uniforms), children.ToArray(), bounds);
+    }
+
+    /// <summary>Creates an indexed mesh without uniforms or children. Returns null and the reason in <paramref name="errors"/> on failure.</summary>
+    public static SKMesh MakeIndexed(SKMeshSpecification specification, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer,
+        int vertexCount, int vertexOffset, SKMeshIndexBuffer indexBuffer, int indexCount, int indexOffset, SKRect bounds,
+        out string errors)
+        => MakeIndexed(specification, mode, vertexBuffer, vertexCount, vertexOffset, indexBuffer, indexCount, indexOffset,
+            null, default, bounds, out errors);
+
+    /// <summary>Creates an indexed mesh with uniform data. Returns null and the reason in <paramref name="errors"/> on failure.</summary>
+    public static SKMesh MakeIndexed(SKMeshSpecification specification, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer,
+        int vertexCount, int vertexOffset, SKMeshIndexBuffer indexBuffer, int indexCount, int indexOffset, SKData uniforms,
+        SKRect bounds, out string errors)
+        => MakeIndexed(specification, mode, vertexBuffer, vertexCount, vertexOffset, indexBuffer, indexCount, indexOffset,
+            uniforms, default, bounds, out errors);
+
+    /// <summary>
+    /// Creates an indexed mesh with uniform data and child effects. Offsets are in bytes; indices are ushort and
+    /// relative to <paramref name="vertexOffset"/>. Returns null and the reason in <paramref name="errors"/> on failure.
+    /// </summary>
+    public static SKMesh MakeIndexed(SKMeshSpecification specification, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer,
+        int vertexCount, int vertexOffset, SKMeshIndexBuffer indexBuffer, int indexCount, int indexOffset, SKData uniforms,
+        ReadOnlySpan<SKRuntimeEffectChild> children, SKRect bounds, out string errors)
+    {
+        if (specification == null)
+            throw new ArgumentNullException(nameof(specification));
+        if (vertexBuffer == null)
+            throw new ArgumentNullException(nameof(vertexBuffer));
+        if (indexBuffer == null)
+            throw new ArgumentNullException(nameof(indexBuffer));
+
+        errors = ValidateVertices(specification, mode, vertexBuffer, vertexCount, vertexOffset, true);
+        if (errors == null)
+        {
+            if (indexCount < 3)
+                errors = $"{ModeName(mode)} mode requires at least 3 indices but index count is {indexCount}.";
+            else if (indexOffset < 0 || indexOffset % 2 != 0)
+                errors = "The index offset must be a multiple of 2.";
+            else if ((long)indexOffset + (long)indexCount * 2 > indexBuffer.Size)
+                errors = "The index buffer offset and index count reads beyond the end of the index buffer.";
+        }
+        errors ??= ValidateUniformsAndChildren(specification, uniforms, children);
+        if (errors != null)
+            return null;
+
+        return new SKMesh(specification, mode, vertexBuffer, vertexCount, vertexOffset, indexBuffer, indexCount, indexOffset,
+            CopyUniforms(uniforms), children.ToArray(), bounds);
+    }
+
+    static string ModeName(SKMeshMode mode) => mode == SKMeshMode.Triangles ? "triangles" : "triangle-strip";
+
+    static string ValidateVertices(SKMeshSpecification spec, SKMeshMode mode, SKMeshVertexBuffer vb, int count, int offset, bool indexed)
+    {
+        if ((!indexed && count < 3) || count < 0)
+            return $"{ModeName(mode)} mode requires at least 3 vertices but vertex count is {count}.";
+        if (offset < 0 || offset % spec.Stride != 0)
+            return $"The vertex offset ({offset}) must be a multiple of the vertex stride ({spec.Stride}).";
+        if ((long)offset + (long)count * spec.Stride > vb.Size)
+            return "The vertex buffer offset and vertex count reads beyond the end of the vertex buffer.";
+        return null;
+    }
+
+    static string ValidateUniformsAndChildren(SKMeshSpecification spec, SKData uniforms, ReadOnlySpan<SKRuntimeEffectChild> children)
+    {
+        long size = uniforms?.Size ?? 0;
+        if (size < spec.UniformSize)
+            return $"The uniform data is {size} bytes but must be at least {spec.UniformSize}.";
+        if (children.Length != spec.Children.Length)
+            return $"The mesh specification declares {spec.Children.Length} child effects, but the mesh supplies {children.Length}.";
+        for (int i = 0; i < children.Length; i++)
+        {
+            var child = children[i];
+            if (child.Value == null)
+                continue;
+            var passed = child.Shader != null ? "shader" : child.ColorFilter != null ? "colorFilter" : "blender";
+            if (passed != spec.Children[i].Kind)
+                return $"Child effect '{spec.Children[i].Name}' was specified as a {KindName(spec.Children[i].Kind)}, but passed as a {KindName(passed)}.";
+        }
+        return null;
+    }
+
+    static string KindName(string kind) => kind == "colorFilter" ? "color filter" : kind;
+
+    static byte[] CopyUniforms(SKData uniforms) => uniforms == null ? Array.Empty<byte>() : uniforms.ToArray();
+
+    internal void Draw(SKCanvas canvas, SKBlender blender, SKPaint paint)
+    {
+        lock (_lock)
+        {
+            if (!_built)
+            {
+                _built = true;
+                Build(canvas.Context);
+            }
+            if (_vertices == null)
+                return;
+            var shader = GetShader(blender, paint, canvas.Context);
+            if (shader == null)
+                return;
+
+            // The caller's paint draws, with the mesh shader and white for the draw only (paint color and alpha are
+            // applied inside the shader, as SkMesh does): no paint copy per draw.
+            var paintShader = paint.Shader;
+            var paintColor = paint.Color;
+            paint.Shader = shader;
+            paint.Color = SKColors.White;
+            try
+            {
+                foreach (var vertices in _vertices)
+                    canvas.DrawVertices(vertices, SKBlendMode.Modulate, paint);
+            }
+            finally
+            {
+                paint.Shader = paintShader;
+                paint.Color = paintColor;
+            }
+        }
+    }
+
+    void Build(GRRecordingContext context)
+    {
+        var key = new MeshGeometry.Key(_spec, _mode, _vertexCount, _vertexOffset, _indexBuffer, _indexCount, _indexOffset);
+        _geometry = _vertexBuffer.AcquireGeometry(key);
+        if (_geometry == null)
+            return;
+        // Positions copied from the "position" attribute, else the vertex program runs on the CPU with this
+        // mesh's uniforms.
+        _vertices = _geometry.Vertices ?? (_ownVertices = _geometry.RunVertexProgram(_uniforms, context));
+    }
+
+    SKShader GetShader(SKBlender blender, SKPaint paint, GRRecordingContext context)
+    {
+        var paintShader = paint.Shader;
+        var paintColor = paint.Color;
+        if (!_spec.HasColor)
+            blender = null;
+        else
+            blender ??= Modulate;
+
+        bool varyings = _spec.VaryingsEffect != null;
+        var packed = varyings ? _geometry.Packed.GetVaryings(context) : _geometry.Packed.GetPacked(context);
+        if (packed == null)
+            return null;
+        if (_shader != null && ReferenceEquals(_shaderPaintShader, paintShader) && _shaderPaintColor == paintColor
+            && ReferenceEquals(_shaderBlender, blender) && ReferenceEquals(_shaderPacked, packed))
+            return _shader;
+
+        SKShader source = paintShader;
+        if (source == null)
+        {
+            // one per thread and color, not one per mesh: a mesh made every frame draws with the same paint color
+            if (t_colorShader == null || t_colorShaderColor != paintColor)
+            {
+                t_colorShader?.Dispose(); // shaders made with it keep their own reference
+                t_colorShader = SKShader.CreateColor(paintColor);
+                t_colorShaderColor = paintColor;
+            }
+            source = t_colorShader;
+        }
+
+        var g = _geometry;
+        SKShader shader;
+        lock (_spec.EffectLock)
+        {
+            // a plain paint color: the program that never reads the local coords (no position texel reads)
+            bool solid = paintShader == null && _spec.DrawSolidEffect != null;
+            var effect = solid ? _spec.DrawSolidEffect : _spec.DrawEffect;
+            var uniforms = solid ? _spec.DrawSolidUniforms : _spec.DrawUniforms;
+            MeshGeometry.SetUniforms(uniforms, _spec.Uniforms, _uniforms);
+            float alpha = paintShader == null ? 1f : paintColor.Alpha / 255f;
+            g.SetCornerUniforms(uniforms, alpha);
+            if (varyings)
+                uniforms.Set("_sm_pk", stackalloc float[] { 0, g.Packed.VaryingsPerRow, 1f / g.Packed.VaryingsPerRow, 0 });
+            else
+                uniforms.Set("_sm_pk", stackalloc float[] { 0, g.Packed.VerticesPerRow, 1f / g.Packed.VerticesPerRow, g.Packed.Rows });
+
+            var children = solid ? _spec.DrawSolidChildren : _spec.DrawChildren;
+            for (int i = 0; i < _spec.Children.Length; i++)
+                children[_spec.Children[i].Name] = _children[i].Value == null ? (SKRuntimeEffectChild?)null : _children[i];
+            children["_sm_attr"] = packed;
+            children["_sm_idx"] = g.IndexShader;
+            children["_sm_paint"] = source;
+            if (blender != null)
+                children["_sm_blend"] = blender;
+            shader = effect.ToShader(uniforms.Holder, children);
+            children.Reset(); // holds no mesh's objects between draws
+        }
+
+        _shader?.Dispose();
+        _shader = shader;
+        _shaderPaintShader = paintShader;
+        _shaderPaintColor = paintColor;
+        _shaderBlender = blender;
+        _shaderPacked = packed;
+        return _shader;
+    }
+
+    /// <summary>Releases the drawing resources of this mesh.</summary>
+    public void Dispose()
+    {
+        lock (_lock)
+        {
+            _shader?.Dispose();
+            _shader = null;
+            if (_ownVertices != null)
+                foreach (var v in _ownVertices)
+                    v.Dispose();
+            _ownVertices = null;
+            _vertices = null;
+            _geometry?.Release();
+            _geometry = null;
+            if (!_disposed)
+            {
+                _disposed = true;
+                _vertexBuffer.Release();
+                _indexBuffer?.Release();
+            }
+        }
+    }
+}
+
+// The attributes of a vertex range packed per vertex as the programs read them, made from the vertex bytes by
+// the convert program (on the GPU when there is one). Depends only on the vertex buffer, the range and the
+// specification: meshes that change only their indices or uniforms (a draw order sorted every frame) share it.
+// Reference counted: the buffer and every geometry using it.
+sealed class PackedVertices
+{
+    internal readonly record struct Key(SKMeshSpecification Spec, int VertexOffset, int Available);
+
+    static readonly SKSamplingOptions Nearest = new(SKFilterMode.Nearest, SKMipmapMode.None);
+
+    public Key Id { get; private init; }
+    public MeshData VertexImage { get; private init; }  // owned by the vertex buffer
+    public float FirstFloat { get; private init; }      // first float of the range in the vertex image
+    public int VerticesPerRow { get; private init; }    // in the packed images, a power of two
+    public int Rows { get; private init; }              // rows of vertices (the fp16 image has them twice: hi, lo)
+
+    // fp16 hi/lo for the draw program, made on the context it is drawn with (null: raster).
+    SKImage _packed;
+    SKShader _packedShader;
+    IntPtr _packedContext;
+    // F32 (raster) for the vertex program run on the CPU.
+    SKImage _packedF32;
+    SKShader _packedF32Shader;
+    // The varyings the vertex program gives (a specification that draws varyings), per context like _packed.
+    SKImage _varyings;
+    SKShader _varyingsShader;
+    IntPtr _varyingsContext;
+    public int VaryingsPerRow { get; private init; }     // in the varyings image, a power of two
+    public int VaryingsRows { get; private init; }
+    // Vertex program runs on this range (under the geometry lock of each mesh: a race only picks a path)
+    public int VertexProgramRuns;
+
+    int _refs = 1;
+
+    public void AddRef() => Interlocked.Increment(ref _refs);
+
+    public void Release()
+    {
+        if (Interlocked.Decrement(ref _refs) != 0)
+            return;
+        _packedShader?.Dispose();
+        _packed?.Dispose();
+        _packedF32Shader?.Dispose();
+        _packedF32?.Dispose();
+        _varyingsShader?.Dispose();
+        _varyings?.Dispose();
+    }
+
+    public static PackedVertices Build(Key key, SKMeshVertexBuffer buffer)
+    {
+        var vertexImage = buffer.GetImage();
+        if (vertexImage == null)
+            return null;
+        int texels = key.Spec.TexelsPerVertex;
+        int perRow = 1;
+        while (perRow * 2 * texels <= SKMeshSpecification.MaxTextureSide)
+            perRow *= 2;
+        int rows = (key.Available + perRow - 1) / perRow;
+        if (rows * 2 > SKMeshSpecification.MaxTextureSide)
+            return null;
+        int varyingsPerRow = 0, varyingsRows = 0;
+        if (key.Spec.Varyings != null)
+        {
+            varyingsPerRow = 1;
+            while (varyingsPerRow * 2 * key.Spec.Varyings.Texels <= SKMeshSpecification.MaxTextureSide)
+                varyingsPerRow *= 2;
+            varyingsRows = (key.Available + varyingsPerRow - 1) / varyingsPerRow;
+            if (varyingsRows > SKMeshSpecification.MaxTextureSide)
+                return null;
+        }
+        return new PackedVertices
+        {
+            Id = key,
+            VertexImage = vertexImage,
+            FirstFloat = key.VertexOffset / 4,
+            VerticesPerRow = perRow,
+            Rows = rows,
+            VaryingsPerRow = varyingsPerRow,
+            VaryingsRows = varyingsRows,
+        };
+    }
+
+    // The draw program's input when the specification draws varyings: the varyings pass over the vertex bytes, on
+    // `context` (null: raster), once per context.
+    public SKShader GetVaryings(GRRecordingContext context)
+    {
+        var handle = context?.Handle ?? IntPtr.Zero;
+        lock (this)
+        {
+            if (_varyingsShader != null && _varyingsContext == handle)
+                return _varyingsShader;
+            var spec = Id.Spec;
+            int width = VaryingsPerRow * spec.Varyings.Texels;
+            var info = new SKImageInfo(width, VaryingsRows, SKColorType.RgbaF16, SKAlphaType.Premul); // written with Src: as they are
+            ref var pass = ref MeshGeometry.t_varyings;
+            if (!pass.Acquire(context, info) && (context == null || !pass.Acquire(null, info)))
+                return null;
+            SKShader shader;
+            lock (spec.EffectLock)
+            {
+                var uniforms = spec.VaryingsUniforms;
+                uniforms.Set("_sm_vtx", stackalloc float[] { FirstFloat, VertexImage.Width, 1f / VertexImage.Width, 0 });
+                uniforms.Set("_sm_vy", stackalloc float[] { VaryingsPerRow, 0, 0, 0 });
+                var children = spec.VaryingsChildren;
+                children["_sm_attr"] = VertexImage.Shader;
+                shader = spec.VaryingsEffect.ToShader(uniforms.Holder, children);
+                children.Reset();
+            }
+            using (shader)
+                MeshGeometry.PassSurface.Fill(pass.Canvas, shader, width, VaryingsRows);
+            var image = pass.Surface.Snapshot();
+            if (image == null)
+                return null;
+            _varyingsShader?.Dispose();
+            _varyings?.Dispose();
+            _varyings = image;
+            _varyingsShader = image.ToRawShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, Nearest);
+            _varyingsContext = handle;
+            return _varyingsShader;
+        }
+    }
+
+    // The draw program's input on `context` (null: a raster or recording canvas), once per context.
+    public SKShader GetPacked(GRRecordingContext context)
+    {
+        var handle = context?.Handle ?? IntPtr.Zero;
+        lock (this)
+        {
+            if (_packedShader != null && _packedContext == handle)
+                return _packedShader;
+            var image = Convert(context, false);
+            if (image == null)
+                return null;
+            _packedShader?.Dispose();
+            _packed?.Dispose();
+            _packed = image;
+            _packedShader = image.ToRawShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, Nearest);
+            _packedContext = handle;
+            return _packedShader;
+        }
+    }
+
+    // The vertex program's input on the CPU.
+    public SKShader GetPackedF32()
+    {
+        lock (this)
+        {
+            if (_packedF32Shader == null)
+            {
+                _packedF32 = Convert(null, true);
+                _packedF32Shader = _packedF32?.ToRawShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, Nearest);
+            }
+            return _packedF32Shader;
+        }
+    }
+
+    // Runs the convert program into a new image: fp16 hi + lo rows, or one F32 block (`plain`, raster only).
+    SKImage Convert(GRRecordingContext context, bool plain)
+    {
+        var spec = Id.Spec;
+        int width = VerticesPerRow * spec.TexelsPerVertex;
+        int height = plain ? Rows : Rows * 2;
+        // Premul: an Unpremul GPU surface is refused. The program writes with Src, so values are stored as they are.
+        var info = new SKImageInfo(width, height, plain ? SKColorType.RgbaF32 : SKColorType.RgbaF16, SKAlphaType.Premul);
+        ref var pass = ref (plain ? ref MeshGeometry.t_convertF32 : ref MeshGeometry.t_convert);
+        if (!pass.Acquire(context, info) && (context == null || !pass.Acquire(null, info)))
+            return null;
+        SKShader shader;
+        lock (spec.EffectLock)
+        {
+            var uniforms = spec.ConvertUniforms;
+            uniforms.Set("_sm_vtx", stackalloc float[] { FirstFloat, VertexImage.Width, 1f / VertexImage.Width, 0 });
+            uniforms.Set("_sm_cv", stackalloc float[] { VerticesPerRow, Rows, plain ? 1 : 0, 0 });
+            var children = spec.ConvertChildren;
+            children["_sm_attr"] = VertexImage.Shader;
+            shader = spec.ConvertEffect.ToShader(uniforms.Holder, children);
+            children.Reset();
+        }
+        using (shader)
+            MeshGeometry.PassSurface.Fill(pass.Canvas, shader, width, height);
+        return pass.Surface.Snapshot();
+    }
+}
+
+// What a mesh draws with that depends on its vertex range, mode and indices: the packed vertices (shared with
+// every mesh of the same vertex range), the DrawVertices texCoords, and the positions when the vertex program
+// copies the "position" attribute. Reference counted: the buffer and every mesh using it.
+//
+// No per-float work on the CPU: the app's bytes go to the GPU as they are and the convert program packs them
+// there, once per vertex range. Triangle i covers texCoord cell (i % w, i / w); the draw program finds the
+// vertex of each of its corners.
+sealed class MeshGeometry
+{
+    internal readonly record struct Key(SKMeshSpecification Spec, SKMeshMode Mode, int VertexCount, int VertexOffset,
+        SKMeshIndexBuffer IndexBuffer, int IndexCount, int IndexOffset);
+
+    // Triangles per SKVertices: its SKPoint arrays stay under the large object heap threshold (85 KB).
+    const int ChunkTriangles = 3000;
+
+    public Key Id { get; private init; }
+    public PackedVertices Packed { get; private init; }
+    public int CellsPerRow { get; private init; }
+    public MeshData IndexImage { get; private init; }   // owned by the index buffer, null when not indexed
+    public float FirstIndex { get; private init; }
+    public SKVertices[] Vertices { get; private set; }  // per chunk, set when positions are the "position" attribute
+
+    int _available, _triangles;
+    SKPoint[][] _texCoords;
+
+    int _refs = 1;
+
+    public void AddRef() => Interlocked.Increment(ref _refs);
+
+    public void Release()
+    {
+        if (Interlocked.Decrement(ref _refs) != 0)
+            return;
+        if (Vertices != null)
+            foreach (var v in Vertices)
+                v.Dispose();
+        Packed.Release();
+    }
+
+    public static MeshGeometry Build(Key key, SKMeshVertexBuffer buffer)
+    {
+        var spec = key.Spec;
+        bool indexed = key.IndexBuffer != null;
+        int count = indexed ? key.IndexCount : key.VertexCount;
+        int triangles = key.Mode == SKMeshMode.Triangles ? count / 3 : Math.Max(0, count - 2);
+        // Vertices the mesh can reach: the counted range, or for indices, everything the buffer holds past the offset.
+        int available = indexed ? (buffer.Size - key.VertexOffset) / spec.Stride : key.VertexCount;
+        if (triangles == 0 || available <= 0)
+            return null;
+
+        var indexImage = indexed ? key.IndexBuffer.GetImage() : null;
+        if (indexed && indexImage == null)
+            return null;
+        var packed = buffer.AcquirePacked(new PackedVertices.Key(spec, key.VertexOffset, available));
+        if (packed == null)
+            return null;
+
+        // DrawVertices arrays are made for a padded count (the extra triangles are empty, at 0,0): a mesh whose count
+        // changes every frame reuses the arrays of its size class instead of making new ones for each count.
+        int padded = PaddedTriangles(triangles);
+        int w = (int)Math.Ceiling(Math.Sqrt(padded)); // keeps texCoords small: their fraction is the barycentric
+        var g = new MeshGeometry
+        {
+            Id = key,
+            Packed = packed,
+            CellsPerRow = w,
+            IndexImage = indexImage,
+            FirstIndex = key.IndexOffset / 2,
+            _available = available,
+            _triangles = triangles,
+            _texCoords = TexCoords(padded, w),
+        };
+
+        if (spec.PositionEffect == null)
+        {
+            // The vertex program copies the "position" attribute: positions straight from the bytes.
+            var floats = MemoryMarshal.Cast<byte, float>(buffer.Bytes.Slice(0, buffer.Size & ~3));
+            g.Vertices = g.MakeVertices(floats, key.VertexOffset / 4 + spec.PositionAttributeFloat, spec.Stride / 4);
+        }
+        return g;
+    }
+
+    // DrawVertices triangles of the whole mesh, corner positions read from `src` (vertex v's x at
+    // first + v * stride). A triangle with an index outside the buffer is drawn empty (undefined in Skia).
+    SKVertices[] MakeVertices(ReadOnlySpan<float> src, int first, int stride)
+    {
+        var key = Id;
+        bool strip = key.Mode == SKMeshMode.TriangleStrip;
+        ReadOnlySpan<ushort> indices = key.IndexBuffer == null
+            ? default
+            : MemoryMarshal.Cast<byte, ushort>(key.IndexBuffer.Data.AsSpan(key.IndexOffset, key.IndexCount * 2));
+        bool indexed = key.IndexBuffer != null;
+        uint available = (uint)_available;
+
+        var result = new SKVertices[_texCoords.Length];
+        int t = 0;
+        for (int c = 0; c < _texCoords.Length; c++)
+        {
+            var texs = _texCoords[c];
+            var points = Scratch(texs.Length);
+            for (int j = 0; j < texs.Length; j += 3, t++)
+            {
+                if (t >= _triangles)
+                {
+                    points[j] = points[j + 1] = points[j + 2] = default; // padding: an empty triangle
+                    continue;
+                }
+                int a = strip ? t : t * 3;
+                int v0 = indexed ? indices[a] : a;
+                int v1 = indexed ? indices[a + 1] : a + 1;
+                int v2 = indexed ? indices[a + 2] : a + 2;
+                if ((uint)v0 >= available || (uint)v1 >= available || (uint)v2 >= available)
+                {
+                    points[j] = points[j + 1] = points[j + 2] = default;
+                    continue;
+                }
+                int f0 = first + v0 * stride, f1 = first + v1 * stride, f2 = first + v2 * stride;
+                points[j] = new SKPoint(src[f0], src[f0 + 1]);
+                points[j + 1] = new SKPoint(src[f1], src[f1 + 1]);
+                points[j + 2] = new SKPoint(src[f2], src[f2 + 1]);
+            }
+            result[c] = SKVertices.CreateCopy(SKVertexMode.Triangles, points, texs, null);
+        }
+        return result;
+    }
+
+    // DrawVertices triangles from positions already in triangle-list corner order (the GPU read-back).
+    SKVertices[] MakeVertices(ReadOnlySpan<SKPoint> corners)
+    {
+        var result = new SKVertices[_texCoords.Length];
+        int o = 0;
+        for (int c = 0; c < _texCoords.Length; c++)
+        {
+            var texs = _texCoords[c];
+            var points = Scratch(texs.Length);
+            int real = Math.Clamp(corners.Length - o, 0, texs.Length);
+            corners.Slice(o, real).CopyTo(points);
+            points.AsSpan(real).Clear(); // padding: empty triangles
+            o += real;
+            result[c] = SKVertices.CreateCopy(SKVertexMode.Triangles, points, texs, null);
+        }
+        return result;
+    }
+
+    // DrawVertices copies the points: one array per thread and length (lengths are padded counts) is reused for
+    // every mesh.
+    [ThreadStatic] static Dictionary<int, SKPoint[]> t_scratch;
+
+    static SKPoint[] Scratch(int length)
+    {
+        var scratch = t_scratch ??= new Dictionary<int, SKPoint[]>();
+        if (!scratch.TryGetValue(length, out var points))
+        {
+            if (scratch.Count >= SizeClassesKept) // ponytail: drops all at once, as the texCoords cache
+                scratch.Clear();
+            scratch[length] = points = new SKPoint[length];
+        }
+        return points;
+    }
+
+    // Size classes whose arrays are kept: a range of counts 1 to 8 times wide (a corridor from near to far, a model
+    // from close to far) stays within it.
+    const int SizeClassesKept = 32;
+
+    // The triangle count with its last chunk rounded up to its size class (at most 1/16 more, 64 under 1024
+    // triangles), never past the chunk: padding adds no chunk.
+    static int PaddedTriangles(int triangles)
+    {
+        int full = triangles / ChunkTriangles * ChunkTriangles;
+        int tail = triangles - full;
+        if (tail == 0)
+            return triangles;
+        return full + Math.Min(PaddedCount(tail), ChunkTriangles);
+    }
+
+    // `count` rounded up to its size class: at most 1/16 more, 64 under 1024.
+    static int PaddedCount(int count)
+    {
+        int pow2 = 1;
+        while (pow2 < count)
+            pow2 <<= 1;
+        int step = Math.Max(64, pow2 / 16);
+        return (count + step - 1) / step * step;
+    }
+
+    // TexCoords depend only on the triangle count: shared by every mesh of that size (a mesh rebuilt each
+    // frame reuses them). Triangle i: cell (i % w, i / w) with corners at +0.125 / +0.875, so the interpolated
+    // texCoord gives the triangle (floor) and its barycentrics (fraction).
+    static readonly Dictionary<int, SKPoint[][]> s_texCoords = new();
+
+    static SKPoint[][] TexCoords(int triangles, int w)
+    {
+        lock (s_texCoords)
+        {
+            if (s_texCoords.TryGetValue(triangles, out var cached))
+                return cached;
+            int chunks = (triangles + ChunkTriangles - 1) / ChunkTriangles;
+            var texs = new SKPoint[chunks][];
+            for (int c = 0; c < chunks; c++)
+            {
+                var chunk = texs[c] = new SKPoint[Math.Min(ChunkTriangles, triangles - c * ChunkTriangles) * 3];
+                for (int j = 0, t = c * ChunkTriangles; j < chunk.Length; j += 3, t++)
+                {
+                    float cx = t % w, cy = t / w;
+                    chunk[j] = new SKPoint(cx + SKMeshSpecification.CornerLow, cy + SKMeshSpecification.CornerLow);
+                    chunk[j + 1] = new SKPoint(cx + SKMeshSpecification.CornerHigh, cy + SKMeshSpecification.CornerLow);
+                    chunk[j + 2] = new SKPoint(cx + SKMeshSpecification.CornerLow, cy + SKMeshSpecification.CornerHigh);
+                }
+            }
+            if (s_texCoords.Count >= SizeClassesKept) // ponytail: drops all sizes at once; an LRU if apps cycle more sizes
+                s_texCoords.Clear();
+            s_texCoords[triangles] = texs;
+            return texs;
+        }
+    }
+
+    // Uniforms that place the mesh's corners in the packed and index images, for the draw and position programs.
+    public void SetCornerUniforms(SKMeshSpecification.CachedUniforms uniforms, float alpha)
+    {
+        var idx = IndexImage ?? Packed.VertexImage; // any image when not indexed: never read
+        uniforms.Set("_sm_grid", stackalloc float[]
+            { CellsPerRow, alpha, Id.Mode == SKMeshMode.TriangleStrip ? 1 : 0, IndexImage != null ? 1 : 0 });
+        uniforms.Set("_sm_ix", stackalloc float[] { FirstIndex, idx.Width, 1f / idx.Width, 0 });
+    }
+
+    public SKShader IndexShader => (IndexImage ?? Packed.VertexImage).Shader;
+
+    // DrawVertices needs positions on the CPU: the vertex program runs with the mesh's uniforms and the positions
+    // are read back. On the canvas's GPU when it has one: one pixel pair per triangle-list corner (input: the
+    // packed fp16 image the draw program uses; output: each position float as its 4 IEEE bytes in an RGBA8
+    // target, since Skia renders no F32 on the GPU), so the read-back bytes are the DrawVertices positions in
+    // order. Else on a raster F32 surface, one pixel per vertex (input: packed F32). Both give the floats bit-exact.
+    public SKVertices[] RunVertexProgram(byte[] uniformData, GRRecordingContext context)
+    {
+        lock (this)
+        {
+            // The GPU path waits for the GPU once per draw (the read-back): about 0.5 ms on desktop GL, more on WebGL.
+            // The CPU path first converts the vertex range to F32 on the CPU (raster pipeline, slow, worst in Wasm),
+            // then runs the vertex program per draw. So the CPU path only pays off for a small mesh over a vertex
+            // range drawn again (a strip redrawn with new uniforms, many times a frame); a range drawn once (a mesh
+            // made every frame) or a big mesh runs on the GPU. Measured, a 194-vertex wave made every frame: desktop
+            // GL 0.8 ms GPU against 3.6 ms CPU; Blazor Wasm 6 ms GPU against 17-23 ms CPU.
+            // The targets are made for a padded row width (as the DrawVertices arrays): a mesh whose count changes every
+            // frame keeps its target instead of making a new surface for each count. Only the real width is run and read.
+            bool reused = Packed.VertexProgramRuns++ > 0;
+            if (context != null && (_available >= GpuVertexProgramMinVertices || !reused))
+            {
+                int corners = _triangles * 3;
+                int perRow = Math.Min(PaddedCount(corners), SKMeshSpecification.MaxTextureSide / 2); // 2 pixels per corner: x, y
+                int rows = (corners + perRow - 1) / perRow;
+                int used = rows == 1 ? corners : perRow;
+                var packed = Packed.GetPacked(context);
+                if (packed != null && rows <= SKMeshSpecification.MaxTextureSide)
+                {
+                    var info = new SKImageInfo(perRow * 2, rows, SKColorType.Rgba8888, SKAlphaType.Premul); // read back as written
+                    if (t_gpuPositions.Acquire(context, info))
+                    {
+                        var readInfo = info.WithSize(used * 2, rows);
+                        var readBack = ReadBack(readInfo.BytesSize);
+                        if (RunVertexProgram(t_gpuPositions.Canvas, uniformData, packed, Packed.Rows, perRow, used, rows, true)
+                            && t_gpuPositions.Surface.ReadPixels(readInfo, Marshal.UnsafeAddrOfPinnedArrayElement(readBack, 0), readInfo.RowBytes, 0, 0))
+                            return MakeVertices(MemoryMarshal.Cast<byte, SKPoint>(readBack.AsSpan(0, corners * 8)));
+                    }
+                }
+            }
+
+            int vPerRow = Math.Min(PaddedCount(_available), SKMeshSpecification.MaxTextureSide);
+            int vRows = (_available + vPerRow - 1) / vPerRow;
+            if (vRows > SKMeshSpecification.MaxTextureSide)
+                return null;
+            var input = Packed.GetPackedF32();
+            var rasterInfo = new SKImageInfo(vPerRow, vRows, SKColorType.RgbaF32, SKAlphaType.Premul);
+            var output = ReadBack(rasterInfo.BytesSize);
+            if (input == null || !t_rasterPositions.Acquire(null, rasterInfo, Marshal.UnsafeAddrOfPinnedArrayElement(output, 0)))
+                return null;
+            int vUsed = vRows == 1 ? _available : vPerRow;
+            if (!RunVertexProgram(t_rasterPositions.Canvas, uniformData, input, 0, vPerRow, vUsed, vRows, false)) // raster: written at once
+                return null;
+            // vertex v at pixel (v % vPerRow, v / vPerRow): float v * 4 of the rows laid end to end
+            return MakeVertices(MemoryMarshal.Cast<byte, float>(output.AsSpan(0, rasterInfo.BytesSize)), 0, 4);
+        }
+    }
+
+    const int GpuVertexProgramMinVertices = 1024;
+
+    // Read-back memory, one per thread, reused by every mesh (a mesh rebuilt each frame allocates none):
+    // consumed by MakeVertices before RunVertexProgram returns.
+    [ThreadStatic] static byte[] t_readBack;
+
+    static byte[] ReadBack(int bytes)
+    {
+        if (t_readBack == null || t_readBack.Length < bytes)
+            t_readBack = GC.AllocateUninitializedArray<byte>(Math.Max(bytes, (t_readBack?.Length ?? 0) * 2), pinned: true);
+        return t_readBack;
+    }
+
+    // `loRows`: rows of the high half block of an fp16 hi/lo input, 0 for F32. `corners`: the GPU RGBA8 output.
+    // `perRow` items per row of the target, the first `used` of each row are run.
+    bool RunVertexProgram(SKCanvas canvas, byte[] uniformData, SKShader input, int loRows, int perRow, int used, int rows, bool corners)
+    {
+        var spec = Id.Spec;
+        SKShader shader;
+        lock (spec.EffectLock)
+        {
+            var uniforms = spec.PositionUniforms;
+            SetUniforms(uniforms, spec.VertexUniforms, uniformData);
+            uniforms.Set("_sm_pk", stackalloc float[] { 0, Packed.VerticesPerRow, 1f / Packed.VerticesPerRow, loRows });
+            uniforms.Set("_sm_pos", stackalloc float[] { perRow, corners ? 1 : 0, _available, 0 });
+            SetCornerUniforms(uniforms, 1);
+            var children = spec.PositionChildren;
+            children["_sm_attr"] = input;
+            children["_sm_idx"] = IndexShader;
+            shader = spec.PositionEffect.ToShader(uniforms.Holder, children);
+            children.Reset();
+        }
+        if (shader == null)
+            return false;
+        using (shader)
+            PassSurface.Fill(canvas, shader, corners ? used * 2 : used, rows);
+        return true;
+    }
+
+    // The stand-in's own pass targets, one of each per thread, reused while size, format, context and memory
+    // stay the same: a mesh rebuilt every frame then creates none (SkiaSharp's SKCanvas wrapper alone is ~2 KB).
+    [ThreadStatic] internal static PassSurface t_convert, t_convertF32, t_varyings;
+    [ThreadStatic] static PassSurface t_gpuPositions, t_rasterPositions;
+
+    internal struct PassSurface
+    {
+        [ThreadStatic] static SKPaint t_paint;
+
+        public SKSurface Surface { get; private set; }
+        public SKCanvas Canvas { get; private set; }
+        SKImageInfo _info;
+        IntPtr _context, _pixels;
+
+        // `pixels`: raster memory to draw into (rows of info.RowBytes), else a GPU surface on `context` or raster.
+        public bool Acquire(GRRecordingContext context, SKImageInfo info, IntPtr pixels = default)
+        {
+            var handle = context?.Handle ?? IntPtr.Zero;
+            if (Surface != null && _info == info && _context == handle && _pixels == pixels)
+                return true;
+            Surface?.Dispose();
+            Surface = pixels != IntPtr.Zero ? SKSurface.Create(info, pixels, info.RowBytes)
+                : context != null ? SKSurface.Create(context, true, info)
+                : SKSurface.Create(info);
+            Canvas = Surface?.Canvas;
+            (_info, _context, _pixels) = (info, handle, pixels);
+            return Surface != null;
+        }
+
+        // Writes `shader` over (0, 0, width, height) as it is (Src).
+        public static void Fill(SKCanvas canvas, SKShader shader, float width, float height)
+        {
+            var paint = t_paint ??= new SKPaint { BlendMode = SKBlendMode.Src };
+            paint.Shader = shader;
+            canvas.DrawRect(0, 0, width, height, paint);
+            paint.Shader = null;
+        }
+    }
+
+    public static void SetUniforms(SKMeshSpecification.CachedUniforms target, SKMeshSpecification.UniformSlot[] slots, byte[] data)
+    {
+        foreach (var slot in slots)
+        {
+            var bytes = new ReadOnlySpan<byte>(data, slot.Offset, slot.Size);
+            if (slot.IsInt)
+            {
+                var ints = MemoryMarshal.Cast<byte, int>(bytes);
+                target.Set(slot.Name, ints, ints.Length == 1 && !slot.IsArray);
+            }
+            else
+            {
+                var floats = MemoryMarshal.Cast<byte, float>(bytes);
+                target.Set(slot.Name, floats, floats.Length == 1 && !slot.IsArray);
+            }
+        }
+    }
+}
+
+/// <summary><c>SKCanvas.DrawMesh</c> for the stand-in <see cref="SKMesh"/>, same overloads as SkiaSharp's.</summary>
+public static class SKMeshCanvasExtensions
+{
+    /// <summary>Draws <paramref name="mesh"/>; a fragment color is multiplied with the paint's shader or color (Modulate).</summary>
+    public static void DrawMesh(this SKCanvas canvas, SKMesh mesh, SKPaint paint)
+        => DrawMesh(canvas, mesh, null, paint);
+
+    /// <summary>
+    /// Draws <paramref name="mesh"/>. When the fragment program outputs a color, <paramref name="blender"/> combines the
+    /// paint's shader or color (source) with it (destination); null means Modulate.
+    /// </summary>
+    public static void DrawMesh(this SKCanvas canvas, SKMesh mesh, SKBlender blender, SKPaint paint)
+    {
+        if (canvas == null)
+            throw new ArgumentNullException(nameof(canvas));
+        if (mesh == null)
+            throw new ArgumentNullException(nameof(mesh));
+        if (paint == null)
+            throw new ArgumentNullException(nameof(paint));
+        if (!mesh.IsValid)
+            return;
+        // Bounds cull like SkCanvas::drawMesh (filters can draw outside them, so no cull then).
+        if (paint.ImageFilter == null && paint.MaskFilter == null && canvas.QuickReject(mesh.Bounds))
+            return;
+        mesh.Draw(canvas, blender, paint);
+    }
+}

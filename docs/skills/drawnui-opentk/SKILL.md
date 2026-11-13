@@ -25,11 +25,14 @@ Package `DrawnUi.OpenTk` (+ addon `DrawnUi.OpenTk.Game` for games: `DrawnGame` f
 
 - Linux publish needs `SkiaSharp.NativeAssets.Linux`.
 - Self-contained single-file Release: `SelfContained` + `PublishTrimmed` (`TrimMode=full`) + `PublishSingleFile` + `IncludeNativeLibrariesForSelfExtract`. Full trim cuts SkiaSharp/OpenTK reflection — root them: `<TrimmerRootAssembly Include="OpenTK.Graphics" />` + `OpenTK.Windowing.Desktop`, `SkiaSharp`, `HarfBuzzSharp`.
+- **Trimmed publish crashes on the first frame without two more settings** (measured 2026-11-06, DrawnUi.OpenTk 1.10.8.20): `System.TypeLoadException at DrawnUi.OpenTk.WindowsUiaProvider.UiaRaiseStructureChangedEvent` (Windows screen-reader support is COM interop). Needs BOTH `<BuiltInComInteropSupport>true</BuiltInComInteropSupport>` (trimming turns it off) AND `<TrimmerRootAssembly Include="DrawnUi.OpenTk" />`; either alone still crashes. OpenTkPong's csproj has neither, so its trimmed publish likely crashes the same way (unverified). An untrimmed Release build runs fine, so always run the PUBLISHED exe before calling a desktop release done.
+- Trimmed publish also disables reflection `System.Text.Json` (`Reflection-based serialization has been disabled`): an app that stores settings with `JsonSerializer` on generic types needs `<JsonSerializerIsReflectionEnabledByDefault>true</JsonSerializerIsReflectionEnabledByDefault>` or a source-generated context.
+- Put such properties in an UNCONDITIONAL PropertyGroup: a group conditioned on `'$(RuntimeIdentifier)' == 'win-x64'` is evaluated before a publish profile (`-p:PublishProfile=...`) sets the RID, so its properties silently do not apply.
 - Cross-link assets from a sibling project: `<Content Include="..\Other\fonts\X.ttf" Link="fonts\X.ttf" CopyToOutputDirectory="PreserveNewest" />`.
 
 ## Startup
 
-`Super.UseDrawnUi().ConfigureFonts(fonts => fonts.AddFont("fonts/X.ttf", "Alias", FontWeight.Regular)).Build();` ONCE before creating any window/canvas. Fonts/assets resolve relative to the OUTPUT dir (no MAUI asset pipeline); `Super.Screen.Density = 1`. Namespaces: `DrawnUi.OpenTk`, `DrawnUi.Draw`, `DrawnUi.Views` — alias `using Color = DrawnUi.Color;` to dodge OpenTK's `Color`.
+`Super.UseDrawnUi().ConfigureFonts(fonts => fonts.AddFont("fonts/X.ttf", "Alias", FontWeight.Regular)).Build();` ONCE before creating any window/canvas. Fonts/assets resolve relative to the OUTPUT dir (no MAUI asset pipeline). Display scale: see "Window size and display scale" below (a `CanvasHost` app runs at `Super.Screen.Density = 1` unless it sets the scale itself). Namespaces: `DrawnUi.OpenTk`, `DrawnUi.Draw`, `DrawnUi.Views` — alias `using Color = DrawnUi.Color;` to dodge OpenTK's `Color`.
 
 ## Entry pattern A — `DrawnUiWindow` (fully-drawn app/game)
 
@@ -47,6 +50,15 @@ window.Run();
 ```
 
 `DrawnUiWindow` owns the Skia GPU surface, VSync, mouse/keyboard routing, centering, chrome, fullscreen (F11 toggle / ESC exit built in), and the no-white-flash reveal (window hidden until first `SwapBuffers`). `Super.Init()` runs automatically in its `OnLoad`; `Super.MaxFps` = primary monitor refresh rate. Overridables: `PositionWindow()`, `ConfigureWindowChrome(hwnd)` (Windows-only, called only there), `RenderScene()` (raw GL behind the canvas — base restores GL state before and `ResetContext()` after; end yours with `GL.Finish()`).
+
+### Window size and display scale (DrawnUi after 1.10.8.25)
+
+- `NativeWindowSettings.ClientSize` is in POINTS: the window opens at that size times the monitor's content scale (1100x700 at 125 % = 1375x875 px client area), the same size as WPF, MAUI and DrawnUI for Rust windows. The window is still hidden then, so it never shows unscaled.
+- The canvas draws at that scale (`RenderingScale` = scale); `Super.Screen.Density` and `DrawnUiWindow.ContentScale` return it.
+- Moving the window to a monitor with another scale keeps its size in points (GLFW content-scale callback; Windows and Linux).
+- Mouse input needs nothing: GLFW reports pixels and the canvas works in pixels.
+- Minimum and maximum window sizes stay in pixels.
+- At 100 % nothing differs. DrawnUi 1.10.8.25 and earlier: `ClientSize` is in pixels and the canvas draws at scale 1.
 
 Fixed-proportion scaling on resize: `RescalingCanvas { LogicalWidth = W, LogicalHeight = H }` (Pong, `src/Shared/Samples/Pong.Shared/Views/RescalingCanvas.cs`) or a `RescalingLayout` inside the canvas (HelloOpenTk `Pages/RescalingLayout.cs`). Both are sample classes, not package API.
 

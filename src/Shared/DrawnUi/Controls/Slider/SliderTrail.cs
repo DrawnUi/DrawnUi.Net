@@ -4,6 +4,9 @@ namespace DrawnUi.Draw;
 
 public class SliderTrail : SkiaShape
 {
+    /// <inheritdoc />
+    protected override bool ClipDependsOnlyOnShape => GetType() == typeof(SliderTrail);
+
     public override ISkiaGestureListener ProcessGestures(SkiaGesturesParameters args, GestureEventProcessingInfo apply)
     {
         Debug.WriteLine("[SliderTrail] gestures hit");

@@ -53,7 +53,7 @@ Put in shared: scenes, controls, game logic, view models, the `Canvas`/scene fac
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DrawnUi.Web" Version="1.10.8.25" />
+    <PackageReference Include="DrawnUi.Web" Version="1.10.8.26" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.7" PrivateAssets="all" />
     <PackageReference Include="SkiaSharp.NativeAssets.WebAssembly" Version="4.148.0" />
@@ -153,7 +153,11 @@ public static partial class Program
 }
 ```
 
-`RunAsync(elementId, factory)` wires rendering, input, the rAF loop, resize, fonts and gestures.
+`RunAsync(elementId, factory)` wires rendering, input, the rAF loop, resize, fonts and gestures to the canvas with that element id (DrawnUi after 1.10.8.25; 1.10.8.25 and earlier need the id `drawnui-canvas`).
+
+DrawnUi after 1.10.8.25 also gives the pure Wasm head:
+- `SkiaShell`, the drawn shell (routes, modals, popups, toasts), as on the other heads, with `Super.AddHotReloadListener` / `RemoveHotReloadListener` as on desktop.
+- `Super.OpenLink(url)`, which opens the link in a new browser tab (same name as on MAUI).
 
 ---
 
@@ -244,6 +248,8 @@ Audit moved code for MAUI-only APIs (`MainThread`, native handlers, `FileSystem.
 - **Gestures**: `GesturesMode.Lock` auto-applies the iOS swipe-away CSS/JS guard (lib-level). `Enabled` = route input and share page scrolling: touch pans along the axes the page can scroll (vertical always inside an iframe) and wheels no control used go to the page.
 - **RenderingMode** must be final BEFORE the canvas attaches — `RunAsync` handles it; don't flip it afterward (disposes the view, kills the loop).
 - **Accessibility and keyboard (since 1.10.6.22)**: `RunAsync` adds an invisible ARIA overlay right after your `<canvas>` (`drawnui-web.js`, nothing to wire in `main.js` or `index.html`). It holds one element per accessibility node in reading order (role, label, value, checked / pressed, disabled, live), the same contract as the Blazor overlay. Tab walks the interactive nodes (one Tab stop per arrow-key group), Enter / Space activate, the arrows go to the node then its group, a focused node scrolls into view. The elements never take the pointer (`pointer-events: none`), so every gesture and hover stays with the canvas; the canvas draws the focus ring. Keys aimed at an overlay element count as DrawnUI keys (the page does not scroll on Space / arrows). Controls without an `AccessibilityRole` are not in it: give buttons and labels a role (`SkiaButton.DefaultAccessibilityRole = Aria.RoleButton` at startup) and name sliders / toggles by purpose.
+- **Text entry (SkiaEditor)** (DrawnUi after 1.10.8.25): nothing to wire in `main.js`. A focused editor gets an invisible `<textarea class="drawnui-text-input">` with the page focus (`WebTextInput`, `drawnui-web.js` `textInputFocus`): a phone shows its on-screen keyboard, input methods compose (the editor shows the word being composed), held keys repeat, Ctrl/Cmd+C and X copy through `Super.SetClipboardText`, Ctrl/Cmd+V types the browser's paste event text (no permission prompt). Typed text arrives as `KeyboardManager.KeyChar`, editing keys as `KeyDown`. Without that textarea (another page element took the focus) the keydown still types: its 4th argument to `WebInput.OnKeyDown` is the text the key types. Earlier DrawnUi.Web versions show the caret but type nothing. Test with real keys over CDP: `Input.dispatchKeyEvent` with `autoRepeat` for held keys, `Input.imeSetComposition` + `Input.insertText` for an input method, a Backspace with `code: ''` for a phone keyboard. A tap on an editor gives the textarea the page focus inside the tap's own pointerup (`WebTextInput.FocusOnTap`, hit-tested on the accessibility snapshot), as iOS Safari requires to raise its keyboard (checked on an iPhone 14 in Safari: the keyboard rises on the first tap, stays up from field to field, closes on a tap beside the fields); a tap the editor does not take gives it back after 500 ms. While the textarea has the focus, the canvas cancels the mouse events a touch would make (touchend) and a mouse press's focus change, so the keyboard stays up while DrawnUI decides the focus.
+- **Drawn focus and page focus stay one** (DrawnUi.Web and Blazor): a control a tap or code focuses gives its overlay element the page focus, after the tap's pointer events (the browser's press moves the page focus to the page and would take it back); a focused editor's textarea counts as its element. Tab and Shift+Tab move on from it in the overlay's order, and the control left loses its focus (an editor its caret). Blazor: a text field's overlay element keeps Space and the caret keys from scrolling the page (`drawnui-keyboard.js`).
 - GPU traps + headless CDP validation: read `src/Wasm/DrawnUi/CLAUDE.md`.
 
 ---
@@ -285,6 +291,7 @@ Validate fonts/assets are served (e.g. `curl -I http://localhost:<port>/fonts/My
 - `<base href>` mismatch → relative font/asset fetch 404; check `document.baseURI`.
 - Flipping `RenderingMode` after attach → blank canvas.
 - SkiaSharp/HarfBuzz native versions diverge from `DrawnUi.Web` → native load failure.
+- `drawnui-web.js` imported under two URLs (main.js with a cache-busting `?v=` stamp, DrawnUi.Web's C# by its plain path `./_content/DrawnUi.Web/drawnui-web.js` against `document.baseURI`): the browser loads two module copies. DrawnUi.Web makes every copy after the first hand its exports to the first one (shared through `globalThis.__drawnuiWeb`), so input, resize and the `setModuleExports` callbacks stay wired. Packages without that (`drawnui-web.js` has no `__drawnuiWeb`) split the copies: taps do nothing and a resized window keeps its first layout size at the top-left. With those, cache-bust with an import map before the module script (`{"imports": {"./_content/DrawnUi.Web/drawnui-web.js": "./_content/DrawnUi.Web/drawnui-web.js?v=<hash>"}}`), which maps both imports to one URL.
 
 ---
 

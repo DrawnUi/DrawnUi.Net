@@ -54,6 +54,12 @@ namespace DrawnUi.Draw
 
             InsetsChanged?.Invoke(null, null);
 
+            // the safe area changes with a rotation, a status bar shown or hidden, a split view: the key window reports it
+            UIWindow.Notifications.ObserveDidBecomeKey((sender, args) => WatchSafeArea(args.Notification.Object as UIWindow));
+            // a window already key: MAUI makes its window key before the app's FinishedLaunching handlers run
+            foreach (var window in AppWindows())
+                WatchSafeArea(window);
+
             if (UseDisplaySync)
             {
                 Tasks.StartDelayed(TimeSpan.FromMilliseconds(250), async () =>
@@ -125,6 +131,99 @@ namespace DrawnUi.Draw
             OnThermalStateChanged(_thermalService.CurrentState);
 
             _thermalService.StateChanged += OnThermalStateChanged;
+        }
+
+        /// <summary>
+        /// Puts a <see cref="SafeAreaWatcher"/> into the window once and reads its safe area now.
+        /// </summary>
+        /// <summary>
+        /// The app's key window: the one of its connected scenes, or the key window of an app without scenes. Only the
+        /// key window: a scene also lists other windows (the one Init reads the first insets from), whose safe area is
+        /// not the app's.
+        /// </summary>
+        static IEnumerable<UIWindow> AppWindows()
+        {
+            var found = false;
+            foreach (var scene in UIApplication.SharedApplication.ConnectedScenes)
+            {
+                if (scene is UIWindowScene windowScene)
+                {
+                    foreach (var window in windowScene.Windows)
+                    {
+                        if (!window.IsKeyWindow)
+                            continue;
+                        found = true;
+                        yield return window;
+                    }
+                }
+            }
+
+            if (!found)
+            {
+#pragma warning disable CA1422 // KeyWindow: the only handle on the window of an app without scenes
+                var key = UIApplication.SharedApplication.KeyWindow;
+#pragma warning restore CA1422
+                if (key != null)
+                    yield return key;
+            }
+        }
+
+        static void WatchSafeArea(UIWindow window)
+        {
+            if (window == null)
+                return;
+
+            if (!window.Subviews.Any(x => x is SafeAreaWatcher))
+                window.InsertSubview(new SafeAreaWatcher(window.Bounds), 0);
+
+            ReadSafeArea(window);
+        }
+
+        /// <summary>
+        /// The window's safe area (status bar, notch, home indicator, rounded corners) into the Super.Screen insets, in
+        /// points; raises <see cref="InsetsChanged"/> when one of them changed.
+        /// </summary>
+        static void ReadSafeArea(UIWindow window)
+        {
+            var insets = window.SafeAreaInsets;
+            var changed = SetInset(Super.Screen.TopInset, (int)insets.Top, value => Super.Screen.TopInset = value)
+                          | SetInset(Super.Screen.BottomInset, (int)insets.Bottom, value => Super.Screen.BottomInset = value)
+                          | SetInset(Super.Screen.LeftInset, (int)insets.Left, value => Super.Screen.LeftInset = value)
+                          | SetInset(Super.Screen.RightInset, (int)insets.Right, value => Super.Screen.RightInset = value);
+            if (!changed)
+                return;
+
+            Super.StatusBarHeight = Super.Screen.TopInset > 0 ? Super.Screen.TopInset : 20;
+            InsetsChanged?.Invoke(null, null);
+        }
+
+        static bool SetInset(double current, double value, Action<double> set)
+        {
+            if (Math.Abs(current - value) < 0.01)
+                return false;
+            set(value);
+            return true;
+        }
+
+        /// <summary>
+        /// An invisible view covering the window, behind its content: UIKit tells it when the window's safe area changes.
+        /// </summary>
+        sealed class SafeAreaWatcher : UIView
+        {
+            public SafeAreaWatcher(CoreGraphics.CGRect frame) : base(frame)
+            {
+                UserInteractionEnabled = false;
+                BackgroundColor = UIColor.Clear;
+                AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+            }
+
+            public override void SafeAreaInsetsDidChange()
+            {
+                base.SafeAreaInsetsDidChange();
+
+                if (Window != null)
+                    ReadSafeArea(Window);
+            }
         }
 
         private static ThermalStateService _thermalService;

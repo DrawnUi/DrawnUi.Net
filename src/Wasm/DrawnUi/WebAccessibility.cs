@@ -50,6 +50,7 @@ internal static partial class WebAccessibility
         manager.ReaderRefocusRequested += OnReaderRefocus;
         manager.LiveRegionUpdated += OnLiveRegionUpdated;
         manager.RebuildSkipped += OnRebuildSkipped;
+        canvas.FocusedItemChanged += OnFocusedItemChanged;
 
         JsAttach(elementId, OnActivate, OnKey, OnFocus, OnBlur);
         Push();
@@ -68,6 +69,7 @@ internal static partial class WebAccessibility
         manager.ReaderRefocusRequested -= OnReaderRefocus;
         manager.LiveRegionUpdated -= OnLiveRegionUpdated;
         manager.RebuildSkipped -= OnRebuildSkipped;
+        canvas.FocusedItemChanged -= OnFocusedItemChanged;
         _refresh?.Dispose();
         _refresh = null;
         JsDetach();
@@ -108,7 +110,7 @@ internal static partial class WebAccessibility
 
             // the active modal: the overlay itself becomes the dialog (role, name, aria-modal), so readers leave the page
             // around the canvas alone; its controls are the overlay's other elements, all inside it
-            if (node.Source != null && ReferenceEquals(node.Source, manager.ActiveModal))
+            if (node.Source != null && ReferenceEquals(node.Source, manager.ActiveModalNode))
                 flags |= 128;
 
             var o = i * 7;
@@ -159,7 +161,7 @@ internal static partial class WebAccessibility
 
     // arrows, Home / End, PageUp / PageDown: the node first (a slider steps), else its group
     private static bool OnKey(int id, string key) =>
-        Enum.TryParse(key, out InputKey inputKey) && SkiaAccessibilityManager.Key(Find(id), inputKey);
+        KeyboardManager.MapBrowserCode(key) is var inputKey && inputKey != InputKey.Unknown && SkiaAccessibilityManager.Key(Find(id), inputKey);
 
     // the focused element is the canvas keyboard focus (ring, scroll bars) and the screen reader's node; a node off
     // screen is scrolled into view
@@ -173,6 +175,8 @@ internal static partial class WebAccessibility
         _focused = source;
         canvas.AccessibilityManager.NotifyFocused(source);
         canvas.AccessibilityManager.NotifyReaderFocused(source);
+        if (_pointerFocus)
+            return; // a tap focused the control already; no keyboard ring
         canvas.KeyboardFocusNode = source;
         source.OnAccessibilityFocused(true); // a text field takes the caret, as on the other heads
         SkiaAccessibilityManager.ScrollIntoView(source);
@@ -197,6 +201,38 @@ internal static partial class WebAccessibility
         source.OnAccessibilityFocused(false);
         if (ReferenceEquals(canvas.KeyboardFocusNode, source))
             canvas.KeyboardFocusNode = null!;
+    }
+
+    private static bool _pointerFocus;
+
+    // Drawn focus and page focus stay one: a control a tap or code focused gives its overlay element the page focus,
+    // so Tab and Shift+Tab move on from it in the overlay's order. A SkiaEditor has its own text input (WebTextInput).
+    private static void OnFocusedItemChanged(object? sender, DrawnView.FocusedItemChangedArgs e)
+    {
+        if (!e.IsFocused || e.Item is null or SkiaEditor || e.Item is not ISkiaAccessibilityNode node
+            || ReferenceEquals(_focused, node))
+            return;
+
+        _ = FocusAfterPointer(node);
+    }
+
+    // after the pointer events of the tap: the browser moves the page focus on the pointer press (to the page, the canvas
+    // takes none), which would take it right back from an element focused during it
+    private static async Task FocusAfterPointer(ISkiaAccessibilityNode node)
+    {
+        await Task.Delay(1);
+        if (_canvas == null || !ReferenceEquals(_canvas.FocusedChild, node) || ReferenceEquals(_focused, node))
+            return;
+
+        _pointerFocus = true;
+        try
+        {
+            JsFocus(node.AccessibilityId);
+        }
+        finally
+        {
+            _pointerFocus = false;
+        }
     }
 
     // arrow keys in a group moved keyboard focus to another node

@@ -37,6 +37,9 @@ namespace DrawnUi.Draw
         /// </summary>
         protected override SKRect CalculateClipSizeForStroke(SKRect destination, float scale) => destination;
 
+        /// <inheritdoc />
+        protected override bool ClipDependsOnlyOnShape => GetType() == typeof(SkiaEditor);
+
         /// <summary>
         /// Lay children out in the FULL padded area, never the stroke-inset one. The base insets the
         /// children rect by the stroke (see <see cref="SkiaShape.CalculateContentSizeForStroke"/>), which
@@ -244,7 +247,7 @@ namespace DrawnUi.Draw
             // neither: plain single-font label (lightest).
             SkiaLabel label;
             if (UseMarkdown)
-                label = new SkiaRichLabel();
+                label = new SkiaRichLabel { TrackSourceIndexes = true }; // the caret maps text to drawn characters
             else if (UseUnicode)
                 label = new SkiaRichLabel { MarkdownEnabled = false };
             else
@@ -597,6 +600,17 @@ namespace DrawnUi.Draw
             if (lineHeightPx <= 0)
                 return 0f;
 
+            // lines of their own heights (SkiaLabel.LineHeightUniform false, mixed fonts): as the label lays them out
+            if (AutoHeight && IsMultiline && Label != null && !Label.LineHeightUniform
+                && Label.Lines != null && Label.Lines.Length >= lines)
+            {
+                for (var i = 0; i < lines; i++)
+                {
+                    if (Label.Lines[i].Height != lineHeightPx)
+                        return Label.GetLinesHeightPixels(lines);
+                }
+            }
+
             var lineSpacingPx = lines > 1 ? GetAutoLineSpacingPixels(lineHeightPx) : 0f;
             var contentHeightPx = lineHeightPx * lines + lineSpacingPx * Math.Max(0, lines - 1);
             if (lines <= 1 || Label == null)
@@ -746,6 +760,15 @@ namespace DrawnUi.Draw
         /// <returns></returns>
         protected int GetCursorPosition(float x, float y)
         {
+            return FromLayoutIndex(GetLayoutPosition(x, y));
+        }
+
+        /// <summary>
+        /// The drawn-text index (see <see cref="LayoutText"/>) nearest to the point, in pixels.
+        /// </summary>
+        int GetLayoutPosition(float x, float y)
+        {
+            var Text = LayoutText; // the label's lines hold the drawn text
             //we have all lines position inside Label
             if (Label != null && Label.Lines != null)
             {
@@ -1168,10 +1191,23 @@ namespace DrawnUi.Draw
                         return;
                     }
 
+                    // the label's lines hold the drawn text: with markdown, its index differs from the text's
+                    var layoutText = LayoutText;
+                    cursorIndex = ToLayoutIndex(cursorIndex);
+
                     var index = 0;
                     var line = 0;
                     var endX = 0f;
                     var lastY = 0f;
+                    TextLine lastLine = null;
+
+                    // the caret is as tall as the line it is on: lines have their own heights (SkiaLabel.LineHeightUniform)
+                    void CaretOn(TextLine caretLine)
+                    {
+                        if (caretLine != null && caretLine.Bounds.Height > 0)
+                            Cursor.HeightRequest = caretLine.Bounds.Height / RenderingScale;
+                    }
+
                     foreach (var labelLine in Label.Lines)
                     {
                         var lineGlyphs = GetLineGlyphs(labelLine);
@@ -1181,9 +1217,9 @@ namespace DrawnUi.Draw
                         if (line == Label.LinesCount - 1 && cursorIndex == index + lineGlyphs.Length)
                         {
                             var endsWithHardLineBreak = cursorIndex > 0
-                                && Text != null
-                                && cursorIndex == Text.Length
-                                && IsEditorBreak(Text[cursorIndex - 1]);
+                                && layoutText != null
+                                && cursorIndex == layoutText.Length
+                                && IsEditorBreak(layoutText[cursorIndex - 1]);
 
                             double translateX;
                             double translateY;
@@ -1198,6 +1234,7 @@ namespace DrawnUi.Draw
                             {
                                 translateX = (LineEndX(labelLine) - Label.DrawingRect.Left) / RenderingScale;
                                 translateY = (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale;
+                                CaretOn(labelLine);
                             }
 
                             MoveCursorTo(translateX, translateY);
@@ -1213,6 +1250,7 @@ namespace DrawnUi.Draw
                                 var startX = nextLine.Carets != null
                                     ? BidiCaretX(nextLine, 0)
                                     : nextLine.Bounds.Left + (nextGlyphs.Length > 0 ? nextGlyphs[0].Position : 0);
+                                CaretOn(nextLine);
                                 MoveCursorTo((startX - Label.DrawingRect.Left) / RenderingScale,
                                     (nextLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
                                 break;
@@ -1221,6 +1259,7 @@ namespace DrawnUi.Draw
 
                         if (cursorIndex == nextIndex - 1 && nextIndex > index + lineGlyphs.Length)
                         {
+                            CaretOn(labelLine);
                             MoveCursorTo((LineEndX(labelLine) - Label.DrawingRect.Left) / RenderingScale,
                                 (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
                             break;
@@ -1232,20 +1271,22 @@ namespace DrawnUi.Draw
                             if (line > 0 && cursorIndex - index == 0)
                             {
                                 var isHardLineBreak = cursorIndex > 0
-                                    && Text != null
-                                    && cursorIndex - 1 < Text.Length
-                                    && IsEditorBreak(Text[cursorIndex - 1]);
+                                    && layoutText != null
+                                    && cursorIndex - 1 < layoutText.Length
+                                    && IsEditorBreak(layoutText[cursorIndex - 1]);
 
                                 if (isHardLineBreak)
                                 {
                                     var startX = labelLine.Carets != null
                                         ? BidiCaretX(labelLine, 0)
                                         : labelLine.Bounds.Left + (lineGlyphs.Length > 0 ? lineGlyphs[0].Position : 0);
+                                    CaretOn(labelLine);
                                     MoveCursorTo((startX - Label.DrawingRect.Left) / RenderingScale,
                                         (labelLine.Bounds.Top - Label.DrawingRect.Top) / RenderingScale);
                                 }
                                 else
                                 {
+                                    CaretOn(lastLine);
                                     MoveCursorTo((endX - Label.DrawingRect.Left) / RenderingScale,
                                         (lastY - Label.DrawingRect.Top) / RenderingScale);
                                 }
@@ -1257,12 +1298,14 @@ namespace DrawnUi.Draw
                                 : labelLine.Bounds.Left + lineGlyphs[cursorIndex - index].Position;
                             var y = labelLine.Bounds.Top;
 
+                            CaretOn(labelLine);
                             MoveCursorTo((x - Label.DrawingRect.Left) / RenderingScale, (y - Label.DrawingRect.Top) / RenderingScale);
                             break;
                         }
 
                         endX = LineEndX(labelLine);
                         lastY = labelLine.Bounds.Top;
+                        lastLine = labelLine;
                         line++;
                         index = nextIndex;
                     }
@@ -1271,8 +1314,10 @@ namespace DrawnUi.Draw
 
                     if (_selectionControl != null)
                     {
-                        _selectionControl.SelectionStart = CursorPosition;
-                        _selectionControl.SelectionLength = SelectionLength;
+                        var selectionStart = ToLayoutIndex(CursorPosition);
+                        _selectionControl.LayoutText = _layoutMap != null ? layoutText : null;
+                        _selectionControl.SelectionStart = selectionStart;
+                        _selectionControl.SelectionLength = ToLayoutIndex(CursorPosition + SelectionLength) - selectionStart;
                         _selectionControl.SelectionColor = SelectionColor;
                         _selectionControl.Invalidate();
                     }
@@ -1401,6 +1446,7 @@ namespace DrawnUi.Draw
 
         private int AdvanceLineTextIndex(int currentIndex, int glyphCount)
         {
+            var Text = LayoutText; // drawn-text indexes
             var nextIndex = currentIndex + glyphCount;
             // KeepSpacesOnLineBreaks causes the last glyph to be a synthetic space that
             // covers the editor break separator in the text. When that happens, the separator is
@@ -1414,6 +1460,89 @@ namespace DrawnUi.Draw
                 nextIndex++;
             }
             return nextIndex;
+        }
+
+        IReadOnlyList<int> _layoutSource;
+        int[] _layoutMap;
+        string _layoutText;
+
+        /// <summary>
+        /// The text the label's lines hold: the drawn text of a markdown label (its markup hidden), otherwise
+        /// <see cref="Text"/>. Line walks (caret, taps, selection, arrows) run in its indexes, converted with
+        /// <see cref="ToLayoutIndex"/> and <see cref="FromLayoutIndex"/>.
+        /// </summary>
+        protected string LayoutText => UpdateLayoutMap() ? _layoutText : Text;
+
+        bool UpdateLayoutMap()
+        {
+            var map = (Label as SkiaRichLabel)?.SourceIndexes;
+            if (map == null)
+            {
+                _layoutSource = null;
+                _layoutMap = null;
+                _layoutText = null;
+                return false;
+            }
+
+            if (!ReferenceEquals(map, _layoutSource))
+            {
+                var spans = Label.Spans;
+                var drawn = new System.Text.StringBuilder(map.Count);
+                for (var i = 0; i < spans.Count; i++)
+                    drawn.Append(spans[i].Text);
+                _layoutText = drawn.ToString();
+                _layoutMap = map.ToArray();
+                _layoutSource = map;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Drawn-text index of the text index <paramref name="index"/>: the count of drawn characters before it.
+        /// A character the markdown adds (a list bullet) counts as standing just before the next source character.
+        /// </summary>
+        protected int ToLayoutIndex(int index)
+        {
+            if (!UpdateLayoutMap())
+                return index;
+            var map = _layoutMap;
+            var count = 0;
+            for (var d = 0; d < map.Length; d++)
+            {
+                var source = map[d];
+                if (source < 0)
+                {
+                    // an added character: before the next source character, after everything when none follows
+                    var next = d + 1;
+                    while (next < map.Length && map[next] < 0)
+                        next++;
+                    if (next < map.Length && map[next] <= index)
+                        count++;
+                }
+                else if (source < index)
+                    count++;
+            }
+            return count;
+        }
+
+        /// <summary>
+        /// Text index of the drawn-text index <paramref name="index"/>: right after the drawn character before it (typing
+        /// there continues its formatting), or before the next source character after an added one.
+        /// </summary>
+        protected int FromLayoutIndex(int index)
+        {
+            if (!UpdateLayoutMap())
+                return index;
+            var map = _layoutMap;
+            var length = Text?.Length ?? 0;
+            if (index > 0 && index <= map.Length && map[index - 1] >= 0)
+                return Math.Min(map[index - 1] + 1, length);
+            for (var d = Math.Max(0, index); d < map.Length; d++)
+            {
+                if (map[d] >= 0)
+                    return map[d];
+            }
+            return length;
         }
 
         /// <summary>
@@ -1449,11 +1578,32 @@ namespace DrawnUi.Draw
         /// </summary>
         protected int VisualArrowTarget(int from, bool right)
         {
+            if (!UpdateLayoutMap())
+                return LayoutArrowTarget(from, right);
+
+            // markdown: one drawn character at a time, the hidden markup is skipped
+            var all = _layoutText;
+            var layoutFrom = ToLayoutIndex(from);
+            var target = LayoutArrowTarget(layoutFrom, right);
+            if (target < 0)
+            {
+                target = right
+                    ? (layoutFrom < all.Length ? layoutFrom + CodeUnitsAfterCaret(all, layoutFrom, 1) : layoutFrom)
+                    : (layoutFrom > 0 ? layoutFrom - CodeUnitsBeforeCaret(all, layoutFrom, 1) : layoutFrom);
+            }
+            return target == layoutFrom ? from : FromLayoutIndex(target);
+        }
+
+        /// <summary>
+        /// <see cref="VisualArrowTarget"/> in drawn-text indexes (<see cref="LayoutText"/>).
+        /// </summary>
+        int LayoutArrowTarget(int from, bool right)
+        {
             var line = FindCaretLine(from, out var lineStart);
             if (line?.Carets == null)
                 return -1;
 
-            var all = Text ?? string.Empty;
+            var all = LayoutText ?? string.Empty;
             var text = line.Value ?? string.Empty;
             if (all.Length - lineStart < text.Length) // the label's synthetic trailing space is no stop
                 text = text.Substring(0, Math.Max(0, all.Length - lineStart));
@@ -1497,15 +1647,17 @@ namespace DrawnUi.Draw
         /// </summary>
         protected int SelectionEdgeByX(int start, int end, bool right)
         {
-            var a = FindCaretLine(start, out var aStart);
-            var b = FindCaretLine(end, out var bStart);
+            var layoutStart = ToLayoutIndex(start);
+            var layoutEnd = ToLayoutIndex(end);
+            var a = FindCaretLine(layoutStart, out var aStart);
+            var b = FindCaretLine(layoutEnd, out var bStart);
             if (a?.Carets == null && b?.Carets == null)
                 return -1;
             if (a != b)
                 return right ? end : start;
 
-            var xa = a.CaretX(start - aStart);
-            var xb = a.CaretX(end - bStart);
+            var xa = a.CaretX(layoutStart - aStart);
+            var xb = a.CaretX(layoutEnd - bStart);
             return right == (xb >= xa) ? end : start;
         }
 
@@ -1515,7 +1667,7 @@ namespace DrawnUi.Draw
             if (Label?.Lines == null || Label.LinesCount == 0)
                 return 0;
 
-            var cursorIndex = CursorPosition;
+            var cursorIndex = ToLayoutIndex(CursorPosition);
             var textIndex = 0;
             var lineNum = 0;
 
@@ -1549,6 +1701,7 @@ namespace DrawnUi.Draw
             if (targetLine < 0 || targetLine >= Label.LinesCount) return;
 
             var cursorXPixels = (float)(Cursor.Left * RenderingScale);
+            var Text = LayoutText; // the label's lines hold the drawn text
 
             var lineStart = 0;
             for (var i = 0; i < targetLine; i++)
@@ -1557,7 +1710,7 @@ namespace DrawnUi.Draw
             var glyphs = GetLineGlyphs(Label.Lines[targetLine]);
             if (glyphs.Length == 0)
             {
-                CursorPosition = lineStart;
+                CursorPosition = FromLayoutIndex(lineStart);
                 return;
             }
 
@@ -1568,7 +1721,7 @@ namespace DrawnUi.Draw
                     (Text?.Length ?? 0) - lineStart);
                 if (Text != null && stop > lineStart && stop - 1 < Text.Length && IsEditorBreak(Text[stop - 1]))
                     stop--;
-                CursorPosition = Math.Min(stop, Text?.Length ?? stop);
+                CursorPosition = FromLayoutIndex(Math.Min(stop, Text?.Length ?? stop));
                 return;
             }
 
@@ -1577,7 +1730,7 @@ namespace DrawnUi.Draw
             {
                 if (prevX <= cursorXPixels && cursorXPixels <= glyphs[i].Position)
                 {
-                    CursorPosition = lineStart + i;
+                    CursorPosition = FromLayoutIndex(lineStart + i);
                     return;
                 }
                 prevX = glyphs[i].Position;
@@ -1586,7 +1739,7 @@ namespace DrawnUi.Draw
             var pos = lineStart + glyphs.Length;
             if (Text != null && pos > 0 && pos - 1 < Text.Length && IsEditorBreak(Text[pos - 1]))
                 pos--;
-            CursorPosition = pos;
+            CursorPosition = FromLayoutIndex(pos);
         }
 
 
@@ -1632,6 +1785,25 @@ namespace DrawnUi.Draw
             // Writing it back could move the native caret to a position captured before the
             // keystrokes typed meanwhile (fast typing / SendKeys burst): the next characters
             // went in before the last ones ("drawncamera.com" came out as "drawncameracom.").
+            // a caret move (the text unchanged) into hidden markdown markup goes on to the next drawn character in the
+            // move's direction, and the native caret follows: otherwise the press seems to do nothing
+            var text = Text;
+            var caretMoveOnly = ReferenceEquals(text, _nativeCaretText);
+            _nativeCaretText = text;
+            if (caretMoveOnly && length == 0)
+            {
+                var snapped = SnapNativeCaret(start, CursorPosition);
+                if (snapped != start)
+                {
+                    SelectionLength = 0;
+                    if (CursorPosition == snapped)
+                        SetCursorPositionNative(snapped); // unchanged: no property change writes it back
+                    else
+                        CursorPosition = snapped;
+                    return;
+                }
+            }
+
             _cursorFromNative = true;
             try
             {
@@ -1642,6 +1814,29 @@ namespace DrawnUi.Draw
             {
                 _cursorFromNative = false;
             }
+        }
+
+        string _nativeCaretText;
+
+        /// <summary>
+        /// A caret moved from <paramref name="previous"/> to <paramref name="position"/> by the native control: when
+        /// that lands inside hidden markdown markup, the text index of the next drawn character in the move's direction
+        /// (one drawn character on when only markup was crossed); otherwise <paramref name="position"/>. The text's
+        /// start and end are always kept.
+        /// </summary>
+        protected int SnapNativeCaret(int position, int previous)
+        {
+            var length = Text?.Length ?? 0;
+            if (position == previous || position <= 0 || position >= length || !UpdateLayoutMap())
+                return position;
+
+            var drawn = ToLayoutIndex(position);
+            if (FromLayoutIndex(drawn) == position)
+                return position;
+
+            if (drawn == ToLayoutIndex(previous))
+                drawn += position > previous ? 1 : -1;
+            return FromLayoutIndex(Math.Clamp(drawn, 0, _layoutText.Length));
         }
 
         public virtual void SetSelection(int start, int end)

@@ -81,7 +81,7 @@ The non-indexed `SKMesh.Make(...)` path works fine. The crash is on the PInvoke 
 - Use `SKMesh.Make(spec, SKMeshMode.Triangles, vb, vertexCount, 0, bounds, out err)` and duplicate shared vertices (6 verts for a quad instead of 4 + indices).
 - For triangle strips a contiguous strip via `SKMesh.Make(spec, SKMeshMode.TriangleStrip, ...)` is also fine.
 
-This restriction is WASM-specific. MAUI / desktop AOT paths can still use `MakeIndexed`.
+This restriction is WASM-specific. MAUI / desktop AOT paths can still use `MakeIndexed`. A Release Blazor publish (interpreter, no AOT, `RootMode="All"`) draws the indexed quad of the sandbox probe correctly (`SKMeshIndexBuffer.Make` + `SKMesh.MakeIndexed`, 4.147.0-pr.3779.2, 2026-11-11); the crash above is from a Debug build, so test the indexed path in the build type you ship.
 
 ## Backend support - CRITICAL
 
@@ -120,11 +120,11 @@ Fix - add to the host `.csproj` (e.g. `BlazorSandbox.csproj`):
 
 ```xml
 <ItemGroup>
-  <TrimmerRootAssembly Include="SkiaSharp" RootMode="EntireAssembly" />
+  <TrimmerRootAssembly Include="SkiaSharp" RootMode="All" />
 </ItemGroup>
 ```
 
-Do NOT use `<TrimmerRootAssembly Include="SkiaSharp" />` alone - without `RootMode="EntireAssembly"` the assembly is rooted but individual unused types are still pruned, so the symptom persists. After changing this you usually have to **delete `bin/` and `obj/` of the Blazor host project** before rebuilding because the webcil output is content-hashed and the cached trimmed copy is otherwise reused.
+Do NOT use `<TrimmerRootAssembly Include="SkiaSharp" />` alone - without `RootMode="All"` (the valid ILLink value; `EntireAssembly` fails a Release publish with `IL1037: Invalid assembly root mode`, and Debug builds do not trim so they never show it) the assembly is rooted but individual unused types are still pruned, so the symptom persists. After changing this you usually have to **delete `bin/` and `obj/` of the Blazor host project** before rebuilding because the webcil output is content-hashed and the cached trimmed copy is otherwise reused.
 
 ## Practical workflow
 
@@ -132,7 +132,7 @@ When asked to implement or debug mesh drawing:
 
 1. Verify package/branch availability first.
 2. Verify host is rendering on a GPU surface (Accelerated mode, WebGL canvas, hardware MAUI canvas) - raster = silent no-op.
-3. For Blazor WASM, verify trimmer is rooting `SkiaSharp` (`TrimmerRootAssembly` with `RootMode="EntireAssembly"`).
+3. For Blazor WASM, verify trimmer is rooting `SkiaSharp` (`TrimmerRootAssembly` with `RootMode="All"`).
 4. Start from a tiny non-indexed triangle.
 5. Keep the first spec minimal: one `Float2` position attribute, no custom varyings.
 6. Make the fragment shader output a solid color first - and use the `Make` overload with `SKColorSpace` + `SKAlphaType` because `out half4 color` requires it.
@@ -143,13 +143,31 @@ When asked to implement or debug mesh drawing:
 
 Symptom-first triage when "mesh doesn't draw":
 
-1. `System.TypeLoadException` for any `SKMesh*` type -> trimmer stripped types. Apply `TrimmerRootAssembly RootMode="EntireAssembly"` and clean `bin/`+`obj/`.
+1. `System.TypeLoadException` for any `SKMesh*` type -> trimmer stripped types. Apply `TrimmerRootAssembly RootMode="All"` and clean `bin/`+`obj/`.
 2. Mono interp crash with `ves_pinvoke_method` / `get_build_args_from_sig_info` after a successful unrelated mesh draw -> indexed-mesh PInvoke broken on Blazor WASM. Switch to non-indexed `SKMesh.Make`.
 3. `spec == null`, error contains `Must provide a color space if FS returns a color` -> switch to color-space overload of `SKMeshSpecification.Make`.
 4. `spec == null`, other shader text -> SkSL syntax / missing varying / wrong main signature.
 5. `mesh == null` -> vertex/index count, offset, or bounds wrong.
 6. `mesh.IsValid == true`, `DrawMesh` returns silently, no pixels -> CPU raster backend. Switch host to GPU surface (Accelerated mode in Blazor / hardware-accelerated surface in MAUI).
 7. Pixels appear but wrong color/position -> fragment returning bad position; flip to outputting solid color and `return varyings.position` as-is to verify pipeline.
+
+## Performance: what a mesh costs per pixel
+
+DrawnUI for .NET ships its own SKMesh (`DrawnUi.Draw.Meshes`, the same API on the current SkiaSharp) until SkiaSharp ships `SKMesh`. It draws through `DrawVertices` + one runtime shader, so the GPU cannot interpolate varyings itself: each pixel reads its triangle's 3 corners from a texture.
+
+- **Each varying float4 costs about 3 texel reads per pixel** (a `Float` varying 6: a high and a low fp16 half per corner; a `Half` varying 3). That is the stand-in's whole extra cost: a mesh with no varyings besides `position` draws as fast as the real one.
+- Measured, Dungeon corridor (8020 triangles, 3 float4 varyings, drawn 8 times, 1280x800, desktop GL, GPU time): fragment program that only reads the varyings, real SKMesh 1.4-2.0 ms, stand-in 7.4-9.9 ms; with no varyings read, both 1.1-1.5 ms. On a Mali phone (BV8800, Vulkan) the full Dungeon draws 20-24 fps on the stand-in (32-42 with a fragment program that only reads the varyings), 35-37 on the real SKMesh.
+- Raw cost of N fp16 texel reads per pixel on the same scene: 0 reads 1.1 ms, 3 reads 1.6, 6 reads 2.5, 9 reads 3.6-4.4, 18 reads 7.3.
+- **For speed on .NET, keep varyings few.** Compute per pixel what you can from `position` and uniforms (camera, light, time); pass only what truly varies per vertex, packed into as few float4 as possible; use `Half` varyings where fp16 is enough. On that desktop scene every Float float4 removed saves about 2 ms of GPU (6 reads), a Half float4 about 1 ms (3 reads).
+- This cost goes away once SkiaSharp ships `SKMesh`: the same code then interpolates varyings in hardware.
+- A vertex program **without uniforms** runs once per vertex (a varyings pass); one with uniforms runs again per pixel for every corner, which costs far more. Move per-frame values to the fragment program when you can.
+- Real SkiaSharp `SKMeshVertexBuffer` (4.147.0-pr.3779.2) has only a CPU `Make`: every draw uploads its vertices (1.35 MB per draw for the Dungeon corridor). On desktop that makes the real one slower in wall time (10-16 ms against 4-9 ms for 8 draws) while its GPU time is lower; a GPU-bound phone does not show it.
+
+## Shader math on Mali (and any strict GPU)
+
+- Mali computes IEEE float32 exactly: 0 × infinity is NaN, and a NaN in a color draws black. Many desktop GPUs and Skia's CPU path happen to return 0 there, so a shader can look right on the desktop and in headless tests and draw black on a phone.
+- Keep shader math inside the float32 normal range: no power of two above 2^127 or below 2^-126 in any intermediate (a loop that squares or doubles, a reciprocal of a tiny value). Clamp the input first; the DrawnUI stand-in's fp16 high/low split searches its power of two from 2^-14 up.
+- Judge every phone run by a screenshot of the scene, never by FPS alone: a black scene runs at a plausible frame rate.
 
 ## API reminders
 

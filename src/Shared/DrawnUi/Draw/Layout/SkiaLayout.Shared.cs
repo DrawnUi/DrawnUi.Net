@@ -1149,7 +1149,7 @@ namespace DrawnUi.Draw
         {
             InvalidatedChildren.Add(child);
 
-            if (!IsStack && Type != LayoutType.Grid && (!NeedAutoSize && (child.NeedAutoSize || IsTemplated)) ||
+            if (!IsStack && Type != LayoutType.Grid && (!SizeFollowsContent && (child.NeedAutoSize || IsTemplated)) ||
                 (IsTemplated && (MeasureItemsStrategy == MeasuringStrategy.MeasureVisible || MeasureItemsStrategy == MeasuringStrategy.MeasureFirst)))
             {
                 UpdateByChild(child); //simple update
