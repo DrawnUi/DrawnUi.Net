@@ -13,7 +13,7 @@ _A 3D dungeon runner: one SKMesh corridor, SkSL shaders, a HUD and drawn dialogs
 | Framework | Heads | Play it live | Source |
 |---|---|---|---|
 | DrawnUI for .NET | Web (pure WebAssembly), Blazor WebAssembly, .NET MAUI (Android, iOS, Mac Catalyst, Windows), WPF, OpenTK (Windows, Linux) | [dungeonnet.drawnui.net](https://dungeonnet.drawnui.net), [dungeonblazor.drawnui.net](https://dungeonblazor.drawnui.net) | [DrawnUi.Dungeon.Net](https://github.com/DrawnUi/DrawnUi.Dungeon.Net) |
-| DrawnUI for Rust | Web (WebAssembly), Windows, Linux, macOS, Android, iOS | [run.drawnui.net](https://run.drawnui.net) | [examples/dungeon](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/dungeon), [examples/dungeon-android](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/dungeon-android) |
+| DrawnUI for Rust | Web (WebAssembly), Windows, Linux, macOS, Android, iOS | [run.drawnui.net](https://run.drawnui.net) | [examples/dungeon](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/dungeon) |
 | DrawnUi.React | Web | [dungeonreact.drawnui.net](https://dungeonreact.drawnui.net) | [samples/dungeon](https://github.com/DrawnUi/DrawnUi.React/tree/master/samples/dungeon) |
 
 The same start screen in four browser tabs: .NET WebAssembly, Blazor, Rust and React.
@@ -32,7 +32,7 @@ _The same 20-screen catalog in every framework: layouts, text, images, shapes, s
 | Framework | Heads | Try it | Source |
 |---|---|---|---|
 | DrawnUI for .NET | .NET MAUI (Android, iOS, Mac Catalyst, Windows), WPF, OpenTK (Windows, Linux) | run the sample on desktop or a phone | [HelloMaui](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/HelloMaui), [HelloWpf](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/HelloWpf), [HelloOpenTk](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/OpenTk/Samples/HelloOpenTk) |
-| DrawnUI for Rust | Web (WebAssembly), Windows, Linux, macOS, Android, iOS | [hellorust.drawnui.net](https://hellorust.drawnui.net) | [examples/hellorust](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/hellorust), [examples/hellorust-android](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/hellorust-android) |
+| DrawnUI for Rust | Web (WebAssembly), Windows, Linux, macOS, Android, iOS | [hellorust.drawnui.net](https://hellorust.drawnui.net) | [examples/hellorust](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/hellorust) |
 | DrawnUi.React | Web | [helloreact.drawnui.net](https://helloreact.drawnui.net) | [samples/demo](https://github.com/DrawnUi/DrawnUi.React/tree/master/samples/demo) |
 
 .NET in the browser has its own showcase, the [Blazor Sandbox](https://drawnui.net/sandbox/) (see below).
