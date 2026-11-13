@@ -253,14 +253,11 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasurePartialTextWidthSpan
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
-    startLine: 68
+    startLine: 67
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: >-
-    Measures partial text width using span-based operations where possible
-
-    Falls back to string conversion only for cache compatibility
+  summary: Measures partial text width with span-based operations
   example: []
   syntax:
     content: public static float MeasurePartialTextWidthSpan(SKFont font, SKPaint paint, ReadOnlySpan<char> textSpan, bool needsShaping, float scale, SKTypeface paintTypeface)
@@ -302,7 +299,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AppendSpan
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
-    startLine: 96
+    startLine: 76
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -338,7 +335,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AppendChar
     path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.SpanMeasurement.cs
-    startLine: 106
+    startLine: 86
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

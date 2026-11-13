@@ -21,6 +21,7 @@ items:
   - DrawnUi.Draw.KeyboardManager.KeyboardPressed(DrawnUi.Draw.InputKey,System.Boolean)
   - DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey)
   - DrawnUi.Draw.KeyboardManager.KeyboardReleased(DrawnUi.Draw.InputKey,System.Boolean)
+  - DrawnUi.Draw.KeyboardManager.MapBrowserCode(System.String)
   - DrawnUi.Draw.KeyboardManager.MarkKeyHandled(DrawnUi.Draw.InputKey)
   - DrawnUi.Draw.KeyboardManager.Subscribe(DrawnUi.Draw.SkiaControl,System.Action{DrawnUi.Draw.InputKey},System.Action{DrawnUi.Draw.InputKey})
   - DrawnUi.Draw.KeyboardManager.Unsubscribe(DrawnUi.Draw.SkiaControl)
@@ -250,6 +251,45 @@ items:
       type: DrawnUi.Draw.InputKey
     content.vb: Public Shared Sub MarkKeyHandled(key As InputKey)
   overload: DrawnUi.Draw.KeyboardManager.MarkKeyHandled*
+- uid: DrawnUi.Draw.KeyboardManager.MapBrowserCode(System.String)
+  commentId: M:DrawnUi.Draw.KeyboardManager.MapBrowserCode(System.String)
+  id: MapBrowserCode(System.String)
+  parent: DrawnUi.Draw.KeyboardManager
+  langs:
+  - csharp
+  - vb
+  name: MapBrowserCode(string)
+  nameWithType: KeyboardManager.MapBrowserCode(string)
+  fullName: DrawnUi.Draw.KeyboardManager.MapBrowserCode(string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: MapBrowserCode
+    path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
+    startLine: 43
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    For the browser heads: the key of a DOM <code>KeyboardEvent.code</code>. The numpad's Enter is <xref href="DrawnUi.Draw.InputKey.Enter" data-throw-if-not-resolved="false"></xref>,
+
+    as on the desktop heads; an unknown code is <xref href="DrawnUi.Draw.InputKey.Unknown" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public static InputKey MapBrowserCode(string code)
+    parameters:
+    - id: code
+      type: System.String
+    return:
+      type: DrawnUi.Draw.InputKey
+    content.vb: Public Shared Function MapBrowserCode(code As String) As InputKey
+  overload: DrawnUi.Draw.KeyboardManager.MapBrowserCode*
+  nameWithType.vb: KeyboardManager.MapBrowserCode(String)
+  fullName.vb: DrawnUi.Draw.KeyboardManager.MapBrowserCode(String)
+  name.vb: MapBrowserCode(String)
 - uid: DrawnUi.Draw.KeyboardManager.KeyboardChar(System.String)
   commentId: M:DrawnUi.Draw.KeyboardManager.KeyboardChar(System.String)
   id: KeyboardChar(System.String)
@@ -268,7 +308,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardChar
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 39
+    startLine: 52
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -300,7 +340,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardChar
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 43
+    startLine: 56
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -337,7 +377,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 56
+    startLine: 69
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -366,7 +406,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 60
+    startLine: 73
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -403,7 +443,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDispatchingKeyDown
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 86
+    startLine: 99
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -439,7 +479,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardReleased
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 94
+    startLine: 107
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -468,7 +508,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardReleased
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 98
+    startLine: 111
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -505,7 +545,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsShiftPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 115
+    startLine: 128
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -534,7 +574,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAltPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 123
+    startLine: 136
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -563,7 +603,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsControlPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 131
+    startLine: 144
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -592,7 +632,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsMetaPressed
     path: ../src/Shared/DrawnUi/Features/Keyboard/KeyboardManager.cs
-    startLine: 142
+    startLine: 155
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1227,12 +1267,24 @@ references:
   name: InputKey
   nameWithType: InputKey
   fullName: DrawnUi.Draw.InputKey
-- uid: DrawnUi.Draw.KeyboardManager.KeyboardChar*
-  commentId: Overload:DrawnUi.Draw.KeyboardManager.KeyboardChar
-  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardChar_System_String_
-  name: KeyboardChar
-  nameWithType: KeyboardManager.KeyboardChar
-  fullName: DrawnUi.Draw.KeyboardManager.KeyboardChar
+- uid: DrawnUi.Draw.InputKey.Enter
+  commentId: F:DrawnUi.Draw.InputKey.Enter
+  href: DrawnUi.Draw.InputKey.html#DrawnUi_Draw_InputKey_Enter
+  name: Enter
+  nameWithType: InputKey.Enter
+  fullName: DrawnUi.Draw.InputKey.Enter
+- uid: DrawnUi.Draw.InputKey.Unknown
+  commentId: F:DrawnUi.Draw.InputKey.Unknown
+  href: DrawnUi.Draw.InputKey.html#DrawnUi_Draw_InputKey_Unknown
+  name: Unknown
+  nameWithType: InputKey.Unknown
+  fullName: DrawnUi.Draw.InputKey.Unknown
+- uid: DrawnUi.Draw.KeyboardManager.MapBrowserCode*
+  commentId: Overload:DrawnUi.Draw.KeyboardManager.MapBrowserCode
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_MapBrowserCode_System_String_
+  name: MapBrowserCode
+  nameWithType: KeyboardManager.MapBrowserCode
+  fullName: DrawnUi.Draw.KeyboardManager.MapBrowserCode
 - uid: System.String
   commentId: T:System.String
   parent: System
@@ -1244,6 +1296,12 @@ references:
   nameWithType.vb: String
   fullName.vb: String
   name.vb: String
+- uid: DrawnUi.Draw.KeyboardManager.KeyboardChar*
+  commentId: Overload:DrawnUi.Draw.KeyboardManager.KeyboardChar
+  href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_KeyboardChar_System_String_
+  name: KeyboardChar
+  nameWithType: KeyboardManager.KeyboardChar
+  fullName: DrawnUi.Draw.KeyboardManager.KeyboardChar
 - uid: DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement
   commentId: P:DrawnUi.Draw.KeyboardManager.IsKeyForOtherElement
   href: DrawnUi.Draw.KeyboardManager.html#DrawnUi_Draw_KeyboardManager_IsKeyForOtherElement

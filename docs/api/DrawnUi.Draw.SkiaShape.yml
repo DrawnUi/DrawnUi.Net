@@ -22,6 +22,7 @@ items:
   - DrawnUi.Draw.SkiaShape.CalculateSizeForStrokeFromContent(SkiaSharp.SKRect,System.Single)
   - DrawnUi.Draw.SkiaShape.ClipBackgroundColor
   - DrawnUi.Draw.SkiaShape.ClipBackgroundColorProperty
+  - DrawnUi.Draw.SkiaShape.ClipDependsOnlyOnShape
   - DrawnUi.Draw.SkiaShape.ComputeEffectsMargin(System.Single)
   - DrawnUi.Draw.SkiaShape.CornerRadius
   - DrawnUi.Draw.SkiaShape.CornerRadiusProperty
@@ -508,6 +509,9 @@ items:
   - DrawnUi.Draw.SkiaControl.VisualEffects
   - DrawnUi.Draw.SkiaControl.DisableEffectsProperty
   - DrawnUi.Draw.SkiaControl.DisableEffects
+  - DrawnUi.Draw.SkiaControl.WidthFollowsContent
+  - DrawnUi.Draw.SkiaControl.HeightFollowsContent
+  - DrawnUi.Draw.SkiaControl.SizeFollowsContent
   - DrawnUi.Draw.SkiaControl.InvalidateParents
   - DrawnUi.Draw.SkiaControl.InvalidatedParent
   - DrawnUi.Draw.SkiaControl.InvalidateParent
@@ -641,6 +645,7 @@ items:
   - DrawnUi.Draw.SkiaControl.SkipRenderingOutOfBoundsProperty
   - DrawnUi.Draw.SkiaControl.SkipRenderingOutOfBounds
   - DrawnUi.Draw.SkiaControl.SendContextMenu(System.Object,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo)
+  - DrawnUi.Draw.SkiaControl.IsPrimaryPointer(DrawnUi.Draw.SkiaGesturesParameters)
   - DrawnUi.Draw.SkiaControl.SendTapped(System.Object,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo,System.Boolean)
   - DrawnUi.Draw.SkiaControl.SendLongPressing(System.Object,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo,System.Boolean)
   - DrawnUi.Draw.SkiaControl.ChildTapped
@@ -819,6 +824,7 @@ items:
   - DrawnUi.Draw.SkiaControl.ApplyTransforms(SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaControl.GetTransformedDirtyBounds
   - DrawnUi.Draw.SkiaControl.RenderTransformMatrix
+  - DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(SkiaSharp.SKRect@)
   - DrawnUi.Draw.SkiaControl.InverseRenderTransformMatrix
   - DrawnUi.Draw.SkiaControl.ApplyTransformationMatrix(DrawnUi.Draw.SkiaDrawingContext)
   - DrawnUi.Draw.SkiaControl.CreateTransformationMatrix(DrawnUi.Draw.SkiaDrawingContext,SkiaSharp.SKRect)
@@ -991,6 +997,10 @@ items:
   - DrawnUi.Draw.SkiaControl._builtRenderTreeStamp
   - DrawnUi.Draw.SkiaControl.RenderTree
   - DrawnUi.Draw.SkiaControl.SetRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+  - DrawnUi.Draw.SkiaControl.RenderTreeEntry(System.Int32,DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect,SkiaSharp.SKRect,System.Int32,System.Int32,System.Object)
+  - DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+  - DrawnUi.Draw.SkiaControl.RentRenderTreeBuilder
+  - DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
   - DrawnUi.Draw.SkiaControl.Invalidated
   - DrawnUi.Draw.SkiaControl.NeedUpdate
   - DrawnUi.Draw.SkiaControl.Superview
@@ -2520,6 +2530,50 @@ items:
     content.vb: Protected Overrides Sub PaintWithShadows(ctx As DrawingContext, render As Action)
   overridden: DrawnUi.Draw.SkiaControl.PaintWithShadows(DrawnUi.Draw.DrawingContext,System.Action)
   overload: DrawnUi.Draw.SkiaShape.PaintWithShadows*
+- uid: DrawnUi.Draw.SkiaShape.ClipDependsOnlyOnShape
+  commentId: P:DrawnUi.Draw.SkiaShape.ClipDependsOnlyOnShape
+  id: ClipDependsOnlyOnShape
+  parent: DrawnUi.Draw.SkiaShape
+  langs:
+  - csharp
+  - vb
+  name: ClipDependsOnlyOnShape
+  nameWithType: SkiaShape.ClipDependsOnlyOnShape
+  fullName: DrawnUi.Draw.SkiaShape.ClipDependsOnlyOnShape
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/SkiaShape.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ClipDependsOnlyOnShape
+    path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
+    startLine: 537
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    True when the clip this shape makes (<xref href="DrawnUi.Draw.SkiaShape.CreateClip(System.Object%2cSystem.Boolean%2cSkiaSharp.SKPath)" data-throw-if-not-resolved="false"></xref>) depends only on its <xref href="DrawnUi.Draw.SkiaShape.Type" data-throw-if-not-resolved="false"></xref>, its
+
+    stroke-aware sizes, <xref href="DrawnUi.Draw.SkiaShape.CornerRadius" data-throw-if-not-resolved="false"></xref> and the rendering scale. Then a rectangle, circle or ellipse
+
+    keeps its clip path between paints while those stay the same, instead of making it again (in SkiaSharp 4 a
+
+    path changed after it was drawn makes a new path builder each time). A plain SkiaShape is; a subclass is not
+
+    unless it says so: return true from a class whose CreateClip, TryCreateBasicClip and CreateScaledRadii are
+
+    the library's, or follow only those inputs. Library subclasses return true for their own type only, so a
+
+    class derived from them that overrides the clip is never kept by mistake.
+  example: []
+  syntax:
+    content: protected virtual bool ClipDependsOnlyOnShape { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Protected Overridable ReadOnly Property ClipDependsOnlyOnShape As Boolean
+  overload: DrawnUi.Draw.SkiaShape.ClipDependsOnlyOnShape*
 - uid: DrawnUi.Draw.SkiaShape.AddPaintArguments(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaShape.AddPaintArguments(DrawnUi.Draw.DrawingContext)
   id: AddPaintArguments(DrawnUi.Draw.DrawingContext)
@@ -2538,7 +2592,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddPaintArguments
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 500
+    startLine: 590
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2571,7 +2625,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Paint
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 511
+    startLine: 613
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2609,7 +2663,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ComputeEffectsMargin
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 821
+    startLine: 920
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2651,7 +2705,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShadowsProperty
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 904
+    startLine: 1003
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2678,7 +2732,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Shadows
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 920
+    startLine: 1019
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2707,7 +2761,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PolygonStar
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 953
+    startLine: 1052
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2736,7 +2790,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SmoothPointsProperty
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 1018
+    startLine: 1117
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2763,7 +2817,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SmoothPoints
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 1048
+    startLine: 1147
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2815,7 +2869,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateStarPoints
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 1195
+    startLine: 1294
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2851,7 +2905,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateStarPointsCrossed
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 1243
+    startLine: 1342
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2885,7 +2939,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCompensatedStrokeWidth
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.cs
-    startLine: 1301
+    startLine: 1400
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3851,7 +3905,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateScaledRadii
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.Shared.cs
-    startLine: 284
+    startLine: 296
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3885,7 +3939,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AlignResizedPath
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.Shared.cs
-    startLine: 295
+    startLine: 322
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3914,7 +3968,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TryCreateBasicClip
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.Shared.cs
-    startLine: 307
+    startLine: 334
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3952,7 +4006,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TryPaintBasicShape
     path: ../src/Shared/DrawnUi/Draw/SkiaShape.Shared.cs
-    startLine: 368
+    startLine: 395
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -11699,6 +11753,27 @@ references:
   name: DisableEffects
   nameWithType: SkiaControl.DisableEffects
   fullName: DrawnUi.Draw.SkiaControl.DisableEffects
+- uid: DrawnUi.Draw.SkiaControl.WidthFollowsContent
+  commentId: P:DrawnUi.Draw.SkiaControl.WidthFollowsContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_WidthFollowsContent
+  name: WidthFollowsContent
+  nameWithType: SkiaControl.WidthFollowsContent
+  fullName: DrawnUi.Draw.SkiaControl.WidthFollowsContent
+- uid: DrawnUi.Draw.SkiaControl.HeightFollowsContent
+  commentId: P:DrawnUi.Draw.SkiaControl.HeightFollowsContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_HeightFollowsContent
+  name: HeightFollowsContent
+  nameWithType: SkiaControl.HeightFollowsContent
+  fullName: DrawnUi.Draw.SkiaControl.HeightFollowsContent
+- uid: DrawnUi.Draw.SkiaControl.SizeFollowsContent
+  commentId: P:DrawnUi.Draw.SkiaControl.SizeFollowsContent
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SizeFollowsContent
+  name: SizeFollowsContent
+  nameWithType: SkiaControl.SizeFollowsContent
+  fullName: DrawnUi.Draw.SkiaControl.SizeFollowsContent
 - uid: DrawnUi.Draw.SkiaControl.InvalidateParents
   commentId: M:DrawnUi.Draw.SkiaControl.InvalidateParents
   parent: DrawnUi.Draw.SkiaControl
@@ -15124,6 +15199,31 @@ references:
     name: GestureEventProcessingInfo
     href: DrawnUi.Draw.GestureEventProcessingInfo.html
   - name: )
+- uid: DrawnUi.Draw.SkiaControl.IsPrimaryPointer(DrawnUi.Draw.SkiaGesturesParameters)
+  commentId: M:DrawnUi.Draw.SkiaControl.IsPrimaryPointer(DrawnUi.Draw.SkiaGesturesParameters)
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsPrimaryPointer_DrawnUi_Draw_SkiaGesturesParameters_
+  name: IsPrimaryPointer(SkiaGesturesParameters)
+  nameWithType: SkiaControl.IsPrimaryPointer(SkiaGesturesParameters)
+  fullName: DrawnUi.Draw.SkiaControl.IsPrimaryPointer(DrawnUi.Draw.SkiaGesturesParameters)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.IsPrimaryPointer(DrawnUi.Draw.SkiaGesturesParameters)
+    name: IsPrimaryPointer
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsPrimaryPointer_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.IsPrimaryPointer(DrawnUi.Draw.SkiaGesturesParameters)
+    name: IsPrimaryPointer
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_IsPrimaryPointer_DrawnUi_Draw_SkiaGesturesParameters_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaGesturesParameters
+    name: SkiaGesturesParameters
+    href: DrawnUi.Draw.SkiaGesturesParameters.html
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.SendTapped(System.Object,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo,System.Boolean)
   commentId: M:DrawnUi.Draw.SkiaControl.SendTapped(System.Object,DrawnUi.Draw.SkiaGesturesParameters,DrawnUi.Draw.GestureEventProcessingInfo,System.Boolean)
   parent: DrawnUi.Draw.SkiaControl
@@ -17709,6 +17809,39 @@ references:
   name: RenderTransformMatrix
   nameWithType: SkiaControl.RenderTransformMatrix
   fullName: DrawnUi.Draw.SkiaControl.RenderTransformMatrix
+- uid: DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(SkiaSharp.SKRect@)
+  commentId: M:DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(SkiaSharp.SKRect@)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryGetDrawnDirtyBounds_SkiaSharp_SKRect__
+  name: TryGetDrawnDirtyBounds(out SKRect)
+  nameWithType: SkiaControl.TryGetDrawnDirtyBounds(out SKRect)
+  fullName: DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(out SkiaSharp.SKRect)
+  nameWithType.vb: SkiaControl.TryGetDrawnDirtyBounds(SKRect)
+  fullName.vb: DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(SkiaSharp.SKRect)
+  name.vb: TryGetDrawnDirtyBounds(SKRect)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(SkiaSharp.SKRect@)
+    name: TryGetDrawnDirtyBounds
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryGetDrawnDirtyBounds_SkiaSharp_SKRect__
+  - name: (
+  - name: out
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.TryGetDrawnDirtyBounds(SkiaSharp.SKRect@)
+    name: TryGetDrawnDirtyBounds
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_TryGetDrawnDirtyBounds_SkiaSharp_SKRect__
+  - name: (
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
 - uid: DrawnUi.Draw.SkiaControl.InverseRenderTransformMatrix
   commentId: P:DrawnUi.Draw.SkiaControl.InverseRenderTransformMatrix
   parent: DrawnUi.Draw.SkiaControl
@@ -21788,6 +21921,212 @@ references:
   - uid: DrawnUi.Draw.SkiaControl.SetRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
     name: SetRenderingTree
     href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_SetRenderingTree_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
+  - name: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControlWithRect
+    name: SkiaControlWithRect
+    href: DrawnUi.Draw.SkiaControlWithRect.html
+  - name: )
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RenderTreeEntry(System.Int32,DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect,SkiaSharp.SKRect,System.Int32,System.Int32,System.Object)
+  commentId: M:DrawnUi.Draw.SkiaControl.RenderTreeEntry(System.Int32,DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect,SkiaSharp.SKRect,System.Int32,System.Int32,System.Object)
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderTreeEntry_System_Int32_DrawnUi_Draw_SkiaControl_SkiaSharp_SKRect_SkiaSharp_SKRect_System_Int32_System_Int32_System_Object_
+  name: RenderTreeEntry(int, SkiaControl, SKRect, SKRect, int, int, object)
+  nameWithType: SkiaControl.RenderTreeEntry(int, SkiaControl, SKRect, SKRect, int, int, object)
+  fullName: DrawnUi.Draw.SkiaControl.RenderTreeEntry(int, DrawnUi.Draw.SkiaControl, SkiaSharp.SKRect, SkiaSharp.SKRect, int, int, object)
+  nameWithType.vb: SkiaControl.RenderTreeEntry(Integer, SkiaControl, SKRect, SKRect, Integer, Integer, Object)
+  fullName.vb: DrawnUi.Draw.SkiaControl.RenderTreeEntry(Integer, DrawnUi.Draw.SkiaControl, SkiaSharp.SKRect, SkiaSharp.SKRect, Integer, Integer, Object)
+  name.vb: RenderTreeEntry(Integer, SkiaControl, SKRect, SKRect, Integer, Integer, Object)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RenderTreeEntry(System.Int32,DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect,SkiaSharp.SKRect,System.Int32,System.Int32,System.Object)
+    name: RenderTreeEntry
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderTreeEntry_System_Int32_DrawnUi_Draw_SkiaControl_SkiaSharp_SKRect_SkiaSharp_SKRect_System_Int32_System_Int32_System_Object_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RenderTreeEntry(System.Int32,DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect,SkiaSharp.SKRect,System.Int32,System.Int32,System.Object)
+    name: RenderTreeEntry
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RenderTreeEntry_System_Int32_DrawnUi_Draw_SkiaControl_SkiaSharp_SKRect_SkiaSharp_SKRect_System_Int32_System_Int32_System_Object_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+  commentId: M:DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_PublishRenderingTree_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
+  name: PublishRenderingTree(List<SkiaControlWithRect>)
+  nameWithType: SkiaControl.PublishRenderingTree(List<SkiaControlWithRect>)
+  fullName: DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List<DrawnUi.Draw.SkiaControlWithRect>)
+  nameWithType.vb: SkiaControl.PublishRenderingTree(List(Of SkiaControlWithRect))
+  fullName.vb: DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List(Of DrawnUi.Draw.SkiaControlWithRect))
+  name.vb: PublishRenderingTree(List(Of SkiaControlWithRect))
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+    name: PublishRenderingTree
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_PublishRenderingTree_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
+  - name: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: DrawnUi.Draw.SkiaControlWithRect
+    name: SkiaControlWithRect
+    href: DrawnUi.Draw.SkiaControlWithRect.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.PublishRenderingTree(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+    name: PublishRenderingTree
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_PublishRenderingTree_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
+  - name: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Draw.SkiaControlWithRect
+    name: SkiaControlWithRect
+    href: DrawnUi.Draw.SkiaControlWithRect.html
+  - name: )
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.RentRenderTreeBuilder
+  commentId: M:DrawnUi.Draw.SkiaControl.RentRenderTreeBuilder
+  parent: DrawnUi.Draw.SkiaControl
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RentRenderTreeBuilder
+  name: RentRenderTreeBuilder()
+  nameWithType: SkiaControl.RentRenderTreeBuilder()
+  fullName: DrawnUi.Draw.SkiaControl.RentRenderTreeBuilder()
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.RentRenderTreeBuilder
+    name: RentRenderTreeBuilder
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RentRenderTreeBuilder
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.RentRenderTreeBuilder
+    name: RentRenderTreeBuilder
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_RentRenderTreeBuilder
+  - name: (
+  - name: )
+- uid: DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+  commentId: M:DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+  parent: DrawnUi.Draw.SkiaControl
+  isExternal: true
+  href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ReturnRenderTreeBuilder_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
+  name: ReturnRenderTreeBuilder(List<SkiaControlWithRect>)
+  nameWithType: SkiaControl.ReturnRenderTreeBuilder(List<SkiaControlWithRect>)
+  fullName: DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List<DrawnUi.Draw.SkiaControlWithRect>)
+  nameWithType.vb: SkiaControl.ReturnRenderTreeBuilder(List(Of SkiaControlWithRect))
+  fullName.vb: DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List(Of DrawnUi.Draw.SkiaControlWithRect))
+  name.vb: ReturnRenderTreeBuilder(List(Of SkiaControlWithRect))
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+    name: ReturnRenderTreeBuilder
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ReturnRenderTreeBuilder_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
+  - name: (
+  - uid: System.Collections.Generic.List`1
+    name: List
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1
+  - name: <
+  - uid: DrawnUi.Draw.SkiaControlWithRect
+    name: SkiaControlWithRect
+    href: DrawnUi.Draw.SkiaControlWithRect.html
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaControl.ReturnRenderTreeBuilder(System.Collections.Generic.List{DrawnUi.Draw.SkiaControlWithRect})
+    name: ReturnRenderTreeBuilder
+    href: DrawnUi.Draw.SkiaControl.html#DrawnUi_Draw_SkiaControl_ReturnRenderTreeBuilder_System_Collections_Generic_List_DrawnUi_Draw_SkiaControlWithRect__
   - name: (
   - uid: System.Collections.Generic.List`1
     name: List
@@ -44969,6 +45308,88 @@ references:
   name: Action
   nameWithType: Action
   fullName: System.Action
+- uid: DrawnUi.Draw.SkiaShape.CreateClip(System.Object,System.Boolean,SkiaSharp.SKPath)
+  commentId: M:DrawnUi.Draw.SkiaShape.CreateClip(System.Object,System.Boolean,SkiaSharp.SKPath)
+  parent: DrawnUi.Draw.SkiaShape
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShape.html#DrawnUi_Draw_SkiaShape_CreateClip_System_Object_System_Boolean_SkiaSharp_SKPath_
+  name: CreateClip(object, bool, SKPath)
+  nameWithType: SkiaShape.CreateClip(object, bool, SKPath)
+  fullName: DrawnUi.Draw.SkiaShape.CreateClip(object, bool, SkiaSharp.SKPath)
+  nameWithType.vb: SkiaShape.CreateClip(Object, Boolean, SKPath)
+  fullName.vb: DrawnUi.Draw.SkiaShape.CreateClip(Object, Boolean, SkiaSharp.SKPath)
+  name.vb: CreateClip(Object, Boolean, SKPath)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShape.CreateClip(System.Object,System.Boolean,SkiaSharp.SKPath)
+    name: CreateClip
+    href: DrawnUi.Draw.SkiaShape.html#DrawnUi_Draw_SkiaShape_CreateClip_System_Object_System_Boolean_SkiaSharp_SKPath_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPath
+    name: SKPath
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpath
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShape.CreateClip(System.Object,System.Boolean,SkiaSharp.SKPath)
+    name: CreateClip
+    href: DrawnUi.Draw.SkiaShape.html#DrawnUi_Draw_SkiaShape_CreateClip_System_Object_System_Boolean_SkiaSharp_SKPath_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPath
+    name: SKPath
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpath
+  - name: )
+- uid: DrawnUi.Draw.SkiaShape.Type
+  commentId: P:DrawnUi.Draw.SkiaShape.Type
+  parent: DrawnUi.Draw.SkiaShape
+  href: DrawnUi.Draw.SkiaShape.html#DrawnUi_Draw_SkiaShape_Type
+  name: Type
+  nameWithType: SkiaShape.Type
+  fullName: DrawnUi.Draw.SkiaShape.Type
+- uid: DrawnUi.Draw.SkiaShape.CornerRadius
+  commentId: P:DrawnUi.Draw.SkiaShape.CornerRadius
+  parent: DrawnUi.Draw.SkiaShape
+  href: DrawnUi.Draw.SkiaShape.html#DrawnUi_Draw_SkiaShape_CornerRadius
+  name: CornerRadius
+  nameWithType: SkiaShape.CornerRadius
+  fullName: DrawnUi.Draw.SkiaShape.CornerRadius
+- uid: DrawnUi.Draw.SkiaShape.ClipDependsOnlyOnShape*
+  commentId: Overload:DrawnUi.Draw.SkiaShape.ClipDependsOnlyOnShape
+  href: DrawnUi.Draw.SkiaShape.html#DrawnUi_Draw_SkiaShape_ClipDependsOnlyOnShape
+  name: ClipDependsOnlyOnShape
+  nameWithType: SkiaShape.ClipDependsOnlyOnShape
+  fullName: DrawnUi.Draw.SkiaShape.ClipDependsOnlyOnShape
+- uid: DrawnUi.Draw.SkiaShape
+  commentId: T:DrawnUi.Draw.SkiaShape
+  parent: DrawnUi.Draw
+  href: DrawnUi.Draw.SkiaShape.html
+  name: SkiaShape
+  nameWithType: SkiaShape
+  fullName: DrawnUi.Draw.SkiaShape
 - uid: DrawnUi.Draw.SkiaControl.AddPaintArguments(DrawnUi.Draw.DrawingContext)
   commentId: M:DrawnUi.Draw.SkiaControl.AddPaintArguments(DrawnUi.Draw.DrawingContext)
   parent: DrawnUi.Draw.SkiaControl
@@ -45083,13 +45504,6 @@ references:
   name: Thickness
   nameWithType: Thickness
   fullName: Microsoft.Maui.Thickness
-- uid: DrawnUi.Draw.SkiaShape
-  commentId: T:DrawnUi.Draw.SkiaShape
-  parent: DrawnUi.Draw
-  href: DrawnUi.Draw.SkiaShape.html
-  name: SkiaShape
-  nameWithType: SkiaShape
-  fullName: DrawnUi.Draw.SkiaShape
 - uid: DrawnUi.Draw.SkiaShape.Shadows*
   commentId: Overload:DrawnUi.Draw.SkiaShape.Shadows
   href: DrawnUi.Draw.SkiaShape.html#DrawnUi_Draw_SkiaShape_Shadows

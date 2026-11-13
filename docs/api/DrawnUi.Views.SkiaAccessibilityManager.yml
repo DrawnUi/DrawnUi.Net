@@ -7,6 +7,7 @@ items:
   children:
   - DrawnUi.Views.SkiaAccessibilityManager.Activate(DrawnUi.Draw.ISkiaAccessibilityNode)
   - DrawnUi.Views.SkiaAccessibilityManager.ActiveModal
+  - DrawnUi.Views.SkiaAccessibilityManager.ActiveModalNode
   - DrawnUi.Views.SkiaAccessibilityManager.Adjust(DrawnUi.Draw.ISkiaAccessibilityNode,System.Boolean)
   - DrawnUi.Views.SkiaAccessibilityManager.Changed
   - DrawnUi.Views.SkiaAccessibilityManager.FocusChanged
@@ -732,6 +733,42 @@ items:
       type: DrawnUi.Draw.SkiaControl
     content.vb: Public Property ActiveModal As SkiaControl
   overload: DrawnUi.Views.SkiaAccessibilityManager.ActiveModal*
+- uid: DrawnUi.Views.SkiaAccessibilityManager.ActiveModalNode
+  commentId: P:DrawnUi.Views.SkiaAccessibilityManager.ActiveModalNode
+  id: ActiveModalNode
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: ActiveModalNode
+  nameWithType: SkiaAccessibilityManager.ActiveModalNode
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.ActiveModalNode
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ActiveModalNode
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 240
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    The one dialog readers meet for <xref href="DrawnUi.Views.SkiaAccessibilityManager.ActiveModal" data-throw-if-not-resolved="false"></xref>: the modal itself when it is named, else the first
+
+    named dialog / alertdialog inside it (a popup host around an app's dialog), else the modal. The heads' overlay
+
+    takes its role and name.
+  example: []
+  syntax:
+    content: public SkiaControl? ActiveModalNode { get; }
+    parameters: []
+    return:
+      type: DrawnUi.Draw.SkiaControl
+    content.vb: Public Property ActiveModalNode As SkiaControl
+  overload: DrawnUi.Views.SkiaAccessibilityManager.ActiveModalNode*
 - uid: DrawnUi.Views.SkiaAccessibilityManager.IsScreenReaderRunning
   commentId: P:DrawnUi.Views.SkiaAccessibilityManager.IsScreenReaderRunning
   id: IsScreenReaderRunning
@@ -750,7 +787,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsScreenReaderRunning
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 324
+    startLine: 365
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -788,7 +825,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsOutsideModal
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 348
+    startLine: 389
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -827,7 +864,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RequestAccessibilityFocus
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 399
+    startLine: 447
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -867,7 +904,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TryFindGroup
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 483
+    startLine: 549
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -912,7 +949,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsTabStop
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 518
+    startLine: 584
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -955,7 +992,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NextTabStop
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 556
+    startLine: 622
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1000,7 +1037,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MoveInGroup
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 595
+    startLine: 661
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1048,7 +1085,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusFirstTabStop
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 907
+    startLine: 973
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1093,7 +1130,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyFocused
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 944
+    startLine: 1010
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1125,7 +1162,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Register
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 952
+    startLine: 1018
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1154,7 +1191,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyUpdated
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 958
+    startLine: 1024
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1183,7 +1220,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ForceRebuildOnNextFrame
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 971
+    startLine: 1037
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1209,7 +1246,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Unregister
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 977
+    startLine: 1043
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1238,7 +1275,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnregisterSubtree
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 986
+    startLine: 1052
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1267,7 +1304,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RefreshIfStale
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 1035
+    startLine: 1101
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2183,6 +2220,18 @@ references:
   name: ActiveModal
   nameWithType: SkiaAccessibilityManager.ActiveModal
   fullName: DrawnUi.Views.SkiaAccessibilityManager.ActiveModal
+- uid: DrawnUi.Views.SkiaAccessibilityManager.ActiveModal
+  commentId: P:DrawnUi.Views.SkiaAccessibilityManager.ActiveModal
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_ActiveModal
+  name: ActiveModal
+  nameWithType: SkiaAccessibilityManager.ActiveModal
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.ActiveModal
+- uid: DrawnUi.Views.SkiaAccessibilityManager.ActiveModalNode*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.ActiveModalNode
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_ActiveModalNode
+  name: ActiveModalNode
+  nameWithType: SkiaAccessibilityManager.ActiveModalNode
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.ActiveModalNode
 - uid: DrawnUi.Views.SkiaAccessibilityManager.IsScreenReaderRunning*
   commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.IsScreenReaderRunning
   href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_IsScreenReaderRunning
