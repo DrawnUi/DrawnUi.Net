@@ -83,8 +83,9 @@ public class ShaderDoubleTexturesEffect : SkiaShaderEffect
     {
         if (ControlFrom != null)
         {
-            //that control spans the destination: its texture is placed where it is drawn now
-            return CacheAt(_controlFrom, destination);
+            //that control spans the effect's control (a subclass may render into a part of it): its texture is placed
+            //where that control is drawn now
+            return CacheAt(_controlFrom, ControlAreaOr(destination));
         }
 
         if (PrimarySource != null)

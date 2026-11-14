@@ -389,8 +389,19 @@ public class SkiaShaderEffect : SkiaEffect, IPostRendererEffect, IComparable, IC
         }
     }
 
+    /// <summary>
+    /// Where the control this effect belongs to is drawn this frame, set by the control before it renders the effect. A
+    /// subclass may render into a part of it (a clipped destination): the control's textures still cover the whole
+    /// control, see <see cref="ControlAreaOr"/>.
+    /// </summary>
+    public SKRect ControlArea { get; set; }
+
+    /// <summary>The whole control's area this frame, or <paramref name="destination"/> when the control did not set one.</summary>
+    protected SKRect ControlAreaOr(SKRect destination) =>
+        ControlArea.Width > 0 && ControlArea.Height > 0 ? ControlArea : destination;
+
     /// <summary>The parent's cache as the input texture, placed where it is drawn now, see <see cref="CacheAt"/>.</summary>
-    protected CachedTexture ParentCache(SKRect destination) => CacheAt(Parent, destination);
+    protected CachedTexture ParentCache(SKRect destination) => CacheAt(Parent, ControlAreaOr(destination));
 
     /// <summary>
     /// The cache of <paramref name="control"/>, a control that spans <paramref name="destination"/>, as a texture placed
