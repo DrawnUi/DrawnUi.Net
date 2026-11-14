@@ -84,6 +84,18 @@ The window serves vertical lists: a templated `SkiaStack` (one column or a `Spli
 
 `LoadMoreCommand` keeps its meaning: it fires only when the user reaches the true end of your source data — "paging within already-available data" is internal, "fetch more from the API" is yours.
 
+## Try it live
+
+The same list of 100 000 recycled rows in C#, React and Rust. Only the visible cells exist; scroll fast.
+
+<div data-drawfiddle="G3c09Jl8" data-lang="csharp" data-title="Recycled cells: 100 000 rows (C#)" data-height="460"></div>
+
+<div data-drawfiddle="ryQqbPbc0" data-lang="tsx" data-title="Recycled cells: 100 000 rows (React)" data-height="460"></div>
+
+<div data-drawfiddle="flwlMAAY" data-lang="rust" data-title="Recycled cells: 100 000 rows (Rust)" data-height="460"></div>
+
+<script src="https://drawfiddle.com/embed.js" defer></script>
+
 ## Reordering
 
 A templated list is reordered through its data: `ObservableCollection.Move(from, to)` is applied to the cells the layout already has (with `MeasureFirst` a move is a pure re-bind, no rebuild). Drag to reorder, with the list moving live under the pointer, a floating copy of the row and edge auto-scroll, is a recipe on top of that: [Drag to Reorder a List](../advanced/reorder.md).

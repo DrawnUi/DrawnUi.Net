@@ -21,6 +21,14 @@ Check out [Breakout (Bricks Breaker) source code](https://github.com/DrawnUi/Dra
 - **Easy integration**  
     with other .NET MAUI native controls and layouts to use-platform-specific features.
 
+## Try it live
+
+<div data-drawfiddle="z0BSodtF" data-lang="csharp" data-title="Breakout with power-ups" data-height="560" data-autoplay="false"></div>
+
+<div data-drawfiddle="6w1nZz56" data-lang="rust" data-title="Pong: a game loop, an AI paddle, keyboard and touch" data-height="520"></div>
+
+<script src="https://drawfiddle.com/embed.js" defer></script>
+
 ## Game addon per host
 
 The `DrawnGame` base class (game loop with a frame-time interpolator, keyboard state, pause and resume) ships as one addon package per host, all built from the same source, so a game is shared code between them:
