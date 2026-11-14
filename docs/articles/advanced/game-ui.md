@@ -23,7 +23,7 @@ Check out [Breakout (Bricks Breaker) source code](https://github.com/DrawnUi/Dra
 
 ## Try it live
 
-<div data-drawfiddle="z0BSodtF" data-lang="csharp" data-title="Breakout with power-ups" data-height="560"></div>
+<div data-drawfiddle="z0BSodtF" data-lang="csharp" data-title="Breakout with power-ups" data-height="560" data-autoplay="false"></div>
 
 <div data-drawfiddle="6w1nZz56" data-lang="rust" data-title="Pong: a game loop, an AI paddle, keyboard and touch" data-height="520"></div>
 
