@@ -95,6 +95,24 @@ SkiaWrap::new().spacing(24).horizontal_options(LayoutOptions::Center).children(
 
 ---
 
+## ▶️ Live Examples
+
+These run right here in the page, drawn by DrawnUI in your browser. "Open in Fiddle" opens the code in [DrawFiddle](https://drawfiddle.com), where you can change it and see the result at once.
+
+<div data-drawfiddle="AUzGMhk1" data-lang="csharp" data-title="Blackjack: a card game with SVG cards loaded on demand" data-height="520" data-app></div>
+
+<div data-drawfiddle="4LlpXaiF" data-lang="csharp" data-title="Now Playing: a music player screen with a blurred backdrop, a scrubber and drawers" data-height="560"></div>
+
+<div data-drawfiddle="6w1nZz56" data-lang="rust" data-title="Pong: a game loop, an AI paddle, keyboard and touch" data-height="520"></div>
+
+<div data-drawfiddle="flwlMAAY" data-lang="rust" data-title="Recycled cells: 100 000 rows, only the visible ones exist" data-height="460"></div>
+
+<div data-drawfiddle="r7iQiTEDa" data-lang="tsx" data-title="Gradient cards you pick with a tap" data-height="420"></div>
+
+<script src="https://drawfiddle.com/embed.js" defer></script>
+
+More examples to run and edit: the Community feed on [drawfiddle.com](https://drawfiddle.com).
+
 ## 🎮 Learning Projects
 
 - **[Blazor Sandbox](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Blazor/Samples/BlazorSandbox)** 🌐 - Explore the browser-hosted DrawnUI sample surface with:
