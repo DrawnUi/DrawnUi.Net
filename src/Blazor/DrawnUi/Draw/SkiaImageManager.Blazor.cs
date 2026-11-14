@@ -44,7 +44,13 @@ public class SkiaImageManager : IDisposable
     private sealed record CacheEntry(SKBitmap Bitmap, DateTimeOffset ExpiresAtUtc);
 
     public static bool LoadLocalAsync = true;
-    public static bool ReuseBitmaps = false;
+    /// <summary>
+    /// On by default: images on the same source share the one decoded SKBitmap the cache holds (one copy in memory
+    /// for any number of controls). SkiaImage never disposes or edits that shared bitmap. Code of your own that
+    /// takes bitmaps from this manager (LoadImageAsync, LoadImageManagedAsync, GetFromCache) gets the shared one too:
+    /// do not dispose or draw into it, or set this to false so every caller gets its own copy.
+    /// </summary>
+    public static bool ReuseBitmaps = true;
     public static int CacheLongevitySecs = 1800;
     public static string NativeFilePrefix = "file://";
     public static bool LogEnabled = false;

@@ -185,9 +185,12 @@ public partial class SkiaImageManager : IDisposable
     public static bool LoadLocalAsync = false;
 
     /// <summary>
-    /// If set to true will not return clones for same sources, but will just return the existing cached SKBitmap reference. Useful if you have a lot on images reusing same sources, but you have to be carefull not to dispose the shared image. SkiaImage is aware of this setting and will keep a cached SKBitmap from being disposed.
+    /// On by default: images on the same source share the one decoded SKBitmap the cache holds (one copy in memory
+    /// for any number of controls). SkiaImage never disposes or edits that shared bitmap. Code of your own that
+    /// takes bitmaps from this manager (LoadImageAsync, LoadImageManagedAsync, GetFromCache) gets the shared one too:
+    /// do not dispose or draw into it, or set this to false so every caller gets its own copy.
     /// </summary>
-    public static bool ReuseBitmaps = false;
+    public static bool ReuseBitmaps = true;
 
     /// <summary>
     /// Caching provider setting
