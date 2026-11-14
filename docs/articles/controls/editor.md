@@ -70,6 +70,12 @@ The native control is never visible — it exists solely so the platform IME has
     Text="{Binding Password}" />
 ```
 
+## Try it live
+
+<div data-drawfiddle="OYfatKrd" data-lang="csharp" data-title="SkiaEditor: drawn text input" data-height="460"></div>
+
+<script src="https://drawfiddle.com/embed.js" defer></script>
+
 ## Properties
 
 ### Text
