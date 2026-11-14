@@ -86,6 +86,10 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
+## What's New 1.10.8.27
+
+  * Images that show the same source share one copy in memory (`SkiaImageManager.ReuseBitmaps` is on by default). Code that disposes or edits bitmaps it gets from `SkiaImageManager` sets `SkiaImageManager.ReuseBitmaps = false`.
+
 ## What's New 1.10.8.26
 
   * SKMesh runs on Android Mali GPUs and is faster everywhere

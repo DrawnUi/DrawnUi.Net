@@ -490,12 +490,15 @@ Network images load `SkiaImageManager.MaxParallelLoads` at a time and the others
 
 #### Managing Memory Usage
 
-Configure the image manager for optimal memory usage:
+Images that show the same source share one decoded bitmap, so it is in memory once (`SkiaImageManager.ReuseBitmaps`, on by default). 69 images of one 1088x1088 photo add about 7 MB instead of 941 MB. `SkiaImage` handles the shared bitmap safely.
+
+Code that takes bitmaps from `SkiaImageManager` itself (`LoadImageAsync`, `LoadImageManagedAsync`, `GetFromCache`) shares them too: it never disposes them or draws into them. Code that needs its own copy to change or dispose sets `SkiaImageManager.ReuseBitmaps = false`.
+
+A shared bitmap stays in the cache, so a changed file or URL content shows after its cache entry expires (`CacheLongevitySecs`, 30 minutes by default) or after `RemoveFromCache(url)`.
+
+Configure the image manager:
 
 ```csharp
-// Enable bitmap reuse for better memory usage
-SkiaImageManager.ReuseBitmaps = true;
-
 // Set cache longevity (in seconds)
 SkiaImageManager.CacheLongevitySecs = 1800; // 30 minutes
 
@@ -617,7 +620,7 @@ var sprite = new SkiaSprite
      - `Ultra`: Cubic when scaling up, slowest (use sparingly)
 
 5. **Memory Management**
-   - Enable bitmap reuse with `SkiaImageManager.ReuseBitmaps = true`
+   - Images on the same source share one bitmap by default (`SkiaImageManager.ReuseBitmaps`): never dispose or draw into a bitmap you get from `SkiaImageManager`
    - Set reasonable cache longevity with `SkiaImageManager.CacheLongevitySecs`
    - Call `SkiaImageManager.Instance.RemoveFromCache(url)` for images you no longer need
    - Use `EraseChangedContent="True"` for dynamic image sources
@@ -763,7 +766,7 @@ if (loadedSource != null)
 - Set `CacheRescaledSource="False"` for sources that change every frame
 
 ### 3. Manage Memory Efficiently
-- Enable `SkiaImageManager.ReuseBitmaps = true` for shared images
+- Show one source in many places freely: those images share one bitmap (`SkiaImageManager.ReuseBitmaps`, on by default)
 - Set appropriate cache longevity with `CacheLongevitySecs`
 - Use `EraseChangedContent="True"` for dynamic content
 - Remove images you no longer need with `RemoveFromCache`
