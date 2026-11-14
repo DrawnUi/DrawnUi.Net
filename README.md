@@ -88,7 +88,7 @@ Please star ⭐ if you like it!
 
 ## What's New 1.10.8.27
 
-  * Images that show the same source share one copy in memory (`SkiaImageManager.ReuseBitmaps` is on by default). Code that disposes or edits bitmaps it gets from `SkiaImageManager` sets `SkiaImageManager.ReuseBitmaps = false`.
+  * Much lower memory for images: every image that shows the same file or URL now shares one decoded copy instead of holding its own. 69 images of one photo take about 7 MB instead of over 900 MB. Code that disposes or edits bitmaps it gets from SkiaImageManager sets `SkiaImageManager.ReuseBitmaps = false`.
 
 ## What's New 1.10.8.26
 

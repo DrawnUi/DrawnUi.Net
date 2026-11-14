@@ -490,7 +490,7 @@ Network images load `SkiaImageManager.MaxParallelLoads` at a time and the others
 
 #### Managing Memory Usage
 
-Images that show the same source share one decoded bitmap, so it is in memory once (`SkiaImageManager.ReuseBitmaps`, on by default). 69 images of one 1088x1088 photo add about 7 MB instead of 941 MB. `SkiaImage` handles the shared bitmap safely.
+Images take little memory: every image that shows the same file or URL shares one decoded copy instead of holding its own (`SkiaImageManager.ReuseBitmaps`, on by default). 69 images of one 1088x1088 photo take about 7 MB instead of over 900 MB. `SkiaImage` handles the shared bitmap safely.
 
 Code that takes bitmaps from `SkiaImageManager` itself (`LoadImageAsync`, `LoadImageManagedAsync`, `GetFromCache`) shares them too: it never disposes them or draws into them. Code that needs its own copy to change or dispose sets `SkiaImageManager.ReuseBitmaps = false`.
 
