@@ -224,3 +224,10 @@ control.FillGradient = gradient;
 - Gradients can be animated by changing their properties 
 - Combine gradients with shadows for modern card and button designs.
 
+## Try it live
+
+<div data-drawfiddle="ac9waeS1" data-lang="csharp" data-title="A card with an animated gradient border" data-height="460"></div>
+
+<div data-drawfiddle="r7iQiTEDa" data-lang="tsx" data-title="Gradient cards you pick with a tap" data-height="420"></div>
+
+<script src="https://drawfiddle.com/embed.js" defer></script>

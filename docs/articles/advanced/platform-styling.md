@@ -51,6 +51,14 @@ foreach (var toggle in Views.OfType<SkiaToggle>())
     toggle.ControlStyle = PrebuiltControlStyle.Material3;
 ```
 
+## Try it live
+
+One card per prebuilt style, built by the same code:
+
+<div data-drawfiddle="IiQI6YPA" data-lang="csharp" data-title="Every ControlStyle side by side" data-height="520"></div>
+
+<script src="https://drawfiddle.com/embed.js" defer></script>
+
 ## Platform Style Characteristics
 
 ### Cupertino (iOS) Style
