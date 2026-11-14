@@ -88,7 +88,7 @@ The window serves vertical lists: a templated `SkiaStack` (one column or a `Spli
 
 The same list of 100 000 recycled rows in C#, React and Rust. Only the visible cells exist; scroll fast.
 
-<div data-drawfiddle="cEKTcX0P" data-lang="csharp" data-title="Recycled cells: 100 000 rows (C#)" data-height="460"></div>
+<div data-drawfiddle="G3c09Jl8" data-lang="csharp" data-title="Recycled cells: 100 000 rows (C#)" data-height="460"></div>
 
 <div data-drawfiddle="ryQqbPbc0" data-lang="tsx" data-title="Recycled cells: 100 000 rows (React)" data-height="460"></div>
 
