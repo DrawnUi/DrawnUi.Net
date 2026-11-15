@@ -649,7 +649,10 @@ internal sealed unsafe class VulkanRenderer3D
             Release(target);
             t = null;
         }
-        if (t != null && t.Device == _device && target.Width == w && target.Height == h && t.Samples == samples && target.Image != null)
+        // A new window draws with a new Skia context on the same device: the image made for the old context is
+        // made again for this one (its own Vulkan images are made again with it).
+        if (t != null && t.Device == _device && target.Width == w && target.Height == h && t.Samples == samples && target.Image != null
+            && target.Context == gr)
             return t;
         target.Image?.Dispose();
         target.Image = null;
