@@ -61,6 +61,15 @@ public static class PerfProbe
         canvas.WillDraw += OnWillDraw;
         canvas.WasDrawn += OnWasDrawn;
         Console.WriteLine($"[perf] {_mode}: {WarmupSeconds} s warm-up, {MeasureSeconds} s of frames");
+        // A page at rest draws no frames: the probe's finger moves on every frame tick, as a hand would.
+        if (_mode is "scroll" or "list")
+            new ActionOnTickAnimator(_page, _ => _canvas.Update()).Start();
+        // a page at rest is right to draw nothing: say so instead of waiting for frames that never come
+        Tasks.StartDelayed(TimeSpan.FromSeconds(WarmupSeconds + MeasureSeconds + 0.5), () =>
+        {
+            if (_count == 0)
+                Console.WriteLine($"[perf] {_mode}: frames 0, nothing drew in {MeasureSeconds} s");
+        });
     }
 
     /// <summary>
@@ -165,5 +174,8 @@ public static class PerfProbe
         Array.Sort(alloc2);
         var fps = (_count - 1) / Stopwatch.GetElapsedTime(_first, _last).TotalSeconds;
         Console.WriteLine($"[perf] {_mode}: frames {_count}, {fps:0.0} FPS, draw median {draw[_count / 2]:0.00} ms, p99 {draw[(int)(_count * 0.99)]:0.00} ms, max {draw[^1]:0.00} ms, over 12 ms {over}, alloc/frame median {alloc2[_count / 2] / 1024:0.0} KB, p99 {alloc2[(int)(_count * 0.99)] / 1024:0.0} KB, GC {GC.CollectionCount(0) - _gcAtFirst}, slowest {slowest}");
+        // What keeps the canvas drawing: every animator still registered, with the control it animates.
+        Console.WriteLine("[perf] animators: " + string.Join("; ", _canvas.AnimatingControls.Values.Select(a =>
+            $"{a.GetType().Name} on {a.Parent?.GetType().Name}{(a.Parent is SkiaControl c && !string.IsNullOrEmpty(c.Tag) ? " '" + c.Tag + "'" : "")} running {a.IsRunning} paused {a.IsPaused} deactivated {a.IsDeactivated}")));
     }
 }

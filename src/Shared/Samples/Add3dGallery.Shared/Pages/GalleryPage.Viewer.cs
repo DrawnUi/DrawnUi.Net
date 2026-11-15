@@ -326,6 +326,7 @@ public partial class GalleryPage
     void SetFabric(int index)
     {
         _fabric = index;
+        WakeLoop();
         for (var i = 0; i < _swatches.Length; i++)
         {
             _swatches[i].StrokeColor = i == index ? Theme.Ink : Colors.Transparent;

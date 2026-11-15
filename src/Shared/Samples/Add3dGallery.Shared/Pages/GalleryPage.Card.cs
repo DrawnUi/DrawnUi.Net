@@ -169,6 +169,7 @@ public partial class GalleryPage
         _flipped = !_flipped;
         _cardTurnTo = _flipped ? 180 : 0;
         _flipButton.Text = _flipped ? "Show the front" : "Show the back";
+        WakeLoop();
     }
 
     /// <summary>Each frame: the half turn eases toward its side (the view's home yaw: the lean toward the pointer stays on top).</summary>

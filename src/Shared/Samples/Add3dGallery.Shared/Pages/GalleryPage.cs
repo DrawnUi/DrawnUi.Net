@@ -461,10 +461,21 @@ public partial class GalleryPage : DrawnGame
         // The pins' first placement makes the globe's ray tree (hidden pins are found by a ray): done now, while the
         // page opens, and not in the frame the globe scrolls into view.
         PlacePins();
+        // every drawn frame (a scroll, a tap) starts the loop again when something it moves comes into view
+        if (!_wakeHooked && Superview is DrawnView canvas)
+        {
+            _wakeHooked = true;
+            canvas.WasDrawn += (_, _) => WakeLoop();
+        }
+        _looping = true;
         StartLoop();
     }
 
-    void SpinMedal() => _spin = 0;
+    void SpinMedal()
+    {
+        _spin = 0;
+        WakeLoop();
+    }
 
     void MedalColors()
     {
@@ -481,6 +492,7 @@ public partial class GalleryPage : DrawnGame
         if (_unlocked)
         {
             _spin = 0;
+            WakeLoop();
             _medal.Scale = 0.6;
             _ = _medal.ScaleToAsync(1, 1, 500, Easing.SpringOut);
         }
@@ -490,6 +502,7 @@ public partial class GalleryPage : DrawnGame
     {
         _liked = !_liked;
         _pop = _liked ? 1 : 0;
+        WakeLoop();
         _heart.SetMaterialColor("heart", _liked ? null : Grey);
         _likeButton.Text = _liked ? "Unlike" : "Like";
     }

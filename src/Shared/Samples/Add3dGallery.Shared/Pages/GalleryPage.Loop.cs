@@ -51,16 +51,51 @@ public partial class GalleryPage
 
     static float EaseOut(float t) => 1 - MathF.Pow(1 - Math.Clamp(t, 0, 1), 3);
 
+    bool _looping, _wakeHooked;
+
+    /// <summary>Drawn in the last frame and inside the page's window: the user can see it.</summary>
+    bool Seen(SkiaControl control) =>
+        control != null && control.WasInLastFrame() && control.GetAccessibilityPixelRect().IntersectsWith(_scroll.GetAccessibilityPixelRect());
+
+    /// <summary>
+    /// Whether the loop has something to move: a section that moves on its own is in view (mobs, confetti, the heart's
+    /// beat, the globe's pulses), or a glide started by the user has not ended (price, medal, heart pop, card turn,
+    /// mascot). When nothing is, the loop stops and the page draws no frames at rest.
+    /// </summary>
+    bool LoopNeeded() =>
+        Seen(_field) || Seen(_rain) || Seen(_heart) || Seen(_globe)
+        || _spin < 1 || _pop > 0 || _globeGlide < 1 || _priceShown != Fabrics[Math.Max(_fabric, 0)].Price
+        || (_cardTurn != _cardTurnTo && Seen(_card))
+        || (Seen(_mascot) && (MathF.Abs(_lookTo - _look) > 0.001f || MathF.Abs(_handsTo - _hands) > 0.001f
+                              || MathF.Abs(_headYawTo - _headYaw) > 0.01f || MathF.Abs(_headPitchTo - _headPitch) > 0.01f));
+
+    /// <summary>Starts the loop when it has something to move again; checked after every drawn frame (a scroll, a tap).</summary>
+    void WakeLoop()
+    {
+        ListFrame();
+        if (_looping || !LoopNeeded())
+            return;
+        _looping = true;
+        // the time the loop was stopped is not a step of the animations
+        LastFrameTimeNanos = SkiaControl.GetNanoseconds();
+        StartLoop();
+    }
+
     public override void GameLoop(float delta)
     {
         base.GameLoop(delta);
+        if (!LoopNeeded())
+        {
+            _looping = false;
+            StopLoop();
+            return;
+        }
         // The first tick after a start or a pause carries the whole gap.
         delta = Math.Clamp(delta, 0, 0.1f);
         _time += delta;
         var t = _time;
 
         PriceFrame(delta);
-        ListFrame();
         // The scene pans: every layer slides by its share, the ground (and the mobs on it) the most.
         // Wrapped where every layer is back at its start (100000 pt, 50 min), so the float keeps its fractions.
         _pan = (_pan + Scenery.PanSpeed * delta) % 100_000;

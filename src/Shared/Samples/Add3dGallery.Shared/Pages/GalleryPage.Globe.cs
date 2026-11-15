@@ -210,6 +210,7 @@ public partial class GalleryPage
         _globeToYaw = yaw;
         _globeToPitch = pitch;
         _globeGlide = 0;
+        WakeLoop();
         _openCity = -1;
         ToggleCity(index);
     }

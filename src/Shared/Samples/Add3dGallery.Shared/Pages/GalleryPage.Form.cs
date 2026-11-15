@@ -147,6 +147,7 @@ public partial class GalleryPage
         }
         else
             _lookTo = 0;
+        WakeLoop();
     }
 
     void SignUp()
