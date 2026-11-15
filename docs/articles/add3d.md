@@ -85,9 +85,17 @@ The control behaves the same on every platform:
 - Inside a scroll, a drag decides its direction at the start: up and down scrolls the page, sideways turns the model. Without a scroll around it, a drag turns it freely.
 - A plain mouse wheel scrolls the page. Ctrl or Cmd + wheel, a touchpad pinch or a two-finger pinch zooms (`PinchZoom`, `MinZoom`, `MaxZoom`).
 - A double tap resets the view (`ResetOnDoubleTap`), and `ResetView()` does it from code.
+- `Fling = true`: a drag that is let go keeps the model turning, slowing down like a scroll after a swipe; a finger put down stops it.
 - `LockPitch` keeps the horizon level, `Orbit = false` turns dragging off, `AutoRotate` turns the model slowly at rest, and `TiltToPointer` makes it lean toward the mouse or finger.
 
 Tell people how to use it, under the control: "Drag to turn · pinch or Ctrl+scroll to zoom · double-tap to reset".
+
+### Framing
+
+The control fits its model tightly and never cuts it: it fits the model's real outline as it turns around the vertical axis, at the current pitch, with a little air around it, and keeps every animation of the file in frame.
+
+- `FrameAnimations`: the animations kept in frame besides the model at rest; `null` (default) = every animation of the file. When the file has bigger animations the app never plays (a jump, a fall), name only the ones it plays, and the model shows larger.
+- `FrameMargin`: room kept around the resting model, in model units (default 0), for parts that move past it (dice that tumble and hop, swinging arms). The view backs off so they stay in sight.
 
 ## Shapes made in code
 
@@ -99,7 +107,13 @@ new SkiaModel3D(new Model3D()
     .MaterialImage("earth", Texture3D.Decode(earthJpg));
 ```
 
-Meshes: `Sphere`, `Cylinder`, `Torus`, `Cuboid`, `Lathe` (a turned profile) and `Extrude` (any `SKPath` made 3D). Each part is placed with `At`, `Turned`, `Scaled` and `Inside(parent)`. `Texture3D.FromImage` takes any Skia image: a photo, or a pattern drawn in code.
+Meshes:
+
+- `Sphere`, `Cylinder`, `Torus`, `Cuboid`.
+- `RoundedCuboid(width, height, depth, radius, atlas = false)`: a centered box with rounded edges and corners (a die, a soap bar, a phone, a cushion); `radius` is at most half the smallest side. An image covers each face whole, upright on the sides, as on `Cuboid`. With `atlas: true` each face takes its own cell of one image split 3 x 2: +X, -X, +Y on the top row, -Y, +Z, -Z on the bottom, for example a die's six faces in one image.
+- `Lathe` (a turned profile) and `Extrude` (any `SKPath` made 3D).
+
+Each part is placed with `At`, `Turned`, `Scaled` and `Inside(parent)`. `Texture3D.FromImage` takes any Skia image: a photo, or a pattern drawn in code.
 
 ## A 3D layer: SkiaScene3D
 

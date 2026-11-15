@@ -173,4 +173,102 @@ public class KeyboardTabScrollTests
         foreach (var label in Enumerable.Reverse(expected).Skip(1))
             Assert.Equal(label, Press(host, true));
     }
+
+    /// <summary>A recycled cell holding two buttons, each named by the item.</summary>
+    private class TwoButtonCell : SkiaLayout
+    {
+        private readonly SkiaButton _a, _b;
+
+        public TwoButtonCell()
+        {
+            Type = LayoutType.Row;
+            HeightRequest = 40;
+            HorizontalOptions = LayoutOptions.Fill;
+            Children = new List<SkiaControl>
+            {
+                new SkiaButton("a") { WidthRequest = 100, HeightRequest = 36, AccessibilityRole = Aria.RoleButton }.Assign(out _a),
+                new SkiaButton("b") { WidthRequest = 100, HeightRequest = 36, AccessibilityRole = Aria.RoleButton }.Assign(out _b),
+            };
+        }
+
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+            _a.AccessibilityLabel = $"{BindingContext} a";
+            _b.AccessibilityLabel = $"{BindingContext} b";
+        }
+    }
+
+    /// <summary>Shift+Tab into a recycled cell with two stops lands on its last one, then its first (WinUI, browsers).</summary>
+    [Fact]
+    public void ShiftTab_IntoRecycledCellsWithTwoStops_TakesEachCellsLastStopFirst()
+    {
+        var host = new HeadlessCanvasHost(300, 400, background: Colors.Black);
+        using var _ = host;
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
+        SkiaScroll scroll = null;
+        const int count = 200;
+        host.Canvas.Content = new SkiaStack
+        {
+            Spacing = 0,
+            Children =
+            {
+                new SkiaRow { Spacing = 0, Children = { Button("Back").WithWidth(120), Button("Home").WithWidth(120) } },
+                new SkiaScroll
+                {
+                    HeightRequest = ViewportHeight, HorizontalOptions = LayoutOptions.Fill,
+                    Content = new SkiaStack
+                    {
+                        Spacing = 0,
+                        RecyclingTemplate = RecyclingTemplate.Enabled,
+                        MeasureItemsStrategy = MeasuringStrategy.MeasureFirst,
+                        ItemsSource = Enumerable.Range(0, count).Select(i => $"Item {i}").ToList(),
+                        ItemTemplate = new DataTemplate(() => new TwoButtonCell()),
+                    }
+                }.Assign(out scroll),
+                Button("Footer"),
+            }
+        };
+        host.AdvanceFrames(4);
+
+        var expected = new[] { "Back", "Home" }
+            .Concat(Enumerable.Range(0, count).SelectMany(i => new[] { $"Item {i} a", $"Item {i} b" }))
+            .Append("Footer").ToArray();
+        foreach (var label in expected)
+        {
+            Assert.Equal(label, Press(host, false));
+            AssertInView(host, scroll, label);
+        }
+        foreach (var label in Enumerable.Reverse(expected).Skip(1))
+        {
+            Assert.Equal(label, Press(host, true));
+            AssertInView(host, scroll, label);
+        }
+    }
+
+    /// <summary>
+    /// The control holding the keyboard focus goes away (hidden: a pin turned to the back of a globe): the focus moves to
+    /// the next stop in page order, never to nothing (on the web, the page body), so the next Tab goes on from there.
+    /// </summary>
+    [Fact]
+    public void KeyboardFocus_OnAControlThatGoesAway_MovesToTheNextStop()
+    {
+        var host = new HeadlessCanvasHost(300, 400, background: Colors.Black);
+        using var _ = host;
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
+        SkiaButton b = null;
+        host.Canvas.Content = new SkiaStack
+        {
+            Spacing = 0,
+            Children = { Button("A"), Button("B").Assign(out b), Button("C"), Button("D") }
+        };
+        host.AdvanceFrames(4);
+
+        Assert.Equal("A", Press(host, false));
+        Assert.Equal("B", Press(host, false));
+        b.IsVisible = false;
+        host.AdvanceFrames(5);
+        Assert.Equal("C", host.Canvas.KeyboardFocusNode?.AccessibilityLabel);
+        Assert.Equal("D", Press(host, false));
+    }
 }

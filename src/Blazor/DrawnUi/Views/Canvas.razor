@@ -1083,6 +1083,15 @@
     private void OnA11yChanged()
     {
         _accessibilityNodes = AccessibilityManager.Snapshot;
+        // the element with the page focus is about to go (its node left, or takes no input any more): the next stop's
+        // element takes the focus in this same render, before the browser drops it to the page
+        if (_a11yDomFocus is { } focused && ReferenceEquals(KeyboardFocusNode, focused)
+            && AccessibilityManager.StopAfterGone(focused) is { } next)
+        {
+            _pendingA11yFocusId = next.AccessibilityId;
+            KeyboardFocusNode = next;
+            AccessibilityManager.NotifyFocused(next);
+        }
         _ = InvokeAsync(StateHasChanged);
     }
 
@@ -1167,6 +1176,9 @@
 
     private void OnA11yBlur(AccessibilityNode node)
     {
+        // the element lost the page focus because its node left the page or stopped taking input: the next stop takes it
+        if (node.Source != null && ReferenceEquals(KeyboardFocusNode, node.Source))
+            AccessibilityManager.HandOffKeyboardFocus(node.Source);
         if (ReferenceEquals(_a11yDomFocus, node.Source))
             _a11yDomFocus = null;
         if (ReferenceEquals(AccessibilityManager.ReaderNode, node.Source))
