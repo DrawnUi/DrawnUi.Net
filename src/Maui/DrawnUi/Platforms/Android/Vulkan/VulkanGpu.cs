@@ -187,10 +187,28 @@ internal sealed unsafe class VulkanGpu : IDisposable
     }
 
     /// <summary>A device, its queue and a Skia context on it, or null when Vulkan does not work here.</summary>
+    /// <summary>Devices of closed windows, kept for the next window (see <see cref="Park"/>).</summary>
+    private static readonly System.Collections.Concurrent.ConcurrentBag<VulkanGpu> Parked = new();
+
+    /// <summary>
+    /// The window is gone: its device and Skia context are kept for the next window instead of destroyed. Skia
+    /// objects made with them can outlive the window (a control's GPU cache, an image a library imported) and are freed
+    /// later, also by the Finalizer; with the device destroyed that freeing crashed in the driver. Unused GPU memory is
+    /// released now. Call on the thread that drew with it, after the window's own Vulkan objects are destroyed.
+    /// </summary>
+    public void Park()
+    {
+        Context?.PurgeUnlockedResources(false);
+        Parked.Add(this);
+    }
+
     public static VulkanGpu Create()
     {
         if (!IsAvailable)
             return null;
+
+        if (Parked.TryTake(out var parked))
+            return parked;
 
         var gpu = new VulkanGpu();
         try
