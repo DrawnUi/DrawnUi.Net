@@ -24,10 +24,10 @@ public partial class GalleryPage : DrawnGame
     static readonly int[] MobCounts = { 10, 40, 100 };
 
     SkiaScroll _scroll;
-    SkiaModel3D _medal, _heart, _avatar, _chest;
+    SkiaModel3D _chest;
     SkiaScene3D _rain, _field;
     Scenery _scenery;
-    UiButton _medalButton, _likeButton, _chestButton;
+    UiButton _chestButton;
     readonly UiButton[] _mobButtons = new UiButton[MobCounts.Length];
     readonly UiButton[] _lookButtons = new UiButton[2];
     SkiaControl _keyboardSpacer;
@@ -81,29 +81,34 @@ public partial class GalleryPage : DrawnGame
                                     FontSize = 15, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center,
                                     HorizontalTextAlignment = DrawTextAlignment.Center,
                                 },
+                                new SkiaRow
+                                {
+                                    Spacing = 20,
+                                    HorizontalOptions = LayoutOptions.Center,
+                                    Children =
+                                    {
+                                        Theme.Link("Read the 3D article", Theme.ArticleUrl),
+                                        Theme.Link("Source on GitHub", Theme.RepoUrl),
+                                    }
+                                },
                             }
                         },
+
+                        GlobeCard().Assign(out _globeCard),
+
+                        FlipCard(),
 
                         ViewerCard(),
 
                         ListCard(),
 
-                        FlipCard(),
-
-                        GlobeCard().Assign(out _globeCard),
-
-                        FormCard(),
-
-                        Theme.Section("Micro-interactions", "Small 3D touches that answer a tap."),
+                        Theme.Section("Small 3D touches", "Little 3D moments that answer a tap."),
                         new SkiaWrap
                         {
                             Spacing = 16,
                             HorizontalOptions = LayoutOptions.Center,
                             Children =
                             {
-                                Tile("Like", "A heart that beats, and jumps when liked.",
-                                    Shaded(HeartModel(), -24, 12).Assign(out _heart).OnTapped3D((_, _) => ToggleLike()),
-                                    new UiButton("Unlike", Theme.Accent).Assign(out _likeButton).OnTapped(_ => ToggleLike())),
                                 Tile("Celebration", "Confetti and stars falling: one 3D layer, many pieces.",
                                     new SkiaScene3D
                                         {
@@ -114,31 +119,7 @@ public partial class GalleryPage : DrawnGame
                                         .Model("star", ConfettiStar())
                                         .Assign(out _rain),
                                     new UiButton("Hooray", Theme.Accent).OnTapped(_ => Hooray())),
-                                Tile("Achievement", "A medal that lights up and spins when unlocked.",
-                                    Shaded(Medal(), MedalYaw, 12).Assign(out _medal).OnTapped3D((_, _) => SpinMedal()),
-                                    new UiButton("Lock", Theme.Accent).Assign(out _medalButton).OnTapped(_ => ToggleMedal())),
-                            }
-                        },
-
-                        Theme.Section("Images on 3D", "Any image on a 3D surface, switched live: drawn in code here, or a photo or a file."),
-                        ImagesSection(),
-
-                        Theme.Section("From model files", "Free 3D models with their own animations, driven by the app."),
-                        new SkiaWrap
-                        {
-                            Spacing = 16,
-                            HorizontalOptions = LayoutOptions.Center,
-                            Children =
-                            {
-                                Tile("Avatar", "A character that idles, and waves when tapped.",
-                                    new SkiaModel3D(Theme.Avatar)
-                                        {
-                                            Animation = "CharacterArmature|Idle", Yaw = 25, Pitch = 10,
-                                            HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
-                                        }
-                                        .Assign(out _avatar)
-                                        .OnTapped3D((me, _) => me.PlayOnce("CharacterArmature|Wave")),
-                                    new UiButton("Wave", Theme.Accent).OnTapped(_ => _avatar.PlayOnce("CharacterArmature|Wave"))),
+                                ProductBoxTile(),
                                 Tile("Reward", "A chest that opens and closes.",
                                     new SkiaModel3D(Theme.Chest)
                                         {
@@ -150,8 +131,12 @@ public partial class GalleryPage : DrawnGame
                             }
                         },
 
+                        FormCard(),
+
                         Theme.Section("Games", "Many 3D characters on one field, moved like sprites and drawn by one layer in one pass."),
                         MobsCard(),
+
+                        Footer(),
 
                         // As tall as the on-screen keyboard while it shows (phones): the last fields can scroll above it.
                         new SkiaControl { HorizontalOptions = LayoutOptions.Fill, IsVisible = false }.Assign(out _keyboardSpacer),
@@ -164,6 +149,36 @@ public partial class GalleryPage : DrawnGame
     }
 
     /// <summary>A card: title, caption, the 3D piece on its stage, the button that drives it.</summary>
+    /// <summary>The page's end: where to read more, the source, and the same demo in the other DrawnUI engines.</summary>
+    static SkiaControl Footer() => new SkiaStack
+    {
+        Spacing = 14,
+        Margin = new Thickness(0, 24, 0, 8),
+        HorizontalOptions = LayoutOptions.Fill,
+        UseCache = SkiaCacheType.Image,
+        Children =
+        {
+            new SkiaShape { HeightRequest = 1, HorizontalOptions = LayoutOptions.Fill, BackgroundColor = Theme.Line },
+            new SkiaWrap
+            {
+                Spacing = 24,
+                HorizontalOptions = LayoutOptions.Center,
+                Children =
+                {
+                    Theme.Link("3D article", Theme.ArticleUrl),
+                    Theme.Link("DrawnUI docs", Theme.DocsUrl),
+                    Theme.Link("Source on GitHub", Theme.RepoUrl),
+                    Theme.Link("Same demo in Rust", Theme.RustDemoUrl),
+                    Theme.Link("Same demo in React", Theme.ReactDemoUrl),
+                }
+            },
+            new SkiaLabel("Drawn with DrawnUI: every pixel of this page, the 3D included.")
+            {
+                FontSize = 12, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center,
+            },
+        }
+    };
+
     static SkiaShape Tile(string title, string caption, SkiaControl piece, SkiaControl button) => new()
     {
         WidthRequest = 300,
@@ -301,7 +316,6 @@ public partial class GalleryPage : DrawnGame
     .Adapt(card => _adapt.Add(width => card.WidthRequest = MathF.Min(width - 2 * 24, WideWidth + 42)));
 
     /// <summary>The medal's resting turn: it spins from here and lands here.</summary>
-    const float MedalYaw = 20;
 
     /// <summary>
     /// A piece made in code in real 3D (the default Lit look: shaded by a light with a sky ambient, in perspective),
@@ -484,42 +498,6 @@ public partial class GalleryPage : DrawnGame
         }
         _looping = true;
         StartLoop();
-    }
-
-    void SpinMedal()
-    {
-        _spin = 0;
-        WakeLoop();
-    }
-
-    void MedalColors()
-    {
-        _medal.SetMaterialColor("disc", _unlocked ? null : Grey);
-        _medal.SetMaterialColor("inner", _unlocked ? null : Color.FromRgb(222, 219, 230));
-        _medal.SetMaterialColor("star", _unlocked ? null : Color.FromRgb(244, 242, 248));
-    }
-
-    void ToggleMedal()
-    {
-        _unlocked = !_unlocked;
-        _medalButton.Text = _unlocked ? "Lock" : "Unlock";
-        MedalColors();
-        if (_unlocked)
-        {
-            _spin = 0;
-            WakeLoop();
-            _medal.Scale = 0.6;
-            _ = _medal.ScaleToAsync(1, 1, 500, Easing.SpringOut);
-        }
-    }
-
-    void ToggleLike()
-    {
-        _liked = !_liked;
-        _pop = _liked ? 1 : 0;
-        WakeLoop();
-        _heart.SetMaterialColor("heart", _liked ? null : Grey);
-        _likeButton.Text = _liked ? "Unlike" : "Like";
     }
 
     void Hooray()

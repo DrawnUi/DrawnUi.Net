@@ -58,6 +58,31 @@ public static class Theme
         Color.FromRgba(c.Red + (1 - c.Red) * amount, c.Green + (1 - c.Green) * amount, c.Blue + (1 - c.Blue) * amount, c.Alpha);
 
     /// <summary>A section title with the line under it.</summary>
+    // Where the gallery links to (this is the .NET build; the Rust and React galleries are the same demo).
+    public const string ArticleUrl = "https://drawnui.net/articles/add3d.html";
+    public const string DocsUrl = "https://drawnui.net/";
+    public const string RepoUrl = "https://github.com/DrawnUi/DrawnUi.Net";
+    public const string RustDemoUrl = "https://add3d.drawnui.net/";
+    public const string ReactDemoUrl = "https://add3dreact.drawnui.net/";
+
+    /// <summary>
+    /// A text link: the accent color, brighter under the mouse, a link for the keyboard and screen readers; opens the
+    /// address in the browser.
+    /// </summary>
+    public static SkiaLabel Link(string text, string url) => new SkiaLabel(text)
+        {
+            FontSize = 14,
+            FontFamily = Title,
+            TextColor = LinkColor,
+            AccessibilityRole = Aria.RoleLink,
+            AccessibilityLabel = text,
+            AccessibilityHint = url,
+        }
+        .OnHovered((me, on) => me.TextColor = on ? Ink : LinkColor)
+        .OnTapped(_ => Super.OpenLink(url));
+
+    public static readonly Color LinkColor = Color.FromRgb(172, 160, 255);
+
     public static SkiaControl Section(string title, string caption) => new SkiaStack
     {
         Spacing = 4,

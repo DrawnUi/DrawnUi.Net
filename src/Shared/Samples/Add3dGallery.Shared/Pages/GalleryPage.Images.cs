@@ -61,16 +61,11 @@ public partial class GalleryPage
     }
 
     /// <summary>The section's tile.</summary>
-    SkiaControl ImagesSection()
+    /// <summary>The product box tile: a box wearing a label drawn in code, switched live.</summary>
+    SkiaControl ProductBoxTile()
     {
         _labels ??= Labels();
-        return new SkiaWrap
-        {
-            Spacing = 16,
-            HorizontalOptions = LayoutOptions.Center,
-            Children =
-            {
-                Tile("Product box", "A box with its label: tap it or switch the design.",
+        return Tile("Product box", "A box with its label: tap it or switch the design.",
                     Shaded(ProductBox(), 28, 18)
                         .Adapt(me => me.AutoRotate = 40)
                         .MaterialImage("box", _labels[0])
@@ -92,8 +87,6 @@ public partial class GalleryPage
                                     me.AccessibilityIsPressed = _product.Antialias;
                                 }),
                         }
-                    }),
-            }
-        };
+                    });
     }
 }
