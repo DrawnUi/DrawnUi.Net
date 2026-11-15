@@ -51,7 +51,7 @@ public partial class GalleryPage
 
     static float EaseOut(float t) => 1 - MathF.Pow(1 - Math.Clamp(t, 0, 1), 3);
 
-    bool _looping, _wakeHooked;
+    bool _looping, _wakeHooked, _built;
 
     /// <summary>Drawn in the last frame and inside the page's window: the user can see it.</summary>
     bool Seen(SkiaControl control) =>
@@ -72,6 +72,10 @@ public partial class GalleryPage
     /// <summary>Starts the loop when it has something to move again; checked after every drawn frame (a scroll, a tap).</summary>
     void WakeLoop()
     {
+        // The page is still being built (the default fabric is set while its sections are made): the loop starts
+        // once the page is laid out.
+        if (!_built)
+            return;
         ListFrame();
         if (_looping || !LoopNeeded())
             return;

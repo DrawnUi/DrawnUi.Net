@@ -458,6 +458,7 @@ public partial class GalleryPage : DrawnGame
     protected override void OnLayoutReady()
     {
         base.OnLayoutReady();
+        _built = true;
         // The pins' first placement makes the globe's ray tree (hidden pins are found by a ray): done now, while the
         // page opens, and not in the frame the globe scrolls into view.
         PlacePins();
