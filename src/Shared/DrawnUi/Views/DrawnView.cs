@@ -817,6 +817,12 @@ namespace DrawnUi.Views
             {
                 AccessibilityManager.RefreshIfStale(RenderingScale);
                 var next = AccessibilityManager.NextTabStop(current, !shift);
+                // into or along a list whose cells are made on demand: its next item may have no cell yet
+                if (AccessibilityManager.TabThroughList(current, next, !shift))
+                {
+                    current?.OnAccessibilityFocused(false);
+                    return true;
+                }
                 if (!ReferenceEquals(current, next))
                 {
                     current?.OnAccessibilityFocused(false);

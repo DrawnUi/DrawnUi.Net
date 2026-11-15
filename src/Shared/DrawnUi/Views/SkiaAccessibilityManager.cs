@@ -212,6 +212,119 @@ namespace DrawnUi.Views
         }
 
         private GroupFocusRequest? _groupRequest;
+
+        private sealed class RevealRequest
+        {
+            public SkiaControl Control = null!;
+            public int Direction;
+            public bool Jumped;
+            public long Deadline;
+        }
+
+        private RevealRequest? _reveal;
+
+        /// <summary>
+        /// Brings a control that a scroll on screen holds outside its viewport into view (it is not drawn, so it has no
+        /// rect to scroll to): the scroll jumps to the item of its content that holds it, then steps toward it until it
+        /// is drawn, then <see cref="SkiaScroll.EnsureVisible"/> places it. Keyboard focus moving to such a control
+        /// (Tab) and a screen reader's scroll-into-view come here. One at a time: a newer one replaces it.
+        /// </summary>
+        public void Reveal(SkiaControl control)
+        {
+            var scroll = NearestDrawnScroll(control);
+            if (scroll == null)
+                return;
+
+            // which way: before or after what the scroll shows now, in its content's order
+            var path = TreePath(control, scroll);
+            var direction = 1;
+            foreach (var n in Snapshot)
+            {
+                if (n.Source is SkiaControl drawn && !n.Rect.IsEmpty && ReferenceEquals(NearestDrawnScroll(drawn), scroll))
+                {
+                    direction = ComparePaths(path, TreePath(drawn, scroll)) < 0 ? -1 : 1;
+                    break;
+                }
+            }
+
+            Volatile.Write(ref _reveal, new RevealRequest
+            {
+                Control = control,
+                Direction = direction,
+                Deadline = Environment.TickCount64 + 3000,
+            });
+            control.Superview?.Update();
+        }
+
+        private static SkiaScroll? NearestDrawnScroll(SkiaControl control)
+        {
+            for (var p = control.Parent as SkiaControl; p != null; p = p.Parent as SkiaControl)
+            {
+                if (p is SkiaScroll scroll && !scroll.GetAccessibilityPixelRect().IsEmpty)
+                    return scroll;
+            }
+            return null;
+        }
+
+        /// <summary>Frame end: one step of <see cref="Reveal"/>.</summary>
+        private void ProcessReveal()
+        {
+            var request = Volatile.Read(ref _reveal); // every frame: nothing to do in the common case
+            if (request == null)
+                return;
+
+            var control = request.Control;
+            if (control.IsDisposed || Environment.TickCount64 > request.Deadline)
+            {
+                Interlocked.CompareExchange(ref _reveal, null, request);
+                return;
+            }
+
+            if (!control.GetAccessibilityPixelRect().IsEmpty)
+            {
+                Interlocked.CompareExchange(ref _reveal, null, request);
+                SkiaScroll.EnsureVisible(control); // drawn now: the usual placement, padding included
+                return;
+            }
+
+            var scroll = NearestDrawnScroll(control);
+            if (scroll == null)
+            {
+                Interlocked.CompareExchange(ref _reveal, null, request);
+                return;
+            }
+
+            var vertical = scroll.Orientation != ScrollOrientation.Horizontal;
+            if (!request.Jumped)
+            {
+                request.Jumped = true;
+                // the item of the scroll's content that holds the control: ScrollToIndex knows where every item is
+                SkiaControl? item = control;
+                while (item != null && !ReferenceEquals(item.Parent, scroll.Content))
+                    item = item.Parent as SkiaControl;
+                if (item != null && scroll.Content is SkiaLayout { IsTemplated: false } content && !item.WasInLastFrame())
+                {
+                    var index = content.Views.IndexOf(item);
+                    if (index >= 0)
+                    {
+                        scroll.ScrollToIndex(index, false,
+                            request.Direction > 0 ? RelativePositionType.End : RelativePositionType.Start);
+                        scroll.Update();
+                        return;
+                    }
+                }
+            }
+
+            // the item is on screen but the control inside it is not (a tall card): most of a viewport toward it
+            var offset = scroll.InternalViewportOffset.Units;
+            var viewport = scroll.Viewport.Units;
+            var step = (float)(vertical ? viewport.Height : viewport.Width) * 0.8f * request.Direction;
+            if (vertical)
+                scroll.ScrollTo(offset.X, offset.Y - step, 0, true);
+            else
+                scroll.ScrollTo(offset.X - step, offset.Y, 0, true);
+            scroll.Update();
+        }
         private readonly object _groupRequestLock = new();
 
         /// <summary>
@@ -636,6 +749,73 @@ namespace DrawnUi.Views
             if ((KeyboardScope != null || ActiveModal != null) && stops.Count > 0)
                 next = (next + stops.Count) % stops.Count; // inside an open popup Tab goes round, it never leaves
             return next >= 0 && next < stops.Count ? stops[next] : null;
+        }
+
+        /// <summary>
+        /// Tab along a templated list whose cells are made on demand (recycled, a large ItemsSource), as WinUI's ListView:
+        /// the next item in Tab order is the next item of the list, also when its cell does not exist yet. When Tab from
+        /// an item would skip the items after it (or Tab from outside would skip the first, Shift+Tab the last), the list
+        /// is scrolled so that item is made and it gets the focus at a later frame end. True when that was started. Not
+        /// for a list with a composite role: it is one Tab stop walked with the arrows (<see cref="MoveInGroup"/>).
+        /// </summary>
+        public bool TabThroughList(ISkiaAccessibilityNode? from, ISkiaAccessibilityNode? next, bool forward)
+        {
+            var fromList = ListOf(from as SkiaControl, out var fromItem);
+            var nextList = ListOf(next as SkiaControl, out var nextItem);
+            SkiaLayout list;
+            int target;
+            if (fromList != null)
+            {
+                var index = IndexOf(fromList, fromItem!);
+                target = index + (forward ? 1 : -1);
+                if (target < 0 || target >= ItemCount(fromList))
+                    return false; // leaving the list past its end: the usual next stop
+                if (ReferenceEquals(nextList, fromList)
+                    && (ReferenceEquals(nextItem, fromItem) || IndexOf(fromList, nextItem!) == target))
+                    return false; // the next stop is in this item or the next one: nothing skipped
+                list = fromList;
+            }
+            else if (nextList != null)
+            {
+                target = forward ? 0 : ItemCount(nextList) - 1;
+                if (target < 0 || IndexOf(nextList, nextItem!) == target)
+                    return false;
+                list = nextList;
+            }
+            else
+                return false;
+
+            lock (_groupRequestLock)
+            {
+                _groupRequest = new GroupFocusRequest
+                {
+                    Group = list,
+                    Scroll = FindScroll(list),
+                    Index = target,
+                    Step = forward ? 1 : -1,
+                    Deadline = Environment.TickCount64 + 3000,
+                };
+            }
+
+            list.Superview?.Update();
+            return true;
+        }
+
+        /// <summary>The templated list (not an arrow-key group) whose cell holds <paramref name="control"/>, and that cell.</summary>
+        private static SkiaLayout? ListOf(SkiaControl? control, out SkiaControl? cell)
+        {
+            cell = null;
+            if (control == null || TryFindGroup(control, out _, out _))
+                return null;
+            for (var child = control; child?.Parent is SkiaControl parent; child = parent)
+            {
+                if (parent is SkiaLayout { IsTemplated: true } list)
+                {
+                    cell = child;
+                    return list;
+                }
+            }
+            return null;
         }
 
         /// <summary>Whether <paramref name="node"/> is in the current <see cref="Snapshot"/>.</summary>
@@ -1075,6 +1255,7 @@ namespace DrawnUi.Views
                 UpdateActiveModal();
             ProcessPendingFocus(scale);
             ProcessGroupFocus(scale);
+            ProcessReveal();
 
             if (!_dirty && _nodes.IsEmpty) return;
 
@@ -1143,30 +1324,14 @@ namespace DrawnUi.Views
                 if (IsHiddenByAncestor(control))
                     continue;
                 var px = node.GetAccessibilityPixelRect();
-                if (px.Width <= 0 || px.Height <= 0)
+                // not drawn because it is scrolled out of a drawn scroll's viewport: still on the page, listed with no
+                // rect (Tab reaches it and the scroll brings it into view, as browsers do)
+                if ((px.Width <= 0 || px.Height <= 0) && !ScrolledOut(control))
                     continue;
                 _sortBuffer.Add((node, px));
             }
 
-            _sortBuffer.Sort(RectComparer);
-
-            // reading order: nodes whose tops are within half the smaller height form one row, read left to right,
-            // so a row of vertically centered controls of different heights keeps its visual order
-            var rowStart = 0;
-            for (int i = 1; i <= _sortBuffer.Count; i++)
-            {
-                if (i < _sortBuffer.Count)
-                {
-                    var first = _sortBuffer[rowStart].Rect;
-                    var next = _sortBuffer[i].Rect;
-                    if (next.Top - first.Top < Math.Min(first.Height, next.Height) / 2)
-                        continue;
-                }
-
-                if (i - rowStart > 1)
-                    _sortBuffer.Sort(rowStart, i - rowStart, LeftComparer);
-                rowStart = i;
-            }
+            OrderLocked();
 
             var snapshot = BuildSaidOnce(scale);
 
@@ -1290,6 +1455,143 @@ namespace DrawnUi.Views
                 current = p.Parent;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Page order (drawnui-cross, as DrawnUi.React and DrawnUi.Rust): the nodes of a scroll take the scroll's place
+        /// among the others and are ordered inside it, so content scrolled above or below the viewport never lands
+        /// before a fixed header or after a footer. Outside scrolls: by top, a row (tops within half the smaller height)
+        /// read left to right. Inside a scroll: tree order, the order of its content, which also holds for the nodes
+        /// scrolled out of view that have no rect (the Tab order of browsers is the document order too).
+        /// </summary>
+        private void OrderLocked()
+        {
+            _groups.Clear();
+            _topBuffer.Clear();
+            foreach (var entry in _sortBuffer)
+            {
+                var scroll = OutermostDrawnScroll(entry.Node as SkiaControl);
+                if (scroll == null)
+                {
+                    _topBuffer.Add((entry.Node, entry.Rect, null));
+                    continue;
+                }
+
+                if (!_groups.TryGetValue(scroll, out var members))
+                {
+                    _groups[scroll] = members = new List<(ISkiaAccessibilityNode Node, SKRect Rect)>();
+                    _topBuffer.Add((scroll, scroll.GetAccessibilityPixelRect(), scroll));
+                }
+                members.Add(entry);
+            }
+
+            _topBuffer.Sort(TopComparer);
+
+            // reading order: nodes whose tops are within half the smaller height form one row, read left to right,
+            // so a row of vertically centered controls of different heights keeps its visual order
+            var rowStart = 0;
+            for (int i = 1; i <= _topBuffer.Count; i++)
+            {
+                if (i < _topBuffer.Count)
+                {
+                    var first = _topBuffer[rowStart].Rect;
+                    var next = _topBuffer[i].Rect;
+                    if (next.Top - first.Top < Math.Min(first.Height, next.Height) / 2)
+                        continue;
+                }
+
+                if (i - rowStart > 1)
+                    _topBuffer.Sort(rowStart, i - rowStart, TopLeftComparer);
+                rowStart = i;
+            }
+
+            _sortBuffer.Clear();
+            foreach (var top in _topBuffer)
+            {
+                if (top.Scroll == null)
+                {
+                    _sortBuffer.Add((top.Node, top.Rect));
+                    continue;
+                }
+
+                var members = _groups[top.Scroll];
+                if (members.Count > 1)
+                {
+                    var paths = new Dictionary<ISkiaAccessibilityNode, int[]>(members.Count);
+                    foreach (var m in members)
+                        paths[m.Node] = TreePath(m.Node as SkiaControl, top.Scroll);
+                    members.Sort((a, b) => ComparePaths(paths[a.Node], paths[b.Node]));
+                }
+                _sortBuffer.AddRange(members);
+            }
+        }
+
+        private readonly Dictionary<SkiaScroll, List<(ISkiaAccessibilityNode Node, SKRect Rect)>> _groups = new();
+        private readonly List<(ISkiaAccessibilityNode Node, SKRect Rect, SkiaScroll? Scroll)> _topBuffer = new();
+
+        private static readonly Comparison<(ISkiaAccessibilityNode Node, SKRect Rect, SkiaScroll? Scroll)> TopComparer = (a, b) =>
+        {
+            var cmp = a.Rect.Top.CompareTo(b.Rect.Top);
+            return cmp != 0 ? cmp : a.Rect.Left.CompareTo(b.Rect.Left);
+        };
+
+        private static readonly IComparer<(ISkiaAccessibilityNode Node, SKRect Rect, SkiaScroll? Scroll)> TopLeftComparer =
+            Comparer<(ISkiaAccessibilityNode Node, SKRect Rect, SkiaScroll? Scroll)>.Create((a, b) => a.Rect.Left.CompareTo(b.Rect.Left));
+
+        /// <summary>The outermost scroll around <paramref name="control"/> that is on screen, null when none is.</summary>
+        private static SkiaScroll? OutermostDrawnScroll(SkiaControl? control)
+        {
+            SkiaScroll? found = null;
+            for (var p = control?.Parent as SkiaControl; p != null; p = p.Parent as SkiaControl)
+            {
+                if (p is SkiaScroll scroll && !scroll.GetAccessibilityPixelRect().IsEmpty)
+                    found = scroll;
+            }
+            return found;
+        }
+
+        /// <summary>
+        /// A control not drawn only because a scroll on screen holds it outside its viewport: it has a size, and no
+        /// templated layout lies between it and that scroll (a recycled cell out of view belongs to no item).
+        /// </summary>
+        private static bool ScrolledOut(SkiaControl control)
+        {
+            if (control.MeasuredSize.Pixels.Width <= 0 || control.MeasuredSize.Pixels.Height <= 0)
+                return false;
+            for (var p = control.Parent as SkiaControl; p != null; p = p.Parent as SkiaControl)
+            {
+                if (p is SkiaLayout { IsTemplated: true })
+                    return false;
+                if (p is SkiaScroll scroll && !scroll.GetAccessibilityPixelRect().IsEmpty)
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>Child indices from <paramref name="root"/> down to <paramref name="control"/>; a recycled cell counts by its item.</summary>
+        private static int[] TreePath(SkiaControl? control, SkiaControl root)
+        {
+            var path = new List<int>();
+            for (var c = control; c != null && !ReferenceEquals(c, root); c = c.Parent as SkiaControl)
+            {
+                var parent = c.Parent as SkiaControl;
+                if (parent == null)
+                    break;
+                path.Add(parent is SkiaLayout { IsTemplated: true } ? c.ContextIndex : parent.Views.IndexOf(c));
+            }
+            path.Reverse();
+            return path.ToArray();
+        }
+
+        private static int ComparePaths(int[] a, int[] b)
+        {
+            for (int i = 0; i < Math.Min(a.Length, b.Length); i++)
+            {
+                var cmp = a[i].CompareTo(b[i]);
+                if (cmp != 0)
+                    return cmp;
+            }
+            return a.Length.CompareTo(b.Length); // a container before what it holds
         }
 
         private static readonly Comparison<(ISkiaAccessibilityNode Node, SKRect Rect)> RectComparer = (a, b) =>

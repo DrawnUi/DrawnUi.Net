@@ -10,7 +10,7 @@ namespace DrawnUi.Net.Tests;
 /// <summary>
 /// The reading (and Tab) order of a page stays the same while it scrolls: a fixed header comes first, the scrolled
 /// content next in its own order, a footer last, whatever the scroll position (drawnui-cross, as DrawnUi.React).
-/// Only drawn controls are listed, so items scrolled out of view are not in it.
+/// Items scrolled out of view are listed too (Tab reaches them, the scroll brings them into view).
 /// </summary>
 public class AccessibilityReadingOrderTests
 {
@@ -53,13 +53,9 @@ public class AccessibilityReadingOrderTests
         scroll.ScrollTo(0, (float)offsetY, 0, true);
         host.AdvanceFrames(3);
 
-        // only drawn controls are listed (items scrolled out of view are not): what is listed keeps the page order
+        // every item is listed, also the ones scrolled out of view, in page order: header, all items, footer
         var actual = manager.Snapshot.Select(n => n.Label).ToArray();
-        Assert.Equal(new[] { "Back", "Home" }, actual.Take(2));
-        Assert.Equal("Footer", actual[^1]);
-        var listed = actual.Skip(2).Take(actual.Length - 3).ToArray();
-        Assert.NotEmpty(listed);
-        var first = int.Parse(listed[0].Substring(5));
-        Assert.Equal(Enumerable.Range(first, listed.Length).Select(i => $"Item {i}"), listed);
+        var expected = new[] { "Back", "Home" }.Concat(Enumerable.Range(0, 12).Select(i => $"Item {i}")).Append("Footer");
+        Assert.Equal(expected, actual);
     }
 }

@@ -1390,7 +1390,11 @@ public partial class SkiaScroll
                 // both rects where they are on screen now (a scroll inside a cached panel is blitted, its DrawingRect is not)
                 var r = control.GetAccessibilityPixelRect();
                 if (r.IsEmpty)
+                {
+                    // scrolled out of view, so not drawn and without a rect: scrolled in over the next frames
+                    control.Superview?.AccessibilityManager.Reveal(control);
                     return;
+                }
                 var v = SKRect.Create(scroll.GetSelfDrawingPosition(), scroll.LastDrawnAt.Size);
                 float dx = 0, dy = 0;
                 if (r.Top < v.Top) dy = (v.Top - r.Top) / scale + paddingPts;

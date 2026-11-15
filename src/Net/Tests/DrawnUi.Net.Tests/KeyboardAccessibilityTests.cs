@@ -202,12 +202,14 @@ public class KeyboardAccessibilityTests
                 _out.WriteLine($"{when} {n.Label} {n.Rect}");
         }
 
-        // card i top = 10 + i * 120, switch = card + (30, 20); a node is in the snapshot while it is drawn (live or
-        // into a cache that is blitted), so without a content cache only the cards in the viewport are there
-        void AssertRects(float offset, int expectedCount)
+        // card i top = 10 + i * 120, switch = card + (30, 20); every switch is listed in page order, a drawn one (live
+        // or into a cache that is blitted) with its visible rect, one scrolled out of view with no rect (without a
+        // content cache only the cards in the viewport are drawn)
+        void AssertRects(float offset, int expectedDrawn)
         {
-            Assert.Equal(expectedCount, manager.Snapshot.Length);
-            foreach (var n in manager.Snapshot)
+            Assert.Equal(Enumerable.Range(0, 5).Select(i => $"s{i}"), manager.Snapshot.Select(n => n.Label));
+            Assert.Equal(expectedDrawn, manager.Snapshot.Count(n => !n.Rect.IsEmpty));
+            foreach (var n in manager.Snapshot.Where(n => !n.Rect.IsEmpty))
             {
                 var i = int.Parse(n.Label.Substring(1));
                 Assert.Equal(40, n.Rect.Left, 1);

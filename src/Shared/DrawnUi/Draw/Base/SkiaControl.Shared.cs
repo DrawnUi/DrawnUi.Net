@@ -9549,6 +9549,11 @@ namespace DrawnUi.Draw
             {
                 CommitInvalidations();
 
+                // a node is on the page from the moment it joins the canvas, also one never laid out yet (inside a
+                // card scrolled out of view): Tab and screen readers reach it, the scroll brings it into view
+                if (IsAccessibilityElement && !_registeredWithAccessibility && IsVisible)
+                    NotifyAccessibility();
+
                 bool needKick = false;
                 _lastAnimatorManager = Superview;
                 ResumeParkedAnimators();
