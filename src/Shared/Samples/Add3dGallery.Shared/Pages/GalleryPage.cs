@@ -133,8 +133,9 @@ public partial class GalleryPage : DrawnGame
 
                         FormCard(),
 
-                        Theme.Section("Games", "Many 3D characters on one field, moved like sprites and drawn by one layer in one pass."),
+                        Theme.Section("Games", "Many 3D characters on one field, moved like sprites, and dice made in code."),
                         MobsCard(),
+                        DiceCard(),
 
                         Footer(),
 
