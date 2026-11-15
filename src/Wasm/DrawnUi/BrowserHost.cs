@@ -151,7 +151,11 @@ public static partial class BrowserHost
         var nanos = Nanos();
         Super.OnBrowserFrame(nanos);   // tick DrawnUI animators
         _view?.SignalFrame(nanos);
-        _view?.OnRenderFrame();
+        // Draw only when something changed: the canvas is dirty (any update, and always in Constant mode) or the view
+        // was invalidated (a resize, a restored GPU context). The render loop keeps the animation clock running; a
+        // page at rest draws nothing, as on the other hosts.
+        if (_view != null && (_view.TakeDirty() | (_canvas?.IsDirty ?? true)))
+            _view.OnRenderFrame();
     }
 
     /// <summary>

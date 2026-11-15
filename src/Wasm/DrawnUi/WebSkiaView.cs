@@ -106,8 +106,23 @@ public class WebSkiaView : ISkiaDrawable, ISkiaGpuDrawable, IDisposable
     /// <summary>
     /// Request a frame render. Optionally set render loop + resize.
     /// </summary>
+    /// <summary>Something asked for a redraw since the last frame drawn (an update, a resize, a restored GPU context).</summary>
+    bool _dirty = true;
+
+    /// <summary>
+    /// Whether the next frame must draw, and clears it: a page at rest draws nothing on the frames the render loop
+    /// still runs for its clock. Cleared before drawing, so a redraw asked during the draw gets the next frame.
+    /// </summary>
+    public bool TakeDirty()
+    {
+        var dirty = _dirty;
+        _dirty = false;
+        return dirty;
+    }
+
     public void Invalidate()
     {
+        _dirty = true;
         if (_canvasSize.Width <= 0 || _canvasSize.Height <= 0 || _dpi <= 0)
             return;
 
@@ -216,6 +231,7 @@ public class WebSkiaView : ISkiaDrawable, ISkiaGpuDrawable, IDisposable
     /// </summary>
     private void OnContextRestored()
     {
+        _dirty = true;
         _context?.AbandonContext(false);
         _surface?.Dispose();
         _surface = null;
