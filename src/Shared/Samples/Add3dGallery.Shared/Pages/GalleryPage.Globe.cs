@@ -111,8 +111,8 @@ public partial class GalleryPage
                         Spacing = 4,
                         Children =
                         {
-                            new SkiaLabel("Our offices") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                            new SkiaLabel("Pick a city to turn the globe to it, or tap a pin.") { FontSize = 13, TextColor = Theme.Muted },
+                            new SkiaLabel("Our offices") { AccessibilityTextSelectable = true, FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new SkiaLabel("Pick a city to turn the globe to it, or tap a pin.") { AccessibilityTextSelectable = true, FontSize = 13, TextColor = Theme.Muted },
                         }
                     },
                     new SkiaWrap
@@ -145,7 +145,7 @@ public partial class GalleryPage
                                 }),
                         }
                     },
-                    new SkiaLabel("Image: NASA Blue Marble") { FontSize = 12, TextColor = Theme.Muted },
+                    new SkiaLabel("Image: NASA Blue Marble") { AccessibilityTextSelectable = true, FontSize = 12, TextColor = Theme.Muted },
                 }
             },
         }

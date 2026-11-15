@@ -97,11 +97,11 @@ public static class Theme
         Children = new List<SkiaControl>
         {
             new SkiaLabel(title)
-            {
+            { AccessibilityTextSelectable = true,
                 FontSize = 22, FontFamily = Title, TextColor = Ink, HorizontalOptions = LayoutOptions.Center,
                 AccessibilityRole = Aria.RoleHeading,
             },
-            new SkiaLabel(caption) { FontSize = 14, TextColor = Muted, HorizontalOptions = LayoutOptions.Center },
+            new SkiaLabel(caption) { AccessibilityTextSelectable = true, FontSize = 14, TextColor = Muted, HorizontalOptions = LayoutOptions.Center },
         }
     };
 }

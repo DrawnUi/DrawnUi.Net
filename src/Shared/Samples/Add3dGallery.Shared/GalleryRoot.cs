@@ -17,6 +17,8 @@ public class GalleryRoot : SkiaLayer
     {
         VerticalOptions = LayoutOptions.Fill;
         BackgroundColor = Theme.Page;
+        // titles and descriptions can be selected and copied: their selection in the gallery's gold
+        SkiaLabel.TextSelectionColor = Theme.Accent.WithAlpha(0.4f).ToSKColor();
         Children = new List<SkiaControl>
         {
             new SkiaGrid
@@ -62,8 +64,8 @@ public class GalleryRoot : SkiaLayer
                                             VerticalOptions = LayoutOptions.Center,
                                             Children =
                                             {
-                                                new SkiaLabel("DrawnUI 3D Demo") { FontSize = 17, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                                                new SkiaLabel(subtitle) { FontSize = 12, TextColor = Theme.Muted },
+                                                new SkiaLabel("DrawnUI 3D Demo") { AccessibilityTextSelectable = true, FontSize = 17, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                                                new SkiaLabel(subtitle) { AccessibilityTextSelectable = true, FontSize = 12, TextColor = Theme.Muted },
                                             }
                                         },
                                     }

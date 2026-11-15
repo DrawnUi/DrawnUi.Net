@@ -149,10 +149,10 @@ public partial class GalleryPage
                         UseCache = SkiaCacheType.Image,
                         Children =
                         {
-                            new SkiaLabel("Drawn Rewards Gold") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                            new SkiaLabel("12,480 points · member since 2021") { FontSize = 14, TextColor = Theme.Muted },
+                            new SkiaLabel("Drawn Rewards Gold") { AccessibilityTextSelectable = true, FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new SkiaLabel("12,480 points · member since 2021") { AccessibilityTextSelectable = true, FontSize = 14, TextColor = Theme.Muted },
                             new SkiaLabel("Both faces are images drawn in code with Skia and put on the card's two halves.")
-                                { FontSize = 13, TextColor = Theme.Muted, Margin = new Thickness(0, 10, 0, 0) },
+                                { AccessibilityTextSelectable = true, FontSize = 13, TextColor = Theme.Muted, Margin = new Thickness(0, 10, 0, 0) },
                         }
                     },
                     new Button3D("Show the back", Theme.Accent, 160) { AccessibilityHint = "Turns the card over" }

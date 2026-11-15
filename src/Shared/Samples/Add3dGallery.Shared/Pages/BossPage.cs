@@ -96,12 +96,12 @@ public class BossPage : SkiaLayer
                             Children =
                             {
                                 new SkiaLabel("BOSS FIGHT")
-                                {
+                                { AccessibilityTextSelectable = true,
                                     FontSize = 30, FontFamily = Theme.Title, TextColor = Colors.White,
                                     HorizontalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RoleHeading,
                                 },
                                 new SkiaLabel("A glTF model drawn in 3D inside DrawnUI, driven by the app. Drag it to turn it, tap it to hit it.")
-                                {
+                                { AccessibilityTextSelectable = true,
                                     FontSize = 15, TextColor = Muted, HorizontalOptions = LayoutOptions.Center,
                                     HorizontalTextAlignment = DrawTextAlignment.Center,
                                 },
@@ -140,7 +140,7 @@ public class BossPage : SkiaLayer
                             })
                             .SetGrid(0, 1),
                         new SkiaLabel("Tap the dragon to hit it.")
-                            {
+                            { AccessibilityTextSelectable = true,
                                 FontSize = 15, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center,
                             }
                             .WithAccessibilityLive()

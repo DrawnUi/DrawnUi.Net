@@ -100,7 +100,7 @@ public partial class GalleryPage
                         Children = Hotspots.Select((spot, i) => (SkiaControl)Pin(i, spot.Name)).Append(Note()).ToList(),
                     },
                     new SkiaLabel("Drag to turn  ·  pinch or Ctrl+scroll to zoom  ·  double-tap to reset")
-                    {
+                    { AccessibilityTextSelectable = true,
                         FontSize = 12, TextColor = Theme.Muted, Margin = new Thickness(0, 0, 0, 12), HorizontalTextAlignment = DrawTextAlignment.Center,
                         HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.End, InputTransparent = true,
                     },
@@ -121,8 +121,8 @@ public partial class GalleryPage
                         IgnoreChildrenInvalidations = true,
                         Children =
                         {
-                            new SkiaLabel("Walnut sofa") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                            new SkiaLabel("Three-seater, carved walnut frame") { FontSize = 13, TextColor = Theme.Muted },
+                            new SkiaLabel("Walnut sofa") { AccessibilityTextSelectable = true, FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new SkiaLabel("Three-seater, carved walnut frame") { AccessibilityTextSelectable = true, FontSize = 13, TextColor = Theme.Muted },
                             new SkiaLabel(Dollars(Fabrics[0].Price))
                                 {
                                     FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Gold, Margin = new Thickness(0, 6, 0, 0),

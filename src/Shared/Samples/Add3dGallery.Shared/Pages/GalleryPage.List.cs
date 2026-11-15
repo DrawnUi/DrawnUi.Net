@@ -51,7 +51,7 @@ public partial class GalleryPage
                     IgnoreChildrenInvalidations = true,
                     Children =
                     {
-                        new SkiaLabel("Shop") { FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                        new SkiaLabel("Shop") { AccessibilityTextSelectable = true, FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
                         // Changes while the list scrolls: a fixed box, so a new count never lays the page out again.
                         new SkiaLabel
                             {
