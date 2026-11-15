@@ -7,6 +7,7 @@ global using DrawnUi.Draw;
 global using DrawnUi.Models;
 global using DrawnUi.Views;
 global using SkiaSharp;
+global using SkiaSharp.Views.Maui;
 // DrawnUi and MAUI both declare these; the app means the drawn ones.
 global using FontWeight = DrawnUi.Draw.FontWeight;
 using Microsoft.Maui.LifecycleEvents;
