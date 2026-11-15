@@ -64,6 +64,7 @@ public partial class GalleryPage
 
     const float DieRounding = 0.14f;
     static readonly float[] DieX = { -0.8f, 0.8f };
+    static readonly Vector2 ShadowShift = new(0.12f, 0.15f);
 
     /// <summary>
     /// Two dice, each a holder that turns it around the vertical and lifts it, a rounded cube wearing its faces, and a
@@ -73,7 +74,8 @@ public partial class GalleryPage
     {
         var model = new Model3D();
         for (var d = 0; d < 2; d++)
-            model.Part($"shadow{d}", Mesh3D.Cuboid(1.3f, 0.001f, 1.3f), Colors.White.WithAlpha(0.99f)).At(DieX[d], -0.505f, 0)
+            // a little toward the viewer and right: away from the key light, up and to the left
+            model.Part($"shadow{d}", Mesh3D.Cuboid(1.45f, 0.001f, 1.45f), Colors.White.WithAlpha(0.99f)).At(DieX[d] + ShadowShift.X, -0.505f, ShadowShift.Y)
                 .Part($"holder{d}", Mesh3D.Cuboid(0.01f, 0.01f, 0.01f), Colors.White).At(DieX[d], 0, 0)
                 .Part($"die{d}", Mesh3D.RoundedCuboid(1, 1, 1, DieRounding, atlas: true), Colors.White).Inside($"holder{d}");
         return model;
@@ -86,7 +88,8 @@ public partial class GalleryPage
         {
             IsAntialias = true,
             Shader = SKShader.CreateRadialGradient(new SKPoint(w / 2, h / 2), w / 2,
-                new[] { new SKColor(0, 0, 0, 150), new SKColor(0, 0, 0, 90), new SKColor(0, 0, 0, 0) }, new[] { 0f, 0.45f, 1f },
+                new[] { new SKColor(0, 0, 0, 255), new SKColor(0, 0, 0, 215), new SKColor(0, 0, 0, 90), new SKColor(0, 0, 0, 0) },
+                new[] { 0f, 0.35f, 0.7f, 1f },
                 SKShaderTileMode.Clamp),
         };
         c.DrawRect(0, 0, w, h, paint);
@@ -115,7 +118,7 @@ public partial class GalleryPage
         _diceView.SetNodeTranslation($"holder{d}", DieX[d], lift, 0);
         var spread = 1 + lift * 0.6f;
         _diceView.SetNodeScale($"shadow{d}", spread, 1, spread);
-        _diceView.SetMaterialColor($"shadow{d}", Colors.White.WithAlpha(Math.Clamp(0.99f - lift * 0.9f, 0.2f, 0.99f)));
+        _diceView.SetMaterialColor($"shadow{d}", Colors.White.WithAlpha(Math.Clamp(0.99f - lift * 0.9f, 0.3f, 0.99f)));
     }
 
     SkiaControl DiceCard()
