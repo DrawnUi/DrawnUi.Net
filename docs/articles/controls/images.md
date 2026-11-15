@@ -494,11 +494,22 @@ Images take little memory: every image that shows the same file or URL shares on
 
 Code that takes bitmaps from `SkiaImageManager` itself (`LoadImageAsync`, `LoadImageManagedAsync`, `GetFromCache`) shares them too: it never disposes them or draws into them. Code that needs its own copy to change or dispose sets `SkiaImageManager.ReuseBitmaps = false`.
 
-A shared bitmap stays in the cache, so a changed file or URL content shows after its cache entry expires (`CacheLongevitySecs`, 30 minutes by default) or after `RemoveFromCache(url)`.
+Image memory stays within a budget: the cache keeps at most `SkiaImageManager.CacheBudgetMb` megabytes of decoded pictures, 128 by default. Change it with one line:
+
+```csharp
+SkiaImageManager.CacheBudgetMb = 256; // 0 = no limit
+```
+
+Over the budget, the pictures used longest ago leave the cache. A picture still shown on screen stays and is reused, never decoded twice. `SkiaImageManager.Instance.CacheMemoryMb` reads how much the cache uses now.
+
+Cached pictures also refresh after `CacheLongevitySecs` (30 minutes by default), so a picture changed on the server shows; `RemoveFromCache(url)` refreshes one at once.
 
 Configure the image manager:
 
 ```csharp
+// Memory budget for decoded pictures, in megabytes (0 = no limit)
+SkiaImageManager.CacheBudgetMb = 128;
+
 // Set cache longevity (in seconds)
 SkiaImageManager.CacheLongevitySecs = 1800; // 30 minutes
 
