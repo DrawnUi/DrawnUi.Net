@@ -26,7 +26,7 @@ One package per head, namespace `DrawnUi.Add3d`. There is no startup registratio
 
 On desktop heads the canvas draws with `RenderingMode = RenderingModeType.Accelerated`: the 3D pass uses the canvas's GPU context.
 
-The same add-on exists for DrawnUI for Rust (crate `drawnui-add3d`) and DrawnUi.React, with the same controls and property names in each language's style.
+The same add-on exists for DrawnUI for Rust (crate `drawnui-add3d`), with the same controls and property names in Rust style. It is also in DrawnUi.React.
 
 ## Two controls
 
@@ -40,7 +40,7 @@ using DrawnUi.Add3d;
 
 new SkiaModel3D(avatarGlb)            // the .glb file's bytes
 {
-    Animation = "Idle",
+    Animation = "CharacterArmature|Idle",
     Yaw = 25, Pitch = 10,
     PinchZoom = true,
     ResetOnDoubleTap = true,
@@ -48,8 +48,10 @@ new SkiaModel3D(avatarGlb)            // the .glb file's bytes
     HeightRequest = 320,
 }
 .Assign(out _avatar)
-.OnTapped3D((me, hit) => me.PlayOnce("Wave"));
+.OnTapped3D((me, hit) => me.PlayOnce("CharacterArmature|Wave"));
 ```
+
+Animation names come from the file: `Animations` lists them. Look them up there, never guess them.
 
 - **Loading:** pass the bytes of a glTF 2.0 binary (`.glb`), or set `Source` to a URL or an app file to load it in the background. `LoadState` tells `Loading`, `Ready` or `Failed` (`LoadStateChanged`, `Error`); show your own message on `Failed`. Controls showing the same model share one copy.
 - **Animations:** `Animation` plays in a loop; `PlayOnce` plays and returns to the loop, `Hold` stays on the last frame, `PlayLayer` plays on top of the loop. `Speed`, `CrossfadeMs`, `IsPlaying`, `AnimationEnded`.
@@ -91,16 +93,16 @@ new SkiaScene3D
 }
 .Model("slime", slimeGlb)
 .Assign(out _field)
-.OnTapped3D((me, hit) => me.PlayOnce(hit.Object, "Hit"));
+.OnTapped3D((me, hit) => me.PlayOnce(hit.Object, "CharacterArmature|HitRecieve"));
 
 // from the game loop
 _field.Add("mob7", "slime", x, y, 48);   // name, model, position in points, height
 _field.SetPosition("mob7", x, y);
 _field.SetFacing("mob7", 90);
-_field.Play("mob7", "Walk");
+_field.Play("mob7", "CharacterArmature|Walk");
 ```
 
-Each model loads once, however many objects use it, and the whole layer draws in one pass. Moving an object never re-measures the layout. 100 animated characters run at 60 FPS in desktop Chrome, and at about 79 FPS on a 90 Hz mid-range Android phone in Chrome with .NET WebAssembly.
+Each model loads once, however many objects use it, and the whole layer draws in one pass. Moving an object never re-measures the layout. 100 animated characters run at 60 FPS in desktop Chrome; on a mid-range Android phone in Chrome (BV8800, 90 Hz screen) at about 79 FPS, with the Blazor build running without AOT.
 
 ## Looks
 
