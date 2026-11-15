@@ -74,7 +74,7 @@ public partial class GalleryPage
                             Yaw = -20,
                             Pitch = 15,
                             // a little away from the tight fit: the globe sits in space with room around it
-                            Zoom = 1.4f,
+                            Zoom = 1.15f,
                             AutoRotate = 10,
                             // a swipe keeps the Earth turning, slowing as a scroll does
                             Fling = true,
