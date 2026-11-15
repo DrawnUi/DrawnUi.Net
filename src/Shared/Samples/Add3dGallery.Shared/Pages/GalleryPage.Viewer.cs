@@ -123,7 +123,7 @@ public partial class GalleryPage
                         {
                             new Copyable("Walnut sofa") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
                             new Copyable("Three-seater, carved walnut frame") { FontSize = 13, TextColor = Theme.Muted },
-                            new SkiaLabel(Dollars(Fabrics[0].Price))
+                            new Copyable(Dollars(Fabrics[0].Price))
                                 {
                                     FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Gold, Margin = new Thickness(0, 6, 0, 0),
                                     HorizontalOptions = LayoutOptions.Fill, AccessibilityRole = Aria.RoleText,
@@ -152,7 +152,7 @@ public partial class GalleryPage
                                     Children =
                                     {
                                         Swatch($"{f.Name}, {Dollars(f.Price)}", f.Swatch).Assign(out _swatches[i]).OnTapped(_ => SetFabric(i)),
-                                        new SkiaLabel(f.Name) { FontSize = 12, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center },
+                                        new Copyable(f.Name) { FontSize = 12, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center },
                                     }
                                 }).ToList(),
                             },
@@ -179,7 +179,7 @@ public partial class GalleryPage
         LoadViewer(Source.App);
     });
 
-    static SkiaLabel PanelLabel(string text) => new(text)
+    static SkiaLabel PanelLabel(string text) => new Copyable(text)
     {
         FontSize = 12, FontFamily = Theme.Title, TextColor = Theme.Muted, Margin = new Thickness(0, 8, 0, -6),
         CharacterSpacing = 1.5,

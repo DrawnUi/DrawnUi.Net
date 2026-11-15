@@ -5178,7 +5178,7 @@ namespace DrawnUi.Draw
                         return null; // touch: a long press selects, a drag keeps scrolling
 
                     // only the main button selects: a right click keeps the selection for its context menu
-                    if (args.Event.Pointer is { Button: not MouseButton.Left })
+                    if (args.Event.Pointer is { Button: not AppoMobi.Gestures.MouseButton.Left })
                         return _selectionLength > 0 ? this : null;
 
                     var index = IndexAt(point);
