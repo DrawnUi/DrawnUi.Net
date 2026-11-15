@@ -154,6 +154,7 @@ public class Button3D : SkiaButton
             MainLabel.TextColor = Ink;
         if (_shade != null)
             _shade.Text = _edge.Text = MainLabel?.Text ?? Text;
+        Apply();
     }
 
     /// <param name="width">Points; -1 = as wide as its caption plus padding (a chip).</param>
@@ -250,6 +251,9 @@ public class Button3D : SkiaButton
         _shade.TextColor = Colors.Black.WithAlpha(LightFace ? 0.18f : 0.55f);
         _edge.TextColor = Colors.White.WithAlpha(LightFace ? 0.45f : 0.16f);
         MainLabel.TextColor = Ink;
+        // an outline the app asked for (a swatch button in its color) goes on the face
+        _face.StrokeColor = StrokeColor;
+        _face.StrokeWidth = StrokeWidth;
         Update();
     }
 }
