@@ -5007,6 +5007,9 @@ namespace DrawnUi.Draw
             // Ctrl+C in a page input or a native text field is that field's copy, not this selection's
             if (KeyboardManager.IsKeyForOtherElement)
                 return;
+            // a drag selected several labels: the page copies all of them
+            if (Superview?.OwnsTextSelectionKeys == true)
+                return;
             if (!KeyboardManager.IsControlPressed && !KeyboardManager.IsMetaPressed)
                 return;
             if (key == InputKey.KeyC)
@@ -5148,6 +5151,25 @@ namespace DrawnUi.Draw
             var offset = TranslateInputCoords(apply.ChildOffset, true);
             return new SKPoint(apply.MappedLocation.X + offset.X - DrawingRect.Left + _linesOrigin.X,
                 apply.MappedLocation.Y + offset.Y - DrawingRect.Top + _linesOrigin.Y);
+        }
+
+        /// <summary>Text index under a canvas point (pixels), for a selection that a page drag makes across labels.</summary>
+        internal int TextIndexAtCanvas(SKPoint point)
+        {
+            var r = GetAccessibilityPixelRect();
+            if (r.IsEmpty)
+                return 0;
+            return IndexAt(new SKPoint(point.X - r.Left + _linesOrigin.X, point.Y - r.Top + _linesOrigin.Y));
+        }
+
+        /// <summary>Length of the text a selection counts in (see <see cref="SelectionStart"/>).</summary>
+        internal int SelectableLength
+        {
+            get
+            {
+                EnsureSelectionMap();
+                return _selectionSource.Length;
+            }
         }
 
         void SelectBetween(int index)
