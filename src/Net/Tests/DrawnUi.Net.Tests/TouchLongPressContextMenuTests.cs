@@ -92,4 +92,32 @@ public class TouchLongPressContextMenuTests
         }
         Assert.Equal(2, menus.Count);
     }
+
+    [Fact]
+    public void BrowserMenuFirst_OnText_SelectsTheWordBeforeTheMenu_AndSkipsTheLaterLongPress()
+    {
+        using var host = new HeadlessCanvasHost(420, 200, scale: 1f, background: Colors.Black);
+        string seen = null;
+        var longPresses = 0;
+        var label = new SkiaLabel { Text = "Hello wonderful world", FontSize = 20, WidthRequest = 360, AccessibilityTextSelectable = true };
+        var root = new SkiaLayer { VerticalOptions = LayoutOptions.Fill, Children = { label } };
+        root.OnContextMenu((me, e) =>
+        {
+            seen = label.SelectedText;
+            return true;
+        });
+        root.OnLongPressing(me => longPresses++);
+        host.Canvas.Content = root;
+        host.AdvanceFrames(3);
+
+        var r = label.DrawingRect;
+        var x = r.Left + 95; // inside "wonderful" (about 55 to 145 px at 20 pt)
+        var y = r.MidY;
+        Send(host, TouchActionResult.Down, Touch(TouchActionType.Pressed, x, y));
+        Send(host, TouchActionResult.ContextMenu, Touch(TouchActionType.ContextMenu, x, y)); // Android Chrome, ~0.5 s
+        Assert.Equal("wonderful", seen);
+        Send(host, TouchActionResult.LongPressing, Touch(TouchActionType.Pressed, x, y)); // the engine's own, later
+        Assert.Equal("wonderful", label.SelectedText);
+        Assert.True(longPresses <= 1);
+    }
 }

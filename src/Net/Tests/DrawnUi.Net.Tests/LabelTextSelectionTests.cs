@@ -273,6 +273,9 @@ public class LabelTextSelectionTests
 
         // a long press outside it selects the word there, as before
         var other = At(label, 2);
+        robot.Device = PointerDeviceType.Touch;
+        robot.PointerDown(other.X, other.Y); // a new press
+        robot.Device = PointerDeviceType.Mouse;
         args = new TouchActionEventArgs(2, TouchActionType.Pressed, other, null, 1f)
         {
             StartingLocation = other,
