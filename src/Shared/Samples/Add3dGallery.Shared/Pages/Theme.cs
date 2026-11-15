@@ -74,8 +74,9 @@ public static class Theme
     /// A text link: the accent color, brighter under the mouse, a link for the keyboard and screen readers; opens the
     /// address in the browser.
     /// </summary>
-    public static SkiaLabel Link(string text, string url) => new SkiaLabel(text)
+    public static SkiaLabel Link(string text, string url) => new Copyable(text)
         {
+            Url = url,
             FontSize = 14,
             FontFamily = Title,
             TextColor = LinkColor,
@@ -84,7 +85,12 @@ public static class Theme
             AccessibilityHint = url,
         }
         .OnHovered((me, on) => me.TextColor = on ? Ink : LinkColor)
-        .OnTapped(_ => Super.OpenLink(url));
+        // the main button opens it; a right click is for its menu (Copy Link)
+        .OnTapped((me, e) =>
+        {
+            if (e.Parameters?.Event?.Pointer is not { Button: not AppoMobi.Gestures.MouseButton.Left })
+                Super.OpenLink(url);
+        });
 
     public static readonly Color LinkColor = Color.FromRgb(255, 208, 110);
 
@@ -361,16 +367,31 @@ public class Copyable : SkiaLabel
         AccessibilityTextSelectable = true;
         this.OnContextMenu((me, e) =>
         {
-            // nothing selected: the right click is not for us
-            if (string.IsNullOrEmpty(me.SelectedText) || me.Superview == null)
+            // nothing selected and not a link: the right click is not for us
+            var selected = !string.IsNullOrEmpty(me.SelectedText);
+            if ((!selected && string.IsNullOrEmpty(me.Url)) || me.Superview == null)
                 return false;
             me.Superview.ClosePopupWindow(_menu);
-            _menu = me.Superview.OpenPopupWindow(Menu(me), e.Location);
+            _menu = me.Superview.OpenPopupWindow(Menu(me, selected), e.Location);
             return true;
         });
     }
 
-    static SkiaControl Menu(Copyable label) => new SkiaShape
+    /// <summary>A link's address: its menu offers Copy Link.</summary>
+    public string Url { get; set; }
+
+    static SkiaControl Menu(Copyable label, bool selected)
+    {
+        var items = new List<SkiaControl>();
+        if (selected)
+            items.Add(Item("Copy", () => label.CopySelection()));
+        if (!string.IsNullOrEmpty(label.Url))
+            items.Add(Item("Copy Link", () => Super.SetClipboardText?.Invoke(label.Url)));
+        items.Add(Item("Cancel", label.ClearSelection));
+        return Panel(items);
+    }
+
+    static SkiaControl Panel(List<SkiaControl> items) => new SkiaShape
     {
         CornerRadius = 10,
         BackgroundColor = Theme.Card,
@@ -386,11 +407,7 @@ public class Copyable : SkiaLabel
                 Spacing = 0,
                 AccessibilityRole = Aria.RoleMenu,
                 AccessibilityLabel = "Text",
-                Children =
-                {
-                    Item("Copy", () => label.CopySelection()),
-                    Item("Cancel", label.ClearSelection),
-                }
+                Children = items,
             }
         }
     };

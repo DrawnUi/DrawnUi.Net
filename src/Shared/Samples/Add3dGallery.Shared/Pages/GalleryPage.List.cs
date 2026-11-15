@@ -150,9 +150,9 @@ public partial class GalleryPage
                         VerticalOptions = LayoutOptions.Center,
                         Children =
                         {
-                            new SkiaLabel(name) { FontSize = 15, TextColor = Theme.Ink },
-                            new SkiaLabel(large ? $"{piece.Detail} · large" : piece.Detail) { FontSize = 12, TextColor = Theme.Muted },
-                            new SkiaLabel(Dollars(price)) { FontSize = 14, TextColor = Theme.Gold },
+                            new Copyable(name) { FontSize = 15, TextColor = Theme.Ink },
+                            new Copyable(large ? $"{piece.Detail} · large" : piece.Detail) { FontSize = 12, TextColor = Theme.Muted },
+                            new Copyable(Dollars(price)) { FontSize = 14, TextColor = Theme.Gold },
                         }
                     },
                     new Button3D("+ Add", Theme.Quiet, 120)
