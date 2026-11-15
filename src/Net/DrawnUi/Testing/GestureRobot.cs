@@ -211,6 +211,14 @@ public sealed class GestureRobot
         Send(TouchActionType.Wheel, args, TouchActionResult.Wheel, frameMs);
     }
 
+    /// <summary>A mouse moving over the given point with no button down (hover), as desktop heads send it.</summary>
+    public void Hover(double x, double y, double frameMs = 16.0)
+    {
+        var px = ToPixels(x, y);
+        var args = MakeArgs(0, TouchActionType.Pointer, px, px);
+        Send(TouchActionType.Pointer, args, TouchActionResult.Pointer, frameMs);
+    }
+
     private TouchActionEventArgs _heldDown;
     private TouchActionEventArgs _heldPrev;
     private PointF _heldPoint;
