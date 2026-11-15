@@ -163,7 +163,34 @@ public partial class SkiaImageManager : IDisposable
             Console.WriteLine(message);
     }
 
-    public void CancelAll() { }
+    static int _cancelAllGeneration;
+
+    /// <summary>
+    /// Cancels the network loads still waiting for a free slot, as on MAUI: their callers' token sources are cancelled
+    /// (a SkiaImage sees a cancel, not a failure). Loads already running finish.
+    /// </summary>
+    public void CancelAll()
+    {
+        Interlocked.Increment(ref _cancelAllGeneration);
+        NetworkQueue.CancelWaiting();
+    }
+
+    async Task<SKBitmap> CancelledByCancelAll(Task<SKBitmap> load, CancellationTokenSource token)
+    {
+        var generation = Volatile.Read(ref _cancelAllGeneration);
+        SKBitmap bitmap = null;
+        try
+        {
+            bitmap = await load;
+        }
+        catch (OperationCanceledException) when (generation != Volatile.Read(ref _cancelAllGeneration))
+        {
+        }
+
+        if (bitmap == null && generation != Volatile.Read(ref _cancelAllGeneration))
+            token?.Cancel();
+        return bitmap;
+    }
 
     public void RegisterImage(string sourceUrl)
     {
@@ -205,10 +232,10 @@ public partial class SkiaImageManager : IDisposable
                 return Task.FromResult(cached);
 
             var task = _inFlight.GetOrAdd(cacheKey, _ => LoadAndCacheAsync(source, cacheKey, priority, token.Token));
-            return AwaitTrackedLoadAsync(cacheKey, task, token.Token);
+            return CancelledByCancelAll(AwaitTrackedLoadAsync(cacheKey, task, token.Token), token);
         }
 
-        return LoadWithPriorityAsync(source, priority, token.Token);
+        return CancelledByCancelAll(LoadWithPriorityAsync(source, priority, token.Token), token);
     }
 
     private static async Task<SKBitmap> LoadWithPriorityAsync(ImageSource source, LoadPriority priority, CancellationToken cancel)
@@ -498,6 +525,7 @@ public partial class SkiaImageManager : IDisposable
         if (!EnableHttpRetry)
             return await LoadImageFromInternetAsyncSingle(uriSource.Uri, cancel);
 
+        var generation = Volatile.Read(ref _cancelAllGeneration);
         for (var attempt = 0; attempt <= HttpRetryMaxAttempts; attempt++)
         {
             try
@@ -505,6 +533,8 @@ public partial class SkiaImageManager : IDisposable
                 var bitmap = await LoadImageFromInternetAsyncSingle(uriSource.Uri, cancel);
                 if (bitmap != null)
                     return bitmap;
+                if (generation != Volatile.Read(ref _cancelAllGeneration))
+                    return null; // cancelled by CancelAll: no retry
                 if (attempt < HttpRetryMaxAttempts)
                     await Task.Delay((int)Math.Pow(2, attempt) * 100, cancel);
             }

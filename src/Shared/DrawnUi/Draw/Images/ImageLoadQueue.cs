@@ -96,6 +96,22 @@ public sealed class ImageLoadQueue
     }
 
     /// <summary>
+    /// Cancels every wait still in line; loads already holding a slot go on.
+    /// </summary>
+    public void CancelWaiting()
+    {
+        List<TaskCompletionSource<bool>> waiting;
+        lock (_lock)
+        {
+            waiting = _waiting.Select(x => x.Signal).ToList();
+            _waiting.Clear();
+        }
+
+        foreach (var signal in waiting)
+            signal.TrySetCanceled();
+    }
+
+    /// <summary>
     /// Frees the slot taken by a completed <see cref="WaitAsync"/> and hands it to the next waiter.
     /// </summary>
     public void Release()

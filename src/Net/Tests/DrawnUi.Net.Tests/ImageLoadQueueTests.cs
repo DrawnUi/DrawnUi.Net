@@ -47,6 +47,74 @@ public class ImageLoadQueueTests
         Assert.Equal(0, queue.QueuedCount);
     }
 
+    /// <summary>
+    /// CancelAll cancels the network loads still waiting for a slot, as on MAUI: their callers see a cancel (their
+    /// token source is cancelled, so SkiaImage raises no Error); a load already running finishes.
+    /// </summary>
+    [Fact]
+    public async Task CancelAll_CancelsWaitingLoads_RunningOneFinishes()
+    {
+        var port = Random.Shared.Next(41000, 49000);
+        using var server = new HttpListener();
+        server.Prefixes.Add($"http://localhost:{port}/");
+        server.Start();
+        var png = SkiaPng();
+        _ = Task.Run(async () =>
+        {
+            while (server.IsListening)
+            {
+                HttpListenerContext ctx;
+                try { ctx = await server.GetContextAsync(); }
+                catch { return; }
+                _ = Task.Run(async () =>
+                {
+                    await Task.Delay(300);
+                    ctx.Response.ContentType = "image/png";
+                    await ctx.Response.OutputStream.WriteAsync(png);
+                    ctx.Response.Close();
+                });
+            }
+        });
+
+        var manager = SkiaImageManager.Instance;
+        var previous = SkiaImageManager.MaxParallelLoads;
+        SkiaImageManager.MaxParallelLoads = 1;
+        var id = Guid.NewGuid().ToString("N");
+        var urls = Enumerable.Range(0, 3).Select(i => $"http://localhost:{port}/cancel-{id}.png?n={i}").ToList();
+        try
+        {
+            var tokens = urls.Select(_ => new CancellationTokenSource()).ToList();
+            var loads = new List<Task<SKBitmap>>();
+            for (var i = 0; i < urls.Count; i++)
+            {
+                loads.Add(manager.LoadImageManagedAsync(new UriImageSource { Uri = new Uri(urls[i]) }, tokens[i]));
+                for (var wait = 0; wait < 100 && manager.RunningCount + manager.QueuedCount <= i; wait++)
+                    await Task.Delay(5);
+            }
+
+            manager.CancelAll();
+
+            var running = await loads[0];
+            Assert.NotNull(running);
+            Assert.False(tokens[0].IsCancellationRequested);
+            for (var i = 1; i < loads.Count; i++)
+            {
+                SKBitmap waiting = null;
+                try { waiting = await loads[i]; }
+                catch (OperationCanceledException) { }
+                Assert.Null(waiting);
+                Assert.True(tokens[i].IsCancellationRequested, $"load {i} was not cancelled");
+            }
+        }
+        finally
+        {
+            SkiaImageManager.MaxParallelLoads = previous;
+            foreach (var url in urls)
+                manager.RemoveFromCache(url);
+            server.Stop();
+        }
+    }
+
     [Fact]
     public async Task PreloadImages_NetworkLoadsRunMaxParallelAtOnce()
     {
