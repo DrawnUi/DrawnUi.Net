@@ -186,6 +186,80 @@ namespace DrawnUi.Views
             ExecuteBeforeDraw.Enqueue(key, action);
         }
 
+        bool _pressMenuRaised, _pressMenuHandled;
+
+        /// <summary>
+        /// Heads that process a gesture at once (web, desktop): a touch long press opens one context menu, whether the
+        /// browser raised one for it (Android Chrome) or not (iOS Safari). Call before processing: true = this context
+        /// menu is a repeat for the same press, skip it (args.Handled is set as the first one ended).
+        /// </summary>
+        protected bool SkipRepeatedTouchContextMenu(AppoMobi.Gestures.TouchActionResult action, AppoMobi.Gestures.TouchActionEventArgs args)
+        {
+            if (action == AppoMobi.Gestures.TouchActionResult.Down)
+            {
+                _pressMenuRaised = false;
+                return false;
+            }
+            if (action == AppoMobi.Gestures.TouchActionResult.ContextMenu && _pressMenuRaised)
+            {
+                args.Handled = _pressMenuHandled;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Call after processing a gesture on a head that processes at once: notes a touch context menu (and steps the
+        /// drawn Copy button aside when the app took it); after a touch long press with no context menu yet, raises it
+        /// through <paramref name="raise"/> (drawnui-cross 6cb).
+        /// </summary>
+        protected void AfterTouchGesture(AppoMobi.Gestures.TouchActionResult action, AppoMobi.Gestures.TouchActionEventArgs args,
+            Action<AppoMobi.Gestures.TouchActionEventArgs> raise)
+        {
+            var touch = args.Pointer is { DeviceType: AppoMobi.Gestures.PointerDeviceType.Touch or AppoMobi.Gestures.PointerDeviceType.Pen };
+            if (!touch)
+                return;
+            if (action == AppoMobi.Gestures.TouchActionResult.ContextMenu)
+            {
+                _pressMenuRaised = true;
+                _pressMenuHandled = args.Handled;
+                if (args.Handled && FocusedChild is SkiaLabel label)
+                    label.HideCopyButton();
+            }
+            else if (action == AppoMobi.Gestures.TouchActionResult.LongPressing && !_pressMenuRaised)
+            {
+                raise(TouchContextMenuArgs(args));
+            }
+        }
+
+        /// <summary>
+        /// The context-menu event a touch long press raises, at the press, carrying its pointer kind (Source = Touch).
+        /// </summary>
+        protected AppoMobi.Gestures.TouchActionEventArgs TouchContextMenuArgs(AppoMobi.Gestures.TouchActionEventArgs longPress)
+        {
+            return new AppoMobi.Gestures.TouchActionEventArgs(longPress.Id, AppoMobi.Gestures.TouchActionType.ContextMenu,
+                longPress.Location, null, (float)RenderingScale)
+            {
+                IsInsideView = true,
+                StartingLocation = longPress.StartingLocation,
+                Distance = new AppoMobi.Gestures.TouchActionEventArgs.DistanceInfo(),
+                Pointer = new AppoMobi.Gestures.PointerData { DeviceType = longPress.Pointer?.DeviceType ?? AppoMobi.Gestures.PointerDeviceType.Touch },
+            };
+        }
+
+        /// <summary>
+        /// Call after queueing a touch context menu (a long press): when the app's handler took it, the drawn Copy button
+        /// of a touch text selection steps aside for the app's own menu; the selection stays (drawnui-cross 6cb).
+        /// </summary>
+        protected void AfterTouchContextMenu(AppoMobi.Gestures.TouchActionEventArgs menuArgs)
+        {
+            PostponeExecutionBeforeDraw(() =>
+            {
+                if (menuArgs.Handled && FocusedChild is SkiaLabel label)
+                    label.HideCopyButton();
+            }, LongKeyGenerator.Next());
+        }
+
         /// <summary>
         ///Postpone the action to be executed after the current frame is drawn. Exception-safe.
         /// </summary>

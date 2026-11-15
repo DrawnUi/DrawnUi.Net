@@ -954,6 +954,18 @@ public class Canvas : DrawnView, IGestureListener
             }
         }, LongKeyGenerator.Next());
 
+#if ANDROID || IOS
+        // a long press on a phone or tablet opens the context menu, right after the long press itself, as press-and-hold
+        // does on Windows touch (drawnui-cross 6cb)
+        if (touchAction == TouchActionResult.LongPressing && args1.Pointer?.DeviceType != PointerDeviceType.Mouse)
+        {
+            var menuArgs = TouchContextMenuArgs(args1);
+            OnGestureEvent(TouchActionType.ContextMenu, menuArgs, TouchActionResult.ContextMenu);
+            AfterTouchContextMenu(menuArgs);
+            return;
+        }
+#endif
+
         Repaint();
     }
 

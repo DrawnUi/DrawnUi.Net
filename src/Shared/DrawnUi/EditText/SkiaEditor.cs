@@ -880,6 +880,20 @@ namespace DrawnUi.Draw
 
             case TouchActionResult.Down:
 
+            // only the main button moves the caret or the selection: a right click keeps them for its context menu
+            if (args.Event.Pointer is { Button: not AppoMobi.Gestures.MouseButton.Left })
+            {
+                if (!IsFocused)
+                {
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        IsFocused = true;
+                        Superview.FocusedChild = this;
+                    });
+                }
+                return this;
+            }
+
             var thisOffset = TranslateInputCoords(apply.ChildOffset);
             var x = args.Event.Location.X + thisOffset.X;
             var y = args.Event.Location.Y + thisOffset.Y;

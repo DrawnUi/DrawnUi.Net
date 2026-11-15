@@ -93,6 +93,11 @@ Please star ⭐ if you like it!
   * Much lower memory for images: every image that shows the same file or URL now shares one decoded copy instead of holding its own. 69 images of one photo take about 7 MB instead of over 900 MB. Code that disposes or edits bitmaps it gets from SkiaImageManager sets `SkiaImageManager.ReuseBitmaps = false`.
   * Image memory stays within a budget: `SkiaImageManager.CacheBudgetMb` (128 MB by default) caps the decoded pictures the cache keeps; pictures on screen always stay.
   * Android, iOS, Mac, Windows: pages of a closed window are freed, and their canvases release their GPU memory.
+  * The mouse wheel keeps scrolling the page while a text field is focused.
+  * A touchpad pinch over a zoomable control zooms it instead of scrolling the page.
+  * A long press on a phone or tablet opens the app's context menu (OnContextMenu), on every platform, Android and iPhone apps included.
+  * A right click on selected text, in a label or a text field, keeps the selection, so its context menu sees it.
+  * A long press on selected text keeps the selection for that menu.
   * WPF: GPU canvases draw at full frame rate on every device, including Windows on ARM.
   * Web (DrawnUi.Web): a page at rest draws nothing, saving battery and CPU.
   * Shader effects that paint only part of their control now sample the control where it really is, for example a transition clipped to its photo.

@@ -417,6 +417,8 @@ namespace DrawnUi.Views
             }
 
             OnGestureEvent(AppoMobi.Gestures.TouchActionType.ContextMenu, args, AppoMobi.Gestures.TouchActionResult.ContextMenu);
+            if (args.Pointer is { DeviceType: not AppoMobi.Gestures.PointerDeviceType.Mouse })
+                AfterTouchContextMenu(args); // press-and-hold: the app's own menu takes the place of the drawn Copy button
             if (args.Handled)
                 e.Handled = true;
         }

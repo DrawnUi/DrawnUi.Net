@@ -314,6 +314,10 @@ public partial class Canvas : IGestureListener
             _gestureEffect.WIllLock = ShareLockState.Initial;
         }
 
+        // one context menu per touch long press (drawnui-cross 6cb)
+        if (SkipRepeatedTouchContextMenu(touchAction, args1))
+            return;
+
         var args = SkiaGesturesParameters.Create(touchAction, args1, RenderingScale);
 
         // Blazor interop needs the lock state updated before JS decides whether
@@ -333,6 +337,8 @@ public partial class Canvas : IGestureListener
         {
             args1.Handled = args.Event.Handled;
         }
+
+        AfterTouchGesture(touchAction, args1, menu => OnGestureEvent(TouchActionType.ContextMenu, menu, TouchActionResult.ContextMenu));
 
         Repaint();
 
