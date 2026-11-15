@@ -209,6 +209,8 @@ namespace DrawnUi.Views
             public int Step;
             public long Deadline;
             public bool ScrollIssued;
+            /// <summary>Focus the item's last interactive node, not its first (Shift+Tab into it).</summary>
+            public bool Last;
         }
 
         private GroupFocusRequest? _groupRequest;
@@ -793,6 +795,7 @@ namespace DrawnUi.Views
                     Scroll = FindScroll(list),
                     Index = target,
                     Step = forward ? 1 : -1,
+                    Last = !forward,
                     Deadline = Environment.TickCount64 + 3000,
                 };
             }
@@ -1066,6 +1069,19 @@ namespace DrawnUi.Views
             return null;
         }
 
+        /// <summary>The item's last interactive node in tree order (its deepest last one), else the item itself when it is one.</summary>
+        private static ISkiaAccessibilityNode? FindLastTarget(SkiaControl item)
+        {
+            for (var i = item.Views.Count - 1; i >= 0; i--)
+            {
+                var found = FindLastTarget(item.Views[i]);
+                if (found != null)
+                    return found;
+            }
+
+            return item.IsAccessibilityElement && item.AccessibilityCanInteract ? item : null;
+        }
+
         private void ScrollToItem(GroupFocusRequest request)
         {
             // ScrollToIndex speaks item indices of the scroll's own content (global ones for a windowed source)
@@ -1099,7 +1115,7 @@ namespace DrawnUi.Views
             var cell = CellAt(request.Index);
             while (cell != null && (Hidden(cell) || cell.WasInLastFrame()))
             {
-                var node = Hidden(cell) ? null : FindTarget(cell);
+                var node = Hidden(cell) ? null : request.Last ? FindLastTarget(cell) : FindTarget(cell);
                 if (node != null)
                 {
                     ClearGroupRequest(request);
