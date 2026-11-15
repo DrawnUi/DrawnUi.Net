@@ -5,5 +5,5 @@ public class App : Application
 {
     /// <inheritdoc/>
     protected override Window CreateWindow(IActivationState activationState)
-        => new(new MainPage()) { Title = "DrawnUI 3D" };
+        => new(new MainPage()) { Title = "DrawnUI 3D Demo" };
 }

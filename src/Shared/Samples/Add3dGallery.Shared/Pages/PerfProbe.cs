@@ -40,6 +40,36 @@ public static class PerfProbe
         Tasks.StartDelayed(TimeSpan.FromMilliseconds(1500), Attach);
     }
 
+    /// <summary>
+    /// <c>?perf=tour</c>: the page moves down one screen every 3 s, then shows the Boss tab, so a capture of each step
+    /// shows every section as a visitor sees it (no measurement). Each step is announced in the console.
+    /// </summary>
+    static void Tour(int step)
+    {
+        var at = _page.ProbeTourStep(step);
+        if (at == "end")
+        {
+            // the last stop: the Boss fight tab, then back to the gallery
+            IDrawnBase parent = _page.Parent;
+            while (parent is SkiaControl control && parent is not GalleryRoot)
+                parent = control.Parent;
+            if (parent is GalleryRoot root)
+            {
+                root.ProbeShow(1);
+                Console.WriteLine($"[tour] step {step} boss");
+                Tasks.StartDelayed(TimeSpan.FromSeconds(3), () =>
+                {
+                    root.ProbeShow(0);
+                    Console.WriteLine($"[tour] step {step + 1} end");
+                });
+                return;
+            }
+        }
+        Console.WriteLine($"[tour] step {step} {at}");
+        if (at != "end")
+            Tasks.StartDelayed(TimeSpan.FromSeconds(3), () => Tour(step + 1));
+    }
+
     static void Attach()
     {
         if (_page.Superview is not DrawnView canvas)
@@ -51,6 +81,11 @@ public static class PerfProbe
         if (_mode == "globetaps")
         {
             GlobeTaps();
+            return;
+        }
+        if (_mode == "tour")
+        {
+            Tour(0);
             return;
         }
         if (_mode is "mobs" or "mobsdrawn" or "mobs0")

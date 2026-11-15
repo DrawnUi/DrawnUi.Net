@@ -447,6 +447,20 @@ public partial class GalleryPage : DrawnGame
     /// For <see cref="PerfProbe"/>: puts the page (or, with <paramref name="list"/>, the 3D product list) at
     /// <paramref name="travel"/> points of steady scrolling, going down and back up between the ends; -1 = the end.
     /// </summary>
+    /// <summary>For <see cref="PerfProbe"/> (tour): shows step <paramref name="step"/> of the page, one screen per step, and
+    /// says where it is; "end" after the last.</summary>
+    internal string ProbeTourStep(int step)
+    {
+        var range = (float)(_scroll.ContentSize.Units.Height - _scroll.Viewport.Units.Height);
+        var screen = (float)_scroll.Viewport.Units.Height * 0.9f;
+        var y = step * screen;
+        if (y > range + screen)
+            return "end";
+        y = MathF.Min(y, range);
+        _scroll.ScrollTo(0, -y, 0, true);
+        return $"y {y:0} of {range:0}";
+    }
+
     internal void ProbeScroll(bool list, float travel)
     {
         var scroll = list ? _listScroll : _scroll;

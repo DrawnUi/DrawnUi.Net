@@ -46,7 +46,7 @@ var canvas = new Canvas
 var nativeSettings = new NativeWindowSettings
 {
     ClientSize = new Vector2i(980, 820),
-    Title = "DrawnUI 3D for OpenTK",
+    Title = "DrawnUI 3D Demo",
     API = ContextAPI.OpenGL,
     Profile = ContextProfile.Core,
     // Windows has GL 4.6; Mesa (Linux) gives 3.3 and macOS 4.1, which also needs a forward-compatible core context

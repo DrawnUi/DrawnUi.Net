@@ -136,6 +136,9 @@ public class GalleryRoot : SkiaLayer
         _header.Padding = oneLine ? new Thickness(24, 0) : new Thickness(16, 12);
     }
 
+    /// <summary>For <see cref="PerfProbe"/> (tour): shows screen <paramref name="index"/> (0 = gallery, 1 = boss fight).</summary>
+    internal void ProbeShow(int index) => Show(index);
+
     /// <summary>Shows one screen; the hidden one asks for no frames.</summary>
     void Show(int index)
     {

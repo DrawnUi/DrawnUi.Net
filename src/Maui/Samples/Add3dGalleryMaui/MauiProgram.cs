@@ -9,6 +9,7 @@ global using DrawnUi.Views;
 global using SkiaSharp;
 // DrawnUi and MAUI both declare these; the app means the drawn ones.
 global using FontWeight = DrawnUi.Draw.FontWeight;
+using Microsoft.Maui.LifecycleEvents;
 
 namespace Add3dGallery;
 
@@ -32,6 +33,12 @@ public static class MauiProgram
             UseDesktopKeyboard = true,
             DesktopWindow = new() { Width = 1280, Height = 860 },
         });
+
+#if WINDOWS
+        // the app icon on the window's title bar and the taskbar (an unpackaged app shows none by itself)
+        builder.ConfigureLifecycleEvents(events => events.AddWindows(windows => windows.OnWindowCreated(window =>
+            window.AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "appicon.ico")))));
+#endif
 
         return builder.Build();
     }
