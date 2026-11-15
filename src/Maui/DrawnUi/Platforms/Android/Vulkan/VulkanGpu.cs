@@ -191,14 +191,18 @@ internal sealed unsafe class VulkanGpu : IDisposable
     private static readonly System.Collections.Concurrent.ConcurrentBag<VulkanGpu> Parked = new();
 
     /// <summary>
-    /// The window is gone: its device and Skia context are kept for the next window instead of destroyed. Skia
-    /// objects made with them can outlive the window (a control's GPU cache, an image a library imported) and are freed
-    /// later, also by the Finalizer; with the device destroyed that freeing crashed in the driver. Unused GPU memory is
-    /// released now. Call on the thread that drew with it, after the window's own Vulkan objects are destroyed.
+    /// The window is gone: its Skia context is abandoned with all its GPU memory released now, and the device is kept
+    /// for the next window instead of destroyed. Skia objects made with the context can outlive the window (a control's
+    /// GPU cache, an image a library imported, a page that is never collected) and are freed later, also by the
+    /// Finalizer: through the abandoned context that makes no Vulkan call and frees nothing more on the GPU, while the
+    /// device they were made on still exists (with it destroyed that freeing crashed in the driver). Call on the thread
+    /// that drew with it, after the window's own Vulkan objects are destroyed and the device is idle.
     /// </summary>
     public void Park()
     {
-        Context?.PurgeUnlockedResources(false);
+        Context?.AbandonContext(true);
+        Context?.Dispose();
+        Context = null;
         Parked.Add(this);
     }
 
@@ -207,8 +211,14 @@ internal sealed unsafe class VulkanGpu : IDisposable
         if (!IsAvailable)
             return null;
 
-        if (Parked.TryTake(out var parked))
-            return parked;
+        // a kept device gets a new Skia context: the old one was abandoned with its window
+        while (Parked.TryTake(out var parked))
+        {
+            parked.Context = GRContext.CreateVulkan(parked._backend);
+            if (parked.Context != null)
+                return parked;
+            parked.Dispose();
+        }
 
         var gpu = new VulkanGpu();
         try
