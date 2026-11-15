@@ -29,7 +29,7 @@ public partial class GalleryPage : DrawnGame
     Scenery _scenery;
     Button3D _chestButton;
     readonly Button3D[] _mobButtons = new Button3D[MobCounts.Length];
-    readonly Button3D[] _lookButtons = new Button3D[2];
+    Switch3D _drawnSwitch;
     SkiaControl _keyboardSpacer;
 
     /// <summary>
@@ -380,32 +380,22 @@ public partial class GalleryPage : DrawnGame
                 Children = MobCounts.Select((n, i) => (SkiaControl)new Button3D($"{n} mobs", Theme.Quiet, 110) { AccessibilityRole = Aria.RoleRadio }
                         .Assign(out _mobButtons[i])
                         .OnTapped(_ => SetMobs(n)))
-                    // How they look, switched in place: a segmented 3D | Drawn on a plate (as DrawnUI for Rust).
-                    .Append(new SkiaShape
+                    // How they look, switched in place: lit 3D, or drawn as a cartoon.
+                    .Append(new SkiaRow
                     {
-                        CornerRadius = 12,
-                        BackgroundColor = Theme.Stage,
-                        Padding = new Thickness(3),
-                        BevelType = BevelType.Emboss,
-                        Bevel = Theme.CardBevel(),
+                        Spacing = 10,
                         Margin = new Thickness(8, 0, 0, 0),
-                        AccessibilityRole = Aria.RoleRadioGroup,
-                        AccessibilityLabel = "Look",
+                        VerticalOptions = LayoutOptions.Center,
                         Children =
                         {
-                            new SkiaRow
-                            {
-                                Spacing = 3,
-                                Children =
+                            new SkiaLabel("Drawn") { FontSize = 14, FontFamily = Theme.Title, TextColor = Theme.Ink, VerticalOptions = LayoutOptions.Center },
+                            new Switch3D { VerticalOptions = LayoutOptions.Center, AccessibilityLabel = "Drawn look" }
+                                .Assign(out _drawnSwitch)
+                                .ObserveSelf((me, prop) =>
                                 {
-                                    new Button3D("3D", Theme.Quiet, 90) { AccessibilityRole = Aria.RoleRadio }
-                                        .Assign(out _lookButtons[0])
-                                        .OnTapped(_ => SetDrawnMobs(false)),
-                                    new Button3D("Drawn", Theme.Quiet, 90) { AccessibilityRole = Aria.RoleRadio }
-                                        .Assign(out _lookButtons[1])
-                                        .OnTapped(_ => SetDrawnMobs(true)),
-                                }
-                            },
+                                    if (prop == nameof(SkiaToggle.IsToggled))
+                                        SetDrawnMobs(me.IsToggled);
+                                }),
                         }
                     })
                     .ToList(),
@@ -535,12 +525,7 @@ public partial class GalleryPage : DrawnGame
             _mobButtons[i].Fill = on ? Theme.Accent : Theme.Quiet;
             _mobButtons[i].AccessibilityIsPressed = on;
         }
-        for (var i = 0; i < _lookButtons.Length; i++)
-        {
-            var on = (i == 1) == _drawnMobs;
-            _lookButtons[i].Fill = on ? Theme.Accent : Theme.Quiet;
-            _lookButtons[i].AccessibilityIsPressed = on;
-        }
+        _drawnSwitch.IsToggled = _drawnMobs;
     }
 
     /// <summary>The drawn look of the mobs: toon shading and the gallery's ink outline (same in DrawnUI for Rust).</summary>

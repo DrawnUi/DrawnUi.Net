@@ -247,3 +247,55 @@ public class Button3D : SkiaButton
         Update();
     }
 }
+
+/// <summary>
+/// The app's switch, in 3D like <see cref="Button3D"/>: a track sunk into the card (gold when on) and a raised knob lit
+/// from above, with a soft shadow, that slides across it.
+/// </summary>
+public class Switch3D : SkiaSwitch
+{
+    public Switch3D()
+    {
+        ColorFrameOn = Theme.Accent;
+        ColorFrameOff = Theme.Darker(Theme.Quiet, 0.35f);
+        AccessibilityRole = Aria.RoleSwitch;
+    }
+
+    protected override void CreateDefaultStyleContent()
+    {
+        SetDefaultContentSize(54, 30);
+        Children = new List<SkiaControl>
+        {
+            new SkiaShape
+            {
+                Tag = "Frame",
+                CornerRadius = 15,
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                // sunk into the card: shaded top edge, lit bottom edge
+                BevelType = BevelType.Emboss,
+                Bevel = new SkiaBevel { Depth = 2, LightColor = Colors.White, ShadowColor = Colors.Black, Opacity = 0.4 },
+            },
+            new SkiaShape
+            {
+                Tag = "Thumb",
+                Type = ShapeType.Circle,
+                Margin = 3,
+                LockRatio = -1,
+                HorizontalOptions = LayoutOptions.Start,
+                VerticalOptions = LayoutOptions.Fill,
+                FillGradient = new SkiaGradient
+                {
+                    StartXRatio = 0, StartYRatio = 0, EndXRatio = 0, EndYRatio = 1,
+                    Colors = new List<Color> { Colors.White, Color.FromRgb(196, 198, 212) },
+                },
+                BevelType = BevelType.Bevel,
+                Bevel = new SkiaBevel { Depth = 1.2, LightColor = Colors.White, ShadowColor = Colors.Black, Opacity = 0.35 },
+                Shadows = new List<SkiaShadow> { new() { Blur = 4, Y = 2, Opacity = 0.5, Color = Colors.Black } },
+            },
+        };
+        new SkiaHotspot { TransformView = Thumb }
+            .Adapt(me => me.Tapped += (s, e) => IsToggled = !IsToggled)
+            .AssignParent(this);
+    }
+}
