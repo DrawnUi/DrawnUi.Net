@@ -1201,8 +1201,9 @@ public partial class SkiaControl
 
             // A recycled cell rebound to another item (PixelsForeign): both its caches still hold the previous
             // item's picture, never shown at the new slot. The placeholder shows until its own bake lands (that
-            // clears PixelsForeign), and a bake is queued if none runs.
-            if (PixelsForeign && UsesCacheDoubleBuffering)
+            // clears PixelsForeign), and a bake is queued if none runs. A cell that asked to keep its pixels
+            // across a rebind (SkiaDynamicDrawnCell.DestroyCacheOnContextChange = false, a chat) keeps them.
+            if (PixelsForeign && UsesCacheDoubleBuffering && !KeepsPixelsAcrossRebind)
             {
                 cache = null;
                 cacheOffscreen = null;
@@ -1464,6 +1465,12 @@ public partial class SkiaControl
     /// Volatile: written by prep worker / render thread, read by the render thread.
     /// </summary>
     internal volatile bool PixelsForeign;
+
+    /// <summary>
+    /// True when the control asked to keep its cached picture when rebound to another context (it then shows the
+    /// old pixels until the new bake lands instead of its placeholder).
+    /// </summary>
+    internal virtual bool KeepsPixelsAcrossRebind => false;
 
     /// <summary>
     /// Atomic measure claim for templated cells: taken (0→1 via Interlocked) by whichever side measures
