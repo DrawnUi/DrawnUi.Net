@@ -16,4 +16,10 @@
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
 
+    <!-- .NET 9 MAUI targets build only on the .NET 10 SDK, where the packages are packed; newer SDKs cannot build
+         them (the .NET 9 workloads are out of support), so a build from source there makes the .NET 10+ targets only -->
+    <PropertyGroup Condition="'$(UseMaui)' == 'true' And '$(TargetFrameworks)' != '' And '$(NETCoreSdkVersion)' != '' And $([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '11.0'))">
+        <TargetFrameworks>$([MSBuild]::Unescape($([System.Text.RegularExpressions.Regex]::Replace('$(TargetFrameworks)', 'net9\.0[^;]*;?', ''))))</TargetFrameworks>
+    </PropertyGroup>
+
 </Project>
