@@ -33,6 +33,8 @@ public partial class GalleryPage
                     CornerRadius = 14,
                     BackgroundColor = Theme.Page,
                     Padding = new Thickness(24),
+                    BevelType = BevelType.Emboss,
+                    Bevel = Theme.CardBevel(),
                     WidthRequest = FormWidth,
                     VerticalOptions = LayoutOptions.Start,
                     // The form beside a mascot that moves every frame: blitted, drawn again when a field changes.

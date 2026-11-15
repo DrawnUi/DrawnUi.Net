@@ -14,7 +14,7 @@ public static class Theme
     public static readonly Color Ink = Color.FromRgb(242, 241, 248);
     public static readonly Color Muted = Color.FromRgb(154, 152, 176);
     public static readonly Color Accent = Color.FromRgb(242, 179, 61);
-    public static readonly Color Quiet = Color.FromRgb(52, 56, 78);
+    public static readonly Color Quiet = Color.FromRgb(70, 76, 106);
     /// <summary>Prices.</summary>
     public static readonly Color Gold = Color.FromRgb(255, 196, 61);
 
@@ -56,6 +56,9 @@ public static class Theme
     /// <summary>A color moved toward white by <paramref name="amount"/> (0..1): the hover lift.</summary>
     public static Color Lighter(Color c, float amount) =>
         Color.FromRgba(c.Red + (1 - c.Red) * amount, c.Green + (1 - c.Green) * amount, c.Blue + (1 - c.Blue) * amount, c.Alpha);
+
+    /// <summary>The edge light of cards (raised) and of the panels sunk into them.</summary>
+    public static SkiaBevel CardBevel() => new() { Depth = 1.5, LightColor = Colors.White, ShadowColor = Colors.Black, Opacity = 0.22 };
 
     public static Color Darker(Color c, float amount) =>
         Color.FromRgba(c.Red * (1 - amount), c.Green * (1 - amount), c.Blue * (1 - amount), c.Alpha);
@@ -235,8 +238,8 @@ public class Button3D : SkiaButton
             Colors = new List<Color> { Theme.Lighter(face, 0.2f), face, Theme.Darker(face, 0.1f) },
             ColorPositions = new List<double> { 0, 0.55, 1 },
         };
-        // clearly darker than the face and than the card under it, whatever the face: a dark face keeps its depth too
-        _side.Color = Theme.Darker(_fill, LightFace ? 0.45f : 0.7f);
+        // the foot: the face's own color, darker; Quiet is light enough for its foot to stand off the card
+        _side.Color = Theme.Darker(_fill, 0.45f);
         // engraved: a dark face takes its light edge below, a light face its shadow above
         _shade.TextColor = Colors.Black.WithAlpha(LightFace ? 0.18f : 0.55f);
         _edge.TextColor = Colors.White.WithAlpha(LightFace ? 0.45f : 0.16f);

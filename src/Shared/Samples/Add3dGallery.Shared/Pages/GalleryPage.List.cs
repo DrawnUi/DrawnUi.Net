@@ -68,6 +68,8 @@ public partial class GalleryPage
                     CornerRadius = 12,
                     UseCache = SkiaCacheType.None,
                     BackgroundColor = Theme.Page,
+                    BevelType = BevelType.Emboss,
+                    Bevel = Theme.CardBevel(),
                     HeightRequest = ListHeight,
                     HorizontalOptions = LayoutOptions.Fill,
                     Children =

@@ -82,6 +82,8 @@ public partial class GalleryPage
                 UseCache = SkiaCacheType.GPU,
                 BackgroundColor = Theme.Stage,
                 WidthRequest = ViewerWidth,
+                BevelType = BevelType.Emboss,
+                Bevel = Theme.CardBevel(),
                 HeightRequest = ViewerHeight,
                 Children =
                 {

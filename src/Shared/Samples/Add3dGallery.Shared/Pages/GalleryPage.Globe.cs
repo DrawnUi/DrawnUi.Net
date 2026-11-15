@@ -65,6 +65,8 @@ public partial class GalleryPage
                 WidthRequest = ViewerWidth,
                 HeightRequest = GlobeHeight,
                 BackgroundColor = Color.FromRgb(8, 10, 22),
+                BevelType = BevelType.Emboss,
+                Bevel = Theme.CardBevel(),
                 Children =
                 {
                     new SkiaModel3D(new Model3D().Part("earth", Mesh3D.Sphere(1), Colors.White))

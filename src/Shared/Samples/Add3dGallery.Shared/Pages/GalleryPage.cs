@@ -186,8 +186,9 @@ public partial class GalleryPage : DrawnGame
         UseCache = SkiaCacheType.None,
         CornerRadius = 16,
         BackgroundColor = Theme.Card,
-        StrokeColor = Theme.Line,
-        StrokeWidth = 1,
+        // raised from the page: lit top edge, shaded bottom edge
+        BevelType = BevelType.Bevel,
+        Bevel = Theme.CardBevel(),
         Padding = new Thickness(16),
         Children = new List<SkiaControl>
         {
@@ -219,6 +220,9 @@ public partial class GalleryPage : DrawnGame
         CornerRadius = 14,
         UseCache = SkiaCacheType.None,
         BackgroundColor = Theme.Stage,
+        // sunk into the card
+        BevelType = BevelType.Emboss,
+        Bevel = Theme.CardBevel(),
         HorizontalOptions = LayoutOptions.Fill,
         Children = { piece },
     };
@@ -284,8 +288,9 @@ public partial class GalleryPage : DrawnGame
         UseCache = still ? SkiaCacheType.GPU : SkiaCacheType.None,
         CornerRadius = 16,
         BackgroundColor = Theme.Card,
-        StrokeColor = Theme.Line,
-        StrokeWidth = 1,
+        // raised from the page: lit top edge, shaded bottom edge
+        BevelType = BevelType.Bevel,
+        Bevel = Theme.CardBevel(),
         Padding = new Thickness(20),
         HorizontalOptions = LayoutOptions.Center,
         WidthRequest = WideWidth + 42,
@@ -381,6 +386,8 @@ public partial class GalleryPage : DrawnGame
                         CornerRadius = 12,
                         BackgroundColor = Theme.Stage,
                         Padding = new Thickness(3),
+                        BevelType = BevelType.Emboss,
+                        Bevel = Theme.CardBevel(),
                         Margin = new Thickness(8, 0, 0, 0),
                         AccessibilityRole = Aria.RoleRadioGroup,
                         AccessibilityLabel = "Look",
