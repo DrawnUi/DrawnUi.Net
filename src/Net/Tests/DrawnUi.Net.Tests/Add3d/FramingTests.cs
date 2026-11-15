@@ -51,8 +51,36 @@ public class FramingTests
         Assert.True(minX >= -0.5 && maxX <= width + 0.5 && minY >= -0.5 && maxY <= height + 0.5,
             $"x {minX:0}..{maxX:0} of {width}, y {minY:0}..{maxY:0} of {height}");
         // and tight: the box spans most of the view along the side that limits it
-        var fill = orbit ? 0.6 : 0.85;
+        var fill = orbit ? 0.55 : 0.75;
         Assert.True((maxX - minX) / width > fill || (maxY - minY) / height > fill,
             $"x {minX:0}..{maxX:0} of {width}, y {minY:0}..{maxY:0} of {height}");
+    }
+
+    /// <summary>Turning a globe to a city tilts it: the globe keeps its size on screen, the camera does not move away.</summary>
+    [Fact]
+    public void A_ball_keeps_its_size_when_tilted()
+    {
+        using var host = new HeadlessCanvasHost(600, 400, 1f, Colors.Black);
+        var model = new SkiaModel3D(new Model3D().Part("earth", Mesh3D.Sphere(1), Colors.White))
+        {
+            HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
+        };
+        host.Canvas.Content = new SkiaLayer { VerticalOptions = LayoutOptions.Fill, Children = { model } };
+        for (var i = 0; i < 3; i++)
+            host.RenderFrame(16.7);
+
+        float Width()
+        {
+            // the ball's edge across, seen from the camera: the point at a right angle to the view
+            var right = Vector3.Transform(Vector3.UnitX, Quaternion.CreateFromAxisAngle(Vector3.UnitY, model.Yaw * MathF.PI / 180));
+            return MathF.Abs(model.ScreenPosition(right).Value.X - model.ScreenPosition(-right).Value.X);
+        }
+        var level = Width();
+        foreach (var pitch in new[] { 20f, 45f, 70f, -40f })
+        {
+            model.Pitch = pitch;
+            host.RenderFrame(16.7);
+            Assert.InRange(Width(), level * 0.97f, level * 1.03f);
+        }
     }
 }

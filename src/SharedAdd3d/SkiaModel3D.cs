@@ -780,7 +780,7 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         {
             _yaw = (_yaw + _flingYaw * delta) % 360;
             if (_flingPitch != 0)
-                _pitch = Math.Clamp(_pitch + _flingPitch * delta, -60, 80);
+                _pitch = Math.Clamp(_pitch + _flingPitch * delta, MinPitch, MaxPitch);
             var keep = MathF.Pow(FlingDeceleration, delta * 1000);
             _flingYaw *= keep;
             _flingPitch *= keep;
@@ -839,8 +839,101 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     }
 
     // a view nobody turns (no drag, no tilt, no auto turn) is fitted exactly as it is seen
-    Matrix4x4 Camera(float width, float height) => _scene.Camera(_yaw, _pitch, _zoom, width / MathF.Max(height, 1), _frameMargin,
-        asSeen: !_orbit && TiltToPointer == 0 && _autoRotate == 0);
+    Matrix4x4 Camera(float width, float height)
+    {
+        var aspect = width / MathF.Max(height, 1);
+        var (min, max) = FrameBox();
+        if (!_orbit && _tilt == 0 && _autoRotate == 0)
+            return _scene.CameraAsSeen(min, max, _yaw, _pitch, _zoom, aspect, _frameMargin);
+
+        // turned by the user: fitted for any yaw at this pitch, by the model's outline (a ball keeps its size at
+        // every tilt); a lean toward the pointer is fitted over its whole range, so hovering never moves the camera
+        var outline = FrameOutline();
+        var axis = _scene.ProfileOf(-1).Axis;
+        var center = new Vector3(axis.X, (min.Y + max.Y) / 2, axis.Y);
+        float from, to;
+        if (_tilt > 0)
+            (from, to) = (_homePitch - _tilt, _homePitch + _tilt);
+        else
+            (from, to) = (_pitch, _pitch);
+        if (aspect != _fitAspect || from != _fitFrom || to != _fitTo || _frameMargin != _fitMargin || _fitOutline != outline)
+        {
+            (_fitAspect, _fitFrom, _fitTo, _fitMargin, _fitOutline) = (aspect, from, to, _frameMargin, outline);
+            _fit = Scene3D.OutlineFit(outline, center.Y, from, to, aspect, _frameMargin);
+        }
+        return Scene3D.CameraAt(center, (max - min).Length() * 0.5f + _frameMargin, _fit * _zoom, _yaw, _pitch, aspect);
+    }
+
+    const float MinPitch = -60, MaxPitch = 80;
+    float _fit, _fitAspect = float.NaN, _fitFrom, _fitTo, _fitMargin;
+    List<Vector2> _fitOutline;
+
+    Scene3D _frameScene;
+    (Vector3 Min, Vector3 Max) _frameBox;
+    List<Vector2> _outline;
+
+    /// <summary>The box the view keeps in frame: the model at rest and through <see cref="FrameAnimations"/>.</summary>
+    (Vector3 Min, Vector3 Max) FrameBox()
+    {
+        Frame();
+        return _frameBox;
+    }
+
+    /// <summary>The outline the view keeps in frame (reach from the vertical axis, height), worked out once.</summary>
+    List<Vector2> FrameOutline()
+    {
+        Frame();
+        if (_outline == null)
+        {
+            _outline = new List<Vector2>();
+            _scene.ProfileOf(-1).Points(_outline);
+            for (var a = 0; a < _scene.Animations.Length; a++)
+                if (_frameAnimations == null || _frameAnimations.Contains(_scene.Animations[a].Name))
+                    _scene.ProfileOf(a).Points(_outline);
+        }
+        return _outline;
+    }
+
+    void Frame()
+    {
+        if (ReferenceEquals(_frameScene, _scene))
+            return;
+        _frameScene = _scene;
+        _outline = null;
+        if (_frameAnimations == null)
+        {
+            _frameBox = (_scene.PlayMin, _scene.PlayMax);
+            return;
+        }
+        _frameBox = (_scene.BoundsMin, _scene.BoundsMax);
+        foreach (var name in _frameAnimations)
+        {
+            var a = _scene.AnimationNamed(name);
+            if (a < 0)
+                continue;
+            var (lo, hi) = _scene.AnimationBounds(a);
+            _frameBox = (Vector3.Min(_frameBox.Min, lo), Vector3.Max(_frameBox.Max, hi));
+        }
+    }
+
+    IReadOnlyList<string> _frameAnimations;
+
+    /// <summary>
+    /// The animations the view keeps in frame, besides the model at rest. Null (the default): every animation of the
+    /// file, so playing any of them never cuts the model. Name only the ones the app plays when the file has bigger
+    /// ones it never uses (a jump, a fall): the model then shows larger.
+    /// </summary>
+    public IReadOnlyList<string> FrameAnimations
+    {
+        get => _frameAnimations;
+        set
+        {
+            _frameAnimations = value;
+            _frameScene = null;
+            _outline = null;
+            Update();
+        }
+    }
 
     /// <summary>What the ray through this point of the control (in points from its corner) meets first, null when nothing.</summary>
     public ModelHit HitTest(float x, float y)
@@ -1000,7 +1093,7 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
                         _velocity.CaptureVelocity(new Vector2(args.Event.Distance.Velocity.X, args.Event.Distance.Velocity.Y) / scale, args.ArrivedTimeNanos);
                     }
                     if (!_lockPitch)
-                        _pitch = Math.Clamp(_pitch + args.Event.Distance.Delta.Y / scale * 0.3f, -60, 80);
+                        _pitch = Math.Clamp(_pitch + args.Event.Distance.Delta.Y / scale * 0.3f, MinPitch, MaxPitch);
                     Update();
                     return this;
                 // A plain wheel scrolls the page; Ctrl (Cmd) + wheel or a touchpad pinch zooms, as maps and Google's
