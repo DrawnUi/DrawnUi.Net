@@ -245,4 +245,30 @@ public class KeyboardTabScrollTests
             AssertInView(host, scroll, label);
         }
     }
+
+    /// <summary>
+    /// The control holding the keyboard focus goes away (hidden: a pin turned to the back of a globe): the focus moves to
+    /// the next stop in page order, never to nothing (on the web, the page body), so the next Tab goes on from there.
+    /// </summary>
+    [Fact]
+    public void KeyboardFocus_OnAControlThatGoesAway_MovesToTheNextStop()
+    {
+        var host = new HeadlessCanvasHost(300, 400, background: Colors.Black);
+        using var _ = host;
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
+        SkiaButton b = null;
+        host.Canvas.Content = new SkiaStack
+        {
+            Spacing = 0,
+            Children = { Button("A"), Button("B").Assign(out b), Button("C"), Button("D") }
+        };
+        host.AdvanceFrames(4);
+
+        Assert.Equal("A", Press(host, false));
+        Assert.Equal("B", Press(host, false));
+        b.IsVisible = false;
+        host.AdvanceFrames(5);
+        Assert.Equal("C", host.Canvas.KeyboardFocusNode?.AccessibilityLabel);
+        Assert.Equal("D", Press(host, false));
+    }
 }

@@ -550,6 +550,57 @@ namespace DrawnUi.Views
         }
 
         private SkiaControl? _accessibilityFocusTarget;
+
+        // the next stop that takes the keyboard focus when the control holding it went away
+        private SkiaControl? _keyboardHandOff;
+
+        // the last snapshot that held the focused node: where it stood in page order once it left
+        private AccessibilityNode[] _focusOrder = Array.Empty<AccessibilityNode>();
+
+        /// <summary>
+        /// For heads whose page focus sits on an element of the node (Blazor's overlay): the node with the keyboard focus
+        /// left the page (a pin turned to the back of a globe, a row removed) and its element lost the focus. The next
+        /// stop in page order takes the keyboard focus at the next frame end, so it never drops to the page itself.
+        /// </summary>
+        public void HandOffKeyboardFocus(ISkiaAccessibilityNode gone)
+        {
+            if (StopAfterGone(gone) is SkiaControl next)
+            {
+                Volatile.Write(ref _keyboardHandOff, next);
+                next.Superview?.Update();
+            }
+        }
+
+        /// <summary>
+        /// The stop that takes the focus of <paramref name="gone"/> when it is no longer a stop in the current snapshot (it
+        /// left, or it is listed but takes no input: a pin turned to the back of a globe): the next stop after where it
+        /// stood, else the last one before. Null while it is still a stop, or when there is none.
+        /// </summary>
+        public ISkiaAccessibilityNode? StopAfterGone(ISkiaAccessibilityNode gone)
+        {
+            var listed = Array.Find(Snapshot, n => ReferenceEquals(n.Source, gone));
+            if (listed is { CanInteract: true } && IsTabStop(gone))
+                return null;
+            var order = listed != null ? Snapshot : _focusOrder;
+            return NextStopAfter(order, gone, Snapshot);
+        }
+
+        /// <summary>Frame end: the keyboard focus (and its ring) goes to the stop chosen when its control went away.</summary>
+        private void ProcessKeyboardHandOff(float scale)
+        {
+            var next = Interlocked.Exchange(ref _keyboardHandOff, null);
+            if (next == null || next.IsDisposed || !IsInSnapshot(next))
+                return;
+            // something else is moving the focus already: an arrow-key jump in a list scrolling its item in, a control
+            // being scrolled into view, a closing popup giving it back to its opener, the app's own request
+            if (Volatile.Read(ref _groupRequest) != null || Volatile.Read(ref _reveal) != null
+                || Volatile.Read(ref _accessibilityFocusTarget) != null || Volatile.Read(ref _focusReturn) != null)
+                return;
+            if (next.Superview?.KeyboardFocusNode is { } current && IsInSnapshot(current))
+                return;
+            next.OnAccessibilityFocused(true);
+            FocusFromKeyboard(next, scale);
+        }
         private long _accessibilityFocusDeadline;
         private bool _appFocusRequested; // until the frame end: the app said where the focus goes, a popup's return gives way
 
@@ -1209,6 +1260,8 @@ namespace DrawnUi.Views
             if (ReferenceEquals(FocusedNode, node)) return;
             NoteFocus(node);
             FocusedNode = node;
+            if (node != null && IsInSnapshot(node))
+                _focusOrder = Snapshot;
             FocusChanged?.Invoke(node);
         }
 
@@ -1270,6 +1323,7 @@ namespace DrawnUi.Views
             if (ModalsMaybe || ActiveModal != null)
                 UpdateActiveModal();
             ProcessPendingFocus(scale);
+            ProcessKeyboardHandOff(scale);
             ProcessGroupFocus(scale);
             ProcessReveal();
 
@@ -1317,6 +1371,7 @@ namespace DrawnUi.Views
 
         private void RebuildLocked(float scale)
         {
+            var before = Snapshot;
             _dirty = false;
             _stale = false;
             _lastRebuildTick = Environment.TickCount64;
@@ -1357,6 +1412,10 @@ namespace DrawnUi.Views
                 return;
 
             Snapshot = snapshot;
+            // the last order that still held the focused node: where it stood if it leaves (rebuilds follow each other
+            // while things move, so the snapshot just before may already be without it)
+            if (FocusedNode is { } held && Array.FindIndex(snapshot, n => ReferenceEquals(n.Source, held)) >= 0)
+                _focusOrder = snapshot;
             Changed?.Invoke();
 
             if (!IsScreenReaderRunning())
@@ -1367,8 +1426,17 @@ namespace DrawnUi.Views
                 var focused = FocusedNode;
                 if (focused != null && Array.FindIndex(snapshot, n => ReferenceEquals(n.Source, focused)) < 0)
                 {
+                    var keyboard = ReferenceEquals((focused as SkiaControl)?.Superview?.KeyboardFocusNode, focused);
                     FocusedNode = null;
                     FocusChanged?.Invoke(null);
+
+                    // the keyboard was on it (a pin turned to the back of a globe, a row removed): the next stop in page
+                    // order takes the focus at the next frame end, so it never drops to nothing (the page body on the web)
+                    if (keyboard && NextStopAfter(before, focused, snapshot) is SkiaControl next)
+                    {
+                        Volatile.Write(ref _keyboardHandOff, next);
+                        next.Superview?.Update();
+                    }
                 }
                 return;
             }
@@ -1381,6 +1449,33 @@ namespace DrawnUi.Views
                 if (next != null)
                     ReaderRefocusRequested?.Invoke(next);
             }
+        }
+
+        /// <summary>
+        /// The Tab stop that followed <paramref name="gone"/> in the <paramref name="before"/> order and is still in
+        /// <paramref name="now"/>; when none follows, the last one before it.
+        /// </summary>
+        private ISkiaAccessibilityNode? NextStopAfter(AccessibilityNode[] before, ISkiaAccessibilityNode gone, AccessibilityNode[] now)
+        {
+            var at = Array.FindIndex(before, n => ReferenceEquals(n.Source, gone));
+            if (at < 0)
+                return null;
+
+            bool Usable(ISkiaAccessibilityNode? node) =>
+                node is { AccessibilityCanInteract: true } && IsTabStop(node)
+                && Array.FindIndex(now, n => ReferenceEquals(n.Source, node)) >= 0;
+
+            for (var i = at + 1; i < before.Length; i++)
+            {
+                if (Usable(before[i].Source))
+                    return before[i].Source;
+            }
+            for (var i = at - 1; i >= 0; i--)
+            {
+                if (Usable(before[i].Source))
+                    return before[i].Source;
+            }
+            return null;
         }
 
         /// <summary>
