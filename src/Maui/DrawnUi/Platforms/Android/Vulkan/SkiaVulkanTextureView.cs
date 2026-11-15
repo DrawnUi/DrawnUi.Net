@@ -46,6 +46,7 @@ public unsafe class SkiaVulkanTextureView : TextureView, TextureView.ISurfaceTex
     private ulong[] _images = Array.Empty<ulong>();
     private SKSurface[] _surfaces = Array.Empty<SKSurface>();
     private GRBackendRenderTarget[] _targets = Array.Empty<GRBackendRenderTarget>();
+    private GRBackendTexture[] _textures = Array.Empty<GRBackendTexture>();
     private SKPaintGLSurfaceEventArgs[] _args = Array.Empty<SKPaintGLSurfaceEventArgs>();
     private ulong[] _renderDone = Array.Empty<ulong>();
     private readonly ulong[] _acquired = new ulong[FramesInFlight];
@@ -484,6 +485,7 @@ public unsafe class SkiaVulkanTextureView : TextureView, TextureView.ISurfaceTex
 
         _surfaces = new SKSurface[imageCount];
         _targets = new GRBackendRenderTarget[imageCount];
+        _textures = new GRBackendTexture[imageCount];
         _args = new SKPaintGLSurfaceEventArgs[imageCount];
         _renderDone = new ulong[imageCount];
         var semaphoreInfo = new Vk.SemaphoreCreateInfo { sType = Vk.STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO };
@@ -503,7 +505,16 @@ public unsafe class SkiaVulkanTextureView : TextureView, TextureView.ISurfaceTex
                 SharingMode = Vk.SHARING_MODE_EXCLUSIVE,
             };
             _targets[i] = new GRBackendRenderTarget(width, height, imageInfo);
-            _surfaces[i] = SKSurface.Create(_gpu.Context, _targets[i], GRSurfaceOrigin.TopLeft, _colorType);
+            // a sampled swapchain image is wrapped as a texture, as Skia's own Vulkan window does: Skia may sample the
+            // surface it draws to (a snapshot of the canvas used by an effect), and a render-target-only wrap has no
+            // texture to sample
+            if ((usage & Vk.IMAGE_USAGE_SAMPLED_BIT) != 0)
+            {
+                _textures[i] = new GRBackendTexture(width, height, imageInfo);
+                _surfaces[i] = SKSurface.Create(_gpu.Context, _textures[i], GRSurfaceOrigin.TopLeft, 1, _colorType);
+            }
+            else
+                _surfaces[i] = SKSurface.Create(_gpu.Context, _targets[i], GRSurfaceOrigin.TopLeft, _colorType);
             if (_surfaces[i] == null)
                 return false;
             _args[i] = new SKPaintGLSurfaceEventArgs(_surfaces[i], _targets[i], GRSurfaceOrigin.TopLeft, _colorType);
@@ -687,6 +698,9 @@ public unsafe class SkiaVulkanTextureView : TextureView, TextureView.ISurfaceTex
             surface?.Dispose();
         foreach (var target in _targets)
             target?.Dispose();
+        foreach (var texture in _textures)
+            texture?.Dispose();
+        _textures = Array.Empty<GRBackendTexture>();
         _surfaces = Array.Empty<SKSurface>();
         _targets = Array.Empty<GRBackendRenderTarget>();
         _args = Array.Empty<SKPaintGLSurfaceEventArgs>();
