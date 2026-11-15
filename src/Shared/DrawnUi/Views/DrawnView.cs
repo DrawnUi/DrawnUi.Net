@@ -1511,6 +1511,8 @@ namespace DrawnUi.Views
         {
             base.OnPropertyChanged(propertyName);
 
+            OnPlatformPropertyChanged(propertyName);
+
 
             if (propertyName == nameof(HeightRequest)
                 || propertyName == nameof(WidthRequest)
@@ -1530,6 +1532,8 @@ namespace DrawnUi.Views
                 Update();
             }
         }
+
+        partial void OnPlatformPropertyChanged(string propertyName);
 
         public new Guid Uid { get; } = Guid.NewGuid();
 

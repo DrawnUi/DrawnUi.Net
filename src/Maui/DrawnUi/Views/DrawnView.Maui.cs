@@ -162,6 +162,44 @@ namespace DrawnUi.Views
             VisualDiagnostics.OnChildRemoved(this, control, index);
         }
 
+        private Window _watchedWindow;
+
+        partial void OnPlatformPropertyChanged(string propertyName)
+        {
+            if (propertyName == nameof(Window))
+                WatchWindow(Window);
+        }
+
+        /// <summary>
+        /// When the window the canvas is in is destroyed (an Android activity closed with Back, a desktop window
+        /// closed), the canvas lets go of its handler: MAUI does not disconnect handlers then, and the process-wide
+        /// events a connected canvas listens to (frames, theme, orientation) would keep it, its page and the closed
+        /// window alive for good, with their GPU objects. A page shown again in a new window gets a new handler.
+        /// </summary>
+        private void WatchWindow(Window window)
+        {
+            if (_watchedWindow == window)
+                return;
+            if (_watchedWindow != null)
+                _watchedWindow.Destroying -= OnWindowDestroying;
+            _watchedWindow = window;
+            if (window != null)
+                window.Destroying += OnWindowDestroying;
+        }
+
+        private void OnWindowDestroying(object sender, EventArgs e)
+        {
+            WatchWindow(null);
+            try
+            {
+                Handler?.DisconnectHandler();
+            }
+            catch (Exception exception)
+            {
+                Super.Log(exception);
+            }
+        }
+
         protected override void OnHandlerChanging(HandlerChangingEventArgs args)
         {
             if (args.NewHandler == null || args.OldHandler != null)
