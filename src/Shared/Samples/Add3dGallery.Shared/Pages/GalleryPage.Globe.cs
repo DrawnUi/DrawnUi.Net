@@ -27,7 +27,7 @@ public partial class GalleryPage
     };
 
     SkiaModel3D _globe;
-    Button3D _spinButton;
+    Switch3D _spinSwitch;
     readonly SkiaLayer[] _cityPins = new SkiaLayer[Cities.Length];
     readonly SkiaLayer[] _pulses = new SkiaLayer[Cities.Length];
     readonly SkiaLayer[] _cityLabels = new SkiaLayer[Cities.Length];
@@ -124,9 +124,27 @@ public partial class GalleryPage
                             .Assign(out _cityButtons[i])
                             .OnTapped(_ => GoToCity(i))).ToList(),
                     },
-                    new Button3D("Pause spin", Theme.Quiet, 158) { Margin = new Thickness(0, 6, 0, 0), AccessibilityHint = "Stops or starts the globe turning by itself" }
-                        .Assign(out _spinButton)
-                        .OnTapped(_ => SetSpin(!_spinning)),
+                    // the globe turning by itself: on from the start, a turn to a city keeps it going
+                    new SkiaRow
+                    {
+                        Spacing = 10,
+                        Margin = new Thickness(0, 6, 0, 0),
+                        Children =
+                        {
+                            new SkiaLabel("Spin") { FontSize = 14, FontFamily = Theme.Title, TextColor = Theme.Ink, VerticalOptions = LayoutOptions.Center },
+                            new Switch3D
+                                {
+                                    IsToggled = true, VerticalOptions = LayoutOptions.Center,
+                                    AccessibilityLabel = "Spin", AccessibilityHint = "The globe turns by itself",
+                                }
+                                .Assign(out _spinSwitch)
+                                .ObserveSelf((me, prop) =>
+                                {
+                                    if (prop == nameof(SkiaToggle.IsToggled))
+                                        SetSpin(me.IsToggled);
+                                }),
+                        }
+                    },
                     new SkiaLabel("Image: NASA Blue Marble") { FontSize = 12, TextColor = Theme.Muted },
                 }
             },
@@ -289,7 +307,7 @@ public partial class GalleryPage
         PlacePins();
     }
 
-    /// <summary>Turns the globe to a city in 0.6 s, stops its spin and shows the city's name.</summary>
+    /// <summary>Turns the globe to a city in 0.6 s and shows the city's name; a spinning globe goes on spinning after.</summary>
     void GoToCity(int index)
     {
         for (var i = 0; i < Cities.Length; i++)
@@ -297,7 +315,6 @@ public partial class GalleryPage
             _cityButtons[i].Fill = i == index ? Theme.Accent : Theme.Quiet;
             _cityButtons[i].AccessibilityIsPressed = i == index;
         }
-        SetSpin(false);
         var (yaw, pitch) = Facing(OnGlobe(Cities[index].Lat, Cities[index].Lon));
         _globeFromYaw = _globe.Yaw;
         _globeFromPitch = _globe.Pitch;
@@ -313,8 +330,7 @@ public partial class GalleryPage
     {
         _spinning = on;
         _globe.AutoRotate = on ? 10 : 0;
-        _spinButton.Text = on ? "Pause spin" : "Spin";
-        _spinButton.AccessibilityIsPressed = !on;
+        _spinSwitch.IsToggled = on;
     }
 
     /// <summary>Pins and the open name chip go where their cities show; a city on the far side hides its pin.</summary>
