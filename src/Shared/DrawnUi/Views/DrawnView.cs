@@ -186,24 +186,63 @@ namespace DrawnUi.Views
             ExecuteBeforeDraw.Enqueue(key, action);
         }
 
-        bool _pressMenuRaised, _pressMenuHandled;
+        bool _pressMenuRaised, _pressMenuHandled, _pressLongPressed, _menuIncoming;
+
+        static bool IsTouch(AppoMobi.Gestures.TouchActionEventArgs args) =>
+            args.Pointer is { DeviceType: AppoMobi.Gestures.PointerDeviceType.Touch or AppoMobi.Gestures.PointerDeviceType.Pen };
 
         /// <summary>
         /// Heads that process a gesture at once (web, desktop): a touch long press opens one context menu, whether the
-        /// browser raised one for it (Android Chrome) or not (iOS Safari). Call before processing: true = this context
-        /// menu is a repeat for the same press, skip it (args.Handled is set as the first one ended).
+        /// browser raised one for it (Android Chrome, about 0.5 s into the press) or not (iOS Safari). Call before
+        /// processing; true = skip this gesture. A browser menu that comes before the long press runs the long press
+        /// first through <paramref name="raiseLongPress"/> (the word under the finger is selected before the menu), and
+        /// the later long press of the same press is skipped; a repeated menu for the same press is skipped with the
+        /// first one's answer in args.Handled (drawnui-cross 6cb).
         /// </summary>
-        protected bool SkipRepeatedTouchContextMenu(AppoMobi.Gestures.TouchActionResult action, AppoMobi.Gestures.TouchActionEventArgs args)
+        protected bool SkipRepeatedTouchContextMenu(AppoMobi.Gestures.TouchActionResult action, AppoMobi.Gestures.TouchActionEventArgs args,
+            Action<AppoMobi.Gestures.TouchActionEventArgs> raiseLongPress)
         {
-            if (action == AppoMobi.Gestures.TouchActionResult.Down)
+            switch (action)
             {
-                _pressMenuRaised = false;
-                return false;
-            }
-            if (action == AppoMobi.Gestures.TouchActionResult.ContextMenu && _pressMenuRaised)
-            {
-                args.Handled = _pressMenuHandled;
-                return true;
+                case AppoMobi.Gestures.TouchActionResult.Down:
+                    _pressMenuRaised = false;
+                    _pressLongPressed = false;
+                    return false;
+
+                case AppoMobi.Gestures.TouchActionResult.LongPressing when IsTouch(args):
+                    if (_pressLongPressed)
+                        return true; // already run for the browser's earlier menu
+                    _pressLongPressed = true;
+                    return false;
+
+                case AppoMobi.Gestures.TouchActionResult.ContextMenu:
+                    if (_pressMenuRaised)
+                    {
+                        args.Handled = _pressMenuHandled;
+                        return true;
+                    }
+                    if (IsTouch(args) && !_pressLongPressed)
+                    {
+                        _menuIncoming = true;
+                        try
+                        {
+                            raiseLongPress(new AppoMobi.Gestures.TouchActionEventArgs(args.Id, AppoMobi.Gestures.TouchActionType.Pressed,
+                                args.Location, null, (float)RenderingScale)
+                            {
+                                IsInsideView = true,
+                                StartingLocation = args.StartingLocation,
+                                NumberOfTouches = 1,
+                                Distance = new AppoMobi.Gestures.TouchActionEventArgs.DistanceInfo(),
+                                Pointer = new AppoMobi.Gestures.PointerData { DeviceType = args.Pointer.DeviceType },
+                            });
+                        }
+                        finally
+                        {
+                            _menuIncoming = false;
+                            _pressLongPressed = true;
+                        }
+                    }
+                    return false;
             }
             return false;
         }
@@ -216,8 +255,7 @@ namespace DrawnUi.Views
         protected void AfterTouchGesture(AppoMobi.Gestures.TouchActionResult action, AppoMobi.Gestures.TouchActionEventArgs args,
             Action<AppoMobi.Gestures.TouchActionEventArgs> raise)
         {
-            var touch = args.Pointer is { DeviceType: AppoMobi.Gestures.PointerDeviceType.Touch or AppoMobi.Gestures.PointerDeviceType.Pen };
-            if (!touch)
+            if (!IsTouch(args))
                 return;
             if (action == AppoMobi.Gestures.TouchActionResult.ContextMenu)
             {
@@ -226,7 +264,7 @@ namespace DrawnUi.Views
                 if (args.Handled && FocusedChild is SkiaLabel label)
                     label.HideCopyButton();
             }
-            else if (action == AppoMobi.Gestures.TouchActionResult.LongPressing && !_pressMenuRaised)
+            else if (action == AppoMobi.Gestures.TouchActionResult.LongPressing && !_pressMenuRaised && !_menuIncoming)
             {
                 raise(TouchContextMenuArgs(args));
             }

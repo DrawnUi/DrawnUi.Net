@@ -268,7 +268,7 @@ public partial class Canvas
         }
 
         // one context menu per touch long press (drawnui-cross 6cb)
-        if (SkipRepeatedTouchContextMenu(touchAction, args1))
+        if (SkipRepeatedTouchContextMenu(touchAction, args1, press => OnGestureEvent(TouchActionType.Pressed, press, TouchActionResult.LongPressing)))
             return;
 
         var args = SkiaGesturesParameters.Create(touchAction, args1, RenderingScale);
