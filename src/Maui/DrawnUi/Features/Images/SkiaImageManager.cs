@@ -543,6 +543,7 @@ public partial class SkiaImageManager : IDisposable
                         if (_cachingProvider != null)
                         {
                             _cachingProvider.Set(GetCacheKey(uri), bitmap, TimeSpan.FromSeconds(CacheLongevitySecs));
+                            OnCached(GetCacheKey(uri), bitmap, CacheLongevitySecs);
                         }
                         TraceLog($"ImageLoadManager: Loaded bitmap for UriImageSource {uri}");
                         // Remove the Task from the loadingBitmaps dictionary now that we're done loading this image
@@ -557,6 +558,7 @@ public partial class SkiaImageManager : IDisposable
                             if (_cachingProvider != null)
                             {
                                 _cachingProvider.Set(GetCacheKey(uri), bitmap, TimeSpan.FromSeconds(CacheLongevitySecs));
+                                OnCached(GetCacheKey(uri), bitmap, CacheLongevitySecs);
                             }
 
                             TraceLog($"ImageLoadManager: Loaded bitmap for FileImageSource {uri}");
@@ -833,6 +835,7 @@ public partial class SkiaImageManager : IDisposable
         if (_cachingProvider != null)
         {
             _cachingProvider.Set(GetCacheKey(uri), bitmap, TimeSpan.FromMinutes(cacheLongevityMinutes));
+            OnCached(GetCacheKey(uri), bitmap, cacheLongevityMinutes * 60.0);
         }
     }
 
@@ -850,6 +853,7 @@ public partial class SkiaImageManager : IDisposable
             return false;
 
         _cachingProvider.Set(uri, bitmap, TimeSpan.FromSeconds(cacheLongevitySecs));
+        OnCached(uri, bitmap, cacheLongevitySecs);
         return true;
     }
 
@@ -862,6 +866,7 @@ public partial class SkiaImageManager : IDisposable
             return false;
 
         uri = GetCacheKey(uri);
+        OnRemoved(uri);
         if (!_cachingProvider.Exists(uri))
             return false;
 
@@ -894,7 +899,15 @@ public partial class SkiaImageManager : IDisposable
             return null;
         }
 
-        return _cachingProvider.Get<SKBitmap>(GetCacheKey(url))?.Value;
+        var key = GetCacheKey(url);
+        var bitmap = _cachingProvider.Get<SKBitmap>(key)?.Value;
+        if (_dropping)
+            return bitmap;
+        if (bitmap != null)
+            OnUsed(key);
+        else
+            bitmap = FindDropped(key);
+        return bitmap;
     }
 
     /// <summary>

@@ -4,7 +4,7 @@ using DrawnUi.Infrastructure.Xaml;
 
 namespace DrawnUi.Draw;
 
-public class SkiaImageManager : IDisposable
+public partial class SkiaImageManager : IDisposable
 {
     private readonly ConcurrentDictionary<string, CacheEntry> _cache = new(StringComparer.OrdinalIgnoreCase);
     private readonly ConcurrentDictionary<string, Task<SKBitmap>> _inFlight = new(StringComparer.OrdinalIgnoreCase);
@@ -366,7 +366,9 @@ public class SkiaImageManager : IDisposable
     {
         if (string.IsNullOrWhiteSpace(uri) || bitmap == null)
             return;
-        _cache[GetCacheKey(uri)] = new CacheEntry(bitmap, DateTimeOffset.UtcNow.AddMinutes(cacheLongevityMinutes));
+        uri = GetCacheKey(uri);
+        _cache[uri] = new CacheEntry(bitmap, DateTimeOffset.UtcNow.AddMinutes(cacheLongevityMinutes));
+        OnCached(uri, bitmap, cacheLongevityMinutes * 60.0);
     }
 
     public bool AddToCache(string uri, SKBitmap bitmap, int cacheLongevitySecs)
@@ -378,6 +380,7 @@ public class SkiaImageManager : IDisposable
         if (_cache.ContainsKey(uri))
             return false;
         _cache[uri] = new CacheEntry(bitmap, DateTimeOffset.UtcNow.AddSeconds(cacheLongevitySecs));
+        OnCached(uri, bitmap, cacheLongevitySecs);
         return true;
     }
 
@@ -388,7 +391,9 @@ public class SkiaImageManager : IDisposable
     {
         if (string.IsNullOrWhiteSpace(uri))
             return false;
-        return _cache.TryRemove(GetCacheKey(uri), out _);
+        uri = GetCacheKey(uri);
+        OnRemoved(uri);
+        return _cache.TryRemove(uri, out _);
     }
 
     public SKBitmap GetFromCache(string url)
@@ -405,13 +410,23 @@ public class SkiaImageManager : IDisposable
             return null;
         url = GetCacheKey(url);
         CleanupExpired(url);
-        return _cache.TryGetValue(url, out var cached) ? cached.Bitmap : null;
+        var bitmap = _cache.TryGetValue(url, out var cached) ? cached.Bitmap : null;
+        if (_dropping)
+            return bitmap;
+        if (bitmap != null)
+            OnUsed(url);
+        else
+            bitmap = FindDropped(url);
+        return bitmap;
     }
 
     private void CleanupExpired(string url)
     {
         if (_cache.TryGetValue(url, out var cached) && cached.ExpiresAtUtc <= DateTimeOffset.UtcNow)
+        {
             _cache.TryRemove(url, out _);
+            OnRemoved(url);
+        }
     }
 
     public static string GetUriFromImageSource(ImageSource source)
