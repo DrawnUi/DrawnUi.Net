@@ -92,10 +92,12 @@ internal sealed unsafe class VulkanRenderer3D
     bool _failed;
 
     /// <summary>
-    /// One renderer per canvas view: each Vulkan canvas has its own device and render thread, so a renderer's objects are
-    /// made, used and freed only on its canvas's render thread.
+    /// One renderer per Vulkan device. A device belongs to one canvas at a time, and a closed window's device is kept for
+    /// the next window, so the renderer and its objects (pipelines, models, textures, the images of controls freed after
+    /// the window closed) go on with the device: made, used and freed only on the render thread of the canvas that
+    /// draws with it now.
     /// </summary>
-    static readonly ConditionalWeakTable<SkiaVulkanTextureView, VulkanRenderer3D> Renderers = new();
+    static readonly Dictionary<IntPtr, VulkanRenderer3D> Renderers = new();
 
     /// <summary>Frees a control's images at the next draw of its canvas (on that canvas's render thread).</summary>
     public static void Release(RenderTarget target)
@@ -112,7 +114,14 @@ internal sealed unsafe class VulkanRenderer3D
     {
         if ((canvas?.CanvasView as Microsoft.Maui.Controls.View)?.Handler?.PlatformView is not SkiaVulkanTextureView view)
             return null;
-        return Renderers.GetValue(view, _ => new VulkanRenderer3D()).DrawOn(view, gr, target, items, count, style, viewProj, w, h);
+        var device = view.VkDevice;
+        if (device == IntPtr.Zero)
+            return null;
+        VulkanRenderer3D renderer;
+        lock (Renderers)
+            if (!Renderers.TryGetValue(device, out renderer))
+                Renderers[device] = renderer = new VulkanRenderer3D();
+        return renderer.DrawOn(view, gr, target, items, count, style, viewProj, w, h);
     }
 
     SKImage DrawOn(SkiaVulkanTextureView view, GRContext gr, RenderTarget target, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h)
