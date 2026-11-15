@@ -90,6 +90,7 @@ Please star ⭐ if you like it!
 
   * Android: fixed a crash that could happen some time after an app was closed with Back and opened again.
   * Android: fixed a crash on start in apps whose effects read the screen behind them (GPU canvas).
+  * Android: fixed a crash when an app rebuilt its screen in-process (for example after a language change) on devices without Vulkan.
   * Much lower memory for images: every image that shows the same file or URL now shares one decoded copy instead of holding its own. 69 images of one photo take about 7 MB instead of over 900 MB. Code that disposes or edits bitmaps it gets from SkiaImageManager sets `SkiaImageManager.ReuseBitmaps = false`.
   * Image memory stays within a budget: `SkiaImageManager.CacheBudgetMb` (128 MB by default) caps the decoded pictures the cache keeps; pictures on screen always stay.
   * Android, iOS, Mac, Windows: pages of a closed window are freed, and their canvases release their GPU memory.
