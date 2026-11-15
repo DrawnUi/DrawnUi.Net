@@ -261,7 +261,17 @@ public class Switch3D : SkiaSwitch
         ColorFrameOn = Theme.Darker(Theme.Accent, 0.45f);
         ColorFrameOff = Theme.Darker(Theme.Quiet, 0.35f);
         AccessibilityRole = Aria.RoleSwitch;
+        // under the mouse the knob and the track light up, as the buttons do
+        this.OnHovered((me, on) =>
+        {
+            _hovered = on;
+            Colorize();
+        });
     }
+
+    bool _hovered;
+
+    Color Lift(Color c) => _hovered ? Theme.Lighter(c, 0.14f) : c;
 
     static SkiaGradient Lit(Color c) => new()
     {
@@ -315,14 +325,21 @@ public class Switch3D : SkiaSwitch
     public override void ApplyOn()
     {
         base.ApplyOn();
-        if (Thumb != null)
-            Thumb.FillGradient = Lit(Theme.Accent);
+        Colorize();
     }
 
     public override void ApplyOff()
     {
         base.ApplyOff();
-        if (Thumb != null)
-            Thumb.FillGradient = Lit(Color.FromRgb(200, 202, 214));
+        Colorize();
+    }
+
+    /// <summary>The knob's and the track's colors for the state and the hover; the knob stays where it is.</summary>
+    void Colorize()
+    {
+        if (Thumb == null)
+            return;
+        Thumb.FillGradient = Lit(Lift(IsToggled ? Theme.Accent : Color.FromRgb(200, 202, 214)));
+        Track.BackgroundColor = Lift(IsToggled ? ColorFrameOn : ColorFrameOff);
     }
 }
