@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace Add3dGallery;
 
 /// <summary>
@@ -60,19 +62,66 @@ public partial class GalleryPage
         }
     }
 
-    /// <summary>Two dice, each a holder that turns it around the vertical and hops, and a rounded cube wearing its faces.</summary>
+    const float DieRounding = 0.14f;
+    static readonly float[] DieX = { -0.8f, 0.8f };
+
+    /// <summary>
+    /// Two dice, each a holder that turns it around the vertical and lifts it, a rounded cube wearing its faces, and a
+    /// soft shadow on the table under it (it stays on the table while the die hops).
+    /// </summary>
     static Model3D TwoDice()
     {
         var model = new Model3D();
         for (var d = 0; d < 2; d++)
-            model.Part($"holder{d}", Mesh3D.Cuboid(0.01f, 0.01f, 0.01f), Colors.White).At(d == 0 ? -0.8f : 0.8f, 0, 0)
-                .Part($"die{d}", Mesh3D.RoundedCuboid(1, 1, 1, 0.14f, atlas: true), Colors.White).Inside($"holder{d}");
+            model.Part($"shadow{d}", Mesh3D.Cuboid(1.3f, 0.001f, 1.3f), Colors.White.WithAlpha(0.99f)).At(DieX[d], -0.505f, 0)
+                .Part($"holder{d}", Mesh3D.Cuboid(0.01f, 0.01f, 0.01f), Colors.White).At(DieX[d], 0, 0)
+                .Part($"die{d}", Mesh3D.RoundedCuboid(1, 1, 1, DieRounding, atlas: true), Colors.White).Inside($"holder{d}");
         return model;
+    }
+
+    /// <summary>A soft dark spot that fades to nothing at its edge: a die's shadow on the table.</summary>
+    static Texture3D ShadowSpot() => Painted(128, 128, (c, w, h) =>
+    {
+        using var paint = new SKPaint
+        {
+            IsAntialias = true,
+            Shader = SKShader.CreateRadialGradient(new SKPoint(w / 2, h / 2), w / 2,
+                new[] { new SKColor(0, 0, 0, 150), new SKColor(0, 0, 0, 90), new SKColor(0, 0, 0, 0) }, new[] { 0f, 0.45f, 1f },
+                SKShaderTileMode.Clamp),
+        };
+        c.DrawRect(0, 0, w, h, paint);
+    });
+
+    /// <summary>How high a die's center must be for its lowest point to touch the table, turned by (x, z).</summary>
+    static float RestingLift(float x, float z)
+    {
+        var turn = Quaternion.CreateFromAxisAngle(Vector3.UnitX, x * MathF.PI / 180) * Quaternion.CreateFromAxisAngle(Vector3.UnitZ, z * MathF.PI / 180);
+        var core = 0.5f - DieRounding;
+        var lowest = 0f;
+        for (var i = 0; i < 8; i++)
+        {
+            var corner = new Vector3((i & 1) == 0 ? -core : core, (i & 2) == 0 ? -core : core, (i & 4) == 0 ? -core : core);
+            lowest = MathF.Min(lowest, Vector3.Transform(corner, turn).Y);
+        }
+        return -lowest + DieRounding - 0.5f;
+    }
+
+    /// <summary>A die's place: turned, lifted to rest on the table plus its hop, its shadow wider and lighter as it rises.</summary>
+    void PlaceDie(int d, (float X, float Z, float Yaw) pose, float hop)
+    {
+        var lift = RestingLift(pose.X, pose.Z) + hop;
+        _diceView.SetNodeRotation($"die{d}", pose.X, 0, pose.Z);
+        _diceView.SetNodeRotation($"holder{d}", 0, pose.Yaw, 0);
+        _diceView.SetNodeTranslation($"holder{d}", DieX[d], lift, 0);
+        var spread = 1 + lift * 0.6f;
+        _diceView.SetNodeScale($"shadow{d}", spread, 1, spread);
+        _diceView.SetMaterialColor($"shadow{d}", Colors.White.WithAlpha(Math.Clamp(0.99f - lift * 0.9f, 0.2f, 0.99f)));
     }
 
     SkiaControl DiceCard()
     {
         var faces = DieFaces();
+        var shadow = ShadowSpot();
         return WideCard("Dice roll",
             "Two dice made in code: a rounded cube wearing one image of its six faces, pips drawn in Skia. Flick them sideways, tap them or press Roll.",
             new SkiaStack
@@ -85,7 +134,8 @@ public partial class GalleryPage
                             Orbit = false,
                             Yaw = 0,
                             Pitch = 32,
-                            Zoom = 0.85f,
+                            // room for a die turned on its corner and hopping
+                            FrameMargin = 0.5f,
                             Antialias = true,
                             HorizontalOptions = LayoutOptions.Fill,
                             VerticalOptions = LayoutOptions.Fill,
@@ -100,9 +150,11 @@ public partial class GalleryPage
                                 me.SetMaterialImage($"die{d}", faces);
                                 // polished plastic: a soft shine
                                 me.SetMaterialRoughness($"die{d}", 0.3f);
+                                me.SetMaterialImage($"shadow{d}", shadow);
                                 me.SetMaterialVisible($"holder{d}", false);
-                                me.SetNodeRotation($"holder{d}", 0, _diePose[d].Yaw, 0);
                             }
+                            for (var d = 0; d < 2; d++)
+                                PlaceDie(d, _diePose[d], 0);
                             // a flick sideways rolls them; the page keeps its vertical drags
                             me.OnGestures = (args, _) =>
                             {
@@ -157,15 +209,13 @@ public partial class GalleryPage
         {
             var ease = 1 - MathF.Pow(1 - (float)t, 3);
             // hops that die down as it settles
-            var hop = 0.45f * MathF.Abs(MathF.Sin((float)t * MathF.PI * 3)) * MathF.Pow(1 - (float)t, 1.5f);
+            var hop = 0.3f * MathF.Abs(MathF.Sin((float)t * MathF.PI * 3)) * MathF.Pow(1 - (float)t, 1.5f);
             for (var d = 0; d < 2; d++)
             {
                 var p = (from[d].X + (to[d].X - from[d].X) * ease, from[d].Z + (to[d].Z - from[d].Z) * ease,
                     from[d].Yaw + (to[d].Yaw - from[d].Yaw) * ease);
                 _diePose[d] = p;
-                _diceView.SetNodeRotation($"die{d}", p.Item1, 0, p.Item2);
-                _diceView.SetNodeRotation($"holder{d}", 0, p.Item3, 0);
-                _diceView.SetNodeTranslation($"holder{d}", d == 0 ? -0.8f : 0.8f, hop, 0);
+                PlaceDie(d, p, hop);
             }
         }, 0, 1, 1400, null, 0, cancel).ContinueWith(_ => MainThread.BeginInvokeOnMainThread(() =>
         {
