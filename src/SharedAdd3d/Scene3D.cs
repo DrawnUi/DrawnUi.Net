@@ -104,6 +104,8 @@ internal sealed partial class Scene3D
     public int[] Order;
     /// <summary>The scene's box at rest.</summary>
     public Vector3 BoundsMin, BoundsMax;
+    /// <summary>The box around the model at rest and through all its animations: what a viewer's camera fits.</summary>
+    public Vector3 PlayMin, PlayMax;
     /// <summary>The most joints any skin has.</summary>
     public int MaxJoints;
 
@@ -155,7 +157,8 @@ internal sealed partial class Scene3D
         }
         Order = Enumerable.Range(0, Nodes.Length).OrderBy(i => depth[i]).ToArray();
         MaxJoints = Skins.Length == 0 ? 0 : Skins.Max(s => s.Joints.Length);
-        (BoundsMin, BoundsMax) = RestBounds();
+        (BoundsMin, BoundsMax) = RestBounds(false);
+        (PlayMin, PlayMax) = Animations.Length == 0 ? (BoundsMin, BoundsMax) : RestBounds(true);
     }
 
     /// <summary>
@@ -477,43 +480,89 @@ internal sealed partial class Scene3D
         return hitNode >= 0;
     }
 
-    (Vector3, Vector3) RestBounds()
+    /// <summary>Poses sampled along each animation for the bounds: the view fits what the model does, not only its rest.</summary>
+    const int BoundsSamples = 8;
+
+    /// <summary>
+    /// The box around the model at rest, and with <paramref name="animations"/> through every animation of the file
+    /// too (a chest's opening lid, a character's swing), sampled: a view fitted to it does not cut the model while it
+    /// plays.
+    /// </summary>
+    (Vector3, Vector3) RestBounds(bool animations)
     {
-        var pose = Pose(-1, 0);
         var lo = new Vector3(float.MaxValue);
         var hi = new Vector3(float.MinValue);
         Vector3[] at = null;
-        for (var i = 0; i < Nodes.Length; i++)
+        void Add(Matrix4x4[] pose)
         {
-            var mesh = Nodes[i].Mesh;
-            if (mesh < 0 || mesh >= Meshes.Length)
-                continue;
-            foreach (var p in Meshes[mesh])
+            for (var i = 0; i < Nodes.Length; i++)
             {
-                if (at == null || at.Length < p.Positions.Length)
-                    at = new Vector3[p.Positions.Length];
-                PosedPositions(i, p, pose, at);
-                for (var v = 0; v < p.Positions.Length; v++)
+                var mesh = Nodes[i].Mesh;
+                if (mesh < 0 || mesh >= Meshes.Length)
+                    continue;
+                foreach (var p in Meshes[mesh])
                 {
-                    lo = Vector3.Min(lo, at[v]);
-                    hi = Vector3.Max(hi, at[v]);
+                    if (at == null || at.Length < p.Positions.Length)
+                        at = new Vector3[p.Positions.Length];
+                    PosedPositions(i, p, pose, at);
+                    for (var v = 0; v < p.Positions.Length; v++)
+                    {
+                        lo = Vector3.Min(lo, at[v]);
+                        hi = Vector3.Max(hi, at[v]);
+                    }
                 }
             }
         }
+        Add(Pose(-1, 0));
+        for (var a = 0; animations && a < Animations.Length; a++)
+            for (var s = 0; s <= BoundsSamples; s++)
+                Add(Pose(a, Animations[a].Duration * s / BoundsSamples * 0.999f));
         return lo.X > hi.X ? (new Vector3(-1), new Vector3(1)) : (lo, hi);
     }
 
-    /// <summary>View and projection that fit the scene's box, turned by yaw / pitch (degrees).</summary>
-    public Matrix4x4 Camera(float yaw, float pitch, float zoom, float aspect)
+    /// <summary>
+    /// View and projection that fit the scene's box, turned by yaw / pitch (degrees), <paramref name="margin"/> (scene
+    /// units) kept around the box for parts that move past it. The fit is tight both ways: across, the box's widest
+    /// turn around the vertical (turning never cuts it); up and down, its height as seen from this pitch. A wide view
+    /// shows a flat model large, a narrow one still shows all of it. <paramref name="asSeen"/>: the view is never turned
+    /// by the user, so the box is fitted exactly as it is seen from this yaw and pitch (tighter still).
+    /// </summary>
+    public Matrix4x4 Camera(float yaw, float pitch, float zoom, float aspect, float margin = 0, bool asSeen = false)
     {
-        var center = (BoundsMin + BoundsMax) * 0.5f;
-        var radius = MathF.Max((BoundsMax - BoundsMin).Length() * 0.5f, 1e-3f);
+        var center = (PlayMin + PlayMax) * 0.5f;
+        var radius = MathF.Max((PlayMax - PlayMin).Length() * 0.5f, 1e-3f);
         var fov = Math3D.Radians(35);
-        var fit = radius / MathF.Sin(fov * 0.5f) * (aspect < 1 ? 1 / aspect : 1);
-        var distance = fit * zoom;
+        var half = (PlayMax - PlayMin) * 0.5f + new Vector3(MathF.Max(0, margin));
+        // across: the circle the box sweeps turning around the vertical; up and down: its height and that circle tilted
+        var across = MathF.Max(MathF.Sqrt(half.X * half.X + half.Z * half.Z), 1e-3f);
+        var tilt = Math3D.Radians(MathF.Abs(pitch));
+        var up = half.Y * MathF.Cos(tilt) + across * MathF.Sin(tilt);
+        var depth = across * MathF.Cos(tilt) + half.Y * MathF.Sin(tilt);
+        var tanV = MathF.Tan(fov * 0.5f);
+        var halfH = MathF.Atan(tanV * aspect);
         // glam: from_rotation_y(yaw) * from_rotation_x(-pitch), applied to (0, 0, distance).
         var rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, Math3D.Radians(yaw))
                        * Quaternion.CreateFromAxisAngle(Vector3.UnitX, Math3D.Radians(-pitch));
+        float fit;
+        if (asSeen)
+        {
+            // every corner of the box inside the view, as the camera sees it from here
+            Vector3 right = Vector3.Transform(Vector3.UnitX, rotation), upward = Vector3.Transform(Vector3.UnitY, rotation),
+                back = Vector3.Transform(Vector3.UnitZ, rotation);
+            var tanH = tanV * aspect;
+            fit = 1e-3f;
+            for (var i = 0; i < 8; i++)
+            {
+                var corner = new Vector3((i & 1) == 0 ? -half.X : half.X, (i & 2) == 0 ? -half.Y : half.Y, (i & 4) == 0 ? -half.Z : half.Z);
+                var near = Vector3.Dot(corner, back);
+                fit = MathF.Max(fit, MathF.Max(near + MathF.Abs(Vector3.Dot(corner, right)) / tanH,
+                    near + MathF.Abs(Vector3.Dot(corner, upward)) / tanV));
+            }
+        }
+        else
+            fit = MathF.Max(across / MathF.Sin(halfH) + half.Y * MathF.Sin(tilt), depth + up / tanV);
+        radius = MathF.Max(radius, (half * 2).Length() * 0.5f);
+        var distance = fit * zoom;
         var eye = center + Vector3.Transform(new Vector3(0, 0, distance), rotation);
         var view = Matrix4x4.CreateLookAt(eye, center, Vector3.UnitY);
         var proj = Math3D.PerspectiveGl(fov, aspect, MathF.Max(distance - radius * 2, distance * 0.01f), distance + radius * 2);

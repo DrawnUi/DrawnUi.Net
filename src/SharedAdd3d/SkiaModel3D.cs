@@ -340,6 +340,22 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         }
     }
 
+    float _frameMargin;
+
+    /// <summary>
+    /// Room kept around the model's resting box, in the model's own units, for parts that move past it (dice that
+    /// tumble and hop, a character's swinging arms): the view backs off so they stay in sight. 0 by default.
+    /// </summary>
+    public float FrameMargin
+    {
+        get => _frameMargin;
+        set
+        {
+            _frameMargin = MathF.Max(0, value);
+            Update();
+        }
+    }
+
     /// <summary>Drags turn the scene (on by default).</summary>
     public bool Orbit
     {
@@ -822,7 +838,9 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         }
     }
 
-    Matrix4x4 Camera(float width, float height) => _scene.Camera(_yaw, _pitch, _zoom, width / MathF.Max(height, 1));
+    // a view nobody turns (no drag, no tilt, no auto turn) is fitted exactly as it is seen
+    Matrix4x4 Camera(float width, float height) => _scene.Camera(_yaw, _pitch, _zoom, width / MathF.Max(height, 1), _frameMargin,
+        asSeen: !_orbit && TiltToPointer == 0 && _autoRotate == 0);
 
     /// <summary>What the ray through this point of the control (in points from its corner) meets first, null when nothing.</summary>
     public ModelHit HitTest(float x, float y)
