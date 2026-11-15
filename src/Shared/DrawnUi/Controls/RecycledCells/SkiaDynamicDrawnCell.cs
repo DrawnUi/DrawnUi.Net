@@ -41,6 +41,8 @@ public class SkiaDynamicDrawnCell : SkiaDrawnCell
     /// </summary>
     protected virtual bool DestroyCacheOnContextChange => true;
 
+    internal override bool KeepsPixelsAcrossRebind => !DestroyCacheOnContextChange;
+
     protected override void AttachContext(object ctx)
     {
 
