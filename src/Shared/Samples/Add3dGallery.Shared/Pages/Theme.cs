@@ -249,53 +249,73 @@ public class Button3D : SkiaButton
 }
 
 /// <summary>
-/// The app's switch, in 3D like <see cref="Button3D"/>: a track sunk into the card (gold when on) and a raised knob lit
-/// from above, with a soft shadow, that slides across it.
+/// The app's switch, in 3D like <see cref="Button3D"/>, the classic Android way: a thin track sunk into the card and a
+/// bigger raised knob, lit from above, riding on it. On, the knob turns gold and the track takes a deep gold.
 /// </summary>
 public class Switch3D : SkiaSwitch
 {
+    const float Knob = 28;
+
     public Switch3D()
     {
-        ColorFrameOn = Theme.Accent;
+        ColorFrameOn = Theme.Darker(Theme.Accent, 0.45f);
         ColorFrameOff = Theme.Darker(Theme.Quiet, 0.35f);
         AccessibilityRole = Aria.RoleSwitch;
     }
 
+    static SkiaGradient Lit(Color c) => new()
+    {
+        StartXRatio = 0, StartYRatio = 0, EndXRatio = 0, EndYRatio = 1,
+        Colors = new List<Color> { Theme.Lighter(c, 0.35f), c, Theme.Darker(c, 0.15f) },
+        ColorPositions = new List<double> { 0, 0.5, 1 },
+    };
+
     protected override void CreateDefaultStyleContent()
     {
-        SetDefaultContentSize(54, 30);
+        SetDefaultContentSize(54, Knob + 4);
         Children = new List<SkiaControl>
         {
             new SkiaShape
             {
                 Tag = "Frame",
-                CornerRadius = 15,
+                CornerRadius = 7,
+                HeightRequest = 14,
+                // the knob reaches past both ends of the track
+                Margin = new Thickness(6, 0),
                 HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
-                // sunk into the card: shaded top edge, lit bottom edge
+                VerticalOptions = LayoutOptions.Center,
                 BevelType = BevelType.Emboss,
-                Bevel = new SkiaBevel { Depth = 2, LightColor = Colors.White, ShadowColor = Colors.Black, Opacity = 0.4 },
+                Bevel = new SkiaBevel { Depth = 1.5, LightColor = Colors.White, ShadowColor = Colors.Black, Opacity = 0.45 },
             },
             new SkiaShape
             {
                 Tag = "Thumb",
                 Type = ShapeType.Circle,
-                Margin = 3,
-                LockRatio = -1,
+                WidthRequest = Knob,
+                HeightRequest = Knob,
                 HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Fill,
-                FillGradient = new SkiaGradient
-                {
-                    StartXRatio = 0, StartYRatio = 0, EndXRatio = 0, EndYRatio = 1,
-                    Colors = new List<Color> { Colors.White, Color.FromRgb(196, 198, 212) },
-                },
+                VerticalOptions = LayoutOptions.Center,
                 BevelType = BevelType.Bevel,
-                Bevel = new SkiaBevel { Depth = 1.2, LightColor = Colors.White, ShadowColor = Colors.Black, Opacity = 0.35 },
-                Shadows = new List<SkiaShadow> { new() { Blur = 4, Y = 2, Opacity = 0.5, Color = Colors.Black } },
+                Bevel = new SkiaBevel { Depth = 1.5, LightColor = Colors.White, ShadowColor = Colors.Black, Opacity = 0.4 },
+                Shadows = new List<SkiaShadow> { new() { Blur = 5, Y = 3, Opacity = 0.55, Color = Colors.Black } },
             },
         };
-        new SkiaHotspot { TransformView = Thumb }
+        new SkiaHotspot()
             .Adapt(me => me.Tapped += (s, e) => IsToggled = !IsToggled)
             .AssignParent(this);
+    }
+
+    public override void ApplyOn()
+    {
+        base.ApplyOn();
+        if (Thumb != null)
+            Thumb.FillGradient = Lit(Theme.Accent);
+    }
+
+    public override void ApplyOff()
+    {
+        base.ApplyOff();
+        if (Thumb != null)
+            Thumb.FillGradient = Lit(Color.FromRgb(200, 202, 214));
     }
 }
