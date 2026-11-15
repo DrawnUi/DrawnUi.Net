@@ -1,0 +1,225 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.Meshes.SKMeshMode
+  commentId: T:DrawnUi.Draw.Meshes.SKMeshMode
+  id: SKMeshMode
+  parent: DrawnUi.Draw.Meshes
+  children:
+  - DrawnUi.Draw.Meshes.SKMeshMode.TriangleStrip
+  - DrawnUi.Draw.Meshes.SKMeshMode.Triangles
+  langs:
+  - csharp
+  - vb
+  name: SKMeshMode
+  nameWithType: SKMeshMode
+  fullName: DrawnUi.Draw.Meshes.SKMeshMode
+  type: Enum
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SKMeshMode
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: How the vertices of an <xref href="DrawnUi.Draw.Meshes.SKMesh" data-throw-if-not-resolved="false"></xref> make triangles (stand-in for SkiaSharp's SKMeshMode).
+  example: []
+  syntax:
+    content: public enum SKMeshMode
+    content.vb: Public Enum SKMeshMode
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.Meshes.SKMeshMode.Triangles
+  commentId: F:DrawnUi.Draw.Meshes.SKMeshMode.Triangles
+  id: Triangles
+  parent: DrawnUi.Draw.Meshes.SKMeshMode
+  langs:
+  - csharp
+  - vb
+  name: Triangles
+  nameWithType: SKMeshMode.Triangles
+  fullName: DrawnUi.Draw.Meshes.SKMeshMode.Triangles
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Triangles
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 18
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Every 3 vertices (or indices) make one triangle.
+  example: []
+  syntax:
+    content: Triangles = 0
+    return:
+      type: DrawnUi.Draw.Meshes.SKMeshMode
+- uid: DrawnUi.Draw.Meshes.SKMeshMode.TriangleStrip
+  commentId: F:DrawnUi.Draw.Meshes.SKMeshMode.TriangleStrip
+  id: TriangleStrip
+  parent: DrawnUi.Draw.Meshes.SKMeshMode
+  langs:
+  - csharp
+  - vb
+  name: TriangleStrip
+  nameWithType: SKMeshMode.TriangleStrip
+  fullName: DrawnUi.Draw.Meshes.SKMeshMode.TriangleStrip
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: TriangleStrip
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 20
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Each vertex after the first two makes a triangle with the two before it.
+  example: []
+  syntax:
+    content: TriangleStrip = 1
+    return:
+      type: DrawnUi.Draw.Meshes.SKMeshMode
+references:
+- uid: DrawnUi.Draw.Meshes.SKMesh
+  commentId: T:DrawnUi.Draw.Meshes.SKMesh
+  parent: DrawnUi.Draw.Meshes
+  href: DrawnUi.Draw.Meshes.SKMesh.html
+  name: SKMesh
+  nameWithType: SKMesh
+  fullName: DrawnUi.Draw.Meshes.SKMesh
+- uid: DrawnUi.Draw.Meshes
+  commentId: N:DrawnUi.Draw.Meshes
+  href: DrawnUi.html
+  name: DrawnUi.Draw.Meshes
+  nameWithType: DrawnUi.Draw.Meshes
+  fullName: DrawnUi.Draw.Meshes
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  - name: .
+  - uid: DrawnUi.Draw.Meshes
+    name: Meshes
+    href: DrawnUi.Draw.Meshes.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  - name: .
+  - uid: DrawnUi.Draw.Meshes
+    name: Meshes
+    href: DrawnUi.Draw.Meshes.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.Meshes.SKMeshMode
+  commentId: T:DrawnUi.Draw.Meshes.SKMeshMode
+  parent: DrawnUi.Draw.Meshes
+  href: DrawnUi.Draw.Meshes.SKMeshMode.html
+  name: SKMeshMode
+  nameWithType: SKMeshMode
+  fullName: DrawnUi.Draw.Meshes.SKMeshMode

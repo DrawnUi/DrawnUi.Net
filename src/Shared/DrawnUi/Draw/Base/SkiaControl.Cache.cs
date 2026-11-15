@@ -1909,6 +1909,8 @@ public partial class SkiaControl
 
         foreach (var postRenderer in EffectPostRenderers)
         {
+            if (postRenderer is SkiaShaderEffect shader)
+                shader.ControlArea = destination;
             postRenderer.Render(ctx.WithDestination(destination));
         }
     }

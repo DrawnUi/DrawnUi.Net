@@ -170,7 +170,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Add
     path: ../src/Shared/DrawnUi/Internals/Models/DynamicGrid.cs
-    startLine: 15
+    startLine: 27
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -206,7 +206,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Get
     path: ../src/Shared/DrawnUi/Internals/Models/DynamicGrid.cs
-    startLine: 47
+    startLine: 60
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -242,7 +242,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetRow
     path: ../src/Shared/DrawnUi/Internals/Models/DynamicGrid.cs
-    startLine: 53
+    startLine: 66
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -276,7 +276,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetColumn
     path: ../src/Shared/DrawnUi/Internals/Models/DynamicGrid.cs
-    startLine: 64
+    startLine: 77
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -310,7 +310,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clear
     path: ../src/Shared/DrawnUi/Internals/Models/DynamicGrid.cs
-    startLine: 75
+    startLine: 88
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -338,7 +338,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetChildren
     path: ../src/Shared/DrawnUi/Internals/Models/DynamicGrid.cs
-    startLine: 83
+    startLine: 97
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -368,7 +368,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Children
     path: ../src/Shared/DrawnUi/Internals/Models/DynamicGrid.cs
-    startLine: 88
+    startLine: 102
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -399,7 +399,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindChildAtIndex
     path: ../src/Shared/DrawnUi/Internals/Models/DynamicGrid.cs
-    startLine: 96
+    startLine: 110
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -433,7 +433,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: this[]
     path: ../src/Shared/DrawnUi/Internals/Models/DynamicGrid.cs
-    startLine: 104
+    startLine: 118
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -469,10 +469,15 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetChildrenAsSpans
     path: ../src/Shared/DrawnUi/Internals/Models/DynamicGrid.cs
-    startLine: 115
+    startLine: 133
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    The children in order, as a span over a list made when the grid last changed: the list is never changed once
+
+    made (a change makes a new one), so a span taken before a change still reads what it read.
+  example: []
   syntax:
     content: public Span<T> GetChildrenAsSpans()
     return:
@@ -499,7 +504,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCount
     path: ../src/Shared/DrawnUi/Internals/Models/DynamicGrid.cs
-    startLine: 120
+    startLine: 146
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -529,7 +534,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Length
     path: ../src/Shared/DrawnUi/Internals/Models/DynamicGrid.cs
-    startLine: 128
+    startLine: 154
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -562,7 +567,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetColumnCountForRow
     path: ../src/Shared/DrawnUi/Internals/Models/DynamicGrid.cs
-    startLine: 136
+    startLine: 162
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw

@@ -1,0 +1,305 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+  commentId: T:DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+  id: SKMeshSpecificationAttributeType
+  parent: DrawnUi.Draw.Meshes
+  children:
+  - DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float
+  - DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float2
+  - DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float3
+  - DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float4
+  - DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Ubyte4Unorm
+  langs:
+  - csharp
+  - vb
+  name: SKMeshSpecificationAttributeType
+  nameWithType: SKMeshSpecificationAttributeType
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+  type: Enum
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SKMeshSpecificationAttributeType
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 24
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Type of a mesh vertex attribute (stand-in for SkiaSharp's SKMeshSpecificationAttributeType).
+  example: []
+  syntax:
+    content: public enum SKMeshSpecificationAttributeType
+    content.vb: Public Enum SKMeshSpecificationAttributeType
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float
+  commentId: F:DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float
+  id: Float
+  parent: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+  langs:
+  - csharp
+  - vb
+  name: Float
+  nameWithType: SKMeshSpecificationAttributeType.Float
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Float
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 27
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: One float, SkSL <code>float</code>.
+  example: []
+  syntax:
+    content: Float = 0
+    return:
+      type: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float2
+  commentId: F:DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float2
+  id: Float2
+  parent: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+  langs:
+  - csharp
+  - vb
+  name: Float2
+  nameWithType: SKMeshSpecificationAttributeType.Float2
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float2
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Float2
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 29
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Two floats, SkSL <code>float2</code>.
+  example: []
+  syntax:
+    content: Float2 = 1
+    return:
+      type: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float3
+  commentId: F:DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float3
+  id: Float3
+  parent: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+  langs:
+  - csharp
+  - vb
+  name: Float3
+  nameWithType: SKMeshSpecificationAttributeType.Float3
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float3
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Float3
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 31
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Three floats, SkSL <code>float3</code>.
+  example: []
+  syntax:
+    content: Float3 = 2
+    return:
+      type: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float4
+  commentId: F:DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float4
+  id: Float4
+  parent: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+  langs:
+  - csharp
+  - vb
+  name: Float4
+  nameWithType: SKMeshSpecificationAttributeType.Float4
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Float4
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Float4
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 33
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Four floats, SkSL <code>float4</code>.
+  example: []
+  syntax:
+    content: Float4 = 3
+    return:
+      type: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Ubyte4Unorm
+  commentId: F:DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Ubyte4Unorm
+  id: Ubyte4Unorm
+  parent: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+  langs:
+  - csharp
+  - vb
+  name: Ubyte4Unorm
+  nameWithType: SKMeshSpecificationAttributeType.Ubyte4Unorm
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.Ubyte4Unorm
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Ubyte4Unorm
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMeshSpecification.cs
+    startLine: 35
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Four bytes read as 0..1, SkSL <code>half4</code>.
+  example: []
+  syntax:
+    content: Ubyte4Unorm = 4
+    return:
+      type: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+references:
+- uid: DrawnUi.Draw.Meshes
+  commentId: N:DrawnUi.Draw.Meshes
+  href: DrawnUi.html
+  name: DrawnUi.Draw.Meshes
+  nameWithType: DrawnUi.Draw.Meshes
+  fullName: DrawnUi.Draw.Meshes
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  - name: .
+  - uid: DrawnUi.Draw.Meshes
+    name: Meshes
+    href: DrawnUi.Draw.Meshes.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  - name: .
+  - uid: DrawnUi.Draw.Meshes
+    name: Meshes
+    href: DrawnUi.Draw.Meshes.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+  commentId: T:DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+  parent: DrawnUi.Draw.Meshes
+  href: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType.html
+  name: SKMeshSpecificationAttributeType
+  nameWithType: SKMeshSpecificationAttributeType
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType

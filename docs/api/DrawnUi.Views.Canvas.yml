@@ -386,12 +386,21 @@ items:
   - DrawnUi.Views.DrawnView.ClosePopupWindow(DrawnUi.Views.PopupId)
   - DrawnUi.Views.DrawnView.ClosePopupWindows
   - DrawnUi.Views.DrawnView.OnWindowDeactivated
+  - DrawnUi.Views.DrawnView.OnWindowActivated
+  - DrawnUi.Views.DrawnView.IsWindowActive
+  - DrawnUi.Views.DrawnView.WindowActiveChanged
+  - DrawnUi.Views.DrawnView.SetWindowActive(System.Boolean)
   - DrawnUi.Views.DrawnView.PreviewInputForPopups(DrawnUi.Draw.SkiaGesturesParameters)
   - DrawnUi.Views.DrawnView.PopupWindowClosed
   - DrawnUi.Views.DrawnView.PopupWindowHost
   - DrawnUi.Views.DrawnView.IsPopupWindowOpen(DrawnUi.Views.PopupId)
   - DrawnUi.Views.DrawnView.HasPopupWindows
   - DrawnUi.Views.DrawnView.TopPopupWindow
+  - DrawnUi.Views.DrawnView.SystemTheme
+  - DrawnUi.Views.DrawnView.SystemThemeChanged
+  - DrawnUi.Views.DrawnView.SetSystemTheme(DrawnUi.Views.SystemTheme)
+  - DrawnUi.Views.DrawnView.ReadWindowsSystemTheme
+  - DrawnUi.Views.DrawnView.IsWindowsThemeMessage(System.Int32,System.IntPtr)
   - Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
   - Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
   - Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
@@ -7328,6 +7337,70 @@ references:
     href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnWindowDeactivated
   - name: (
   - name: )
+- uid: DrawnUi.Views.DrawnView.OnWindowActivated
+  commentId: M:DrawnUi.Views.DrawnView.OnWindowActivated
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnWindowActivated
+  name: OnWindowActivated()
+  nameWithType: DrawnView.OnWindowActivated()
+  fullName: DrawnUi.Views.DrawnView.OnWindowActivated()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.OnWindowActivated
+    name: OnWindowActivated
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnWindowActivated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.OnWindowActivated
+    name: OnWindowActivated
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_OnWindowActivated
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.IsWindowActive
+  commentId: P:DrawnUi.Views.DrawnView.IsWindowActive
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsWindowActive
+  name: IsWindowActive
+  nameWithType: DrawnView.IsWindowActive
+  fullName: DrawnUi.Views.DrawnView.IsWindowActive
+- uid: DrawnUi.Views.DrawnView.WindowActiveChanged
+  commentId: E:DrawnUi.Views.DrawnView.WindowActiveChanged
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_WindowActiveChanged
+  name: WindowActiveChanged
+  nameWithType: DrawnView.WindowActiveChanged
+  fullName: DrawnUi.Views.DrawnView.WindowActiveChanged
+- uid: DrawnUi.Views.DrawnView.SetWindowActive(System.Boolean)
+  commentId: M:DrawnUi.Views.DrawnView.SetWindowActive(System.Boolean)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SetWindowActive_System_Boolean_
+  name: SetWindowActive(bool)
+  nameWithType: DrawnView.SetWindowActive(bool)
+  fullName: DrawnUi.Views.DrawnView.SetWindowActive(bool)
+  nameWithType.vb: DrawnView.SetWindowActive(Boolean)
+  fullName.vb: DrawnUi.Views.DrawnView.SetWindowActive(Boolean)
+  name.vb: SetWindowActive(Boolean)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.SetWindowActive(System.Boolean)
+    name: SetWindowActive
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SetWindowActive_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.SetWindowActive(System.Boolean)
+    name: SetWindowActive
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SetWindowActive_System_Boolean_
+  - name: (
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
 - uid: DrawnUi.Views.DrawnView.PreviewInputForPopups(DrawnUi.Draw.SkiaGesturesParameters)
   commentId: M:DrawnUi.Views.DrawnView.PreviewInputForPopups(DrawnUi.Draw.SkiaGesturesParameters)
   parent: DrawnUi.Views.DrawnView
@@ -7406,6 +7479,107 @@ references:
   name: TopPopupWindow
   nameWithType: DrawnView.TopPopupWindow
   fullName: DrawnUi.Views.DrawnView.TopPopupWindow
+- uid: DrawnUi.Views.DrawnView.SystemTheme
+  commentId: P:DrawnUi.Views.DrawnView.SystemTheme
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SystemTheme
+  name: SystemTheme
+  nameWithType: DrawnView.SystemTheme
+  fullName: DrawnUi.Views.DrawnView.SystemTheme
+- uid: DrawnUi.Views.DrawnView.SystemThemeChanged
+  commentId: E:DrawnUi.Views.DrawnView.SystemThemeChanged
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SystemThemeChanged
+  name: SystemThemeChanged
+  nameWithType: DrawnView.SystemThemeChanged
+  fullName: DrawnUi.Views.DrawnView.SystemThemeChanged
+- uid: DrawnUi.Views.DrawnView.SetSystemTheme(DrawnUi.Views.SystemTheme)
+  commentId: M:DrawnUi.Views.DrawnView.SetSystemTheme(DrawnUi.Views.SystemTheme)
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SetSystemTheme_DrawnUi_Views_SystemTheme_
+  name: SetSystemTheme(SystemTheme)
+  nameWithType: DrawnView.SetSystemTheme(SystemTheme)
+  fullName: DrawnUi.Views.DrawnView.SetSystemTheme(DrawnUi.Views.SystemTheme)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.SetSystemTheme(DrawnUi.Views.SystemTheme)
+    name: SetSystemTheme
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SetSystemTheme_DrawnUi_Views_SystemTheme_
+  - name: (
+  - uid: DrawnUi.Views.SystemTheme
+    name: SystemTheme
+    href: DrawnUi.Views.SystemTheme.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.SetSystemTheme(DrawnUi.Views.SystemTheme)
+    name: SetSystemTheme
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_SetSystemTheme_DrawnUi_Views_SystemTheme_
+  - name: (
+  - uid: DrawnUi.Views.SystemTheme
+    name: SystemTheme
+    href: DrawnUi.Views.SystemTheme.html
+  - name: )
+- uid: DrawnUi.Views.DrawnView.ReadWindowsSystemTheme
+  commentId: M:DrawnUi.Views.DrawnView.ReadWindowsSystemTheme
+  parent: DrawnUi.Views.DrawnView
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReadWindowsSystemTheme
+  name: ReadWindowsSystemTheme()
+  nameWithType: DrawnView.ReadWindowsSystemTheme()
+  fullName: DrawnUi.Views.DrawnView.ReadWindowsSystemTheme()
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.ReadWindowsSystemTheme
+    name: ReadWindowsSystemTheme
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReadWindowsSystemTheme
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.ReadWindowsSystemTheme
+    name: ReadWindowsSystemTheme
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_ReadWindowsSystemTheme
+  - name: (
+  - name: )
+- uid: DrawnUi.Views.DrawnView.IsWindowsThemeMessage(System.Int32,System.IntPtr)
+  commentId: M:DrawnUi.Views.DrawnView.IsWindowsThemeMessage(System.Int32,System.IntPtr)
+  parent: DrawnUi.Views.DrawnView
+  isExternal: true
+  href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsWindowsThemeMessage_System_Int32_System_IntPtr_
+  name: IsWindowsThemeMessage(int, nint)
+  nameWithType: DrawnView.IsWindowsThemeMessage(int, nint)
+  fullName: DrawnUi.Views.DrawnView.IsWindowsThemeMessage(int, nint)
+  nameWithType.vb: DrawnView.IsWindowsThemeMessage(Integer, IntPtr)
+  fullName.vb: DrawnUi.Views.DrawnView.IsWindowsThemeMessage(Integer, System.IntPtr)
+  name.vb: IsWindowsThemeMessage(Integer, IntPtr)
+  spec.csharp:
+  - uid: DrawnUi.Views.DrawnView.IsWindowsThemeMessage(System.Int32,System.IntPtr)
+    name: IsWindowsThemeMessage
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsWindowsThemeMessage_System_Int32_System_IntPtr_
+  - name: (
+  - uid: System.Int32
+    name: int
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.IntPtr
+    name: nint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.intptr
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Views.DrawnView.IsWindowsThemeMessage(System.Int32,System.IntPtr)
+    name: IsWindowsThemeMessage
+    href: DrawnUi.Views.DrawnView.html#DrawnUi_Views_DrawnView_IsWindowsThemeMessage_System_Int32_System_IntPtr_
+  - name: (
+  - uid: System.Int32
+    name: Integer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int32
+  - name: ','
+  - name: " "
+  - uid: System.IntPtr
+    name: IntPtr
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.intptr
+  - name: )
 - uid: Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
   commentId: F:Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
   parent: Microsoft.Maui.Controls.TemplatedView

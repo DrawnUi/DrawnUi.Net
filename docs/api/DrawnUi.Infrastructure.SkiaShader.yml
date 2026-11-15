@@ -32,6 +32,7 @@ items:
   - DrawnUi.Infrastructure.SkiaShader.Offset
   - DrawnUi.Infrastructure.SkiaShader.TileMode
   - DrawnUi.Infrastructure.SkiaShader.Time
+  - DrawnUi.Infrastructure.SkiaShader.UniformsVersion
   - DrawnUi.Infrastructure.SkiaShader._bufImageResolution
   - DrawnUi.Infrastructure.SkiaShader._bufMouse
   - DrawnUi.Infrastructure.SkiaShader._bufOffset
@@ -214,6 +215,40 @@ items:
     return:
       type: System.Single[]
     content.vb: Protected ReadOnly _bufOffset As Single()
+- uid: DrawnUi.Infrastructure.SkiaShader.UniformsVersion
+  commentId: P:DrawnUi.Infrastructure.SkiaShader.UniformsVersion
+  id: UniformsVersion
+  parent: DrawnUi.Infrastructure.SkiaShader
+  langs:
+  - csharp
+  - vb
+  name: UniformsVersion
+  nameWithType: SkiaShader.UniformsVersion
+  fullName: DrawnUi.Infrastructure.SkiaShader.UniformsVersion
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: UniformsVersion
+    path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
+    startLine: 35
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Infrastructure
+  summary: >-
+    Changes when the uniforms holder returned by <xref href="DrawnUi.Infrastructure.SkiaShader.CreateUniforms(System.Single%2cSystem.Single%2cSystem.Single%2cSystem.Single)" data-throw-if-not-resolved="false"></xref> is made again (a new compile): a subclass
+
+    that writes its own uniforms only when they change writes all of them again then.
+  example: []
+  syntax:
+    content: public int UniformsVersion { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property UniformsVersion As Integer
+  overload: DrawnUi.Infrastructure.SkiaShader.UniformsVersion*
 - uid: DrawnUi.Infrastructure.SkiaShader.Time
   commentId: P:DrawnUi.Infrastructure.SkiaShader.Time
   id: Time
@@ -232,7 +267,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Time
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 34
+    startLine: 47
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -263,7 +298,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Mouse
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 39
+    startLine: 52
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -294,7 +329,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MouseInitial
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 44
+    startLine: 57
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -325,7 +360,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Offset
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 49
+    startLine: 62
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -356,7 +391,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FilterMode
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 54
+    startLine: 67
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -387,7 +422,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MipmapMode
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 59
+    startLine: 72
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -418,7 +453,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TileMode
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 64
+    startLine: 77
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -449,7 +484,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BlendMode
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 69
+    startLine: 82
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -480,7 +515,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsCompiled
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 74
+    startLine: 87
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -511,7 +546,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Compiled
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 79
+    startLine: 92
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -542,7 +577,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FromResource
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 92
+    startLine: 105
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -586,7 +621,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FromCode
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 105
+    startLine: 118
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -627,7 +662,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Code
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 117
+    startLine: 130
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -658,7 +693,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompileFromResource
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 130
+    startLine: 143
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -696,7 +731,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompileFromCode
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 141
+    startLine: 154
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -736,7 +771,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposeCompiled
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 149
+    startLine: 162
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -762,7 +797,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyTo
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 179
+    startLine: 192
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -811,7 +846,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyTo
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 196
+    startLine: 209
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -851,7 +886,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawRect
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 212
+    startLine: 225
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -886,7 +921,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawRect
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 237
+    startLine: 250
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -919,7 +954,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawImage
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 264
+    startLine: 277
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -964,7 +999,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateUniforms
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 300
+    startLine: 313
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -1025,7 +1060,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateChildren
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 340
+    startLine: 388
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -1075,7 +1110,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateTextureShader
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 357
+    startLine: 410
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -1117,7 +1152,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetPaint
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 384
+    startLine: 437
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -1145,7 +1180,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NormalizeLineEndings
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 394
+    startLine: 447
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -1179,7 +1214,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Features/Shaders/SkiaShader.cs
-    startLine: 401
+    startLine: 454
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Infrastructure
@@ -1587,6 +1622,89 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.single
   - name: (
   - name: )
+- uid: DrawnUi.Infrastructure.SkiaShader.CreateUniforms(System.Single,System.Single,System.Single,System.Single)
+  commentId: M:DrawnUi.Infrastructure.SkiaShader.CreateUniforms(System.Single,System.Single,System.Single,System.Single)
+  isExternal: true
+  href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader_CreateUniforms_System_Single_System_Single_System_Single_System_Single_
+  name: CreateUniforms(float, float, float, float)
+  nameWithType: SkiaShader.CreateUniforms(float, float, float, float)
+  fullName: DrawnUi.Infrastructure.SkiaShader.CreateUniforms(float, float, float, float)
+  nameWithType.vb: SkiaShader.CreateUniforms(Single, Single, Single, Single)
+  fullName.vb: DrawnUi.Infrastructure.SkiaShader.CreateUniforms(Single, Single, Single, Single)
+  name.vb: CreateUniforms(Single, Single, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Infrastructure.SkiaShader.CreateUniforms(System.Single,System.Single,System.Single,System.Single)
+    name: CreateUniforms
+    href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader_CreateUniforms_System_Single_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Infrastructure.SkiaShader.CreateUniforms(System.Single,System.Single,System.Single,System.Single)
+    name: CreateUniforms
+    href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader_CreateUniforms_System_Single_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Infrastructure.SkiaShader.UniformsVersion*
+  commentId: Overload:DrawnUi.Infrastructure.SkiaShader.UniformsVersion
+  href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader_UniformsVersion
+  name: UniformsVersion
+  nameWithType: SkiaShader.UniformsVersion
+  fullName: DrawnUi.Infrastructure.SkiaShader.UniformsVersion
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
 - uid: DrawnUi.Infrastructure.SkiaShader.Time*
   commentId: Overload:DrawnUi.Infrastructure.SkiaShader.Time
   href: DrawnUi.Infrastructure.SkiaShader.html#DrawnUi_Infrastructure_SkiaShader_Time

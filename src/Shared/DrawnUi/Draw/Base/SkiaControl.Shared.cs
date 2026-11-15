@@ -8585,6 +8585,8 @@ namespace DrawnUi.Draw
             // Apply chained post renderers - each snapshots from canvas, enabling shader-after-shader
             foreach (var postRenderer in EffectPostRenderers)
             {
+                if (postRenderer is SkiaShaderEffect shader)
+                    shader.ControlArea = context.Destination;
                 postRenderer.Render(context);
             }
         }

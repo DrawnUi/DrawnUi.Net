@@ -432,11 +432,65 @@ public partial class SkiaLayout
         /// </summary>
         public void RemeasureChildrenAtFinalCells()
         {
+            var starRows = false;
+            foreach (var row in Rows)
+            {
+                starRows |= row.IsStar;
+            }
+
+            if (starRows && double.IsFinite(_gridHeightConstraint))
+            {
+                // Auto rows first, measured at their final width with the star rows yielding: an Auto column that
+                // got the grid's width only now (wrapped text, a wrap of buttons on several lines) can make its rows
+                // taller than the first pass did, and the star rows were already given the rest of the height. When
+                // an Auto row grew the star rows get what is left now, nothing when the Auto rows took it all.
+                var starSizes = new double[Rows.Length];
+                for (var n = 0; n < Rows.Length; n++)
+                {
+                    starSizes[n] = Rows[n].Size;
+                }
+
+                ZeroOutStarSizes(Rows);
+                if (MeasureAtFinalCells(autoRowsOnly: true))
+                {
+                    if (_gridHeightConstraint - GridHeight() > 0)
+                    {
+                        ResolveStarRows(_gridHeightConstraint);
+                    }
+                }
+                else
+                {
+                    for (var n = 0; n < Rows.Length; n++)
+                    {
+                        if (Rows[n].IsStar)
+                        {
+                            Rows[n].Size = starSizes[n];
+                        }
+                    }
+                }
+            }
+
+            MeasureAtFinalCells(autoRowsOnly: false);
+        }
+
+        /// <summary>
+        /// Measures the visible children at their cells (only those on single Auto rows when
+        /// <paramref name="autoRowsOnly"/>); returns true when an Auto row grew.
+        /// </summary>
+        bool MeasureAtFinalCells(bool autoRowsOnly)
+        {
+            var autoRowGrew = false;
+
             foreach (var cell in _cells)
             {
                 var control = _childrenToLayOut[cell.ViewIndex];
 
                 if (control is not SkiaControl || !control.IsVisible)
+                {
+                    continue;
+                }
+
+                if (autoRowsOnly && !SizesAutoRow(cell, control))
                 {
                     continue;
                 }
@@ -447,15 +501,40 @@ public partial class SkiaLayout
                     continue;
                 }
 
+                var scale = _scale;
+                var autoRow = SizesAutoRow(cell, control);
+
+                if (autoRowsOnly)
+                {
+                    // the height the row can grow to, as in MeasureKnownCells: unbounded for a vertical Fill child (it
+                    // would take the whole constraint), the result held to the space the row can have
+                    var grownMeasure = control.Measure((float)(rectCell.Width * scale),
+                        (float)Math.Round(HeightOnAutoRow(cell, (SkiaControl)control) * scale), scale);
+
+                    double grown = grownMeasure.Units.Height;
+                    var available = AvailableHeight(cell);
+                    if (double.IsFinite(available) && grown > available)
+                    {
+                        grown = available;
+                    }
+
+                    if (grown > Rows[cell.Row].Size)
+                    {
+                        Rows[cell.Row].Update(grown);
+                        autoRowGrew = true;
+                    }
+
+                    continue;
+                }
+
                 // on an Auto row a child that is not Fill vertically keeps the height the row can grow to, as in
                 // MeasureKnownCells: the same request returns at once, and wrapped text is not cut to the row
                 var height = rectCell.Height;
-                if (SizesAutoRow(cell, control) && !((SkiaControl)control).NeedFillY)
+                if (autoRow && !((SkiaControl)control).NeedFillY)
                 {
                     height = Math.Max(height, AvailableHeight(cell));
                 }
 
-                var scale = _scale;
                 var measured = control.Measure((float)(rectCell.Width * scale), (float)Math.Round(height * scale), scale);
 
                 if (cell.ColumnSpan == 1 && Columns[cell.Column].IsAuto && measured.Units.Width > Columns[cell.Column].Size)
@@ -468,6 +547,8 @@ public partial class SkiaLayout
                     Rows[cell.Row].Update(measured.Units.Height);
                 }
             }
+
+            return autoRowGrew;
         }
 
         void MeasureChild(Cell cell)

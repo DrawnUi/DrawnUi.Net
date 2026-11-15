@@ -6,11 +6,13 @@ items:
   parent: DrawnUi.Draw
   children:
   - DrawnUi.Draw.TextLine.#ctor
+  - DrawnUi.Draw.TextLine.Ascent
   - DrawnUi.Draw.TextLine.Bounds
   - DrawnUi.Draw.TextLine.Boxes(System.Int32,System.Int32)
   - DrawnUi.Draw.TextLine.CaretIsRightToLeft(System.Int32)
   - DrawnUi.Draw.TextLine.CaretX(System.Int32)
   - DrawnUi.Draw.TextLine.Carets
+  - DrawnUi.Draw.TextLine.Descent
   - DrawnUi.Draw.TextLine.Height
   - DrawnUi.Draw.TextLine.IsLastInParagraph
   - DrawnUi.Draw.TextLine.IsNewParagraph
@@ -228,6 +230,69 @@ items:
       type: System.Single
     content.vb: Public Property Height As Single
   overload: DrawnUi.Draw.TextLine.Height*
+- uid: DrawnUi.Draw.TextLine.Ascent
+  commentId: P:DrawnUi.Draw.TextLine.Ascent
+  id: Ascent
+  parent: DrawnUi.Draw.TextLine
+  langs:
+  - csharp
+  - vb
+  name: Ascent
+  nameWithType: TextLine.Ascent
+  fullName: DrawnUi.Draw.TextLine.Ascent
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/TextLine.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Ascent
+    path: ../src/Shared/DrawnUi/Draw/Text/TextLine.cs
+    startLine: 21
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Largest ascent and descent (positive, pixels) of the fonts on this line, the label's own font included: they
+
+    share the line's baseline, which sits at the line's bottom minus <xref href="DrawnUi.Draw.TextLine.Descent" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public float Ascent { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property Ascent As Single
+  overload: DrawnUi.Draw.TextLine.Ascent*
+- uid: DrawnUi.Draw.TextLine.Descent
+  commentId: P:DrawnUi.Draw.TextLine.Descent
+  id: Descent
+  parent: DrawnUi.Draw.TextLine
+  langs:
+  - csharp
+  - vb
+  name: Descent
+  nameWithType: TextLine.Descent
+  fullName: DrawnUi.Draw.TextLine.Descent
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Text/TextLine.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Descent
+    path: ../src/Shared/DrawnUi/Draw/Text/TextLine.cs
+    startLine: 22
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  syntax:
+    content: public float Descent { get; set; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property Descent As Single
+  overload: DrawnUi.Draw.TextLine.Descent*
 - uid: DrawnUi.Draw.TextLine.Spans
   commentId: P:DrawnUi.Draw.TextLine.Spans
   id: Spans
@@ -246,7 +311,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Spans
     path: ../src/Shared/DrawnUi/Draw/Text/TextLine.cs
-    startLine: 21
+    startLine: 28
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -275,7 +340,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Carets
     path: ../src/Shared/DrawnUi/Draw/Text/TextLine.cs
-    startLine: 28
+    startLine: 35
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -311,7 +376,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsRightToLeft
     path: ../src/Shared/DrawnUi/Draw/Text/TextLine.cs
-    startLine: 34
+    startLine: 41
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -345,7 +410,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Draw/Text/TextLine.cs
-    startLine: 36
+    startLine: 43
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -374,7 +439,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CaretX
     path: ../src/Shared/DrawnUi/Draw/Text/TextLine.cs
-    startLine: 47
+    startLine: 54
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -417,7 +482,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CaretIsRightToLeft
     path: ../src/Shared/DrawnUi/Draw/Text/TextLine.cs
-    startLine: 66
+    startLine: 73
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -456,7 +521,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NearestStop
     path: ../src/Shared/DrawnUi/Draw/Text/TextLine.cs
-    startLine: 74
+    startLine: 81
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -499,7 +564,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Boxes
     path: ../src/Shared/DrawnUi/Draw/Text/TextLine.cs
-    startLine: 100
+    startLine: 107
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -958,6 +1023,24 @@ references:
   name: Height
   nameWithType: TextLine.Height
   fullName: DrawnUi.Draw.TextLine.Height
+- uid: DrawnUi.Draw.TextLine.Descent
+  commentId: P:DrawnUi.Draw.TextLine.Descent
+  href: DrawnUi.Draw.TextLine.html#DrawnUi_Draw_TextLine_Descent
+  name: Descent
+  nameWithType: TextLine.Descent
+  fullName: DrawnUi.Draw.TextLine.Descent
+- uid: DrawnUi.Draw.TextLine.Ascent*
+  commentId: Overload:DrawnUi.Draw.TextLine.Ascent
+  href: DrawnUi.Draw.TextLine.html#DrawnUi_Draw_TextLine_Ascent
+  name: Ascent
+  nameWithType: TextLine.Ascent
+  fullName: DrawnUi.Draw.TextLine.Ascent
+- uid: DrawnUi.Draw.TextLine.Descent*
+  commentId: Overload:DrawnUi.Draw.TextLine.Descent
+  href: DrawnUi.Draw.TextLine.html#DrawnUi_Draw_TextLine_Descent
+  name: Descent
+  nameWithType: TextLine.Descent
+  fullName: DrawnUi.Draw.TextLine.Descent
 - uid: DrawnUi.Draw.TextLine.Spans*
   commentId: Overload:DrawnUi.Draw.TextLine.Spans
   href: DrawnUi.Draw.TextLine.html#DrawnUi_Draw_TextLine_Spans

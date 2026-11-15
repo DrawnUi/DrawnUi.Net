@@ -490,11 +490,25 @@ Network images load `SkiaImageManager.MaxParallelLoads` at a time and the others
 
 #### Managing Memory Usage
 
-Configure the image manager for optimal memory usage:
+Images take little memory: every image that shows the same file or URL shares one decoded copy instead of holding its own (`SkiaImageManager.ReuseBitmaps`, on by default). 69 images of one 1088x1088 photo take about 7 MB instead of over 900 MB. `SkiaImage` handles the shared bitmap safely.
+
+Code that takes bitmaps from `SkiaImageManager` itself (`LoadImageAsync`, `LoadImageManagedAsync`, `GetFromCache`) shares them too: it never disposes them or draws into them. Code that needs its own copy to change or dispose sets `SkiaImageManager.ReuseBitmaps = false`.
+
+Image memory stays within a budget: the cache keeps at most `SkiaImageManager.CacheBudgetMb` megabytes of decoded pictures, 128 by default. Change it with one line:
 
 ```csharp
-// Enable bitmap reuse for better memory usage
-SkiaImageManager.ReuseBitmaps = true;
+SkiaImageManager.CacheBudgetMb = 256; // 0 = no limit
+```
+
+Over the budget, the pictures used longest ago leave the cache. A picture still shown on screen stays and is reused, never decoded twice. `SkiaImageManager.Instance.CacheMemoryMb` reads how much the cache uses now.
+
+Cached pictures also refresh after `CacheLongevitySecs` (30 minutes by default), so a picture changed on the server shows; `RemoveFromCache(url)` refreshes one at once.
+
+Configure the image manager:
+
+```csharp
+// Memory budget for decoded pictures, in megabytes (0 = no limit)
+SkiaImageManager.CacheBudgetMb = 128;
 
 // Set cache longevity (in seconds)
 SkiaImageManager.CacheLongevitySecs = 1800; // 30 minutes
@@ -617,7 +631,7 @@ var sprite = new SkiaSprite
      - `Ultra`: Cubic when scaling up, slowest (use sparingly)
 
 5. **Memory Management**
-   - Enable bitmap reuse with `SkiaImageManager.ReuseBitmaps = true`
+   - Images on the same source share one bitmap by default (`SkiaImageManager.ReuseBitmaps`): never dispose or draw into a bitmap you get from `SkiaImageManager`
    - Set reasonable cache longevity with `SkiaImageManager.CacheLongevitySecs`
    - Call `SkiaImageManager.Instance.RemoveFromCache(url)` for images you no longer need
    - Use `EraseChangedContent="True"` for dynamic image sources
@@ -763,7 +777,7 @@ if (loadedSource != null)
 - Set `CacheRescaledSource="False"` for sources that change every frame
 
 ### 3. Manage Memory Efficiently
-- Enable `SkiaImageManager.ReuseBitmaps = true` for shared images
+- Show one source in many places freely: those images share one bitmap (`SkiaImageManager.ReuseBitmaps`, on by default)
 - Set appropriate cache longevity with `CacheLongevitySecs`
 - Use `EraseChangedContent="True"` for dynamic content
 - Remove images you no longer need with `RemoveFromCache`

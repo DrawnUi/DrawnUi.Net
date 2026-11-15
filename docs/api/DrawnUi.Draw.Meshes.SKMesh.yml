@@ -1,0 +1,1032 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Draw.Meshes.SKMesh
+  commentId: T:DrawnUi.Draw.Meshes.SKMesh
+  id: SKMesh
+  parent: DrawnUi.Draw.Meshes
+  children:
+  - DrawnUi.Draw.Meshes.SKMesh.Dispose
+  - DrawnUi.Draw.Meshes.SKMesh.IsValid
+  - DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,SkiaSharp.SKRect,System.String@)
+  - DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,System.ReadOnlySpan{SkiaSharp.SKRuntimeEffectChild},SkiaSharp.SKRect,System.String@)
+  - DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,SkiaSharp.SKRect,System.String@)
+  - DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,DrawnUi.Draw.Meshes.SKMeshIndexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,SkiaSharp.SKRect,System.String@)
+  - DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,DrawnUi.Draw.Meshes.SKMeshIndexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,System.ReadOnlySpan{SkiaSharp.SKRuntimeEffectChild},SkiaSharp.SKRect,System.String@)
+  - DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,DrawnUi.Draw.Meshes.SKMeshIndexBuffer,System.Int32,System.Int32,SkiaSharp.SKRect,System.String@)
+  langs:
+  - csharp
+  - vb
+  name: SKMesh
+  nameWithType: SKMesh
+  fullName: DrawnUi.Draw.Meshes.SKMesh
+  type: Class
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SKMesh
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+    startLine: 322
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: >-
+    A custom mesh: specification, vertices, optional indices, uniforms and children, drawn with
+
+    <xref href="DrawnUi.Draw.Meshes.SKMeshCanvasExtensions.DrawMesh(SkiaSharp.SKCanvas%2cDrawnUi.Draw.Meshes.SKMesh%2cSkiaSharp.SKPaint)" data-throw-if-not-resolved="false"></xref> (stand-in for SkiaSharp's SKMesh).
+
+    Drawn through <code>SKCanvas.DrawVertices</code> and one runtime shader, so it also draws on raster (CPU) canvases.
+  example: []
+  syntax:
+    content: 'public sealed class SKMesh : IDisposable'
+    content.vb: Public NotInheritable Class SKMesh Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Draw.Meshes.SKMesh.IsValid
+  commentId: P:DrawnUi.Draw.Meshes.SKMesh.IsValid
+  id: IsValid
+  parent: DrawnUi.Draw.Meshes.SKMesh
+  langs:
+  - csharp
+  - vb
+  name: IsValid
+  nameWithType: SKMesh.IsValid
+  fullName: DrawnUi.Draw.Meshes.SKMesh.IsValid
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: IsValid
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+    startLine: 376
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: True for every mesh <code>Make</code> / <code>MakeIndexed</code> returned.
+  example: []
+  syntax:
+    content: public bool IsValid { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsValid As Boolean
+  overload: DrawnUi.Draw.Meshes.SKMesh.IsValid*
+- uid: DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,SkiaSharp.SKRect,System.String@)
+  commentId: M:DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,SkiaSharp.SKRect,System.String@)
+  id: Make(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,SkiaSharp.SKRect,System.String@)
+  parent: DrawnUi.Draw.Meshes.SKMesh
+  langs:
+  - csharp
+  - vb
+  name: Make(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, int, int, SKRect, out string)
+  nameWithType: SKMesh.Make(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, int, int, SKRect, out string)
+  fullName: DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification, DrawnUi.Draw.Meshes.SKMeshMode, DrawnUi.Draw.Meshes.SKMeshVertexBuffer, int, int, SkiaSharp.SKRect, out string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Make
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+    startLine: 382
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Creates a mesh without uniforms or children. Returns null and the reason in <code class="paramref">errors</code> on failure.
+  example: []
+  syntax:
+    content: public static SKMesh Make(SKMeshSpecification specification, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer, int vertexCount, int vertexOffset, SKRect bounds, out string errors)
+    parameters:
+    - id: specification
+      type: DrawnUi.Draw.Meshes.SKMeshSpecification
+    - id: mode
+      type: DrawnUi.Draw.Meshes.SKMeshMode
+    - id: vertexBuffer
+      type: DrawnUi.Draw.Meshes.SKMeshVertexBuffer
+    - id: vertexCount
+      type: System.Int32
+    - id: vertexOffset
+      type: System.Int32
+    - id: bounds
+      type: SkiaSharp.SKRect
+    - id: errors
+      type: System.String
+    return:
+      type: DrawnUi.Draw.Meshes.SKMesh
+    content.vb: Public Shared Function Make(specification As SKMeshSpecification, mode As SKMeshMode, vertexBuffer As SKMeshVertexBuffer, vertexCount As Integer, vertexOffset As Integer, bounds As SKRect, errors As String) As SKMesh
+  overload: DrawnUi.Draw.Meshes.SKMesh.Make*
+  nameWithType.vb: SKMesh.Make(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, Integer, Integer, SKRect, String)
+  fullName.vb: DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification, DrawnUi.Draw.Meshes.SKMeshMode, DrawnUi.Draw.Meshes.SKMeshVertexBuffer, Integer, Integer, SkiaSharp.SKRect, String)
+  name.vb: Make(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, Integer, Integer, SKRect, String)
+- uid: DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,SkiaSharp.SKRect,System.String@)
+  commentId: M:DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,SkiaSharp.SKRect,System.String@)
+  id: Make(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,SkiaSharp.SKRect,System.String@)
+  parent: DrawnUi.Draw.Meshes.SKMesh
+  langs:
+  - csharp
+  - vb
+  name: Make(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, int, int, SKData, SKRect, out string)
+  nameWithType: SKMesh.Make(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, int, int, SKData, SKRect, out string)
+  fullName: DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification, DrawnUi.Draw.Meshes.SKMeshMode, DrawnUi.Draw.Meshes.SKMeshVertexBuffer, int, int, SkiaSharp.SKData, SkiaSharp.SKRect, out string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Make
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+    startLine: 387
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Creates a mesh with uniform data. Returns null and the reason in <code class="paramref">errors</code> on failure.
+  example: []
+  syntax:
+    content: public static SKMesh Make(SKMeshSpecification specification, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer, int vertexCount, int vertexOffset, SKData uniforms, SKRect bounds, out string errors)
+    parameters:
+    - id: specification
+      type: DrawnUi.Draw.Meshes.SKMeshSpecification
+    - id: mode
+      type: DrawnUi.Draw.Meshes.SKMeshMode
+    - id: vertexBuffer
+      type: DrawnUi.Draw.Meshes.SKMeshVertexBuffer
+    - id: vertexCount
+      type: System.Int32
+    - id: vertexOffset
+      type: System.Int32
+    - id: uniforms
+      type: SkiaSharp.SKData
+    - id: bounds
+      type: SkiaSharp.SKRect
+    - id: errors
+      type: System.String
+    return:
+      type: DrawnUi.Draw.Meshes.SKMesh
+    content.vb: Public Shared Function Make(specification As SKMeshSpecification, mode As SKMeshMode, vertexBuffer As SKMeshVertexBuffer, vertexCount As Integer, vertexOffset As Integer, uniforms As SKData, bounds As SKRect, errors As String) As SKMesh
+  overload: DrawnUi.Draw.Meshes.SKMesh.Make*
+  nameWithType.vb: SKMesh.Make(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, Integer, Integer, SKData, SKRect, String)
+  fullName.vb: DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification, DrawnUi.Draw.Meshes.SKMeshMode, DrawnUi.Draw.Meshes.SKMeshVertexBuffer, Integer, Integer, SkiaSharp.SKData, SkiaSharp.SKRect, String)
+  name.vb: Make(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, Integer, Integer, SKData, SKRect, String)
+- uid: DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,System.ReadOnlySpan{SkiaSharp.SKRuntimeEffectChild},SkiaSharp.SKRect,System.String@)
+  commentId: M:DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,System.ReadOnlySpan{SkiaSharp.SKRuntimeEffectChild},SkiaSharp.SKRect,System.String@)
+  id: Make(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,System.ReadOnlySpan{SkiaSharp.SKRuntimeEffectChild},SkiaSharp.SKRect,System.String@)
+  parent: DrawnUi.Draw.Meshes.SKMesh
+  langs:
+  - csharp
+  - vb
+  name: Make(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, int, int, SKData, ReadOnlySpan<SKRuntimeEffectChild>, SKRect, out string)
+  nameWithType: SKMesh.Make(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, int, int, SKData, ReadOnlySpan<SKRuntimeEffectChild>, SKRect, out string)
+  fullName: DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification, DrawnUi.Draw.Meshes.SKMeshMode, DrawnUi.Draw.Meshes.SKMeshVertexBuffer, int, int, SkiaSharp.SKData, System.ReadOnlySpan<SkiaSharp.SKRuntimeEffectChild>, SkiaSharp.SKRect, out string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Make
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+    startLine: 395
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: >-
+    Creates a mesh with uniform data and child effects (fragment program order). <code class="paramref">vertexOffset</code>
+
+    is in bytes. Returns null and the reason in <code class="paramref">errors</code> on failure.
+  example: []
+  syntax:
+    content: public static SKMesh Make(SKMeshSpecification specification, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer, int vertexCount, int vertexOffset, SKData uniforms, ReadOnlySpan<SKRuntimeEffectChild> children, SKRect bounds, out string errors)
+    parameters:
+    - id: specification
+      type: DrawnUi.Draw.Meshes.SKMeshSpecification
+    - id: mode
+      type: DrawnUi.Draw.Meshes.SKMeshMode
+    - id: vertexBuffer
+      type: DrawnUi.Draw.Meshes.SKMeshVertexBuffer
+    - id: vertexCount
+      type: System.Int32
+    - id: vertexOffset
+      type: System.Int32
+    - id: uniforms
+      type: SkiaSharp.SKData
+    - id: children
+      type: System.ReadOnlySpan{SkiaSharp.SKRuntimeEffectChild}
+    - id: bounds
+      type: SkiaSharp.SKRect
+    - id: errors
+      type: System.String
+    return:
+      type: DrawnUi.Draw.Meshes.SKMesh
+    content.vb: Public Shared Function Make(specification As SKMeshSpecification, mode As SKMeshMode, vertexBuffer As SKMeshVertexBuffer, vertexCount As Integer, vertexOffset As Integer, uniforms As SKData, children As ReadOnlySpan(Of SKRuntimeEffectChild), bounds As SKRect, errors As String) As SKMesh
+  overload: DrawnUi.Draw.Meshes.SKMesh.Make*
+  nameWithType.vb: SKMesh.Make(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, Integer, Integer, SKData, ReadOnlySpan(Of SKRuntimeEffectChild), SKRect, String)
+  fullName.vb: DrawnUi.Draw.Meshes.SKMesh.Make(DrawnUi.Draw.Meshes.SKMeshSpecification, DrawnUi.Draw.Meshes.SKMeshMode, DrawnUi.Draw.Meshes.SKMeshVertexBuffer, Integer, Integer, SkiaSharp.SKData, System.ReadOnlySpan(Of SkiaSharp.SKRuntimeEffectChild), SkiaSharp.SKRect, String)
+  name.vb: Make(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, Integer, Integer, SKData, ReadOnlySpan(Of SKRuntimeEffectChild), SKRect, String)
+- uid: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,DrawnUi.Draw.Meshes.SKMeshIndexBuffer,System.Int32,System.Int32,SkiaSharp.SKRect,System.String@)
+  commentId: M:DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,DrawnUi.Draw.Meshes.SKMeshIndexBuffer,System.Int32,System.Int32,SkiaSharp.SKRect,System.String@)
+  id: MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,DrawnUi.Draw.Meshes.SKMeshIndexBuffer,System.Int32,System.Int32,SkiaSharp.SKRect,System.String@)
+  parent: DrawnUi.Draw.Meshes.SKMesh
+  langs:
+  - csharp
+  - vb
+  name: MakeIndexed(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, int, int, SKMeshIndexBuffer, int, int, SKRect, out string)
+  nameWithType: SKMesh.MakeIndexed(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, int, int, SKMeshIndexBuffer, int, int, SKRect, out string)
+  fullName: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification, DrawnUi.Draw.Meshes.SKMeshMode, DrawnUi.Draw.Meshes.SKMeshVertexBuffer, int, int, DrawnUi.Draw.Meshes.SKMeshIndexBuffer, int, int, SkiaSharp.SKRect, out string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: MakeIndexed
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+    startLine: 414
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Creates an indexed mesh without uniforms or children. Returns null and the reason in <code class="paramref">errors</code> on failure.
+  example: []
+  syntax:
+    content: public static SKMesh MakeIndexed(SKMeshSpecification specification, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer, int vertexCount, int vertexOffset, SKMeshIndexBuffer indexBuffer, int indexCount, int indexOffset, SKRect bounds, out string errors)
+    parameters:
+    - id: specification
+      type: DrawnUi.Draw.Meshes.SKMeshSpecification
+    - id: mode
+      type: DrawnUi.Draw.Meshes.SKMeshMode
+    - id: vertexBuffer
+      type: DrawnUi.Draw.Meshes.SKMeshVertexBuffer
+    - id: vertexCount
+      type: System.Int32
+    - id: vertexOffset
+      type: System.Int32
+    - id: indexBuffer
+      type: DrawnUi.Draw.Meshes.SKMeshIndexBuffer
+    - id: indexCount
+      type: System.Int32
+    - id: indexOffset
+      type: System.Int32
+    - id: bounds
+      type: SkiaSharp.SKRect
+    - id: errors
+      type: System.String
+    return:
+      type: DrawnUi.Draw.Meshes.SKMesh
+    content.vb: Public Shared Function MakeIndexed(specification As SKMeshSpecification, mode As SKMeshMode, vertexBuffer As SKMeshVertexBuffer, vertexCount As Integer, vertexOffset As Integer, indexBuffer As SKMeshIndexBuffer, indexCount As Integer, indexOffset As Integer, bounds As SKRect, errors As String) As SKMesh
+  overload: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed*
+  nameWithType.vb: SKMesh.MakeIndexed(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, Integer, Integer, SKMeshIndexBuffer, Integer, Integer, SKRect, String)
+  fullName.vb: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification, DrawnUi.Draw.Meshes.SKMeshMode, DrawnUi.Draw.Meshes.SKMeshVertexBuffer, Integer, Integer, DrawnUi.Draw.Meshes.SKMeshIndexBuffer, Integer, Integer, SkiaSharp.SKRect, String)
+  name.vb: MakeIndexed(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, Integer, Integer, SKMeshIndexBuffer, Integer, Integer, SKRect, String)
+- uid: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,DrawnUi.Draw.Meshes.SKMeshIndexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,SkiaSharp.SKRect,System.String@)
+  commentId: M:DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,DrawnUi.Draw.Meshes.SKMeshIndexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,SkiaSharp.SKRect,System.String@)
+  id: MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,DrawnUi.Draw.Meshes.SKMeshIndexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,SkiaSharp.SKRect,System.String@)
+  parent: DrawnUi.Draw.Meshes.SKMesh
+  langs:
+  - csharp
+  - vb
+  name: MakeIndexed(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, int, int, SKMeshIndexBuffer, int, int, SKData, SKRect, out string)
+  nameWithType: SKMesh.MakeIndexed(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, int, int, SKMeshIndexBuffer, int, int, SKData, SKRect, out string)
+  fullName: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification, DrawnUi.Draw.Meshes.SKMeshMode, DrawnUi.Draw.Meshes.SKMeshVertexBuffer, int, int, DrawnUi.Draw.Meshes.SKMeshIndexBuffer, int, int, SkiaSharp.SKData, SkiaSharp.SKRect, out string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: MakeIndexed
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+    startLine: 421
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Creates an indexed mesh with uniform data. Returns null and the reason in <code class="paramref">errors</code> on failure.
+  example: []
+  syntax:
+    content: public static SKMesh MakeIndexed(SKMeshSpecification specification, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer, int vertexCount, int vertexOffset, SKMeshIndexBuffer indexBuffer, int indexCount, int indexOffset, SKData uniforms, SKRect bounds, out string errors)
+    parameters:
+    - id: specification
+      type: DrawnUi.Draw.Meshes.SKMeshSpecification
+    - id: mode
+      type: DrawnUi.Draw.Meshes.SKMeshMode
+    - id: vertexBuffer
+      type: DrawnUi.Draw.Meshes.SKMeshVertexBuffer
+    - id: vertexCount
+      type: System.Int32
+    - id: vertexOffset
+      type: System.Int32
+    - id: indexBuffer
+      type: DrawnUi.Draw.Meshes.SKMeshIndexBuffer
+    - id: indexCount
+      type: System.Int32
+    - id: indexOffset
+      type: System.Int32
+    - id: uniforms
+      type: SkiaSharp.SKData
+    - id: bounds
+      type: SkiaSharp.SKRect
+    - id: errors
+      type: System.String
+    return:
+      type: DrawnUi.Draw.Meshes.SKMesh
+    content.vb: Public Shared Function MakeIndexed(specification As SKMeshSpecification, mode As SKMeshMode, vertexBuffer As SKMeshVertexBuffer, vertexCount As Integer, vertexOffset As Integer, indexBuffer As SKMeshIndexBuffer, indexCount As Integer, indexOffset As Integer, uniforms As SKData, bounds As SKRect, errors As String) As SKMesh
+  overload: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed*
+  nameWithType.vb: SKMesh.MakeIndexed(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, Integer, Integer, SKMeshIndexBuffer, Integer, Integer, SKData, SKRect, String)
+  fullName.vb: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification, DrawnUi.Draw.Meshes.SKMeshMode, DrawnUi.Draw.Meshes.SKMeshVertexBuffer, Integer, Integer, DrawnUi.Draw.Meshes.SKMeshIndexBuffer, Integer, Integer, SkiaSharp.SKData, SkiaSharp.SKRect, String)
+  name.vb: MakeIndexed(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, Integer, Integer, SKMeshIndexBuffer, Integer, Integer, SKData, SKRect, String)
+- uid: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,DrawnUi.Draw.Meshes.SKMeshIndexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,System.ReadOnlySpan{SkiaSharp.SKRuntimeEffectChild},SkiaSharp.SKRect,System.String@)
+  commentId: M:DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,DrawnUi.Draw.Meshes.SKMeshIndexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,System.ReadOnlySpan{SkiaSharp.SKRuntimeEffectChild},SkiaSharp.SKRect,System.String@)
+  id: MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification,DrawnUi.Draw.Meshes.SKMeshMode,DrawnUi.Draw.Meshes.SKMeshVertexBuffer,System.Int32,System.Int32,DrawnUi.Draw.Meshes.SKMeshIndexBuffer,System.Int32,System.Int32,SkiaSharp.SKData,System.ReadOnlySpan{SkiaSharp.SKRuntimeEffectChild},SkiaSharp.SKRect,System.String@)
+  parent: DrawnUi.Draw.Meshes.SKMesh
+  langs:
+  - csharp
+  - vb
+  name: MakeIndexed(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, int, int, SKMeshIndexBuffer, int, int, SKData, ReadOnlySpan<SKRuntimeEffectChild>, SKRect, out string)
+  nameWithType: SKMesh.MakeIndexed(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, int, int, SKMeshIndexBuffer, int, int, SKData, ReadOnlySpan<SKRuntimeEffectChild>, SKRect, out string)
+  fullName: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification, DrawnUi.Draw.Meshes.SKMeshMode, DrawnUi.Draw.Meshes.SKMeshVertexBuffer, int, int, DrawnUi.Draw.Meshes.SKMeshIndexBuffer, int, int, SkiaSharp.SKData, System.ReadOnlySpan<SkiaSharp.SKRuntimeEffectChild>, SkiaSharp.SKRect, out string)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: MakeIndexed
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+    startLine: 431
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: >-
+    Creates an indexed mesh with uniform data and child effects. Offsets are in bytes; indices are ushort and
+
+    relative to <code class="paramref">vertexOffset</code>. Returns null and the reason in <code class="paramref">errors</code> on failure.
+  example: []
+  syntax:
+    content: public static SKMesh MakeIndexed(SKMeshSpecification specification, SKMeshMode mode, SKMeshVertexBuffer vertexBuffer, int vertexCount, int vertexOffset, SKMeshIndexBuffer indexBuffer, int indexCount, int indexOffset, SKData uniforms, ReadOnlySpan<SKRuntimeEffectChild> children, SKRect bounds, out string errors)
+    parameters:
+    - id: specification
+      type: DrawnUi.Draw.Meshes.SKMeshSpecification
+    - id: mode
+      type: DrawnUi.Draw.Meshes.SKMeshMode
+    - id: vertexBuffer
+      type: DrawnUi.Draw.Meshes.SKMeshVertexBuffer
+    - id: vertexCount
+      type: System.Int32
+    - id: vertexOffset
+      type: System.Int32
+    - id: indexBuffer
+      type: DrawnUi.Draw.Meshes.SKMeshIndexBuffer
+    - id: indexCount
+      type: System.Int32
+    - id: indexOffset
+      type: System.Int32
+    - id: uniforms
+      type: SkiaSharp.SKData
+    - id: children
+      type: System.ReadOnlySpan{SkiaSharp.SKRuntimeEffectChild}
+    - id: bounds
+      type: SkiaSharp.SKRect
+    - id: errors
+      type: System.String
+    return:
+      type: DrawnUi.Draw.Meshes.SKMesh
+    content.vb: Public Shared Function MakeIndexed(specification As SKMeshSpecification, mode As SKMeshMode, vertexBuffer As SKMeshVertexBuffer, vertexCount As Integer, vertexOffset As Integer, indexBuffer As SKMeshIndexBuffer, indexCount As Integer, indexOffset As Integer, uniforms As SKData, children As ReadOnlySpan(Of SKRuntimeEffectChild), bounds As SKRect, errors As String) As SKMesh
+  overload: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed*
+  nameWithType.vb: SKMesh.MakeIndexed(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, Integer, Integer, SKMeshIndexBuffer, Integer, Integer, SKData, ReadOnlySpan(Of SKRuntimeEffectChild), SKRect, String)
+  fullName.vb: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed(DrawnUi.Draw.Meshes.SKMeshSpecification, DrawnUi.Draw.Meshes.SKMeshMode, DrawnUi.Draw.Meshes.SKMeshVertexBuffer, Integer, Integer, DrawnUi.Draw.Meshes.SKMeshIndexBuffer, Integer, Integer, SkiaSharp.SKData, System.ReadOnlySpan(Of SkiaSharp.SKRuntimeEffectChild), SkiaSharp.SKRect, String)
+  name.vb: MakeIndexed(SKMeshSpecification, SKMeshMode, SKMeshVertexBuffer, Integer, Integer, SKMeshIndexBuffer, Integer, Integer, SKData, ReadOnlySpan(Of SKRuntimeEffectChild), SKRect, String)
+- uid: DrawnUi.Draw.Meshes.SKMesh.Dispose
+  commentId: M:DrawnUi.Draw.Meshes.SKMesh.Dispose
+  id: Dispose
+  parent: DrawnUi.Draw.Meshes.SKMesh
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: SKMesh.Dispose()
+  fullName: DrawnUi.Draw.Meshes.SKMesh.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Dispose
+    path: ../src/Shared/DrawnUi/Features/Meshes/SKMesh.cs
+    startLine: 609
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw.Meshes
+  summary: Releases the drawing resources of this mesh.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: DrawnUi.Draw.Meshes.SKMesh.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+references:
+- uid: DrawnUi.Draw.Meshes.SKMeshCanvasExtensions.DrawMesh(SkiaSharp.SKCanvas,DrawnUi.Draw.Meshes.SKMesh,SkiaSharp.SKPaint)
+  commentId: M:DrawnUi.Draw.Meshes.SKMeshCanvasExtensions.DrawMesh(SkiaSharp.SKCanvas,DrawnUi.Draw.Meshes.SKMesh,SkiaSharp.SKPaint)
+  isExternal: true
+  href: DrawnUi.Draw.Meshes.SKMeshCanvasExtensions.html#DrawnUi_Draw_Meshes_SKMeshCanvasExtensions_DrawMesh_SkiaSharp_SKCanvas_DrawnUi_Draw_Meshes_SKMesh_SkiaSharp_SKPaint_
+  name: DrawMesh(SKCanvas, SKMesh, SKPaint)
+  nameWithType: SKMeshCanvasExtensions.DrawMesh(SKCanvas, SKMesh, SKPaint)
+  fullName: DrawnUi.Draw.Meshes.SKMeshCanvasExtensions.DrawMesh(SkiaSharp.SKCanvas, DrawnUi.Draw.Meshes.SKMesh, SkiaSharp.SKPaint)
+  spec.csharp:
+  - uid: DrawnUi.Draw.Meshes.SKMeshCanvasExtensions.DrawMesh(SkiaSharp.SKCanvas,DrawnUi.Draw.Meshes.SKMesh,SkiaSharp.SKPaint)
+    name: DrawMesh
+    href: DrawnUi.Draw.Meshes.SKMeshCanvasExtensions.html#DrawnUi_Draw_Meshes_SKMeshCanvasExtensions_DrawMesh_SkiaSharp_SKCanvas_DrawnUi_Draw_Meshes_SKMesh_SkiaSharp_SKPaint_
+  - name: (
+  - uid: SkiaSharp.SKCanvas
+    name: SKCanvas
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skcanvas
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.Meshes.SKMesh
+    name: SKMesh
+    href: DrawnUi.Draw.Meshes.SKMesh.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPaint
+    name: SKPaint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpaint
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.Meshes.SKMeshCanvasExtensions.DrawMesh(SkiaSharp.SKCanvas,DrawnUi.Draw.Meshes.SKMesh,SkiaSharp.SKPaint)
+    name: DrawMesh
+    href: DrawnUi.Draw.Meshes.SKMeshCanvasExtensions.html#DrawnUi_Draw_Meshes_SKMeshCanvasExtensions_DrawMesh_SkiaSharp_SKCanvas_DrawnUi_Draw_Meshes_SKMesh_SkiaSharp_SKPaint_
+  - name: (
+  - uid: SkiaSharp.SKCanvas
+    name: SKCanvas
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skcanvas
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Draw.Meshes.SKMesh
+    name: SKMesh
+    href: DrawnUi.Draw.Meshes.SKMesh.html
+  - name: ','
+  - name: " "
+  - uid: SkiaSharp.SKPaint
+    name: SKPaint
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skpaint
+  - name: )
+- uid: DrawnUi.Draw.Meshes
+  commentId: N:DrawnUi.Draw.Meshes
+  href: DrawnUi.html
+  name: DrawnUi.Draw.Meshes
+  nameWithType: DrawnUi.Draw.Meshes
+  fullName: DrawnUi.Draw.Meshes
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  - name: .
+  - uid: DrawnUi.Draw.Meshes
+    name: Meshes
+    href: DrawnUi.Draw.Meshes.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Draw
+    name: Draw
+    href: DrawnUi.Draw.html
+  - name: .
+  - uid: DrawnUi.Draw.Meshes
+    name: Meshes
+    href: DrawnUi.Draw.Meshes.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Draw.Meshes.SKMesh.IsValid*
+  commentId: Overload:DrawnUi.Draw.Meshes.SKMesh.IsValid
+  href: DrawnUi.Draw.Meshes.SKMesh.html#DrawnUi_Draw_Meshes_SKMesh_IsValid
+  name: IsValid
+  nameWithType: SKMesh.IsValid
+  fullName: DrawnUi.Draw.Meshes.SKMesh.IsValid
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: DrawnUi.Draw.Meshes.SKMesh.Make*
+  commentId: Overload:DrawnUi.Draw.Meshes.SKMesh.Make
+  href: DrawnUi.Draw.Meshes.SKMesh.html#DrawnUi_Draw_Meshes_SKMesh_Make_DrawnUi_Draw_Meshes_SKMeshSpecification_DrawnUi_Draw_Meshes_SKMeshMode_DrawnUi_Draw_Meshes_SKMeshVertexBuffer_System_Int32_System_Int32_SkiaSharp_SKRect_System_String__
+  name: Make
+  nameWithType: SKMesh.Make
+  fullName: DrawnUi.Draw.Meshes.SKMesh.Make
+- uid: DrawnUi.Draw.Meshes.SKMeshSpecification
+  commentId: T:DrawnUi.Draw.Meshes.SKMeshSpecification
+  parent: DrawnUi.Draw.Meshes
+  href: DrawnUi.Draw.Meshes.SKMeshSpecification.html
+  name: SKMeshSpecification
+  nameWithType: SKMeshSpecification
+  fullName: DrawnUi.Draw.Meshes.SKMeshSpecification
+- uid: DrawnUi.Draw.Meshes.SKMeshMode
+  commentId: T:DrawnUi.Draw.Meshes.SKMeshMode
+  parent: DrawnUi.Draw.Meshes
+  href: DrawnUi.Draw.Meshes.SKMeshMode.html
+  name: SKMeshMode
+  nameWithType: SKMeshMode
+  fullName: DrawnUi.Draw.Meshes.SKMeshMode
+- uid: DrawnUi.Draw.Meshes.SKMeshVertexBuffer
+  commentId: T:DrawnUi.Draw.Meshes.SKMeshVertexBuffer
+  parent: DrawnUi.Draw.Meshes
+  href: DrawnUi.Draw.Meshes.SKMeshVertexBuffer.html
+  name: SKMeshVertexBuffer
+  nameWithType: SKMeshVertexBuffer
+  fullName: DrawnUi.Draw.Meshes.SKMeshVertexBuffer
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: SkiaSharp.SKRect
+  commentId: T:SkiaSharp.SKRect
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  name: SKRect
+  nameWithType: SKRect
+  fullName: SkiaSharp.SKRect
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: DrawnUi.Draw.Meshes.SKMesh
+  commentId: T:DrawnUi.Draw.Meshes.SKMesh
+  parent: DrawnUi.Draw.Meshes
+  href: DrawnUi.Draw.Meshes.SKMesh.html
+  name: SKMesh
+  nameWithType: SKMesh
+  fullName: DrawnUi.Draw.Meshes.SKMesh
+- uid: SkiaSharp
+  commentId: N:SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp
+  name: SkiaSharp
+  nameWithType: SkiaSharp
+  fullName: SkiaSharp
+- uid: SkiaSharp.SKData
+  commentId: T:SkiaSharp.SKData
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skdata
+  name: SKData
+  nameWithType: SKData
+  fullName: SkiaSharp.SKData
+- uid: System.ReadOnlySpan{SkiaSharp.SKRuntimeEffectChild}
+  commentId: T:System.ReadOnlySpan{SkiaSharp.SKRuntimeEffectChild}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<SKRuntimeEffectChild>
+  nameWithType: ReadOnlySpan<SKRuntimeEffectChild>
+  fullName: System.ReadOnlySpan<SkiaSharp.SKRuntimeEffectChild>
+  nameWithType.vb: ReadOnlySpan(Of SKRuntimeEffectChild)
+  fullName.vb: System.ReadOnlySpan(Of SkiaSharp.SKRuntimeEffectChild)
+  name.vb: ReadOnlySpan(Of SKRuntimeEffectChild)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: SkiaSharp.SKRuntimeEffectChild
+    name: SKRuntimeEffectChild
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skruntimeeffectchild
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: SkiaSharp.SKRuntimeEffectChild
+    name: SKRuntimeEffectChild
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skruntimeeffectchild
+  - name: )
+- uid: System.ReadOnlySpan`1
+  commentId: T:System.ReadOnlySpan`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<T>
+  nameWithType: ReadOnlySpan<T>
+  fullName: System.ReadOnlySpan<T>
+  nameWithType.vb: ReadOnlySpan(Of T)
+  fullName.vb: System.ReadOnlySpan(Of T)
+  name.vb: ReadOnlySpan(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed*
+  commentId: Overload:DrawnUi.Draw.Meshes.SKMesh.MakeIndexed
+  href: DrawnUi.Draw.Meshes.SKMesh.html#DrawnUi_Draw_Meshes_SKMesh_MakeIndexed_DrawnUi_Draw_Meshes_SKMeshSpecification_DrawnUi_Draw_Meshes_SKMeshMode_DrawnUi_Draw_Meshes_SKMeshVertexBuffer_System_Int32_System_Int32_DrawnUi_Draw_Meshes_SKMeshIndexBuffer_System_Int32_System_Int32_SkiaSharp_SKRect_System_String__
+  name: MakeIndexed
+  nameWithType: SKMesh.MakeIndexed
+  fullName: DrawnUi.Draw.Meshes.SKMesh.MakeIndexed
+- uid: DrawnUi.Draw.Meshes.SKMeshIndexBuffer
+  commentId: T:DrawnUi.Draw.Meshes.SKMeshIndexBuffer
+  parent: DrawnUi.Draw.Meshes
+  href: DrawnUi.Draw.Meshes.SKMeshIndexBuffer.html
+  name: SKMeshIndexBuffer
+  nameWithType: SKMeshIndexBuffer
+  fullName: DrawnUi.Draw.Meshes.SKMeshIndexBuffer
+- uid: DrawnUi.Draw.Meshes.SKMesh.Dispose*
+  commentId: Overload:DrawnUi.Draw.Meshes.SKMesh.Dispose
+  href: DrawnUi.Draw.Meshes.SKMesh.html#DrawnUi_Draw_Meshes_SKMesh_Dispose
+  name: Dispose
+  nameWithType: SKMesh.Dispose
+  fullName: DrawnUi.Draw.Meshes.SKMesh.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )

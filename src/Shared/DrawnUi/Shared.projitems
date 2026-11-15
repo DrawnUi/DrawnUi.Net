@@ -85,6 +85,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Images\FrameworkImageSourceConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Images\ImageSourceResourceStream.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Images\SkiaImage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Draw\Images\SkiaImageManager.Budget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Images\SkiaImageTiles.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Svg\SkiaSvg.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Draw\Layout\BuildRowLayout.cs" />

@@ -30,6 +30,7 @@ items:
   - DrawnUi.Draw.SkiaShaderEffect.GetEngine
   - DrawnUi.Draw.SkiaShaderEffect.GetHashCode
   - DrawnUi.Draw.SkiaShaderEffect.GetPrimaryTexture(DrawnUi.Draw.SkiaDrawingContext,SkiaSharp.SKRect)
+  - DrawnUi.Draw.SkiaShaderEffect.GetShaderTime(System.Int64)
   - DrawnUi.Draw.SkiaShaderEffect.LoadedCode
   - DrawnUi.Draw.SkiaShaderEffect.MipmapMode
   - DrawnUi.Draw.SkiaShaderEffect.MipmapModeProperty
@@ -54,6 +55,7 @@ items:
   - DrawnUi.Draw.SkiaShaderEffect.ShaderSourceProperty
   - DrawnUi.Draw.SkiaShaderEffect.ShaderTemplate
   - DrawnUi.Draw.SkiaShaderEffect.ShaderTemplateProperty
+  - DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
   - DrawnUi.Draw.SkiaShaderEffect.ShouldDisposePreviousTexture(DrawnUi.Draw.CachedTexture)
   - DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
   - DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCacheProperty
@@ -1223,7 +1225,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedApply
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 571
+    startLine: 572
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1256,7 +1258,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TimeSeconds
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 579
+    startLine: 580
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1269,6 +1271,83 @@ items:
       type: System.Single
     content.vb: Public Property TimeSeconds As Single
   overload: DrawnUi.Draw.SkiaShaderEffect.TimeSeconds*
+- uid: DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
+  commentId: P:DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
+  id: ShaderTimeOriginNanos
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  langs:
+  - csharp
+  - vb
+  name: ShaderTimeOriginNanos
+  nameWithType: SkiaShaderEffect.ShaderTimeOriginNanos
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ShaderTimeOriginNanos
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    startLine: 590
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The frame time that iTime counts from, in nanoseconds: the first frame a shader effect renders in this
+
+    process, so iTime is the time since the app started drawing shaders (as Shadertoy's), the same clock for
+
+    every effect. Frame times count from the device's boot, and a float of days of uptime moves in steps of a
+
+    tenth of a second, which made animated shaders jump. A host with its own clock may set it before the first frame.
+  example: []
+  syntax:
+    content: public static long ShaderTimeOriginNanos { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Shared Property ShaderTimeOriginNanos As Long
+  overload: DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos*
+- uid: DrawnUi.Draw.SkiaShaderEffect.GetShaderTime(System.Int64)
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.GetShaderTime(System.Int64)
+  id: GetShaderTime(System.Int64)
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  langs:
+  - csharp
+  - vb
+  name: GetShaderTime(long)
+  nameWithType: SkiaShaderEffect.GetShaderTime(long)
+  fullName: DrawnUi.Draw.SkiaShaderEffect.GetShaderTime(long)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GetShaderTime
+    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    startLine: 602
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Seconds since <xref href="DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos" data-throw-if-not-resolved="false"></xref> for a frame time in nanoseconds: the iTime the engine writes.
+
+    The difference is taken in whole nanoseconds before it becomes a float, so it keeps its precision.
+  example: []
+  syntax:
+    content: public static float GetShaderTime(long frameNanos)
+    parameters:
+    - id: frameNanos
+      type: System.Int64
+    return:
+      type: System.Single
+    content.vb: Public Shared Function GetShaderTime(frameNanos As Long) As Single
+  overload: DrawnUi.Draw.SkiaShaderEffect.GetShaderTime*
+  nameWithType.vb: SkiaShaderEffect.GetShaderTime(Long)
+  fullName.vb: DrawnUi.Draw.SkiaShaderEffect.GetShaderTime(Long)
+  name.vb: GetShaderTime(Long)
 - uid: DrawnUi.Draw.SkiaShaderEffect.MouseCurrent
   commentId: P:DrawnUi.Draw.SkiaShaderEffect.MouseCurrent
   id: MouseCurrent
@@ -1287,7 +1366,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MouseCurrent
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 586
+    startLine: 613
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1318,7 +1397,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MouseInitial
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 591
+    startLine: 618
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1349,7 +1428,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Uniforms
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 600
+    startLine: 627
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1389,7 +1468,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 603
+    startLine: 630
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1427,7 +1506,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 607
+    startLine: 634
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1467,7 +1546,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 611
+    startLine: 638
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1509,7 +1588,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 615
+    startLine: 642
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1553,7 +1632,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 619
+    startLine: 646
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1591,7 +1670,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateUniforms
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 633
+    startLine: 660
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1627,7 +1706,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateTexturesUniforms
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 661
+    startLine: 710
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1664,7 +1743,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _template
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 673
+    startLine: 722
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1691,7 +1770,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _templatePlacehodler
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 674
+    startLine: 723
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1718,7 +1797,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadedCode
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 676
+    startLine: 725
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1747,7 +1826,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompileShader
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 681
+    startLine: 730
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1775,7 +1854,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCompilationError
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 724
+    startLine: 773
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1802,7 +1881,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SendError
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 726
+    startLine: 775
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1834,7 +1913,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompileShader
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 735
+    startLine: 784
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1870,7 +1949,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyShaderSource
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 761
+    startLine: 810
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1896,7 +1975,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedChangeSource
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 777
+    startLine: 826
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1932,7 +2011,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderCodeProperty
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 787
+    startLine: 836
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1959,7 +2038,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderCode
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 795
+    startLine: 844
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1990,7 +2069,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderSourceProperty
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 801
+    startLine: 850
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2017,7 +2096,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderSource
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 809
+    startLine: 858
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2048,7 +2127,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderTemplateProperty
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 815
+    startLine: 864
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2075,7 +2154,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderTemplate
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 820
+    startLine: 869
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2104,7 +2183,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FilterModeProperty
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 826
+    startLine: 875
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2131,7 +2210,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MipmapModeProperty
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 833
+    startLine: 882
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2158,7 +2237,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FilterMode
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 840
+    startLine: 889
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2187,7 +2266,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MipmapMode
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 846
+    startLine: 895
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2216,7 +2295,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TileModeProperty
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 852
+    startLine: 901
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2243,7 +2322,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TileMode
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 860
+    startLine: 909
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2274,7 +2353,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
     path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-    startLine: 868
+    startLine: 917
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -4666,6 +4745,36 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
+- uid: DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos*
+  commentId: Overload:DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ShaderTimeOriginNanos
+  name: ShaderTimeOriginNanos
+  nameWithType: SkiaShaderEffect.ShaderTimeOriginNanos
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
+  commentId: P:DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ShaderTimeOriginNanos
+  name: ShaderTimeOriginNanos
+  nameWithType: SkiaShaderEffect.ShaderTimeOriginNanos
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
+- uid: DrawnUi.Draw.SkiaShaderEffect.GetShaderTime*
+  commentId: Overload:DrawnUi.Draw.SkiaShaderEffect.GetShaderTime
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_GetShaderTime_System_Int64_
+  name: GetShaderTime
+  nameWithType: SkiaShaderEffect.GetShaderTime
+  fullName: DrawnUi.Draw.SkiaShaderEffect.GetShaderTime
 - uid: DrawnUi.Draw.SkiaShaderEffect.MouseCurrent*
   commentId: Overload:DrawnUi.Draw.SkiaShaderEffect.MouseCurrent
   href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_MouseCurrent

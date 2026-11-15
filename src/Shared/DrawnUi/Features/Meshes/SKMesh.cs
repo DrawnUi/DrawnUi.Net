@@ -548,7 +548,8 @@ public sealed class SKMesh : IDisposable
         else
             blender ??= Modulate;
 
-        var packed = _geometry.Packed.GetPacked(context);
+        bool varyings = _spec.VaryingsEffect != null;
+        var packed = varyings ? _geometry.Packed.GetVaryings(context) : _geometry.Packed.GetPacked(context);
         if (packed == null)
             return null;
         if (_shader != null && ReferenceEquals(_shaderPaintShader, paintShader) && _shaderPaintColor == paintColor
@@ -572,13 +573,19 @@ public sealed class SKMesh : IDisposable
         SKShader shader;
         lock (_spec.EffectLock)
         {
-            var uniforms = _spec.DrawUniforms;
+            // a plain paint color: the program that never reads the local coords (no position texel reads)
+            bool solid = paintShader == null && _spec.DrawSolidEffect != null;
+            var effect = solid ? _spec.DrawSolidEffect : _spec.DrawEffect;
+            var uniforms = solid ? _spec.DrawSolidUniforms : _spec.DrawUniforms;
             MeshGeometry.SetUniforms(uniforms, _spec.Uniforms, _uniforms);
             float alpha = paintShader == null ? 1f : paintColor.Alpha / 255f;
             g.SetCornerUniforms(uniforms, alpha);
-            uniforms.Set("_sm_pk", stackalloc float[] { 0, g.Packed.VerticesPerRow, 1f / g.Packed.VerticesPerRow, g.Packed.Rows });
+            if (varyings)
+                uniforms.Set("_sm_pk", stackalloc float[] { 0, g.Packed.VaryingsPerRow, 1f / g.Packed.VaryingsPerRow, 0 });
+            else
+                uniforms.Set("_sm_pk", stackalloc float[] { 0, g.Packed.VerticesPerRow, 1f / g.Packed.VerticesPerRow, g.Packed.Rows });
 
-            var children = _spec.DrawChildren;
+            var children = solid ? _spec.DrawSolidChildren : _spec.DrawChildren;
             for (int i = 0; i < _spec.Children.Length; i++)
                 children[_spec.Children[i].Name] = _children[i].Value == null ? (SKRuntimeEffectChild?)null : _children[i];
             children["_sm_attr"] = packed;
@@ -586,7 +593,7 @@ public sealed class SKMesh : IDisposable
             children["_sm_paint"] = source;
             if (blender != null)
                 children["_sm_blend"] = blender;
-            shader = _spec.DrawEffect.ToShader(uniforms.Holder, children);
+            shader = effect.ToShader(uniforms.Holder, children);
             children.Reset(); // holds no mesh's objects between draws
         }
 
@@ -646,6 +653,14 @@ sealed class PackedVertices
     // F32 (raster) for the vertex program run on the CPU.
     SKImage _packedF32;
     SKShader _packedF32Shader;
+    // The varyings the vertex program gives (a specification that draws varyings), per context like _packed.
+    SKImage _varyings;
+    SKShader _varyingsShader;
+    IntPtr _varyingsContext;
+    public int VaryingsPerRow { get; private init; }     // in the varyings image, a power of two
+    public int VaryingsRows { get; private init; }
+    // Vertex program runs on this range (under the geometry lock of each mesh: a race only picks a path)
+    public int VertexProgramRuns;
 
     int _refs = 1;
 
@@ -659,6 +674,8 @@ sealed class PackedVertices
         _packed?.Dispose();
         _packedF32Shader?.Dispose();
         _packedF32?.Dispose();
+        _varyingsShader?.Dispose();
+        _varyings?.Dispose();
     }
 
     public static PackedVertices Build(Key key, SKMeshVertexBuffer buffer)
@@ -673,6 +690,16 @@ sealed class PackedVertices
         int rows = (key.Available + perRow - 1) / perRow;
         if (rows * 2 > SKMeshSpecification.MaxTextureSide)
             return null;
+        int varyingsPerRow = 0, varyingsRows = 0;
+        if (key.Spec.Varyings != null)
+        {
+            varyingsPerRow = 1;
+            while (varyingsPerRow * 2 * key.Spec.Varyings.Texels <= SKMeshSpecification.MaxTextureSide)
+                varyingsPerRow *= 2;
+            varyingsRows = (key.Available + varyingsPerRow - 1) / varyingsPerRow;
+            if (varyingsRows > SKMeshSpecification.MaxTextureSide)
+                return null;
+        }
         return new PackedVertices
         {
             Id = key,
@@ -680,7 +707,49 @@ sealed class PackedVertices
             FirstFloat = key.VertexOffset / 4,
             VerticesPerRow = perRow,
             Rows = rows,
+            VaryingsPerRow = varyingsPerRow,
+            VaryingsRows = varyingsRows,
         };
+    }
+
+    // The draw program's input when the specification draws varyings: the varyings pass over the vertex bytes, on
+    // `context` (null: raster), once per context.
+    public SKShader GetVaryings(GRRecordingContext context)
+    {
+        var handle = context?.Handle ?? IntPtr.Zero;
+        lock (this)
+        {
+            if (_varyingsShader != null && _varyingsContext == handle)
+                return _varyingsShader;
+            var spec = Id.Spec;
+            int width = VaryingsPerRow * spec.Varyings.Texels;
+            var info = new SKImageInfo(width, VaryingsRows, SKColorType.RgbaF16, SKAlphaType.Premul); // written with Src: as they are
+            ref var pass = ref MeshGeometry.t_varyings;
+            if (!pass.Acquire(context, info) && (context == null || !pass.Acquire(null, info)))
+                return null;
+            SKShader shader;
+            lock (spec.EffectLock)
+            {
+                var uniforms = spec.VaryingsUniforms;
+                uniforms.Set("_sm_vtx", stackalloc float[] { FirstFloat, VertexImage.Width, 1f / VertexImage.Width, 0 });
+                uniforms.Set("_sm_vy", stackalloc float[] { VaryingsPerRow, 0, 0, 0 });
+                var children = spec.VaryingsChildren;
+                children["_sm_attr"] = VertexImage.Shader;
+                shader = spec.VaryingsEffect.ToShader(uniforms.Holder, children);
+                children.Reset();
+            }
+            using (shader)
+                MeshGeometry.PassSurface.Fill(pass.Canvas, shader, width, VaryingsRows);
+            var image = pass.Surface.Snapshot();
+            if (image == null)
+                return null;
+            _varyingsShader?.Dispose();
+            _varyings?.Dispose();
+            _varyings = image;
+            _varyingsShader = image.ToRawShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, Nearest);
+            _varyingsContext = handle;
+            return _varyingsShader;
+        }
     }
 
     // The draw program's input on `context` (null: a raster or recording canvas), once per context.
@@ -981,12 +1050,16 @@ sealed class MeshGeometry
     {
         lock (this)
         {
-            // The GPU path waits for the GPU once per draw (the read-back), about half a millisecond: small meshes
-            // (a strip of a few dozen vertices, often drawn many times a frame) run on the CPU instead.
-            // ponytail: fixed vertex threshold; measure per device if meshes of ~1000 vertices matter.
+            // The GPU path waits for the GPU once per draw (the read-back): about 0.5 ms on desktop GL, more on WebGL.
+            // The CPU path first converts the vertex range to F32 on the CPU (raster pipeline, slow, worst in Wasm),
+            // then runs the vertex program per draw. So the CPU path only pays off for a small mesh over a vertex
+            // range drawn again (a strip redrawn with new uniforms, many times a frame); a range drawn once (a mesh
+            // made every frame) or a big mesh runs on the GPU. Measured, a 194-vertex wave made every frame: desktop
+            // GL 0.8 ms GPU against 3.6 ms CPU; Blazor Wasm 6 ms GPU against 17-23 ms CPU.
             // The targets are made for a padded row width (as the DrawVertices arrays): a mesh whose count changes every
             // frame keeps its target instead of making a new surface for each count. Only the real width is run and read.
-            if (context != null && _available >= GpuVertexProgramMinVertices)
+            bool reused = Packed.VertexProgramRuns++ > 0;
+            if (context != null && (_available >= GpuVertexProgramMinVertices || !reused))
             {
                 int corners = _triangles * 3;
                 int perRow = Math.Min(PaddedCount(corners), SKMeshSpecification.MaxTextureSide / 2); // 2 pixels per corner: x, y
@@ -1065,7 +1138,7 @@ sealed class MeshGeometry
 
     // The stand-in's own pass targets, one of each per thread, reused while size, format, context and memory
     // stay the same: a mesh rebuilt every frame then creates none (SkiaSharp's SKCanvas wrapper alone is ~2 KB).
-    [ThreadStatic] internal static PassSurface t_convert, t_convertF32;
+    [ThreadStatic] internal static PassSurface t_convert, t_convertF32, t_varyings;
     [ThreadStatic] static PassSurface t_gpuPositions, t_rasterPositions;
 
     internal struct PassSurface

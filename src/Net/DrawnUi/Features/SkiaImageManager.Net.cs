@@ -4,7 +4,7 @@ using DrawnUi.Infrastructure.Xaml;
 
 namespace DrawnUi.Draw;
 
-public class SkiaImageManager : IDisposable
+public partial class SkiaImageManager : IDisposable
 {
     private readonly ConcurrentDictionary<string, CacheEntry> _cache = new(StringComparer.OrdinalIgnoreCase);
     private readonly ConcurrentDictionary<string, Task<SKBitmap>> _inFlight = new(StringComparer.OrdinalIgnoreCase);
@@ -13,7 +13,13 @@ public class SkiaImageManager : IDisposable
     private sealed record CacheEntry(SKBitmap Bitmap, DateTimeOffset ExpiresAtUtc);
 
     public static bool LoadLocalAsync = true;
-    public static bool ReuseBitmaps = false;
+    /// <summary>
+    /// On by default: images on the same source share the one decoded SKBitmap the cache holds (one copy in memory
+    /// for any number of controls). SkiaImage never disposes or edits that shared bitmap. Code of your own that
+    /// takes bitmaps from this manager (LoadImageAsync, LoadImageManagedAsync, GetFromCache) gets the shared one too:
+    /// do not dispose or draw into it, or set this to false so every caller gets its own copy.
+    /// </summary>
+    public static bool ReuseBitmaps = true;
     public static int CacheLongevitySecs = 1800;
     public static string NativeFilePrefix = "file://";
     public static bool LogEnabled = false;
@@ -157,7 +163,34 @@ public class SkiaImageManager : IDisposable
             Console.WriteLine(message);
     }
 
-    public void CancelAll() { }
+    static int _cancelAllGeneration;
+
+    /// <summary>
+    /// Cancels the network loads still waiting for a free slot, as on MAUI: their callers' token sources are cancelled
+    /// (a SkiaImage sees a cancel, not a failure). Loads already running finish.
+    /// </summary>
+    public void CancelAll()
+    {
+        Interlocked.Increment(ref _cancelAllGeneration);
+        NetworkQueue.CancelWaiting();
+    }
+
+    async Task<SKBitmap> CancelledByCancelAll(Task<SKBitmap> load, CancellationTokenSource token)
+    {
+        var generation = Volatile.Read(ref _cancelAllGeneration);
+        SKBitmap bitmap = null;
+        try
+        {
+            bitmap = await load;
+        }
+        catch (OperationCanceledException) when (generation != Volatile.Read(ref _cancelAllGeneration))
+        {
+        }
+
+        if (bitmap == null && generation != Volatile.Read(ref _cancelAllGeneration))
+            token?.Cancel();
+        return bitmap;
+    }
 
     public void RegisterImage(string sourceUrl)
     {
@@ -199,10 +232,10 @@ public class SkiaImageManager : IDisposable
                 return Task.FromResult(cached);
 
             var task = _inFlight.GetOrAdd(cacheKey, _ => LoadAndCacheAsync(source, cacheKey, priority, token.Token));
-            return AwaitTrackedLoadAsync(cacheKey, task, token.Token);
+            return CancelledByCancelAll(AwaitTrackedLoadAsync(cacheKey, task, token.Token), token);
         }
 
-        return LoadWithPriorityAsync(source, priority, token.Token);
+        return CancelledByCancelAll(LoadWithPriorityAsync(source, priority, token.Token), token);
     }
 
     private static async Task<SKBitmap> LoadWithPriorityAsync(ImageSource source, LoadPriority priority, CancellationToken cancel)
@@ -360,7 +393,9 @@ public class SkiaImageManager : IDisposable
     {
         if (string.IsNullOrWhiteSpace(uri) || bitmap == null)
             return;
-        _cache[GetCacheKey(uri)] = new CacheEntry(bitmap, DateTimeOffset.UtcNow.AddMinutes(cacheLongevityMinutes));
+        uri = GetCacheKey(uri);
+        _cache[uri] = new CacheEntry(bitmap, DateTimeOffset.UtcNow.AddMinutes(cacheLongevityMinutes));
+        OnCached(uri, bitmap, cacheLongevityMinutes * 60.0);
     }
 
     public bool AddToCache(string uri, SKBitmap bitmap, int cacheLongevitySecs)
@@ -372,6 +407,7 @@ public class SkiaImageManager : IDisposable
         if (_cache.ContainsKey(uri))
             return false;
         _cache[uri] = new CacheEntry(bitmap, DateTimeOffset.UtcNow.AddSeconds(cacheLongevitySecs));
+        OnCached(uri, bitmap, cacheLongevitySecs);
         return true;
     }
 
@@ -382,7 +418,9 @@ public class SkiaImageManager : IDisposable
     {
         if (string.IsNullOrWhiteSpace(uri))
             return false;
-        return _cache.TryRemove(GetCacheKey(uri), out _);
+        uri = GetCacheKey(uri);
+        OnRemoved(uri);
+        return _cache.TryRemove(uri, out _);
     }
 
     public SKBitmap GetFromCache(string url)
@@ -399,13 +437,23 @@ public class SkiaImageManager : IDisposable
             return null;
         url = GetCacheKey(url);
         CleanupExpired(url);
-        return _cache.TryGetValue(url, out var cached) ? cached.Bitmap : null;
+        var bitmap = _cache.TryGetValue(url, out var cached) ? cached.Bitmap : null;
+        if (_dropping)
+            return bitmap;
+        if (bitmap != null)
+            OnUsed(url);
+        else
+            bitmap = FindDropped(url);
+        return bitmap;
     }
 
     private void CleanupExpired(string url)
     {
         if (_cache.TryGetValue(url, out var cached) && cached.ExpiresAtUtc <= DateTimeOffset.UtcNow)
+        {
             _cache.TryRemove(url, out _);
+            OnRemoved(url);
+        }
     }
 
     public static string GetUriFromImageSource(ImageSource source)
@@ -477,6 +525,7 @@ public class SkiaImageManager : IDisposable
         if (!EnableHttpRetry)
             return await LoadImageFromInternetAsyncSingle(uriSource.Uri, cancel);
 
+        var generation = Volatile.Read(ref _cancelAllGeneration);
         for (var attempt = 0; attempt <= HttpRetryMaxAttempts; attempt++)
         {
             try
@@ -484,6 +533,8 @@ public class SkiaImageManager : IDisposable
                 var bitmap = await LoadImageFromInternetAsyncSingle(uriSource.Uri, cancel);
                 if (bitmap != null)
                     return bitmap;
+                if (generation != Volatile.Read(ref _cancelAllGeneration))
+                    return null; // cancelled by CancelAll: no retry
                 if (attempt < HttpRetryMaxAttempts)
                     await Task.Delay((int)Math.Pow(2, attempt) * 100, cancel);
             }

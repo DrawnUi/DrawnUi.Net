@@ -547,6 +547,18 @@ public class SkiaImage : SkiaControl
             .GetAwaiter().GetResult();
     }
 
+    /// <summary>
+    /// The image drawn from a bitmap the manager handed over. With <see cref="SkiaImageManager.ReuseBitmaps"/> that
+    /// bitmap is the one the cache shares: it is made immutable, so the image uses its pixels instead of a copy
+    /// (Skia copies a mutable bitmap's pixels into every image made from it).
+    /// </summary>
+    static SKImage ImageFromLoadedBitmap(SKBitmap bitmap)
+    {
+        if (SkiaImageManager.ReuseBitmaps)
+            bitmap.SetImmutable();
+        return SKImage.FromBitmap(bitmap);
+    }
+
     public virtual void SetImageSource(ImageSource source)
     {
         //until we implement 2-threads rendering this is needed for ImageDoubleBuffered cache rendering
@@ -599,7 +611,7 @@ public class SkiaImage : SkiaControl
                     var cachedBitmap = SkiaImageManager.Instance.GetFromCache(uri);
                     if (cachedBitmap != null)
                     {
-                        SetImageInternal(SKImage.FromBitmap(cachedBitmap), SkiaImageManager.ReuseBitmaps);
+                        SetImageInternal(ImageFromLoadedBitmap(cachedBitmap), SkiaImageManager.ReuseBitmaps);
                         //ImageBitmap = new LoadedImageSource(cachedBitmap)
                         //{
                         //    ProtectBitmapFromDispose = SkiaImageManager.ReuseBitmaps
@@ -649,7 +661,7 @@ public class SkiaImage : SkiaControl
                             //{
                             //    ProtectBitmapFromDispose = SkiaImageManager.ReuseBitmaps
                             //};
-                            SetImageInternal(SKImage.FromBitmap(bitmap), SkiaImageManager.ReuseBitmaps);
+                            SetImageInternal(ImageFromLoadedBitmap(bitmap), SkiaImageManager.ReuseBitmaps);
                             OnSuccess(uri);
                         }
                         else
