@@ -55,6 +55,8 @@ public class BossPage : SkiaLayer
     SkiaLabel _news;
     UiButton _rageButton, _turnButton;
     string _looping = "Idle";
+    /// <summary>A one-shot move playing now (its button is lit until it ends), null when none.</summary>
+    string _playing;
     string _skin = "Ember";
     bool _rage, _turning;
 
@@ -115,10 +117,27 @@ public class BossPage : SkiaLayer
                             {
                                 // A hit plays once and goes back to the loop; a dead dragon does not react.
                                 if (_looping != "Death")
+                                {
                                     me.PlayOnce(Hit);
+                                    // the hit replaces a one-shot move that was playing: its button goes dark
+                                    if (_playing != null)
+                                    {
+                                        _playing = null;
+                                        UpdateButtons();
+                                    }
+                                }
                                 _news.Text = $"Hit on {hit.Material.Replace('_', ' ')}";
                             })
-                            .OnAnimationEnded((_, name) => _news.Text = $"{CaptionOf(name)} finished")
+                            .OnAnimationEnded((_, name) =>
+                            {
+                                _news.Text = $"{CaptionOf(name)} finished";
+                                // the one-shot move is over: the looping move's button is lit again
+                                if (_playing != null && CaptionOf(name) == _playing)
+                                {
+                                    _playing = null;
+                                    UpdateButtons();
+                                }
+                            })
                             .SetGrid(0, 1),
                         new SkiaLabel("Tap the dragon to hit it.")
                             {
@@ -191,13 +210,16 @@ public class BossPage : SkiaLayer
             case Kind.Loop:
                 _boss.Play(animation);
                 _looping = caption;
+                _playing = null;
                 break;
             case Kind.Once:
                 _boss.PlayOnce(animation);
+                _playing = caption;
                 break;
             case Kind.Hold:
                 _boss.Hold(animation);
                 _looping = caption;
+                _playing = null;
                 break;
         }
         _news.Text = $"{caption}…";
@@ -228,7 +250,7 @@ public class BossPage : SkiaLayer
     void UpdateButtons()
     {
         for (var i = 0; i < Moves.Length; i++)
-            _moveButtons[i].Fill = _looping == Moves[i].Caption ? MovesAccent : ButtonColor;
+            _moveButtons[i].Fill = (_playing ?? _looping) == Moves[i].Caption ? MovesAccent : ButtonColor;
         for (var i = 0; i < Skins.Length; i++)
         {
             var on = _skin == Skins[i].Caption;

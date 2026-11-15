@@ -316,7 +316,7 @@ public partial class GalleryPage : DrawnGame
         VerticalOptions = LayoutOptions.Fill,
     };
 
-    SkiaControl MobsCard() => WideCard("Mobs on a 2D field",
+    SkiaControl MobsCard() => WideCard("3D mobs on a 2D field",
         "Many 3D monsters from one model, moved like sprites and drawn by one layer in one pass. Tap one to hit it.", new SkiaStack
     {
         Spacing = 10,

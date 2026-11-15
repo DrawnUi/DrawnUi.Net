@@ -220,7 +220,7 @@ static class CardPage
                                                     Spacing = 10, HorizontalOptions = LayoutOptions.Start, WidthRequest = 1000,
                                                     Children =
                                                     {
-                                                        new SkiaLabel("Mobs on a 2D field") { FontSize = 18, TextColor = CardTheme.Ink },
+                                                        new SkiaLabel("3D mobs on a 2D field") { FontSize = 18, TextColor = CardTheme.Ink },
                                                         new SkiaShape
                                                         {
                                                             WidthRequest = 1000, HeightRequest = 280, UseCache = SkiaCacheType.None, CornerRadius = 10,
