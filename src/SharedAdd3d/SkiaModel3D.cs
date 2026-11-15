@@ -1030,9 +1030,20 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         base.Update();
     }
 
+    CanvasWatch _watch;
+
+    /// <inheritdoc />
+    public override void SuperViewChanged()
+    {
+        base.SuperViewChanged();
+        // its GPU images go the moment its canvas leaves the screen
+        (_watch ??= new CanvasWatch(_target, () => _stale = true)).Follow(Superview);
+    }
+
     /// <inheritdoc />
     public override void OnDisposing()
     {
+        _watch?.Follow(null);
         _loop?.Dispose();
         _loop = null;
         Renderer3D.Release(_target);

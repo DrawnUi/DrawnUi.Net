@@ -192,6 +192,25 @@ void main() {
     }
 
     /// <summary>Frees a control's texture and buffers at the next draw.</summary>
+    /// <summary>
+    /// Frees a control's GPU images now, because its canvas left the screen (its window closed). On Vulkan they are
+    /// destroyed at once; on Metal released at once (as <see cref="Release"/>); GL objects belong to the view's GL
+    /// context and go with it, anything left is deleted at that context's next draw.
+    /// </summary>
+    public static void ReleaseNow(RenderTarget target)
+    {
+        if (target == null)
+            return;
+#if ANDROID
+        if (target.Native != null)
+        {
+            VulkanRenderer3D.ReleaseNow(target);
+            return;
+        }
+#endif
+        Release(target);
+    }
+
     public static void Release(RenderTarget target)
     {
         if (target == null)

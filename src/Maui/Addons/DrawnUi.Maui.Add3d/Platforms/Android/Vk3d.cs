@@ -419,6 +419,7 @@ internal static unsafe class Vk3d
     [DllImport(Lib)] public static extern int vkCreateGraphicsPipelines(IntPtr device, ulong cache, uint count, GraphicsPipelineCreateInfo* infos, IntPtr allocator, ulong* pipelines);
     [DllImport(Lib)] public static extern int vkCreateDescriptorPool(IntPtr device, DescriptorPoolCreateInfo* info, IntPtr allocator, ulong* pool);
     [DllImport(Lib)] public static extern int vkAllocateDescriptorSets(IntPtr device, DescriptorSetAllocateInfo* info, ulong* sets);
+    [DllImport(Lib)] public static extern int vkFreeDescriptorSets(IntPtr device, ulong pool, uint count, ulong* sets);
     [DllImport(Lib)] public static extern void vkUpdateDescriptorSets(IntPtr device, uint writeCount, WriteDescriptorSet* writes, uint copyCount, IntPtr copies);
 
     [DllImport(Lib)] public static extern int vkCreateCommandPool(IntPtr device, CommandPoolCreateInfo* info, IntPtr allocator, ulong* pool);

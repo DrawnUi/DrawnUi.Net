@@ -5,6 +5,8 @@ namespace Add3dGallery;
 
 [Activity(Theme = "@style/Maui.SplashTheme",
     MainLauncher = true,
+    // opening the app again returns to its window and page instead of building new ones
+    LaunchMode = LaunchMode.SingleTask,
     ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize | ConfigChanges.Density)]
 public class MainActivity : MauiAppCompatActivity
 {

@@ -83,9 +83,11 @@ internal sealed unsafe class VulkanRenderer3D
     GpuTexture _white;
     uint[] _memoryTypes;
     ConditionalWeakTable<Scene3D, GpuModel> _models = new();
-    // ponytail: like models, the texture of an image that is gone is freed only with the device.
     /// <summary>Images put on materials from code (Texture3D), by their pixels: uploaded once per device.</summary>
     ConditionalWeakTable<Image3D, GpuTexture> _images = new();
+    /// <summary>Every model and texture uploaded on the device (the white texture aside), freed with <see cref="FreeUploads"/>.</summary>
+    readonly List<GpuModel> _uploadedModels = new();
+    readonly List<GpuTexture> _uploadedTextures = new();
     readonly List<RenderTarget> _released = new();
     readonly Matrix4x4[] _joints = new Matrix4x4[MaxJoints];
     static readonly Vector3 Light = Vector3.Normalize(new Vector3(0.4f, 0.8f, 0.6f));
@@ -109,6 +111,59 @@ internal sealed unsafe class VulkanRenderer3D
                 owner._released.Add(target);
     }
 
+    /// <summary>Draws and <see cref="ReleaseNow"/> never run at the same time on one device.</summary>
+    readonly object _gate = new();
+
+    /// <summary>
+    /// Frees a control's images now: its canvas left the screen (its window closed). Called while that canvas cannot
+    /// draw, with the device alive; the GPU finishes the work already sent first. The next draw makes them again.
+    /// </summary>
+    public static void ReleaseNow(RenderTarget target)
+    {
+        target.Image?.Dispose();
+        target.Image = null;
+        if (target.Native is VkTarget { Owner: { } owner } t)
+        {
+            lock (owner._gate)
+            {
+                lock (owner._released)
+                    owner._released.Remove(target);
+                if (t.Device == owner._device && !owner._failed)
+                {
+                    vkQueueWaitIdle(owner._queue);
+                    owner.Destroy(t);
+                    // No canvas draws on this device now (one canvas uses a device at a time): its uploads go too,
+                    // the next window uploads what it shows again.
+                    owner.FreeUploads();
+                }
+            }
+        }
+        target.Native = null;
+    }
+
+    /// <summary>Frees every uploaded model and texture (the queue is idle): the next draw uploads what it needs again.</summary>
+    void FreeUploads()
+    {
+        foreach (var texture in _uploadedTextures)
+        {
+            var set = texture.Set;
+            if (set != 0)
+                vkFreeDescriptorSets(_device, _descriptorPool, 1, &set);
+            vkDestroyImageView(_device, texture.View, IntPtr.Zero);
+            vkDestroyImage(_device, texture.Image, IntPtr.Zero);
+            vkFreeMemory(_device, texture.Memory, IntPtr.Zero);
+        }
+        foreach (var model in _uploadedModels)
+        {
+            vkDestroyBuffer(_device, model.Buffer, IntPtr.Zero);
+            vkFreeMemory(_device, model.Memory, IntPtr.Zero);
+        }
+        _uploadedTextures.Clear();
+        _uploadedModels.Clear();
+        _models = new ConditionalWeakTable<Scene3D, GpuModel>();
+        _images = new ConditionalWeakTable<Image3D, GpuTexture>();
+    }
+
     /// <summary>Draws the objects into the control's image on the canvas's Vulkan device; null when it cannot.</summary>
     public static SKImage Draw(DrawnView canvas, GRContext gr, RenderTarget target, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h)
     {
@@ -121,7 +176,8 @@ internal sealed unsafe class VulkanRenderer3D
         lock (Renderers)
             if (!Renderers.TryGetValue(device, out renderer))
                 Renderers[device] = renderer = new VulkanRenderer3D();
-        return renderer.DrawOn(view, gr, target, items, count, style, viewProj, w, h);
+        lock (renderer._gate)
+            return renderer.DrawOn(view, gr, target, items, count, style, viewProj, w, h);
     }
 
     SKImage DrawOn(SkiaVulkanTextureView view, GRContext gr, RenderTarget target, RenderItem[] items, int count, in RenderStyle style, in Matrix4x4 viewProj, int w, int h)
@@ -168,6 +224,8 @@ internal sealed unsafe class VulkanRenderer3D
         _family = view.VkQueueFamily;
         _models = new ConditionalWeakTable<Scene3D, GpuModel>();
         _images = new ConditionalWeakTable<Image3D, GpuTexture>();
+        _uploadedModels.Clear();
+        _uploadedTextures.Clear();
         lock (_released)
             _released.Clear();
 
@@ -203,7 +261,7 @@ internal sealed unsafe class VulkanRenderer3D
         var sizes = stackalloc DescriptorPoolSize[2];
         sizes[0] = new DescriptorPoolSize { type = DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, descriptorCount = Slots * 2 };
         sizes[1] = new DescriptorPoolSize { type = DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, descriptorCount = 1024 };
-        var dpInfo = new DescriptorPoolCreateInfo { sType = STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO, maxSets = Slots + 1024, poolSizeCount = 2, pPoolSizes = sizes };
+        var dpInfo = new DescriptorPoolCreateInfo { sType = STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO, flags = DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT, maxSets = Slots + 1024, poolSizeCount = 2, pPoolSizes = sizes };
         fixed (ulong* p = &_descriptorPool)
             Check(vkCreateDescriptorPool(_device, &dpInfo, IntPtr.Zero, p), "descriptor pool");
 
@@ -620,6 +678,7 @@ internal sealed unsafe class VulkanRenderer3D
         if (!_images.TryGetValue(image, out var texture))
         {
             texture = UploadTexture(image);
+            _uploadedTextures.Add(texture);
             _images.AddOrUpdate(image, texture);
         }
         return texture;
@@ -630,6 +689,8 @@ internal sealed unsafe class VulkanRenderer3D
         if (!_models.TryGetValue(scene, out var model))
         {
             model = Upload(scene);
+            _uploadedModels.Add(model);
+            _uploadedTextures.AddRange(model.Textures);
             _models.AddOrUpdate(scene, model);
         }
         return model;

@@ -17,4 +17,8 @@ internal static class Renderer3D
     public static void Release(RenderTarget target)
     {
     }
+
+    public static void ReleaseNow(RenderTarget target)
+    {
+    }
 }
