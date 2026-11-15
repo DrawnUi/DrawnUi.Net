@@ -86,7 +86,7 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.8.27
+## What's New 1.10.9.1
 
   * Android: fixed a crash that could happen some time after an app was closed with Back and opened again.
   * Much lower memory for images: every image that shows the same file or URL now shares one decoded copy instead of holding its own. 69 images of one photo take about 7 MB instead of over 900 MB. Code that disposes or edits bitmaps it gets from SkiaImageManager sets `SkiaImageManager.ReuseBitmaps = false`.
