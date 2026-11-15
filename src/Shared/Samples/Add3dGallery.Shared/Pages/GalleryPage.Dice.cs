@@ -121,6 +121,26 @@ public partial class GalleryPage
         _diceView.SetMaterialColor($"shadow{d}", Colors.White.WithAlpha(Math.Clamp(0.99f - lift * 0.9f, 0.3f, 0.99f)));
     }
 
+    /// <summary>The dice's table: green casino felt, lit in its middle and darker toward its sunk edges.</summary>
+    static SkiaShape Felt(SkiaControl dice) => new()
+    {
+        CornerRadius = 14,
+        UseCache = SkiaCacheType.None,
+        HorizontalOptions = LayoutOptions.Fill,
+        BackgroundColor = Color.FromRgb(17, 82, 50),
+        FillGradient = new SkiaGradient
+        {
+            Type = GradientType.Circular,
+            StartXRatio = 0.5f, StartYRatio = 0.45f,
+            // a lamp over the table: the light falls off softly into the felt's own green, no rim of shade
+            Colors = new List<Color> { Color.FromRgb(36, 132, 80), Color.FromRgb(25, 106, 64), Color.FromRgb(17, 82, 50) },
+            ColorPositions = new List<double> { 0, 0.6, 1 },
+        },
+        BevelType = BevelType.Emboss,
+        Bevel = Theme.CardBevel(),
+        Children = { dice },
+    };
+
     SkiaControl DiceCard()
     {
         var faces = DieFaces();
@@ -132,7 +152,7 @@ public partial class GalleryPage
                 Spacing = 12,
                 Children =
                 {
-                    Stage(new SkiaModel3D(TwoDice())
+                    Felt(new SkiaModel3D(TwoDice())
                         {
                             Orbit = false,
                             Yaw = 0,
