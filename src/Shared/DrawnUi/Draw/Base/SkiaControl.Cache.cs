@@ -1199,6 +1199,17 @@ public partial class SkiaControl
                 return true; // fresh new-size cache built AND painted (CreateRenderingObjectAndPaint draws it)
             }
 
+            // A recycled cell rebound to another item (PixelsForeign): both its caches still hold the previous
+            // item's picture, never shown at the new slot. The placeholder shows until its own bake lands (that
+            // clears PixelsForeign), and a bake is queued if none runs.
+            if (PixelsForeign && UsesCacheDoubleBuffering)
+            {
+                cache = null;
+                cacheOffscreen = null;
+                if (!OffscreenBakeBusy)
+                    needBuild = true;
+            }
+
             if (cache != null)
             {
                 //CacheValidity will be set by CheckCachedObjectValid
