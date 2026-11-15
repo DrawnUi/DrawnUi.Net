@@ -4968,6 +4968,18 @@ namespace DrawnUi.Draw
         }
 
         /// <summary>
+        /// The app showed its own context menu for a touch selection: the drawn Copy button steps aside, the selection stays.
+        /// </summary>
+        internal void HideCopyButton()
+        {
+            if (!_touchSelection)
+                return;
+            _touchSelection = false;
+            _copyButton = SKRect.Empty;
+            Update();
+        }
+
+        /// <summary>
         /// Puts the selected text on the clipboard through <see cref="Super.SetClipboardText"/>. False when nothing is selected.
         /// </summary>
         public bool CopySelection()
@@ -5186,7 +5198,18 @@ namespace DrawnUi.Draw
                 case TouchActionResult.LongPressing:
                     if (mouse)
                         return _selecting ? this : null;
-                    (_anchorStart, _anchorEnd) = WordAt(IndexAt(point));
+                    var pressed = IndexAt(point);
+                    // a long press on the selection keeps it, for the context menu that follows
+                    if (_selectionLength > 0 && pressed >= _selectionStart && pressed < _selectionStart + _selectionLength)
+                    {
+                        (_anchorStart, _anchorEnd) = (_selectionStart, _selectionStart + _selectionLength);
+                        _touchSelection = true;
+                        _selecting = true;
+                        ClaimSelectionFocus();
+                        Update();
+                        return this;
+                    }
+                    (_anchorStart, _anchorEnd) = WordAt(pressed);
                     _touchSelection = true;
                     _selecting = true;
                     Select(_anchorStart, _anchorEnd - _anchorStart);

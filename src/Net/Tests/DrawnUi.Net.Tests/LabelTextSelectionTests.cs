@@ -247,6 +247,45 @@ public class LabelTextSelectionTests
     }
 
     [Fact]
+    public void TouchLongPress_OnTheSelection_KeepsIt()
+    {
+        var (host, label, robot) = Create(true, PointerDeviceType.Mouse);
+        using var _ = host;
+        var from = At(label, 6);
+        var to = At(label, 21);
+        robot.PointerDown(from.X, from.Y);
+        robot.PointerMoveTo(to.X, to.Y);
+        robot.PointerUp();
+        Assert.Equal("wonderful world", label.SelectedText);
+
+        // a long press on "world", inside the selection: the selection stays, for the context menu after it
+        var press = At(label, 18);
+        var args = new TouchActionEventArgs(1, TouchActionType.Pressed, press, null, 1f)
+        {
+            StartingLocation = press,
+            NumberOfTouches = 1,
+            IsInsideView = true,
+            Pointer = new PointerData { DeviceType = PointerDeviceType.Touch },
+        };
+        host.Canvas.OnGestureEvent(TouchActionType.Pressed, args, TouchActionResult.LongPressing);
+        host.RenderFrame();
+        Assert.Equal("wonderful world", label.SelectedText);
+
+        // a long press outside it selects the word there, as before
+        var other = At(label, 2);
+        args = new TouchActionEventArgs(2, TouchActionType.Pressed, other, null, 1f)
+        {
+            StartingLocation = other,
+            NumberOfTouches = 1,
+            IsInsideView = true,
+            Pointer = new PointerData { DeviceType = PointerDeviceType.Touch },
+        };
+        host.Canvas.OnGestureEvent(TouchActionType.Pressed, args, TouchActionResult.LongPressing);
+        host.RenderFrame();
+        Assert.Equal("Hello", label.SelectedText);
+    }
+
+    [Fact]
     public void NotSelectable_IgnoresPointer()
     {
         var (host, label, robot) = Create(false, PointerDeviceType.Mouse);

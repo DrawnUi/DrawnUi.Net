@@ -267,6 +267,10 @@ public partial class Canvas
             Tapped?.Invoke(this, EventArgs.Empty);
         }
 
+        // one context menu per touch long press (drawnui-cross 6cb)
+        if (SkipRepeatedTouchContextMenu(touchAction, args1))
+            return;
+
         var args = SkiaGesturesParameters.Create(touchAction, args1, RenderingScale);
 
         try
@@ -284,6 +288,8 @@ public partial class Canvas
         {
             args1.Handled = args.Event.Handled;
         }
+
+        AfterTouchGesture(touchAction, args1, menu => OnGestureEvent(TouchActionType.ContextMenu, menu, TouchActionResult.ContextMenu));
 
         Repaint();
     }
