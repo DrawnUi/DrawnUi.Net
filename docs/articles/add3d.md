@@ -129,5 +129,5 @@ Use production-quality glTF models (realistic or well-made stylized), keep each 
 
 ## Samples
 
-- **3D gallery** in the DrawnUi repository, `src/Shared/Samples/Add3dGallery.Shared`, with a head for MAUI, WPF, OpenTK, Blazor and pure WebAssembly: a product viewer with fabrics and hotspots, a 3D list, a card flip, a globe with pins, a mascot beside a form, micro-interactions, images on 3D, model files, 100 mobs on a 2D field and a boss fight.
+- **3D gallery** in the DrawnUi repository, `src/Shared/Samples/Add3dGallery.Shared`, with a head for MAUI, WPF, OpenTK, Blazor and pure WebAssembly: a product viewer with fabrics and hotspots, a 3D list, a card flip, a globe with pins, a mascot beside a form, micro-interactions, images on 3D, model files, 100 3D mobs on a 2D field and a boss fight.
 - **[add3d.drawnui.net](https://add3d.drawnui.net)**: the same gallery built with DrawnUI for Rust, running in the browser.
