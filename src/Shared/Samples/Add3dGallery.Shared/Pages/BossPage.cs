@@ -250,7 +250,11 @@ public class BossPage : SkiaLayer
     void UpdateButtons()
     {
         for (var i = 0; i < Moves.Length; i++)
-            _moveButtons[i].Fill = (_playing ?? _looping) == Moves[i].Caption ? MovesAccent : ButtonColor;
+        {
+            var lit = (_playing ?? _looping) == Moves[i].Caption;
+            _moveButtons[i].Fill = lit ? MovesAccent : ButtonColor;
+            _moveButtons[i].AccessibilityIsPressed = lit;
+        }
         for (var i = 0; i < Skins.Length; i++)
         {
             var on = _skin == Skins[i].Caption;
