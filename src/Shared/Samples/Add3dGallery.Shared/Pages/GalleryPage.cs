@@ -376,13 +376,20 @@ public partial class GalleryPage : DrawnGame
             new SkiaWrap
             {
                 Spacing = 8,
-                AccessibilityRole = Aria.RoleRadioGroup,
-                AccessibilityLabel = "Mobs on the field",
-                Children = MobCounts.Select((n, i) => (SkiaControl)new Button3D($"{n} mobs", Theme.Quiet, 110) { AccessibilityRole = Aria.RoleRadio }
-                        .Assign(out _mobButtons[i])
-                        .OnTapped(_ => SetMobs(n)))
-                    // How they look, switched in place: lit 3D, or drawn as a cartoon.
-                    .Append(new SkiaRow
+                Children =
+                {
+                    // how many: one radio group, its own Tab stop walked with the arrows
+                    new SkiaRow
+                    {
+                        Spacing = 8,
+                        AccessibilityRole = Aria.RoleRadioGroup,
+                        AccessibilityLabel = "Mobs on the field",
+                        Children = MobCounts.Select((n, i) => (SkiaControl)new Button3D($"{n} mobs", Theme.Quiet, 110) { AccessibilityRole = Aria.RoleRadio }
+                            .Assign(out _mobButtons[i])
+                            .OnTapped(_ => SetMobs(n))).ToList(),
+                    },
+                    // How they look, switched in place: lit 3D, or drawn as a cartoon. A Tab stop of its own.
+                    new SkiaRow
                     {
                         Spacing = 10,
                         Margin = new Thickness(8, 0, 0, 0),
@@ -398,8 +405,8 @@ public partial class GalleryPage : DrawnGame
                                         SetDrawnMobs(me.IsToggled);
                                 }),
                         }
-                    })
-                    .ToList(),
+                    },
+                }
             },
         }
     });

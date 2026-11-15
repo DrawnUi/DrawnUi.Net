@@ -585,6 +585,10 @@ public class Canvas : DrawnView, IGestureListener
                 _focusedChildAtDown = FocusedChild;
             }
 
+            // a mouse drag selecting page text keeps its moves: no scroll under it scrolls
+            if (PreviewTextSelectionGesture(args))
+                return;
+
             _checkHover = args.Type == TouchActionResult.Pointer;
             if (!_checkHover)
                 CloseTooltipOnInput(); // a press, the wheel: the tooltip closes
@@ -734,6 +738,8 @@ public class Canvas : DrawnView, IGestureListener
                 HadInput.Clear();
                 _gestureOwner = null;
             }
+
+            AfterTextSelectionDown(args, consumed);
 
             //manage focus changes
             if (args.Type != TouchActionResult.Pointer)

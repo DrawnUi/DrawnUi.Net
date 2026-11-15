@@ -384,10 +384,21 @@ public class Copyable : SkiaLabel
     {
         var items = new List<SkiaControl>();
         if (selected)
-            items.Add(Item("Copy", () => label.CopySelection()));
+            // a drag may have selected several texts: Copy takes all of them, joined by new lines
+            items.Add(Item("Copy", () =>
+            {
+                if (label.Superview is { } page && !string.IsNullOrEmpty(page.SelectedText))
+                    page.CopyTextSelection();
+                else
+                    label.CopySelection();
+            }));
         if (!string.IsNullOrEmpty(label.Url))
             items.Add(Item("Copy Link", () => Super.SetClipboardText?.Invoke(label.Url)));
-        items.Add(Item("Cancel", label.ClearSelection));
+        items.Add(Item("Cancel", () =>
+        {
+            label.Superview?.ClearTextSelection();
+            label.ClearSelection();
+        }));
         return Panel(items);
     }
 

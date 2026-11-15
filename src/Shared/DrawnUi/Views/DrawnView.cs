@@ -2171,6 +2171,7 @@ namespace DrawnUi.Views
             WasDrawn?.Invoke(this, null);
 
             AccessibilityManager.OnFrameEnd(RenderingScale);
+            ProcessTextSelectionFrame();
         }
 
         public virtual void OnDisposing()
