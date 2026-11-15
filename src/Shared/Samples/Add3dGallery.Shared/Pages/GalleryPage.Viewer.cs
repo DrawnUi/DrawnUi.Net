@@ -388,7 +388,6 @@ public partial class GalleryPage
         var sofa = source == Source.App ? new SkiaModel3D(Theme.Sofa) : new SkiaModel3D();
         sofa.Yaw = 28;
         sofa.Pitch = 14;
-        sofa.Zoom = 0.95f;
         sofa.PinchZoom = true;
         sofa.MinZoom = 0.55f;
         sofa.MaxZoom = 1.8f;

@@ -109,7 +109,7 @@ public class BossPage : SkiaLayer
                         }.SetGrid(0, 0),
                         new SkiaModel3D(Theme.Dragon)
                             {
-                                Animation = Idle, Yaw = 30, Pitch = 8, Zoom = 0.75f,
+                                Animation = Idle, Yaw = 30, Pitch = 8,
                                 HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
                             }
                             .Assign(out _boss)

@@ -73,13 +73,14 @@ public partial class GalleryPage
                         {
                             Yaw = -20,
                             Pitch = 15,
-                            Zoom = 0.9f,
+                            // a little away from the tight fit: the globe sits in space with room around it
+                            Zoom = 1.4f,
                             AutoRotate = 10,
                             // a swipe keeps the Earth turning, slowing as a scroll does
                             Fling = true,
                             PinchZoom = true,
                             MinZoom = 0.6f,
-                            MaxZoom = 1.6f,
+                            MaxZoom = 2.2f,
                             ResetOnDoubleTap = true,
                             Antialias = true,
                             HorizontalOptions = LayoutOptions.Fill,
@@ -110,7 +111,7 @@ public partial class GalleryPage
                         Spacing = 4,
                         Children =
                         {
-                            new SkiaLabel("Offices") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new SkiaLabel("Our offices") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
                             new SkiaLabel("Pick a city to turn the globe to it, or tap a pin.") { FontSize = 13, TextColor = Theme.Muted },
                         }
                     },

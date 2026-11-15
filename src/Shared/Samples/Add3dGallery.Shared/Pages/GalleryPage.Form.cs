@@ -63,6 +63,8 @@ public partial class GalleryPage
                 Stage(new SkiaModel3D(Theme.Avatar)
                         {
                             Animation = "CharacterArmature|Idle",
+                            // framed for what it does here, not for the file's jumps and falls it never plays
+                            FrameAnimations = new[] { "CharacterArmature|Idle", "CharacterArmature|Wave", "CharacterArmature|No" },
                             // The camera on the mascot's left: it faces the form at screen left (a view turn, no mirror).
                             Yaw = 32,
                             Pitch = 8,

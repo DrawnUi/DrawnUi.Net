@@ -209,13 +209,14 @@ public partial class GalleryPage
             }, still: true);
     }
 
-    const double RollMs = 1500;
-    /// <summary>The part of a roll spent tumbling; the rest is the die rocking once on the face it landed on.</summary>
-    const float Tumbling = 0.86f;
+    const double RollMs = 1700;
+    /// <summary>The part of a roll spent tumbling; the rest is the die settling on the face it landed on, on a spring.</summary>
+    const float Tumbling = 0.8f;
 
     /// <summary>
     /// A die's angle during a roll: it keeps turning fast, loses speed to friction but never crawls (its last turn is
-    /// still at 40% of its average speed), hits its face and stops dead, then rocks back a few degrees and settles.
+    /// still at 40% of its average speed), hits its face and settles on it like a damped spring: it rocks back off
+    /// the face and in again, each swing smaller, and stops.
     /// </summary>
     static float Tumble(float from, float to, float t)
     {
@@ -225,9 +226,13 @@ public partial class GalleryPage
             var u = t / Tumbling;
             return from + d * u * (1.6f - 0.6f * u);
         }
+        // a damped spring started by the impact: x(s) = A e^(-zeta w s) sin(w_d s), back off the face first
         var s = (t - Tumbling) / (1 - Tumbling);
-        // the rebound off the face: a few degrees back, then down again, damped
-        return to - MathF.Sign(d) * MathF.Min(MathF.Abs(d), 5) * MathF.Sin(MathF.PI * s) * (1 - s);
+        const float zeta = 0.28f, cycles = 2.2f;
+        var wd = 2 * MathF.PI * cycles;
+        var w = wd / MathF.Sqrt(1 - zeta * zeta);
+        var amplitude = MathF.Min(MathF.Abs(d), 7);
+        return to - MathF.Sign(d) * amplitude * MathF.Exp(-zeta * w * s) * MathF.Sin(wd * s);
     }
 
     /// <summary>Hops off the table: three falls under gravity, each lower and shorter, done before the die lands.</summary>

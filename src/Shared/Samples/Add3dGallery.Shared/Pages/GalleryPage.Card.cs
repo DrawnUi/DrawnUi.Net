@@ -120,7 +120,6 @@ public partial class GalleryPage
                         Orbit = false,
                         Yaw = 0,
                         Pitch = 0,
-                        Zoom = 0.74f,
                         // Leans toward the mouse or the finger, up to 14 degrees at the stage's edge.
                         TiltToPointer = 14,
                         Antialias = true,
