@@ -31,7 +31,9 @@ public partial class GalleryPage
         (Source.Broken, "Broken link"),
     };
 
-    const string SofaUrl = "assets/sofa.glb", BrokenUrl = "assets/no-such-sofa.glb";
+    // In the browser, a file of the page's own site; elsewhere the same file from the demo's site on the web.
+    static readonly string LinkBase = OperatingSystem.IsBrowser() ? "assets/" : "https://add3d.drawnui.net/assets/";
+    static readonly string SofaUrl = LinkBase + "sofa.glb", BrokenUrl = LinkBase + "no-such-sofa.glb";
 
     /// <summary>Parts of the sofa worth a note: name, note and the point in the model's own units, a hair above its surface.</summary>
     static readonly (string Name, string Note, Vector3 At)[] Hotspots =
