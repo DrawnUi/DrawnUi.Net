@@ -744,7 +744,12 @@ public unsafe class SkiaVulkanTextureView : TextureView, TextureView.ISurfaceTex
             Vk.vkDestroyCommandPool(device, _commandPool, IntPtr.Zero);
         _commandPool = 0;
 
-        _gpu.Dispose();
+        // the device is kept for the next window, never destroyed here: Skia objects made with it (control caches,
+        // imported images) can outlive the window and are freed later, also by the Finalizer, through this device
+        if (VulkanGpu.IsAvailable)
+            _gpu.Park();
+        else
+            _gpu.Dispose();
         _gpu = null;
     }
 
