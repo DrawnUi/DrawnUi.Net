@@ -90,6 +90,8 @@ Please star ⭐ if you like it!
 
   * Much lower memory for images: every image that shows the same file or URL now shares one decoded copy instead of holding its own. 69 images of one photo take about 7 MB instead of over 900 MB. Code that disposes or edits bitmaps it gets from SkiaImageManager sets `SkiaImageManager.ReuseBitmaps = false`.
   * Image memory stays within a budget: `SkiaImageManager.CacheBudgetMb` (128 MB by default) caps the decoded pictures the cache keeps; pictures on screen always stay.
+  * WPF: GPU canvases draw at full frame rate on every device, including Windows on ARM.
+  * Shader effects that paint only part of their control now sample the control where it really is, for example a transition clipped to its photo.
 
 ## What's New 1.10.8.26
 
