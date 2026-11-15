@@ -295,8 +295,15 @@ public class Switch3D : SkiaSwitch
                 HeightRequest = Knob,
                 HorizontalOptions = LayoutOptions.Start,
                 VerticalOptions = LayoutOptions.Center,
-                BevelType = BevelType.Bevel,
-                Bevel = new SkiaBevel { Depth = 1.5, LightColor = Colors.White, ShadowColor = Colors.Black, Opacity = 0.4 },
+                // its rim catches the light on top and falls into shade below
+                StrokeWidth = 1.5,
+                StrokeColor = Colors.White,
+                StrokeGradient = new SkiaGradient
+                {
+                    StartXRatio = 0, StartYRatio = 0, EndXRatio = 0, EndYRatio = 1,
+                    Colors = new List<Color> { Colors.White.WithAlpha(0.85f), Colors.White.WithAlpha(0.15f), Colors.Black.WithAlpha(0.35f) },
+                    ColorPositions = new List<double> { 0, 0.5, 1 },
+                },
                 Shadows = new List<SkiaShadow> { new() { Blur = 5, Y = 3, Opacity = 0.55, Color = Colors.Black } },
             },
         };
