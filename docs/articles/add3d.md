@@ -2,6 +2,8 @@
 
 The DrawnUI 3D add-on draws real 3D inside a DrawnUI screen: models from glTF files with their skeleton animations, shapes made in code, images on 3D surfaces, and many animated characters on a 2D game field. It draws through the GPU context Skia already uses, so a 3D control sits in a layout, scrolls, takes taps and gets cached around like any other control.
 
+<a href="https://add3d.drawnui.net"><img src="../images/add3d-gallery.jpg" alt="The 3D gallery: a sofa product viewer with fabric swatches and hotspots" width="720" /></a>
+
 [See it live: the 3D gallery](https://add3d.drawnui.net)
 
 ## Where it fits
@@ -51,11 +53,10 @@ new SkiaModel3D(avatarGlb)            // the .glb file's bytes
 .OnTapped3D((me, hit) => me.PlayOnce("CharacterArmature|Wave"));
 ```
 
-Animation names come from the file: `Animations` lists them. Look them up there, never guess them.
+Names come from the file: `Animations`, `NodeNames` and `MaterialNames` list them. Look them up there, never guess them.
 
 - **Loading:** pass the bytes of a glTF 2.0 binary (`.glb`), or set `Source` to a URL or an app file to load it in the background. `LoadState` tells `Loading`, `Ready` or `Failed` (`LoadStateChanged`, `Error`); show your own message on `Failed`. Controls showing the same model share one copy.
 - **Animations:** `Animation` plays in a loop; `PlayOnce` plays and returns to the loop, `Hold` stays on the last frame, `PlayLayer` plays on top of the loop. `Speed`, `CrossfadeMs`, `IsPlaying`, `AnimationEnded`.
-- **Names come from the file:** read `Animations`, `NodeNames` and `MaterialNames` instead of guessing them.
 - **Nodes and materials by name:** show, hide, move, turn or scale a part (`SetNodeVisible`, `SetNodeRotation`, ...), recolor a material, change its roughness or put any image on it (`SetMaterialColor`, `SetMaterialRoughness`, `SetMaterialImage` with a `Texture3D`).
 - **Taps:** `Tapped3D` tells the node, the material and the 3D point hit. `ScreenPosition(point)` tells where a 3D point is on screen and whether the model hides it, to pin labels to a model.
 
