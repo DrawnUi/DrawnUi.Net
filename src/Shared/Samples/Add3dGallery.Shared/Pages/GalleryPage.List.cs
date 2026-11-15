@@ -51,7 +51,7 @@ public partial class GalleryPage
                     IgnoreChildrenInvalidations = true,
                     Children =
                     {
-                        new SkiaLabel("Shop") { FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                        new Copyable("Shop") { FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
                         // Changes while the list scrolls: a fixed box, so a new count never lays the page out again.
                         new SkiaLabel
                             {
@@ -68,6 +68,8 @@ public partial class GalleryPage
                     CornerRadius = 12,
                     UseCache = SkiaCacheType.None,
                     BackgroundColor = Theme.Page,
+                    BevelType = BevelType.Emboss,
+                    Bevel = Theme.CardBevel(),
                     HeightRequest = ListHeight,
                     HorizontalOptions = LayoutOptions.Fill,
                     Children =
@@ -153,16 +155,16 @@ public partial class GalleryPage
                             new SkiaLabel(Dollars(price)) { FontSize = 14, TextColor = Theme.Gold },
                         }
                     },
-                    new UiButton("Add", Theme.Accent, 120)
+                    new Button3D("+ Add", Theme.Quiet, 120)
                         {
                             AccessibilityLabel = $"Add {name} to the cart", HorizontalOptions = LayoutOptions.End, VerticalOptions = LayoutOptions.Center,
                         }
                         .OnTapped(me =>
                         {
                             added = !added;
-                            me.Text = added ? "In the cart" : "Add";
+                            me.Text = added ? "In the cart" : "+ Add";
                             me.AccessibilityLabel = added ? $"Remove {name} from the cart" : $"Add {name} to the cart";
-                            me.Fill = added ? Theme.Stage : Theme.Accent;
+                            me.Fill = added ? Theme.Accent : Theme.Quiet;
                         }),
                 }
             }

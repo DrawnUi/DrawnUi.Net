@@ -55,6 +55,14 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     /// <summary>The glide back to the home view, 0 to 1 (1 = none running), and where it started.</summary>
     float _reset = 1, _fromYaw, _fromPitch, _fromZoom;
     bool _pinchZoom, _resetOnDoubleTap, _lockPitch;
+    /// <summary>Turns on after a drag is let go (<see cref="Fling"/>): degrees per second, slowing as a scroll does.</summary>
+    bool _fling;
+    float _flingYaw, _flingPitch;
+    /// <summary>The way the automatic turn goes: 1 as the app set it, -1 after a fling the other way (it follows the
+    /// last swipe, so a fling slows into the turn instead of stopping and turning back).</summary>
+    float _autoDirection = 1;
+    bool _dragged;
+    readonly VelocityAccumulator _velocity = new();
     float _minZoom = 0.5f, _maxZoom = 2.5f;
     /// <summary>This gesture's drag: 0 not decided yet, 1 turns the model, 2 left to the parent (vertical, pitch locked).</summary>
     int _panAxis;
@@ -332,12 +340,62 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         }
     }
 
+    float _frameMargin;
+
+    /// <summary>
+    /// Room kept around the model's resting box, in the model's own units, for parts that move past it (dice that
+    /// tumble and hop, a character's swinging arms): the view backs off so they stay in sight. 0 by default.
+    /// </summary>
+    public float FrameMargin
+    {
+        get => _frameMargin;
+        set
+        {
+            _frameMargin = MathF.Max(0, value);
+            Update();
+        }
+    }
+
     /// <summary>Drags turn the scene (on by default).</summary>
     public bool Orbit
     {
         get => _orbit;
         set => _orbit = value;
     }
+
+    /// <summary>
+    /// A drag that is let go keeps the model turning, slowing down as a scroll does after a swipe (off by default). A
+    /// finger put down stops it.
+    /// </summary>
+    public bool Fling
+    {
+        get => _fling;
+        set
+        {
+            _fling = value;
+            if (!value)
+                StopFling();
+        }
+    }
+
+    /// <summary>Turns the model on by itself from these speeds (degrees per second) until it slows to a stop.</summary>
+    internal void StartFling(float yawPerSecond, float pitchPerSecond)
+    {
+        if (_autoRotate != 0 && MathF.Abs(yawPerSecond) > MathF.Abs(_autoRotate))
+            _autoDirection = MathF.Sign(yawPerSecond) * MathF.Sign(_autoRotate);
+        _flingYaw = yawPerSecond - _autoDirection * _autoRotate;
+        _flingPitch = _lockPitch ? 0 : pitchPerSecond;
+        Changed();
+    }
+
+    void StopFling()
+    {
+        _flingYaw = 0;
+        _flingPitch = 0;
+    }
+
+    /// <summary>The scroll's deceleration: the speed keeps this share of itself each millisecond.</summary>
+    const float FlingDeceleration = 0.998f;
 
     /// <summary>
     /// Two fingers pinching and Ctrl (Cmd) + mouse wheel zoom the view, between <see cref="MinZoom"/> and
@@ -658,7 +716,7 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         Update();
     }
 
-    bool WantsFrames => _scene != null && (_autoRotate != 0 || _reset < 1 || _player.Busy || TiltMoving);
+    bool WantsFrames => _scene != null && (_autoRotate != 0 || _reset < 1 || _player.Busy || TiltMoving || _flingYaw != 0 || _flingPitch != 0);
 
     /// <summary>The lean toward the pointer has not reached where the pointer says.</summary>
     bool TiltMoving
@@ -717,7 +775,19 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     {
         if (_scene == null)
             return;
-        _yaw = (_yaw + _autoRotate * delta) % 360;
+        _yaw = (_yaw + _autoRotate * _autoDirection * delta) % 360;
+        if (_flingYaw != 0 || _flingPitch != 0)
+        {
+            _yaw = (_yaw + _flingYaw * delta) % 360;
+            if (_flingPitch != 0)
+                _pitch = Math.Clamp(_pitch + _flingPitch * delta, MinPitch, MaxPitch);
+            var keep = MathF.Pow(FlingDeceleration, delta * 1000);
+            _flingYaw *= keep;
+            _flingPitch *= keep;
+            // Under a degree and a half per second it no longer reads as moving.
+            if (MathF.Abs(_flingYaw) < 1.5f && MathF.Abs(_flingPitch) < 1.5f)
+                StopFling();
+        }
         if (_tilt > 0)
         {
             // Pointer moves come in bursts: the lean chases where they point, reaching it in about 0.15 s.
@@ -768,7 +838,102 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         }
     }
 
-    Matrix4x4 Camera(float width, float height) => _scene.Camera(_yaw, _pitch, _zoom, width / MathF.Max(height, 1));
+    // a view nobody turns (no drag, no tilt, no auto turn) is fitted exactly as it is seen
+    Matrix4x4 Camera(float width, float height)
+    {
+        var aspect = width / MathF.Max(height, 1);
+        var (min, max) = FrameBox();
+        if (!_orbit && _tilt == 0 && _autoRotate == 0)
+            return _scene.CameraAsSeen(min, max, _yaw, _pitch, _zoom, aspect, _frameMargin);
+
+        // turned by the user: fitted for any yaw at this pitch, by the model's outline (a ball keeps its size at
+        // every tilt); a lean toward the pointer is fitted over its whole range, so hovering never moves the camera
+        var outline = FrameOutline();
+        var axis = _scene.ProfileOf(-1).Axis;
+        var center = new Vector3(axis.X, (min.Y + max.Y) / 2, axis.Y);
+        float from, to;
+        if (_tilt > 0)
+            (from, to) = (_homePitch - _tilt, _homePitch + _tilt);
+        else
+            (from, to) = (_pitch, _pitch);
+        if (aspect != _fitAspect || from != _fitFrom || to != _fitTo || _frameMargin != _fitMargin || _fitOutline != outline)
+        {
+            (_fitAspect, _fitFrom, _fitTo, _fitMargin, _fitOutline) = (aspect, from, to, _frameMargin, outline);
+            _fit = Scene3D.OutlineFit(outline, center.Y, from, to, aspect, _frameMargin);
+        }
+        return Scene3D.CameraAt(center, (max - min).Length() * 0.5f + _frameMargin, _fit * _zoom, _yaw, _pitch, aspect);
+    }
+
+    const float MinPitch = -60, MaxPitch = 80;
+    float _fit, _fitAspect = float.NaN, _fitFrom, _fitTo, _fitMargin;
+    List<Vector2> _fitOutline;
+
+    Scene3D _frameScene;
+    (Vector3 Min, Vector3 Max) _frameBox;
+    List<Vector2> _outline;
+
+    /// <summary>The box the view keeps in frame: the model at rest and through <see cref="FrameAnimations"/>.</summary>
+    (Vector3 Min, Vector3 Max) FrameBox()
+    {
+        Frame();
+        return _frameBox;
+    }
+
+    /// <summary>The outline the view keeps in frame (reach from the vertical axis, height), worked out once.</summary>
+    List<Vector2> FrameOutline()
+    {
+        Frame();
+        if (_outline == null)
+        {
+            _outline = new List<Vector2>();
+            _scene.ProfileOf(-1).Points(_outline);
+            for (var a = 0; a < _scene.Animations.Length; a++)
+                if (_frameAnimations == null || _frameAnimations.Contains(_scene.Animations[a].Name))
+                    _scene.ProfileOf(a).Points(_outline);
+        }
+        return _outline;
+    }
+
+    void Frame()
+    {
+        if (ReferenceEquals(_frameScene, _scene))
+            return;
+        _frameScene = _scene;
+        _outline = null;
+        if (_frameAnimations == null)
+        {
+            _frameBox = (_scene.PlayMin, _scene.PlayMax);
+            return;
+        }
+        _frameBox = (_scene.BoundsMin, _scene.BoundsMax);
+        foreach (var name in _frameAnimations)
+        {
+            var a = _scene.AnimationNamed(name);
+            if (a < 0)
+                continue;
+            var (lo, hi) = _scene.AnimationBounds(a);
+            _frameBox = (Vector3.Min(_frameBox.Min, lo), Vector3.Max(_frameBox.Max, hi));
+        }
+    }
+
+    IReadOnlyList<string> _frameAnimations;
+
+    /// <summary>
+    /// The animations the view keeps in frame, besides the model at rest. Null (the default): every animation of the
+    /// file, so playing any of them never cuts the model. Name only the ones the app plays when the file has bigger
+    /// ones it never uses (a jump, a fall): the model then shows larger.
+    /// </summary>
+    public IReadOnlyList<string> FrameAnimations
+    {
+        get => _frameAnimations;
+        set
+        {
+            _frameAnimations = value;
+            _frameScene = null;
+            _outline = null;
+            Update();
+        }
+    }
 
     /// <summary>What the ray through this point of the control (in points from its corner) meets first, null when nothing.</summary>
     public ModelHit HitTest(float x, float y)
@@ -833,6 +998,20 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         {
             if (args.Type is TouchActionResult.Down or TouchActionResult.Up)
                 _pinch = 0;
+            if (args.Type == TouchActionResult.Down)
+            {
+                // a finger put down catches the model
+                StopFling();
+                _velocity.Clear();
+                _dragged = false;
+            }
+            else if (args.Type == TouchActionResult.Up && _fling && _dragged && !_multiTouch)
+            {
+                _dragged = false;
+                // the drag's speed when let go, in points per second, turned the way the drag turns the model
+                var v = _velocity.CalculateFinalVelocity(4000);
+                StartFling(-v.X * 0.5f, v.Y * 0.3f);
+            }
             // A gesture that had two fingers on it never turns the model, up to its last finger: the jump between the
             // fingers' events and the move of the finger left after the other lifted are not a drag.
             if (args.Event.NumberOfTouches > 1)
@@ -908,8 +1087,13 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
                     // The surface follows the finger: a drag to the right turns the near side to the right (the camera
                     // goes the other way round), in points whatever the density. Same as DrawnUI for Rust.
                     _yaw -= args.Event.Distance.Delta.X / scale * 0.5f;
+                    if (_fling)
+                    {
+                        _dragged = true;
+                        _velocity.CaptureVelocity(new Vector2(args.Event.Distance.Velocity.X, args.Event.Distance.Velocity.Y) / scale, args.ArrivedTimeNanos);
+                    }
                     if (!_lockPitch)
-                        _pitch = Math.Clamp(_pitch + args.Event.Distance.Delta.Y / scale * 0.3f, -60, 80);
+                        _pitch = Math.Clamp(_pitch + args.Event.Distance.Delta.Y / scale * 0.3f, MinPitch, MaxPitch);
                     Update();
                     return this;
                 // A plain wheel scrolls the page; Ctrl (Cmd) + wheel or a touchpad pinch zooms, as maps and Google's

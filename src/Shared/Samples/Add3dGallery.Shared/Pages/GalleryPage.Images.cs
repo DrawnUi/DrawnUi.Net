@@ -60,40 +60,17 @@ public partial class GalleryPage
         model.SetMaterialImage(material, images[index]);
     }
 
-    /// <summary>The section's tile.</summary>
-    SkiaControl ImagesSection()
+    /// <summary>The product box tile: a box wearing a label drawn in code, switched live.</summary>
+    SkiaControl ProductBoxTile()
     {
         _labels ??= Labels();
-        return new SkiaWrap
-        {
-            Spacing = 16,
-            HorizontalOptions = LayoutOptions.Center,
-            Children =
-            {
-                Tile("Product box", "A box with its label: tap it or switch the design.",
+        return Tile("Product box", "Any image applied as texture. Tap to switch design.",
                     Shaded(ProductBox(), 28, 18)
-                        .Adapt(me => me.AutoRotate = 40)
+                        // smooth edges (multisampling): the box's straight edges show steps without it
+                        .Adapt(me => { me.AutoRotate = 40; me.Antialias = true; })
                         .MaterialImage("box", _labels[0])
                         .Assign(out _product)
                         .OnTapped3D((me, _) => NextImage(me, "box", _labels, ref _label)),
-                    new SkiaRow
-                    {
-                        Spacing = 8,
-                        Children =
-                        {
-                            new UiButton("Next design", Theme.Accent, 124).OnTapped(_ => NextImage(_product, "box", _labels, ref _label)),
-                            // The box's edges: hard (the default) or smooth (4x multisampling).
-                            new UiButton("Edges: hard", Theme.Quiet, 124)
-                                .OnTapped(me =>
-                                {
-                                    _product.Antialias = !_product.Antialias;
-                                    me.Text = _product.Antialias ? "Edges: smooth" : "Edges: hard";
-                                    me.Fill = _product.Antialias ? Theme.Accent : Theme.Quiet;
-                                    me.AccessibilityIsPressed = _product.Antialias;
-                                }),
-                        }
-                    }),
-            }
-        };
+                    new Button3D("Next design", Theme.Accent, 124).OnTapped(_ => NextImage(_product, "box", _labels, ref _label)));
     }
 }

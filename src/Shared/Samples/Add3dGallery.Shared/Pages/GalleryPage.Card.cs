@@ -10,7 +10,7 @@ public partial class GalleryPage
     const float CardScale = 8.56f / 1024;
 
     SkiaModel3D _card;
-    UiButton _flipButton;
+    Button3D _flipButton;
     bool _flipped;
     /// <summary>The half turn: where it is and where it goes (0 = front, 180 = back), degrees.</summary>
     float _cardTurn, _cardTurnTo;
@@ -120,7 +120,6 @@ public partial class GalleryPage
                         Orbit = false,
                         Yaw = 0,
                         Pitch = 0,
-                        Zoom = 0.74f,
                         // Leans toward the mouse or the finger, up to 14 degrees at the stage's edge.
                         TiltToPointer = 14,
                         Antialias = true,
@@ -150,13 +149,13 @@ public partial class GalleryPage
                         UseCache = SkiaCacheType.Image,
                         Children =
                         {
-                            new SkiaLabel("Drawn Rewards Gold") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                            new SkiaLabel("12,480 points · member since 2021") { FontSize = 14, TextColor = Theme.Muted },
-                            new SkiaLabel("Both faces are images drawn in code with Skia and put on the card's two halves.")
+                            new Copyable("Drawn Rewards Gold") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new Copyable("12,480 points · member since 2021") { FontSize = 14, TextColor = Theme.Muted },
+                            new Copyable("Both faces are images drawn in code with Skia and put on the card's two halves.")
                                 { FontSize = 13, TextColor = Theme.Muted, Margin = new Thickness(0, 10, 0, 0) },
                         }
                     },
-                    new UiButton("Show the back", Theme.Accent, 160) { AccessibilityHint = "Turns the card over" }
+                    new Button3D("Show the back", Theme.Accent, 160) { AccessibilityHint = "Turns the card over" }
                         .Assign(out _flipButton)
                         .OnTapped(_ => Flip()),
                 }

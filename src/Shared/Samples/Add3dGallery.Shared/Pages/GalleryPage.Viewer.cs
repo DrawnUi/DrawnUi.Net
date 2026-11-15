@@ -31,7 +31,9 @@ public partial class GalleryPage
         (Source.Broken, "Broken link"),
     };
 
-    const string SofaUrl = "assets/sofa.glb", BrokenUrl = "assets/no-such-sofa.glb";
+    // In the browser, a file of the page's own site; elsewhere the same file from the demo's site on the web.
+    static readonly string LinkBase = OperatingSystem.IsBrowser() ? "assets/" : "https://add3d.drawnui.net/assets/";
+    static readonly string SofaUrl = LinkBase + "sofa.glb", BrokenUrl = LinkBase + "no-such-sofa.glb";
 
     /// <summary>Parts of the sofa worth a note: name, note and the point in the model's own units, a hair above its surface.</summary>
     static readonly (string Name, string Note, Vector3 At)[] Hotspots =
@@ -62,7 +64,7 @@ public partial class GalleryPage
     SkiaShape _note;
     SkiaLabel _noteTitle, _noteText;
     readonly SkiaShape[] _pins = new SkiaShape[Hotspots.Length];
-    readonly UiButton[] _sourceButtons = new UiButton[Sources.Length];
+    readonly Button3D[] _sourceButtons = new Button3D[Sources.Length];
     readonly SkiaShape[] _swatches = new SkiaShape[Fabrics.Length];
     int _fabric = -1, _openSpot = -1;
     Source _source;
@@ -82,6 +84,8 @@ public partial class GalleryPage
                 UseCache = SkiaCacheType.GPU,
                 BackgroundColor = Theme.Stage,
                 WidthRequest = ViewerWidth,
+                BevelType = BevelType.Emboss,
+                Bevel = Theme.CardBevel(),
                 HeightRequest = ViewerHeight,
                 Children =
                 {
@@ -95,7 +99,7 @@ public partial class GalleryPage
                         VerticalOptions = LayoutOptions.Fill,
                         Children = Hotspots.Select((spot, i) => (SkiaControl)Pin(i, spot.Name)).Append(Note()).ToList(),
                     },
-                    new SkiaLabel("Drag to turn  ·  pinch or Ctrl+scroll to zoom  ·  double-tap to reset")
+                    new Copyable("Drag to turn  ·  pinch or Ctrl+scroll to zoom  ·  double-tap to reset")
                     {
                         FontSize = 12, TextColor = Theme.Muted, Margin = new Thickness(0, 0, 0, 12), HorizontalTextAlignment = DrawTextAlignment.Center,
                         HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.End, InputTransparent = true,
@@ -117,8 +121,8 @@ public partial class GalleryPage
                         IgnoreChildrenInvalidations = true,
                         Children =
                         {
-                            new SkiaLabel("Walnut sofa") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                            new SkiaLabel("Three-seater, carved walnut frame") { FontSize = 13, TextColor = Theme.Muted },
+                            new Copyable("Walnut sofa") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new Copyable("Three-seater, carved walnut frame") { FontSize = 13, TextColor = Theme.Muted },
                             new SkiaLabel(Dollars(Fabrics[0].Price))
                                 {
                                     FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Gold, Margin = new Thickness(0, 6, 0, 0),
@@ -158,11 +162,11 @@ public partial class GalleryPage
                                 Spacing = 8,
                                 AccessibilityRole = Aria.RoleRadioGroup,
                                 AccessibilityLabel = "Load the model",
-                                Children = Sources.Select((s, i) => (SkiaControl)new UiButton(s.Caption, Theme.Quiet, -1) { AccessibilityRole = Aria.RoleRadio }
+                                Children = Sources.Select((s, i) => (SkiaControl)new Button3D(s.Caption, Theme.Quiet, -1) { AccessibilityRole = Aria.RoleRadio }
                                     .Assign(out _sourceButtons[i])
                                     .OnTapped(_ => LoadViewer(s.Source))).ToList(),
                             },
-                            new UiButton("Reset view", Theme.Quiet, 140) { AccessibilityHint = "Turns the sofa back to the front" }
+                            new Button3D("Reset view", Theme.Quiet, 140) { AccessibilityHint = "Turns the sofa back to the front" }
                                 .OnTapped(_ => _viewer?.ResetView()),
                         }
                     },
@@ -200,7 +204,7 @@ public partial class GalleryPage
             {
                 new SkiaLabel($"{index + 1}")
                 {
-                    FontSize = 12, FontFamily = Theme.Title, TextColor = Theme.Accent,
+                    FontSize = 12, FontFamily = Theme.Title, TextColor = Theme.Darker(Theme.Accent, 0.4f),
                     HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center,
                 },
             }
@@ -296,7 +300,7 @@ public partial class GalleryPage
                     }.WithAccessibilityLive(),
                     new SkiaLabel { FontSize = 13, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center, HorizontalTextAlignment = DrawTextAlignment.Center }
                         .Assign(out _failedText),
-                    new UiButton("Use the app's copy", Theme.Accent, 180) { Margin = new Thickness(0, 6, 0, 0) }
+                    new Button3D("Use the app's copy", Theme.Accent, 180) { Margin = new Thickness(0, 6, 0, 0) }
                         .WithHorizontalOptions(LayoutOptions.Center)
                         .OnTapped(_ => LoadViewer(Source.App)),
                 }
@@ -386,7 +390,6 @@ public partial class GalleryPage
         var sofa = source == Source.App ? new SkiaModel3D(Theme.Sofa) : new SkiaModel3D();
         sofa.Yaw = 28;
         sofa.Pitch = 14;
-        sofa.Zoom = 0.95f;
         sofa.PinchZoom = true;
         sofa.MinZoom = 0.55f;
         sofa.MaxZoom = 1.8f;

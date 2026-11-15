@@ -687,7 +687,8 @@ public class Canvas : DrawnView, IGestureListener
 
                         if (consumed != null)
                         {
-                            if (args.Type != TouchActionResult.Up)
+                            // a mouse move (hover) never takes the gesture: a focused field under the pointer kept every later wheel
+                            if (args.Type != TouchActionResult.Up && args.Type != TouchActionResult.Pointer)
                             {
                                 AddHadInput(consumed, args);
                             }

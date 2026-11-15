@@ -153,6 +153,71 @@ public sealed class Mesh3D
         return mesh;
     }
 
+    /// <summary>
+    /// A box with rounded edges and corners (a die, a soap bar, a phone, a cushion), centered; <paramref name="radius"/>
+    /// in the box's units, at most half its smallest side. An image covers each face whole, upright on the sides, as on
+    /// <see cref="Cuboid"/>; with <paramref name="atlas"/> each face takes its own cell of one image split 3 x 2, in the
+    /// order +X, -X, +Y on the top row and -Y, +Z, -Z on the bottom row (a die's six faces in one image).
+    /// </summary>
+    public static Mesh3D RoundedCuboid(float width, float height, float depth, float radius, bool atlas = false)
+    {
+        var e = new Vector3(width / 2, height / 2, depth / 2);
+        var r = Math.Clamp(radius, 0, MathF.Min(e.X, MathF.Min(e.Y, e.Z)));
+        var inner = e - new Vector3(r);
+        const int steps = 6; // per 45 degrees of an edge's curve
+        var mesh = new Mesh3D();
+
+        // a face's coordinates along one axis: the curve at each edge in even angles, flat between
+        static float[] Along(float half, float r)
+        {
+            var c = new float[2 * steps + 2];
+            for (var k = 0; k <= steps; k++)
+            {
+                var off = (half - r) + r * MathF.Tan((steps - k) / (float)steps * MathF.PI / 4);
+                c[k] = -off;
+                c[2 * steps + 1 - k] = off;
+            }
+            return c;
+        }
+
+        // face normal, right and up as seen from outside (as Cuboid lays its images)
+        (Vector3 N, Vector3 U, Vector3 V)[] faces =
+        {
+            (Vector3.UnitX, -Vector3.UnitZ, Vector3.UnitY), (-Vector3.UnitX, Vector3.UnitZ, Vector3.UnitY),
+            (Vector3.UnitY, Vector3.UnitX, -Vector3.UnitZ), (-Vector3.UnitY, Vector3.UnitX, Vector3.UnitZ),
+            (Vector3.UnitZ, Vector3.UnitX, Vector3.UnitY), (-Vector3.UnitZ, -Vector3.UnitX, Vector3.UnitY),
+        };
+        static float Abs(Vector3 axis, Vector3 v) => MathF.Abs(Vector3.Dot(axis, v));
+        for (var f = 0; f < faces.Length; f++)
+        {
+            var (n, u, v) = faces[f];
+            float en = Abs(n, e), eu = Abs(u, e), ev = Abs(v, e);
+            var cu = Along(eu, r);
+            var cv = Along(ev, r);
+            var at = (uint)mesh.Positions.Count;
+            foreach (var t in cv)
+            foreach (var s in cu)
+            {
+                var p = n * en + u * s + v * t;
+                var core = Vector3.Clamp(p, -inner, inner);
+                var dir = p - core;
+                dir = dir.LengthSquared() > 0 ? Vector3.Normalize(dir) : n;
+                mesh.Positions.Add(core + dir * r);
+                mesh.Normals.Add(dir);
+                var uv = new Vector2((s / eu + 1) / 2, 1 - (t / ev + 1) / 2);
+                mesh.Uvs.Add(atlas ? new Vector2((f % 3 + uv.X) / 3, (f / 3 + uv.Y) / 2) : uv);
+            }
+            var row = (uint)cu.Length;
+            for (uint j = 0; j + 1 < cv.Length; j++)
+            for (uint i = 0; i + 1 < row; i++)
+            {
+                var a = at + j * row + i;
+                mesh.Indices.AddRange(new[] { a, a + 1, a + 1 + row, a, a + 1 + row, a + row });
+            }
+        }
+        return mesh;
+    }
+
     // ponytail: contours are filled as solids, holes (an O, a ring) are not cut; draw a ring with Torus or Lathe
     // until a shape needs a hole.
     /// <summary>

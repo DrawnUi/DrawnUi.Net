@@ -11,27 +11,27 @@ public partial class GalleryPage
 {
     const float GlobeHeight = 420;
     /// <summary>The pin's size, its tip (the city's point) from its top left, the chip's size and how far above the point it sits.</summary>
-    const float PinW = 32, PinH = 48, PinTipX = 16, PinTipY = 43, ChipW = 130, ChipH = 30, ChipRise = 78;
+    // A pin is a round badge centered on its city, its halo around it; the name chip stands above the badge.
+    const float PinW = 44, PinH = 44, PinTipX = 22, PinTipY = 22, ChipW = 168, ChipH = 46, ChipRise = 62;
 
-    static readonly Color PinRed = Color.FromRgb(234, 67, 53);
 
-    /// <summary>The pinned cities: name, latitude and longitude in degrees.</summary>
-    static readonly (string Name, float Lat, float Lon)[] Cities =
+    /// <summary>The pinned cities: name, country, latitude and longitude in degrees.</summary>
+    static readonly (string Name, string Country, float Lat, float Lon)[] Cities =
     {
-        ("Tokyo", 35.7f, 139.7f),
-        ("Sydney", -33.9f, 151.2f),
-        ("Cape Town", -33.9f, 18.4f),
-        ("London", 51.5f, -0.1f),
-        ("New York", 40.7f, -74.0f),
-        ("Rio de Janeiro", -22.9f, -43.2f),
+        ("Tokyo", "Japan", 35.7f, 139.7f),
+        ("Sydney", "Australia", -33.9f, 151.2f),
+        ("Cape Town", "South Africa", -33.9f, 18.4f),
+        ("London", "United Kingdom", 51.5f, -0.1f),
+        ("New York", "United States", 40.7f, -74.0f),
+        ("Rio de Janeiro", "Brazil", -22.9f, -43.2f),
     };
 
     SkiaModel3D _globe;
-    UiButton _spinButton;
+    Switch3D _spinSwitch;
     readonly SkiaLayer[] _cityPins = new SkiaLayer[Cities.Length];
-    readonly SkiaShape[] _pulses = new SkiaShape[Cities.Length];
-    readonly SkiaShape[] _cityLabels = new SkiaShape[Cities.Length];
-    readonly UiButton[] _cityButtons = new UiButton[Cities.Length];
+    readonly SkiaLayer[] _pulses = new SkiaLayer[Cities.Length];
+    readonly SkiaLayer[] _cityLabels = new SkiaLayer[Cities.Length];
+    readonly Button3D[] _cityButtons = new Button3D[Cities.Length];
     int _openCity = -1;
     bool _spinning = true;
     /// <summary>A glide to a city: 0 to 1 while it runs, and the turn it goes from and to.</summary>
@@ -65,17 +65,22 @@ public partial class GalleryPage
                 WidthRequest = ViewerWidth,
                 HeightRequest = GlobeHeight,
                 BackgroundColor = Color.FromRgb(8, 10, 22),
+                BevelType = BevelType.Emboss,
+                Bevel = Theme.CardBevel(),
                 Children =
                 {
                     new SkiaModel3D(new Model3D().Part("earth", Mesh3D.Sphere(1), Colors.White))
                         {
                             Yaw = -20,
                             Pitch = 15,
-                            Zoom = 0.9f,
+                            // a little away from the tight fit: the globe sits in space with room around it
+                            Zoom = 1.15f,
                             AutoRotate = 10,
+                            // a swipe keeps the Earth turning, slowing as a scroll does
+                            Fling = true,
                             PinchZoom = true,
                             MinZoom = 0.6f,
-                            MaxZoom = 1.6f,
+                            MaxZoom = 2.2f,
                             ResetOnDoubleTap = true,
                             Antialias = true,
                             HorizontalOptions = LayoutOptions.Fill,
@@ -89,7 +94,7 @@ public partial class GalleryPage
                     {
                         VerticalOptions = LayoutOptions.Fill,
                         Children = Cities.Select((city, i) => (SkiaControl)CityPin(i, city.Name))
-                            .Concat(Cities.Select((city, i) => (SkiaControl)CityLabel(i, city.Name))).ToList(),
+                            .Concat(Cities.Select((city, i) => (SkiaControl)CityLabel(i, city.Name, city.Country))).ToList(),
                     },
                 }
             },
@@ -106,8 +111,8 @@ public partial class GalleryPage
                         Spacing = 4,
                         Children =
                         {
-                            new SkiaLabel("Offices") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                            new SkiaLabel("Pick a city to turn the globe to it, or tap a pin.") { FontSize = 13, TextColor = Theme.Muted },
+                            new Copyable("Our offices") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new Copyable("Pick a city to turn the globe to it, or tap a pin.") { FontSize = 13, TextColor = Theme.Muted },
                         }
                     },
                     new SkiaWrap
@@ -115,20 +120,65 @@ public partial class GalleryPage
                         Spacing = 8,
                         AccessibilityRole = Aria.RoleRadioGroup,
                         AccessibilityLabel = "Cities",
-                        Children = Cities.Select((city, i) => (SkiaControl)new UiButton(city.Name, Theme.Quiet, -1) { AccessibilityRole = Aria.RoleRadio }
+                        Children = Cities.Select((city, i) => (SkiaControl)new Button3D(city.Name, Theme.Quiet, -1) { AccessibilityRole = Aria.RoleRadio }
                             .Assign(out _cityButtons[i])
                             .OnTapped(_ => GoToCity(i))).ToList(),
                     },
-                    new UiButton("Pause spin", Theme.Quiet, 158) { Margin = new Thickness(0, 6, 0, 0), AccessibilityHint = "Stops or starts the globe turning by itself" }
-                        .Assign(out _spinButton)
-                        .OnTapped(_ => SetSpin(!_spinning)),
-                    new SkiaLabel("Image: NASA Blue Marble") { FontSize = 12, TextColor = Theme.Muted },
+                    // the globe turning by itself: on from the start, a turn to a city keeps it going
+                    new SkiaRow
+                    {
+                        Spacing = 10,
+                        Margin = new Thickness(0, 6, 0, 0),
+                        Children =
+                        {
+                            new SkiaLabel("Spin") { FontSize = 14, FontFamily = Theme.Title, TextColor = Theme.Ink, VerticalOptions = LayoutOptions.Center },
+                            new Switch3D
+                                {
+                                    IsToggled = true, VerticalOptions = LayoutOptions.Center,
+                                    AccessibilityLabel = "Spin", AccessibilityHint = "The globe turns by itself",
+                                }
+                                .Assign(out _spinSwitch)
+                                .ObserveSelf((me, prop) =>
+                                {
+                                    if (prop == nameof(SkiaToggle.IsToggled))
+                                        SetSpin(me.IsToggled);
+                                }),
+                        }
+                    },
+                    new Copyable("Image: NASA Blue Marble") { FontSize = 12, TextColor = Theme.Muted },
                 }
             },
         }
     }, ViewerWidth, GlobeHeight));
 
-    /// <summary>A map pin: a glossy teardrop with a soft shadow, a white dot inside and a ring pulsing where it stands.</summary>
+    static readonly Color StarGold = Color.FromRgb(246, 184, 32);
+    /// <summary>The callouts' dark glass.</summary>
+    static readonly Color CalloutFill = Color.FromRgba(30, 32, 46, 240);
+
+    /// <summary>
+    /// A city pin: a golden badge with a white ring and a white star, a soft shadow, and a warm halo that breathes
+    /// (it swells and fades slowly, each city a little out of step), as a live marker on a map does.
+    /// </summary>
+    /// <summary>A thin ray of the flare: bright in the middle, fading to nothing at both ends.</summary>
+    static SkiaShape Ray(float length, float thickness, float degrees) => new()
+    {
+        WidthRequest = length,
+        HeightRequest = thickness,
+        HorizontalOptions = LayoutOptions.Center,
+        VerticalOptions = LayoutOptions.Center,
+        Rotation = degrees,
+        BackgroundColor = Colors.White,
+        FillBlendMode = SKBlendMode.Screen,
+        FillGradient = new SkiaGradient
+        {
+            StartXRatio = 0, StartYRatio = 0.5f, EndXRatio = 1, EndYRatio = 0.5f,
+            Colors = new List<Color> { Colors.White.WithAlpha(0f), Color.FromRgba(255, 248, 220, 240), Colors.White.WithAlpha(0f) },
+            ColorPositions = new List<double> { 0, 0.5, 1 },
+        },
+    };
+
+    static readonly Color SparkGold = Color.FromRgb(255, 200, 70);
+
     SkiaLayer CityPin(int index, string name) => new SkiaLayer
         {
             WidthRequest = PinW,
@@ -141,26 +191,50 @@ public partial class GalleryPage
             AccessibilityRole = Aria.RoleButton,
             AccessibilityLabel = name,
             AccessibilityHint = "Shows the city's name",
+            // a flare of light on the city: a soft gold glow, a white-hot core and four thin rays
             Children =
             {
-                new SkiaShape { Type = ShapeType.Ellipse, WidthRequest = 30, HeightRequest = 10, Margin = new Thickness(1, 38, 0, 0), StrokeColor = PinRed, StrokeWidth = 2 }
-                    .Assign(out _pulses[index]),
-                new SkiaShape
+                new SkiaLayer
                 {
-                    Type = ShapeType.Path,
-                    PathData = "M16 0 C7.2 0 0 7 0 15.6 C0 27 16 43 16 43 C16 43 32 27 32 15.6 C32 7 24.8 0 16 0 Z",
-                    WidthRequest = 32,
-                    HeightRequest = 43,
-                    BackgroundColor = PinRed,
-                    FillGradient = new SkiaGradient
+                    WidthRequest = PinW,
+                    HeightRequest = PinH,
+                    Children =
                     {
-                        StartXRatio = 0.3f, StartYRatio = 0, EndXRatio = 0.7f, EndYRatio = 1,
-                        Colors = new List<Color> { Color.FromRgb(255, 112, 96), Color.FromRgb(200, 40, 32) },
-                    },
-                    Shadows = new List<SkiaShadow> { new() { Blur = 5, Y = 3, Opacity = 0.45, Color = Colors.Black } },
-                },
-                new SkiaShape { Type = ShapeType.Circle, WidthRequest = 12, HeightRequest = 12, Margin = new Thickness(10, 10, 0, 0), BackgroundColor = Colors.White },
-                new SkiaShape { Type = ShapeType.Ellipse, WidthRequest = 10, HeightRequest = 5, Margin = new Thickness(8, 4, 0, 0), BackgroundColor = Color.FromRgba(255, 255, 255, 90) },
+                        new SkiaShape
+                        {
+                            Type = ShapeType.Circle,
+                            WidthRequest = PinW,
+                            HeightRequest = PinH,
+                            BackgroundColor = SparkGold,
+                            // light only brightens what is under it: no dark disc over the ocean
+                            FillBlendMode = SKBlendMode.Screen,
+                            FillGradient = new SkiaGradient
+                            {
+                                Type = GradientType.Circular,
+                                StartXRatio = 0.5f, StartYRatio = 0.5f,
+                                // a tight bloom around the core only: a wide gold haze over the deep blue ocean
+                                // reads as a grey smudge, not as light
+                                Colors = new List<Color> { Color.FromRgba(255, 250, 230, 255), Color.FromRgba(255, 226, 150, 200), SparkGold.WithAlpha(0f), SparkGold.WithAlpha(0f) },
+                                ColorPositions = new List<double> { 0, 0.1, 0.28, 1 },
+                            },
+                        },
+                        Ray(PinW, 2, 0),
+                        Ray(PinW, 2, 90),
+                        Ray(PinW * 0.55f, 1.5f, 45),
+                        Ray(PinW * 0.55f, 1.5f, 135),
+                        new SkiaShape
+                        {
+                            Type = ShapeType.Circle,
+                            WidthRequest = 5,
+                            HeightRequest = 5,
+                            HorizontalOptions = LayoutOptions.Center,
+                            VerticalOptions = LayoutOptions.Center,
+                            BackgroundColor = Colors.White,
+                            FillBlendMode = SKBlendMode.Screen,
+                        },
+                    }
+                }
+                .Assign(out _pulses[index]),
             }
         }
         .Assign(out _cityPins[index])
@@ -168,22 +242,60 @@ public partial class GalleryPage
         .OnTapped(_ => ToggleCity(index));
 
     /// <summary>
-    /// A clean name chip over a pin. The globe under it draws every frame, the chip never changes: one image, its blurred
-    /// shadow and text made once and blitted where the city shows.
+    /// A city's callout over its pin: a dark glass card with a hairline edge and a soft shadow, a gold star, the city in
+    /// semibold and its country under it. The globe under it draws every frame, the
+    /// callout never changes: one image, made once and blitted where the city shows.
     /// </summary>
-    SkiaShape CityLabel(int index, string name) => new SkiaShape
+    SkiaLayer CityLabel(int index, string name, string country) => new SkiaLayer
     {
         WidthRequest = ChipW,
         HeightRequest = ChipH,
-        CornerRadius = 15,
         UseCache = SkiaCacheType.Image,
-        BackgroundColor = Color.FromRgb(250, 250, 252),
-        Shadows = new List<SkiaShadow> { new() { Blur = 6, Y = 2, Opacity = 0.35, Color = Colors.Black } },
         IsVisible = false,
         InputTransparent = true,
         Children =
         {
-            new SkiaLabel(name) { FontSize = 14, TextColor = Color.FromRgb(30, 32, 44), HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+            new SkiaShape
+            {
+                WidthRequest = ChipW,
+                HeightRequest = ChipH,
+                CornerRadius = 12,
+                BackgroundColor = CalloutFill,
+                StrokeColor = Color.FromRgba(255, 255, 255, 30),
+                StrokeWidth = 1,
+                Shadows = new List<SkiaShadow> { new() { Blur = 10, Y = 4, Opacity = 0.5, Color = Colors.Black } },
+                Children =
+                {
+                    new SkiaRow
+                    {
+                        Spacing = 9,
+                        Padding = new Thickness(12, 0),
+                        VerticalOptions = LayoutOptions.Center,
+                        Children =
+                        {
+                            new SkiaShape
+                            {
+                                Type = ShapeType.Path,
+                                PathData = "M7.00 0.40 L8.70 5.05 L13.66 5.24 L9.76 8.30 L11.11 13.06 L7.00 10.30 L2.89 13.06 L4.24 8.30 L0.34 5.24 L5.30 5.05 Z",
+                                WidthRequest = 14,
+                                HeightRequest = 14,
+                                VerticalOptions = LayoutOptions.Center,
+                                BackgroundColor = StarGold,
+                            },
+                            new SkiaStack
+                            {
+                                Spacing = 1,
+                                VerticalOptions = LayoutOptions.Center,
+                                Children =
+                                {
+                                    new SkiaLabel(name) { FontSize = 14, FontFamily = Theme.Title, TextColor = Theme.Ink, MaxLines = 1 },
+                                    new SkiaLabel(country) { FontSize = 11, TextColor = Theme.Muted, MaxLines = 1 },
+                                }
+                            },
+                        }
+                    },
+                }
+            },
         }
     }.Assign(out _cityLabels[index]);
 
@@ -195,7 +307,7 @@ public partial class GalleryPage
         PlacePins();
     }
 
-    /// <summary>Turns the globe to a city in 0.6 s, stops its spin and shows the city's name.</summary>
+    /// <summary>Turns the globe to a city in 0.6 s and shows the city's name; a spinning globe goes on spinning after.</summary>
     void GoToCity(int index)
     {
         for (var i = 0; i < Cities.Length; i++)
@@ -203,7 +315,6 @@ public partial class GalleryPage
             _cityButtons[i].Fill = i == index ? Theme.Accent : Theme.Quiet;
             _cityButtons[i].AccessibilityIsPressed = i == index;
         }
-        SetSpin(false);
         var (yaw, pitch) = Facing(OnGlobe(Cities[index].Lat, Cities[index].Lon));
         _globeFromYaw = _globe.Yaw;
         _globeFromPitch = _globe.Pitch;
@@ -219,8 +330,7 @@ public partial class GalleryPage
     {
         _spinning = on;
         _globe.AutoRotate = on ? 10 : 0;
-        _spinButton.Text = on ? "Pause spin" : "Spin";
-        _spinButton.AccessibilityIsPressed = !on;
+        _spinSwitch.IsToggled = on;
     }
 
     /// <summary>Pins and the open name chip go where their cities show; a city on the far side hides its pin.</summary>
@@ -263,11 +373,13 @@ public partial class GalleryPage
         {
             if (!_cityPins[i].IsVisible)
                 continue;
-            // Each pulse grows and fades over 1.6 s, the pins out of step.
-            var phase = (_time / 1.6f + i * 0.17f) % 1;
-            var ring = _pulses[i];
-            ring.Scale = 0.4f + phase;
-            ring.Opacity = 1 - phase;
+            // Each light flashes now and then: a short bright swell, then calm, every city at its own moment.
+            var phase = (_time / 2.6f + i * 0.37f) % 1;
+            var flash = MathF.Pow(MathF.Max(0, MathF.Sin(phase * MathF.PI)), 8);
+            var size = 0.45f + 0.75f * flash;
+            var flare = _pulses[i];
+            flare.Scale = size;
+            flare.Rotation = 20 * flash;
         }
     }
 }

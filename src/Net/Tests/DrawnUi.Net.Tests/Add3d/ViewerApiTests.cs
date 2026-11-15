@@ -65,6 +65,55 @@ public class ViewerApiTests
     }
 
     [Fact]
+    public void A_fling_turns_on_slows_as_a_scroll_and_stops()
+    {
+        var model = Model();
+        model.Yaw = 0;
+        model.Fling = true;
+        model.StartFling(120, 0);
+
+        model.Advance(0.1f);
+        var first = model.Yaw;
+        Assert.InRange(first, 10, 12.1);           // about 120 deg/s for a tenth of a second
+        model.Advance(0.1f);
+        Assert.InRange(model.Yaw - first, 9, first); // the next tenth turns less: it slows down
+
+        for (var i = 0; i < 100; i++)
+            model.Advance(0.05f);                  // five seconds: long stopped
+        var stopped = model.Yaw;
+        model.Advance(0.5f);
+        Assert.Equal(stopped, model.Yaw, 3);
+    }
+
+    [Fact]
+    public void After_a_fling_the_model_turns_by_itself_again()
+    {
+        var model = Model();
+        model.Yaw = 0;
+        model.AutoRotate = 10;
+        model.Fling = true;
+        model.StartFling(-300, 0);   // flung against its own turn
+        for (var i = 0; i < 100; i++)
+            model.Advance(0.05f);    // five seconds
+        var before = model.Yaw;
+        model.Advance(1);
+        var turned = ((before - model.Yaw) % 360 + 360) % 360;
+        Assert.InRange(turned, 9.5, 10.5); // 10 degrees a second again, the way of the swipe
+    }
+
+    [Fact]
+    public void Turning_fling_off_stops_it()
+    {
+        var model = Model();
+        model.Yaw = 0;
+        model.Fling = true;
+        model.StartFling(200, 0);
+        model.Fling = false;
+        model.Advance(0.5f);
+        Assert.Equal(0, model.Yaw, 3);
+    }
+
+    [Fact]
     public void No_size_yet_means_no_position()
     {
         var model = Model();

@@ -35,12 +35,6 @@ public partial class GalleryPage
     static readonly string[] MobNames = Enumerable.Range(0, MaxMobs).Select(i => $"m{i}").ToArray();
 
     float _time, _pan;
-    bool _unlocked = true;
-    /// <summary>The medal's spin after unlocking, 0 to 1.</summary>
-    float _spin = 1;
-    bool _liked = true;
-    /// <summary>The heart's pop after a like, 1 to 0.</summary>
-    float _pop;
     bool _open;
     readonly Piece[] _pieces = new Piece[PieceCount];
     bool _rainReady;
@@ -49,7 +43,6 @@ public partial class GalleryPage
     int _mobs;
     Dice _dice = new(7);
 
-    static float EaseOut(float t) => 1 - MathF.Pow(1 - Math.Clamp(t, 0, 1), 3);
 
     bool _looping, _wakeHooked, _built;
 
@@ -58,13 +51,13 @@ public partial class GalleryPage
         control != null && control.WasInLastFrame() && control.GetAccessibilityPixelRect().IntersectsWith(_scroll.GetAccessibilityPixelRect());
 
     /// <summary>
-    /// Whether the loop has something to move: a section that moves on its own is in view (mobs, confetti, the heart's
-    /// beat, the globe's pulses), or a glide started by the user has not ended (price, medal, heart pop, card turn,
-    /// mascot). When nothing is, the loop stops and the page draws no frames at rest.
+    /// Whether the loop has something to move: a section that moves on its own is in view (mobs, confetti, the globe's
+    /// flashing lights), or a glide started by the user has not ended (globe turn, price, card turn, mascot). When
+    /// nothing is, the loop stops and the page draws no frames at rest.
     /// </summary>
     bool LoopNeeded() =>
-        Seen(_field) || Seen(_rain) || Seen(_heart) || Seen(_globe)
-        || _spin < 1 || _pop > 0 || _globeGlide < 1 || _priceShown != Fabrics[Math.Max(_fabric, 0)].Price
+        Seen(_field) || Seen(_rain) || Seen(_globe)
+        || _globeGlide < 1 || _priceShown != Fabrics[Math.Max(_fabric, 0)].Price
         || (_cardTurn != _cardTurnTo && Seen(_card))
         || (Seen(_mascot) && (MathF.Abs(_lookTo - _look) > 0.001f || MathF.Abs(_handsTo - _hands) > 0.001f
                               || MathF.Abs(_headYawTo - _headYaw) > 0.01f || MathF.Abs(_headPitchTo - _headPitch) > 0.01f));
@@ -108,20 +101,6 @@ public partial class GalleryPage
         CardFrame(delta);
         GlobeFrame(delta);
         FormFrame(delta);
-
-        if (_spin < 1)
-        {
-            _spin = MathF.Min(_spin + delta / 0.9f, 1);
-            _medal.Yaw = MedalYaw + 360 * EaseOut(_spin);
-        }
-
-        _pop = MathF.Max(_pop - delta * 3, 0);
-        // Controls off screen are not touched: their state moves on, they get it when they show again.
-        if (_heart.WasInLastFrame())
-        {
-            var beat = 1 + 0.05f * MathF.Max(MathF.Sin(t * 5), 0) + 0.35f * _pop;
-            _heart.SetNodeScale("heart", beat, beat, 1);
-        }
 
         if (!_rainReady)
         {

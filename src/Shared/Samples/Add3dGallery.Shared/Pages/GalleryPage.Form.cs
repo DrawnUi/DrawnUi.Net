@@ -33,6 +33,8 @@ public partial class GalleryPage
                     CornerRadius = 14,
                     BackgroundColor = Theme.Page,
                     Padding = new Thickness(24),
+                    BevelType = BevelType.Emboss,
+                    Bevel = Theme.CardBevel(),
                     WidthRequest = FormWidth,
                     VerticalOptions = LayoutOptions.Start,
                     // The form beside a mascot that moves every frame: blitted, drawn again when a field changes.
@@ -44,12 +46,12 @@ public partial class GalleryPage
                             Spacing = 12,
                             Children =
                             {
-                                new SkiaLabel("Create your account") { FontSize = 22, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                                new SkiaLabel("It takes a minute. Our mascot will not peek at your password.") { FontSize = 13, TextColor = Theme.Muted },
+                                new Copyable("Create your account") { FontSize = 22, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                                new Copyable("It takes a minute. Our mascot will not peek at your password.") { FontSize = 13, TextColor = Theme.Muted },
                                 Field("Name", false, 0).Assign(out _nameField),
                                 Field("Email", false, 1).Assign(out _emailField),
                                 Field("Password", true, 2).Assign(out _passwordField),
-                                new UiButton("Sign up", Theme.Accent) { HorizontalOptions = LayoutOptions.Fill, WidthRequest = -1 }
+                                new Button3D("Sign up", Theme.Accent) { HorizontalOptions = LayoutOptions.Fill, WidthRequest = -1 }
                                     .OnTapped(_ => SignUp()),
                                 new SkiaLabel { FontSize = 14, TextColor = Theme.Gold, HeightRequest = 20, AccessibilityRole = Aria.RoleText }
                                     .WithAccessibilityLive()
@@ -61,6 +63,8 @@ public partial class GalleryPage
                 Stage(new SkiaModel3D(Theme.Avatar)
                         {
                             Animation = "CharacterArmature|Idle",
+                            // framed for what it does here, not for the file's jumps and falls it never plays
+                            FrameAnimations = new[] { "CharacterArmature|Idle", "CharacterArmature|Wave", "CharacterArmature|No" },
                             // The camera on the mascot's left: it faces the form at screen left (a view turn, no mirror).
                             Yaw = 32,
                             Pitch = 8,

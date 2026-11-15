@@ -49,12 +49,14 @@ public class BossPage : SkiaLayer
     static readonly Color RageColor = Color.FromRgb(200, 30, 40);
     static readonly Color Muted = Color.FromRgb(190, 180, 200);
 
-    readonly UiButton[] _moveButtons = new UiButton[Moves.Length];
-    readonly UiButton[] _skinButtons = new UiButton[Skins.Length];
+    readonly Button3D[] _moveButtons = new Button3D[Moves.Length];
+    readonly Button3D[] _skinButtons = new Button3D[Skins.Length];
     SkiaModel3D _boss;
     SkiaLabel _news;
-    UiButton _rageButton, _turnButton;
+    Button3D _rageButton, _turnButton;
     string _looping = "Idle";
+    /// <summary>A one-shot move playing now (its button is lit until it ends), null when none.</summary>
+    string _playing;
     string _skin = "Ember";
     bool _rage, _turning;
 
@@ -93,12 +95,12 @@ public class BossPage : SkiaLayer
                             UseCache = SkiaCacheType.Image,
                             Children =
                             {
-                                new SkiaLabel("BOSS FIGHT")
+                                new Copyable("BOSS FIGHT")
                                 {
                                     FontSize = 30, FontFamily = Theme.Title, TextColor = Colors.White,
                                     HorizontalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RoleHeading,
                                 },
-                                new SkiaLabel("A glTF model drawn in 3D inside DrawnUI, driven by the app. Drag it to turn it, tap it to hit it.")
+                                new Copyable("A glTF model drawn in 3D inside DrawnUI, driven by the app. Drag it to turn it, tap it to hit it.")
                                 {
                                     FontSize = 15, TextColor = Muted, HorizontalOptions = LayoutOptions.Center,
                                     HorizontalTextAlignment = DrawTextAlignment.Center,
@@ -107,7 +109,7 @@ public class BossPage : SkiaLayer
                         }.SetGrid(0, 0),
                         new SkiaModel3D(Theme.Dragon)
                             {
-                                Animation = Idle, Yaw = 30, Pitch = 8, Zoom = 0.75f,
+                                Animation = Idle, Yaw = 30, Pitch = 8,
                                 HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
                             }
                             .Assign(out _boss)
@@ -115,12 +117,29 @@ public class BossPage : SkiaLayer
                             {
                                 // A hit plays once and goes back to the loop; a dead dragon does not react.
                                 if (_looping != "Death")
+                                {
                                     me.PlayOnce(Hit);
+                                    // the hit replaces a one-shot move that was playing: its button goes dark
+                                    if (_playing != null)
+                                    {
+                                        _playing = null;
+                                        UpdateButtons();
+                                    }
+                                }
                                 _news.Text = $"Hit on {hit.Material.Replace('_', ' ')}";
                             })
-                            .OnAnimationEnded((_, name) => _news.Text = $"{CaptionOf(name)} finished")
+                            .OnAnimationEnded((_, name) =>
+                            {
+                                _news.Text = $"{CaptionOf(name)} finished";
+                                // the one-shot move is over: the looping move's button is lit again
+                                if (_playing != null && CaptionOf(name) == _playing)
+                                {
+                                    _playing = null;
+                                    UpdateButtons();
+                                }
+                            })
                             .SetGrid(0, 1),
-                        new SkiaLabel("Tap the dragon to hit it.")
+                        new Copyable("Tap the dragon to hit it.")
                             {
                                 FontSize = 15, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center,
                             }
@@ -140,7 +159,7 @@ public class BossPage : SkiaLayer
                                     HorizontalOptions = LayoutOptions.Center,
                                     AccessibilityRole = Aria.RoleToolbar,
                                     AccessibilityLabel = "Moves",
-                                    Children = Moves.Select((m, i) => (SkiaControl)new UiButton(m.Caption, ButtonColor, 100)
+                                    Children = Moves.Select((m, i) => (SkiaControl)new Button3D(m.Caption, ButtonColor, 100)
                                         .Assign(out _moveButtons[i])
                                         .OnTapped(_ => Move(m.Caption, m.Animation, m.Kind))).ToList(),
                                 },
@@ -151,15 +170,15 @@ public class BossPage : SkiaLayer
                                     HorizontalOptions = LayoutOptions.Center,
                                     AccessibilityRole = Aria.RoleToolbar,
                                     AccessibilityLabel = "Skin and eyes",
-                                    Children = Skins.Select((s, i) => (SkiaControl)new UiButton(s.Caption, ButtonColor, 100)
+                                    Children = Skins.Select((s, i) => (SkiaControl)new Button3D(s.Caption, ButtonColor, 100)
                                             {
                                                 StrokeColor = s.Color ?? Ember, StrokeWidth = 2,
                                                 AccessibilityRole = Aria.RoleRadio,
                                             }
                                             .Assign(out _skinButtons[i])
                                             .OnTapped(_ => Skin(s.Caption, s.Color)))
-                                        .Append(new UiButton("Rage: off", ToggleColor, 124).Assign(out _rageButton).OnTapped(_ => ToggleRage()))
-                                        .Append(new UiButton("Turn: off", ToggleColor, 124).Assign(out _turnButton).OnTapped(_ => ToggleTurn()))
+                                        .Append(new Button3D("Rage: off", ToggleColor, 124).Assign(out _rageButton).OnTapped(_ => ToggleRage()))
+                                        .Append(new Button3D("Turn: off", ToggleColor, 124).Assign(out _turnButton).OnTapped(_ => ToggleTurn()))
                                         .ToList(),
                                 },
                             }
@@ -191,13 +210,16 @@ public class BossPage : SkiaLayer
             case Kind.Loop:
                 _boss.Play(animation);
                 _looping = caption;
+                _playing = null;
                 break;
             case Kind.Once:
                 _boss.PlayOnce(animation);
+                _playing = caption;
                 break;
             case Kind.Hold:
                 _boss.Hold(animation);
                 _looping = caption;
+                _playing = null;
                 break;
         }
         _news.Text = $"{caption}…";
@@ -228,7 +250,11 @@ public class BossPage : SkiaLayer
     void UpdateButtons()
     {
         for (var i = 0; i < Moves.Length; i++)
-            _moveButtons[i].Fill = _looping == Moves[i].Caption ? MovesAccent : ButtonColor;
+        {
+            var lit = (_playing ?? _looping) == Moves[i].Caption;
+            _moveButtons[i].Fill = lit ? MovesAccent : ButtonColor;
+            _moveButtons[i].AccessibilityIsPressed = lit;
+        }
         for (var i = 0; i < Skins.Length; i++)
         {
             var on = _skin == Skins[i].Caption;

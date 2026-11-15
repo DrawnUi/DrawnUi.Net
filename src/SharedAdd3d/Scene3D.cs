@@ -104,6 +104,9 @@ internal sealed partial class Scene3D
     public int[] Order;
     /// <summary>The scene's box at rest.</summary>
     public Vector3 BoundsMin, BoundsMax;
+    /// <summary>The box around the model at rest and through all its animations: what a viewer's camera fits.</summary>
+    public Vector3 PlayMin, PlayMax;
+    (Vector3 Min, Vector3 Max)?[] _animationBounds;
     /// <summary>The most joints any skin has.</summary>
     public int MaxJoints;
 
@@ -155,7 +158,11 @@ internal sealed partial class Scene3D
         }
         Order = Enumerable.Range(0, Nodes.Length).OrderBy(i => depth[i]).ToArray();
         MaxJoints = Skins.Length == 0 ? 0 : Skins.Max(s => s.Joints.Length);
-        (BoundsMin, BoundsMax) = RestBounds();
+        (BoundsMin, BoundsMax) = RestBounds(-1);
+        _animationBounds = new (Vector3, Vector3)?[Animations.Length];
+        (PlayMin, PlayMax) = (BoundsMin, BoundsMax);
+        for (var a = 0; a < Animations.Length; a++)
+            (PlayMin, PlayMax) = Union((PlayMin, PlayMax), AnimationBounds(a));
     }
 
     /// <summary>
@@ -477,46 +484,163 @@ internal sealed partial class Scene3D
         return hitNode >= 0;
     }
 
-    (Vector3, Vector3) RestBounds()
+    /// <summary>Poses sampled along each animation for the bounds: the view fits what the model does, not only its rest.</summary>
+    const int BoundsSamples = 8;
+
+    static (Vector3, Vector3) Union((Vector3 Min, Vector3 Max) a, (Vector3 Min, Vector3 Max) b) =>
+        (Vector3.Min(a.Min, b.Min), Vector3.Max(a.Max, b.Max));
+
+    /// <summary>The box around the model through one animation (sampled), worked out once.</summary>
+    public (Vector3 Min, Vector3 Max) AnimationBounds(int animation) =>
+        _animationBounds[animation] ??= RestBounds(animation);
+
+    /// <summary>
+    /// The box around the model at rest (<paramref name="animation"/> -1), or through one animation of the file (a
+    /// chest's opening lid, a character's swing), sampled: a view fitted to it does not cut the model while it plays.
+    /// </summary>
+    (Vector3, Vector3) RestBounds(int animation) => Extent(animation, null);
+
+    /// <summary>
+    /// The box around the model at rest (<paramref name="animation"/> -1) or through one animation, sampled. With
+    /// <paramref name="profile"/>, also the model's outline turned around its vertical axis: per height band, how far
+    /// from the axis it reaches.
+    /// </summary>
+    (Vector3, Vector3) Extent(int animation, Profile3D profile)
     {
-        var pose = Pose(-1, 0);
         var lo = new Vector3(float.MaxValue);
         var hi = new Vector3(float.MinValue);
         Vector3[] at = null;
-        for (var i = 0; i < Nodes.Length; i++)
+        void Add(Matrix4x4[] pose)
         {
-            var mesh = Nodes[i].Mesh;
-            if (mesh < 0 || mesh >= Meshes.Length)
-                continue;
-            foreach (var p in Meshes[mesh])
+            for (var i = 0; i < Nodes.Length; i++)
             {
-                if (at == null || at.Length < p.Positions.Length)
-                    at = new Vector3[p.Positions.Length];
-                PosedPositions(i, p, pose, at);
-                for (var v = 0; v < p.Positions.Length; v++)
+                var mesh = Nodes[i].Mesh;
+                if (mesh < 0 || mesh >= Meshes.Length)
+                    continue;
+                foreach (var p in Meshes[mesh])
                 {
-                    lo = Vector3.Min(lo, at[v]);
-                    hi = Vector3.Max(hi, at[v]);
+                    if (at == null || at.Length < p.Positions.Length)
+                        at = new Vector3[p.Positions.Length];
+                    PosedPositions(i, p, pose, at);
+                    for (var v = 0; v < p.Positions.Length; v++)
+                    {
+                        lo = Vector3.Min(lo, at[v]);
+                        hi = Vector3.Max(hi, at[v]);
+                        profile?.Add(at[v]);
+                    }
                 }
             }
         }
+        if (animation < 0)
+            Add(Pose(-1, 0));
+        else
+            for (var s = 0; s <= BoundsSamples; s++)
+                Add(Pose(animation, Animations[animation].Duration * s / BoundsSamples * 0.999f));
         return lo.X > hi.X ? (new Vector3(-1), new Vector3(1)) : (lo, hi);
     }
 
-    /// <summary>View and projection that fit the scene's box, turned by yaw / pitch (degrees).</summary>
-    public Matrix4x4 Camera(float yaw, float pitch, float zoom, float aspect)
+    Profile3D _restProfile;
+    Profile3D[] _profiles;
+
+    /// <summary>The outline of the model turned around its vertical axis, at rest (-1) or through one animation.</summary>
+    internal Profile3D ProfileOf(int animation)
     {
-        var center = (BoundsMin + BoundsMax) * 0.5f;
-        var radius = MathF.Max((BoundsMax - BoundsMin).Length() * 0.5f, 1e-3f);
-        var fov = Math3D.Radians(35);
-        var fit = radius / MathF.Sin(fov * 0.5f) * (aspect < 1 ? 1 / aspect : 1);
-        var distance = fit * zoom;
-        // glam: from_rotation_y(yaw) * from_rotation_x(-pitch), applied to (0, 0, distance).
-        var rotation = Quaternion.CreateFromAxisAngle(Vector3.UnitY, Math3D.Radians(yaw))
-                       * Quaternion.CreateFromAxisAngle(Vector3.UnitX, Math3D.Radians(-pitch));
-        var eye = center + Vector3.Transform(new Vector3(0, 0, distance), rotation);
+        if (animation < 0)
+        {
+            if (_restProfile == null)
+                Extent(-1, _restProfile = NewProfile());
+            return _restProfile;
+        }
+        _profiles ??= new Profile3D[Animations.Length];
+        if (_profiles[animation] == null)
+            Extent(animation, _profiles[animation] = NewProfile());
+        return _profiles[animation];
+    }
+
+    Profile3D NewProfile()
+    {
+        var height = MathF.Max(BoundsMax.Y - BoundsMin.Y, 1e-3f);
+        return new Profile3D(new Vector2((BoundsMin.X + BoundsMax.X) / 2, (BoundsMin.Z + BoundsMax.Z) / 2),
+            BoundsMin.Y - height, BoundsMax.Y + height);
+    }
+
+    static readonly float Fov = Math3D.Radians(35);
+    /// <summary>A little air around a fitted model: it never touches the edges of its view.</summary>
+    const float Air = 1.1f;
+
+    /// <summary>
+    /// View and projection for a view nobody turns: the box from <paramref name="min"/> to <paramref name="max"/>
+    /// (<paramref name="margin"/> scene units around it) fitted exactly as it is seen from this yaw and pitch.
+    /// </summary>
+    public Matrix4x4 CameraAsSeen(Vector3 min, Vector3 max, float yaw, float pitch, float zoom, float aspect, float margin)
+    {
+        var center = (min + max) * 0.5f;
+        var half = (max - min) * 0.5f + new Vector3(MathF.Max(0, margin));
+        var tanV = MathF.Tan(Fov * 0.5f);
+        var tanH = tanV * aspect;
+        var rotation = Turn(yaw, pitch);
+        Vector3 right = Vector3.Transform(Vector3.UnitX, rotation), upward = Vector3.Transform(Vector3.UnitY, rotation),
+            back = Vector3.Transform(Vector3.UnitZ, rotation);
+        var fit = 1e-3f;
+        for (var i = 0; i < 8; i++)
+        {
+            var corner = new Vector3((i & 1) == 0 ? -half.X : half.X, (i & 2) == 0 ? -half.Y : half.Y, (i & 4) == 0 ? -half.Z : half.Z);
+            var near = Vector3.Dot(corner, back);
+            fit = MathF.Max(fit, MathF.Max(near + MathF.Abs(Vector3.Dot(corner, right)) / tanH,
+                near + MathF.Abs(Vector3.Dot(corner, upward)) / tanV));
+        }
+        return CameraAt(center, half.Length(), fit * Air * zoom, yaw, pitch, aspect);
+    }
+
+    /// <summary>
+    /// How far the camera stands (before zoom) so a model's outline turned around the vertical (<see cref="Profile3D"/>
+    /// points: reach from the axis, height) stays in view at any yaw and at every pitch from <paramref name="pitchFrom"/>
+    /// to <paramref name="pitchTo"/>: across, each height band's widest turn; up and down, the band as seen tilted.
+    /// </summary>
+    public static float OutlineFit(List<Vector2> outline, float centerY, float pitchFrom, float pitchTo, float aspect, float margin)
+    {
+        var tanV = MathF.Tan(Fov * 0.5f);
+        var tanH = tanV * aspect;
+        var fit = 1e-3f;
+        var steps = Math.Max(1, (int)MathF.Ceiling((pitchTo - pitchFrom) / 10));
+        for (var k = 0; k <= steps; k++)
+        {
+            var tilt = Math3D.Radians(pitchFrom + (pitchTo - pitchFrom) * k / steps);
+            float cos = MathF.Cos(tilt), sin = MathF.Sin(tilt);
+            var acrossFactor = MathF.Sqrt(cos * cos + 1 / (tanH * tanH));
+            foreach (var point in outline)
+            {
+                // a margin around the box widens the reach by up to the margin's diagonal
+                var reach = point.X + margin * 1.415f;
+                var y = point.Y - centerY;
+                y += MathF.Sign(y) * margin;
+                // up and down: the point swung to the front and to the back of the axis
+                for (var side = -1; side <= 1; side += 2)
+                {
+                    var c = side * reach;
+                    var near = c * cos + y * sin;
+                    var up = y * cos - c * sin;
+                    fit = MathF.Max(fit, near + MathF.Abs(up) / tanV);
+                }
+                // across: swung to the side, at its nearest
+                fit = MathF.Max(fit, reach * acrossFactor + y * sin);
+            }
+        }
+        return fit * Air;
+    }
+
+    // glam: from_rotation_y(yaw) * from_rotation_x(-pitch), applied to (0, 0, distance).
+    static Quaternion Turn(float yaw, float pitch) =>
+        Quaternion.CreateFromAxisAngle(Vector3.UnitY, Math3D.Radians(yaw))
+        * Quaternion.CreateFromAxisAngle(Vector3.UnitX, Math3D.Radians(-pitch));
+
+    /// <summary>View and projection looking at <paramref name="center"/> from <paramref name="distance"/>, turned by yaw / pitch.</summary>
+    public static Matrix4x4 CameraAt(Vector3 center, float radius, float distance, float yaw, float pitch, float aspect)
+    {
+        radius = MathF.Max(radius, 1e-3f);
+        var eye = center + Vector3.Transform(new Vector3(0, 0, distance), Turn(yaw, pitch));
         var view = Matrix4x4.CreateLookAt(eye, center, Vector3.UnitY);
-        var proj = Math3D.PerspectiveGl(fov, aspect, MathF.Max(distance - radius * 2, distance * 0.01f), distance + radius * 2);
+        var proj = Math3D.PerspectiveGl(Fov, aspect, MathF.Max(distance - radius * 2, distance * 0.01f), distance + radius * 2);
         return view * proj;
     }
 
@@ -609,5 +733,53 @@ internal sealed partial class Scene3D
         }
         for (var i = 0; i < width; i++)
             result[i] = a[i] + (b[i] - a[i]) * f;
+    }
+}
+
+/// <summary>
+/// A model's outline turned around its vertical axis: for each height band, the farthest it reaches from the axis.
+/// What a camera that may turn the model any way around the vertical must keep in view (tighter than the box: the
+/// top of a head and the tip of a punch are not one corner).
+/// </summary>
+internal sealed class Profile3D
+{
+    const int Bands = 48;
+    public readonly Vector2 Axis;
+    readonly float _y0, _step;
+    readonly float[] _reach = new float[Bands], _low = new float[Bands], _high = new float[Bands];
+
+    public Profile3D(Vector2 axis, float y0, float y1)
+    {
+        Axis = axis;
+        _y0 = y0;
+        _step = MathF.Max(y1 - y0, 1e-3f) / Bands;
+        Array.Fill(_reach, -1);
+    }
+
+    public void Add(Vector3 p)
+    {
+        var band = Math.Clamp((int)((p.Y - _y0) / _step), 0, Bands - 1);
+        var reach = new Vector2(p.X - Axis.X, p.Z - Axis.Y).Length();
+        if (_reach[band] < 0)
+        {
+            _reach[band] = reach;
+            _low[band] = _high[band] = p.Y;
+            return;
+        }
+        _reach[band] = MathF.Max(_reach[band], reach);
+        _low[band] = MathF.Min(_low[band], p.Y);
+        _high[band] = MathF.Max(_high[band], p.Y);
+    }
+
+    /// <summary>Its points (reach, height): each band's reach at the band's lowest and highest point.</summary>
+    public void Points(List<Vector2> into)
+    {
+        for (var b = 0; b < Bands; b++)
+        {
+            if (_reach[b] < 0)
+                continue;
+            into.Add(new Vector2(_reach[b], _low[b]));
+            into.Add(new Vector2(_reach[b], _high[b]));
+        }
     }
 }
