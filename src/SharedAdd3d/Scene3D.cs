@@ -329,7 +329,10 @@ internal sealed partial class Scene3D
         {
             var own = local[i].ToMatrix();
             var p = Nodes[i].Parent;
-            world[i] = p >= 0 ? own * world[p] : own * place;
+            if (p >= 0)
+                Math3D.Multiply(in own, in world[p], out world[i]);
+            else
+                Math3D.Multiply(in own, in place, out world[i]);
         }
     }
 
@@ -354,7 +357,7 @@ internal sealed partial class Scene3D
         var s = Skins[skin];
         var n = Math.Min(s.Joints.Length, joints.Length);
         for (var j = 0; j < n; j++)
-            joints[j] = s.InverseBind[j] * pose[s.Joints[j]];
+            Math3D.Multiply(in s.InverseBind[j], in pose[s.Joints[j]], out joints[j]);
         return n;
     }
 

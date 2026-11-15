@@ -447,11 +447,19 @@ public class SkiaScene3D : SkiaControl, IPrefetch3D
     Matrix4x4 Placement(Object3D o)
     {
         var scale = o.Size / o.Model.Height;
-        return Matrix4x4.CreateTranslation(-o.Model.Anchor)
-               * Matrix4x4.CreateScale(scale)
-               * Matrix4x4.CreateRotationY(Math3D.Radians(o.Facing))
-               * Matrix4x4.CreateRotationX(Math3D.Radians(_tilt))
-               * Matrix4x4.CreateTranslation(o.X, -o.Y, o.Y);
+        // translate(-anchor) * scale * rotateY(facing) * rotateX(tilt) * translate(x, -y, y), multiplied in floats
+        var m = Matrix4x4.CreateScale(scale);
+        m.M41 = -o.Model.Anchor.X * scale;
+        m.M42 = -o.Model.Anchor.Y * scale;
+        m.M43 = -o.Model.Anchor.Z * scale;
+        var ry = Matrix4x4.CreateRotationY(Math3D.Radians(o.Facing));
+        var rx = Matrix4x4.CreateRotationX(Math3D.Radians(_tilt));
+        Math3D.Multiply(in m, in ry, out var a);
+        Math3D.Multiply(in a, in rx, out var b);
+        b.M41 += o.X;
+        b.M42 -= o.Y;
+        b.M43 += o.Y;
+        return b;
     }
 
     /// <summary>Every node's world matrix of an object, its place included, into its own pose.</summary>

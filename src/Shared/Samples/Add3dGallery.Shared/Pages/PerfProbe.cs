@@ -6,7 +6,7 @@ namespace Add3dGallery;
 /// Measures the gallery in the browser, results in the console. Address options:
 /// <c>?perf</c> = the top of the page at rest, <c>?perf=scroll</c> = the page scrolled down at a steady 600 pt/s,
 /// <c>?perf=list</c> = the 3D product list scrolled, <c>?perf=mobs</c> = 100 mobs on the field, scrolled to it
-/// (<c>?perf=mobsdrawn</c>: the same in the Drawn look),
+/// (<c>?perf=mobsdrawn</c>: the same in the Drawn look, <c>?perf=mobs0</c>: the same place with no mobs),
 /// <c>?perf=globe</c> = the turning globe with its pins at the top (<c>?perf=globechip</c>: with a pin's name chip open; <c>globechipraw</c>: the chip drawn live, not cached).
 /// Per frame: the CPU time of drawing (canvas WillDraw to WasDrawn: layout, drawing, the 3D GL calls; Skia's GPU flush
 /// comes after it), the managed bytes allocated on the UI thread from one frame to the next, and the frame interval.
@@ -32,6 +32,9 @@ public static class PerfProbe
         _mode = at < 0 ? "rest" : query[(at + 5)..].Split('&')[0].ToLowerInvariant();
         if (_mode is "mobs" or "mobsdrawn")
             page.SetMobs(100);
+        // the same place with an empty field: what the page around the mobs costs
+        if (_mode == "mobs0")
+            page.SetMobs(0);
         if (_mode == "mobsdrawn")
             page.SetDrawnMobs(true);
         Tasks.StartDelayed(TimeSpan.FromMilliseconds(1500), Attach);
@@ -50,7 +53,7 @@ public static class PerfProbe
             GlobeTaps();
             return;
         }
-        if (_mode is "mobs" or "mobsdrawn")
+        if (_mode is "mobs" or "mobsdrawn" or "mobs0")
             _page.ProbeScroll(false, -1);
         else if (_mode is "globe" or "globechip" or "globechipraw")
         {
@@ -131,7 +134,7 @@ public static class PerfProbe
             _page.ProbeScroll(_mode == "list", (float)(since - WarmupSeconds) * 600);
         // The page's end, held on every frame: sections below may still be measured after the first jump (a software
         // GL driver draws only a few frames during the warm-up).
-        else if (_mode is "mobs" or "mobsdrawn")
+        else if (_mode is "mobs" or "mobsdrawn" or "mobs0")
             _page.ProbeScroll(false, -1);
     }
 

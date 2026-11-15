@@ -152,6 +152,32 @@ internal struct NodeTransform
 /// <summary>Colors and the GL math both engines share.</summary>
 internal static class Math3D
 {
+    /// <summary>
+    /// <paramref name="a"/> times <paramref name="b"/>, as <c>a * b</c>, written out in floats: the WebAssembly interpreter
+    /// runs <see cref="Matrix4x4"/>'s operator about six times slower (its vector code has no hardware there), and the
+    /// JIT and AOT make this as fast. Used for every node and joint of every object, every frame.
+    /// <paramref name="r"/> must not be <paramref name="a"/> or <paramref name="b"/>.
+    /// </summary>
+    public static void Multiply(in Matrix4x4 a, in Matrix4x4 b, out Matrix4x4 r)
+    {
+        r.M11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31 + a.M14 * b.M41;
+        r.M12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32 + a.M14 * b.M42;
+        r.M13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33 + a.M14 * b.M43;
+        r.M14 = a.M11 * b.M14 + a.M12 * b.M24 + a.M13 * b.M34 + a.M14 * b.M44;
+        r.M21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31 + a.M24 * b.M41;
+        r.M22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32 + a.M24 * b.M42;
+        r.M23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33 + a.M24 * b.M43;
+        r.M24 = a.M21 * b.M14 + a.M22 * b.M24 + a.M23 * b.M34 + a.M24 * b.M44;
+        r.M31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31 + a.M34 * b.M41;
+        r.M32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32 + a.M34 * b.M42;
+        r.M33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33 + a.M34 * b.M43;
+        r.M34 = a.M31 * b.M14 + a.M32 * b.M24 + a.M33 * b.M34 + a.M34 * b.M44;
+        r.M41 = a.M41 * b.M11 + a.M42 * b.M21 + a.M43 * b.M31 + a.M44 * b.M41;
+        r.M42 = a.M41 * b.M12 + a.M42 * b.M22 + a.M43 * b.M32 + a.M44 * b.M42;
+        r.M43 = a.M41 * b.M13 + a.M42 * b.M23 + a.M43 * b.M33 + a.M44 * b.M43;
+        r.M44 = a.M41 * b.M14 + a.M42 * b.M24 + a.M43 * b.M34 + a.M44 * b.M44;
+    }
+
     /// <summary>A UI color (sRGB) as a glTF material color (linear).</summary>
     public static Vector4 Linear(Color c) =>
         new(MathF.Pow(c.Red, 2.2f), MathF.Pow(c.Green, 2.2f), MathF.Pow(c.Blue, 2.2f), c.Alpha);
