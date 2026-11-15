@@ -55,6 +55,11 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     /// <summary>The glide back to the home view, 0 to 1 (1 = none running), and where it started.</summary>
     float _reset = 1, _fromYaw, _fromPitch, _fromZoom;
     bool _pinchZoom, _resetOnDoubleTap, _lockPitch;
+    /// <summary>Turns on after a drag is let go (<see cref="Fling"/>): degrees per second, slowing as a scroll does.</summary>
+    bool _fling;
+    float _flingYaw, _flingPitch;
+    bool _dragged;
+    readonly VelocityAccumulator _velocity = new();
     float _minZoom = 0.5f, _maxZoom = 2.5f;
     /// <summary>This gesture's drag: 0 not decided yet, 1 turns the model, 2 left to the parent (vertical, pitch locked).</summary>
     int _panAxis;
@@ -338,6 +343,38 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         get => _orbit;
         set => _orbit = value;
     }
+
+    /// <summary>
+    /// A drag that is let go keeps the model turning, slowing down as a scroll does after a swipe (off by default). A
+    /// finger put down stops it.
+    /// </summary>
+    public bool Fling
+    {
+        get => _fling;
+        set
+        {
+            _fling = value;
+            if (!value)
+                StopFling();
+        }
+    }
+
+    /// <summary>Turns the model on by itself from these speeds (degrees per second) until it slows to a stop.</summary>
+    internal void StartFling(float yawPerSecond, float pitchPerSecond)
+    {
+        _flingYaw = yawPerSecond;
+        _flingPitch = _lockPitch ? 0 : pitchPerSecond;
+        Changed();
+    }
+
+    void StopFling()
+    {
+        _flingYaw = 0;
+        _flingPitch = 0;
+    }
+
+    /// <summary>The scroll's deceleration: the speed keeps this share of itself each millisecond.</summary>
+    const float FlingDeceleration = 0.998f;
 
     /// <summary>
     /// Two fingers pinching and Ctrl (Cmd) + mouse wheel zoom the view, between <see cref="MinZoom"/> and
@@ -658,7 +695,7 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         Update();
     }
 
-    bool WantsFrames => _scene != null && (_autoRotate != 0 || _reset < 1 || _player.Busy || TiltMoving);
+    bool WantsFrames => _scene != null && (_autoRotate != 0 || _reset < 1 || _player.Busy || TiltMoving || _flingYaw != 0 || _flingPitch != 0);
 
     /// <summary>The lean toward the pointer has not reached where the pointer says.</summary>
     bool TiltMoving
@@ -718,6 +755,18 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         if (_scene == null)
             return;
         _yaw = (_yaw + _autoRotate * delta) % 360;
+        if (_flingYaw != 0 || _flingPitch != 0)
+        {
+            _yaw = (_yaw + _flingYaw * delta) % 360;
+            if (_flingPitch != 0)
+                _pitch = Math.Clamp(_pitch + _flingPitch * delta, -60, 80);
+            var keep = MathF.Pow(FlingDeceleration, delta * 1000);
+            _flingYaw *= keep;
+            _flingPitch *= keep;
+            // Under a degree and a half per second it no longer reads as moving.
+            if (MathF.Abs(_flingYaw) < 1.5f && MathF.Abs(_flingPitch) < 1.5f)
+                StopFling();
+        }
         if (_tilt > 0)
         {
             // Pointer moves come in bursts: the lean chases where they point, reaching it in about 0.15 s.
@@ -833,6 +882,20 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         {
             if (args.Type is TouchActionResult.Down or TouchActionResult.Up)
                 _pinch = 0;
+            if (args.Type == TouchActionResult.Down)
+            {
+                // a finger put down catches the model
+                StopFling();
+                _velocity.Clear();
+                _dragged = false;
+            }
+            else if (args.Type == TouchActionResult.Up && _fling && _dragged && !_multiTouch)
+            {
+                _dragged = false;
+                // the drag's speed when let go, in points per second, turned the way the drag turns the model
+                var v = _velocity.CalculateFinalVelocity(4000);
+                StartFling(-v.X * 0.5f, v.Y * 0.3f);
+            }
             // A gesture that had two fingers on it never turns the model, up to its last finger: the jump between the
             // fingers' events and the move of the finger left after the other lifted are not a drag.
             if (args.Event.NumberOfTouches > 1)
@@ -908,6 +971,11 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
                     // The surface follows the finger: a drag to the right turns the near side to the right (the camera
                     // goes the other way round), in points whatever the density. Same as DrawnUI for Rust.
                     _yaw -= args.Event.Distance.Delta.X / scale * 0.5f;
+                    if (_fling)
+                    {
+                        _dragged = true;
+                        _velocity.CaptureVelocity(new Vector2(args.Event.Distance.Velocity.X, args.Event.Distance.Velocity.Y) / scale, args.ArrivedTimeNanos);
+                    }
                     if (!_lockPitch)
                         _pitch = Math.Clamp(_pitch + args.Event.Distance.Delta.Y / scale * 0.3f, -60, 80);
                     Update();

@@ -27,11 +27,11 @@ public partial class GalleryPage
     };
 
     SkiaModel3D _globe;
-    UiButton _spinButton;
+    Button3D _spinButton;
     readonly SkiaLayer[] _cityPins = new SkiaLayer[Cities.Length];
     readonly SkiaLayer[] _pulses = new SkiaLayer[Cities.Length];
     readonly SkiaLayer[] _cityLabels = new SkiaLayer[Cities.Length];
-    readonly UiButton[] _cityButtons = new UiButton[Cities.Length];
+    readonly Button3D[] _cityButtons = new Button3D[Cities.Length];
     int _openCity = -1;
     bool _spinning = true;
     /// <summary>A glide to a city: 0 to 1 while it runs, and the turn it goes from and to.</summary>
@@ -73,6 +73,8 @@ public partial class GalleryPage
                             Pitch = 15,
                             Zoom = 0.9f,
                             AutoRotate = 10,
+                            // a swipe keeps the Earth turning, slowing as a scroll does
+                            Fling = true,
                             PinchZoom = true,
                             MinZoom = 0.6f,
                             MaxZoom = 1.6f,
@@ -115,11 +117,11 @@ public partial class GalleryPage
                         Spacing = 8,
                         AccessibilityRole = Aria.RoleRadioGroup,
                         AccessibilityLabel = "Cities",
-                        Children = Cities.Select((city, i) => (SkiaControl)new UiButton(city.Name, Theme.Quiet, -1) { AccessibilityRole = Aria.RoleRadio }
+                        Children = Cities.Select((city, i) => (SkiaControl)new Button3D(city.Name, Theme.Quiet, -1) { AccessibilityRole = Aria.RoleRadio }
                             .Assign(out _cityButtons[i])
                             .OnTapped(_ => GoToCity(i))).ToList(),
                     },
-                    new UiButton("Pause spin", Theme.Quiet, 158) { Margin = new Thickness(0, 6, 0, 0), AccessibilityHint = "Stops or starts the globe turning by itself" }
+                    new Button3D("Pause spin", Theme.Quiet, 158) { Margin = new Thickness(0, 6, 0, 0), AccessibilityHint = "Stops or starts the globe turning by itself" }
                         .Assign(out _spinButton)
                         .OnTapped(_ => SetSpin(!_spinning)),
                     new SkiaLabel("Image: NASA Blue Marble") { FontSize = 12, TextColor = Theme.Muted },
