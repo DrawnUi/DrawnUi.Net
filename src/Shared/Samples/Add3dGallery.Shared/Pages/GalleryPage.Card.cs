@@ -10,7 +10,7 @@ public partial class GalleryPage
     const float CardScale = 8.56f / 1024;
 
     SkiaModel3D _card;
-    UiButton _flipButton;
+    Button3D _flipButton;
     bool _flipped;
     /// <summary>The half turn: where it is and where it goes (0 = front, 180 = back), degrees.</summary>
     float _cardTurn, _cardTurnTo;
@@ -156,7 +156,7 @@ public partial class GalleryPage
                                 { FontSize = 13, TextColor = Theme.Muted, Margin = new Thickness(0, 10, 0, 0) },
                         }
                     },
-                    new UiButton("Show the back", Theme.Accent, 160) { AccessibilityHint = "Turns the card over" }
+                    new Button3D("Show the back", Theme.Accent, 160) { AccessibilityHint = "Turns the card over" }
                         .Assign(out _flipButton)
                         .OnTapped(_ => Flip()),
                 }

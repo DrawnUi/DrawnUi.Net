@@ -6,7 +6,7 @@ namespace Add3dGallery;
 /// </summary>
 public class GalleryRoot : SkiaLayer
 {
-    readonly UiButton[] _tabs = new UiButton[2];
+    readonly Button3D[] _tabs = new Button3D[2];
     readonly SkiaControl[] _pages = new SkiaControl[2];
 
     /// <summary>The gallery screen, measured by <see cref="PerfProbe"/>.</summary>
@@ -77,10 +77,10 @@ public class GalleryRoot : SkiaLayer
                                     AccessibilityLabel = "Screens",
                                     Children =
                                     {
-                                        new UiButton("Gallery", Theme.Accent, 120) { AccessibilityRole = Aria.RoleTab }
+                                        new Button3D("Gallery", Theme.Accent, 120) { AccessibilityRole = Aria.RoleTab }
                                             .Assign(out _tabs[0])
                                             .OnTapped(_ => Show(0)),
-                                        new UiButton("Boss fight", Theme.Quiet, 120) { AccessibilityRole = Aria.RoleTab }
+                                        new Button3D("Boss fight", Theme.Quiet, 120) { AccessibilityRole = Aria.RoleTab }
                                             .Assign(out _tabs[1])
                                             .OnTapped(_ => Show(1)),
                                     }

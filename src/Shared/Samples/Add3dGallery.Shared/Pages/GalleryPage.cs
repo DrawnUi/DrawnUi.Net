@@ -27,9 +27,9 @@ public partial class GalleryPage : DrawnGame
     SkiaModel3D _chest;
     SkiaScene3D _rain, _field;
     Scenery _scenery;
-    UiButton _chestButton;
-    readonly UiButton[] _mobButtons = new UiButton[MobCounts.Length];
-    readonly UiButton[] _lookButtons = new UiButton[2];
+    Button3D _chestButton;
+    readonly Button3D[] _mobButtons = new Button3D[MobCounts.Length];
+    readonly Button3D[] _lookButtons = new Button3D[2];
     SkiaControl _keyboardSpacer;
 
     /// <summary>
@@ -118,7 +118,7 @@ public partial class GalleryPage : DrawnGame
                                         .Model("paper", Paper())
                                         .Model("star", ConfettiStar())
                                         .Assign(out _rain),
-                                    new UiButton("Hooray", Theme.Accent).OnTapped(_ => Hooray())),
+                                    new Button3D("Hooray", Theme.Accent).OnTapped(_ => Hooray())),
                                 ProductBoxTile(),
                                 Tile("Reward", "A chest that opens and closes.",
                                     new SkiaModel3D(Theme.Chest)
@@ -127,7 +127,7 @@ public partial class GalleryPage : DrawnGame
                                             HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
                                         }
                                         .Assign(out _chest),
-                                    new UiButton("Open", Theme.Accent).Assign(out _chestButton).OnTapped(_ => ToggleChest())),
+                                    new Button3D("Open", Theme.Accent).Assign(out _chestButton).OnTapped(_ => ToggleChest())),
                             }
                         },
 
@@ -372,7 +372,7 @@ public partial class GalleryPage : DrawnGame
                 Spacing = 8,
                 AccessibilityRole = Aria.RoleRadioGroup,
                 AccessibilityLabel = "Mobs on the field",
-                Children = MobCounts.Select((n, i) => (SkiaControl)new UiButton($"{n} mobs", Theme.Quiet, 110) { AccessibilityRole = Aria.RoleRadio }
+                Children = MobCounts.Select((n, i) => (SkiaControl)new Button3D($"{n} mobs", Theme.Quiet, 110) { AccessibilityRole = Aria.RoleRadio }
                         .Assign(out _mobButtons[i])
                         .OnTapped(_ => SetMobs(n)))
                     // How they look, switched in place: a segmented 3D | Drawn on a plate (as DrawnUI for Rust).
@@ -391,10 +391,10 @@ public partial class GalleryPage : DrawnGame
                                 Spacing = 3,
                                 Children =
                                 {
-                                    new UiButton("3D", Theme.Quiet, 90) { AccessibilityRole = Aria.RoleRadio }
+                                    new Button3D("3D", Theme.Quiet, 90) { AccessibilityRole = Aria.RoleRadio }
                                         .Assign(out _lookButtons[0])
                                         .OnTapped(_ => SetDrawnMobs(false)),
-                                    new UiButton("Drawn", Theme.Quiet, 90) { AccessibilityRole = Aria.RoleRadio }
+                                    new Button3D("Drawn", Theme.Quiet, 90) { AccessibilityRole = Aria.RoleRadio }
                                         .Assign(out _lookButtons[1])
                                         .OnTapped(_ => SetDrawnMobs(true)),
                                 }

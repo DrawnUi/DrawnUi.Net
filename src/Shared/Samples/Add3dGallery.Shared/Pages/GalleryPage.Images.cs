@@ -76,9 +76,9 @@ public partial class GalleryPage
                         Spacing = 8,
                         Children =
                         {
-                            new UiButton("Next design", Theme.Accent, 124).OnTapped(_ => NextImage(_product, "box", _labels, ref _label)),
+                            new Button3D("Next design", Theme.Accent, 124).OnTapped(_ => NextImage(_product, "box", _labels, ref _label)),
                             // The box's edges: hard (the default) or smooth (4x multisampling).
-                            new UiButton("Edges: hard", Theme.Quiet, 124)
+                            new Button3D("Edges: hard", Theme.Quiet, 124)
                                 .OnTapped(me =>
                                 {
                                     _product.Antialias = !_product.Antialias;

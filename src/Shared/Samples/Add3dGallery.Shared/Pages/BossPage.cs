@@ -49,11 +49,11 @@ public class BossPage : SkiaLayer
     static readonly Color RageColor = Color.FromRgb(200, 30, 40);
     static readonly Color Muted = Color.FromRgb(190, 180, 200);
 
-    readonly UiButton[] _moveButtons = new UiButton[Moves.Length];
-    readonly UiButton[] _skinButtons = new UiButton[Skins.Length];
+    readonly Button3D[] _moveButtons = new Button3D[Moves.Length];
+    readonly Button3D[] _skinButtons = new Button3D[Skins.Length];
     SkiaModel3D _boss;
     SkiaLabel _news;
-    UiButton _rageButton, _turnButton;
+    Button3D _rageButton, _turnButton;
     string _looping = "Idle";
     /// <summary>A one-shot move playing now (its button is lit until it ends), null when none.</summary>
     string _playing;
@@ -159,7 +159,7 @@ public class BossPage : SkiaLayer
                                     HorizontalOptions = LayoutOptions.Center,
                                     AccessibilityRole = Aria.RoleToolbar,
                                     AccessibilityLabel = "Moves",
-                                    Children = Moves.Select((m, i) => (SkiaControl)new UiButton(m.Caption, ButtonColor, 100)
+                                    Children = Moves.Select((m, i) => (SkiaControl)new Button3D(m.Caption, ButtonColor, 100)
                                         .Assign(out _moveButtons[i])
                                         .OnTapped(_ => Move(m.Caption, m.Animation, m.Kind))).ToList(),
                                 },
@@ -170,15 +170,15 @@ public class BossPage : SkiaLayer
                                     HorizontalOptions = LayoutOptions.Center,
                                     AccessibilityRole = Aria.RoleToolbar,
                                     AccessibilityLabel = "Skin and eyes",
-                                    Children = Skins.Select((s, i) => (SkiaControl)new UiButton(s.Caption, ButtonColor, 100)
+                                    Children = Skins.Select((s, i) => (SkiaControl)new Button3D(s.Caption, ButtonColor, 100)
                                             {
                                                 StrokeColor = s.Color ?? Ember, StrokeWidth = 2,
                                                 AccessibilityRole = Aria.RoleRadio,
                                             }
                                             .Assign(out _skinButtons[i])
                                             .OnTapped(_ => Skin(s.Caption, s.Color)))
-                                        .Append(new UiButton("Rage: off", ToggleColor, 124).Assign(out _rageButton).OnTapped(_ => ToggleRage()))
-                                        .Append(new UiButton("Turn: off", ToggleColor, 124).Assign(out _turnButton).OnTapped(_ => ToggleTurn()))
+                                        .Append(new Button3D("Rage: off", ToggleColor, 124).Assign(out _rageButton).OnTapped(_ => ToggleRage()))
+                                        .Append(new Button3D("Turn: off", ToggleColor, 124).Assign(out _turnButton).OnTapped(_ => ToggleTurn()))
                                         .ToList(),
                                 },
                             }

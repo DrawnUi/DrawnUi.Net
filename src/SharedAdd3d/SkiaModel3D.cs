@@ -58,6 +58,9 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     /// <summary>Turns on after a drag is let go (<see cref="Fling"/>): degrees per second, slowing as a scroll does.</summary>
     bool _fling;
     float _flingYaw, _flingPitch;
+    /// <summary>The way the automatic turn goes: 1 as the app set it, -1 after a fling the other way (it follows the
+    /// last swipe, so a fling slows into the turn instead of stopping and turning back).</summary>
+    float _autoDirection = 1;
     bool _dragged;
     readonly VelocityAccumulator _velocity = new();
     float _minZoom = 0.5f, _maxZoom = 2.5f;
@@ -362,7 +365,9 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     /// <summary>Turns the model on by itself from these speeds (degrees per second) until it slows to a stop.</summary>
     internal void StartFling(float yawPerSecond, float pitchPerSecond)
     {
-        _flingYaw = yawPerSecond;
+        if (_autoRotate != 0 && MathF.Abs(yawPerSecond) > MathF.Abs(_autoRotate))
+            _autoDirection = MathF.Sign(yawPerSecond) * MathF.Sign(_autoRotate);
+        _flingYaw = yawPerSecond - _autoDirection * _autoRotate;
         _flingPitch = _lockPitch ? 0 : pitchPerSecond;
         Changed();
     }
@@ -754,7 +759,7 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     {
         if (_scene == null)
             return;
-        _yaw = (_yaw + _autoRotate * delta) % 360;
+        _yaw = (_yaw + _autoRotate * _autoDirection * delta) % 360;
         if (_flingYaw != 0 || _flingPitch != 0)
         {
             _yaw = (_yaw + _flingYaw * delta) % 360;

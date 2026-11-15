@@ -62,7 +62,7 @@ public partial class GalleryPage
     SkiaShape _note;
     SkiaLabel _noteTitle, _noteText;
     readonly SkiaShape[] _pins = new SkiaShape[Hotspots.Length];
-    readonly UiButton[] _sourceButtons = new UiButton[Sources.Length];
+    readonly Button3D[] _sourceButtons = new Button3D[Sources.Length];
     readonly SkiaShape[] _swatches = new SkiaShape[Fabrics.Length];
     int _fabric = -1, _openSpot = -1;
     Source _source;
@@ -158,11 +158,11 @@ public partial class GalleryPage
                                 Spacing = 8,
                                 AccessibilityRole = Aria.RoleRadioGroup,
                                 AccessibilityLabel = "Load the model",
-                                Children = Sources.Select((s, i) => (SkiaControl)new UiButton(s.Caption, Theme.Quiet, -1) { AccessibilityRole = Aria.RoleRadio }
+                                Children = Sources.Select((s, i) => (SkiaControl)new Button3D(s.Caption, Theme.Quiet, -1) { AccessibilityRole = Aria.RoleRadio }
                                     .Assign(out _sourceButtons[i])
                                     .OnTapped(_ => LoadViewer(s.Source))).ToList(),
                             },
-                            new UiButton("Reset view", Theme.Quiet, 140) { AccessibilityHint = "Turns the sofa back to the front" }
+                            new Button3D("Reset view", Theme.Quiet, 140) { AccessibilityHint = "Turns the sofa back to the front" }
                                 .OnTapped(_ => _viewer?.ResetView()),
                         }
                     },
@@ -200,7 +200,7 @@ public partial class GalleryPage
             {
                 new SkiaLabel($"{index + 1}")
                 {
-                    FontSize = 12, FontFamily = Theme.Title, TextColor = Theme.Accent,
+                    FontSize = 12, FontFamily = Theme.Title, TextColor = Theme.Darker(Theme.Accent, 0.4f),
                     HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center,
                 },
             }
@@ -296,7 +296,7 @@ public partial class GalleryPage
                     }.WithAccessibilityLive(),
                     new SkiaLabel { FontSize = 13, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center, HorizontalTextAlignment = DrawTextAlignment.Center }
                         .Assign(out _failedText),
-                    new UiButton("Use the app's copy", Theme.Accent, 180) { Margin = new Thickness(0, 6, 0, 0) }
+                    new Button3D("Use the app's copy", Theme.Accent, 180) { Margin = new Thickness(0, 6, 0, 0) }
                         .WithHorizontalOptions(LayoutOptions.Center)
                         .OnTapped(_ => LoadViewer(Source.App)),
                 }

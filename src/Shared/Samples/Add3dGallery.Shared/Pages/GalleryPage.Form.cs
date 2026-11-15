@@ -49,7 +49,7 @@ public partial class GalleryPage
                                 Field("Name", false, 0).Assign(out _nameField),
                                 Field("Email", false, 1).Assign(out _emailField),
                                 Field("Password", true, 2).Assign(out _passwordField),
-                                new UiButton("Sign up", Theme.Accent) { HorizontalOptions = LayoutOptions.Fill, WidthRequest = -1 }
+                                new Button3D("Sign up", Theme.Accent) { HorizontalOptions = LayoutOptions.Fill, WidthRequest = -1 }
                                     .OnTapped(_ => SignUp()),
                                 new SkiaLabel { FontSize = 14, TextColor = Theme.Gold, HeightRequest = 20, AccessibilityRole = Aria.RoleText }
                                     .WithAccessibilityLive()

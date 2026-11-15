@@ -13,7 +13,7 @@ public static class Theme
     public static readonly Color Stage = Color.FromRgb(42, 47, 70);
     public static readonly Color Ink = Color.FromRgb(242, 241, 248);
     public static readonly Color Muted = Color.FromRgb(154, 152, 176);
-    public static readonly Color Accent = Color.FromRgb(124, 108, 242);
+    public static readonly Color Accent = Color.FromRgb(242, 179, 61);
     public static readonly Color Quiet = Color.FromRgb(52, 56, 78);
     /// <summary>Prices.</summary>
     public static readonly Color Gold = Color.FromRgb(255, 196, 61);
@@ -57,7 +57,9 @@ public static class Theme
     public static Color Lighter(Color c, float amount) =>
         Color.FromRgba(c.Red + (1 - c.Red) * amount, c.Green + (1 - c.Green) * amount, c.Blue + (1 - c.Blue) * amount, c.Alpha);
 
-    /// <summary>A section title with the line under it.</summary>
+    public static Color Darker(Color c, float amount) =>
+        Color.FromRgba(c.Red * (1 - amount), c.Green * (1 - amount), c.Blue * (1 - amount), c.Alpha);
+
     // Where the gallery links to (this is the .NET build; the Rust and React galleries are the same demo).
     public const string ArticleUrl = "https://drawnui.net/articles/add3d.html";
     public const string DocsUrl = "https://drawnui.net/";
@@ -81,8 +83,9 @@ public static class Theme
         .OnHovered((me, on) => me.TextColor = on ? Ink : LinkColor)
         .OnTapped(_ => Super.OpenLink(url));
 
-    public static readonly Color LinkColor = Color.FromRgb(172, 160, 255);
+    public static readonly Color LinkColor = Color.FromRgb(255, 208, 110);
 
+    /// <summary>A section title with the line under it.</summary>
     public static SkiaControl Section(string title, string caption) => new SkiaStack
     {
         Spacing = 4,
@@ -101,55 +104,69 @@ public static class Theme
 }
 
 /// <summary>
-/// The app's button: a rounded pill with a caption, lighter while the mouse is over it, a button for the keyboard
-/// and screen readers. <see cref="Fill"/> is its state color (selected, active); the hover lift goes on top of it.
+/// The app's button, raised in 3D: a face lit from above (a light gradient and a bevel on its edges) standing on its
+/// darker side, with a soft shadow under it. Pressed, the face sinks onto its side; under the mouse it gets lighter.
+/// A button for the keyboard and screen readers. <see cref="Fill"/> is its state color (selected, active).
 /// </summary>
-public class UiButton : SkiaShape
+public class Button3D : SkiaButton
 {
-    readonly SkiaLabel _caption;
+    /// <summary>How far the face stands above the page, points: the side seen under it.</summary>
+    const float Depth = 4;
+    const float FaceHeight = 40;
+
+    readonly double _width;
     Color _fill;
     bool _hovered;
+    SkiaShape _face;
+    SkiaShadow _side;
+    SkiaLabel _shade, _edge;
+
+    SkiaLabel Caption(Color color, float offsetY) => new(Text)
+    {
+        FontFamily = Theme.Title,
+        FontSize = 14,
+        TextColor = color,
+        TranslationY = offsetY,
+        HorizontalOptions = LayoutOptions.Center,
+        VerticalOptions = LayoutOptions.Center,
+        // the button is the accessible node, read once: its captions are not
+        AccessibilityRole = Aria.RolePresentation,
+    };
+
+    /// <summary>A light face (the gold accent) takes dark ink, a dark face light ink.</summary>
+    bool LightFace => 0.299 * _fill.Red + 0.587 * _fill.Green + 0.114 * _fill.Blue > 0.55;
+
+    Color Ink => LightFace ? Color.FromRgb(40, 28, 6) : Theme.Ink.WithAlpha(0.92f);
+
+    public override void ApplyProperties()
+    {
+        base.ApplyProperties();
+        if (MainLabel != null)
+            MainLabel.TextColor = Ink;
+        if (_shade != null)
+            _shade.Text = _edge.Text = MainLabel?.Text ?? Text;
+    }
 
     /// <param name="width">Points; -1 = as wide as its caption plus padding (a chip).</param>
-    public UiButton(string text, Color fill, double width = 150)
+    public Button3D(string text, Color fill, double width = 150)
     {
         _fill = fill;
-        // Still between its state changes: one bitmap blit inside cards that redraw every frame around a moving 3D
-        // view, not its shape and caption replayed each frame.
-        UseCache = SkiaCacheType.Image;
-        CornerRadius = 10;
+        _width = width;
+        Text = text;
+        TextColor = Theme.Ink;
+        FontFamily = Theme.Title;
+        FontSize = 14;
         WidthRequest = width;
-        if (width < 0)
-            Padding = new Thickness(18, 0);
-        HeightRequest = 40;
-        BackgroundColor = fill;
+        HeightRequest = FaceHeight + Depth;
+        // Still between its state changes: one bitmap blit inside cards that redraw every frame around a moving 3D
+        // view, not its shapes and caption replayed each frame.
+        UseCache = SkiaCacheType.Image;
         AccessibilityRole = Aria.RoleButton;
-        AccessibilityLabel = text;
-        Children = new List<SkiaControl>
-        {
-            new SkiaLabel(text)
-                {
-                    FontSize = 14, FontFamily = Theme.Title, TextColor = Theme.Ink,
-                    HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center,
-                }
-                .Assign(out _caption),
-        };
         this.OnHovered((me, on) =>
         {
             _hovered = on;
             Apply();
         });
-    }
-
-    /// <summary>The caption, also its name for screen readers.</summary>
-    public string Text
-    {
-        get => _caption.Text;
-        set
-        {
-            _caption.Text = value;
-            AccessibilityLabel = value;
-        }
     }
 
     /// <summary>The state color; hover lightens it.</summary>
@@ -163,5 +180,67 @@ public class UiButton : SkiaShape
         }
     }
 
-    void Apply() => BackgroundColor = _hovered ? Theme.Lighter(_fill, 0.14f) : _fill;
+    protected override void CreateDefaultStyleContent()
+    {
+        new SkiaShape
+            {
+                CornerRadius = 10,
+                HeightRequest = FaceHeight,
+                HorizontalOptions = _width < 0 ? LayoutOptions.Start : LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Start,
+                Padding = _width < 0 ? new Thickness(18, 0) : new Thickness(0),
+                BevelType = BevelType.Bevel,
+                Bevel = new SkiaBevel { Depth = 1.2, LightColor = Colors.White, ShadowColor = Colors.Black, Opacity = 0.5 },
+                Shadows = new List<SkiaShadow>
+                {
+                    // the side: the face's own outline, darker, right under it
+                    new SkiaShadow { Blur = 0, Y = Depth, Opacity = 1 }.Assign(out _side),
+                    new SkiaShadow { Blur = 8, Y = Depth + 3, Opacity = 0.35, Color = Colors.Black },
+                },
+                // the caption engraved in the face: its shadow 1 pt above, its light edge 1 pt below
+                Children =
+                {
+                    Caption(Colors.Black.WithAlpha(0.55f), -1).Assign(out _shade),
+                    Caption(Colors.White.WithAlpha(0.16f), 1).Assign(out _edge),
+                    Caption(Theme.Ink.WithAlpha(0.92f), 0).Assign(out var label),
+                },
+            }
+            .Assign(out _face)
+            .AssignParent(this);
+        MainLabel = label;
+        Apply();
+    }
+
+    protected override void OnButtonPropertyChanged(SkiaButton control, string propertyName)
+    {
+        base.OnButtonPropertyChanged(control, propertyName);
+        if (propertyName == nameof(IsPressed) && _face != null)
+        {
+            // pressed, the face sits on its side
+            _face.TranslationY = IsPressed ? Depth : 0;
+            _side.Y = IsPressed ? 0 : Depth;
+            Update();
+        }
+    }
+
+    void Apply()
+    {
+        if (_face == null)
+            return;
+        var face = _hovered ? Theme.Lighter(_fill, 0.14f) : _fill;
+        _face.BackgroundColor = face;
+        _face.FillGradient = new SkiaGradient
+        {
+            StartXRatio = 0, StartYRatio = 0, EndXRatio = 0, EndYRatio = 1,
+            Colors = new List<Color> { Theme.Lighter(face, 0.2f), face, Theme.Darker(face, 0.1f) },
+            ColorPositions = new List<double> { 0, 0.55, 1 },
+        };
+        // clearly darker than the face and than the card under it, whatever the face: a dark face keeps its depth too
+        _side.Color = Theme.Darker(_fill, LightFace ? 0.45f : 0.7f);
+        // engraved: a dark face takes its light edge below, a light face its shadow above
+        _shade.TextColor = Colors.Black.WithAlpha(LightFace ? 0.18f : 0.55f);
+        _edge.TextColor = Colors.White.WithAlpha(LightFace ? 0.45f : 0.16f);
+        MainLabel.TextColor = Ink;
+        Update();
+    }
 }

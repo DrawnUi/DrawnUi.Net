@@ -153,7 +153,7 @@ public partial class GalleryPage
                             new SkiaLabel(Dollars(price)) { FontSize = 14, TextColor = Theme.Gold },
                         }
                     },
-                    new UiButton("Add", Theme.Accent, 120)
+                    new Button3D("Add", Theme.Accent, 120)
                         {
                             AccessibilityLabel = $"Add {name} to the cart", HorizontalOptions = LayoutOptions.End, VerticalOptions = LayoutOptions.Center,
                         }
