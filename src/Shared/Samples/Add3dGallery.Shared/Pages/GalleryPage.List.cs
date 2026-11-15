@@ -155,7 +155,7 @@ public partial class GalleryPage
                             new SkiaLabel(Dollars(price)) { FontSize = 14, TextColor = Theme.Gold },
                         }
                     },
-                    new Button3D("Add", Theme.Accent, 120)
+                    new Button3D("Add", Theme.Quiet, 120)
                         {
                             AccessibilityLabel = $"Add {name} to the cart", HorizontalOptions = LayoutOptions.End, VerticalOptions = LayoutOptions.Center,
                         }
@@ -164,7 +164,7 @@ public partial class GalleryPage
                             added = !added;
                             me.Text = added ? "In the cart" : "Add";
                             me.AccessibilityLabel = added ? $"Remove {name} from the cart" : $"Add {name} to the cart";
-                            me.Fill = added ? Theme.Stage : Theme.Accent;
+                            me.Fill = added ? Theme.Accent : Theme.Quiet;
                         }),
                 }
             }
