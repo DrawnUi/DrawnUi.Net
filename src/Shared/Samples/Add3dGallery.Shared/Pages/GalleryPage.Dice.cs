@@ -198,7 +198,7 @@ public partial class GalleryPage
                         Children =
                         {
                             new Button3D("Roll", Theme.Accent, 120).OnTapped(_ => RollDice()),
-                            new SkiaLabel("Roll the dice")
+                            new Copyable("Roll the dice")
                             {
                                 FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Ink,
                                 VerticalOptions = LayoutOptions.Center,
