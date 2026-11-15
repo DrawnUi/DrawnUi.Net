@@ -67,15 +67,18 @@ public class SkiaGLTextureView : TextureView, TextureView.ISurfaceTextureListene
             _preRenderedImage?.Dispose();
             _preRenderedImage = null;
 
-            // Dispose renderer to clean up any transferred PreRenderedImage and GPU resources
-            (renderer as IDisposable)?.Dispose();
-            renderer = null;
-
+            // Stop the GL thread FIRST: its teardown (surface destroyed, context released) still calls the renderer.
+            // Disposing the renderer before it crashed that thread (NullReferenceException in
+            // EglHelper.DestroySurface, then SIGABRT) when an app rebuilt its UI in-process (language change).
             if (glThread != null)
             {
                 // GLThread may still be running if this view was never attached to a window.
                 glThread.RequestExitAndWait();
             }
+
+            // Dispose renderer to clean up any transferred PreRenderedImage and GPU resources
+            (renderer as IDisposable)?.Dispose();
+            renderer = null;
         }
 
         base.Dispose(disposing);
@@ -1676,7 +1679,7 @@ public class SkiaGLTextureView : TextureView, TextureView.ISurfaceTextureListene
 
             if (textureViewWeakRef.TryGetTarget(out SkiaGLTextureView view))
             {
-                view.renderer.OnSurfaceDestroyed();
+                view.renderer?.OnSurfaceDestroyed(); // null when the GL thread outlived a stuck exit wait
             }
 
             DestroySurfaceImpl();
