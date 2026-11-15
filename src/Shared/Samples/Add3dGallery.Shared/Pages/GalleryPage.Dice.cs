@@ -209,6 +209,49 @@ public partial class GalleryPage
             }, still: true);
     }
 
+    const double RollMs = 1500;
+    /// <summary>The part of a roll spent tumbling; the rest is the die rocking once on the face it landed on.</summary>
+    const float Tumbling = 0.86f;
+
+    /// <summary>
+    /// A die's angle during a roll: it keeps turning fast, loses speed to friction but never crawls (its last turn is
+    /// still at 40% of its average speed), hits its face and stops dead, then rocks back a few degrees and settles.
+    /// </summary>
+    static float Tumble(float from, float to, float t)
+    {
+        var d = to - from;
+        if (t < Tumbling)
+        {
+            var u = t / Tumbling;
+            return from + d * u * (1.6f - 0.6f * u);
+        }
+        var s = (t - Tumbling) / (1 - Tumbling);
+        // the rebound off the face: a few degrees back, then down again, damped
+        return to - MathF.Sign(d) * MathF.Min(MathF.Abs(d), 5) * MathF.Sin(MathF.PI * s) * (1 - s);
+    }
+
+    /// <summary>Hops off the table: three falls under gravity, each lower and shorter, done before the die lands.</summary>
+    static float Bounces(float t)
+    {
+        ReadOnlySpan<float> heights = stackalloc float[] { 0.32f, 0.12f, 0.04f };
+        // time of a hop grows with the square root of its height, as for a falling body
+        float total = 0;
+        foreach (var h in heights)
+            total += MathF.Sqrt(h);
+        var at = t / (Tumbling * 0.95f) * total;
+        foreach (var h in heights)
+        {
+            var span = MathF.Sqrt(h);
+            if (at < span)
+            {
+                var u = at / span;
+                return 4 * h * u * (1 - u);
+            }
+            at -= span;
+        }
+        return 0;
+    }
+
     /// <summary>Picks both results, then tumbles each die into its face-up turn with a few hops, from where it stands.</summary>
     internal void RollDice()
     {
@@ -230,17 +273,15 @@ public partial class GalleryPage
 
         _diceView.AnimateRangeAsync(t =>
         {
-            var ease = 1 - MathF.Pow(1 - (float)t, 3);
-            // hops that die down as it settles
-            var hop = 0.3f * MathF.Abs(MathF.Sin((float)t * MathF.PI * 3)) * MathF.Pow(1 - (float)t, 1.5f);
+            var hop = Bounces((float)t);
             for (var d = 0; d < 2; d++)
             {
-                var p = (from[d].X + (to[d].X - from[d].X) * ease, from[d].Z + (to[d].Z - from[d].Z) * ease,
-                    from[d].Yaw + (to[d].Yaw - from[d].Yaw) * ease);
+                var p = (Tumble(from[d].X, to[d].X, (float)t), Tumble(from[d].Z, to[d].Z, (float)t),
+                    Tumble(from[d].Yaw, to[d].Yaw, (float)t));
                 _diePose[d] = p;
                 PlaceDie(d, p, hop);
             }
-        }, 0, 1, 1400, null, 0, cancel).ContinueWith(_ => MainThread.BeginInvokeOnMainThread(() =>
+        }, 0, 1, RollMs, null, 0, cancel).ContinueWith(_ => MainThread.BeginInvokeOnMainThread(() =>
         {
             if (cancel.IsCancellationRequested)
                 return;
