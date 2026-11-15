@@ -64,7 +64,7 @@ public partial class GalleryPage
     SkiaControl ProductBoxTile()
     {
         _labels ??= Labels();
-        return Tile("Product box", "Any image applied as a texture. Tap to switch the design.",
+        return Tile("Product box", "Any image applied as texture. Tap to switch the design.",
                     Shaded(ProductBox(), 28, 18)
                         // smooth edges (multisampling): the box's straight edges show steps without it
                         .Adapt(me => { me.AutoRotate = 40; me.Antialias = true; })
