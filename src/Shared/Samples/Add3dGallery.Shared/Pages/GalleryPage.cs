@@ -173,7 +173,7 @@ public partial class GalleryPage : DrawnGame
                     Theme.Link("Same demo in React", Theme.ReactDemoUrl),
                 }
             },
-            new Copyable("Drawn with DrawnUI: every pixel of this page, the 3D included.")
+            new Copyable("Drawn with DrawnUI: every pixel of this page, 3D and context menus included.")
             {
                 FontSize = 12, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center,
             },
