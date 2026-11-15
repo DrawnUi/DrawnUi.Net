@@ -88,7 +88,7 @@ Please star ⭐ if you like it!
 
 ## What's New 1.10.8.27
 
-  * Android: apps stay stable when closed with Back and opened again, for as long as they run: the GPU canvas keeps its graphics device for the whole app session.
+  * Android: fixed a crash that could happen some time after an app was closed with Back and opened again.
   * Much lower memory for images: every image that shows the same file or URL now shares one decoded copy instead of holding its own. 69 images of one photo take about 7 MB instead of over 900 MB. Code that disposes or edits bitmaps it gets from SkiaImageManager sets `SkiaImageManager.ReuseBitmaps = false`.
   * Image memory stays within a budget: `SkiaImageManager.CacheBudgetMb` (128 MB by default) caps the decoded pictures the cache keeps; pictures on screen always stay.
   * WPF: GPU canvases draw at full frame rate on every device, including Windows on ARM.
