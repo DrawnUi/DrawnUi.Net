@@ -96,12 +96,12 @@ public static class Theme
         Margin = new Thickness(0, 12, 0, 0),
         Children = new List<SkiaControl>
         {
-            new SkiaLabel(title)
-            { AccessibilityTextSelectable = true,
+            new Copyable(title)
+            {
                 FontSize = 22, FontFamily = Title, TextColor = Ink, HorizontalOptions = LayoutOptions.Center,
                 AccessibilityRole = Aria.RoleHeading,
             },
-            new SkiaLabel(caption) { AccessibilityTextSelectable = true, FontSize = 14, TextColor = Muted, HorizontalOptions = LayoutOptions.Center },
+            new Copyable(caption) { FontSize = 14, TextColor = Muted, HorizontalOptions = LayoutOptions.Center },
         }
     };
 }
@@ -342,4 +342,73 @@ public class Switch3D : SkiaSwitch
         Thumb.FillGradient = Lit(Lift(IsToggled ? Theme.Accent : Color.FromRgb(200, 202, 214)));
         Track.BackgroundColor = Lift(IsToggled ? ColorFrameOn : ColorFrameOff);
     }
+}
+
+/// <summary>
+/// The gallery's text that can be selected and copied (titles, descriptions): mouse drag or double click selects,
+/// Ctrl+C copies; a right click on selected text opens a small menu, Copy or Cancel.
+/// </summary>
+public class Copyable : SkiaLabel
+{
+    static PopupId _menu;
+
+    public Copyable() : this(null)
+    {
+    }
+
+    public Copyable(string text) : base(text)
+    {
+        AccessibilityTextSelectable = true;
+        this.OnContextMenu((me, e) =>
+        {
+            // nothing selected: the right click is not for us
+            if (string.IsNullOrEmpty(me.SelectedText) || me.Superview == null)
+                return false;
+            me.Superview.ClosePopupWindow(_menu);
+            _menu = me.Superview.OpenPopupWindow(Menu(me), e.Location);
+            return true;
+        });
+    }
+
+    static SkiaControl Menu(Copyable label) => new SkiaShape
+    {
+        CornerRadius = 10,
+        BackgroundColor = Theme.Card,
+        StrokeColor = Theme.Line,
+        StrokeWidth = 1,
+        WidthRequest = 150,
+        Padding = new Thickness(4),
+        Shadows = new List<SkiaShadow> { new() { Blur = 12, Y = 4, Opacity = 0.5, Color = Colors.Black } },
+        Children =
+        {
+            new SkiaStack
+            {
+                Spacing = 0,
+                AccessibilityRole = Aria.RoleMenu,
+                AccessibilityLabel = "Text",
+                Children =
+                {
+                    Item("Copy", () => label.CopySelection()),
+                    Item("Cancel", label.ClearSelection),
+                }
+            }
+        }
+    };
+
+    static SkiaShape Item(string text, Action act) => new SkiaShape
+        {
+            CornerRadius = 7,
+            HorizontalOptions = LayoutOptions.Fill,
+            Padding = new Thickness(12, 8),
+            AccessibilityRole = Aria.RoleMenuItem,
+            AccessibilityCanInteract = true,
+            AccessibilityLabel = text,
+            Children = { new SkiaLabel(text) { FontSize = 14, TextColor = Theme.Ink, AccessibilityRole = Aria.RolePresentation } },
+        }
+        .OnHovered((me, on) => me.BackgroundColor = on ? Theme.Quiet : Colors.Transparent)
+        .OnTapped(me =>
+        {
+            act();
+            me.Superview?.ClosePopupWindow(_menu);
+        });
 }

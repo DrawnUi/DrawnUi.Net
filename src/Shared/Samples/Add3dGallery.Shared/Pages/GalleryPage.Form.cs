@@ -46,8 +46,8 @@ public partial class GalleryPage
                             Spacing = 12,
                             Children =
                             {
-                                new SkiaLabel("Create your account") { AccessibilityTextSelectable = true, FontSize = 22, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                                new SkiaLabel("It takes a minute. Our mascot will not peek at your password.") { AccessibilityTextSelectable = true, FontSize = 13, TextColor = Theme.Muted },
+                                new Copyable("Create your account") { FontSize = 22, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                                new Copyable("It takes a minute. Our mascot will not peek at your password.") { FontSize = 13, TextColor = Theme.Muted },
                                 Field("Name", false, 0).Assign(out _nameField),
                                 Field("Email", false, 1).Assign(out _emailField),
                                 Field("Password", true, 2).Assign(out _passwordField),

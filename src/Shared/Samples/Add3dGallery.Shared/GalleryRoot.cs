@@ -64,8 +64,8 @@ public class GalleryRoot : SkiaLayer
                                             VerticalOptions = LayoutOptions.Center,
                                             Children =
                                             {
-                                                new SkiaLabel("DrawnUI 3D Demo") { AccessibilityTextSelectable = true, FontSize = 17, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                                                new SkiaLabel(subtitle) { AccessibilityTextSelectable = true, FontSize = 12, TextColor = Theme.Muted },
+                                                new Copyable("DrawnUI 3D Demo") { FontSize = 17, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                                                new Copyable(subtitle) { FontSize = 12, TextColor = Theme.Muted },
                                             }
                                         },
                                     }

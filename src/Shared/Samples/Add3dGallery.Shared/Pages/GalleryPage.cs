@@ -71,13 +71,13 @@ public partial class GalleryPage : DrawnGame
                             UseCache = SkiaCacheType.Image,
                             Children =
                             {
-                                new SkiaLabel("3D, made in the app")
-                                { AccessibilityTextSelectable = true,
+                                new Copyable("3D, made in the app")
+                                {
                                     FontSize = 30, FontFamily = Theme.Title, TextColor = Theme.Ink,
                                     HorizontalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RoleHeading,
                                 },
-                                new SkiaLabel("Where 3D earns its place in an app: products, lists, cards, maps and forms first, then the fun.")
-                                { AccessibilityTextSelectable = true,
+                                new Copyable("Where 3D earns its place in an app: products, lists, cards, maps and forms first, then the fun.")
+                                {
                                     FontSize = 15, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center,
                                     HorizontalTextAlignment = DrawTextAlignment.Center,
                                 },
@@ -173,8 +173,8 @@ public partial class GalleryPage : DrawnGame
                     Theme.Link("Same demo in React", Theme.ReactDemoUrl),
                 }
             },
-            new SkiaLabel("Drawn with DrawnUI: every pixel of this page, the 3D included.")
-            { AccessibilityTextSelectable = true,
+            new Copyable("Drawn with DrawnUI: every pixel of this page, the 3D included.")
+            {
                 FontSize = 12, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center,
             },
         }
@@ -204,8 +204,8 @@ public partial class GalleryPage : DrawnGame
                         UseCache = SkiaCacheType.Image,
                         Children =
                         {
-                            new SkiaLabel(title) { AccessibilityTextSelectable = true, FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                            new SkiaLabel(caption) { AccessibilityTextSelectable = true, FontSize = 13, TextColor = Theme.Muted, HeightRequest = 36 },
+                            new Copyable(title) { FontSize = 18, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new Copyable(caption) { FontSize = 13, TextColor = Theme.Muted, HeightRequest = 36 },
                         }
                     },
                     Stage(piece).WithHeight(RainHeight),
@@ -309,8 +309,8 @@ public partial class GalleryPage : DrawnGame
                         UseCache = still ? SkiaCacheType.None : SkiaCacheType.Image,
                         Children =
                         {
-                            new SkiaLabel(title) { AccessibilityTextSelectable = true, FontSize = 20, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
-                            new SkiaLabel(caption) { AccessibilityTextSelectable = true, FontSize = 14, TextColor = Theme.Muted },
+                            new Copyable(title) { FontSize = 20, FontFamily = Theme.Title, TextColor = Theme.Ink, AccessibilityRole = Aria.RoleHeading },
+                            new Copyable(caption) { FontSize = 14, TextColor = Theme.Muted },
                         }
                     },
                     content.WithMargin(0, 6, 0, 0),
