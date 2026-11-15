@@ -29,6 +29,9 @@ public sealed class GestureRobot
     /// </summary>
     public PointerDeviceType? Device { get; set; }
 
+    /// <summary>The mouse button the events carry when <see cref="Device"/> is set (left by default).</summary>
+    public AppoMobi.Gestures.MouseButton Button { get; set; } = AppoMobi.Gestures.MouseButton.Left;
+
     /// <summary>Single tap at the given point (no movement): Down → Tapped → Up.</summary>
     public void Tap(double x, double y, double frameMs = 16.0)
     {
@@ -381,7 +384,7 @@ public sealed class GestureRobot
             IsInsideView = true
         };
         if (Device != null)
-            args.Pointer = new PointerData { DeviceType = Device.Value, Button = AppoMobi.Gestures.MouseButton.Left };
+            args.Pointer = new PointerData { DeviceType = Device.Value, Button = Button };
         return args;
     }
 

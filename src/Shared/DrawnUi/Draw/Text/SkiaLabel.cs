@@ -5165,6 +5165,10 @@ namespace DrawnUi.Draw
                     if (!mouse)
                         return null; // touch: a long press selects, a drag keeps scrolling
 
+                    // only the main button selects: a right click keeps the selection for its context menu
+                    if (args.Event.Pointer is { Button: not MouseButton.Left })
+                        return _selectionLength > 0 ? this : null;
+
                     var index = IndexAt(point);
                     // when the click happened (stamped at arrival), not when a frame got to process it
                     var now = args.Event.Timestamp.Ticks / TimeSpan.TicksPerMillisecond;

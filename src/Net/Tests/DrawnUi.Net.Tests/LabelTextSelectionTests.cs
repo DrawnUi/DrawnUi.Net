@@ -73,6 +73,25 @@ public class LabelTextSelectionTests
         Assert.Equal("wonderful", label.SelectedText);
     }
 
+    /// <summary>A right click on selected text keeps the selection, for the context menu that copies it.</summary>
+    [Fact]
+    public void RightClick_KeepsTheSelection()
+    {
+        var (host, label, robot) = Create(true, PointerDeviceType.Mouse);
+        using var _ = host;
+        var from = At(label, 6);
+        var to = At(label, 15);
+        robot.PointerDown(from.X, from.Y);
+        robot.PointerMoveTo(to.X, to.Y);
+        robot.PointerUp();
+        Assert.Equal("wonderful", label.SelectedText);
+
+        robot.Button = AppoMobi.Gestures.MouseButton.Right;
+        var mid = At(label, 10);
+        robot.Tap(mid.X, mid.Y);
+        Assert.Equal("wonderful", label.SelectedText);
+    }
+
     [Fact]
     public void MouseDrag_AcrossTheWrap_CopiesTheSpaceItDropped()
     {
