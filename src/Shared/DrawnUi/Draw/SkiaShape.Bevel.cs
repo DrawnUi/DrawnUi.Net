@@ -90,7 +90,7 @@ namespace DrawnUi.Draw
             if (BevelType == BevelType.None || Bevel == null)
                 return;
 
-            var paint = new SKPaint
+            using var paint = new SKPaint
             {
                 IsAntialias = true,
                 Style = SKPaintStyle.Stroke,
