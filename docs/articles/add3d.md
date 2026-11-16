@@ -72,7 +72,7 @@ new SkiaModel3D(avatarGlb)            // the .glb file's bytes
 import { SkiaModel3D } from "drawnui-react-add3d";
 
 <SkiaModel3D
-  Glb={avatarGlb}                     // the .glb file's bytes
+  Glb={avatarGlb}                     // the .glb file's bytes, kept stable (a constant or useMemo)
   Animation="CharacterArmature|Idle"
   Yaw={25} Pitch={10}
   PinchZoom={true}
@@ -159,14 +159,15 @@ new SkiaModel3D(new Model3D()
 # [React (TSX)](#tab/tsx)
 
 ```tsx
-import { SkiaModel3D, Model3D, Mesh3D, Texture3D, type SkiaModel3DCtrl } from "drawnui-react-add3d";
+import { SkiaModel3D, Model3D, Mesh3D, Texture3D } from "drawnui-react-add3d";
 
-const globe = useRef<SkiaModel3DCtrl>(null);
+// make the model once: a new Model value rebuilds the scene
+const earth = useMemo(() => new Model3D().Part("earth", Mesh3D.Sphere(1), "#FFFFFF"), []);
 
-<SkiaModel3D ref={globe} Model={new Model3D().Part("earth", Mesh3D.Sphere(1), "#FFFFFF")} />
-
-// once it is mounted
-globe.current?.SetMaterialImage("earth", Texture3D.Decode(earthJpg));
+<SkiaModel3D
+  Model={earth}
+  ref={(m) => { m?.SetMaterialImage("earth", Texture3D.Decode(earthJpg)); }}
+/>
 ```
 
 # [Rust](#tab/rust)
@@ -223,13 +224,16 @@ const layer = useRef<SkiaScene3DCtrl>(null);
   Tapped3D={(me, hit) => me.PlayOnce(hit.Object, "CharacterArmature|HitRecieve")}
 />
 
-// once it is mounted, then from code
-const l = layer.current!;
-l.Model("character", characterGlb);
-l.Add("player", "character", x, y, 48);        // object name, model, position in points, height
-l.SetPosition("player", x, y);
-l.SetFacing("player", 90);
-l.Play("player", "CharacterArmature|Walk");
+useEffect(() => {
+  const l = layer.current!;
+  l.Model("character", characterGlb);
+  l.Add("player", "character", x, y, 48);      // object name, model, position in points, height
+  l.Play("player", "CharacterArmature|Walk");
+}, []);
+
+// from your game code (nothing re-renders)
+layer.current!.SetPosition("player", x, y);
+layer.current!.SetFacing("player", 90);
 ```
 
 # [Rust](#tab/rust)
