@@ -205,7 +205,7 @@ namespace DrawnUi.Draw
                     }
 
                     await Task.Delay(TimeSpan.FromSeconds(1.0 / fps), cancellationToken);
-                    OnFrame?.Invoke(null, EventArgs.Empty);
+                    RaiseFrame(OnFrame, EventArgs.Empty);
                 }
             }
             catch (OperationCanceledException)

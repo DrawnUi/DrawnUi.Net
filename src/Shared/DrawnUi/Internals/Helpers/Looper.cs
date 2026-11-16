@@ -120,7 +120,14 @@ public class Looper : IDisposable
 
             frameStopwatch.Restart();
 
-            OnFrame?.Invoke();
+            try
+            {
+                OnFrame?.Invoke();
+            }
+            catch (Exception e)
+            {
+                Super.Log(e); // one failing frame must not end the loop
+            }
 
             frameStopwatch.Stop();
 
@@ -151,7 +158,14 @@ public class Looper : IDisposable
 
             var startFrameTimestamp = Stopwatch.GetTimestamp();
 
-            OnFrame?.Invoke();
+            try
+            {
+                OnFrame?.Invoke();
+            }
+            catch (Exception e)
+            {
+                Super.Log(e); // one failing frame must not end the loop
+            }
 
             var endFrameTimestamp = Stopwatch.GetTimestamp();
             var frameElapsedTicks = endFrameTimestamp - startFrameTimestamp;

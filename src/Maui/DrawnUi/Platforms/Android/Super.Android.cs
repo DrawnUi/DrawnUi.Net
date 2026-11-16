@@ -145,7 +145,7 @@ public partial class Super
                 // visible under a cap, where each frame carries twice the movement.
                 var vsyncStep = (long)(1_000_000_000.0 / (RefreshRate > 0 ? RefreshRate : 60));
                 VsyncFrameTimeNanos = nanos + vsyncStep;
-                OnFrame?.Invoke(null, null);
+                RaiseFrame(OnFrame, EventArgs.Empty);
                 Choreographer.Instance.PostFrameCallback(_frameCallback);
                 isRendering = false;
             });

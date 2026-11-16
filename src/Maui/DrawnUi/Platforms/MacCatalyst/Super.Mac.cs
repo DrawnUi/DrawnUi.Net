@@ -162,7 +162,7 @@ namespace DrawnUi.Draw
                                                     return;
                                                 _lastDisplayTimestamp = _displayLink.Timestamp;
                                             }
-                                            OnFrame?.Invoke(null, null);
+                                            RaiseFrame(OnFrame, EventArgs.Empty);
                                         });
                                         _displayLink.AddToRunLoop(NSRunLoop.Current, NSRunLoopMode.Default);
                                     }
@@ -184,7 +184,7 @@ namespace DrawnUi.Draw
             {
                 Looper = new(() =>
                 {
-                    OnFrame?.Invoke(null, null);
+                    RaiseFrame(OnFrame, EventArgs.Empty);
                 });
 
                 Looper.StartOnMainThread(120);

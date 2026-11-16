@@ -217,7 +217,7 @@ namespace DrawnUi.Draw
                                                         if (++frameTick % skipFrames != 0)
                                                             return;
                                                     }
-                                                    OnFrame?.Invoke(null, null);
+                                                    RaiseFrame(OnFrame, EventArgs.Empty);
                                                 };
                                             }
                                             catch (Exception e)
@@ -246,7 +246,7 @@ namespace DrawnUi.Draw
             {
                 Looper = new(() =>
                 {
-                    OnFrame?.Invoke(null, null);
+                    RaiseFrame(OnFrame, EventArgs.Empty);
                 });
 
                 Looper.StartOnMainThread(MaxFps > 0 ? MaxFps : RefreshRate);

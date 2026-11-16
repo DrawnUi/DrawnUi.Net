@@ -99,7 +99,7 @@ namespace DrawnUi.Draw
                                             // Vsync-aligned animation clock: TargetTimestamp is when the
                                             // frame produced by this tick will actually be displayed.
                                             VsyncFrameTimeNanos = (long)(_displayLink.TargetTimestamp * 1_000_000_000.0);
-                                            OnFrame?.Invoke(null, null);
+                                            RaiseFrame(OnFrame, EventArgs.Empty);
                                         });
                                         ApplyDisplayLinkFps(MaxFps);
                                         _displayLink.AddToRunLoop(NSRunLoop.Main, NSRunLoopMode.Default);
@@ -121,7 +121,7 @@ namespace DrawnUi.Draw
             {
                 Looper = new(() =>
                 {
-                    OnFrame?.Invoke(null, null);
+                    RaiseFrame(OnFrame, EventArgs.Empty);
                 });
 
                 Looper.StartOnMainThread(120);

@@ -192,6 +192,27 @@ public partial class Super
     public static bool IsPrerenderingEnabled = true;
 
     /// <summary>
+    /// Raises a frame tick to every listener. A listener that throws is logged and skipped: one error must never end
+    /// the frame loop or keep the other listeners from their frame.
+    /// </summary>
+    internal static void RaiseFrame(EventHandler handler, EventArgs args)
+    {
+        if (handler == null)
+            return;
+        foreach (var listener in handler.GetInvocationList())
+        {
+            try
+            {
+                ((EventHandler)listener)(null, args);
+            }
+            catch (Exception e)
+            {
+                Log(e);
+            }
+        }
+    }
+
+    /// <summary>
     /// Logs an exception at Error level. If a startup logger is configured, delegates to it; otherwise falls back to Trace/Console.
     /// </summary>
     /// <param name="e">The exception to log.</param>

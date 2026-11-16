@@ -95,7 +95,7 @@ namespace DrawnUi.Draw
         [SupportedOSPlatform("browser")]
         public static void OnBrowserFrame(double timestamp)
         {
-            OnFrame?.Invoke(null, EventArgs.Empty);
+            RaiseFrame(OnFrame, EventArgs.Empty);
         }
 
         public static void Init()
