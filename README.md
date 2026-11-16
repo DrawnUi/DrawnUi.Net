@@ -88,13 +88,17 @@ Please star ⭐ if you like it!
 
 ## What's New 1.10.9.1
 
+  * New: the 3D add-on. Real 3D models (glTF), a product viewer that turns and zooms, 3D characters on a 2D field, shapes made in code, inside any DrawnUI screen: DrawnUi.Maui.Add3d, DrawnUi.Blazor.Add3d, DrawnUi.Web.Add3d, DrawnUi.Wpf.Add3d, DrawnUi.OpenTk.Add3d. See [3D](https://drawnui.net/articles/add3d.html).
   * Android: fixed a crash that could happen some time after an app was closed with Back and opened again.
   * Android: fixed a crash on start in apps whose effects read the screen behind them (GPU canvas).
   * Android: fixed a crash when an app rebuilt its screen in-process (for example after a language change) on devices without Vulkan.
   * Much lower memory for images: every image that shows the same file or URL now shares one decoded copy instead of holding its own. 69 images of one photo take about 7 MB instead of over 900 MB. Code that disposes or edits bitmaps it gets from SkiaImageManager sets `SkiaImageManager.ReuseBitmaps = false`.
   * Image memory stays within a budget: `SkiaImageManager.CacheBudgetMb` (128 MB by default) caps the decoded pictures the cache keeps; pictures on screen always stay.
+  * `SkiaImageManager.CancelAll` also cancels waiting network loads on the Net and Blazor heads.
   * Android, iOS, Mac, Windows: pages of a closed window are freed, and their canvases release their GPU memory.
   * Forms follow the on-screen keyboard by themselves: set `AdaptToKeyboardAuto = true` on a SkiaScroll and the focused field rises above the keyboard on any page, with room for the last field; the page settles back when the keyboard closes (Android, iOS and the web).
+  * `SkiaScroll.AdaptToKeyboardGap` sets the space between the focused field and the keyboard (8 by default).
+  * Phones: tapping a text field focuses it, and a drag that starts on a field scrolls the page, as native fields do.
   * The mouse wheel keeps scrolling the page while a text field is focused.
   * A touchpad pinch over a zoomable control zooms it instead of scrolling the page.
   * Windows (MAUI): a drag that leaves a control keeps going until the button is released, as on the other platforms.
@@ -102,21 +106,28 @@ Please star ⭐ if you like it!
   * When the control with the keyboard focus disappears, the focus moves to the next control; choosing an item of a menu leaves the page where it is.
   * Screen readers hear a menu's items as soon as it opens.
   * Screen readers never hear what is typed in a password field: it is announced by its placeholder, and Windows reports it as a password field.
+  * Screen readers hear a button's, radio's or tab's own text once.
   * A long press on a phone or tablet opens the app's context menu (`OnContextMenu`), on every platform, Android and iPhone apps included.
   * A long press comes after 0.75 s by default on every platform (was 1.5 s); set your own with `TouchEffect.LongPressTimeMsDefault`.
   * Web (DrawnUi.Web): long press works on the pure WebAssembly head too.
   * Blazor on phones: tapping a text field opens the phone's keyboard, and a long press shows the app's menu instead of the browser's selection.
   * Web on phones (Blazor, DrawnUi.Web): the keyboard's Done / Go / Search / Send key ends editing in a single-line field and closes the keyboard, as in the MAUI apps; a physical keyboard's Enter keeps the focus.
+  * iPhone Safari: a double tap reaches drawn controls.
   * Blazor on desktop: drawn text fields take input from Chinese, Japanese, Korean and other input methods, with the candidate window next to the field.
   * Text selection with the mouse works like on a web page: start beside or above the text, and one drag selects across several labels; Ctrl+C copies them one per line.
+  * Page text selection: a mouse drag keeps selecting past the canvas edge and the page scrolls with it; a drag on a scroll bar moves the bar.
   * A right click on selected text, in a label or a text field, keeps the selection, so its context menu sees it.
   * A long press on selected text keeps the selection for that menu.
   * WPF: GPU canvases draw at full frame rate on every device, including Windows on ARM.
   * Mac Catalyst: frames follow the screen's own refresh, with less CPU spent between frames; drawing keeps going while the window is resized.
   * Mac Catalyst: the MAUI template and samples run as Mac apps, drawn at full size (an iPad-style app is drawn at 77% on a Mac).
+  * iPhone: the MAUI template and samples run at 120 Hz on ProMotion screens (`CADisableMinimumFrameDurationOnPhone` in Info.plist).
+  * MAUI desktop: the window opens centered and never larger than the screen.
   * Web (DrawnUi.Web): a page at rest draws nothing, saving battery and CPU.
+  * Pure WebAssembly template: scripts get fingerprinted names through the import map, so a new deploy never runs old scripts.
   * Recycled list cells never show the previous item's picture while their own is prepared.
   * Shader effects that paint only part of their control now sample the control where it really is, for example a transition clipped to its photo.
+  * Frame loops keep running when one frame listener throws (the error is logged).
 
 ## What's New 1.10.8.26
 
