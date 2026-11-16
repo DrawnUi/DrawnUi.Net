@@ -4,7 +4,7 @@ DrawnUI comes with a separate, optional 3D add-on, for every head DrawnUI runs o
 
 <a href="https://add3d.drawnui.net"><img src="../images/add3d-gallery.jpg" alt="The 3D gallery: a sofa product viewer with fabric swatches and hotspots" width="720" /></a>
 
-[See it live: the 3D gallery](https://add3d.drawnui.net)
+[See it live: the 3D gallery](https://add3d.drawnui.net). The same gallery comes in every framework, with its code: see [Samples](#samples).
 
 ## Where it fits
 
@@ -28,9 +28,18 @@ Add the package for your framework and head, then use the controls. There is no 
 | DrawnUI for Rust | Windows, Linux, macOS, iOS, Android, Web | crate `drawnui-add3d` | OpenGL, Metal, Vulkan, WebGL2 |
 | DrawnUi.React | Web | npm `drawnui-react-add3d` | WebGL2 |
 
-The .NET namespace is `DrawnUi.Add3d`. The controls and their properties have the same names in every framework, in that language's style (`PlayOnce` in C#, `play_once` in Rust). The examples below are C#.
+The controls, properties and methods have the same names in every framework, in each language's style:
 
-On desktop heads the canvas draws with `RenderingMode = RenderingModeType.Accelerated`: the 3D pass uses the canvas's GPU context.
+| | C# | React (TSX) | Rust |
+|---|---|---|---|
+| Import | `using DrawnUi.Add3d;` | `import { SkiaModel3D, SkiaScene3D } from "drawnui-react-add3d";` | `use drawnui_add3d::prelude::*;` |
+| A property | `PinchZoom = true` | `PinchZoom={true}` | `.pinch_zoom(true)` |
+| A method | `PlayOnce("Wave")` | `PlayOnce("Wave")` | `play_once("Wave")` |
+| A tap | `.OnTapped3D((me, hit) => ...)` | `Tapped3D={(me, hit) => ...}` | `.on_tapped_3d(\|me, app, cx, hit\| ...)` |
+
+The text below uses the C# names; every example comes in all three languages.
+
+On .NET desktop heads the canvas draws with `RenderingMode = RenderingModeType.Accelerated`: the 3D pass uses the canvas's GPU context.
 
 ## Two controls
 
@@ -38,6 +47,8 @@ On desktop heads the canvas draws with `RenderingMode = RenderingModeType.Accele
 - **`SkiaScene3D`**: one 3D layer over 2D content. Objects are placed in the layer's points like sprites, each with its own animation, and the whole layer draws in one pass.
 
 ## Showing a model
+
+# [C#](#tab/csharp)
 
 ```csharp
 using DrawnUi.Add3d;
@@ -54,6 +65,42 @@ new SkiaModel3D(avatarGlb)            // the .glb file's bytes
 .Assign(out _avatar)
 .OnTapped3D((me, hit) => me.PlayOnce("CharacterArmature|Wave"));
 ```
+
+# [React (TSX)](#tab/tsx)
+
+```tsx
+import { SkiaModel3D } from "drawnui-react-add3d";
+
+<SkiaModel3D
+  Glb={avatarGlb}                     // the .glb file's bytes, kept stable (a constant or useMemo)
+  Animation="CharacterArmature|Idle"
+  Yaw={25} Pitch={10}
+  PinchZoom={true}
+  ResetOnDoubleTap={true}
+  HorizontalOptions="Fill"
+  HeightRequest={320}
+  Tapped3D={(me, hit) => me.PlayOnce("CharacterArmature|Wave")}
+/>
+```
+
+# [Rust](#tab/rust)
+
+```rust
+use drawnui::prelude::*;
+use drawnui_add3d::prelude::*;
+
+SkiaModel3D::new(include_bytes!("assets/avatar.glb"))
+    .animation("CharacterArmature|Idle")
+    .view_angles(25.0, 10.0)
+    .pinch_zoom(true)
+    .reset_on_double_tap(true)
+    .assign(&mut app.avatar)
+    .on_tapped_3d(|me, _app: &mut App, _cx, _hit| {
+        me.play_once("CharacterArmature|Wave");
+    })
+```
+
+---
 
 Names come from the file: `Animations`, `NodeNames` and `MaterialNames` list them. Look them up there, never guess them.
 
@@ -101,11 +148,36 @@ The control fits its model tightly and never cuts it: it fits the model's real o
 
 Simple objects need no file: build a `Model3D` from parts.
 
+# [C#](#tab/csharp)
+
 ```csharp
 new SkiaModel3D(new Model3D()
     .Part("earth", Mesh3D.Sphere(1), Colors.White))
     .MaterialImage("earth", Texture3D.Decode(earthJpg));
 ```
+
+# [React (TSX)](#tab/tsx)
+
+```tsx
+import { SkiaModel3D, Model3D, Mesh3D, Texture3D } from "drawnui-react-add3d";
+
+// make the model once: a new Model value rebuilds the scene
+const earth = useMemo(() => new Model3D().Part("earth", Mesh3D.Sphere(1), "#FFFFFF"), []);
+
+<SkiaModel3D
+  Model={earth}
+  ref={(m) => { m?.SetMaterialImage("earth", Texture3D.Decode(earthJpg)); }}
+/>
+```
+
+# [Rust](#tab/rust)
+
+```rust
+SkiaModel3D::from_model(&Model3D::new().part("earth", Mesh3D::sphere(1.0), Color::WHITE))
+    .material_image("earth", Texture3D::decode(include_bytes!("assets/earth.jpg")).unwrap())
+```
+
+---
 
 Meshes:
 
@@ -116,6 +188,8 @@ Meshes:
 Each part is placed with `At`, `Turned`, `Scaled` and `Inside(parent)`. `Texture3D.FromImage` takes any Skia image: a photo, or a pattern drawn in code.
 
 ## A 3D layer: SkiaScene3D
+
+# [C#](#tab/csharp)
 
 ```csharp
 new SkiaScene3D
@@ -134,6 +208,56 @@ _layer.SetPosition("player", x, y);
 _layer.SetFacing("player", 90);
 _layer.Play("player", "CharacterArmature|Walk");
 ```
+
+# [React (TSX)](#tab/tsx)
+
+```tsx
+import { SkiaScene3D, type SkiaScene3DCtrl } from "drawnui-react-add3d";
+
+const layer = useRef<SkiaScene3DCtrl>(null);
+
+<SkiaScene3D
+  ref={layer}
+  Tilt={30}                           // how much of the objects' tops is seen
+  HorizontalOptions="Fill"
+  VerticalOptions="Fill"
+  Tapped3D={(me, hit) => me.PlayOnce(hit.Object, "CharacterArmature|HitRecieve")}
+/>
+
+useEffect(() => {
+  const l = layer.current!;
+  l.Model("character", characterGlb);
+  l.Add("player", "character", x, y, 48);      // object name, model, position in points, height
+  l.Play("player", "CharacterArmature|Walk");
+}, []);
+
+// from your game code (nothing re-renders)
+layer.current!.SetPosition("player", x, y);
+layer.current!.SetFacing("player", 90);
+```
+
+# [Rust](#tab/rust)
+
+```rust
+SkiaScene3D::new()
+    .model("character", include_bytes!("assets/character.glb"))
+    .tilt(30.0)                       // how much of the objects' tops is seen
+    .fill()
+    .assign(&mut app.layer)
+    .on_tapped_3d(|me, _app: &mut App, _cx, hit| {
+        me.play_once(&hit.object, "CharacterArmature|HitRecieve");
+    })
+
+// place and drive objects from code
+if let Some(mut layer) = cx.get_mut(app.layer) {
+    layer.add("player", "character", x, y, 48.0); // object name, model, position in points, height
+    layer.set_position("player", x, y);
+    layer.set_facing("player", 90.0);
+    layer.play("player", "CharacterArmature|Walk");
+}
+```
+
+---
 
 - `Model(name, ...)` registers a model once; `Add` places an object that uses it, `Remove` and `ClearObjects` take objects away.
 - `SetPosition`, `SetFacing`, `SetSize` and `SetVisible` move and change an object; moving it never re-measures the layout.
@@ -165,5 +289,16 @@ Use production-quality glTF models (realistic or well-made stylized), keep each 
 
 ## Samples
 
-- **3D gallery** in the DrawnUi repository, `src/Shared/Samples/Add3dGallery.Shared`, with a head for MAUI, WPF, OpenTK, Blazor and pure WebAssembly.
-- **[add3d.drawnui.net](https://add3d.drawnui.net)**: the same gallery built with DrawnUI for Rust, running in the browser.
+The 3D gallery is the same app in every framework:
+
+| Framework | Runs on | Code | Try it |
+|---|---|---|---|
+| DrawnUI for .NET, pure WebAssembly | browser | [Add3dGalleryWeb](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/Samples/Add3dGalleryWeb) | [add3dnet.drawnui.net](https://add3dnet.drawnui.net) |
+| DrawnUI for .NET, Blazor | browser | [Add3dGallery](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Blazor/Samples/Add3dGallery) | [add3dblazor.drawnui.net](https://add3dblazor.drawnui.net) |
+| DrawnUI for .NET, MAUI | Android, iOS, Mac, Windows | [Add3dGalleryMaui](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/Add3dGalleryMaui) | run the sample |
+| DrawnUI for .NET, WPF | Windows | [Add3dGalleryWpf](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/Add3dGalleryWpf) | run the sample |
+| DrawnUI for .NET, OpenTK | Windows, Linux | [Add3dGalleryOpenTk](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/OpenTk/Samples/Add3dGalleryOpenTk) | run the sample |
+| DrawnUI for Rust | Windows, macOS, Linux, iOS, Android, browser | [examples/gallery3d](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/gallery3d) | [add3d.drawnui.net](https://add3d.drawnui.net) |
+| DrawnUi.React | browser | [samples/add3d](https://github.com/DrawnUi/DrawnUi.React/tree/master/samples/add3d) | [add3dreact.drawnui.net](https://add3dreact.drawnui.net) |
+
+The five .NET versions share one gallery: [Add3dGallery.Shared](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Shared/Samples/Add3dGallery.Shared).

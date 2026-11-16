@@ -21,6 +21,14 @@ public class GalleryRoot : SkiaLayer
         SkiaLabel.TextSelectionColor = Theme.Accent.WithAlpha(0.4f).ToSKColor();
         // every text of the page is read by a screen reader (descriptions, hints, prices), as in DrawnUI for React
         SkiaLabel.DefaultAccessibilityRole = Aria.RoleText;
+        // tooltips in the look of the active button: gold, with its dark text
+        Super.TooltipStyle = new TooltipStyle
+        {
+            BackgroundColor = Theme.Accent,
+            TextColor = Theme.AccentInk,
+            BorderColor = Colors.Transparent,
+            FontFamily = Theme.Title,
+        };
         Children = new List<SkiaControl>
         {
             new SkiaGrid
