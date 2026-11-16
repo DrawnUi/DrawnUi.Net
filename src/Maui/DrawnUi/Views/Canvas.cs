@@ -585,9 +585,14 @@ public class Canvas : DrawnView, IGestureListener
                 _focusedChildAtDown = FocusedChild;
             }
 
-            // a mouse drag selecting page text keeps its moves: no scroll under it scrolls
+            // a mouse drag selecting page text keeps its moves: no scroll under it scrolls; the canvas captures the
+            // pointer, so the moves keep coming once it leaves the canvas (the scroll follows it past its edge)
             if (PreviewTextSelectionGesture(args))
+            {
+                if (AttachedTouchEffect != null)
+                    AttachedTouchEffect.WIllLock = ShareLockState.Locked;
                 return;
+            }
 
             _checkHover = args.Type == TouchActionResult.Pointer;
             if (!_checkHover)
