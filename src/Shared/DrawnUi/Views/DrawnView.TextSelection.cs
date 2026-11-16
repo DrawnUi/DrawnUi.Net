@@ -38,8 +38,8 @@ namespace DrawnUi.Views
             }
         }
 
-        /// <summary>True while a mouse drag selection spans more than one label: the page, not the label, owns Ctrl+C.</summary>
-        internal bool OwnsTextSelectionKeys => _pageSelection.Count(l => l.SelectionLength > 0) > 1;
+        /// <summary>True while a mouse drag selected text on the page (one label or more): the page, not a label, owns Ctrl+C.</summary>
+        internal bool OwnsTextSelectionKeys => _pageSelection.Any(l => l.SelectionLength > 0);
 
         /// <summary>Puts <see cref="SelectedText"/> on the clipboard through <see cref="Super.SetClipboardText"/>. False when nothing is selected.</summary>
         public bool CopyTextSelection()
@@ -60,6 +60,9 @@ namespace DrawnUi.Views
             AttachPageSelectionKeys(false);
         }
 
+        private bool InsidePopup(SkiaGesturesParameters args) =>
+            _popupLayer is { HasInteractive: true } && _popupLayer.InsideInteractive(new SKPoint(args.Event.Location.X, args.Event.Location.Y));
+
         private static bool IsMouse(SkiaGesturesParameters args) =>
             args.Event?.Pointer is { DeviceType: PointerDeviceType.Mouse };
 
@@ -76,7 +79,8 @@ namespace DrawnUi.Views
             {
                 case TouchActionResult.Down when IsMouse(args) && IsMainButton(args):
                     _textDrag = null;
-                    if (_pageSelection.Count > 0)
+                    // a press in an open popup (the app's Copy menu) keeps the selection for what it does
+                    if (_pageSelection.Count > 0 && !InsidePopup(args))
                         ClearTextSelection();
                     return false;
 
@@ -104,7 +108,7 @@ namespace DrawnUi.Views
         /// </summary>
         internal void AfterTextSelectionDown(SkiaGesturesParameters args, ISkiaGestureListener? consumed)
         {
-            if (args.Type != TouchActionResult.Down || !IsMouse(args) || !IsMainButton(args))
+            if (args.Type != TouchActionResult.Down || !IsMouse(args) || !IsMainButton(args) || InsidePopup(args))
                 return;
             if (consumed != null && consumed is not SkiaScroll && consumed is not SkiaLabel { AccessibilityTextSelectable: true })
                 return;
@@ -193,12 +197,15 @@ namespace DrawnUi.Views
         }
 
         /// <summary>
-        /// Where a canvas point falls in the labels' order: inside a drawn label, its text index there; before a label
-        /// (above it, or left of it on its line), that label's start; past them all, the end of the last drawn one.
+        /// The text boundary a canvas point stands for: inside a drawn label, its text index there; elsewhere the label
+        /// seen nearest to it (by distance to its drawn rect, so a press in the right column of a page never lands on a
+        /// label of the left one), at its start when the point is above it or before it on its line, else its end.
         /// </summary>
         private static (SkiaLabel? Label, int Index) Locate(List<SkiaLabel> labels, SKPoint point)
         {
-            SkiaLabel? last = null;
+            SkiaLabel? nearest = null;
+            var nearestRect = SKRect.Empty;
+            var best = float.MaxValue;
             foreach (var label in labels)
             {
                 var r = label.GetAccessibilityPixelRect();
@@ -206,12 +213,21 @@ namespace DrawnUi.Views
                     continue;
                 if (r.Contains(point))
                     return (label, label.TextIndexAtCanvas(point));
-                if (point.Y < r.Top || (point.Y <= r.Bottom && point.X < r.Left))
-                    return (label, 0);
-                last = label;
+                var dx = MathF.Max(MathF.Max(r.Left - point.X, 0), point.X - r.Right);
+                var dy = MathF.Max(MathF.Max(r.Top - point.Y, 0), point.Y - r.Bottom);
+                var d = dx * dx + dy * dy;
+                if (d < best)
+                {
+                    best = d;
+                    nearest = label;
+                    nearestRect = r;
+                }
             }
 
-            return last == null ? (null, 0) : (last, last.SelectableLength);
+            if (nearest == null)
+                return (null, 0);
+            var before = point.Y < nearestRect.Top || (point.Y <= nearestRect.Bottom && point.X < nearestRect.Left);
+            return (nearest, before ? 0 : nearest.SelectableLength);
         }
 
         private static void CollectSelectable(SkiaControl control, List<SkiaLabel> into)

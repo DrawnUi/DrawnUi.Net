@@ -5179,6 +5179,16 @@ namespace DrawnUi.Draw
             Select(start, end - start);
         }
 
+        /// <summary>The press on the drawn Copy button ended: on the button, the selection is copied and dropped.</summary>
+        void CopyButtonReleased(SKPoint point)
+        {
+            _copyPressed = false;
+            if (!_copyButton.Contains(point))
+                return;
+            CopySelection();
+            ClearSelection();
+        }
+
         /// <summary>
         /// Pointer handling of <see cref="AccessibilityTextSelectable"/>; null lets the gesture go on as usual.
         /// </summary>
@@ -5247,12 +5257,7 @@ namespace DrawnUi.Draw
                 case TouchActionResult.Up:
                     if (_copyPressed)
                     {
-                        _copyPressed = false;
-                        if (_copyButton.Contains(point))
-                        {
-                            CopySelection();
-                            ClearSelection();
-                        }
+                        CopyButtonReleased(point);
                         return this;
                     }
 
@@ -5264,6 +5269,12 @@ namespace DrawnUi.Draw
                     return null;
 
                 case TouchActionResult.Tapped:
+                    // heads differ on whether the tap or the release comes first (Blazor: the tap): the first copies
+                    if (_copyPressed)
+                    {
+                        CopyButtonReleased(point);
+                        return this;
+                    }
                     if (_selectionLength <= 0)
                         return null; // nothing selected: span links still get their tap
                     if (!mouse)
