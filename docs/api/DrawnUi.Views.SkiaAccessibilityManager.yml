@@ -14,6 +14,7 @@ items:
   - DrawnUi.Views.SkiaAccessibilityManager.FocusFirstTabStop(System.Boolean,System.Single)
   - DrawnUi.Views.SkiaAccessibilityManager.FocusedNode
   - DrawnUi.Views.SkiaAccessibilityManager.ForceRebuildOnNextFrame
+  - DrawnUi.Views.SkiaAccessibilityManager.HandOffKeyboardFocus(DrawnUi.Draw.ISkiaAccessibilityNode)
   - DrawnUi.Views.SkiaAccessibilityManager.IsOutsideModal(DrawnUi.Draw.ISkiaAccessibilityNode)
   - DrawnUi.Views.SkiaAccessibilityManager.IsScreenReaderRunning
   - DrawnUi.Views.SkiaAccessibilityManager.IsTabStop(DrawnUi.Draw.ISkiaAccessibilityNode)
@@ -34,9 +35,12 @@ items:
   - DrawnUi.Views.SkiaAccessibilityManager.RefreshIfStale(System.Single)
   - DrawnUi.Views.SkiaAccessibilityManager.Register(DrawnUi.Draw.ISkiaAccessibilityNode)
   - DrawnUi.Views.SkiaAccessibilityManager.RequestAccessibilityFocus(DrawnUi.Draw.SkiaControl)
+  - DrawnUi.Views.SkiaAccessibilityManager.Reveal(DrawnUi.Draw.SkiaControl)
   - DrawnUi.Views.SkiaAccessibilityManager.ScrollIntoView(DrawnUi.Draw.ISkiaAccessibilityNode)
   - DrawnUi.Views.SkiaAccessibilityManager.SetValue(DrawnUi.Draw.ISkiaAccessibilityNode,System.Double)
   - DrawnUi.Views.SkiaAccessibilityManager.Snapshot
+  - DrawnUi.Views.SkiaAccessibilityManager.StopAfterGone(DrawnUi.Draw.ISkiaAccessibilityNode)
+  - DrawnUi.Views.SkiaAccessibilityManager.TabThroughList(DrawnUi.Draw.ISkiaAccessibilityNode,DrawnUi.Draw.ISkiaAccessibilityNode,System.Boolean)
   - DrawnUi.Views.SkiaAccessibilityManager.TryFindGroup(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.SkiaControl@,DrawnUi.Draw.SkiaControl@)
   - DrawnUi.Views.SkiaAccessibilityManager.Unregister(DrawnUi.Draw.ISkiaAccessibilityNode)
   - DrawnUi.Views.SkiaAccessibilityManager.UnregisterSubtree(DrawnUi.Draw.ISkiaAccessibilityNode)
@@ -665,6 +669,44 @@ items:
     return:
       type: System.Action{DrawnUi.Draw.ISkiaAccessibilityNode}
     content.vb: Public Event KeyboardFocusRequested As Action(Of ISkiaAccessibilityNode)
+- uid: DrawnUi.Views.SkiaAccessibilityManager.Reveal(DrawnUi.Draw.SkiaControl)
+  commentId: M:DrawnUi.Views.SkiaAccessibilityManager.Reveal(DrawnUi.Draw.SkiaControl)
+  id: Reveal(DrawnUi.Draw.SkiaControl)
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: Reveal(SkiaControl)
+  nameWithType: SkiaAccessibilityManager.Reveal(SkiaControl)
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.Reveal(DrawnUi.Draw.SkiaControl)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Reveal
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 233
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    Brings a control that a scroll on screen holds outside its viewport into view (it is not drawn, so it has no
+
+    rect to scroll to): the scroll jumps to the item of its content that holds it, then steps toward it until it
+
+    is drawn, then <xref href="DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl%2cSystem.Single%2cSystem.Single)" data-throw-if-not-resolved="false"></xref> places it. Keyboard focus moving to such a control
+
+    (Tab) and a screen reader's scroll-into-view come here. One at a time: a newer one replaces it.
+  example: []
+  syntax:
+    content: public void Reveal(SkiaControl control)
+    parameters:
+    - id: control
+      type: DrawnUi.Draw.SkiaControl
+    content.vb: Public Sub Reveal(control As SkiaControl)
+  overload: DrawnUi.Views.SkiaAccessibilityManager.Reveal*
 - uid: DrawnUi.Views.SkiaAccessibilityManager.KeyboardScope
   commentId: P:DrawnUi.Views.SkiaAccessibilityManager.KeyboardScope
   id: KeyboardScope
@@ -683,7 +725,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardScope
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 220
+    startLine: 335
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -717,7 +759,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActiveModal
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 233
+    startLine: 348
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -751,7 +793,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActiveModalNode
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 240
+    startLine: 355
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -787,7 +829,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsScreenReaderRunning
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 365
+    startLine: 480
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -825,7 +867,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsOutsideModal
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 389
+    startLine: 504
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -846,6 +888,80 @@ items:
   nameWithType.vb: SkiaAccessibilityManager.IsOutsideModal(ISkiaAccessibilityNode)
   fullName.vb: DrawnUi.Views.SkiaAccessibilityManager.IsOutsideModal(DrawnUi.Draw.ISkiaAccessibilityNode)
   name.vb: IsOutsideModal(ISkiaAccessibilityNode)
+- uid: DrawnUi.Views.SkiaAccessibilityManager.HandOffKeyboardFocus(DrawnUi.Draw.ISkiaAccessibilityNode)
+  commentId: M:DrawnUi.Views.SkiaAccessibilityManager.HandOffKeyboardFocus(DrawnUi.Draw.ISkiaAccessibilityNode)
+  id: HandOffKeyboardFocus(DrawnUi.Draw.ISkiaAccessibilityNode)
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: HandOffKeyboardFocus(ISkiaAccessibilityNode)
+  nameWithType: SkiaAccessibilityManager.HandOffKeyboardFocus(ISkiaAccessibilityNode)
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.HandOffKeyboardFocus(DrawnUi.Draw.ISkiaAccessibilityNode)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: HandOffKeyboardFocus
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 564
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    For heads whose page focus sits on an element of the node (Blazor's overlay): the node with the keyboard focus
+
+    left the page (a pin turned to the back of a globe, a row removed) and its element lost the focus. The next
+
+    stop in page order takes the keyboard focus at the next frame end, so it never drops to the page itself.
+  example: []
+  syntax:
+    content: public void HandOffKeyboardFocus(ISkiaAccessibilityNode gone)
+    parameters:
+    - id: gone
+      type: DrawnUi.Draw.ISkiaAccessibilityNode
+    content.vb: Public Sub HandOffKeyboardFocus(gone As ISkiaAccessibilityNode)
+  overload: DrawnUi.Views.SkiaAccessibilityManager.HandOffKeyboardFocus*
+- uid: DrawnUi.Views.SkiaAccessibilityManager.StopAfterGone(DrawnUi.Draw.ISkiaAccessibilityNode)
+  commentId: M:DrawnUi.Views.SkiaAccessibilityManager.StopAfterGone(DrawnUi.Draw.ISkiaAccessibilityNode)
+  id: StopAfterGone(DrawnUi.Draw.ISkiaAccessibilityNode)
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: StopAfterGone(ISkiaAccessibilityNode)
+  nameWithType: SkiaAccessibilityManager.StopAfterGone(ISkiaAccessibilityNode)
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.StopAfterGone(DrawnUi.Draw.ISkiaAccessibilityNode)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: StopAfterGone
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 578
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    The stop that takes the focus of <code class="paramref">gone</code> when it is no longer a stop in the current snapshot (it
+
+    left, or it is listed but takes no input: a pin turned to the back of a globe): the next stop after where it
+
+    stood, else the last one before. Null while it is still a stop, or when there is none.
+  example: []
+  syntax:
+    content: public ISkiaAccessibilityNode? StopAfterGone(ISkiaAccessibilityNode gone)
+    parameters:
+    - id: gone
+      type: DrawnUi.Draw.ISkiaAccessibilityNode
+    return:
+      type: DrawnUi.Draw.ISkiaAccessibilityNode
+    content.vb: Public Function StopAfterGone(gone As ISkiaAccessibilityNode) As ISkiaAccessibilityNode
+  overload: DrawnUi.Views.SkiaAccessibilityManager.StopAfterGone*
 - uid: DrawnUi.Views.SkiaAccessibilityManager.RequestAccessibilityFocus(DrawnUi.Draw.SkiaControl)
   commentId: M:DrawnUi.Views.SkiaAccessibilityManager.RequestAccessibilityFocus(DrawnUi.Draw.SkiaControl)
   id: RequestAccessibilityFocus(DrawnUi.Draw.SkiaControl)
@@ -864,7 +980,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RequestAccessibilityFocus
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 447
+    startLine: 613
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -904,7 +1020,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TryFindGroup
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 549
+    startLine: 715
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -949,7 +1065,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsTabStop
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 584
+    startLine: 750
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -992,7 +1108,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NextTabStop
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 622
+    startLine: 788
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1019,6 +1135,55 @@ items:
   nameWithType.vb: SkiaAccessibilityManager.NextTabStop(ISkiaAccessibilityNode, Boolean)
   fullName.vb: DrawnUi.Views.SkiaAccessibilityManager.NextTabStop(DrawnUi.Draw.ISkiaAccessibilityNode, Boolean)
   name.vb: NextTabStop(ISkiaAccessibilityNode, Boolean)
+- uid: DrawnUi.Views.SkiaAccessibilityManager.TabThroughList(DrawnUi.Draw.ISkiaAccessibilityNode,DrawnUi.Draw.ISkiaAccessibilityNode,System.Boolean)
+  commentId: M:DrawnUi.Views.SkiaAccessibilityManager.TabThroughList(DrawnUi.Draw.ISkiaAccessibilityNode,DrawnUi.Draw.ISkiaAccessibilityNode,System.Boolean)
+  id: TabThroughList(DrawnUi.Draw.ISkiaAccessibilityNode,DrawnUi.Draw.ISkiaAccessibilityNode,System.Boolean)
+  parent: DrawnUi.Views.SkiaAccessibilityManager
+  langs:
+  - csharp
+  - vb
+  name: TabThroughList(ISkiaAccessibilityNode?, ISkiaAccessibilityNode?, bool)
+  nameWithType: SkiaAccessibilityManager.TabThroughList(ISkiaAccessibilityNode?, ISkiaAccessibilityNode?, bool)
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.TabThroughList(DrawnUi.Draw.ISkiaAccessibilityNode?, DrawnUi.Draw.ISkiaAccessibilityNode?, bool)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: TabThroughList
+    path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
+    startLine: 813
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: >-
+    Tab along a templated list whose cells are made on demand (recycled, a large ItemsSource), as WinUI's ListView:
+
+    the next item in Tab order is the next item of the list, also when its cell does not exist yet. When Tab from
+
+    an item would skip the items after it (or Tab from outside would skip the first, Shift+Tab the last), the list
+
+    is scrolled so that item is made and it gets the focus at a later frame end. True when that was started. Not
+
+    for a list with a composite role: it is one Tab stop walked with the arrows (<xref href="DrawnUi.Views.SkiaAccessibilityManager.MoveInGroup(DrawnUi.Draw.SkiaControl%2cDrawnUi.Draw.InputKey)" data-throw-if-not-resolved="false"></xref>).
+  example: []
+  syntax:
+    content: public bool TabThroughList(ISkiaAccessibilityNode? from, ISkiaAccessibilityNode? next, bool forward)
+    parameters:
+    - id: from
+      type: DrawnUi.Draw.ISkiaAccessibilityNode
+    - id: next
+      type: DrawnUi.Draw.ISkiaAccessibilityNode
+    - id: forward
+      type: System.Boolean
+    return:
+      type: System.Boolean
+    content.vb: Public Function TabThroughList(from As ISkiaAccessibilityNode, [next] As ISkiaAccessibilityNode, forward As Boolean) As Boolean
+  overload: DrawnUi.Views.SkiaAccessibilityManager.TabThroughList*
+  nameWithType.vb: SkiaAccessibilityManager.TabThroughList(ISkiaAccessibilityNode, ISkiaAccessibilityNode, Boolean)
+  fullName.vb: DrawnUi.Views.SkiaAccessibilityManager.TabThroughList(DrawnUi.Draw.ISkiaAccessibilityNode, DrawnUi.Draw.ISkiaAccessibilityNode, Boolean)
+  name.vb: TabThroughList(ISkiaAccessibilityNode, ISkiaAccessibilityNode, Boolean)
 - uid: DrawnUi.Views.SkiaAccessibilityManager.MoveInGroup(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.InputKey)
   commentId: M:DrawnUi.Views.SkiaAccessibilityManager.MoveInGroup(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.InputKey)
   id: MoveInGroup(DrawnUi.Draw.SkiaControl,DrawnUi.Draw.InputKey)
@@ -1037,7 +1202,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MoveInGroup
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 661
+    startLine: 895
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1085,7 +1250,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusFirstTabStop
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 973
+    startLine: 1220
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1130,7 +1295,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyFocused
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 1010
+    startLine: 1257
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1162,7 +1327,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Register
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 1018
+    startLine: 1267
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1191,7 +1356,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyUpdated
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 1024
+    startLine: 1273
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1220,7 +1385,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ForceRebuildOnNextFrame
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 1037
+    startLine: 1286
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1246,7 +1411,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Unregister
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 1043
+    startLine: 1292
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1275,7 +1440,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnregisterSubtree
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 1052
+    startLine: 1301
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -1304,7 +1469,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RefreshIfStale
     path: ../src/Shared/DrawnUi/Views/SkiaAccessibilityManager.cs
-    startLine: 1101
+    startLine: 1352
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -2201,6 +2366,65 @@ references:
   name: FocusChanged
   nameWithType: SkiaAccessibilityManager.FocusChanged
   fullName: DrawnUi.Views.SkiaAccessibilityManager.FocusChanged
+- uid: DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl,System.Single,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl,System.Single,System.Single)
+  parent: DrawnUi.Draw.SkiaScroll
+  isExternal: true
+  href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_EnsureVisible_DrawnUi_Draw_SkiaControl_System_Single_System_Single_
+  name: EnsureVisible(SkiaControl, float, float)
+  nameWithType: SkiaScroll.EnsureVisible(SkiaControl, float, float)
+  fullName: DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl, float, float)
+  nameWithType.vb: SkiaScroll.EnsureVisible(SkiaControl, Single, Single)
+  fullName.vb: DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl, Single, Single)
+  name.vb: EnsureVisible(SkiaControl, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl,System.Single,System.Single)
+    name: EnsureVisible
+    href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_EnsureVisible_DrawnUi_Draw_SkiaControl_System_Single_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaScroll.EnsureVisible(DrawnUi.Draw.SkiaControl,System.Single,System.Single)
+    name: EnsureVisible
+    href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_EnsureVisible_DrawnUi_Draw_SkiaControl_System_Single_System_Single_
+  - name: (
+  - uid: DrawnUi.Draw.SkiaControl
+    name: SkiaControl
+    href: DrawnUi.Draw.SkiaControl.html
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Views.SkiaAccessibilityManager.Reveal*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.Reveal
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_Reveal_DrawnUi_Draw_SkiaControl_
+  name: Reveal
+  nameWithType: SkiaAccessibilityManager.Reveal
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.Reveal
 - uid: DrawnUi.Views.SkiaAccessibilityManager.KeyboardScope*
   commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.KeyboardScope
   href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_KeyboardScope
@@ -2307,6 +2531,18 @@ references:
   name: IsOutsideModal
   nameWithType: SkiaAccessibilityManager.IsOutsideModal
   fullName: DrawnUi.Views.SkiaAccessibilityManager.IsOutsideModal
+- uid: DrawnUi.Views.SkiaAccessibilityManager.HandOffKeyboardFocus*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.HandOffKeyboardFocus
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_HandOffKeyboardFocus_DrawnUi_Draw_ISkiaAccessibilityNode_
+  name: HandOffKeyboardFocus
+  nameWithType: SkiaAccessibilityManager.HandOffKeyboardFocus
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.HandOffKeyboardFocus
+- uid: DrawnUi.Views.SkiaAccessibilityManager.StopAfterGone*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.StopAfterGone
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_StopAfterGone_DrawnUi_Draw_ISkiaAccessibilityNode_
+  name: StopAfterGone
+  nameWithType: SkiaAccessibilityManager.StopAfterGone
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.StopAfterGone
 - uid: DrawnUi.Views.SkiaAccessibilityManager.RequestAccessibilityFocus*
   commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.RequestAccessibilityFocus
   href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_RequestAccessibilityFocus_DrawnUi_Draw_SkiaControl_
@@ -2436,6 +2672,12 @@ references:
   name: NextTabStop
   nameWithType: SkiaAccessibilityManager.NextTabStop
   fullName: DrawnUi.Views.SkiaAccessibilityManager.NextTabStop
+- uid: DrawnUi.Views.SkiaAccessibilityManager.TabThroughList*
+  commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.TabThroughList
+  href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_TabThroughList_DrawnUi_Draw_ISkiaAccessibilityNode_DrawnUi_Draw_ISkiaAccessibilityNode_System_Boolean_
+  name: TabThroughList
+  nameWithType: SkiaAccessibilityManager.TabThroughList
+  fullName: DrawnUi.Views.SkiaAccessibilityManager.TabThroughList
 - uid: DrawnUi.Views.SkiaAccessibilityManager.MoveInGroup*
   commentId: Overload:DrawnUi.Views.SkiaAccessibilityManager.MoveInGroup
   href: DrawnUi.Views.SkiaAccessibilityManager.html#DrawnUi_Views_SkiaAccessibilityManager_MoveInGroup_DrawnUi_Draw_SkiaControl_DrawnUi_Draw_InputKey_

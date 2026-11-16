@@ -112,6 +112,8 @@ items:
   - DrawnUi.Draw.SkiaShaderEffect.BlendMode
   - DrawnUi.Draw.SkiaShaderEffect.Flush(DrawnUi.Draw.SkiaDrawingContext)
   - DrawnUi.Draw.SkiaShaderEffect.CreateSnapshot(DrawnUi.Draw.SkiaDrawingContext,SkiaSharp.SKRect)
+  - DrawnUi.Draw.SkiaShaderEffect.ControlArea
+  - DrawnUi.Draw.SkiaShaderEffect.ControlAreaOr(SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaShaderEffect.ParentCache(SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaShaderEffect.CacheAt(DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaShaderEffect.SyncEngineState(SkiaSharp.SKRect,SkiaSharp.SKRect)
@@ -1351,6 +1353,41 @@ references:
     href: DrawnUi.Draw.SkiaDrawingContext.html
   - name: ','
   - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
+- uid: DrawnUi.Draw.SkiaShaderEffect.ControlArea
+  commentId: P:DrawnUi.Draw.SkiaShaderEffect.ControlArea
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ControlArea
+  name: ControlArea
+  nameWithType: SkiaShaderEffect.ControlArea
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ControlArea
+- uid: DrawnUi.Draw.SkiaShaderEffect.ControlAreaOr(SkiaSharp.SKRect)
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.ControlAreaOr(SkiaSharp.SKRect)
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ControlAreaOr_SkiaSharp_SKRect_
+  name: ControlAreaOr(SKRect)
+  nameWithType: SkiaShaderEffect.ControlAreaOr(SKRect)
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ControlAreaOr(SkiaSharp.SKRect)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.ControlAreaOr(SkiaSharp.SKRect)
+    name: ControlAreaOr
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ControlAreaOr_SkiaSharp_SKRect_
+  - name: (
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.ControlAreaOr(SkiaSharp.SKRect)
+    name: ControlAreaOr
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ControlAreaOr_SkiaSharp_SKRect_
+  - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
     isExternal: true

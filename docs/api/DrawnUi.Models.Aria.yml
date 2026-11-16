@@ -5,6 +5,7 @@ items:
   id: Aria
   parent: DrawnUi.Models
   children:
+  - DrawnUi.Models.Aria.ChildrenArePresentational(System.String)
   - DrawnUi.Models.Aria.IsCompositeRole(System.String)
   - DrawnUi.Models.Aria.IsInteractiveRole(System.String)
   - DrawnUi.Models.Aria.LiveAssertive
@@ -1204,6 +1205,47 @@ items:
   nameWithType.vb: Aria.IsInteractiveRole(String)
   fullName.vb: DrawnUi.Models.Aria.IsInteractiveRole(String)
   name.vb: IsInteractiveRole(String)
+- uid: DrawnUi.Models.Aria.ChildrenArePresentational(System.String)
+  commentId: M:DrawnUi.Models.Aria.ChildrenArePresentational(System.String)
+  id: ChildrenArePresentational(System.String)
+  parent: DrawnUi.Models.Aria
+  langs:
+  - csharp
+  - vb
+  name: ChildrenArePresentational(string?)
+  nameWithType: Aria.ChildrenArePresentational(string?)
+  fullName: DrawnUi.Models.Aria.ChildrenArePresentational(string?)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ChildrenArePresentational
+    path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
+    startLine: 140
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Models
+  summary: >-
+    Roles whose content is their look, not more nodes (ARIA "children presentational": button, check box, radio,
+
+    switch, tab, option, slider, progress bar, image...): a screen reader says the control's name once, never the
+
+    texts inside it again. A link, a group, a list keep their content.
+  example: []
+  syntax:
+    content: public static bool ChildrenArePresentational(string? role)
+    parameters:
+    - id: role
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Shared Function ChildrenArePresentational(role As String) As Boolean
+  overload: DrawnUi.Models.Aria.ChildrenArePresentational*
+  nameWithType.vb: Aria.ChildrenArePresentational(String)
+  fullName.vb: DrawnUi.Models.Aria.ChildrenArePresentational(String)
+  name.vb: ChildrenArePresentational(String)
 - uid: DrawnUi.Models.Aria.PressedStateAttribute(System.String)
   commentId: M:DrawnUi.Models.Aria.PressedStateAttribute(System.String)
   id: PressedStateAttribute(System.String)
@@ -1222,7 +1264,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PressedStateAttribute
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 140
+    startLine: 149
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1263,7 +1305,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RoleGrid
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 148
+    startLine: 157
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1292,7 +1334,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RoleToolbar
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 151
+    startLine: 160
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1321,7 +1363,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RoleRadioGroup
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 154
+    startLine: 163
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1350,7 +1392,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RoleMenuBar
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 157
+    startLine: 166
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1379,7 +1421,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsCompositeRole
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 164
+    startLine: 173
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1420,7 +1462,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LivePolite
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 173
+    startLine: 182
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1452,7 +1494,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LiveAssertive
     path: ../src/Shared/DrawnUi/Internals/Helpers/Aria.cs
-    startLine: 179
+    startLine: 188
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Models
@@ -1832,6 +1874,12 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: DrawnUi.Models.Aria.ChildrenArePresentational*
+  commentId: Overload:DrawnUi.Models.Aria.ChildrenArePresentational
+  href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_ChildrenArePresentational_System_String_
+  name: ChildrenArePresentational
+  nameWithType: Aria.ChildrenArePresentational
+  fullName: DrawnUi.Models.Aria.ChildrenArePresentational
 - uid: DrawnUi.Models.Aria.PressedStateAttribute*
   commentId: Overload:DrawnUi.Models.Aria.PressedStateAttribute
   href: DrawnUi.Models.Aria.html#DrawnUi_Models_Aria_PressedStateAttribute_System_String_

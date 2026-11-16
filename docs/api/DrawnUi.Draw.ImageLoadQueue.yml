@@ -6,6 +6,7 @@ items:
   parent: DrawnUi.Draw
   children:
   - DrawnUi.Draw.ImageLoadQueue.#ctor(System.Func{System.Int32})
+  - DrawnUi.Draw.ImageLoadQueue.CancelWaiting
   - DrawnUi.Draw.ImageLoadQueue.QueuedCount
   - DrawnUi.Draw.ImageLoadQueue.Release
   - DrawnUi.Draw.ImageLoadQueue.RunningCount
@@ -180,6 +181,34 @@ items:
       type: System.Threading.Tasks.Task
     content.vb: Public Function WaitAsync(priority As LoadPriority, cancel As CancellationToken = Nothing) As Task
   overload: DrawnUi.Draw.ImageLoadQueue.WaitAsync*
+- uid: DrawnUi.Draw.ImageLoadQueue.CancelWaiting
+  commentId: M:DrawnUi.Draw.ImageLoadQueue.CancelWaiting
+  id: CancelWaiting
+  parent: DrawnUi.Draw.ImageLoadQueue
+  langs:
+  - csharp
+  - vb
+  name: CancelWaiting()
+  nameWithType: ImageLoadQueue.CancelWaiting()
+  fullName: DrawnUi.Draw.ImageLoadQueue.CancelWaiting()
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Images/ImageLoadQueue.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CancelWaiting
+    path: ../src/Shared/DrawnUi/Draw/Images/ImageLoadQueue.cs
+    startLine: 100
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Cancels every wait still in line; loads already holding a slot go on.
+  example: []
+  syntax:
+    content: public void CancelWaiting()
+    content.vb: Public Sub CancelWaiting()
+  overload: DrawnUi.Draw.ImageLoadQueue.CancelWaiting*
 - uid: DrawnUi.Draw.ImageLoadQueue.Release
   commentId: M:DrawnUi.Draw.ImageLoadQueue.Release
   id: Release
@@ -198,7 +227,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Release
     path: ../src/Shared/DrawnUi/Draw/Images/ImageLoadQueue.cs
-    startLine: 100
+    startLine: 116
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -747,6 +776,12 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: DrawnUi.Draw.ImageLoadQueue.CancelWaiting*
+  commentId: Overload:DrawnUi.Draw.ImageLoadQueue.CancelWaiting
+  href: DrawnUi.Draw.ImageLoadQueue.html#DrawnUi_Draw_ImageLoadQueue_CancelWaiting
+  name: CancelWaiting
+  nameWithType: ImageLoadQueue.CancelWaiting
+  fullName: DrawnUi.Draw.ImageLoadQueue.CancelWaiting
 - uid: DrawnUi.Draw.ImageLoadQueue.WaitAsync(DrawnUi.Draw.LoadPriority,System.Threading.CancellationToken)
   commentId: M:DrawnUi.Draw.ImageLoadQueue.WaitAsync(DrawnUi.Draw.LoadPriority,System.Threading.CancellationToken)
   isExternal: true

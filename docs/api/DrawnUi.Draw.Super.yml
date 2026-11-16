@@ -34,6 +34,8 @@ items:
   - DrawnUi.Draw.Super.InsetsChanged
   - DrawnUi.Draw.Super.IsPrerenderingEnabled
   - DrawnUi.Draw.Super.IsRtl
+  - DrawnUi.Draw.Super.KeyboardChanged
+  - DrawnUi.Draw.Super.KeyboardTop
   - DrawnUi.Draw.Super.Log(Microsoft.Extensions.Logging.LogLevel,System.String,System.String)
   - DrawnUi.Draw.Super.Log(System.Exception,System.String)
   - DrawnUi.Draw.Super.Log(System.String,Microsoft.Extensions.Logging.LogLevel,System.String)
@@ -86,12 +88,12 @@ items:
   type: Class
   source:
     remote:
-      path: src/Shared/DrawnUi/Super.cs
+      path: src/Shared/DrawnUi/Super.Keyboard.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Super
-    path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 9
+    path: ../src/Shared/DrawnUi/Super.Keyboard.cs
+    startLine: 2
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1003,7 +1005,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Log
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 198
+    startLine: 219
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1041,7 +1043,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetLocale
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 220
+    startLine: 241
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1073,7 +1075,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Initialized
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 228
+    startLine: 249
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1102,7 +1104,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitShared
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 238
+    startLine: 259
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1128,7 +1130,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnableRendering
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 248
+    startLine: 269
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1157,7 +1159,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsRtl
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 263
+    startLine: 284
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1188,7 +1190,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSubPixelRendering
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 280
+    startLine: 301
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1219,7 +1221,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InsetsChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 299
+    startLine: 320
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1248,7 +1250,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Screen
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 305
+    startLine: 326
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1277,7 +1279,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CapMicroSecs
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 318
+    startLine: 339
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1306,7 +1308,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCurrentTimeMs
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 320
+    startLine: 341
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1334,7 +1336,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCurrentTimeNanos
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 327
+    startLine: 348
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1362,7 +1364,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavBarHeight
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 337
+    startLine: 358
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1393,7 +1395,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StatusBarHeight
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 342
+    startLine: 363
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1424,7 +1426,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationBarHeight
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 347
+    startLine: 368
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1455,7 +1457,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BottomTabsHeight
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 352
+    startLine: 373
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1486,7 +1488,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxFrameLengthMs
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 356
+    startLine: 377
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1515,7 +1517,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ThermalState
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 358
+    startLine: 379
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1544,7 +1546,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ThermalStateChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 360
+    startLine: 381
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1571,7 +1573,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 378
+    startLine: 399
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1605,7 +1607,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNativeAppCreated
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 388
+    startLine: 409
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1634,7 +1636,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNativeAppPaused
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 390
+    startLine: 411
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1661,7 +1663,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNativeAppResumed
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 392
+    startLine: 413
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1688,7 +1690,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNativeAppDestroyed
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 394
+    startLine: 415
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1715,7 +1717,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitialWindowSize
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 396
+    startLine: 417
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1742,7 +1744,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCreated
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 402
+    startLine: 423
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1768,7 +1770,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWentBackground
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 409
+    startLine: 430
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1794,7 +1796,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWentForeground
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 415
+    startLine: 436
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1820,7 +1822,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMauiAppCreated
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 425
+    startLine: 446
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1849,7 +1851,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedGlobalRefresh
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 431
+    startLine: 452
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1878,7 +1880,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedGlobalUpdate
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 437
+    startLine: 458
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1906,7 +1908,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InBackground
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 448
+    startLine: 469
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1935,7 +1937,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StopRenderingInBackground
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 488
+    startLine: 509
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1964,7 +1966,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RunOnMainThreadAndWait
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 511
+    startLine: 532
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1995,7 +1997,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RunOnMainThreadAndWaitAsync
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 535
+    startLine: 556
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2031,7 +2033,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CacheEnabled
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 573
+    startLine: 594
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2060,7 +2062,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GpuCacheEnabled
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 575
+    startLine: 596
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2089,7 +2091,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UserAgent
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 577
+    startLine: 598
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2118,7 +2120,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaGeneration
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 579
+    startLine: 600
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2145,7 +2147,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnqueueBackgroundTask
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 586
+    startLine: 607
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2177,7 +2179,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessBackgroundQueue
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 591
+    startLine: 612
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2205,7 +2207,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RotationChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 611
+    startLine: 632
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2232,7 +2234,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DeviceRotation
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 616
+    startLine: 637
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2263,7 +2265,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrientationChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 629
+    startLine: 650
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2290,7 +2292,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DeviceOrientation
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 631
+    startLine: 652
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2319,7 +2321,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DeviceRotationSnap
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 645
+    startLine: 666
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2330,6 +2332,69 @@ items:
       type: System.Int32
     content.vb: Public Shared ReadOnly Property DeviceRotationSnap As Integer
   overload: DrawnUi.Draw.Super.DeviceRotationSnap*
+- uid: DrawnUi.Draw.Super.KeyboardTop
+  commentId: P:DrawnUi.Draw.Super.KeyboardTop
+  id: KeyboardTop
+  parent: DrawnUi.Draw.Super
+  langs:
+  - csharp
+  - vb
+  name: KeyboardTop
+  nameWithType: Super.KeyboardTop
+  fullName: DrawnUi.Draw.Super.KeyboardTop
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Super.Keyboard.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: KeyboardTop
+    path: ../src/Shared/DrawnUi/Super.Keyboard.cs
+    startLine: 8
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Top edge of the on-screen keyboard, in points from the top of the screen; NaN while no on-screen keyboard is
+
+    shown. Tracked for the whole app (no page needed): iOS keyboard notifications, Android window IME insets, the browser's visual viewport on the web heads.
+  example: []
+  syntax:
+    content: public static double KeyboardTop { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public Shared Property KeyboardTop As Double
+  overload: DrawnUi.Draw.Super.KeyboardTop*
+- uid: DrawnUi.Draw.Super.KeyboardChanged
+  commentId: E:DrawnUi.Draw.Super.KeyboardChanged
+  id: KeyboardChanged
+  parent: DrawnUi.Draw.Super
+  langs:
+  - csharp
+  - vb
+  name: KeyboardChanged
+  nameWithType: Super.KeyboardChanged
+  fullName: DrawnUi.Draw.Super.KeyboardChanged
+  type: Event
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Super.Keyboard.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: KeyboardChanged
+    path: ../src/Shared/DrawnUi/Super.Keyboard.cs
+    startLine: 13
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Raised when the on-screen keyboard appears, moves or hides (<xref href="DrawnUi.Draw.Super.KeyboardTop" data-throw-if-not-resolved="false"></xref> changed).
+  example: []
+  syntax:
+    content: public static event EventHandler KeyboardChanged
+    return:
+      type: System.EventHandler
+    content.vb: Public Shared Event KeyboardChanged As EventHandler
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -3827,3 +3892,15 @@ references:
   name: DeviceRotationSnap
   nameWithType: Super.DeviceRotationSnap
   fullName: DrawnUi.Draw.Super.DeviceRotationSnap
+- uid: DrawnUi.Draw.Super.KeyboardTop*
+  commentId: Overload:DrawnUi.Draw.Super.KeyboardTop
+  href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_KeyboardTop
+  name: KeyboardTop
+  nameWithType: Super.KeyboardTop
+  fullName: DrawnUi.Draw.Super.KeyboardTop
+- uid: DrawnUi.Draw.Super.KeyboardTop
+  commentId: P:DrawnUi.Draw.Super.KeyboardTop
+  href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_KeyboardTop
+  name: KeyboardTop
+  nameWithType: Super.KeyboardTop
+  fullName: DrawnUi.Draw.Super.KeyboardTop

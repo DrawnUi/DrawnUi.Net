@@ -1,0 +1,647 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Add3d.PointOnScreen
+  commentId: T:DrawnUi.Add3d.PointOnScreen
+  id: PointOnScreen
+  parent: DrawnUi.Add3d
+  children:
+  - DrawnUi.Add3d.PointOnScreen.#ctor(System.Single,System.Single,System.Boolean)
+  - DrawnUi.Add3d.PointOnScreen.Occluded
+  - DrawnUi.Add3d.PointOnScreen.X
+  - DrawnUi.Add3d.PointOnScreen.Y
+  langs:
+  - csharp
+  - vb
+  name: PointOnScreen
+  nameWithType: PointOnScreen
+  fullName: DrawnUi.Add3d.PointOnScreen
+  type: Struct
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: PointOnScreen
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 45
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: >-
+    Where a 3D point of a model shows in its control (<xref href="DrawnUi.Add3d.SkiaModel3D.ScreenPosition(System.Numerics.Vector3)" data-throw-if-not-resolved="false"></xref>): points from the control's
+
+    top left, and whether the model's own surface hides it (a pin on the far side of a globe, a hotspot behind the
+
+    model). Same as DrawnUI for Rust's PointOnScreen.
+  example: []
+  syntax:
+    content: 'public readonly record struct PointOnScreen : IEquatable<PointOnScreen>'
+    content.vb: Public Structure PointOnScreen Implements IEquatable(Of PointOnScreen)
+  implements:
+  - System.IEquatable{DrawnUi.Add3d.PointOnScreen}
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Add3d.PointOnScreen.#ctor(System.Single,System.Single,System.Boolean)
+  commentId: M:DrawnUi.Add3d.PointOnScreen.#ctor(System.Single,System.Single,System.Boolean)
+  id: '#ctor(System.Single,System.Single,System.Boolean)'
+  parent: DrawnUi.Add3d.PointOnScreen
+  langs:
+  - csharp
+  - vb
+  name: PointOnScreen(float, float, bool)
+  nameWithType: PointOnScreen.PointOnScreen(float, float, bool)
+  fullName: DrawnUi.Add3d.PointOnScreen.PointOnScreen(float, float, bool)
+  type: Constructor
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: .ctor
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 45
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: >-
+    Where a 3D point of a model shows in its control (<xref href="DrawnUi.Add3d.SkiaModel3D.ScreenPosition(System.Numerics.Vector3)" data-throw-if-not-resolved="false"></xref>): points from the control's
+
+    top left, and whether the model's own surface hides it (a pin on the far side of a globe, a hotspot behind the
+
+    model). Same as DrawnUI for Rust's PointOnScreen.
+  example: []
+  syntax:
+    content: public PointOnScreen(float X, float Y, bool Occluded)
+    parameters:
+    - id: X
+      type: System.Single
+    - id: Y
+      type: System.Single
+    - id: Occluded
+      type: System.Boolean
+    content.vb: Public Sub New(X As Single, Y As Single, Occluded As Boolean)
+  overload: DrawnUi.Add3d.PointOnScreen.#ctor*
+  nameWithType.vb: PointOnScreen.New(Single, Single, Boolean)
+  fullName.vb: DrawnUi.Add3d.PointOnScreen.New(Single, Single, Boolean)
+  name.vb: New(Single, Single, Boolean)
+- uid: DrawnUi.Add3d.PointOnScreen.X
+  commentId: P:DrawnUi.Add3d.PointOnScreen.X
+  id: X
+  parent: DrawnUi.Add3d.PointOnScreen
+  langs:
+  - csharp
+  - vb
+  name: X
+  nameWithType: PointOnScreen.X
+  fullName: DrawnUi.Add3d.PointOnScreen.X
+  type: Property
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: X
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 45
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  syntax:
+    content: public float X { get; init; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property X As Single
+  overload: DrawnUi.Add3d.PointOnScreen.X*
+- uid: DrawnUi.Add3d.PointOnScreen.Y
+  commentId: P:DrawnUi.Add3d.PointOnScreen.Y
+  id: Y
+  parent: DrawnUi.Add3d.PointOnScreen
+  langs:
+  - csharp
+  - vb
+  name: Y
+  nameWithType: PointOnScreen.Y
+  fullName: DrawnUi.Add3d.PointOnScreen.Y
+  type: Property
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Y
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 45
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  syntax:
+    content: public float Y { get; init; }
+    parameters: []
+    return:
+      type: System.Single
+    content.vb: Public Property Y As Single
+  overload: DrawnUi.Add3d.PointOnScreen.Y*
+- uid: DrawnUi.Add3d.PointOnScreen.Occluded
+  commentId: P:DrawnUi.Add3d.PointOnScreen.Occluded
+  id: Occluded
+  parent: DrawnUi.Add3d.PointOnScreen
+  langs:
+  - csharp
+  - vb
+  name: Occluded
+  nameWithType: PointOnScreen.Occluded
+  fullName: DrawnUi.Add3d.PointOnScreen.Occluded
+  type: Property
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Occluded
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 45
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  syntax:
+    content: public bool Occluded { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property Occluded As Boolean
+  overload: DrawnUi.Add3d.PointOnScreen.Occluded*
+references:
+- uid: DrawnUi.Add3d.SkiaModel3D.ScreenPosition(System.Numerics.Vector3)
+  commentId: M:DrawnUi.Add3d.SkiaModel3D.ScreenPosition(System.Numerics.Vector3)
+  isExternal: true
+  href: DrawnUi.Add3d.SkiaModel3D.html#DrawnUi_Add3d_SkiaModel3D_ScreenPosition_System_Numerics_Vector3_
+  name: ScreenPosition(Vector3)
+  nameWithType: SkiaModel3D.ScreenPosition(Vector3)
+  fullName: DrawnUi.Add3d.SkiaModel3D.ScreenPosition(System.Numerics.Vector3)
+  spec.csharp:
+  - uid: DrawnUi.Add3d.SkiaModel3D.ScreenPosition(System.Numerics.Vector3)
+    name: ScreenPosition
+    href: DrawnUi.Add3d.SkiaModel3D.html#DrawnUi_Add3d_SkiaModel3D_ScreenPosition_System_Numerics_Vector3_
+  - name: (
+  - uid: System.Numerics.Vector3
+    name: Vector3
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector3
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Add3d.SkiaModel3D.ScreenPosition(System.Numerics.Vector3)
+    name: ScreenPosition
+    href: DrawnUi.Add3d.SkiaModel3D.html#DrawnUi_Add3d_SkiaModel3D_ScreenPosition_System_Numerics_Vector3_
+  - name: (
+  - uid: System.Numerics.Vector3
+    name: Vector3
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.numerics.vector3
+  - name: )
+- uid: DrawnUi.Add3d
+  commentId: N:DrawnUi.Add3d
+  href: DrawnUi.html
+  name: DrawnUi.Add3d
+  nameWithType: DrawnUi.Add3d
+  fullName: DrawnUi.Add3d
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Add3d
+    name: Add3d
+    href: DrawnUi.Add3d.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Add3d
+    name: Add3d
+    href: DrawnUi.Add3d.html
+- uid: System.IEquatable{DrawnUi.Add3d.PointOnScreen}
+  commentId: T:System.IEquatable{DrawnUi.Add3d.PointOnScreen}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<PointOnScreen>
+  nameWithType: IEquatable<PointOnScreen>
+  fullName: System.IEquatable<DrawnUi.Add3d.PointOnScreen>
+  nameWithType.vb: IEquatable(Of PointOnScreen)
+  fullName.vb: System.IEquatable(Of DrawnUi.Add3d.PointOnScreen)
+  name.vb: IEquatable(Of PointOnScreen)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: DrawnUi.Add3d.PointOnScreen
+    name: PointOnScreen
+    href: DrawnUi.Add3d.PointOnScreen.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: DrawnUi.Add3d.PointOnScreen
+    name: PointOnScreen
+    href: DrawnUi.Add3d.PointOnScreen.html
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Add3d.PointOnScreen.#ctor*
+  commentId: Overload:DrawnUi.Add3d.PointOnScreen.#ctor
+  href: DrawnUi.Add3d.PointOnScreen.html#DrawnUi_Add3d_PointOnScreen__ctor_System_Single_System_Single_System_Boolean_
+  name: PointOnScreen
+  nameWithType: PointOnScreen.PointOnScreen
+  fullName: DrawnUi.Add3d.PointOnScreen.PointOnScreen
+  nameWithType.vb: PointOnScreen.New
+  fullName.vb: DrawnUi.Add3d.PointOnScreen.New
+  name.vb: New
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: DrawnUi.Add3d.PointOnScreen.X*
+  commentId: Overload:DrawnUi.Add3d.PointOnScreen.X
+  href: DrawnUi.Add3d.PointOnScreen.html#DrawnUi_Add3d_PointOnScreen_X
+  name: X
+  nameWithType: PointOnScreen.X
+  fullName: DrawnUi.Add3d.PointOnScreen.X
+- uid: DrawnUi.Add3d.PointOnScreen.Y*
+  commentId: Overload:DrawnUi.Add3d.PointOnScreen.Y
+  href: DrawnUi.Add3d.PointOnScreen.html#DrawnUi_Add3d_PointOnScreen_Y
+  name: Y
+  nameWithType: PointOnScreen.Y
+  fullName: DrawnUi.Add3d.PointOnScreen.Y
+- uid: DrawnUi.Add3d.PointOnScreen.Occluded*
+  commentId: Overload:DrawnUi.Add3d.PointOnScreen.Occluded
+  href: DrawnUi.Add3d.PointOnScreen.html#DrawnUi_Add3d_PointOnScreen_Occluded
+  name: Occluded
+  nameWithType: PointOnScreen.Occluded
+  fullName: DrawnUi.Add3d.PointOnScreen.Occluded

@@ -7,7 +7,9 @@ items:
   children:
   - DrawnUi.Draw.SkiaImageManager.#ctor
   - DrawnUi.Draw.SkiaImageManager.AddToCache(System.String,SkiaSharp.SKBitmap,System.Int32)
+  - DrawnUi.Draw.SkiaImageManager.CacheBudgetMb
   - DrawnUi.Draw.SkiaImageManager.CacheLongevitySecs
+  - DrawnUi.Draw.SkiaImageManager.CacheMemoryMb
   - DrawnUi.Draw.SkiaImageManager.CanReload
   - DrawnUi.Draw.SkiaImageManager.CancelAll
   - DrawnUi.Draw.SkiaImageManager.Dispose
@@ -53,15 +55,17 @@ items:
   type: Class
   source:
     remote:
-      path: src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+      path: src/Shared/DrawnUi/Draw/Images/SkiaImageManager.Budget.cs
       branch: Cells
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaImageManager
-    path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
+    path: ../src/Shared/DrawnUi/Draw/Images/SkiaImageManager.Budget.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: The memory budget of the image cache, shared by every head.
+  example: []
   syntax:
     content: 'public class SkiaImageManager : IDisposable'
     content.vb: Public Class SkiaImageManager Implements IDisposable
@@ -317,11 +321,18 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReuseBitmaps
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 189
+    startLine: 192
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
-  summary: If set to true will not return clones for same sources, but will just return the existing cached SKBitmap reference. Useful if you have a lot on images reusing same sources, but you have to be carefull not to dispose the shared image. SkiaImage is aware of this setting and will keep a cached SKBitmap from being disposed.
+  summary: >-
+    On by default: images on the same source share the one decoded SKBitmap the cache holds (one copy in memory
+
+    for any number of controls). SkiaImage never disposes or edits that shared bitmap. Code of your own that
+
+    takes bitmaps from this manager (LoadImageAsync, LoadImageManagedAsync, GetFromCache) gets the shared one too:
+
+    do not dispose or draw into it, or set this to false so every caller gets its own copy.
   example: []
   syntax:
     content: public static bool ReuseBitmaps
@@ -346,7 +357,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CacheLongevitySecs
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 194
+    startLine: 197
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -375,7 +386,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NativeFilePrefix
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 199
+    startLine: 202
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -404,7 +415,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanReload
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 201
+    startLine: 204
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -431,7 +442,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LogEnabled
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 205
+    startLine: 208
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -458,7 +469,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TraceLog
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 207
+    startLine: 210
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -490,7 +501,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Instance
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 224
+    startLine: 227
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -519,7 +530,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseCache
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 235
+    startLine: 238
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -548,7 +559,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 237
+    startLine: 240
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -577,7 +588,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxParallelLoads
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 262
+    startLine: 265
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -611,7 +622,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RunningCount
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 287
+    startLine: 290
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -642,7 +653,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: QueuedCount
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 292
+    startLine: 295
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -673,7 +684,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsLoadingLocked
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 304
+    startLine: 307
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -702,7 +713,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CancelAll
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 317
+    startLine: 320
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -728,7 +739,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadImageAsync
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 387
+    startLine: 390
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -766,7 +777,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadImageManagedAsync
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 398
+    startLine: 401
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -806,7 +817,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadImageOnPlatformAsync
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 507
+    startLine: 510
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -839,7 +850,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisposed
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 729
+    startLine: 734
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -868,7 +879,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateInCache
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 827
+    startLine: 832
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -904,7 +915,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddToCache
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 842
+    startLine: 848
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -947,7 +958,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemoveFromCache
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 855
+    startLine: 862
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -983,7 +994,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetFromCache
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 873
+    startLine: 881
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1021,7 +1032,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetFromCacheInternal
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 886
+    startLine: 894
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1059,7 +1070,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Preload
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 899
+    startLine: 915
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1094,7 +1105,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Preload
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 904
+    startLine: 920
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1131,7 +1142,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetUriFromImageSource
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 947
+    startLine: 963
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1162,7 +1173,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 968
+    startLine: 984
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1192,7 +1203,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsOffline
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 975
+    startLine: 991
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1221,7 +1232,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadFromFile
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 989
+    startLine: 1005
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1257,7 +1268,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OpenStreamAsync
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 1061
+    startLine: 1077
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1300,7 +1311,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnableHttpRetry
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 1086
+    startLine: 1102
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1334,7 +1345,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HttpRetryMaxAttempts
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 1093
+    startLine: 1109
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1366,7 +1377,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadImageFromInternetAsync
     path: ../src/Maui/DrawnUi/Features/Images/SkiaImageManager.cs
-    startLine: 1095
+    startLine: 1111
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1381,6 +1392,73 @@ items:
       type: System.Threading.Tasks.Task{SkiaSharp.SKBitmap}
     content.vb: Public Shared Function LoadImageFromInternetAsync(uriSource As UriImageSource, cancel As CancellationToken) As Task(Of SKBitmap)
   overload: DrawnUi.Draw.SkiaImageManager.LoadImageFromInternetAsync*
+- uid: DrawnUi.Draw.SkiaImageManager.CacheBudgetMb
+  commentId: P:DrawnUi.Draw.SkiaImageManager.CacheBudgetMb
+  id: CacheBudgetMb
+  parent: DrawnUi.Draw.SkiaImageManager
+  langs:
+  - csharp
+  - vb
+  name: CacheBudgetMb
+  nameWithType: SkiaImageManager.CacheBudgetMb
+  fullName: DrawnUi.Draw.SkiaImageManager.CacheBudgetMb
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Images/SkiaImageManager.Budget.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CacheBudgetMb
+    path: ../src/Shared/DrawnUi/Draw/Images/SkiaImageManager.Budget.cs
+    startLine: 14
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The most megabytes of decoded pictures the cache keeps, 128 by default. When a new picture goes over it, the
+
+    pictures used longest ago leave the cache. A picture a control still shows stays alive with that control and is
+
+    served from it again, never decoded twice. 0 or less = no limit.
+  example: []
+  syntax:
+    content: public static int CacheBudgetMb { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Shared Property CacheBudgetMb As Integer
+  overload: DrawnUi.Draw.SkiaImageManager.CacheBudgetMb*
+- uid: DrawnUi.Draw.SkiaImageManager.CacheMemoryMb
+  commentId: P:DrawnUi.Draw.SkiaImageManager.CacheMemoryMb
+  id: CacheMemoryMb
+  parent: DrawnUi.Draw.SkiaImageManager
+  langs:
+  - csharp
+  - vb
+  name: CacheMemoryMb
+  nameWithType: SkiaImageManager.CacheMemoryMb
+  fullName: DrawnUi.Draw.SkiaImageManager.CacheMemoryMb
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Images/SkiaImageManager.Budget.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: CacheMemoryMb
+    path: ../src/Shared/DrawnUi/Draw/Images/SkiaImageManager.Budget.cs
+    startLine: 34
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Megabytes of decoded pictures the cache holds now (pictures dropped for the budget not counted).
+  example: []
+  syntax:
+    content: public double CacheMemoryMb { get; }
+    parameters: []
+    return:
+      type: System.Double
+    content.vb: Public ReadOnly Property CacheMemoryMb As Double
+  overload: DrawnUi.Draw.SkiaImageManager.CacheMemoryMb*
 references:
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
@@ -2382,3 +2460,26 @@ references:
   name: UriImageSource
   nameWithType: UriImageSource
   fullName: Microsoft.Maui.Controls.UriImageSource
+- uid: DrawnUi.Draw.SkiaImageManager.CacheBudgetMb*
+  commentId: Overload:DrawnUi.Draw.SkiaImageManager.CacheBudgetMb
+  href: DrawnUi.Draw.SkiaImageManager.html#DrawnUi_Draw_SkiaImageManager_CacheBudgetMb
+  name: CacheBudgetMb
+  nameWithType: SkiaImageManager.CacheBudgetMb
+  fullName: DrawnUi.Draw.SkiaImageManager.CacheBudgetMb
+- uid: DrawnUi.Draw.SkiaImageManager.CacheMemoryMb*
+  commentId: Overload:DrawnUi.Draw.SkiaImageManager.CacheMemoryMb
+  href: DrawnUi.Draw.SkiaImageManager.html#DrawnUi_Draw_SkiaImageManager_CacheMemoryMb
+  name: CacheMemoryMb
+  nameWithType: SkiaImageManager.CacheMemoryMb
+  fullName: DrawnUi.Draw.SkiaImageManager.CacheMemoryMb
+- uid: System.Double
+  commentId: T:System.Double
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.double
+  name: double
+  nameWithType: double
+  fullName: double
+  nameWithType.vb: Double
+  fullName.vb: Double
+  name.vb: Double

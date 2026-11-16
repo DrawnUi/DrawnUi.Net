@@ -96,6 +96,8 @@ items:
   - DrawnUi.Draw.SkiaShaderEffect.BlendMode
   - DrawnUi.Draw.SkiaShaderEffect.Flush(DrawnUi.Draw.SkiaDrawingContext)
   - DrawnUi.Draw.SkiaShaderEffect.CreateSnapshot(DrawnUi.Draw.SkiaDrawingContext,SkiaSharp.SKRect)
+  - DrawnUi.Draw.SkiaShaderEffect.ControlArea
+  - DrawnUi.Draw.SkiaShaderEffect.ControlAreaOr(SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaShaderEffect.ParentCache(SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaShaderEffect.CacheAt(DrawnUi.Draw.SkiaControl,SkiaSharp.SKRect)
   - DrawnUi.Draw.SkiaShaderEffect.SyncEngineState(SkiaSharp.SKRect,SkiaSharp.SKRect)
@@ -393,7 +395,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ControlFromProperty
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 131
+    startLine: 132
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -420,7 +422,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ControlFrom
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 137
+    startLine: 138
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -449,7 +451,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrimarySourceProperty
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 149
+    startLine: 150
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -476,7 +478,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrimarySource
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 156
+    startLine: 157
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -505,7 +507,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResizePrimaryLoadedBitmap
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 182
+    startLine: 183
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -531,7 +533,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResizedPrimaryImage
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 221
+    startLine: 222
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -562,7 +564,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadedPrimaryBitmap
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 222
+    startLine: 223
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -591,7 +593,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadPrimarySource
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 231
+    startLine: 232
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -629,7 +631,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSecondaryTexture
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 275
+    startLine: 276
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -657,7 +659,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SecondaryTexture
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 300
+    startLine: 301
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -686,7 +688,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompileSecondaryTexture
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 302
+    startLine: 303
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -715,7 +717,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadedSecondaryBitmap
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 321
+    startLine: 322
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -742,7 +744,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SecondarySourceProperty
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 325
+    startLine: 326
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -769,7 +771,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SecondarySource
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 332
+    startLine: 333
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -798,7 +800,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResizeSecondaryLoadedBitmapAndCompileTexture
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 359
+    startLine: 360
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -824,7 +826,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadSecondarySource
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 389
+    startLine: 390
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -862,7 +864,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DecodePackageBitmapAsync
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 424
+    startLine: 425
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -896,7 +898,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AssignedControlTo
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 438
+    startLine: 439
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -923,7 +925,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ImportCacheTo
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 440
+    startLine: 441
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -949,7 +951,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyControlTo
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 455
+    startLine: 456
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -978,7 +980,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ControlToProperty
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 486
+    startLine: 487
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1005,7 +1007,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ControlTo
     path: ../src/Shared/DrawnUi/Features/Effects/ShaderDoubleTexturesEffect.cs
-    startLine: 492
+    startLine: 493
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1532,6 +1534,41 @@ references:
     href: DrawnUi.Draw.SkiaDrawingContext.html
   - name: ','
   - name: " "
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
+- uid: DrawnUi.Draw.SkiaShaderEffect.ControlArea
+  commentId: P:DrawnUi.Draw.SkiaShaderEffect.ControlArea
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ControlArea
+  name: ControlArea
+  nameWithType: SkiaShaderEffect.ControlArea
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ControlArea
+- uid: DrawnUi.Draw.SkiaShaderEffect.ControlAreaOr(SkiaSharp.SKRect)
+  commentId: M:DrawnUi.Draw.SkiaShaderEffect.ControlAreaOr(SkiaSharp.SKRect)
+  parent: DrawnUi.Draw.SkiaShaderEffect
+  isExternal: true
+  href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ControlAreaOr_SkiaSharp_SKRect_
+  name: ControlAreaOr(SKRect)
+  nameWithType: SkiaShaderEffect.ControlAreaOr(SKRect)
+  fullName: DrawnUi.Draw.SkiaShaderEffect.ControlAreaOr(SkiaSharp.SKRect)
+  spec.csharp:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.ControlAreaOr(SkiaSharp.SKRect)
+    name: ControlAreaOr
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ControlAreaOr_SkiaSharp_SKRect_
+  - name: (
+  - uid: SkiaSharp.SKRect
+    name: SKRect
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/skiasharp.skrect
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.SkiaShaderEffect.ControlAreaOr(SkiaSharp.SKRect)
+    name: ControlAreaOr
+    href: DrawnUi.Draw.SkiaShaderEffect.html#DrawnUi_Draw_SkiaShaderEffect_ControlAreaOr_SkiaSharp_SKRect_
+  - name: (
   - uid: SkiaSharp.SKRect
     name: SKRect
     isExternal: true

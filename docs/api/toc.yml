@@ -10,6 +10,46 @@ items:
   - uid: DrawnUi.IThermalStateService
     name: IThermalStateService
     type: Interface
+- uid: DrawnUi.Add3d
+  name: DrawnUi.Add3d
+  type: Namespace
+  items:
+  - uid: DrawnUi.Add3d.Add3dFluent
+    name: Add3dFluent
+    type: Class
+  - uid: DrawnUi.Add3d.LoadState3D
+    name: LoadState3D
+    type: Enum
+  - uid: DrawnUi.Add3d.Look
+    name: Look
+    type: Enum
+  - uid: DrawnUi.Add3d.Mesh3D
+    name: Mesh3D
+    type: Class
+  - uid: DrawnUi.Add3d.Model3D
+    name: Model3D
+    type: Class
+  - uid: DrawnUi.Add3d.ModelHit
+    name: ModelHit
+    type: Class
+  - uid: DrawnUi.Add3d.PointOnScreen
+    name: PointOnScreen
+    type: Struct
+  - uid: DrawnUi.Add3d.SceneAnimationEnded
+    name: SceneAnimationEnded
+    type: Class
+  - uid: DrawnUi.Add3d.SceneHit
+    name: SceneHit
+    type: Class
+  - uid: DrawnUi.Add3d.SkiaModel3D
+    name: SkiaModel3D
+    type: Class
+  - uid: DrawnUi.Add3d.SkiaScene3D
+    name: SkiaScene3D
+    type: Class
+  - uid: DrawnUi.Add3d.Texture3D
+    name: Texture3D
+    type: Class
 - uid: DrawnUi.Animate.Animators
   name: DrawnUi.Animate.Animators
   type: Namespace

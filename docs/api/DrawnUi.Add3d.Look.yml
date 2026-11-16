@@ -1,0 +1,251 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Add3d.Look
+  commentId: T:DrawnUi.Add3d.Look
+  id: Look
+  parent: DrawnUi.Add3d
+  children:
+  - DrawnUi.Add3d.Look.Flat
+  - DrawnUi.Add3d.Look.Lit
+  - DrawnUi.Add3d.Look.Toon
+  langs:
+  - csharp
+  - vb
+  name: Look
+  nameWithType: Look
+  fullName: DrawnUi.Add3d.Look
+  type: Enum
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Look
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 9
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: How 3D is drawn (<xref href="DrawnUi.Add3d.SkiaModel3D.Look" data-throw-if-not-resolved="false"></xref>, <xref href="DrawnUi.Add3d.SkiaScene3D.Look" data-throw-if-not-resolved="false"></xref>).
+  example: []
+  syntax:
+    content: public enum Look
+    content.vb: Public Enum Look
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Add3d.Look.Lit
+  commentId: F:DrawnUi.Add3d.Look.Lit
+  id: Lit
+  parent: DrawnUi.Add3d.Look
+  langs:
+  - csharp
+  - vb
+  name: Lit
+  nameWithType: Look.Lit
+  fullName: DrawnUi.Add3d.Look.Lit
+  type: Field
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Lit
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 12
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: Shaded by a light and the sky (the default).
+  example: []
+  syntax:
+    content: Lit = 0
+    return:
+      type: DrawnUi.Add3d.Look
+- uid: DrawnUi.Add3d.Look.Toon
+  commentId: F:DrawnUi.Add3d.Look.Toon
+  id: Toon
+  parent: DrawnUi.Add3d.Look
+  langs:
+  - csharp
+  - vb
+  name: Toon
+  nameWithType: Look.Toon
+  fullName: DrawnUi.Add3d.Look.Toon
+  type: Field
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Toon
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 15
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: Two tones, lit and shade, like a cartoon.
+  example: []
+  syntax:
+    content: Toon = 1
+    return:
+      type: DrawnUi.Add3d.Look
+- uid: DrawnUi.Add3d.Look.Flat
+  commentId: F:DrawnUi.Add3d.Look.Flat
+  id: Flat
+  parent: DrawnUi.Add3d.Look
+  langs:
+  - csharp
+  - vb
+  name: Flat
+  nameWithType: Look.Flat
+  fullName: DrawnUi.Add3d.Look.Flat
+  type: Field
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Flat
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 18
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: 'Each color as it is, no shading: an illustration (with an outline).'
+  example: []
+  syntax:
+    content: Flat = 2
+    return:
+      type: DrawnUi.Add3d.Look
+references:
+- uid: DrawnUi.Add3d.SkiaModel3D.Look
+  commentId: P:DrawnUi.Add3d.SkiaModel3D.Look
+  href: DrawnUi.Add3d.SkiaModel3D.html#DrawnUi_Add3d_SkiaModel3D_Look
+  name: Look
+  nameWithType: SkiaModel3D.Look
+  fullName: DrawnUi.Add3d.SkiaModel3D.Look
+- uid: DrawnUi.Add3d.SkiaScene3D.Look
+  commentId: P:DrawnUi.Add3d.SkiaScene3D.Look
+  href: DrawnUi.Add3d.SkiaScene3D.html#DrawnUi_Add3d_SkiaScene3D_Look
+  name: Look
+  nameWithType: SkiaScene3D.Look
+  fullName: DrawnUi.Add3d.SkiaScene3D.Look
+- uid: DrawnUi.Add3d
+  commentId: N:DrawnUi.Add3d
+  href: DrawnUi.html
+  name: DrawnUi.Add3d
+  nameWithType: DrawnUi.Add3d
+  fullName: DrawnUi.Add3d
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Add3d
+    name: Add3d
+    href: DrawnUi.Add3d.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Add3d
+    name: Add3d
+    href: DrawnUi.Add3d.html
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Add3d.Look
+  commentId: T:DrawnUi.Add3d.Look
+  parent: DrawnUi.Add3d
+  href: DrawnUi.Add3d.Look.html
+  name: Look
+  nameWithType: Look
+  fullName: DrawnUi.Add3d.Look

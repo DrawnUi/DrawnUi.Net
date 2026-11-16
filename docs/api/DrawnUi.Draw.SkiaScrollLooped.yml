@@ -306,6 +306,8 @@ items:
   - DrawnUi.Draw.SkiaScroll.AdaptToKeyboardFor
   - DrawnUi.Draw.SkiaScroll.AdaptToKeyboardSizeProperty
   - DrawnUi.Draw.SkiaScroll.AdaptToKeyboardSize
+  - DrawnUi.Draw.SkiaScroll.AdaptToKeyboardAutoProperty
+  - DrawnUi.Draw.SkiaScroll.AdaptToKeyboardAuto
   - DrawnUi.Draw.SkiaScroll.AdaptToKeyboardGapProperty
   - DrawnUi.Draw.SkiaScroll.AdaptToKeyboardGap
   - DrawnUi.Draw.SkiaScroll.CalculateNeededScrollForKeyboard
@@ -5078,6 +5080,20 @@ references:
   name: AdaptToKeyboardSize
   nameWithType: SkiaScroll.AdaptToKeyboardSize
   fullName: DrawnUi.Draw.SkiaScroll.AdaptToKeyboardSize
+- uid: DrawnUi.Draw.SkiaScroll.AdaptToKeyboardAutoProperty
+  commentId: F:DrawnUi.Draw.SkiaScroll.AdaptToKeyboardAutoProperty
+  parent: DrawnUi.Draw.SkiaScroll
+  href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_AdaptToKeyboardAutoProperty
+  name: AdaptToKeyboardAutoProperty
+  nameWithType: SkiaScroll.AdaptToKeyboardAutoProperty
+  fullName: DrawnUi.Draw.SkiaScroll.AdaptToKeyboardAutoProperty
+- uid: DrawnUi.Draw.SkiaScroll.AdaptToKeyboardAuto
+  commentId: P:DrawnUi.Draw.SkiaScroll.AdaptToKeyboardAuto
+  parent: DrawnUi.Draw.SkiaScroll
+  href: DrawnUi.Draw.SkiaScroll.html#DrawnUi_Draw_SkiaScroll_AdaptToKeyboardAuto
+  name: AdaptToKeyboardAuto
+  nameWithType: SkiaScroll.AdaptToKeyboardAuto
+  fullName: DrawnUi.Draw.SkiaScroll.AdaptToKeyboardAuto
 - uid: DrawnUi.Draw.SkiaScroll.AdaptToKeyboardGapProperty
   commentId: F:DrawnUi.Draw.SkiaScroll.AdaptToKeyboardGapProperty
   parent: DrawnUi.Draw.SkiaScroll

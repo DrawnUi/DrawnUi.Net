@@ -1,0 +1,683 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Add3d.Texture3D
+  commentId: T:DrawnUi.Add3d.Texture3D
+  id: Texture3D
+  parent: DrawnUi.Add3d
+  children:
+  - DrawnUi.Add3d.Texture3D.Decode(System.Byte[])
+  - DrawnUi.Add3d.Texture3D.FromImage(SkiaSharp.SKImage)
+  - DrawnUi.Add3d.Texture3D.Height
+  - DrawnUi.Add3d.Texture3D.Width
+  langs:
+  - csharp
+  - vb
+  name: Texture3D
+  nameWithType: Texture3D
+  fullName: DrawnUi.Add3d.Texture3D
+  type: Class
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Texture3D
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 98
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: >-
+    An image to put on a material (<xref href="DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(System.String%2cDrawnUi.Add3d.Texture3D)" data-throw-if-not-resolved="false"></xref>, <xref href="DrawnUi.Add3d.SkiaScene3D.SetMaterialImage(System.String%2cSystem.String%2cDrawnUi.Add3d.Texture3D)" data-throw-if-not-resolved="false"></xref>):
+
+    a PNG / JPEG / WebP file, or any Skia image (a photo, a pattern drawn in code). One copy of its pixels is uploaded
+
+    once per GPU context, however many materials and controls show it. It wraps by the surface's texture coordinates
+
+    (the model file's, or those of the shapes made in code) and is multiplied by the material's color: a white material
+
+    shows it as it is.
+  example: []
+  syntax:
+    content: public sealed class Texture3D
+    content.vb: Public NotInheritable Class Texture3D
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Add3d.Texture3D.Decode(System.Byte[])
+  commentId: M:DrawnUi.Add3d.Texture3D.Decode(System.Byte[])
+  id: Decode(System.Byte[])
+  parent: DrawnUi.Add3d.Texture3D
+  langs:
+  - csharp
+  - vb
+  name: Decode(byte[])
+  nameWithType: Texture3D.Decode(byte[])
+  fullName: DrawnUi.Add3d.Texture3D.Decode(byte[])
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Decode
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 105
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: From encoded bytes (PNG, JPEG, WebP); null when they are not an image.
+  example: []
+  syntax:
+    content: public static Texture3D Decode(byte[] encoded)
+    parameters:
+    - id: encoded
+      type: System.Byte[]
+    return:
+      type: DrawnUi.Add3d.Texture3D
+    content.vb: Public Shared Function Decode(encoded As Byte()) As Texture3D
+  overload: DrawnUi.Add3d.Texture3D.Decode*
+  nameWithType.vb: Texture3D.Decode(Byte())
+  fullName.vb: DrawnUi.Add3d.Texture3D.Decode(Byte())
+  name.vb: Decode(Byte())
+- uid: DrawnUi.Add3d.Texture3D.FromImage(SkiaSharp.SKImage)
+  commentId: M:DrawnUi.Add3d.Texture3D.FromImage(SkiaSharp.SKImage)
+  id: FromImage(SkiaSharp.SKImage)
+  parent: DrawnUi.Add3d.Texture3D
+  langs:
+  - csharp
+  - vb
+  name: FromImage(SKImage)
+  nameWithType: Texture3D.FromImage(SKImage)
+  fullName: DrawnUi.Add3d.Texture3D.FromImage(SkiaSharp.SKImage)
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: FromImage
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 112
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: From a Skia image in memory (decoded, or drawn on a raster surface); null for an image that lives on the GPU only.
+  example: []
+  syntax:
+    content: public static Texture3D FromImage(SKImage image)
+    parameters:
+    - id: image
+      type: SkiaSharp.SKImage
+    return:
+      type: DrawnUi.Add3d.Texture3D
+    content.vb: Public Shared Function FromImage(image As SKImage) As Texture3D
+  overload: DrawnUi.Add3d.Texture3D.FromImage*
+- uid: DrawnUi.Add3d.Texture3D.Width
+  commentId: P:DrawnUi.Add3d.Texture3D.Width
+  id: Width
+  parent: DrawnUi.Add3d.Texture3D
+  langs:
+  - csharp
+  - vb
+  name: Width
+  nameWithType: Texture3D.Width
+  fullName: DrawnUi.Add3d.Texture3D.Width
+  type: Property
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Width
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 119
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: Width in pixels.
+  example: []
+  syntax:
+    content: public int Width { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Width As Integer
+  overload: DrawnUi.Add3d.Texture3D.Width*
+- uid: DrawnUi.Add3d.Texture3D.Height
+  commentId: P:DrawnUi.Add3d.Texture3D.Height
+  id: Height
+  parent: DrawnUi.Add3d.Texture3D
+  langs:
+  - csharp
+  - vb
+  name: Height
+  nameWithType: Texture3D.Height
+  fullName: DrawnUi.Add3d.Texture3D.Height
+  type: Property
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dTypes.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Height
+    path: ../src/SharedAdd3d/Add3dTypes.cs
+    startLine: 122
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: Height in pixels.
+  example: []
+  syntax:
+    content: public int Height { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Height As Integer
+  overload: DrawnUi.Add3d.Texture3D.Height*
+references:
+- uid: DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(System.String,DrawnUi.Add3d.Texture3D)
+  commentId: M:DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(System.String,DrawnUi.Add3d.Texture3D)
+  isExternal: true
+  href: DrawnUi.Add3d.SkiaModel3D.html#DrawnUi_Add3d_SkiaModel3D_SetMaterialImage_System_String_DrawnUi_Add3d_Texture3D_
+  name: SetMaterialImage(string, Texture3D)
+  nameWithType: SkiaModel3D.SetMaterialImage(string, Texture3D)
+  fullName: DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(string, DrawnUi.Add3d.Texture3D)
+  nameWithType.vb: SkiaModel3D.SetMaterialImage(String, Texture3D)
+  fullName.vb: DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(String, DrawnUi.Add3d.Texture3D)
+  name.vb: SetMaterialImage(String, Texture3D)
+  spec.csharp:
+  - uid: DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(System.String,DrawnUi.Add3d.Texture3D)
+    name: SetMaterialImage
+    href: DrawnUi.Add3d.SkiaModel3D.html#DrawnUi_Add3d_SkiaModel3D_SetMaterialImage_System_String_DrawnUi_Add3d_Texture3D_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Add3d.Texture3D
+    name: Texture3D
+    href: DrawnUi.Add3d.Texture3D.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(System.String,DrawnUi.Add3d.Texture3D)
+    name: SetMaterialImage
+    href: DrawnUi.Add3d.SkiaModel3D.html#DrawnUi_Add3d_SkiaModel3D_SetMaterialImage_System_String_DrawnUi_Add3d_Texture3D_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Add3d.Texture3D
+    name: Texture3D
+    href: DrawnUi.Add3d.Texture3D.html
+  - name: )
+- uid: DrawnUi.Add3d.SkiaScene3D.SetMaterialImage(System.String,System.String,DrawnUi.Add3d.Texture3D)
+  commentId: M:DrawnUi.Add3d.SkiaScene3D.SetMaterialImage(System.String,System.String,DrawnUi.Add3d.Texture3D)
+  isExternal: true
+  href: DrawnUi.Add3d.SkiaScene3D.html#DrawnUi_Add3d_SkiaScene3D_SetMaterialImage_System_String_System_String_DrawnUi_Add3d_Texture3D_
+  name: SetMaterialImage(string, string, Texture3D)
+  nameWithType: SkiaScene3D.SetMaterialImage(string, string, Texture3D)
+  fullName: DrawnUi.Add3d.SkiaScene3D.SetMaterialImage(string, string, DrawnUi.Add3d.Texture3D)
+  nameWithType.vb: SkiaScene3D.SetMaterialImage(String, String, Texture3D)
+  fullName.vb: DrawnUi.Add3d.SkiaScene3D.SetMaterialImage(String, String, DrawnUi.Add3d.Texture3D)
+  name.vb: SetMaterialImage(String, String, Texture3D)
+  spec.csharp:
+  - uid: DrawnUi.Add3d.SkiaScene3D.SetMaterialImage(System.String,System.String,DrawnUi.Add3d.Texture3D)
+    name: SetMaterialImage
+    href: DrawnUi.Add3d.SkiaScene3D.html#DrawnUi_Add3d_SkiaScene3D_SetMaterialImage_System_String_System_String_DrawnUi_Add3d_Texture3D_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Add3d.Texture3D
+    name: Texture3D
+    href: DrawnUi.Add3d.Texture3D.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Add3d.SkiaScene3D.SetMaterialImage(System.String,System.String,DrawnUi.Add3d.Texture3D)
+    name: SetMaterialImage
+    href: DrawnUi.Add3d.SkiaScene3D.html#DrawnUi_Add3d_SkiaScene3D_SetMaterialImage_System_String_System_String_DrawnUi_Add3d_Texture3D_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Add3d.Texture3D
+    name: Texture3D
+    href: DrawnUi.Add3d.Texture3D.html
+  - name: )
+- uid: DrawnUi.Add3d
+  commentId: N:DrawnUi.Add3d
+  href: DrawnUi.html
+  name: DrawnUi.Add3d
+  nameWithType: DrawnUi.Add3d
+  fullName: DrawnUi.Add3d
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Add3d
+    name: Add3d
+    href: DrawnUi.Add3d.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Add3d
+    name: Add3d
+    href: DrawnUi.Add3d.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Add3d.Texture3D.Decode*
+  commentId: Overload:DrawnUi.Add3d.Texture3D.Decode
+  href: DrawnUi.Add3d.Texture3D.html#DrawnUi_Add3d_Texture3D_Decode_System_Byte___
+  name: Decode
+  nameWithType: Texture3D.Decode
+  fullName: DrawnUi.Add3d.Texture3D.Decode
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+- uid: DrawnUi.Add3d.Texture3D
+  commentId: T:DrawnUi.Add3d.Texture3D
+  parent: DrawnUi.Add3d
+  href: DrawnUi.Add3d.Texture3D.html
+  name: Texture3D
+  nameWithType: Texture3D
+  fullName: DrawnUi.Add3d.Texture3D
+- uid: DrawnUi.Add3d.Texture3D.FromImage*
+  commentId: Overload:DrawnUi.Add3d.Texture3D.FromImage
+  href: DrawnUi.Add3d.Texture3D.html#DrawnUi_Add3d_Texture3D_FromImage_SkiaSharp_SKImage_
+  name: FromImage
+  nameWithType: Texture3D.FromImage
+  fullName: DrawnUi.Add3d.Texture3D.FromImage
+- uid: SkiaSharp.SKImage
+  commentId: T:SkiaSharp.SKImage
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skimage
+  name: SKImage
+  nameWithType: SKImage
+  fullName: SkiaSharp.SKImage
+- uid: SkiaSharp
+  commentId: N:SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp
+  name: SkiaSharp
+  nameWithType: SkiaSharp
+  fullName: SkiaSharp
+- uid: DrawnUi.Add3d.Texture3D.Width*
+  commentId: Overload:DrawnUi.Add3d.Texture3D.Width
+  href: DrawnUi.Add3d.Texture3D.html#DrawnUi_Add3d_Texture3D_Width
+  name: Width
+  nameWithType: Texture3D.Width
+  fullName: DrawnUi.Add3d.Texture3D.Width
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: DrawnUi.Add3d.Texture3D.Height*
+  commentId: Overload:DrawnUi.Add3d.Texture3D.Height
+  href: DrawnUi.Add3d.Texture3D.html#DrawnUi_Add3d_Texture3D_Height
+  name: Height
+  nameWithType: Texture3D.Height
+  fullName: DrawnUi.Add3d.Texture3D.Height

@@ -1,0 +1,1000 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Add3d.Mesh3D
+  commentId: T:DrawnUi.Add3d.Mesh3D
+  id: Mesh3D
+  parent: DrawnUi.Add3d
+  children:
+  - DrawnUi.Add3d.Mesh3D.Cuboid(System.Single,System.Single,System.Single)
+  - DrawnUi.Add3d.Mesh3D.Cylinder(System.Single,System.Single)
+  - DrawnUi.Add3d.Mesh3D.Extrude(SkiaSharp.SKPath,System.Single)
+  - DrawnUi.Add3d.Mesh3D.Lathe(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Single,System.Single}},System.Int32)
+  - DrawnUi.Add3d.Mesh3D.RoundedCuboid(System.Single,System.Single,System.Single,System.Single,System.Boolean)
+  - DrawnUi.Add3d.Mesh3D.Sphere(System.Single)
+  - DrawnUi.Add3d.Mesh3D.Torus(System.Single,System.Single)
+  - DrawnUi.Add3d.Mesh3D.TriangleCount
+  langs:
+  - csharp
+  - vb
+  name: Mesh3D
+  nameWithType: Mesh3D
+  fullName: DrawnUi.Add3d.Mesh3D
+  type: Class
+  source:
+    remote:
+      path: src/SharedAdd3d/Shapes3D.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Mesh3D
+    path: ../src/SharedAdd3d/Shapes3D.cs
+    startLine: 13
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: >-
+    A mesh made in code: smooth shapes (turned profiles, spheres, rings, boxes, any 2D path pushed into depth). Put
+
+    them together as named, colored parts with <xref href="DrawnUi.Add3d.Model3D" data-throw-if-not-resolved="false"></xref>. Every shape has texture coordinates, so
+
+    SetMaterialImage can wrap an image around it.
+  example: []
+  syntax:
+    content: public sealed class Mesh3D
+    content.vb: Public NotInheritable Class Mesh3D
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  extensionMethods:
+  - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Add3d.Mesh3D.Lathe(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Single,System.Single}},System.Int32)
+  commentId: M:DrawnUi.Add3d.Mesh3D.Lathe(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Single,System.Single}},System.Int32)
+  id: Lathe(System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Single,System.Single}},System.Int32)
+  parent: DrawnUi.Add3d.Mesh3D
+  langs:
+  - csharp
+  - vb
+  name: Lathe(IReadOnlyList<(float Radius, float Height)>, int)
+  nameWithType: Mesh3D.Lathe(IReadOnlyList<(float Radius, float Height)>, int)
+  fullName: DrawnUi.Add3d.Mesh3D.Lathe(System.Collections.Generic.IReadOnlyList<(float Radius, float Height)>, int)
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Shapes3D.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Lathe
+    path: ../src/SharedAdd3d/Shapes3D.cs
+    startLine: 47
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: >-
+    A profile turned around the vertical axis: (radius, height) points from bottom to top (a cup, a vase, a coin's
+
+    rim). Each step of the profile is its own band, so corners stay sharp. An image wraps once around and runs from
+
+    the top of the profile to its bottom, by length along it.
+  example: []
+  syntax:
+    content: public static Mesh3D Lathe(IReadOnlyList<(float Radius, float Height)> profile, int segments)
+    parameters:
+    - id: profile
+      type: System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Single,System.Single}}
+    - id: segments
+      type: System.Int32
+    return:
+      type: DrawnUi.Add3d.Mesh3D
+    content.vb: Public Shared Function Lathe(profile As IReadOnlyList(Of (Radius As Single, Height As Single)), segments As Integer) As Mesh3D
+  overload: DrawnUi.Add3d.Mesh3D.Lathe*
+  nameWithType.vb: Mesh3D.Lathe(IReadOnlyList(Of (Radius As Single, Height As Single)), Integer)
+  fullName.vb: DrawnUi.Add3d.Mesh3D.Lathe(System.Collections.Generic.IReadOnlyList(Of (Radius As Single, Height As Single)), Integer)
+  name.vb: Lathe(IReadOnlyList(Of (Radius As Single, Height As Single)), Integer)
+- uid: DrawnUi.Add3d.Mesh3D.Cylinder(System.Single,System.Single)
+  commentId: M:DrawnUi.Add3d.Mesh3D.Cylinder(System.Single,System.Single)
+  id: Cylinder(System.Single,System.Single)
+  parent: DrawnUi.Add3d.Mesh3D
+  langs:
+  - csharp
+  - vb
+  name: Cylinder(float, float)
+  nameWithType: Mesh3D.Cylinder(float, float)
+  fullName: DrawnUi.Add3d.Mesh3D.Cylinder(float, float)
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Shapes3D.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Cylinder
+    path: ../src/SharedAdd3d/Shapes3D.cs
+    startLine: 89
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: A disc or a short cylinder (a coin, a button, a medal), <code class="paramref">height</code> thick, centered.
+  example: []
+  syntax:
+    content: public static Mesh3D Cylinder(float radius, float height)
+    parameters:
+    - id: radius
+      type: System.Single
+    - id: height
+      type: System.Single
+    return:
+      type: DrawnUi.Add3d.Mesh3D
+    content.vb: Public Shared Function Cylinder(radius As Single, height As Single) As Mesh3D
+  overload: DrawnUi.Add3d.Mesh3D.Cylinder*
+  nameWithType.vb: Mesh3D.Cylinder(Single, Single)
+  fullName.vb: DrawnUi.Add3d.Mesh3D.Cylinder(Single, Single)
+  name.vb: Cylinder(Single, Single)
+- uid: DrawnUi.Add3d.Mesh3D.Sphere(System.Single)
+  commentId: M:DrawnUi.Add3d.Mesh3D.Sphere(System.Single)
+  id: Sphere(System.Single)
+  parent: DrawnUi.Add3d.Mesh3D
+  langs:
+  - csharp
+  - vb
+  name: Sphere(float)
+  nameWithType: Mesh3D.Sphere(float)
+  fullName: DrawnUi.Add3d.Mesh3D.Sphere(float)
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Shapes3D.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Sphere
+    path: ../src/SharedAdd3d/Shapes3D.cs
+    startLine: 96
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: A sphere (a ball, a dot of a loader).
+  example: []
+  syntax:
+    content: public static Mesh3D Sphere(float radius)
+    parameters:
+    - id: radius
+      type: System.Single
+    return:
+      type: DrawnUi.Add3d.Mesh3D
+    content.vb: Public Shared Function Sphere(radius As Single) As Mesh3D
+  overload: DrawnUi.Add3d.Mesh3D.Sphere*
+  nameWithType.vb: Mesh3D.Sphere(Single)
+  fullName.vb: DrawnUi.Add3d.Mesh3D.Sphere(Single)
+  name.vb: Sphere(Single)
+- uid: DrawnUi.Add3d.Mesh3D.Torus(System.Single,System.Single)
+  commentId: M:DrawnUi.Add3d.Mesh3D.Torus(System.Single,System.Single)
+  id: Torus(System.Single,System.Single)
+  parent: DrawnUi.Add3d.Mesh3D
+  langs:
+  - csharp
+  - vb
+  name: Torus(float, float)
+  nameWithType: Mesh3D.Torus(float, float)
+  fullName: DrawnUi.Add3d.Mesh3D.Torus(float, float)
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Shapes3D.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Torus
+    path: ../src/SharedAdd3d/Shapes3D.cs
+    startLine: 112
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: "A ring (a torus): <code class=\"paramref\">radius</code> to the middle of the tube, <code class=\"paramref\">tube</code> the tube's radius."
+  example: []
+  syntax:
+    content: public static Mesh3D Torus(float radius, float tube)
+    parameters:
+    - id: radius
+      type: System.Single
+    - id: tube
+      type: System.Single
+    return:
+      type: DrawnUi.Add3d.Mesh3D
+    content.vb: Public Shared Function Torus(radius As Single, tube As Single) As Mesh3D
+  overload: DrawnUi.Add3d.Mesh3D.Torus*
+  nameWithType.vb: Mesh3D.Torus(Single, Single)
+  fullName.vb: DrawnUi.Add3d.Mesh3D.Torus(Single, Single)
+  name.vb: Torus(Single, Single)
+- uid: DrawnUi.Add3d.Mesh3D.Cuboid(System.Single,System.Single,System.Single)
+  commentId: M:DrawnUi.Add3d.Mesh3D.Cuboid(System.Single,System.Single,System.Single)
+  id: Cuboid(System.Single,System.Single,System.Single)
+  parent: DrawnUi.Add3d.Mesh3D
+  langs:
+  - csharp
+  - vb
+  name: Cuboid(float, float, float)
+  nameWithType: Mesh3D.Cuboid(float, float, float)
+  fullName: DrawnUi.Add3d.Mesh3D.Cuboid(float, float, float)
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Shapes3D.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Cuboid
+    path: ../src/SharedAdd3d/Shapes3D.cs
+    startLine: 143
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: A box, centered. An image covers each face whole, upright on the sides.
+  example: []
+  syntax:
+    content: public static Mesh3D Cuboid(float width, float height, float depth)
+    parameters:
+    - id: width
+      type: System.Single
+    - id: height
+      type: System.Single
+    - id: depth
+      type: System.Single
+    return:
+      type: DrawnUi.Add3d.Mesh3D
+    content.vb: Public Shared Function Cuboid(width As Single, height As Single, depth As Single) As Mesh3D
+  overload: DrawnUi.Add3d.Mesh3D.Cuboid*
+  nameWithType.vb: Mesh3D.Cuboid(Single, Single, Single)
+  fullName.vb: DrawnUi.Add3d.Mesh3D.Cuboid(Single, Single, Single)
+  name.vb: Cuboid(Single, Single, Single)
+- uid: DrawnUi.Add3d.Mesh3D.RoundedCuboid(System.Single,System.Single,System.Single,System.Single,System.Boolean)
+  commentId: M:DrawnUi.Add3d.Mesh3D.RoundedCuboid(System.Single,System.Single,System.Single,System.Single,System.Boolean)
+  id: RoundedCuboid(System.Single,System.Single,System.Single,System.Single,System.Boolean)
+  parent: DrawnUi.Add3d.Mesh3D
+  langs:
+  - csharp
+  - vb
+  name: RoundedCuboid(float, float, float, float, bool)
+  nameWithType: Mesh3D.RoundedCuboid(float, float, float, float, bool)
+  fullName: DrawnUi.Add3d.Mesh3D.RoundedCuboid(float, float, float, float, bool)
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Shapes3D.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: RoundedCuboid
+    path: ../src/SharedAdd3d/Shapes3D.cs
+    startLine: 163
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: >-
+    A box with rounded edges and corners (a die, a soap bar, a phone, a cushion), centered; <code class="paramref">radius</code>
+
+    in the box's units, at most half its smallest side. An image covers each face whole, upright on the sides, as on
+
+    <xref href="DrawnUi.Add3d.Mesh3D.Cuboid(System.Single%2cSystem.Single%2cSystem.Single)" data-throw-if-not-resolved="false"></xref>; with <code class="paramref">atlas</code> each face takes its own cell of one image split 3 x 2, in the
+
+    order +X, -X, +Y on the top row and -Y, +Z, -Z on the bottom row (a die's six faces in one image).
+  example: []
+  syntax:
+    content: public static Mesh3D RoundedCuboid(float width, float height, float depth, float radius, bool atlas = false)
+    parameters:
+    - id: width
+      type: System.Single
+    - id: height
+      type: System.Single
+    - id: depth
+      type: System.Single
+    - id: radius
+      type: System.Single
+    - id: atlas
+      type: System.Boolean
+    return:
+      type: DrawnUi.Add3d.Mesh3D
+    content.vb: Public Shared Function RoundedCuboid(width As Single, height As Single, depth As Single, radius As Single, atlas As Boolean = False) As Mesh3D
+  overload: DrawnUi.Add3d.Mesh3D.RoundedCuboid*
+  nameWithType.vb: Mesh3D.RoundedCuboid(Single, Single, Single, Single, Boolean)
+  fullName.vb: DrawnUi.Add3d.Mesh3D.RoundedCuboid(Single, Single, Single, Single, Boolean)
+  name.vb: RoundedCuboid(Single, Single, Single, Single, Boolean)
+- uid: DrawnUi.Add3d.Mesh3D.Extrude(SkiaSharp.SKPath,System.Single)
+  commentId: M:DrawnUi.Add3d.Mesh3D.Extrude(SkiaSharp.SKPath,System.Single)
+  id: Extrude(SkiaSharp.SKPath,System.Single)
+  parent: DrawnUi.Add3d.Mesh3D
+  langs:
+  - csharp
+  - vb
+  name: Extrude(SKPath, float)
+  nameWithType: Mesh3D.Extrude(SKPath, float)
+  fullName: DrawnUi.Add3d.Mesh3D.Extrude(SkiaSharp.SKPath, float)
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Shapes3D.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Extrude
+    path: ../src/SharedAdd3d/Shapes3D.cs
+    startLine: 229
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: >-
+    A 2D path pushed into depth (a star, a heart, a check mark, a logo, a digit), <code class="paramref">depth</code> thick,
+
+    facing the viewer, centered on the path's bounds; path units, y down as in Skia. Each closed contour is its own
+
+    solid. An image lies on the front over the path's bounds (mirrored on the back) and runs once around the walls.
+  example: []
+  syntax:
+    content: public static Mesh3D Extrude(SKPath path, float depth)
+    parameters:
+    - id: path
+      type: SkiaSharp.SKPath
+    - id: depth
+      type: System.Single
+    return:
+      type: DrawnUi.Add3d.Mesh3D
+    content.vb: Public Shared Function Extrude(path As SKPath, depth As Single) As Mesh3D
+  overload: DrawnUi.Add3d.Mesh3D.Extrude*
+  nameWithType.vb: Mesh3D.Extrude(SKPath, Single)
+  fullName.vb: DrawnUi.Add3d.Mesh3D.Extrude(SkiaSharp.SKPath, Single)
+  name.vb: Extrude(SKPath, Single)
+- uid: DrawnUi.Add3d.Mesh3D.TriangleCount
+  commentId: P:DrawnUi.Add3d.Mesh3D.TriangleCount
+  id: TriangleCount
+  parent: DrawnUi.Add3d.Mesh3D
+  langs:
+  - csharp
+  - vb
+  name: TriangleCount
+  nameWithType: Mesh3D.TriangleCount
+  fullName: DrawnUi.Add3d.Mesh3D.TriangleCount
+  type: Property
+  source:
+    remote:
+      path: src/SharedAdd3d/Shapes3D.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: TriangleCount
+    path: ../src/SharedAdd3d/Shapes3D.cs
+    startLine: 303
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: The number of triangles.
+  example: []
+  syntax:
+    content: public int TriangleCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property TriangleCount As Integer
+  overload: DrawnUi.Add3d.Mesh3D.TriangleCount*
+references:
+- uid: DrawnUi.Add3d.Model3D
+  commentId: T:DrawnUi.Add3d.Model3D
+  parent: DrawnUi.Add3d
+  href: DrawnUi.Add3d.Model3D.html
+  name: Model3D
+  nameWithType: Model3D
+  fullName: DrawnUi.Add3d.Model3D
+- uid: DrawnUi.Add3d
+  commentId: N:DrawnUi.Add3d
+  href: DrawnUi.html
+  name: DrawnUi.Add3d
+  nameWithType: DrawnUi.Add3d
+  fullName: DrawnUi.Add3d
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Add3d
+    name: Add3d
+    href: DrawnUi.Add3d.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Add3d
+    name: Add3d
+    href: DrawnUi.Add3d.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  parent: DrawnUi.Extensions.InternalExtensions
+  definition: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  commentId: M:DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+  isExternal: true
+  href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  name: FromPlatform(object)
+  nameWithType: InternalExtensions.FromPlatform(object)
+  fullName: DrawnUi.Extensions.InternalExtensions.FromPlatform(object)
+  nameWithType.vb: InternalExtensions.FromPlatform(Object)
+  fullName.vb: DrawnUi.Extensions.InternalExtensions.FromPlatform(Object)
+  name.vb: FromPlatform(Object)
+  spec.csharp:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Extensions.InternalExtensions.FromPlatform(System.Object)
+    name: FromPlatform
+    href: DrawnUi.Extensions.InternalExtensions.html#DrawnUi_Extensions_InternalExtensions_FromPlatform_System_Object_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: DrawnUi.Extensions.InternalExtensions
+  commentId: T:DrawnUi.Extensions.InternalExtensions
+  parent: DrawnUi.Extensions
+  href: DrawnUi.Extensions.InternalExtensions.html
+  name: InternalExtensions
+  nameWithType: InternalExtensions
+  fullName: DrawnUi.Extensions.InternalExtensions
+- uid: DrawnUi.Extensions
+  commentId: N:DrawnUi.Extensions
+  href: DrawnUi.html
+  name: DrawnUi.Extensions
+  nameWithType: DrawnUi.Extensions
+  fullName: DrawnUi.Extensions
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Extensions
+    name: Extensions
+    href: DrawnUi.Extensions.html
+- uid: DrawnUi.Add3d.Mesh3D.Lathe*
+  commentId: Overload:DrawnUi.Add3d.Mesh3D.Lathe
+  href: DrawnUi.Add3d.Mesh3D.html#DrawnUi_Add3d_Mesh3D_Lathe_System_Collections_Generic_IReadOnlyList_System_ValueTuple_System_Single_System_Single___System_Int32_
+  name: Lathe
+  nameWithType: Mesh3D.Lathe
+  fullName: DrawnUi.Add3d.Mesh3D.Lathe
+- uid: System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Single,System.Single}}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.ValueTuple{System.Single,System.Single}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<(float Radius, float Height)>
+  nameWithType: IReadOnlyList<(float Radius, float Height)>
+  fullName: System.Collections.Generic.IReadOnlyList<(float Radius, float Height)>
+  nameWithType.vb: IReadOnlyList(Of (Radius As Single, Height As Single))
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of (Radius As Single, Height As Single))
+  name.vb: IReadOnlyList(Of (Radius As Single, Height As Single))
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: " "
+  - uid: System.ValueTuple{System.Single,System.Single}.Radius
+    name: Radius
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.single,system.single-.radius
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: " "
+  - uid: System.ValueTuple{System.Single,System.Single}.Height
+    name: Height
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.single,system.single-.height
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.ValueTuple{System.Single,System.Single}.Radius
+    name: Radius
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.single,system.single-.radius
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.ValueTuple{System.Single,System.Single}.Height
+    name: Height
+    href: https://learn.microsoft.com/dotnet/api/system.valuetuple-system.single,system.single-.height
+  - name: " "
+  - name: As
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  - name: )
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: DrawnUi.Add3d.Mesh3D
+  commentId: T:DrawnUi.Add3d.Mesh3D
+  parent: DrawnUi.Add3d
+  href: DrawnUi.Add3d.Mesh3D.html
+  name: Mesh3D
+  nameWithType: Mesh3D
+  fullName: DrawnUi.Add3d.Mesh3D
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: DrawnUi.Add3d.Mesh3D.Cylinder*
+  commentId: Overload:DrawnUi.Add3d.Mesh3D.Cylinder
+  href: DrawnUi.Add3d.Mesh3D.html#DrawnUi_Add3d_Mesh3D_Cylinder_System_Single_System_Single_
+  name: Cylinder
+  nameWithType: Mesh3D.Cylinder
+  fullName: DrawnUi.Add3d.Mesh3D.Cylinder
+- uid: System.Single
+  commentId: T:System.Single
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.single
+  name: float
+  nameWithType: float
+  fullName: float
+  nameWithType.vb: Single
+  fullName.vb: Single
+  name.vb: Single
+- uid: DrawnUi.Add3d.Mesh3D.Sphere*
+  commentId: Overload:DrawnUi.Add3d.Mesh3D.Sphere
+  href: DrawnUi.Add3d.Mesh3D.html#DrawnUi_Add3d_Mesh3D_Sphere_System_Single_
+  name: Sphere
+  nameWithType: Mesh3D.Sphere
+  fullName: DrawnUi.Add3d.Mesh3D.Sphere
+- uid: DrawnUi.Add3d.Mesh3D.Torus*
+  commentId: Overload:DrawnUi.Add3d.Mesh3D.Torus
+  href: DrawnUi.Add3d.Mesh3D.html#DrawnUi_Add3d_Mesh3D_Torus_System_Single_System_Single_
+  name: Torus
+  nameWithType: Mesh3D.Torus
+  fullName: DrawnUi.Add3d.Mesh3D.Torus
+- uid: DrawnUi.Add3d.Mesh3D.Cuboid*
+  commentId: Overload:DrawnUi.Add3d.Mesh3D.Cuboid
+  href: DrawnUi.Add3d.Mesh3D.html#DrawnUi_Add3d_Mesh3D_Cuboid_System_Single_System_Single_System_Single_
+  name: Cuboid
+  nameWithType: Mesh3D.Cuboid
+  fullName: DrawnUi.Add3d.Mesh3D.Cuboid
+- uid: DrawnUi.Add3d.Mesh3D.Cuboid(System.Single,System.Single,System.Single)
+  commentId: M:DrawnUi.Add3d.Mesh3D.Cuboid(System.Single,System.Single,System.Single)
+  isExternal: true
+  href: DrawnUi.Add3d.Mesh3D.html#DrawnUi_Add3d_Mesh3D_Cuboid_System_Single_System_Single_System_Single_
+  name: Cuboid(float, float, float)
+  nameWithType: Mesh3D.Cuboid(float, float, float)
+  fullName: DrawnUi.Add3d.Mesh3D.Cuboid(float, float, float)
+  nameWithType.vb: Mesh3D.Cuboid(Single, Single, Single)
+  fullName.vb: DrawnUi.Add3d.Mesh3D.Cuboid(Single, Single, Single)
+  name.vb: Cuboid(Single, Single, Single)
+  spec.csharp:
+  - uid: DrawnUi.Add3d.Mesh3D.Cuboid(System.Single,System.Single,System.Single)
+    name: Cuboid
+    href: DrawnUi.Add3d.Mesh3D.html#DrawnUi_Add3d_Mesh3D_Cuboid_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: float
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Add3d.Mesh3D.Cuboid(System.Single,System.Single,System.Single)
+    name: Cuboid
+    href: DrawnUi.Add3d.Mesh3D.html#DrawnUi_Add3d_Mesh3D_Cuboid_System_Single_System_Single_System_Single_
+  - name: (
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: ','
+  - name: " "
+  - uid: System.Single
+    name: Single
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.single
+  - name: )
+- uid: DrawnUi.Add3d.Mesh3D.RoundedCuboid*
+  commentId: Overload:DrawnUi.Add3d.Mesh3D.RoundedCuboid
+  href: DrawnUi.Add3d.Mesh3D.html#DrawnUi_Add3d_Mesh3D_RoundedCuboid_System_Single_System_Single_System_Single_System_Single_System_Boolean_
+  name: RoundedCuboid
+  nameWithType: Mesh3D.RoundedCuboid
+  fullName: DrawnUi.Add3d.Mesh3D.RoundedCuboid
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: DrawnUi.Add3d.Mesh3D.Extrude*
+  commentId: Overload:DrawnUi.Add3d.Mesh3D.Extrude
+  href: DrawnUi.Add3d.Mesh3D.html#DrawnUi_Add3d_Mesh3D_Extrude_SkiaSharp_SKPath_System_Single_
+  name: Extrude
+  nameWithType: Mesh3D.Extrude
+  fullName: DrawnUi.Add3d.Mesh3D.Extrude
+- uid: SkiaSharp.SKPath
+  commentId: T:SkiaSharp.SKPath
+  parent: SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp.skpath
+  name: SKPath
+  nameWithType: SKPath
+  fullName: SkiaSharp.SKPath
+- uid: SkiaSharp
+  commentId: N:SkiaSharp
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/skiasharp
+  name: SkiaSharp
+  nameWithType: SkiaSharp
+  fullName: SkiaSharp
+- uid: DrawnUi.Add3d.Mesh3D.TriangleCount*
+  commentId: Overload:DrawnUi.Add3d.Mesh3D.TriangleCount
+  href: DrawnUi.Add3d.Mesh3D.html#DrawnUi_Add3d_Mesh3D_TriangleCount
+  name: TriangleCount
+  nameWithType: Mesh3D.TriangleCount
+  fullName: DrawnUi.Add3d.Mesh3D.TriangleCount

@@ -1,0 +1,790 @@
+### YamlMime:ManagedReference
+items:
+- uid: DrawnUi.Add3d.Add3dFluent
+  commentId: T:DrawnUi.Add3d.Add3dFluent
+  id: Add3dFluent
+  parent: DrawnUi.Add3d
+  children:
+  - DrawnUi.Add3d.Add3dFluent.MaterialImage``1(``0,System.String,DrawnUi.Add3d.Texture3D)
+  - DrawnUi.Add3d.Add3dFluent.OnAnimationEnded``1(``0,System.Action{``0,DrawnUi.Add3d.SceneAnimationEnded})
+  - DrawnUi.Add3d.Add3dFluent.OnAnimationEnded``1(``0,System.Action{``0,System.String})
+  - DrawnUi.Add3d.Add3dFluent.OnTapped3D``1(``0,System.Action{``0,DrawnUi.Add3d.ModelHit})
+  - DrawnUi.Add3d.Add3dFluent.OnTapped3D``1(``0,System.Action{``0,DrawnUi.Add3d.SceneHit})
+  langs:
+  - csharp
+  - vb
+  name: Add3dFluent
+  nameWithType: Add3dFluent
+  fullName: DrawnUi.Add3d.Add3dFluent
+  type: Class
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dFluent.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Add3dFluent
+    path: ../src/SharedAdd3d/Add3dFluent.cs
+    startLine: 4
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: Fluent wiring of the 3D controls' events, in the style of DrawnUI's .OnTapped(...).
+  example: []
+  syntax:
+    content: public static class Add3dFluent
+    content.vb: Public Module Add3dFluent
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: DrawnUi.Add3d.Add3dFluent.OnAnimationEnded``1(``0,System.Action{``0,System.String})
+  commentId: M:DrawnUi.Add3d.Add3dFluent.OnAnimationEnded``1(``0,System.Action{``0,System.String})
+  id: OnAnimationEnded``1(``0,System.Action{``0,System.String})
+  isExtensionMethod: true
+  parent: DrawnUi.Add3d.Add3dFluent
+  langs:
+  - csharp
+  - vb
+  name: OnAnimationEnded<T>(T, Action<T, string>)
+  nameWithType: Add3dFluent.OnAnimationEnded<T>(T, Action<T, string>)
+  fullName: DrawnUi.Add3d.Add3dFluent.OnAnimationEnded<T>(T, System.Action<T, string>)
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dFluent.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnAnimationEnded
+    path: ../src/SharedAdd3d/Add3dFluent.cs
+    startLine: 7
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: Runs when an animation played with PlayOnce or Hold ended, with its name.
+  example: []
+  syntax:
+    content: 'public static T OnAnimationEnded<T>(this T model, Action<T, string> action) where T : SkiaModel3D'
+    parameters:
+    - id: model
+      type: '{T}'
+    - id: action
+      type: System.Action{{T},System.String}
+    typeParameters:
+    - id: T
+    return:
+      type: '{T}'
+    content.vb: Public Shared Function OnAnimationEnded(Of T As SkiaModel3D)(model As T, action As Action(Of T, String)) As T
+  overload: DrawnUi.Add3d.Add3dFluent.OnAnimationEnded*
+  nameWithType.vb: Add3dFluent.OnAnimationEnded(Of T)(T, Action(Of T, String))
+  fullName.vb: DrawnUi.Add3d.Add3dFluent.OnAnimationEnded(Of T)(T, System.Action(Of T, String))
+  name.vb: OnAnimationEnded(Of T)(T, Action(Of T, String))
+- uid: DrawnUi.Add3d.Add3dFluent.OnTapped3D``1(``0,System.Action{``0,DrawnUi.Add3d.ModelHit})
+  commentId: M:DrawnUi.Add3d.Add3dFluent.OnTapped3D``1(``0,System.Action{``0,DrawnUi.Add3d.ModelHit})
+  id: OnTapped3D``1(``0,System.Action{``0,DrawnUi.Add3d.ModelHit})
+  isExtensionMethod: true
+  parent: DrawnUi.Add3d.Add3dFluent
+  langs:
+  - csharp
+  - vb
+  name: OnTapped3D<T>(T, Action<T, ModelHit>)
+  nameWithType: Add3dFluent.OnTapped3D<T>(T, Action<T, ModelHit>)
+  fullName: DrawnUi.Add3d.Add3dFluent.OnTapped3D<T>(T, System.Action<T, DrawnUi.Add3d.ModelHit>)
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dFluent.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnTapped3D
+    path: ../src/SharedAdd3d/Add3dFluent.cs
+    startLine: 14
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: "Runs when a tap lands on the scene's surface, with what it hit: the node, the material and the point."
+  example: []
+  syntax:
+    content: 'public static T OnTapped3D<T>(this T model, Action<T, ModelHit> action) where T : SkiaModel3D'
+    parameters:
+    - id: model
+      type: '{T}'
+    - id: action
+      type: System.Action{{T},DrawnUi.Add3d.ModelHit}
+    typeParameters:
+    - id: T
+    return:
+      type: '{T}'
+    content.vb: Public Shared Function OnTapped3D(Of T As SkiaModel3D)(model As T, action As Action(Of T, ModelHit)) As T
+  overload: DrawnUi.Add3d.Add3dFluent.OnTapped3D*
+  nameWithType.vb: Add3dFluent.OnTapped3D(Of T)(T, Action(Of T, ModelHit))
+  fullName.vb: DrawnUi.Add3d.Add3dFluent.OnTapped3D(Of T)(T, System.Action(Of T, DrawnUi.Add3d.ModelHit))
+  name.vb: OnTapped3D(Of T)(T, Action(Of T, ModelHit))
+- uid: DrawnUi.Add3d.Add3dFluent.MaterialImage``1(``0,System.String,DrawnUi.Add3d.Texture3D)
+  commentId: M:DrawnUi.Add3d.Add3dFluent.MaterialImage``1(``0,System.String,DrawnUi.Add3d.Texture3D)
+  id: MaterialImage``1(``0,System.String,DrawnUi.Add3d.Texture3D)
+  isExtensionMethod: true
+  parent: DrawnUi.Add3d.Add3dFluent
+  langs:
+  - csharp
+  - vb
+  name: MaterialImage<T>(T, string, Texture3D)
+  nameWithType: Add3dFluent.MaterialImage<T>(T, string, Texture3D)
+  fullName: DrawnUi.Add3d.Add3dFluent.MaterialImage<T>(T, string, DrawnUi.Add3d.Texture3D)
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dFluent.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: MaterialImage
+    path: ../src/SharedAdd3d/Add3dFluent.cs
+    startLine: 21
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: Starts with an image on a material (see <xref href="DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(System.String%2cDrawnUi.Add3d.Texture3D)" data-throw-if-not-resolved="false"></xref>).
+  example: []
+  syntax:
+    content: 'public static T MaterialImage<T>(this T model, string name, Texture3D image) where T : SkiaModel3D'
+    parameters:
+    - id: model
+      type: '{T}'
+    - id: name
+      type: System.String
+    - id: image
+      type: DrawnUi.Add3d.Texture3D
+    typeParameters:
+    - id: T
+    return:
+      type: '{T}'
+    content.vb: Public Shared Function MaterialImage(Of T As SkiaModel3D)(model As T, name As String, image As Texture3D) As T
+  overload: DrawnUi.Add3d.Add3dFluent.MaterialImage*
+  nameWithType.vb: Add3dFluent.MaterialImage(Of T)(T, String, Texture3D)
+  fullName.vb: DrawnUi.Add3d.Add3dFluent.MaterialImage(Of T)(T, String, DrawnUi.Add3d.Texture3D)
+  name.vb: MaterialImage(Of T)(T, String, Texture3D)
+- uid: DrawnUi.Add3d.Add3dFluent.OnAnimationEnded``1(``0,System.Action{``0,DrawnUi.Add3d.SceneAnimationEnded})
+  commentId: M:DrawnUi.Add3d.Add3dFluent.OnAnimationEnded``1(``0,System.Action{``0,DrawnUi.Add3d.SceneAnimationEnded})
+  id: OnAnimationEnded``1(``0,System.Action{``0,DrawnUi.Add3d.SceneAnimationEnded})
+  isExtensionMethod: true
+  parent: DrawnUi.Add3d.Add3dFluent
+  langs:
+  - csharp
+  - vb
+  name: OnAnimationEnded<T>(T, Action<T, SceneAnimationEnded>)
+  nameWithType: Add3dFluent.OnAnimationEnded<T>(T, Action<T, SceneAnimationEnded>)
+  fullName: DrawnUi.Add3d.Add3dFluent.OnAnimationEnded<T>(T, System.Action<T, DrawnUi.Add3d.SceneAnimationEnded>)
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dFluent.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnAnimationEnded
+    path: ../src/SharedAdd3d/Add3dFluent.cs
+    startLine: 28
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: "Runs when an object's animation played with PlayOnce or Hold ended: the object's name and the animation's."
+  example: []
+  syntax:
+    content: 'public static T OnAnimationEnded<T>(this T layer, Action<T, SceneAnimationEnded> action) where T : SkiaScene3D'
+    parameters:
+    - id: layer
+      type: '{T}'
+    - id: action
+      type: System.Action{{T},DrawnUi.Add3d.SceneAnimationEnded}
+    typeParameters:
+    - id: T
+    return:
+      type: '{T}'
+    content.vb: Public Shared Function OnAnimationEnded(Of T As SkiaScene3D)(layer As T, action As Action(Of T, SceneAnimationEnded)) As T
+  overload: DrawnUi.Add3d.Add3dFluent.OnAnimationEnded*
+  nameWithType.vb: Add3dFluent.OnAnimationEnded(Of T)(T, Action(Of T, SceneAnimationEnded))
+  fullName.vb: DrawnUi.Add3d.Add3dFluent.OnAnimationEnded(Of T)(T, System.Action(Of T, DrawnUi.Add3d.SceneAnimationEnded))
+  name.vb: OnAnimationEnded(Of T)(T, Action(Of T, SceneAnimationEnded))
+- uid: DrawnUi.Add3d.Add3dFluent.OnTapped3D``1(``0,System.Action{``0,DrawnUi.Add3d.SceneHit})
+  commentId: M:DrawnUi.Add3d.Add3dFluent.OnTapped3D``1(``0,System.Action{``0,DrawnUi.Add3d.SceneHit})
+  id: OnTapped3D``1(``0,System.Action{``0,DrawnUi.Add3d.SceneHit})
+  isExtensionMethod: true
+  parent: DrawnUi.Add3d.Add3dFluent
+  langs:
+  - csharp
+  - vb
+  name: OnTapped3D<T>(T, Action<T, SceneHit>)
+  nameWithType: Add3dFluent.OnTapped3D<T>(T, Action<T, SceneHit>)
+  fullName: DrawnUi.Add3d.Add3dFluent.OnTapped3D<T>(T, System.Action<T, DrawnUi.Add3d.SceneHit>)
+  type: Method
+  source:
+    remote:
+      path: src/SharedAdd3d/Add3dFluent.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: OnTapped3D
+    path: ../src/SharedAdd3d/Add3dFluent.cs
+    startLine: 35
+  assemblies:
+  - DrawnUi.Maui.Add3d
+  namespace: DrawnUi.Add3d
+  summary: 'Runs when a tap lands on an object, with what it hit: the object, its node and its material.'
+  example: []
+  syntax:
+    content: 'public static T OnTapped3D<T>(this T layer, Action<T, SceneHit> action) where T : SkiaScene3D'
+    parameters:
+    - id: layer
+      type: '{T}'
+    - id: action
+      type: System.Action{{T},DrawnUi.Add3d.SceneHit}
+    typeParameters:
+    - id: T
+    return:
+      type: '{T}'
+    content.vb: Public Shared Function OnTapped3D(Of T As SkiaScene3D)(layer As T, action As Action(Of T, SceneHit)) As T
+  overload: DrawnUi.Add3d.Add3dFluent.OnTapped3D*
+  nameWithType.vb: Add3dFluent.OnTapped3D(Of T)(T, Action(Of T, SceneHit))
+  fullName.vb: DrawnUi.Add3d.Add3dFluent.OnTapped3D(Of T)(T, System.Action(Of T, DrawnUi.Add3d.SceneHit))
+  name.vb: OnTapped3D(Of T)(T, Action(Of T, SceneHit))
+references:
+- uid: DrawnUi.Add3d
+  commentId: N:DrawnUi.Add3d
+  href: DrawnUi.html
+  name: DrawnUi.Add3d
+  nameWithType: DrawnUi.Add3d
+  fullName: DrawnUi.Add3d
+  spec.csharp:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Add3d
+    name: Add3d
+    href: DrawnUi.Add3d.html
+  spec.vb:
+  - uid: DrawnUi
+    name: DrawnUi
+    href: DrawnUi.html
+  - name: .
+  - uid: DrawnUi.Add3d
+    name: Add3d
+    href: DrawnUi.Add3d.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: DrawnUi.Add3d.Add3dFluent.OnAnimationEnded*
+  commentId: Overload:DrawnUi.Add3d.Add3dFluent.OnAnimationEnded
+  href: DrawnUi.Add3d.Add3dFluent.html#DrawnUi_Add3d_Add3dFluent_OnAnimationEnded__1___0_System_Action___0_System_String__
+  name: OnAnimationEnded
+  nameWithType: Add3dFluent.OnAnimationEnded
+  fullName: DrawnUi.Add3d.Add3dFluent.OnAnimationEnded
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Action{{T},System.String}
+  commentId: T:System.Action{``0,System.String}
+  parent: System
+  definition: System.Action`2
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<T, string>
+  nameWithType: Action<T, string>
+  fullName: System.Action<T, string>
+  nameWithType.vb: Action(Of T, String)
+  fullName.vb: System.Action(Of T, String)
+  name.vb: Action(Of T, String)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Action`2
+  commentId: T:System.Action`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<T1, T2>
+  nameWithType: Action<T1, T2>
+  fullName: System.Action<T1, T2>
+  nameWithType.vb: Action(Of T1, T2)
+  fullName.vb: System.Action(Of T1, T2)
+  name.vb: Action(Of T1, T2)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: DrawnUi.Add3d.Add3dFluent.OnTapped3D*
+  commentId: Overload:DrawnUi.Add3d.Add3dFluent.OnTapped3D
+  href: DrawnUi.Add3d.Add3dFluent.html#DrawnUi_Add3d_Add3dFluent_OnTapped3D__1___0_System_Action___0_DrawnUi_Add3d_ModelHit__
+  name: OnTapped3D
+  nameWithType: Add3dFluent.OnTapped3D
+  fullName: DrawnUi.Add3d.Add3dFluent.OnTapped3D
+- uid: System.Action{{T},DrawnUi.Add3d.ModelHit}
+  commentId: T:System.Action{``0,DrawnUi.Add3d.ModelHit}
+  parent: System
+  definition: System.Action`2
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<T, ModelHit>
+  nameWithType: Action<T, ModelHit>
+  fullName: System.Action<T, DrawnUi.Add3d.ModelHit>
+  nameWithType.vb: Action(Of T, ModelHit)
+  fullName.vb: System.Action(Of T, DrawnUi.Add3d.ModelHit)
+  name.vb: Action(Of T, ModelHit)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Add3d.ModelHit
+    name: ModelHit
+    href: DrawnUi.Add3d.ModelHit.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Add3d.ModelHit
+    name: ModelHit
+    href: DrawnUi.Add3d.ModelHit.html
+  - name: )
+- uid: DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(System.String,DrawnUi.Add3d.Texture3D)
+  commentId: M:DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(System.String,DrawnUi.Add3d.Texture3D)
+  isExternal: true
+  href: DrawnUi.Add3d.SkiaModel3D.html#DrawnUi_Add3d_SkiaModel3D_SetMaterialImage_System_String_DrawnUi_Add3d_Texture3D_
+  name: SetMaterialImage(string, Texture3D)
+  nameWithType: SkiaModel3D.SetMaterialImage(string, Texture3D)
+  fullName: DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(string, DrawnUi.Add3d.Texture3D)
+  nameWithType.vb: SkiaModel3D.SetMaterialImage(String, Texture3D)
+  fullName.vb: DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(String, DrawnUi.Add3d.Texture3D)
+  name.vb: SetMaterialImage(String, Texture3D)
+  spec.csharp:
+  - uid: DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(System.String,DrawnUi.Add3d.Texture3D)
+    name: SetMaterialImage
+    href: DrawnUi.Add3d.SkiaModel3D.html#DrawnUi_Add3d_SkiaModel3D_SetMaterialImage_System_String_DrawnUi_Add3d_Texture3D_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Add3d.Texture3D
+    name: Texture3D
+    href: DrawnUi.Add3d.Texture3D.html
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Add3d.SkiaModel3D.SetMaterialImage(System.String,DrawnUi.Add3d.Texture3D)
+    name: SetMaterialImage
+    href: DrawnUi.Add3d.SkiaModel3D.html#DrawnUi_Add3d_SkiaModel3D_SetMaterialImage_System_String_DrawnUi_Add3d_Texture3D_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Add3d.Texture3D
+    name: Texture3D
+    href: DrawnUi.Add3d.Texture3D.html
+  - name: )
+- uid: DrawnUi.Add3d.Add3dFluent.MaterialImage*
+  commentId: Overload:DrawnUi.Add3d.Add3dFluent.MaterialImage
+  href: DrawnUi.Add3d.Add3dFluent.html#DrawnUi_Add3d_Add3dFluent_MaterialImage__1___0_System_String_DrawnUi_Add3d_Texture3D_
+  name: MaterialImage
+  nameWithType: Add3dFluent.MaterialImage
+  fullName: DrawnUi.Add3d.Add3dFluent.MaterialImage
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: DrawnUi.Add3d.Texture3D
+  commentId: T:DrawnUi.Add3d.Texture3D
+  parent: DrawnUi.Add3d
+  href: DrawnUi.Add3d.Texture3D.html
+  name: Texture3D
+  nameWithType: Texture3D
+  fullName: DrawnUi.Add3d.Texture3D
+- uid: System.Action{{T},DrawnUi.Add3d.SceneAnimationEnded}
+  commentId: T:System.Action{``0,DrawnUi.Add3d.SceneAnimationEnded}
+  parent: System
+  definition: System.Action`2
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<T, SceneAnimationEnded>
+  nameWithType: Action<T, SceneAnimationEnded>
+  fullName: System.Action<T, DrawnUi.Add3d.SceneAnimationEnded>
+  nameWithType.vb: Action(Of T, SceneAnimationEnded)
+  fullName.vb: System.Action(Of T, DrawnUi.Add3d.SceneAnimationEnded)
+  name.vb: Action(Of T, SceneAnimationEnded)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Add3d.SceneAnimationEnded
+    name: SceneAnimationEnded
+    href: DrawnUi.Add3d.SceneAnimationEnded.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Add3d.SceneAnimationEnded
+    name: SceneAnimationEnded
+    href: DrawnUi.Add3d.SceneAnimationEnded.html
+  - name: )
+- uid: System.Action{{T},DrawnUi.Add3d.SceneHit}
+  commentId: T:System.Action{``0,DrawnUi.Add3d.SceneHit}
+  parent: System
+  definition: System.Action`2
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<T, SceneHit>
+  nameWithType: Action<T, SceneHit>
+  fullName: System.Action<T, DrawnUi.Add3d.SceneHit>
+  nameWithType.vb: Action(Of T, SceneHit)
+  fullName.vb: System.Action(Of T, DrawnUi.Add3d.SceneHit)
+  name.vb: Action(Of T, SceneHit)
+  spec.csharp:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Add3d.SceneHit
+    name: SceneHit
+    href: DrawnUi.Add3d.SceneHit.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: DrawnUi.Add3d.SceneHit
+    name: SceneHit
+    href: DrawnUi.Add3d.SceneHit.html
+  - name: )
