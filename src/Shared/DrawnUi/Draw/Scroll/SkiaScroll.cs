@@ -591,6 +591,9 @@ namespace DrawnUi.Draw
         private SkiaScrollBar _draggedScrollBar;
         private bool _scrollBarOwnsGesture;
 
+        /// <summary>The gesture under way started on a draggable scroll bar: it belongs to the bar (no text drag either).</summary>
+        internal bool ScrollBarOwnsGesture => _scrollBarOwnsGesture;
+
         /// <summary>
         /// Thumb drag and track press on a ScrollBar / ScrollBarHorizontal with IsDraggable set. A gesture that
         /// starts on the bar belongs to it until the next down: the content neither pans nor gets the tap.
