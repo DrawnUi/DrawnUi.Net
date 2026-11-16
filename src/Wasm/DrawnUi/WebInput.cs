@@ -14,6 +14,8 @@ public static partial class WebInput
     private static TouchActionEventArgs? _pointerDownArgs;
     private static TouchActionEventArgs? _previousArgs;
     private static readonly HashSet<long> ActiveTouchIds = new();
+    private static CancellationTokenSource? _longPressCts;
+    private static bool _longPressFired;
 
     /// <summary>
     /// The canvas that will receive input events
@@ -47,6 +49,37 @@ public static partial class WebInput
         _previousArgs = args;
 
         TargetCanvas?.OnGestureEvent(TouchActionType.Pressed, args, TouchActionResult.Down);
+
+        // a long press, as the other heads raise it: the main button (or a finger) held still for
+        // TouchEffect.LongPressTimeMsDefault; a second finger, a move or the release cancels it
+        CancelLongPress();
+        _longPressFired = false;
+        if (button == 0 && ActiveTouchIds.Count == 1)
+            _ = LongPressAfterDelay(args);
+    }
+
+    static async Task LongPressAfterDelay(TouchActionEventArgs downArgs)
+    {
+        var cts = new CancellationTokenSource();
+        _longPressCts = cts;
+        try
+        {
+            await Task.Delay(TouchEffect.LongPressTimeMsDefault, cts.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+        if (cts.IsCancellationRequested || !ReferenceEquals(_pointerDownArgs, downArgs))
+            return;
+        _longPressFired = true;
+        TargetCanvas?.OnGestureEvent(TouchActionType.Pressing, downArgs, TouchActionResult.LongPressing);
+    }
+
+    static void CancelLongPress()
+    {
+        _longPressCts?.Cancel();
+        _longPressCts = null;
     }
 
     /// <summary>
@@ -85,6 +118,13 @@ public static partial class WebInput
             return;
         }
 
+        if (_longPressCts != null)
+        {
+            var moved = TouchEffect.TappedCancelMoveThresholdPoints * Math.Max(0.1f, TouchEffect.Density);
+            if (Math.Abs(args.Distance.Total.X) >= moved || Math.Abs(args.Distance.Total.Y) >= moved)
+                CancelLongPress();
+        }
+
         if (args.Distance.Delta.X != 0 || args.Distance.Delta.Y != 0)
         {
             TargetCanvas?.OnGestureEvent(actionType, args, TouchActionResult.Panning);
@@ -107,6 +147,7 @@ public static partial class WebInput
         ActiveTouchIds.Remove(pointerId);
         args.NumberOfTouches = ActiveTouchIds.Count;
         args.IsInContact = ActiveTouchIds.Count > 0;
+        CancelLongPress();
 
         if (_previousArgs != null)
         {
@@ -119,7 +160,8 @@ public static partial class WebInput
 
             // Check for tap
             var threshold = TouchEffect.TappedCancelMoveThresholdPoints * Math.Max(0.1f, TouchEffect.Density);
-            if (Math.Abs(args.Distance.Total.X) < threshold && Math.Abs(args.Distance.Total.Y) < threshold)
+            // a long press that fired is not a tap too, as on the other heads
+            if (!_longPressFired && Math.Abs(args.Distance.Total.X) < threshold && Math.Abs(args.Distance.Total.Y) < threshold)
             {
                 WebTextInput.FocusOnTap(TargetCanvas, x, y); // inside the browser event: iOS raises its keyboard
                 TargetCanvas?.OnGestureEvent(TouchActionType.Released, args, TouchActionResult.Tapped);
@@ -183,6 +225,7 @@ public static partial class WebInput
         ActiveTouchIds.Remove(pointerId);
         args.NumberOfTouches = ActiveTouchIds.Count;
         args.IsInContact = false;
+        CancelLongPress();
 
         TargetCanvas?.OnGestureEvent(TouchActionType.Cancelled, args, TouchActionResult.Up);
 
