@@ -17,7 +17,7 @@ public static partial class WebTextInput
         [JSMarshalAs<JSType.Function<JSType.String>>] Action<string> onKey);
 
     [JSImport("textInputFocus", "drawnui-web")]
-    private static partial void FocusTextInput(bool focus, int ownerId);
+    private static partial void FocusTextInput(bool focus, int ownerId, bool soft);
 
     static object _owner;
 
@@ -37,7 +37,7 @@ public static partial class WebTextInput
         }
         else
             return;
-        FocusTextInput(focus, editor is ISkiaAccessibilityNode node ? node.AccessibilityId : -1);
+        FocusTextInput(focus, editor is ISkiaAccessibilityNode node ? node.AccessibilityId : -1, KeyboardManager.SoftKeyboardInput);
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ public static partial class WebTextInput
             if (!editor.IsFocused || !ReferenceEquals(_owner, editor))
             {
                 _owner = editor;
-                FocusTextInput(true, editor.AccessibilityId);
+                FocusTextInput(true, editor.AccessibilityId, KeyboardManager.SoftKeyboardInput);
                 _ = GiveBackIfNotTaken(editor);
             }
             return;
