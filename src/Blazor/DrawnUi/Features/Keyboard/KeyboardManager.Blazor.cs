@@ -60,6 +60,10 @@ public partial class KeyboardManager
         }
     }
 
+    /// <summary>A tap gave the on-screen keyboard to a text field (true), or a mouse or Tab focused one (false).</summary>
+    [JSInvokable]
+    public static void HandleSoftKeyboard(bool soft) => SoftKeyboardInput = soft;
+
     /// <summary>Text the on-screen keyboard or an input method typed into a focused drawn editor.</summary>
     [JSInvokable]
     public static void HandleTextInput(string? text)

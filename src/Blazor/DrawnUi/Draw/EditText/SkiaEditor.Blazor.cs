@@ -144,7 +144,9 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
             return;
         }
 
-        ExecuteSubmit(clearFocus: false);
+        // single line: the on-screen keyboard's return key ends editing (the keyboard closes), as a native single-line
+        // field does on phones; a physical keyboard's Enter keeps the focus
+        ExecuteSubmit(clearFocus: KeyboardManager.SoftKeyboardInput);
     }
 
     public void StubBackspace(int count = 1)

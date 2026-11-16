@@ -31,7 +31,10 @@ public static partial class WebTextInput
         if (focus)
             _owner = editor;
         else if (_owner == editor)
+        {
             _owner = null;
+            KeyboardManager.SoftKeyboardInput = false;
+        }
         else
             return;
         FocusTextInput(focus, editor is ISkiaAccessibilityNode node ? node.AccessibilityId : -1);
@@ -43,7 +46,7 @@ public static partial class WebTextInput
     /// (the editor itself takes its focus with the tap's gesture, on a later frame). A tap the editor does not take as
     /// focus gives the page focus back.
     /// </summary>
-    internal static void FocusOnTap(Canvas canvas, double x, double y)
+    internal static void FocusOnTap(Canvas canvas, double x, double y, string pointerType)
     {
         var manager = canvas?.AccessibilityManager;
         if (manager == null)
@@ -57,6 +60,7 @@ public static partial class WebTextInput
                 || !node.Rect.Contains((float)x, (float)y))
                 continue;
 
+            KeyboardManager.SoftKeyboardInput = pointerType is "touch" or "pen";
             if (!editor.IsFocused || !ReferenceEquals(_owner, editor))
             {
                 _owner = editor;
