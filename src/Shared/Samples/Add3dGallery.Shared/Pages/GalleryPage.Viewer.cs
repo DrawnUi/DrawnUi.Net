@@ -405,7 +405,7 @@ public partial class GalleryPage
             _sourceButtons[i].Fill = on ? Theme.Accent : Theme.Quiet;
             _sourceButtons[i].AccessibilityIsPressed = on;
         }
-        var sofa = source == Source.App ? new SkiaModel3D(Theme.Sofa) : new SkiaModel3D();
+        var sofa = (source == Source.App ? new SkiaModel3D(Theme.Sofa) : new SkiaModel3D()).View3D("Walnut sofa");
         sofa.Yaw = 28;
         sofa.Pitch = 14;
         sofa.PinchZoom = true;

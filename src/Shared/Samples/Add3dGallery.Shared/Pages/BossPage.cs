@@ -136,7 +136,7 @@ public class BossPage : SkiaLayer
                                 Animation = Idle, Yaw = 30, Pitch = 8,
                                 HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
                             }
-                            .Assign(out _boss)
+                            .View3D("Boss dragon").Assign(out _boss)
                             .OnTapped3D((me, hit) =>
                             {
                                 // A hit plays once and goes back to the loop; a dead dragon does not react.

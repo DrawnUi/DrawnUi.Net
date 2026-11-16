@@ -113,7 +113,7 @@ public partial class GalleryPage : DrawnGame
                                         }
                                         .Model("paper", Paper())
                                         .Model("star", ConfettiStar())
-                                        .Assign(out _rain),
+                                        .View3D("Confetti and stars").Assign(out _rain),
                                     new Button3D("Hooray", Theme.Accent).OnTapped(_ => Hooray())),
                                 ProductBoxTile(),
                                 Tile("Reward", "A chest that opens and closes.",
@@ -122,7 +122,7 @@ public partial class GalleryPage : DrawnGame
                                             Animation = "Chest_Open", IsPlaying = false, Yaw = 30, Pitch = 20, Orbit = false,
                                             HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
                                         }
-                                        .Assign(out _chest),
+                                        .View3D("Reward chest").Assign(out _chest),
                                     new Button3D("Open", Theme.Accent).Assign(out _chestButton).OnTapped(_ => ToggleChest())),
                             }
                         },
@@ -361,7 +361,7 @@ public partial class GalleryPage : DrawnGame
                                         HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
                                     }
                                     .Model("slime", Theme.Mob)
-                                    .Assign(out _field)
+                                    .View3D("3D mobs on a 2D field").Assign(out _field)
                                     .OnTapped3D((me, hit) => me.PlayOnce(hit.Object, "CharacterArmature|HitRecieve")),
                             }
                         },

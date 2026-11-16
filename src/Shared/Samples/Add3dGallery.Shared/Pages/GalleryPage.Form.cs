@@ -72,7 +72,7 @@ public partial class GalleryPage
                             HorizontalOptions = LayoutOptions.Fill,
                             VerticalOptions = LayoutOptions.Fill,
                         }
-                        .Assign(out _mascot)
+                        .View3D("Mascot").Assign(out _mascot)
                         .OnTapped3D((me, _) => me.PlayOnce("CharacterArmature|Wave")))
                     .WithWidth(WideWidth - FormWidth - 24)
                     .WithHeight(ViewerHeight),
