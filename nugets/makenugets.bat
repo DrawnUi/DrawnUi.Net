@@ -19,4 +19,10 @@ dotnet pack ..\src\Maui\Addons\DrawnUi.MauiGraphics\DrawnUi.MauiGraphics.csproj 
 dotnet pack ..\src\Wasm\Addons\DrawnUi.Wasm.Game\DrawnUi.Wasm.Game.csproj -c Release
 dotnet pack ..\src\Wpf\Addons\DrawnUi.Wpf.Game\DrawnUi.Wpf.Game.csproj -c Release
 
+dotnet pack ..\src\Blazor\Addons\DrawnUi.Blazor.Add3d\DrawnUi.Blazor.Add3d.csproj -c Release
+dotnet pack ..\src\OpenTk\Addons\DrawnUi.OpenTk.Add3d\DrawnUi.OpenTk.Add3d.csproj -c Release
+dotnet pack ..\src\Maui\Addons\DrawnUi.Maui.Add3d\DrawnUi.Maui.Add3d.csproj -c Release
+dotnet pack ..\src\Wasm\Addons\DrawnUi.Wasm.Add3d\DrawnUi.Wasm.Add3d.csproj -c Release
+dotnet pack ..\src\Wpf\Addons\DrawnUi.Wpf.Add3d\DrawnUi.Wpf.Add3d.csproj -c Release
+
 pause

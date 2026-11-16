@@ -875,14 +875,14 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     /// <summary>The box the view keeps in frame: the model at rest and through <see cref="FrameAnimations"/>.</summary>
     (Vector3 Min, Vector3 Max) FrameBox()
     {
-        Frame();
+        EnsureFraming();
         return _frameBox;
     }
 
     /// <summary>The outline the view keeps in frame (reach from the vertical axis, height), worked out once.</summary>
     List<Vector2> FrameOutline()
     {
-        Frame();
+        EnsureFraming();
         if (_outline == null)
         {
             _outline = new List<Vector2>();
@@ -894,7 +894,7 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         return _outline;
     }
 
-    void Frame()
+    void EnsureFraming()
     {
         if (ReferenceEquals(_frameScene, _scene))
             return;
