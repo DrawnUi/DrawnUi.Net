@@ -110,7 +110,13 @@
         font-size: 0px;
     }
 
-    /* the keyboard focus ring of controls; text that took the focus (selected by a long press) shows its own selection */
+    /* text that took the focus (a long press selecting a word) shows its own selection: no ring, not the browser's either */
+    .xaml-a11y-element[role="text"]:focus,
+    .xaml-a11y-element[role="heading"]:focus {
+        outline: none;
+    }
+
+    /* the keyboard focus ring of controls */
     .xaml-a11y-interactive:not([role="text"]):not([role="heading"]):focus-visible {
         outline: 3px solid rgba(0, 103, 244, 0.85);
         outline-offset: 1px;
