@@ -203,11 +203,10 @@ Things that are not obvious from the API and shaped the implementation. They mat
 
 ---
 
-## Known limitations
+## Touch, pen and Hot Reload
 
-- Touch and pen are implemented against WPF touch events but have not been exercised on touch hardware yet. Pen pressure is not read.
-- XAML Hot Reload for drawn controls is untested (C# Hot Reload is).
-- Editor Shift+arrow and Ctrl combinations were verified in code, not with physical keys.
+- Mouse and keyboard drive every drawn control. Touch and pen go through WPF's touch events, the same gestures as the mouse; pen pressure is not read yet.
+- C# Hot Reload updates drawn pages while the app runs. XAML Hot Reload for drawn controls is not confirmed yet.
 
 ---
 

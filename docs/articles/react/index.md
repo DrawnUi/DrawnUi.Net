@@ -112,8 +112,6 @@ Work continues control by control against the .NET sources. Not there yet:
 - **Recycling beyond one column**: lists in a single column reuse their cells, while templated rows, grids and wraps still create every item.
 - **Controls**: `SkiaViewSwitcher`, `SkiaTabsSelector`, `SkiaWheelPicker`, `SkiaSpinner` and `SkiaCachedStack`.
 
-## Known limitations
+## Caches in the browser
 
-Everything runs on the browser's main thread. DrawnUI for .NET can record caches on background threads while the screen keeps drawing; here a cache is recorded right inside the frame that needs it.
-
-This is not a React thing, and not a big deal: DrawnUi.Blazor and DrawnUi.Web (pure WebAssembly) work exactly the same way, because WebAssembly in the browser runs on a single thread. A cache is recorded once, when its content changes, and then simply replayed on every following frame, so the extra work lands on the frames where something actually changed.
+A cache is recorded once, when its content changes, and then replayed on every following frame, so the work lands only on the frames where something actually changed. DrawnUi.React does this on the browser's main thread, inside the frame that needs the cache, exactly like DrawnUi.Blazor and DrawnUi.Web (pure WebAssembly): WebAssembly in the browser runs on one thread. On native heads, DrawnUI for .NET can also record caches on background threads while the screen keeps drawing.
