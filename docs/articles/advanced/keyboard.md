@@ -1,17 +1,51 @@
 # On-screen Keyboard over a Form
 
-On phones (MAUI, iOS and Android) the on-screen keyboard covers the bottom of the screen. A DrawnUI form keeps the focused field visible in three steps: the page reports the keyboard height, a spacer makes room at the end of the scrolling content, and the `SkiaScroll` brings the focused field just above the keyboard.
+On phones (MAUI on Android and iOS) the on-screen keyboard covers the bottom of the screen. A DrawnUI form keeps the focused field above it with one property on its `SkiaScroll`, on any page.
 
 ## What you get
 
 - The focused field's bottom lands `AdaptToKeyboardGap` points above the keyboard's top (8 by default).
 - A field that is already visible above the keyboard does not move the page.
-- When the keyboard closes, the page stays where it is.
-- Moving to the next field while the keyboard stays open scrolls that field into view too.
+- Moving to the next field while the keyboard stays open brings that field into view too, and the keyboard stays up.
+- The last field of the form can rise above the keyboard: the scroll makes room at its end while the keyboard is up.
+- When the keyboard closes, the page settles back to its content.
 
 On iOS, MAUI's own keyboard scrolling (`KeyboardAutoManagerScroll`) is switched off under DrawnUI, so the `SkiaScroll` is the only thing that moves the form.
 
-## 1. The page reports the keyboard height
+## The simple way: AdaptToKeyboardAuto
+
+Set `AdaptToKeyboardAuto = true` on the form's `SkiaScroll`. That is all: no special page, no spacer.
+
+```csharp
+new SkiaScroll
+{
+    AdaptToKeyboardAuto = true,
+    AdaptToKeyboardGap = 16,        // points between the field and the keyboard (8 by default)
+    HorizontalOptions = LayoutOptions.Fill,
+    VerticalOptions = LayoutOptions.Fill,
+    Content = new SkiaStack
+    {
+        Spacing = 16,
+        Padding = 16,
+        Children =
+        {
+            // ... your fields (SkiaEditor, buttons)
+        }
+    }
+}
+```
+
+- The keyboard is tracked for the whole app: `Super.KeyboardTop` is its top, in points from the top of the screen (`NaN` while it is hidden), and `Super.KeyboardChanged` fires when it opens, resizes or closes.
+- Each canvas knows how much of it the keyboard covers: `Canvas.KeyboardCovered`.
+- The focused `SkiaEditor`'s nearest scroll with `AdaptToKeyboardAuto` moves the field above the keyboard, and gives itself room for the covered height plus the gap while the keyboard is up.
+
+Use one way per scroll: with `AdaptToKeyboardAuto` on, do not also add a keyboard spacer or set `AdaptToKeyboardFor` / `AdaptToKeyboardSize` on that scroll, or the room would double.
+
+## Full control: the manual way
+
+When you want to decide yourself what moves, wire it by hand in three steps: the page reports the keyboard height, a spacer makes room at the end of the scrolling content, and the `SkiaScroll` brings the focused field just above the keyboard.
+
+### 1. The page reports the keyboard height
 
 Derive the page from `DrawnUiBasePage` (a `SkiaShell` page already is one). It sets `KeyboardSize` to the keyboard height in points whenever the keyboard opens, resizes or closes, and you can adjust that value by overriding `OnKeyboardResized`.
 
@@ -27,22 +61,22 @@ public override double OnKeyboardResized(double size)
 }
 ```
 
-## 2. A spacer at the end of the scrolling content
+### 2. A spacer at the end of the scrolling content
 
 Add an empty control as the last child of the scrolling content, with the keyboard height. It lets the last fields scroll high enough to sit above the keyboard. Keep it hidden while there is no keyboard, so a stack's `Spacing` adds nothing.
 
-## 3. The scroll follows the focused field
+### 3. The scroll follows the focused field
 
 Set two properties on the form's `SkiaScroll`:
 
 - `AdaptToKeyboardFor`: the focused control (`Canvas.FocusedChild`).
 - `AdaptToKeyboardSize`: the keyboard height from step 1.
 
-`AdaptToKeyboardGap` sets the space between the field and the keyboard, in points (8 by default).
+`AdaptToKeyboardGap` sets the space between the field and the keyboard, in points (8 by default). With the manual way the page stays where it is when the keyboard closes.
 
 Set them when the keyboard height changes and again when the focus moves to another field (`Canvas.FocusedItemChanged`), because moving between fields does not change the keyboard height.
 
-## Example
+### Example
 
 ```csharp
 public class FormPage : DrawnUiBasePage

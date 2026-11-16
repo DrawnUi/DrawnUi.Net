@@ -94,6 +94,7 @@ Please star ⭐ if you like it!
   * Much lower memory for images: every image that shows the same file or URL now shares one decoded copy instead of holding its own. 69 images of one photo take about 7 MB instead of over 900 MB. Code that disposes or edits bitmaps it gets from SkiaImageManager sets `SkiaImageManager.ReuseBitmaps = false`.
   * Image memory stays within a budget: `SkiaImageManager.CacheBudgetMb` (128 MB by default) caps the decoded pictures the cache keeps; pictures on screen always stay.
   * Android, iOS, Mac, Windows: pages of a closed window are freed, and their canvases release their GPU memory.
+  * Forms follow the on-screen keyboard by themselves: set `AdaptToKeyboardAuto = true` on a SkiaScroll and the focused field rises above the keyboard on any page, with room for the last field; the page settles back when the keyboard closes (Android, iOS).
   * The mouse wheel keeps scrolling the page while a text field is focused.
   * A touchpad pinch over a zoomable control zooms it instead of scrolling the page.
   * Windows (MAUI): a drag that leaves a control keeps going until the button is released, as on the other platforms.
