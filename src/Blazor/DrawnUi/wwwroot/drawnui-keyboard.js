@@ -220,7 +220,10 @@ function attachTouchTextInput(state) {
                 if (document.activeElement === el) el.blur();
                 state.composing = "";
                 restTextInput(el);
-                el.focus({ preventScroll: true });
+                // the overlay element losing the focus to it is told synchronously, while the page has no focused
+                // element yet: textInputHasFocus answers for the textarea during that
+                state.textInputFocusing = true;
+                try { el.focus({ preventScroll: true }); } finally { state.textInputFocusing = false; }
                 giveBackIfNotTaken(state);
             }
         }
@@ -263,7 +266,7 @@ export function textInputFocus(focus, ownerId) {
 // the hidden textarea has the page focus: the editor's overlay element must not take it (that closes the keyboard)
 export function textInputHasFocus() {
     const state = getState();
-    return !!state.textInput && document.activeElement === state.textInput;
+    return !!state.textInput && (state.textInputFocusing || document.activeElement === state.textInput);
 }
 
 // Called when a drawn text editor (SkiaEditor) gains focus. A drawn editor has no DOM

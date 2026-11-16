@@ -1184,6 +1184,14 @@
 
     private void OnA11yBlur(AccessibilityNode node)
     {
+        // the page focus went to the hidden text field a tap gave the on-screen keyboard (the element took it on the
+        // press): the control keeps its focus and caret
+        if (KeyboardManager.TextInputHasFocus())
+        {
+            if (ReferenceEquals(_a11yDomFocus, node.Source))
+                _a11yDomFocus = null;
+            return;
+        }
         // the element lost the page focus because its node left the page or stopped taking input: the next stop takes it
         if (node.Source != null && ReferenceEquals(KeyboardFocusNode, node.Source))
             AccessibilityManager.HandOffKeyboardFocus(node.Source);
