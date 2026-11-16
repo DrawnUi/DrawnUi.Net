@@ -2,7 +2,7 @@
 
 DrawnUI for Rust is the DrawnUI engine in Rust, drawing with [Skia](https://skia.org) through rust-skia. One Rust source runs on Windows, macOS, Linux, iOS, Android and in the browser (WebAssembly). Every control is drawn by Skia, so an app looks the same on a phone, a desktop and a web page.
 
-It is early and under active development. The crate is published as a preview (`0.1.0-preview.N`).
+The crate is stable since version 1.0, on [crates.io](https://crates.io/crates/drawnui).
 
 - Source: [github.com/DrawnUi/DrawnUi.Rust](https://github.com/DrawnUi/DrawnUi.Rust)
 - Crate: [`drawnui`](https://crates.io/crates/drawnui) · API docs: [docs.rs/drawnui](https://docs.rs/drawnui)
@@ -17,14 +17,14 @@ It is early and under active development. The crate is published as a preview (`
 cargo add drawnui
 ```
 
-It takes the newest preview. Or by hand, in your `Cargo.toml`:
+Or by hand, in your `Cargo.toml`:
 
 ```toml
 [dependencies]
-drawnui = "0.1.0-preview"
+drawnui = "1.0"
 ```
 
-`"0.1.0-preview"` is the newest 0.1.0 preview; `cargo update` moves a project to a newer one.
+`"1.0"` takes the newest 1.x release; `cargo update` moves a project to a newer one.
 
 That is the only dependency. The first build downloads Skia prebuilt for your platform from [DrawnUi/rust-skia's releases](https://github.com/DrawnUi/rust-skia/releases), so there is nothing else to install for the desktop. Use Skia's own API through `drawnui::skia`, and do not add `skia-safe` to the app: a program links one Skia.
 

@@ -2,7 +2,7 @@
 
 DrawnUI for React is the DrawnUI engine in TypeScript, running on [CanvasKit](https://skia.org/docs/user/modules/canvaskit/) (Skia compiled to WebAssembly) in the browser. React composes the control tree through a custom `react-reconciler` renderer. React never touches the canvas: it creates, updates and removes engine controls, and the engine measures, arranges and paints them.
 
-It is early and under active development. The package is published under the `preview` tag.
+The package is stable since version 1.0, on [npm](https://www.npmjs.com/package/drawnui-react).
 
 - Source: [github.com/DrawnUi/DrawnUi.React](https://github.com/DrawnUi/DrawnUi.React)
 - Live demo: [helloreact.drawnui.net](https://helloreact.drawnui.net)
