@@ -24,12 +24,12 @@ Every platform in the table has been tested by ear with its screen reader, excep
 - **Ready-made controls are accessible:** switches, checkboxes, radio buttons, sliders, progress bars and the text editor carry their role, state and value. Buttons and labels are read once you give them a role, one line at startup for all of them, so a button used only as decoration stays silent: you decide what a screen reader sees.
 - **Names said once:** a card whose title already says its name is read once, not twice.
 - **Values:** a slider reads as "Volume, 65%", and a screen reader can step it up and down or set it.
-- **Keyboard (desktop and browser):** Tab and Shift+Tab follow the reading order. A list, toolbar, menu or radio group is one Tab stop that you walk with the arrow keys, Home, End, PageUp and PageDown, also through the rows of a long recycled list. Enter and Space press, and the focus ring shows only when you use the keyboard.
+- **Keyboard (desktop and browser):** Tab and Shift+Tab follow the reading order and reach every control of a scrolling page, also the ones out of view. A list, toolbar, menu or radio group is one Tab stop that you walk with the arrow keys, Home, End, PageUp and PageDown, also through the rows of a long recycled list. Enter and Space press, and the focus ring shows only when you use the keyboard.
 - **Dialogs:** while a dialog is open, the screen reader and Tab stay inside it. It is announced by its name, and the keyboard goes back where it was when the dialog closes.
-- **Menus and popups:** a menu opened from the keyboard takes the keyboard, and Escape closes it.
+- **Menus and popups:** a menu opened from the keyboard takes the keyboard, and Escape closes it. A right click, or a long press on a phone or tablet, opens the app's context menu.
 - **Live regions:** a status text marked as live is read as soon as it changes.
 - **Scrolling:** the screen reader brings any control into view, and on iOS and Android VoiceOver and TalkBack page a scroll with their scroll gestures.
-- **Selectable text:** a label can let people select and copy its text.
+- **Selectable text:** people can select and copy the text of a label, across several labels at once (see [Text people can select and copy](#text-people-can-select-and-copy)).
 
 ## What your app does
 
@@ -38,7 +38,8 @@ Every platform in the table has been tested by ear with its screen reader, excep
 3. Mark a status text as live to have it read when it changes.
 4. Mark a drawn dialog as modal, so readers and the keyboard stay in it. Shell popups and modals do this by themselves.
 5. Give buttons and labels a role (once at startup for all, or per control), and a custom control too: a tappable card is a button. A custom range control also gives its value.
-6. Listen to your app once with the platform's screen reader.
+6. Make text people may want to copy selectable: titles, descriptions, addresses, prices, error messages.
+7. Listen to your app once with the platform's screen reader.
 
 The property names for each framework:
 
@@ -48,7 +49,64 @@ The property names for each framework:
 | Role | `AccessibilityRole = Aria.RoleButton` | `AccessibilityRole={Aria.RoleButton}` | `.accessibility_role(Aria::BUTTON)` |
 | Live text | `AccessibilityLive = "polite"` | `AccessibilityLive="polite"` | `.accessibility_live("polite")` |
 | Dialog | `AccessibilityModal = true` | `AccessibilityModal={true}` | `.accessibility_modal(true)` |
+| Selectable text | `AccessibilityTextSelectable = true` | `AccessibilityTextSelectable={true}` | `.accessibility_text_selectable(true)` |
 | Hidden from readers | `Aria.RolePresentation` | `Aria.RolePresentation` | `Aria::PRESENTATION` |
+
+## Text people can select and copy
+
+A label with `AccessibilityTextSelectable` lets people select its text and copy it, with the mouse, touch and the keyboard:
+
+- **Mouse:** drag over the text, or double click a word. A drag can start beside or above the text and run across several selectable labels, like on a web page.
+- **Touch:** a long press selects a word, then drag to extend it. A Copy button appears next to the selection.
+- **Keyboard:** Ctrl+C (Cmd+C on Mac) copies. Text selected across several labels is copied one label per line.
+- **From code:** the canvas holds the page's selection: `SelectedText`, `CopyTextSelection()` and `ClearTextSelection()`. A label has its own `Select`, `SelectAll`, `CopySelection` and `ClearSelection`.
+
+Copying goes through `Super.SetClipboardText`, which every head fills. A right click, or a long press, on selected text keeps the selection, so your context menu can offer Copy for it.
+
+```csharp
+new SkiaLabel("Order #10457 · ships in 2 days")
+{
+    AccessibilityTextSelectable = true,
+}
+```
+
+See [Selectable text](controls/text.md#selectable-text) for the look (`SkiaLabel.TextSelectionColor`) and the details.
+
+## Web
+
+A web page is expected to behave like a web page. People select a sentence to quote it, copy an address, copy a link's address from its menu, open a link in a new tab, and move through the page with Tab. A drawn page draws all of its text itself, so the browser's own selection and link menus do not reach it: DrawnUI draws these behaviors instead, and you turn them on where they matter.
+
+**Text acts like web text.** Make the text people read selectable (titles, paragraphs, prices, addresses). One drag selects across several labels and Ctrl+C copies them, as on any page.
+
+**Links act like web links.** Give a link the link role and its address as the hint. A left click or a tap opens it in a new browser tab with `Super.OpenLink(url)`; a right click never opens it, it opens the link's menu instead. That menu, drawn with `OpenPopupWindow`, offers Copy Link, and Copy when text is selected:
+
+```csharp
+new SkiaLabel("DrawnUI on GitHub")
+{
+    AccessibilityTextSelectable = true,
+    AccessibilityRole = Aria.RoleLink,
+    AccessibilityHint = url,                    // screen readers read the address
+}
+.OnTapped((me, e) =>
+{
+    // the main button opens the link; a right click is for its menu
+    if (e.Parameters?.Event?.Pointer is not { Button: not MouseButton.Left })
+        Super.OpenLink(url);
+})
+.OnContextMenu((me, e) =>
+{
+    // your drawn menu: "Copy" (me.Superview.CopyTextSelection()),
+    // "Copy Link" (Super.SetClipboardText?.Invoke(url)), "Cancel"
+    me.Superview.OpenPopupWindow(LinkMenu(me, url), e.Location);
+    return true;
+});
+```
+
+**Screen readers and the keyboard.** The invisible ARIA layer over the canvas gives every named control its role and name, so browser screen readers read the page, and Tab, Enter, Space and the arrow keys work through it. A link reads as a link with its address.
+
+**Hover.** On a desktop browser, give links and buttons a hover look (`OnHovered`), as web pages do.
+
+The DrawnUI 3D gallery uses this pattern on every title, description, price and link: [add3d.drawnui.net](https://add3d.drawnui.net).
 
 ## Not covered yet
 
