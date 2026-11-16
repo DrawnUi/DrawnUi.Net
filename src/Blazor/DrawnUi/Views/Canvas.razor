@@ -1150,6 +1150,10 @@
     {
         if (!e.IsFocused || e.Item is not ISkiaAccessibilityNode node || ReferenceEquals(_a11yDomFocus, node))
             return;
+        // a text field gives the page focus to its hidden text input instead (drawnui-keyboard.js: the on-screen
+        // keyboard, input methods), which moves Tab on from the field's overlay element
+        if (e.Item is SkiaEditor)
+            return;
         _ = FocusOverlayElementAfterPointer(node);
     }
 
@@ -1159,9 +1163,6 @@
     {
         await Task.Delay(1);
         if (!ReferenceEquals(FocusedChild, node) || ReferenceEquals(_a11yDomFocus, node))
-            return;
-        // a tap opened the on-screen keyboard: its hidden text field keeps the page focus
-        if (KeyboardManager.TextInputHasFocus())
             return;
         _pendingA11yFocusId = node.AccessibilityId;
         _accessibilityNodes = AccessibilityManager.Snapshot;

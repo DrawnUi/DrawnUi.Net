@@ -32,6 +32,9 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
         // Guard against timer race: if the 50ms defocus task fires AFTER a refocus task
         // has already run, IsFocused will be true while focus=false — skip the unsubscribe.
         if (!focus && IsFocused) return;
+        // and the other way round: a focus that arrives after the editor lost it again (Tab leaving the field puts the
+        // page focus on its overlay element for a moment) must not leave it typing next to the field that has the focus
+        if (focus && !IsFocused) return;
         SubscribeToKeyboard(focus);
         KeyboardManager.TextInputFocus(focus, AccessibilityId); // giving the focus back closes the on-screen keyboard
 
