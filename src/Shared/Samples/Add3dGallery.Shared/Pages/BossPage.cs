@@ -60,6 +60,26 @@ public class BossPage : SkiaLayer
     string _skin = "Ember";
     bool _rage, _turning;
 
+    const float Pad = 20, Gap = 10, MinDragon = 180;
+    SkiaControl _top, _controls;
+    SkiaLayout _arena;
+
+    /// <summary>
+    /// The arena fills the page and the dragon takes what the texts and buttons leave; when that is less than
+    /// <see cref="MinDragon"/> (a short window), the arena grows past the page and the page scrolls.
+    /// </summary>
+    protected override void OnLayoutChanged()
+    {
+        base.OnLayoutChanged();
+        var page = (float)Height;
+        if (page <= 0 || _top == null || _controls == null)
+            return;
+        var fixedPart = _top.MeasuredSize.Units.Height + _news.MeasuredSize.Units.Height + _controls.MeasuredSize.Units.Height + 2 * Pad + 3 * Gap;
+        var height = MathF.Max(page, fixedPart + MinDragon);
+        if (MathF.Abs((float)_arena.HeightRequest - height) > 0.5f)
+            _arena.HeightRequest = height;
+    }
+
     public BossPage()
     {
         VerticalOptions = LayoutOptions.Fill;
@@ -82,11 +102,15 @@ public class BossPage : SkiaLayer
                     Colors = new List<Color> { Color.FromRgb(92, 38, 30), Color.FromRgb(18, 14, 22) },
                 },
             },
-            new SkiaGrid
+            // a short window (a small phone): the arena keeps the dragon at a usable size and the page scrolls
+            new SkiaScroll
+            {
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Fill,
+                Content = new SkiaGrid
                 {
-                    Padding = new Thickness(20),
-                    RowSpacing = 10,
-                    VerticalOptions = LayoutOptions.Fill,
+                    Padding = new Thickness(Pad),
+                    RowSpacing = Gap,
                     Children =
                     {
                         new SkiaStack
@@ -106,7 +130,7 @@ public class BossPage : SkiaLayer
                                     HorizontalTextAlignment = DrawTextAlignment.Center,
                                 },
                             }
-                        }.SetGrid(0, 0),
+                        }.Assign(out _top).SetGrid(0, 0),
                         new SkiaModel3D(Theme.Dragon)
                             {
                                 Animation = Idle, Yaw = 30, Pitch = 8,
@@ -182,10 +206,12 @@ public class BossPage : SkiaLayer
                                         .ToList(),
                                 },
                             }
-                        }.SetGrid(0, 3),
+                        }.Assign(out _controls).SetGrid(0, 3),
                     }
                 }
+                .Assign(out _arena)
                 .WithRowDefinitions("Auto,*,Auto,Auto"),
+            },
         };
         UpdateButtons();
     }
