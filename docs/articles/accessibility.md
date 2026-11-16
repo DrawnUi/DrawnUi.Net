@@ -108,9 +108,11 @@ new SkiaLabel("DrawnUI on GitHub")
 
 The DrawnUI 3D gallery uses this pattern on every title, description, price and link: [add3d.drawnui.net](https://add3d.drawnui.net).
 
-## Not covered yet
+## Display scale and text size
 
-The system text size, high contrast and reduced motion settings are not applied by DrawnUI yet.
+DrawnUI follows the system display scale. When people set 125% or 150% scaling on Windows, a larger display size on their phone, or zoom in the browser, the whole canvas draws larger: text, controls and images together, sharp at any scale. For many people who need bigger text, this is the setting they already use, and your app follows it with no work.
+
+The separate text-size setting (larger fonts only), high contrast and reduced motion are not applied by DrawnUI yet.
 
 ## Details per framework
 
