@@ -98,9 +98,11 @@ Please star ⭐ if you like it!
   * A touchpad pinch over a zoomable control zooms it instead of scrolling the page.
   * Windows (MAUI): a drag that leaves a control keeps going until the button is released, as on the other platforms.
   * Tab and Shift+Tab reach every control of a scrolling page or list, also the ones out of view, and scroll each into view.
-  * A long press on a phone or tablet opens the app's context menu (OnContextMenu), on every platform, Android and iPhone apps included.
-  * A long press comes after 0.75 s by default on every platform (was 1.5 s); set your own with TouchEffect.LongPressTimeMsDefault.
-  * DrawnUi.Web: long press works on the pure WebAssembly head too.
+  * When the control with the keyboard focus disappears, the focus moves to the next control; choosing an item of a menu leaves the page where it is.
+  * Screen readers hear a menu's items as soon as it opens.
+  * A long press on a phone or tablet opens the app's context menu (`OnContextMenu`), on every platform, Android and iPhone apps included.
+  * A long press comes after 0.75 s by default on every platform (was 1.5 s); set your own with `TouchEffect.LongPressTimeMsDefault`.
+  * Web (DrawnUi.Web): long press works on the pure WebAssembly head too.
   * Text selection with the mouse works like on a web page: start beside or above the text, and one drag selects across several labels; Ctrl+C copies them one per line.
   * A right click on selected text, in a label or a text field, keeps the selection, so its context menu sees it.
   * A long press on selected text keeps the selection for that menu.
