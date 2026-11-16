@@ -124,7 +124,6 @@ Please star ⭐ if you like it!
   * Pure WebAssembly template: scripts get fingerprinted names through the import map, so a new deploy never runs old scripts.
   * Recycled list cells never show the previous item's picture while their own is prepared.
   * Shader effects that paint only part of their control now sample the control where it really is, for example a transition clipped to its photo.
-  * Frame loops keep running when one frame listener throws (the error is logged).
 
 ## What's New 1.10.8.26
 
