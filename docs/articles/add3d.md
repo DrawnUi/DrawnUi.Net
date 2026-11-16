@@ -134,6 +134,25 @@ Measured on the 3D gallery page: 100 animated 3D characters on a 2D field, plus 
 | Mac (M1 Air, 60 Hz screen) | 60 |
 | Windows, OpenTK and WPF | 60, with a median draw time of about 1.7-2.7 ms per frame |
 
+## Why not just SKMesh?
+
+`SKMesh` draws triangles with your own SkSL shaders. It is the right tool for shader effects and custom 2D or 2.5D geometry. For 3D objects, everything beyond the triangles is yours to build:
+
+| You need | With SKMesh | With the 3D add-on |
+|---|---|---|
+| Shapes and models | Generate triangles by hand, write your own glTF loader | `Mesh3D` shapes in code, glTF files with materials and textures |
+| What is in front | No depth buffer on the 2D canvas: drop back faces and sort by hand | A real depth buffer on the GPU |
+| Turning and perspective | Rotate and project every point yourself | `Yaw`, `Pitch`, zoom and framing built in |
+| Look | Your own texture sampling and lighting shader | Lit, Toon and Flat looks, filtered textures, smooth edges |
+| Animation | Your own skeleton system | glTF animations by name: loop, play once, blend, layers |
+| Interaction | Your own drag, fling, pinch and hit math | Turn, fling, zoom, double tap reset, `Tapped3D` with the part hit |
+| Labels on the model | Project and hide-test points yourself | `ScreenPosition` tells where a point is and whether it is hidden |
+| Cost at rest | Redraws unless you stop it | A still model asks for no frames |
+
+A globe with city pins is `Mesh3D.Sphere`, an Earth image and a few lines with the add-on. With `SKMesh` it is a small 3D engine to write and maintain.
+
+Use `SKMesh` for effects. Use the 3D add-on for objects.
+
 ## Where it fits
 
 - Product viewers: furniture, shoes, gadgets you turn with a finger, with fabric swatches and prices.
