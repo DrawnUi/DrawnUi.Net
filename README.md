@@ -103,10 +103,14 @@ Please star ⭐ if you like it!
   * A long press on a phone or tablet opens the app's context menu (`OnContextMenu`), on every platform, Android and iPhone apps included.
   * A long press comes after 0.75 s by default on every platform (was 1.5 s); set your own with `TouchEffect.LongPressTimeMsDefault`.
   * Web (DrawnUi.Web): long press works on the pure WebAssembly head too.
+  * Blazor on phones: tapping a text field opens the phone's keyboard, and a long press shows the app's menu instead of the browser's selection.
+  * Web on phones (Blazor, DrawnUi.Web): the keyboard's Done / Go / Search / Send key ends editing in a single-line field and closes the keyboard, as in the MAUI apps; a physical keyboard's Enter keeps the focus.
+  * Blazor on desktop: drawn text fields take input from Chinese, Japanese, Korean and other input methods, with the candidate window next to the field.
   * Text selection with the mouse works like on a web page: start beside or above the text, and one drag selects across several labels; Ctrl+C copies them one per line.
   * A right click on selected text, in a label or a text field, keeps the selection, so its context menu sees it.
   * A long press on selected text keeps the selection for that menu.
   * WPF: GPU canvases draw at full frame rate on every device, including Windows on ARM.
+  * Mac Catalyst: frames follow the screen's own refresh, with less CPU spent between frames; drawing keeps going while the window is resized.
   * Web (DrawnUi.Web): a page at rest draws nothing, saving battery and CPU.
   * Recycled list cells never show the previous item's picture while their own is prepared.
   * Shader effects that paint only part of their control now sample the control where it really is, for example a transition clipped to its photo.
