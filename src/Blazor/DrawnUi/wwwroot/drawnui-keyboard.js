@@ -85,7 +85,7 @@ export function attachGlobalKeyboard() {
 const TEXT_INPUT_REST = "  ";
 const EDITOR_KEYS = new Set(["Backspace", "Delete", "Enter", "NumpadEnter",
     "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"]);
-const TAP_SLOP = 10, TAP_MAX_MS = 600, GIVE_BACK_MS = 1500;
+const TAP_SLOP = 10, GIVE_BACK_MS = 1500, TOUCH_RECENT_MS = 1000;
 
 function graphemes(s) {
     if (typeof Intl !== "undefined" && Intl.Segmenter)
@@ -202,17 +202,22 @@ function textFieldAt(host, x, y) {
 function attachTouchTextInput(state) {
     if (state.touchStartHandler) return;
     state.touchStartHandler = e => {
+        state.touching = true;
+        state.lastTouchAt = performance.now();
         const host = e.target && e.target.closest && e.target.closest(".xaml-canvas");
         const t = e.touches.length === 1 ? e.touches[0] : null;
         state.tap = host && t ? { host, x: t.clientX, y: t.clientY, at: performance.now() } : null;
     };
     state.touchEndHandler = e => {
+        state.touching = e.touches.length > 0;
+        state.lastTouchAt = performance.now();
         const host = e.target && e.target.closest && e.target.closest(".xaml-canvas");
         if (!host) return;
         const tap = state.tap;
         state.tap = null;
         const t = e.changedTouches[0];
-        if (tap && t && e.touches.length === 0 && tap.host === host && performance.now() - tap.at < TAP_MAX_MS
+        // a finger that lifts where it went down: a tap, or a long press (which focuses the field too)
+        if (tap && t && e.touches.length === 0 && tap.host === host
             && Math.abs(t.clientX - tap.x) < TAP_SLOP && Math.abs(t.clientY - tap.y) < TAP_SLOP) {
             const field = textFieldAt(host, t.clientX, t.clientY);
             if (field) {
@@ -288,14 +293,17 @@ export function textInputFocus(focus, ownerId) {
         state.textOwnerId = id;
         const el = ensureTextInput(state);
         if (document.activeElement !== el) {
-            // focused by the mouse, the keyboard or code: the textarea takes the page focus at the field
+            // focused by the mouse, the keyboard or code: the textarea takes the page focus at the field. A finger that
+            // focused it some other way than a tap (a long press, a drag from it): the on-screen keyboard's, as a tap.
             const owner = document.querySelector('.xaml-a11y-overlay [data-a11y-id="' + id + '"]');
+            const byTouch = state.touching || performance.now() - (state.lastTouchAt || -1e9) < TOUCH_RECENT_MS;
             state.textOwner = owner;
             state.composing = "";
             restTextInput(el);
-            placeTextInput(el, owner);
+            placeTextInput(el, byTouch ? null : owner);
             state.textInputFocusing = true;
             try { el.focus({ preventScroll: true }); } finally { state.textInputFocusing = false; }
+            if (byTouch) DotNet.invokeMethodAsync(assemblyName, "HandleSoftKeyboard", true).catch(() => { });
         }
         return;
     }
