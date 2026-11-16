@@ -104,6 +104,7 @@ Please star ⭐ if you like it!
   * A long press comes after 0.75 s by default on every platform (was 1.5 s); set your own with `TouchEffect.LongPressTimeMsDefault`.
   * Web (DrawnUi.Web): long press works on the pure WebAssembly head too.
   * Blazor on phones: tapping a text field opens the phone's keyboard, and a long press shows the app's menu instead of the browser's selection.
+  * Web on phones (Blazor, DrawnUi.Web): the keyboard's Done / Go / Search / Send key ends editing in a single-line field and closes the keyboard, as in the MAUI apps; a physical keyboard's Enter keeps the focus.
   * Text selection with the mouse works like on a web page: start beside or above the text, and one drag selects across several labels; Ctrl+C copies them one per line.
   * A right click on selected text, in a label or a text field, keeps the selection, so its context menu sees it.
   * A long press on selected text keeps the selection for that menu.
