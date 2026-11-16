@@ -276,31 +276,47 @@ public partial class GalleryPage
         IsVisible = false,
         Children =
         {
+            // the icon beside the text, so it fits a viewer scaled down on a phone (as in DrawnUI for Rust)
             new SkiaStack
             {
-                Spacing = 10,
+                Spacing = 12,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
-                WidthRequest = 340,
+                MaximumWidthRequest = 360,
+                Margin = new Thickness(16, 0),
                 Children =
                 {
-                    new SkiaShape
+                    new SkiaGrid
                     {
-                        Type = ShapeType.Circle, WidthRequest = 48, HeightRequest = 48, BackgroundColor = Theme.Bad.WithAlpha(0.18f),
-                        HorizontalOptions = LayoutOptions.Center,
+                        ColumnSpacing = 12,
                         Children =
                         {
-                            new SkiaLabel("!") { FontSize = 24, FontFamily = Theme.Title, TextColor = Theme.Bad, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+                            new SkiaShape
+                            {
+                                Type = ShapeType.Circle, WidthRequest = 40, HeightRequest = 40, BackgroundColor = Theme.Bad.WithAlpha(0.18f),
+                                VerticalOptions = LayoutOptions.Start,
+                                Children =
+                                {
+                                    new SkiaLabel("!") { FontSize = 20, FontFamily = Theme.Title, TextColor = Theme.Bad, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+                                }
+                            }.SetGrid(0, 0),
+                            new SkiaStack
+                            {
+                                Spacing = 4,
+                                Children =
+                                {
+                                    new SkiaLabel("The model could not be loaded")
+                                    {
+                                        FontSize = 16, FontFamily = Theme.Title, TextColor = Theme.Ink,
+                                        AccessibilityRole = Aria.RoleText,
+                                    }.WithAccessibilityLive(),
+                                    new SkiaLabel { FontSize = 13, TextColor = Theme.Muted }
+                                        .Assign(out _failedText),
+                                }
+                            }.SetGrid(1, 0),
                         }
-                    },
-                    new SkiaLabel("The model could not be loaded")
-                    {
-                        FontSize = 16, FontFamily = Theme.Title, TextColor = Theme.Ink, HorizontalOptions = LayoutOptions.Center,
-                        AccessibilityRole = Aria.RoleText,
-                    }.WithAccessibilityLive(),
-                    new SkiaLabel { FontSize = 13, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center, HorizontalTextAlignment = DrawTextAlignment.Center }
-                        .Assign(out _failedText),
-                    new Button3D("Use the app's copy", Theme.Accent, 180) { Margin = new Thickness(0, 6, 0, 0) }
+                    }.WithColumnDefinitions("Auto,*"),
+                    new Button3D("Use the app's copy", Theme.Accent, 180)
                         .WithHorizontalOptions(LayoutOptions.Center)
                         .OnTapped(_ => LoadViewer(Source.App)),
                 }
