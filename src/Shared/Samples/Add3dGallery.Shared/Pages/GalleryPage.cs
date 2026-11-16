@@ -384,10 +384,12 @@ public partial class GalleryPage : DrawnGame
                 Spacing = 8,
                 Children =
                 {
-                    // how many: one radio group, its own Tab stop walked with the arrows
-                    new SkiaRow
+                    // how many: one radio group, its own Tab stop walked with the arrows; on a narrow phone its buttons
+                    // wrap instead of squeezing
+                    new SkiaWrap
                     {
                         Spacing = 8,
+                        HorizontalOptions = LayoutOptions.Start,
                         AccessibilityRole = Aria.RoleRadioGroup,
                         AccessibilityLabel = "Mobs on the field",
                         Children = MobCounts.Select((n, i) => (SkiaControl)new Button3D($"{n} mobs", Theme.Quiet, 110) { AccessibilityRole = Aria.RoleRadio }
