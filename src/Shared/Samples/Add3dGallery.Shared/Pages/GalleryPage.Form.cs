@@ -149,6 +149,13 @@ public partial class GalleryPage
             _headPitchTo = _formFocus == 0 ? 10 : 22;
             _lookTo = 1;
         }
+        else if (_formFocus == 2)
+        {
+            // the password: the head tips down behind the hands, so no eye peeks
+            _headPitchTo = 20;
+            _headYawTo = 0;
+            _lookTo = 1;
+        }
         else
             _lookTo = 0;
         WakeLoop();
@@ -216,14 +223,14 @@ public partial class GalleryPage
         }
         if (_hands > 0.01f)
         {
-            // Hiding from the password: the hands cover the eyes, the ears lie back a little (folded forward they cut
-            // through the face and the hands)
+            // Hiding from the password: the hands cover the eyes (the head tips down behind them, see Watch), the ears lie
+            // back a little (folded forward they cut through the face and the hands)
             _handsSet = true;
             Turn("Ear1.L", Ear1LRest, -25, 0, 0, _hands);
             Turn("Ear1.R", Ear1RRest, -25, 0, 0, _hands);
-            Turn(ArmL, ArmLRest, -150, -150, 60, _hands);
+            Turn(ArmL, ArmLRest, -140, -150, 60, _hands);
             Turn(ForearmL, ForearmLRest, 0, 0, 85, _hands);
-            Turn(ArmR, ArmRRest, 30, 30, 120, _hands);
+            Turn(ArmR, ArmRRest, 40, 30, 120, _hands);
             Turn(ForearmR, ForearmRRest, 0, 0, -85, _hands);
         }
         else if (_handsSet)
