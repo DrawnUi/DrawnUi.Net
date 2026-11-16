@@ -608,6 +608,18 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
         return true;
     }
 
+    /// <summary>Turns a node by name with a quaternion (a turn worked out in code, such as a physics step).</summary>
+    public bool SetNodeRotation(string name, Quaternion rotation)
+    {
+        var i = NodeIndex(name);
+        if (i < 0)
+            return false;
+        _nodes[i].HasR = true;
+        _nodes[i].R = rotation;
+        Update();
+        return true;
+    }
+
     /// <summary>Scales a node by name.</summary>
     public bool SetNodeScale(string name, float x, float y, float z)
     {

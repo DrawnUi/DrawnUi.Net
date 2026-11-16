@@ -176,4 +176,150 @@ public class PageTextSelectionTests
         host.AdvanceFrames(30);
         Assert.Equal(offset, scroll.ViewportOffsetY, 1);
     }
+
+    private static SkiaLabel Narrow(string text) => new(text)
+    {
+        FontSize = 20,
+        WidthRequest = 160,
+        Margin = new Thickness(10, 10),
+        AccessibilityTextSelectable = true,
+    };
+
+    /// <summary>
+    /// Two columns, the left one longer: a drag that starts beside a label of the right column selects the right column,
+    /// never a left-column label that sits lower on the page.
+    /// </summary>
+    [Fact]
+    public void TwoColumns_DragBesideTheRightColumn_SelectsIt()
+    {
+        SkiaLabel b1 = null, b2 = null;
+        var left = new[] { Narrow("Left one"), Narrow("Left two"), Narrow("Left three"), Narrow("Left four") };
+        var (host, robot) = Host(new SkiaRow
+        {
+            Spacing = 40,
+            Children =
+            {
+                new SkiaStack { WidthRequest = 180, Children = left },
+                new SkiaStack { WidthRequest = 180, Children = { Narrow("Right one").Assign(out b1), Narrow("Right two").Assign(out b2) } },
+            }
+        });
+        using var _ = host;
+
+        var start = Rect(b1);
+        var end = Rect(b2);
+        robot.PointerDown(start.Left - 4, start.MidY);
+        robot.PointerMoveTo(start.MidX, end.Top);
+        robot.PointerMoveTo(end.Right - 2, end.MidY);
+        robot.PointerUp();
+
+        Assert.Equal("Right one", b1.SelectedText);
+        Assert.NotEqual(string.Empty, b2.SelectedText);
+        Assert.All(left, l => Assert.Equal(string.Empty, l.SelectedText));
+    }
+
+    /// <summary>A page drag over one label: Ctrl+C copies it, with no label in focus.</summary>
+    [Fact]
+    public void OneLabel_PageDrag_CtrlCCopies()
+    {
+        SkiaLabel label = null;
+        var (host, robot) = Host(new SkiaStack { Children = { Text(First).Assign(out label) } });
+        using var _ = host;
+        var r = Rect(label);
+        var end = AfterFirstWord(label, First);
+        robot.PointerDown(r.Left - 3, r.MidY);
+        robot.PointerMoveTo(end.X, end.Y);
+        robot.PointerUp();
+        Assert.Equal("Alpha", label.SelectedText);
+
+        string copied = null;
+        var previous = Super.SetClipboardText;
+        Super.SetClipboardText = text => copied = text;
+        try
+        {
+            KeyboardManager.KeyboardPressed(InputKey.ControlLeft);
+            KeyboardManager.KeyboardPressed(InputKey.KeyC);
+            KeyboardManager.KeyboardReleased(InputKey.KeyC);
+            KeyboardManager.KeyboardReleased(InputKey.ControlLeft);
+        }
+        finally
+        {
+            Super.SetClipboardText = previous;
+        }
+        Assert.Equal("Alpha", copied);
+    }
+
+    /// <summary>The app's Copy menu drawn on the canvas: the press on its item keeps the page selection for the copy.</summary>
+    [Fact]
+    public void PressInAnOpenPopup_KeepsTheSelection_ForItsCopy()
+    {
+        SkiaLabel a = null, b = null;
+        var (host, robot) = Host(new SkiaStack { Children = { Text(First).Assign(out a), Text(Second).Assign(out b) } });
+        using var _ = host;
+        var top = Rect(a);
+        var bottom = Rect(b);
+        robot.PointerDown(top.Left - 3, top.MidY);
+        robot.PointerMoveTo(bottom.Right - 2, bottom.MidY);
+        robot.PointerUp();
+        Assert.Equal($"{First}\n{Second}", host.Canvas.SelectedText);
+
+        string copied = null;
+        host.Canvas.OpenPopupWindow(new SkiaLayer
+        {
+            WidthRequest = 120,
+            HeightRequest = 40,
+            BackgroundColor = Colors.DarkGray,
+            Children = { new SkiaLabel("Copy") },
+        }.OnTapped(_ => copied = host.Canvas.SelectedText), new SKPoint(200, 250));
+        host.AdvanceFrames(3);
+
+        robot.Tap(230, 265);
+        host.AdvanceFrames(2);
+        Assert.Equal($"{First}\n{Second}", copied);
+    }
+
+    /// <summary>The drawn Copy button of a touch selection copies whether the tap or the release comes first (Blazor: the tap).</summary>
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void CopyButton_Copies_WhicheverOfTapAndUpComesFirst(bool tapFirst)
+    {
+        SkiaLabel label = null;
+        var (host, _) = Host(new SkiaStack { Children = { Text(First).Assign(out label) } });
+        using var __ = host;
+        var word = AfterFirstWord(label, First);
+        var press = new System.Drawing.PointF(word.X - 10, word.Y);
+        TouchActionEventArgs Touch(long id, System.Drawing.PointF at) => new(id, TouchActionType.Pressed, at, null, 1f)
+        {
+            StartingLocation = at,
+            NumberOfTouches = 1,
+            IsInsideView = true,
+            Pointer = new PointerData { DeviceType = PointerDeviceType.Touch },
+        };
+        host.Canvas.OnGestureEvent(TouchActionType.Pressed, Touch(1, press), TouchActionResult.LongPressing);
+        host.AdvanceFrames(2);
+        Assert.Equal("Alpha", label.SelectedText);
+
+        var button = (SKRect)typeof(SkiaLabel).GetField("_copyButton", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(label)!;
+        Assert.False(button.IsEmpty, "the Copy button shows");
+        var at = new System.Drawing.PointF(button.MidX, button.MidY);
+
+        string copied = null;
+        var previous = Super.SetClipboardText;
+        Super.SetClipboardText = text => copied = text;
+        try
+        {
+            host.Canvas.OnGestureEvent(TouchActionType.Pressed, Touch(2, at), TouchActionResult.Down);
+            if (tapFirst)
+                host.Canvas.OnGestureEvent(TouchActionType.Released, Touch(2, at), TouchActionResult.Tapped);
+            host.Canvas.OnGestureEvent(TouchActionType.Released, Touch(2, at), TouchActionResult.Up);
+            if (!tapFirst)
+                host.Canvas.OnGestureEvent(TouchActionType.Released, Touch(2, at), TouchActionResult.Tapped);
+            host.AdvanceFrames(2);
+        }
+        finally
+        {
+            Super.SetClipboardText = previous;
+        }
+        Assert.Equal("Alpha", copied);
+    }
 }
