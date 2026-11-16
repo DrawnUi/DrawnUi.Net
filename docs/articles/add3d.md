@@ -165,5 +165,16 @@ Use production-quality glTF models (realistic or well-made stylized), keep each 
 
 ## Samples
 
-- **3D gallery** in the DrawnUi repository, `src/Shared/Samples/Add3dGallery.Shared`, with a head for MAUI, WPF, OpenTK, Blazor and pure WebAssembly.
-- **[add3d.drawnui.net](https://add3d.drawnui.net)**: the same gallery built with DrawnUI for Rust, running in the browser.
+The 3D gallery is the same app in every framework:
+
+| Framework | Runs on | Code | Try it |
+|---|---|---|---|
+| DrawnUI for .NET, pure WebAssembly | browser | [Add3dGalleryWeb](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/Samples/Add3dGalleryWeb) | [add3dnet.drawnui.net](https://add3dnet.drawnui.net) |
+| DrawnUI for .NET, Blazor | browser | [Add3dGallery](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Blazor/Samples/Add3dGallery) | [add3dblazor.drawnui.net](https://add3dblazor.drawnui.net) |
+| DrawnUI for .NET, MAUI | Android, iOS, Mac, Windows | [Add3dGalleryMaui](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/Add3dGalleryMaui) | run the sample |
+| DrawnUI for .NET, WPF | Windows | [Add3dGalleryWpf](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/Add3dGalleryWpf) | run the sample |
+| DrawnUI for .NET, OpenTK | Windows, Linux | [Add3dGalleryOpenTk](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/OpenTk/Samples/Add3dGalleryOpenTk) | run the sample |
+| DrawnUI for Rust | Windows, macOS, Linux, iOS, Android, browser | [examples/gallery3d](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/gallery3d) | [add3d.drawnui.net](https://add3d.drawnui.net) |
+| DrawnUi.React | browser | [samples/add3d](https://github.com/DrawnUi/DrawnUi.React/tree/master/samples/add3d) | [add3dreact.drawnui.net](https://add3dreact.drawnui.net) |
+
+The five .NET versions share one gallery: [Add3dGallery.Shared](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Shared/Samples/Add3dGallery.Shared).
