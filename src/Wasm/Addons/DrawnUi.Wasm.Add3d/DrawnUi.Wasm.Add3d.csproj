@@ -12,6 +12,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
+        <PackageIcon>add3d-icon128.png</PackageIcon>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -28,5 +29,12 @@
     </ItemGroup>
 
     <Import Project="..\..\..\SharedAdd3d\SharedAdd3d.projitems" Label="Shared" />
+
+    <ItemGroup>
+        <None Include="..\..\..\..\add3d-icon128.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+    </ItemGroup>
 
 </Project>
