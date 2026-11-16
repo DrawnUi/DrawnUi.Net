@@ -1,18 +1,67 @@
 # 3D in DrawnUI
 
-DrawnUI comes with a separate, optional 3D add-on, for every head DrawnUI runs on. It draws real 3D inside a DrawnUI screen: models from glTF files with their skeleton animations, shapes made in code, and images on 3D surfaces. It draws through the GPU context Skia already uses, so a 3D control sits in a layout, scrolls, takes taps and gets cached around like any other control.
+Real 3D models, live, inside your DrawnUI screens: they scroll with the page, take taps, and share the GPU your UI already uses. No WebView, no native 3D view, no game engine.
 
-<a href="https://add3d.drawnui.net"><img src="../images/add3d-gallery.jpg" alt="The 3D gallery: a sofa product viewer with fabric swatches and hotspots" width="720" /></a>
+The 3D add-on runs everywhere DrawnUI runs: .NET MAUI (Android, iOS, Mac, Windows), WPF, OpenTK (Windows, Linux), Blazor, pure WebAssembly, React, and Rust (Windows, macOS, Linux, iOS, Android, web). It draws glTF models with their skeleton animations, shapes made in code and images on 3D surfaces, through the GPU context Skia already uses, so a 3D control lays out, scrolls, caches and takes gestures like any other control.
 
-[See it live: the 3D gallery](https://add3d.drawnui.net). The same gallery comes in every framework, with its code: see [Samples](#samples).
+<a href="https://add3d.drawnui.net"><img src="../images/add3d-hero.jpg" alt="Real 3D, right in your UI: a globe, a dragon, a loyalty card, dice and 3D characters drawn by DrawnUI" width="100%" /></a>
 
-## Where it fits
+## Try it now
 
-- Product viewers: furniture, shoes, gadgets you turn with a finger, with fabric swatches and prices.
-- A model that answers a tap, an avatar beside a form, a reward chest, a globe with pins, a card that flips.
-- Games: 3D characters and elements inside a 2D game.
+One gallery, seven heads, same code shape. Open it in your browser:
 
-For a full 3D world with a free camera, physics and shadows, use a game engine. Vector illustrations and designer animations stay Lottie or SVG.
+<p>
+<a class="btn btn-primary" href="https://add3dnet.drawnui.net">.NET · WebAssembly</a>
+<a class="btn btn-primary" href="https://add3dblazor.drawnui.net">.NET · Blazor</a>
+<a class="btn btn-primary" href="https://add3dreact.drawnui.net">React</a>
+<a class="btn btn-primary" href="https://add3d.drawnui.net">Rust</a>
+</p>
+
+MAUI, WPF and OpenTK run the same gallery as apps: see [Samples](#samples).
+
+## Hello 3D
+
+A model with its animation, turning under the finger:
+
+# [C#](#tab/csharp)
+
+```csharp
+using DrawnUi.Add3d;
+
+new SkiaModel3D(dragonGlb)            // the .glb file's bytes
+{
+    Animation = "CharacterArmature|Flying_Idle",
+    PinchZoom = true,
+    HorizontalOptions = LayoutOptions.Fill,
+    HeightRequest = 360,
+}
+```
+
+# [React (TSX)](#tab/tsx)
+
+```tsx
+import { SkiaModel3D } from "drawnui-react-add3d";
+
+<SkiaModel3D
+  Glb={dragonGlb}                     // the .glb file's bytes
+  Animation="CharacterArmature|Flying_Idle"
+  PinchZoom={true}
+  HorizontalOptions="Fill"
+  HeightRequest={360}
+/>
+```
+
+# [Rust](#tab/rust)
+
+```rust
+use drawnui_add3d::prelude::*;
+
+SkiaModel3D::new(include_bytes!("assets/dragon.glb"))
+    .animation("CharacterArmature|Flying_Idle")
+    .pinch_zoom(true)
+```
+
+---
 
 ## Install
 
@@ -40,6 +89,51 @@ The controls, properties and methods have the same names in every framework, in 
 The text below uses the C# names; every example comes in all three languages.
 
 On .NET desktop heads the canvas draws with `RenderingMode = RenderingModeType.Accelerated`: the 3D pass uses the canvas's GPU context.
+
+## Samples
+
+The 3D gallery is the same app in every framework:
+
+<img src="../images/add3d-scenes.jpg" alt="The 3D gallery and the boss fight, drawn inside a normal app screen" width="100%" />
+
+| Framework | Runs on | Code | Try it |
+|---|---|---|---|
+| DrawnUI for .NET, pure WebAssembly (DrawnUi.Web) | browser | [Add3dGalleryWeb](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/Samples/Add3dGalleryWeb) | [add3dnet.drawnui.net](https://add3dnet.drawnui.net) |
+| DrawnUI for .NET, Blazor WebAssembly | browser | [Add3dGallery](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Blazor/Samples/Add3dGallery) | [add3dblazor.drawnui.net](https://add3dblazor.drawnui.net) |
+| DrawnUI for .NET, MAUI | Android, iOS, Mac, Windows | [Add3dGalleryMaui](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/Add3dGalleryMaui) | run the sample |
+| DrawnUI for .NET, WPF | Windows | [Add3dGalleryWpf](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/Add3dGalleryWpf) | run the sample |
+| DrawnUI for .NET, OpenTK | Windows, Linux | [Add3dGalleryOpenTk](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/OpenTk/Samples/Add3dGalleryOpenTk) | run the sample |
+| DrawnUI for Rust | Windows, macOS, Linux, iOS, Android, browser | [examples/gallery3d](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/gallery3d) | [add3d.drawnui.net](https://add3d.drawnui.net) |
+| DrawnUi.React | browser | [samples/add3d](https://github.com/DrawnUi/DrawnUi.React/tree/master/samples/add3d) | [add3dreact.drawnui.net](https://add3dreact.drawnui.net) |
+
+The five .NET versions share one gallery: [Add3dGallery.Shared](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Shared/Samples/Add3dGallery.Shared).
+
+## Why it is different
+
+- **A normal control.** It takes part in layout, scrolling, caching, gestures and accessibility like any other DrawnUI control.
+- **The same API everywhere.** The same names in C#, TSX and Rust, so code moves between frameworks.
+- **Skia's own GPU.** It draws through the GPU context Skia already uses: Vulkan, Metal, ANGLE, OpenGL or WebGL2.
+- **Pages keep scrolling.** Inside a scroll, an up and down drag scrolls the page and a sideways drag turns the model.
+- **Free at rest.** A model that is still asks for no frames, models off screen cost nothing, and models near the screen are rendered ahead so they appear at once.
+
+### 100 animated characters, one pass
+
+Measured on the 3D gallery page: 100 animated 3D characters on a 2D field, plus the rest of the page.
+
+| Device | Frames per second |
+|---|---|
+| iPhone 16 Pro | 120 |
+| Android mid-range phone (BV8800, 90 Hz screen) | 89-90 |
+| Mac (M1 Air, 60 Hz screen) | 60 |
+| Windows, OpenTK and WPF | 60, with a median draw time of about 1.7-2.7 ms per frame |
+
+## Where it fits
+
+- Product viewers: furniture, shoes, gadgets you turn with a finger, with fabric swatches and prices.
+- A model that answers a tap, an avatar beside a form, a reward chest, a globe with pins, a card that flips.
+- Games: 3D characters and elements inside a 2D game.
+
+For a full 3D world with a free camera, physics and shadows, use a game engine. Vector illustrations and designer animations stay Lottie or SVG.
 
 ## Two controls
 
@@ -127,6 +221,8 @@ Names come from the file: `Animations`, `NodeNames` and `MaterialNames` list the
 
 ### Turning and zooming
 
+<a href="https://add3d.drawnui.net"><img src="../images/add3d-gallery.jpg" alt="A product viewer in the 3D gallery: a sofa with fabric swatches and hotspots" width="640" /></a>
+
 The control behaves the same on every platform:
 
 - Inside a scroll, a drag decides its direction at the start: up and down scrolls the page, sideways turns the model. Without a scroll around it, a drag turns it freely.
@@ -134,8 +230,6 @@ The control behaves the same on every platform:
 - A double tap resets the view (`ResetOnDoubleTap`), and `ResetView()` does it from code.
 - `Fling = true`: a drag that is let go keeps the model turning, slowing down like a scroll after a swipe; a finger put down stops it.
 - `LockPitch` keeps the horizon level, `Orbit = false` turns dragging off, `AutoRotate` turns the model slowly at rest, and `TiltToPointer` makes it lean toward the mouse or finger.
-
-Tell people how to use it, under the control: "Drag to turn · pinch or Ctrl+scroll to zoom · double-tap to reset".
 
 ### Framing
 
@@ -283,22 +377,7 @@ if let Some(mut layer) = cx.get_mut(app.layer) {
 - In web apps, embed only the models of the first screen and load the rest from URLs.
 - The 3D GPU memory of a window is freed when the window closes.
 
-## Assets
+## Tips
 
-Use production-quality glTF models (realistic or well-made stylized), keep each file small (textures at the size they show, unused animations removed), and keep a license file next to them.
-
-## Samples
-
-The 3D gallery is the same app in every framework:
-
-| Framework | Runs on | Code | Try it |
-|---|---|---|---|
-| DrawnUI for .NET, pure WebAssembly | browser | [Add3dGalleryWeb](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wasm/Samples/Add3dGalleryWeb) | [add3dnet.drawnui.net](https://add3dnet.drawnui.net) |
-| DrawnUI for .NET, Blazor | browser | [Add3dGallery](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Blazor/Samples/Add3dGallery) | [add3dblazor.drawnui.net](https://add3dblazor.drawnui.net) |
-| DrawnUI for .NET, MAUI | Android, iOS, Mac, Windows | [Add3dGalleryMaui](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Maui/Samples/Add3dGalleryMaui) | run the sample |
-| DrawnUI for .NET, WPF | Windows | [Add3dGalleryWpf](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Wpf/Samples/Add3dGalleryWpf) | run the sample |
-| DrawnUI for .NET, OpenTK | Windows, Linux | [Add3dGalleryOpenTk](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/OpenTk/Samples/Add3dGalleryOpenTk) | run the sample |
-| DrawnUI for Rust | Windows, macOS, Linux, iOS, Android, browser | [examples/gallery3d](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/gallery3d) | [add3d.drawnui.net](https://add3d.drawnui.net) |
-| DrawnUi.React | browser | [samples/add3d](https://github.com/DrawnUi/DrawnUi.React/tree/master/samples/add3d) | [add3dreact.drawnui.net](https://add3dreact.drawnui.net) |
-
-The five .NET versions share one gallery: [Add3dGallery.Shared](https://github.com/DrawnUi/DrawnUi.Net/tree/main/src/Shared/Samples/Add3dGallery.Shared).
+- Tell people how to use a viewer, under it: "Drag to turn · pinch or Ctrl+scroll to zoom · double-tap to reset".
+- Use production-quality glTF models (realistic or well-made stylized), keep each file small (textures at the size they show, unused animations removed), and keep a license file next to them.
