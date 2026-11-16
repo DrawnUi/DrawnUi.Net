@@ -23,7 +23,10 @@ public class LooperSurvivesFrameErrorTests
         });
 
         looper.Start(60, legacy);
-        await Task.Delay(700);
+        // wait for the frames, not a fixed time: under a loaded test run the loop ticks slower
+        var deadline = DateTime.UtcNow.AddSeconds(10);
+        while (Volatile.Read(ref calls) <= 10 && DateTime.UtcNow < deadline)
+            await Task.Delay(50);
         looper.Stop();
 
         Assert.True(calls > 10, $"the loop stopped after the error: {calls} frames");
