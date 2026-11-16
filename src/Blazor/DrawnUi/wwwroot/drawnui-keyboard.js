@@ -71,6 +71,31 @@ export function attachGlobalKeyboard() {
     window.addEventListener("keydown", state.keyDownHandler, true);
     window.addEventListener("keyup", state.keyUpHandler, true);
     attachTouchTextInput(state);
+    watchKeyboardTop(state);
+}
+
+// The on-screen keyboard's top edge in page points (the browser shrinks the visual viewport under it), -1 when none,
+// to .NET whenever it changes (Super.KeyboardTop). Pinch zoom shrinks the viewport too, so a zoomed page reports none.
+function watchKeyboardTop(state) {
+    const vv = window.visualViewport;
+    if (!vv || state.keyboardTopHandler) return;
+    let last;
+    state.keyboardTopHandler = () => {
+        const bottom = vv.offsetTop + vv.height;
+        const covered = window.innerHeight - bottom;
+        const top = vv.scale > 1.05 || covered < 80 ? -1 : bottom; // under 80: the browser's own bars moving
+        if (top === last) return;
+        last = top;
+        DotNet.invokeMethodAsync(assemblyName, "HandleKeyboardTop", top).catch(() => { });
+    };
+    vv.addEventListener("resize", state.keyboardTopHandler);
+    vv.addEventListener("scroll", state.keyboardTopHandler);
+    state.keyboardTopHandler();
+}
+
+/** An element's bottom edge in page points (the coordinates of the keyboard top), NaN without one. */
+export function elementBottom(element) {
+    return element && element.getBoundingClientRect ? element.getBoundingClientRect().bottom : NaN;
 }
 
 // --- On-screen keyboard for drawn editors (phones) ---

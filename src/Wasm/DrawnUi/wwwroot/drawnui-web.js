@@ -972,6 +972,30 @@ function setupKeyboardHandlers() {
     });
 }
 
+// The on-screen keyboard's top edge in page points (the browser shrinks the visual viewport under it), NaN when none:
+// to onTop whenever it changes. Pinch zoom shrinks the viewport too, so a zoomed page reports none.
+export function keyboardWatch(onTop) {
+    const vv = globalThis.visualViewport;
+    if (!vv) return;
+    let last;
+    const report = () => {
+        const bottom = vv.offsetTop + vv.height;
+        const covered = window.innerHeight - bottom;
+        const top = vv.scale > 1.05 || covered < 80 ? NaN : bottom; // under 80: the browser's own bars moving
+        if (Object.is(top, last)) return;
+        last = top;
+        onTop(top);
+    };
+    vv.addEventListener('resize', report);
+    vv.addEventListener('scroll', report);
+    report();
+}
+
+/** The canvas's bottom edge in page points (the coordinates of keyboardWatch), NaN without a canvas. */
+export function getCanvasBottom() {
+    return canvas ? canvas.getBoundingClientRect().bottom : NaN;
+}
+
 let onBrowserFrame = null;
 let onPointerDown = null;
 let onPointerMove = null;
@@ -1001,11 +1025,12 @@ if (_first) {
     a11yLive = _first.a11yLive; showLoader = _first.showLoader; hideLoader = _first.hideLoader;
     showError = _first.showError; setModuleExports = _first.setModuleExports;
     textInputAttach = _first.textInputAttach; textInputFocus = _first.textInputFocus;
+    keyboardWatch = _first.keyboardWatch; getCanvasBottom = _first.getCanvasBottom;
 } else {
     globalThis.__drawnuiWeb = {
         initGL, initRaster, deinit, requestAnimationFrame, setEnableRenderLoop, putImageData, initCanvas,
         getCanvasWidth, getCanvasHeight, getDevicePixelRatio, getBaseUrl, requestAnimationFrameLegacy,
         applyGestureStyle, a11yAttach, watchSystemTheme, watchWindowFocus, a11yDetach, a11yUpdate, a11yFocus,
-        a11yLive, showLoader, hideLoader, showError, setModuleExports, textInputAttach, textInputFocus,
+        a11yLive, showLoader, hideLoader, showError, setModuleExports, textInputAttach, textInputFocus, keyboardWatch, getCanvasBottom,
     };
 }

@@ -321,6 +321,7 @@
             AccessibilityManager.ReaderRefocusRequested += OnA11yReaderRefocus;
             KeyboardManager.KeyDown += OnArrowStartsNavigation;
             FocusedItemChanged += OnFocusedItemChangedA11y;
+            WatchKeyboard(true); // SkiaScroll.AdaptToKeyboardAuto
         }
 
         if (_pendingA11yFocusId is { } focusId && _a11yElements.TryGetValue(focusId, out var element))
@@ -1073,9 +1074,13 @@
         AccessibilityManager.ReaderRefocusRequested -= OnA11yReaderRefocus;
         FocusedItemChanged -= OnFocusedItemChangedA11y;
         KeyboardManager.KeyDown -= OnArrowStartsNavigation;
+        WatchKeyboard(false);
 
         OnDisposing();
     }
+
+    /// <summary>The canvas's bottom edge in page points (see <see cref="Super.KeyboardTop"/>), NaN before it is shown.</summary>
+    protected override double GetBottomOnScreen() => KeyboardManager.ElementBottom(_hostElement);
 
     // nothing in focus yet: an arrow starts keyboard navigation as Tab does, when the app asked for it
     // (ArrowsStartKeyboardNavigation); the overlay then moves the browser focus to that node

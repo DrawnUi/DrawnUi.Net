@@ -7,6 +7,11 @@ namespace DrawnUi.Views
     {
         protected DrawingContext Context;
 
+#if WEB
+        /// <inheritdoc />
+        protected override double GetBottomOnScreen() => WebTextInput.CanvasBottom();
+#endif
+
         public new object Content
         {
             get => base.Content;

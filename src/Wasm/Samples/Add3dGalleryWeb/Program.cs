@@ -44,22 +44,9 @@ public static partial class Program
                 LoaderDone();
             };
             canvas.WasDrawn += drawn;
-            // The sign-up form on a phone: the focused field is scrolled above the on-screen keyboard, also when the
-            // focus moves to the next field while it shows (as the MAUI head does with DrawnUiBasePage.KeyboardSize).
-            double keyboard = 0;
-            void Follow() => root.Gallery.OnKeyboard(keyboard, canvas.FocusedChild as SkiaControl);
-            canvas.FocusedItemChanged += (_, _) => Follow();
-            WatchKeyboard(height =>
-            {
-                keyboard = height;
-                Follow();
-            });
             return canvas;
         });
 
     [JSImport("globalThis.add3dLoaderDone")]
     static partial void LoaderDone();
-
-    [JSImport("globalThis.add3dWatchKeyboard")]
-    static partial void WatchKeyboard([JSMarshalAs<JSType.Function<JSType.Number>>] Action<double> onChange);
 }

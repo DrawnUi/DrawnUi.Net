@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace DrawnUi.Draw;
@@ -63,6 +64,23 @@ public partial class KeyboardManager
     /// <summary>A tap gave the on-screen keyboard to a text field (true), or a mouse or Tab focused one (false).</summary>
     [JSInvokable]
     public static void HandleSoftKeyboard(bool soft) => SoftKeyboardInput = soft;
+
+    /// <summary>The on-screen keyboard's top in page points, -1 when none (from the browser's visual viewport).</summary>
+    [JSInvokable]
+    public static void HandleKeyboardTop(double top) => Super.SetKeyboardTop(top < 0 ? double.NaN : top);
+
+    // An element's bottom edge in page points, NaN when unknown. Synchronous: Blazor runs in WebAssembly.
+    internal static double ElementBottom(ElementReference element)
+    {
+        try
+        {
+            return _module is IJSInProcessObjectReference module ? module.Invoke<double>("elementBottom", element) : double.NaN;
+        }
+        catch
+        {
+            return double.NaN;
+        }
+    }
 
     /// <summary>Text the on-screen keyboard or an input method typed into a focused drawn editor.</summary>
     [JSInvokable]

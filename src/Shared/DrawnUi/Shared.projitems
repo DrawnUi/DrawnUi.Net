@@ -412,6 +412,8 @@
     <!-- Views utilities -->
     <Compile Include="$(MSBuildThisFileDirectory)Views\CanvasRestoreScope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\DrawnView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\DrawnView.Keyboard.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Super.Keyboard.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\DrawnView.Tooltip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\DrawnView.TextSelection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\DrawnView.Popups.cs" />

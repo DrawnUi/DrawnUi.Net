@@ -8,14 +8,34 @@ namespace DrawnUi.Views
         /// </summary>
         public double KeyboardCovered { get; private set; }
 
-        void WatchKeyboard(bool watch)
+        /// <summary>Follows <see cref="Super.KeyboardChanged"/> while this canvas is shown (its head calls it).</summary>
+        internal void WatchKeyboard(bool watch)
         {
-            Super.KeyboardChanged -= OnKeyboardChanged;
             FocusedItemChanged -= OnFocusedItemChangedForKeyboard;
             if (!watch)
+            {
+                KeyboardViews.Remove(this);
                 return;
-            Super.KeyboardChanged += OnKeyboardChanged;
+            }
+            _ = KeyboardHooked;
+            KeyboardViews.AddOrUpdate(this, null);
             FocusedItemChanged += OnFocusedItemChangedForKeyboard;
+        }
+
+        // Canvases that follow the keyboard, held weakly: the static Super.KeyboardChanged must not keep a canvas alive
+        // that was never disconnected (a dropped page, a headless host).
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<DrawnView, object> KeyboardViews = new();
+
+        private static readonly bool KeyboardHooked = HookKeyboard();
+
+        private static bool HookKeyboard()
+        {
+            Super.KeyboardChanged += (sender, e) =>
+            {
+                foreach (var pair in KeyboardViews)
+                    pair.Key.OnKeyboardChanged(sender, e);
+            };
+            return true;
         }
 
         void OnKeyboardChanged(object sender, EventArgs e) => MainThread.BeginInvokeOnMainThread(ApplyKeyboard);
@@ -80,8 +100,11 @@ namespace DrawnUi.Views
             return null;
         }
 
-        /// <summary>Bottom edge of this canvas on screen, in points; NaN when it is not on screen.</summary>
-        double GetBottomOnScreen()
+        /// <summary>
+        /// Bottom edge of this canvas on screen, in points, in the coordinates of <see cref="Super.KeyboardTop"/>; NaN when
+        /// it is not on screen. A web canvas gives its page rect against the browser's visual viewport.
+        /// </summary>
+        protected virtual double GetBottomOnScreen()
         {
 #if ANDROID
             if (Handler?.PlatformView is Android.Views.View view && view.Height > 0)

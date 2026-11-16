@@ -103,8 +103,10 @@ public static partial class BrowserHost
             ? RenderingModeType.Accelerated
             : RenderingModeType.Default;
 
+        _canvas?.WatchKeyboard(false);
         _canvas = canvas;
         WebInput.TargetCanvas = canvas;
+        canvas.WatchKeyboard(true); // SkiaScroll.AdaptToKeyboardAuto
 
         // Mirror Blazor Canvas GestureStyle at lib level: route Gestures mode to canvas/page CSS
         // (+ iOS swipe-away guard for Lock). Disabled = leave page defaults untouched.

@@ -29,6 +29,12 @@ public sealed class HeadlessCanvasHost : IDisposable
     /// <param name="startNanos">The synthetic clock's start, in nanoseconds. A device's frame clock counts from its
     /// boot, so a large value stands for a device that has been on for days.</param>
     public HeadlessCanvasHost(int width, int height, float scale = 1f, DrawnUi.Color? background = null, long startNanos = 0)
+        : this(new Canvas(), width, height, scale, background, startNanos)
+    {
+    }
+
+    /// <summary>Hosts <paramref name="canvas"/> (a subclass with its own behaviour) on a headless surface.</summary>
+    public HeadlessCanvasHost(Canvas canvas, int width, int height, float scale = 1f, DrawnUi.Color? background = null, long startNanos = 0)
     {
         _frameNanos = startNanos;
         lock (_superLock)
@@ -43,12 +49,10 @@ public sealed class HeadlessCanvasHost : IDisposable
         _surface = SKSurface.Create(new SKImageInfo(width, height));
         _drawable = new HeadlessDrawable(_surface);
 
-        Canvas = new Canvas
-        {
-            WidthRequest = width / scale,
-            HeightRequest = height / scale,
-            BackgroundColor = background ?? Colors.Transparent
-        };
+        Canvas = canvas;
+        Canvas.WidthRequest = width / scale;
+        Canvas.HeightRequest = height / scale;
+        Canvas.BackgroundColor = background ?? Colors.Transparent;
 
         Canvas.AttachCanvasView(_drawable);
         Canvas.ConnectedHandler();

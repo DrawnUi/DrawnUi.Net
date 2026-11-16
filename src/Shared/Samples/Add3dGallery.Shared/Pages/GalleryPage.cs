@@ -30,20 +30,6 @@ public partial class GalleryPage : DrawnGame
     Button3D _chestButton;
     readonly Button3D[] _mobButtons = new Button3D[MobCounts.Length];
     Switch3D _drawnSwitch;
-    SkiaControl _keyboardSpacer;
-
-    /// <summary>
-    /// The on-screen keyboard's height in points (0 = hidden) and the focused control: the page scrolls that control
-    /// above the keyboard (SkiaScroll.AdaptToKeyboardFor / AdaptToKeyboardSize), the spacer lets the last fields go
-    /// that high. Called by the MAUI head from DrawnUiBasePage.KeyboardSize and when the focus moves.
-    /// </summary>
-    public void OnKeyboard(double height, SkiaControl focused)
-    {
-        _keyboardSpacer.HeightRequest = height;
-        _keyboardSpacer.IsVisible = height > 0;
-        _scroll.AdaptToKeyboardFor = height > 0 ? focused : null;
-        _scroll.AdaptToKeyboardSize = height;
-    }
     bool _drawnMobs;
 
     public GalleryPage()
@@ -60,7 +46,9 @@ public partial class GalleryPage : DrawnGame
                 // dragged; not held on hover (the mouse is always over the page, it would never hide)
                 ScrollBar = new SkiaScrollBar { IsDraggable = true, Thickness = 6 },
                 ShowScrollBarsOnHover = false,
-                // a focused field ends 16 pt clear of the on-screen keyboard, as in DrawnUI for React and Rust
+                // the focused field rises above the on-screen keyboard by itself, 16 pt clear of it (as in DrawnUI for
+                // React and Rust); the scroll gets the keyboard's cover as room at its end
+                AdaptToKeyboardAuto = true,
                 AdaptToKeyboardGap = 16,
                 ScrollBarThumbColor = Theme.Muted,
                 ScrollBarTrackColor = Color.FromRgba(255, 255, 255, 18),
@@ -148,7 +136,6 @@ public partial class GalleryPage : DrawnGame
                         Footer(),
 
                         // As tall as the on-screen keyboard while it shows (phones): the last fields can scroll above it.
-                        new SkiaControl { HorizontalOptions = LayoutOptions.Fill, IsVisible = false }.Assign(out _keyboardSpacer),
                     }
                 }
             }.Assign(out _scroll)
