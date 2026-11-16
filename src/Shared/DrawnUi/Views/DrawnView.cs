@@ -1250,6 +1250,7 @@ namespace DrawnUi.Views
         {
             HasHandler = false;
             GlobalRefreshViews.Remove(this);
+            WatchKeyboard(false);
         }
 
         // Canvases a global refresh reaches, held weakly: the static Super.NeedGlobalRefresh must not keep a canvas alive
@@ -1307,6 +1308,7 @@ namespace DrawnUi.Views
             HasHandler = true;
             _ = GlobalRefreshHooked;
             GlobalRefreshViews.AddOrUpdate(this, null);
+            WatchKeyboard(true); // SkiaScroll.AdaptToKeyboardAuto
         }
 
 

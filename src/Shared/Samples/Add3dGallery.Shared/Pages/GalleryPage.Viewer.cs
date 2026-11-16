@@ -152,7 +152,8 @@ public partial class GalleryPage
                                     Children =
                                     {
                                         Swatch($"{f.Name}, {Dollars(f.Price)}", f.Swatch).Assign(out _swatches[i]).OnTapped(_ => SetFabric(i)),
-                                        new Copyable(f.Name) { FontSize = 12, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center },
+                                        // the swatch's caption: its radio already says the name
+                                        new SkiaLabel(f.Name) { FontSize = 12, TextColor = Theme.Muted, HorizontalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RolePresentation },
                                     }
                                 }).ToList(),
                             },
@@ -183,6 +184,7 @@ public partial class GalleryPage
     {
         FontSize = 12, FontFamily = Theme.Title, TextColor = Theme.Muted, Margin = new Thickness(0, 8, 0, -6),
         CharacterSpacing = 1.5,
+        AccessibilityRole = Aria.RolePresentation, // the caption over a group that says its own name
     };
 
     /// <summary>A dot on a part of the model: tap it for the part's note.</summary>

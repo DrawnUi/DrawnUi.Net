@@ -19,6 +19,13 @@ public static partial class WebTextInput
     [JSImport("textInputFocus", "drawnui-web")]
     private static partial void FocusTextInput(bool focus, int ownerId, bool soft);
 
+    [JSImport("keyboardWatch", "drawnui-web")]
+    private static partial void KeyboardWatch([JSMarshalAs<JSType.Function<JSType.Number>>] Action<double> onTop);
+
+    /// <summary>The canvas's bottom edge in page points, NaN without one (see <see cref="Super.KeyboardTop"/>).</summary>
+    [JSImport("getCanvasBottom", "drawnui-web")]
+    internal static partial double CanvasBottom();
+
     static object _owner;
 
     /// <summary>
@@ -78,7 +85,12 @@ public static partial class WebTextInput
             Focus(editor, false);
     }
 
-    internal static void Init() => Attach(OnText, OnKey);
+    internal static void Init()
+    {
+        Attach(OnText, OnKey);
+        // the on-screen keyboard's top for the whole app (SkiaScroll.AdaptToKeyboardAuto)
+        KeyboardWatch(top => Super.SetKeyboardTop(top));
+    }
 
     static void OnText(string text)
     {

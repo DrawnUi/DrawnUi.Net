@@ -19,6 +19,8 @@ public class GalleryRoot : SkiaLayer
         BackgroundColor = Theme.Page;
         // titles and descriptions can be selected and copied: their selection in the gallery's gold
         SkiaLabel.TextSelectionColor = Theme.Accent.WithAlpha(0.4f).ToSKColor();
+        // every text of the page is read by a screen reader (descriptions, hints, prices), as in DrawnUI for React
+        SkiaLabel.DefaultAccessibilityRole = Aria.RoleText;
         Children = new List<SkiaControl>
         {
             new SkiaGrid
@@ -54,7 +56,7 @@ public class GalleryRoot : SkiaLayer
                                             },
                                             Children =
                                             {
-                                                new SkiaLabel("3D") { FontSize = 13, FontFamily = Theme.Title, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center },
+                                                new SkiaLabel("3D") { FontSize = 13, FontFamily = Theme.Title, TextColor = Colors.White, HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RolePresentation }, // the logo
                                             }
                                         },
                                         new SkiaStack

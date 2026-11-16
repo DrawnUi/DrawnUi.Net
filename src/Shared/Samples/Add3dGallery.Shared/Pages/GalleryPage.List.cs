@@ -131,8 +131,8 @@ public partial class GalleryPage
                 // A still row (its thumbnail shows its last render) is one GPU blit, also while the list scrolls; the
                 // row under the mouse is drawn again while its model turns.
                 UseCache = SkiaCacheType.GPU,
+                // named by its texts (name, detail, price), read in order
                 AccessibilityRole = Aria.RoleListItem,
-                AccessibilityLabel = $"{name}, {Dollars(price)}",
                 Children =
                 {
                     new SkiaShape

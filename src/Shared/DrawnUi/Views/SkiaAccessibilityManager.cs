@@ -1506,6 +1506,10 @@ namespace DrawnUi.Views
                 var parent = _parentBuffer[node];
                 if (parent != null && parent.AccessibilityCanInteract && SaysName(node, parent))
                     continue;
+                // the texts inside a button, a radio, a tab... are its look: its name says them (a control nested in it
+                // stays reachable)
+                if (InsidePresentational(node))
+                    continue;
 
                 var built = AccessibilityNode.From(node, _sortBuffer[i].Rect, scale);
                 // a dialog keeps its name even when its title says it too (aria-labelledby): readers announce the
@@ -1530,6 +1534,22 @@ namespace DrawnUi.Views
         }
 
         private readonly Dictionary<ISkiaAccessibilityNode, ISkiaAccessibilityNode?> _parentBuffer = new();
+
+        /// <summary>
+        /// A node that takes no input, inside a node whose children are presentational (see
+        /// <see cref="DrawnUi.Models.Aria.ChildrenArePresentational"/>). Selectable text always stays itself.
+        /// </summary>
+        private bool InsidePresentational(ISkiaAccessibilityNode node)
+        {
+            if (DrawnUi.Models.Aria.IsInteractiveRole(node.AccessibilityRole) || node is SkiaLabel { AccessibilityTextSelectable: true })
+                return false;
+            for (var up = _parentBuffer[node]; up != null; up = _parentBuffer.TryGetValue(up, out var next) ? next : null)
+            {
+                if (DrawnUi.Models.Aria.ChildrenArePresentational(up.AccessibilityRole))
+                    return true;
+            }
+            return false;
+        }
 
         /// <summary>A plain (not selectable) text or heading with the same name as <paramref name="owner"/>.</summary>
         private static bool SaysName(ISkiaAccessibilityNode text, ISkiaAccessibilityNode owner) =>

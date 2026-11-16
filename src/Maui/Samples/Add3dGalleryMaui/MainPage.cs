@@ -30,32 +30,8 @@ public class MainPage : DrawnUiBasePage
                 }.Assign(out _canvas)
             }
         };
-        // a field focused while the keyboard shows (Tab, a tap on the next field) is scrolled above it too
-        _canvas.FocusedItemChanged += (_, _) => FollowKeyboard();
         if (!string.IsNullOrEmpty(PerfRequest))
             PerfProbe.Start(_root.Gallery, "perf=" + PerfRequest);
     }
 
-    /// <inheritdoc />
-    public override double OnKeyboardResized(double size)
-    {
-        var height = base.OnKeyboardResized(size);
-        FollowKeyboard(height);
-        return height;
-    }
-
-    /// <summary>
-    /// The focused field stays above the on-screen keyboard: the gallery's scroll adapts to it. On iOS KeyboardSize is
-    /// the keyboard's raw height, down to the screen's bottom, and the page's content ends above the bottom inset (the
-    /// home indicator), so the part over the content is KeyboardSize minus that inset; Android's KeyboardSize already
-    /// leaves the inset out.
-    /// </summary>
-    void FollowKeyboard(double? height = null)
-    {
-        var keyboard = height ?? KeyboardSize;
-#if IOS
-        keyboard = Math.Max(0, keyboard - Super.Screen.BottomInset);
-#endif
-        _root.Gallery.OnKeyboard(keyboard, _canvas.FocusedChild as SkiaControl);
-    }
 }
