@@ -70,16 +70,9 @@ public class VelocityAccumulator
         velocities.Add((velocity, time));
     }
 
-    /// <param name="clampAbsolute">Clamps each axis to this absolute value; 0 = no clamp.</param>
-    /// <param name="releaseTimeNanos">
-    /// When the release happened, on the same clock as the samples; 0 = now. Pass it where samples carry the
-    /// input's own time (pure Wasm dates pointer events back to the browser's event time): measured against "now",
-    /// a release that a slow frame handled late would find every sample too old and drop the fling.
-    /// </param>
-    public Vector2 CalculateFinalVelocity(float clampAbsolute = 0, long releaseTimeNanos = 0)
+    public Vector2 CalculateFinalVelocity(float clampAbsolute = 0)
     {
-        var now = ClockOverrideNanos?.Invoke()
-                  ?? (releaseTimeNanos > 0 ? releaseTimeNanos : Super.GetCurrentTimeNanos());
+        var now = ClockOverrideNanos?.Invoke() ?? Super.GetCurrentTimeNanos();
 
         // weighted average of the recent samples, the newest weighing most (weights 1..n in sample order)
         float weightedSumX = 0, weightedSumY = 0;
