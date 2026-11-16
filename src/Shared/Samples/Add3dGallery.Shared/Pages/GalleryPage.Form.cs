@@ -4,7 +4,7 @@ namespace Add3dGallery;
 
 /// <summary>
 /// 3D next to normal UI: a plain sign-up form with the avatar beside it as one more control. It looks at the field
-/// being typed in (and along the text as it grows), folds its ears over its eyes while the password field has the keyboard, waves
+/// being typed in (and along the text as it grows), puts its hands over its eyes (ears laid back) while the password field has the keyboard, waves
 /// when the form is sent and shakes its head when something is missing.
 /// </summary>
 public partial class GalleryPage
@@ -216,16 +216,15 @@ public partial class GalleryPage
         }
         if (_hands > 0.01f)
         {
-            // Hiding from the password: the ears fold down over the eyes, the hands go to the cheeks.
+            // Hiding from the password: the hands cover the eyes, the ears lie back a little (folded forward they cut
+            // through the face and the hands)
             _handsSet = true;
-            Turn("Ear1.L", Ear1LRest, 150, 0, 0, _hands);
-            Turn("Ear1.R", Ear1RRest, 150, 0, 0, _hands);
-            Turn("Ear2.L", Ear2LRest, -30, 0, 0, _hands);
-            Turn("Ear2.R", Ear2RRest, -30, 0, 0, _hands);
+            Turn("Ear1.L", Ear1LRest, -25, 0, 0, _hands);
+            Turn("Ear1.R", Ear1RRest, -25, 0, 0, _hands);
             Turn(ArmL, ArmLRest, -150, -150, 60, _hands);
-            Turn(ForearmL, ForearmLRest, 0, 0, 60, _hands);
+            Turn(ForearmL, ForearmLRest, 0, 0, 85, _hands);
             Turn(ArmR, ArmRRest, 30, 30, 120, _hands);
-            Turn(ForearmR, ForearmRRest, 0, 0, -60, _hands);
+            Turn(ForearmR, ForearmRRest, 0, 0, -85, _hands);
         }
         else if (_handsSet)
         {
