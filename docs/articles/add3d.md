@@ -123,17 +123,6 @@ The five .NET versions share one gallery: [Add3dGallery.Shared](https://github.c
 - **Pages keep scrolling.** Inside a scroll, an up and down drag scrolls the page and a sideways drag turns the model.
 - **Free at rest.** A model that is still asks for no frames, models off screen cost nothing, and models near the screen are rendered ahead so they appear at once.
 
-### 100 animated characters, one pass
-
-Measured on the 3D gallery page: 100 animated 3D characters on a 2D field, plus the rest of the page.
-
-| Device | Frames per second |
-|---|---|
-| iPhone 16 Pro | 120 |
-| Android mid-range phone (BV8800, 90 Hz screen) | 89-90 |
-| Mac (M1 Air, 60 Hz screen) | 60 |
-| Windows, OpenTK and WPF | 60, with a median draw time of about 1.7-2.7 ms per frame |
-
 ## Why not just SKMesh?
 
 `SKMesh` draws triangles with your own SkSL shaders. It is the right tool for shader effects and custom 2D or 2.5D geometry. For 3D objects, everything beyond the triangles is yours to build:
