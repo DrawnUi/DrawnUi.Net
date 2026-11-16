@@ -164,7 +164,9 @@ namespace DrawnUi.Draw
                                             }
                                             RaiseFrame(OnFrame, EventArgs.Empty);
                                         });
-                                        _displayLink.AddToRunLoop(NSRunLoop.Current, NSRunLoopMode.Default);
+                                        ApplyDisplayLinkFps(MaxFps);
+                                        // common modes: frames keep coming while the window is resized or a menu tracks
+                                        _displayLink.AddToRunLoop(NSRunLoop.Current, NSRunLoopMode.Common);
                                     }
                                     catch (Exception e)
                                     {
@@ -199,7 +201,7 @@ namespace DrawnUi.Draw
         /// <summary>
         /// When set to true will run loop upon CADisplayLink hits instead of a timer looper. Default is true, change at your own risk.
         /// </summary>
-        public static bool UseDisplaySync = false;
+        public static bool UseDisplaySync = true;
 
         static partial void OnMaxFpsChanged(int fps)
         {
@@ -214,7 +216,32 @@ namespace DrawnUi.Draw
             // Display link callback reads MaxFps dynamically, no action needed there.
             // Update looper fps if it's being used instead of CADisplayLink.
             Looper?.SetTargetFps(fps > 0 ? fps : RefreshRate);
+            ApplyDisplayLinkFps(fps);
             UpdateRegisteredMetalViewsPacing(fps);
+        }
+
+        /// <summary>
+        /// Asks the display link for the capped rate, or the screen's own rate when uncapped (as on iOS).
+        /// </summary>
+        static void ApplyDisplayLinkFps(int fps)
+        {
+            var link = _displayLink;
+            if (link == null)
+                return;
+
+            void Set()
+            {
+                var target = fps > 0 ? fps : RefreshRate;
+                if (OperatingSystem.IsMacCatalystVersionAtLeast(15))
+                    link.PreferredFrameRateRange = new CAFrameRateRange { Minimum = target, Maximum = target, Preferred = target };
+                else
+                    link.PreferredFramesPerSecond = fps > 0 ? fps : 0;
+            }
+
+            if (MainThread.IsMainThread)
+                Set();
+            else
+                MainThread.BeginInvokeOnMainThread(Set);
         }
 
         public static event EventHandler OnFrame;
