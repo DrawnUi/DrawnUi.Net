@@ -74,9 +74,17 @@ public partial class Canvas : IGestureListener
                 _focusedChildAtDown = FocusedChild;
             }
 
-            // a mouse drag selecting page text keeps its moves: no scroll under it scrolls
+            // a mouse drag selecting page text keeps its moves: no scroll under it scrolls; the canvas captures the
+            // pointer, so the moves keep coming once it leaves the canvas (the scroll follows it past its edge)
             if (PreviewTextSelectionGesture(args))
+            {
+                if (_gestureEffect != null)
+                {
+                    _gestureEffect.WIllLock = ShareLockState.Locked;
+                    _gestureEffect.Draggable = true; // moves outside the canvas stay moves, not an exit
+                }
                 return;
+            }
 
             _checkHover = args.Type == TouchActionResult.Pointer;
             if (!_checkHover)
@@ -318,6 +326,7 @@ public partial class Canvas : IGestureListener
         if (touchAction == TouchActionResult.Down && _gestureEffect != null)
         {
             _gestureEffect.WIllLock = ShareLockState.Initial;
+            _gestureEffect.Draggable = false;
         }
 
         // one context menu per touch long press (drawnui-cross 6cb)
