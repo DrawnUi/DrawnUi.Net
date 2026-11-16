@@ -29,6 +29,9 @@ await Super.UseDrawnUi(builder)
 - Enter / Space activate, the arrow keys go to the node and then to its group (the engine moves DOM focus to the next item's element); the element's CSS outline is the focus ring, the canvas draws none.
 - The overlay takes no pointer (`pointer-events: none`): mouse and touch reach the canvas, so every control gets its hover, taps and drags there; Tab, Enter / Space and screen-reader activation still go through the elements.
 - What an element carries: `role`, `aria-label`, the hint as `title`, `aria-live`; a pressed state on the attribute its role is read from (`aria-checked` for switch / checkbox / radio, `aria-selected` for option / tab, `aria-pressed` for a toggle button: with `aria-pressed` Chrome reads a switch as unchecked); `aria-valuenow / min / max / valuetext / orientation` for sliders and progress bars; `aria-disabled` for a control role that takes no input. Non-interactive nodes have `tabindex=-1` so a screen reader can be moved to them (refocus after a page closes).
+- Phones: a tap on a text field (`SkiaEditor`, overlay role `textbox` / `searchbox`) gives a hidden textarea the page focus inside the tap's touchend, which is when iOS opens its keyboard; what the keyboard types (composition included) reaches the editor. Mouse and physical keyboards keep the overlay element model. The canvas host sets `-webkit-touch-callout: none` and `user-select: none`, so a long press shows only the drawn selection and menu.
+- Blazor runs an element's `@onblur` synchronously inside the `focus()` call that moves the focus away, while `document.activeElement` is still `<body>`: to know where the focus went, set a flag around that `focus()` call (the overlay's blur uses it to keep a field focused when the textarea takes over).
+- The focused field rises above the phone keyboard by itself with `SkiaScroll.AdaptToKeyboardAuto = true` (Blazor, DrawnUi.Web and MAUI; `AdaptToKeyboardGap`, 8 by default; `Super.KeyboardTop` / `Super.KeyboardChanged` report the keyboard). The manual option, for full control: read the keyboard height from `visualViewport` against the canvas (`canvas.getBoundingClientRect().bottom - vv.height - vv.offsetTop`, under 80 = none, zoomed = none) and set `SkiaScroll.AdaptToKeyboardFor` / `AdaptToKeyboardSize` yourself; never both on one scroll. Size a full-page canvas with `height: 100%`, not `100vh` (the tallest viewport, which runs under Safari's bottom bar).
 - A focused element is the screen reader's node and scrolls its node into view. Verify in Chrome with CDP `Accessibility.getFullAXTree` (role, value, min, max, checked); its `valuetext` comes back empty for every element, a CDP gap, not the overlay.
 
 ## Shared-project pattern + BROWSER symbol
@@ -69,6 +72,15 @@ Pipeline: JS gesture package → `Canvas.OnTouchAction(TouchActionEventArgs)` �
 | Offscreen cache bakes | dedicated worker threads | drained INLINE (`DrainOffscreenQueueInline`) — queued items would otherwise starve indefinitely under continuous frame load (observed: two lotties, first-queued control never pumped = permanent empty box). Same total main-thread cost, guaranteed execution |
 
 `Super.OnFrame` ticks from a `Task.Delay` loop off `Super.MaxFps` (60 when unset), not rAF; the canvas paint itself goes through SkiaSharp's `SKHtmlCanvas.requestAnimationFrame`.
+
+## Hot math without AOT: System.Numerics operators are slow on the interpreter
+
+Without AOT (the interpreter), `Matrix4x4`'s `*` operator costs about six times what the same product written out in
+floats costs (measured: 60-99 ms vs 10-15 ms per 100 000 products in Chrome). Its vector code has no hardware
+acceleration there. JIT and AOT make both equally fast. Any per-frame loop doing matrix math over many objects (skeletons, particles, transforms) takes a
+plain-float helper (`static void Multiply(in Matrix4x4 a, in Matrix4x4 b, out Matrix4x4 r)` with the 16 sums written
+out). The 3D add-on's posing of 100 animated characters went from 2.0 to 0.55 ms per frame this way. Measure with a
+100 000-iteration loop in the published (Release) build before and after, never in Debug.
 
 ## SkiaImageManager cache keys (Blazor) — slash-agnostic (2026-08-20)
 
@@ -154,7 +166,7 @@ Workflow shape: manual `workflow_dispatch` (optional `source_ref` input for pre-
 
 **wasm-tools is NOT optional on CI** (verified 2026-08, DrawnCells): without the workload the publish SUCCEEDS but skips the native relink — libSkiaSharp never links into `dotnet.native.wasm` and the deployed app dies at boot with `TypeInitialization_Type, SkiaSharp.SkiaApi` while every asset fetches 200 (managed `SkiaSharp.wasm` in the payload is not proof of native code). Diagnostic tell: deployed `dotnet.native.wasm` ~3MB (stock runtime) vs ~27MB with Skia linked — compare via `curl -sI ... | grep -i content-length` against a locally working build.
 
-Performance: add `<RunAOTCompilation>true</RunAOTCompilation>` for game/animation apps (`WasmBuildNative` is NOT AOT; interpreter costs ~2x FPS). AOT grows `dotnet.native.wasm` ~5x raw — verify compressed transfer after deploy: `curl -sI -H "Accept-Encoding: br" .../dotnet.native.<hash>.wasm` must show `content-encoding`.
+Performance: the 3D gallery runs without AOT, on the interpreter, and is made fast there instead (see "Hot math without AOT"). `WasmBuildNative` is NOT AOT. If an app opts into `<RunAOTCompilation>true</RunAOTCompilation>`, AOT grows `dotnet.native.wasm` ~5x raw — verify compressed transfer after deploy: `curl -sI -H "Accept-Encoding: br" .../dotnet.native.<hash>.wasm` must show `content-encoding`.
 
 Runtime fixes Pages hosting needs:
 1. **Loader sequencing**: on .NET 10, `blazor.webassembly.js` may be fingerprinted — import it dynamically and start the DrawnUI loader only after the promise resolves; never assume `window.Blazor` is ready.
