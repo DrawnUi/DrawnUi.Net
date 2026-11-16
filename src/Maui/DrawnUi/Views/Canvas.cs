@@ -590,7 +590,10 @@ public class Canvas : DrawnView, IGestureListener
             if (PreviewTextSelectionGesture(args))
             {
                 if (AttachedTouchEffect != null)
+                {
                     AttachedTouchEffect.WIllLock = ShareLockState.Locked;
+                    AttachedTouchEffect.Draggable = true; // moves outside the canvas stay moves, not an exit
+                }
                 return;
             }
 
@@ -917,6 +920,7 @@ public class Canvas : DrawnView, IGestureListener
             if (AttachedTouchEffect != null)
             {
                 AttachedTouchEffect.WIllLock = ShareLockState.Initial;
+                AttachedTouchEffect.Draggable = false;
             }
         }
 
