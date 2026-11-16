@@ -102,6 +102,41 @@ public class KeyboardFollowCanvasTests
     }
 
     [Fact]
+    public void KeyboardBlink_FullHeightForAMoment_DoesNotDropTheField()
+    {
+        // Android Chrome reports the full height for a moment when the focus moves to the next field (the keyboard
+        // restarts): the lifted field stays where it is
+        var (host, scroll, first, _) = Form(auto: true);
+        using var _ = host;
+        try
+        {
+            first.IsFocused = true;
+            Settle(host);
+            Keyboard(500);
+            Settle(host);
+            var lifted = scroll.ViewportOffsetY;
+            var bottom = Bottom(first);
+
+            Keyboard(double.NaN);
+            for (var i = 0; i < 6; i++) // ~100 ms
+            {
+                Thread.Sleep(15);
+                host.RenderFrame(16.7);
+            }
+            Keyboard(500);
+            Settle(host);
+
+            _out.WriteLine($"offset {lifted} -> {scroll.ViewportOffsetY}, bottom {bottom} -> {Bottom(first)}");
+            Assert.Equal(lifted, scroll.ViewportOffsetY, 1);
+            Assert.Equal(bottom, Bottom(first), 1);
+        }
+        finally
+        {
+            Keyboard(double.NaN);
+        }
+    }
+
+    [Fact]
     public void ScrollWithoutTheSetting_IsLeftAlone()
     {
         var (host, scroll, first, _) = Form(auto: false);
