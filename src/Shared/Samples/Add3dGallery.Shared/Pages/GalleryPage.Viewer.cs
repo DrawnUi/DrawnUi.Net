@@ -144,7 +144,7 @@ public partial class GalleryPage
                             {
                                 Spacing = 10,
                                 AccessibilityRole = Aria.RoleRadioGroup,
-                                AccessibilityLabel = "Upholstery",
+                                AccessibilityLabel = "Fabric", // the caption above says it
                                 Children = Fabrics.Select((f, i) => (SkiaControl)new SkiaStack
                                 {
                                     Spacing = 4,
