@@ -87,7 +87,7 @@ public partial class GalleryPage
                             VerticalOptions = LayoutOptions.Fill,
                         }
                         .MaterialImage("earth", Texture3D.Decode(Theme.Earth))
-                        .Assign(out _globe)
+                        .View3D("Globe with office pins").Assign(out _globe)
                         .Adapt(me => me.ViewChanged += (_, _) => PlacePins()),
                     // The pins, then their name chips over every pin.
                     new SkiaLayer

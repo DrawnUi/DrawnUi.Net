@@ -128,7 +128,7 @@ public partial class GalleryPage
                     }
                     .MaterialImage("front", CardFront())
                     .MaterialImage("back", CardBack())
-                    .Assign(out _card)
+                    .View3D("Drawn Rewards Gold card").Assign(out _card)
                     .OnTapped3D((_, _) => Flip()))
                 .WithWidth(ViewerWidth)
                 .WithHeight(ViewerHeight)

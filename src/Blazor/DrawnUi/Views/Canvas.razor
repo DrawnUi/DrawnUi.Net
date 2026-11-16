@@ -110,7 +110,8 @@
         font-size: 0px;
     }
 
-    .xaml-a11y-interactive:focus-visible {
+    /* the keyboard focus ring of controls; text that took the focus (selected by a long press) shows its own selection */
+    .xaml-a11y-interactive:not([role="text"]):not([role="heading"]):focus-visible {
         outline: 3px solid rgba(0, 103, 244, 0.85);
         outline-offset: 1px;
         border-radius: 3px;

@@ -69,7 +69,7 @@ public partial class GalleryPage
                         // smooth edges (multisampling): the box's straight edges show steps without it
                         .Adapt(me => { me.AutoRotate = 40; me.Antialias = true; })
                         .MaterialImage("box", _labels[0])
-                        .Assign(out _product)
+                        .View3D("Product box").Assign(out _product)
                         .OnTapped3D((me, _) => NextImage(me, "box", _labels, ref _label)),
                     new Button3D("Next design", Theme.Accent, 124).OnTapped(_ => NextImage(_product, "box", _labels, ref _label)));
     }

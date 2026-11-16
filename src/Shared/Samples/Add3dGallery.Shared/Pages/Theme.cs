@@ -5,6 +5,14 @@ namespace Add3dGallery;
 /// <summary>The app's palette, type and the models it ships.</summary>
 public static class Theme
 {
+    /// <summary>A 3D view is a picture to a screen reader: "{name}, 3D view" (as DrawnUI for React and Rust).</summary>
+    public static T View3D<T>(this T view, string name) where T : SkiaControl
+    {
+        view.AccessibilityRole = Aria.RoleImg;
+        view.AccessibilityLabel = $"{name}, 3D view";
+        return view;
+    }
+
     public static readonly Color Page = Color.FromRgb(14, 16, 24);
     public static readonly Color Header = Color.FromRgb(19, 21, 32);
     public static readonly Color Card = Color.FromRgb(24, 27, 40);

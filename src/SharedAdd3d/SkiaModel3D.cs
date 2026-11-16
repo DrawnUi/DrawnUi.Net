@@ -71,7 +71,7 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     float _pinchFrom;
     /// <summary>The gesture going on has had two fingers or more.</summary>
     bool _multiTouch;
-    long _lastTapMs;
+    long _lastTapNanos;
     /// <summary>Drawn since the last frame tick: a model that was not (off screen) stops asking for frames.</summary>
     bool _painted;
     /// <summary>Something changed since the last 3D render (every change calls Update); false = its image can be shown again.</summary>
@@ -506,6 +506,9 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
     /// A tap landed on the scene's surface (not on empty space around it): the node, the material and the point it hit.
     /// </summary>
     public event EventHandler<ModelHit> Tapped3D;
+
+    /// <summary>When a tap happened: its arrival from the platform, or now for a gesture made in code.</summary>
+    static long TapTime(SkiaGesturesParameters args) => args.ArrivedTimeNanos != 0 ? args.ArrivedTimeNanos : Super.GetCurrentTimeNanos();
 
     #endregion
 
@@ -1118,13 +1121,15 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
                     _zoom = Math.Clamp(_zoom * MathF.Pow(0.88f, notches), _minZoom, _maxZoom);
                     Update();
                     return this;
-                case TouchActionResult.Tapped when _resetOnDoubleTap && Environment.TickCount64 - _lastTapMs < 300:
-                    _lastTapMs = 0;
+                // two taps 300 ms apart by when they happened, not when a frame got to them (a slow frame drains both
+                // late, far apart or together; see SkiaGesturesParameters.ArrivedTimeNanos)
+                case TouchActionResult.Tapped when _resetOnDoubleTap && _lastTapNanos != 0 && TapTime(args) - _lastTapNanos < 300_000_000:
+                    _lastTapNanos = 0;
                     ResetView();
                     return this;
                 case TouchActionResult.Tapped when _resetOnDoubleTap || Tapped3D != null:
                     if (_resetOnDoubleTap)
-                        _lastTapMs = Environment.TickCount64;
+                        _lastTapNanos = TapTime(args);
                     if (Tapped3D == null)
                         return this;
                     var at = PointInside(apply);
