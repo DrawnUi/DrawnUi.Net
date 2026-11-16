@@ -94,13 +94,14 @@ Please star ⭐ if you like it!
   * Much lower memory for images: every image that shows the same file or URL now shares one decoded copy instead of holding its own. 69 images of one photo take about 7 MB instead of over 900 MB. Code that disposes or edits bitmaps it gets from SkiaImageManager sets `SkiaImageManager.ReuseBitmaps = false`.
   * Image memory stays within a budget: `SkiaImageManager.CacheBudgetMb` (128 MB by default) caps the decoded pictures the cache keeps; pictures on screen always stay.
   * Android, iOS, Mac, Windows: pages of a closed window are freed, and their canvases release their GPU memory.
-  * Forms follow the on-screen keyboard by themselves: set `AdaptToKeyboardAuto = true` on a SkiaScroll and the focused field rises above the keyboard on any page, with room for the last field; the page settles back when the keyboard closes (Android, iOS).
+  * Forms follow the on-screen keyboard by themselves: set `AdaptToKeyboardAuto = true` on a SkiaScroll and the focused field rises above the keyboard on any page, with room for the last field; the page settles back when the keyboard closes (Android, iOS and the web).
   * The mouse wheel keeps scrolling the page while a text field is focused.
   * A touchpad pinch over a zoomable control zooms it instead of scrolling the page.
   * Windows (MAUI): a drag that leaves a control keeps going until the button is released, as on the other platforms.
   * Tab and Shift+Tab reach every control of a scrolling page or list, also the ones out of view, and scroll each into view.
   * When the control with the keyboard focus disappears, the focus moves to the next control; choosing an item of a menu leaves the page where it is.
   * Screen readers hear a menu's items as soon as it opens.
+  * Screen readers never hear what is typed in a password field: it is announced by its placeholder, and Windows reports it as a password field.
   * A long press on a phone or tablet opens the app's context menu (`OnContextMenu`), on every platform, Android and iPhone apps included.
   * A long press comes after 0.75 s by default on every platform (was 1.5 s); set your own with `TouchEffect.LongPressTimeMsDefault`.
   * Web (DrawnUi.Web): long press works on the pure WebAssembly head too.
@@ -112,6 +113,7 @@ Please star ⭐ if you like it!
   * A long press on selected text keeps the selection for that menu.
   * WPF: GPU canvases draw at full frame rate on every device, including Windows on ARM.
   * Mac Catalyst: frames follow the screen's own refresh, with less CPU spent between frames; drawing keeps going while the window is resized.
+  * Mac Catalyst: the MAUI template and samples run as Mac apps, drawn at full size (an iPad-style app is drawn at 77% on a Mac).
   * Web (DrawnUi.Web): a page at rest draws nothing, saving battery and CPU.
   * Recycled list cells never show the previous item's picture while their own is prepared.
   * Shader effects that paint only part of their control now sample the control where it really is, for example a transition clipped to its photo.

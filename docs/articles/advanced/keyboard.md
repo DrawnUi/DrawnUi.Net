@@ -1,6 +1,6 @@
 # On-screen Keyboard over a Form
 
-On phones (MAUI on Android and iOS) the on-screen keyboard covers the bottom of the screen. A DrawnUI form keeps the focused field above it with one property on its `SkiaScroll`, on any page.
+On phones the on-screen keyboard covers the bottom of the screen. A DrawnUI form keeps the focused field above it with one property on its `SkiaScroll`, on any page: in MAUI apps on Android and iOS, and on the web (Blazor and DrawnUi.Web) in phone browsers such as Chrome on Android and Safari on iPhone.
 
 ## What you get
 
@@ -43,7 +43,7 @@ Use one way per scroll: with `AdaptToKeyboardAuto` on, do not also add a keyboar
 
 ## Full control: the manual way
 
-When you want to decide yourself what moves, wire it by hand in three steps: the page reports the keyboard height, a spacer makes room at the end of the scrolling content, and the `SkiaScroll` brings the focused field just above the keyboard.
+In MAUI apps, when you want to decide yourself what moves, wire it by hand in three steps: the page reports the keyboard height, a spacer makes room at the end of the scrolling content, and the `SkiaScroll` brings the focused field just above the keyboard.
 
 ### 1. The page reports the keyboard height
 
