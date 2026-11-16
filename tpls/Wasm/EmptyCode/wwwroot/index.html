@@ -14,6 +14,8 @@
 </head>
 <body>
     <canvas id="drawnui-canvas"></canvas>
-    <script type="module" src="./main.js"></script>
+    <!-- filled at build with each script's fingerprinted name: a deploy never runs an old cached copy (main.js included) -->
+    <script type="importmap"></script>
+    <script type="module">import "./main.js";</script>
 </body>
 </html>
