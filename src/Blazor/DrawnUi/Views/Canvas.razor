@@ -11,9 +11,13 @@
 @inject IJSRuntime JS
 
 <style>
+    /* the canvas draws its own text selection and menus: a long press must not start the browser's selection or callout */
     .xaml-canvas {
         position: relative;
         overflow: hidden;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
     }
 
     .xaml-canvas:fullscreen,
@@ -164,6 +168,7 @@
                    (aria-disabled, drawnui-cross 6c rule 2); its click, key and focus handlers do nothing. *@
                 <div @key="node.Id"
                      @ref="_a11yElements[node.Id]"
+                     data-a11y-id="@node.Id"
                      role="@node.Role"
                      aria-label="@node.Label"
                      title="@node.Hint"
@@ -1154,6 +1159,9 @@
     {
         await Task.Delay(1);
         if (!ReferenceEquals(FocusedChild, node) || ReferenceEquals(_a11yDomFocus, node))
+            return;
+        // a tap opened the on-screen keyboard: its hidden text field keeps the page focus
+        if (KeyboardManager.TextInputHasFocus())
             return;
         _pendingA11yFocusId = node.AccessibilityId;
         _accessibilityNodes = AccessibilityManager.Snapshot;

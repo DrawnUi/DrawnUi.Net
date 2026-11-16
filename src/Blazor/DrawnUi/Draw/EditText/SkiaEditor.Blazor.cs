@@ -33,6 +33,7 @@ public partial class SkiaEditor : SkiaShape, ISkiaGestureListener
         // has already run, IsFocused will be true while focus=false — skip the unsubscribe.
         if (!focus && IsFocused) return;
         SubscribeToKeyboard(focus);
+        KeyboardManager.TextInputFocus(focus, AccessibilityId); // giving the focus back closes the on-screen keyboard
 
         // Take real DOM focus away from any external page text input (e.g. a Monaco code
         // editor sharing the page): a drawn editor has no DOM element, so without this the

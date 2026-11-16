@@ -34,6 +34,49 @@ public partial class KeyboardManager
             .ContinueWith(static _ => { }, TaskContinuationOptions.OnlyOnFaulted);
     }
 
+    // A drawn editor took or gave back its focus: giving it back closes the phone's on-screen keyboard (the hidden
+    // textarea a tap on a text field focused, see drawnui-keyboard.js). Fire-and-forget.
+    internal static void TextInputFocus(bool focus, int ownerId)
+    {
+        var module = _module;
+        if (module is null)
+            return;
+
+        _ = module.InvokeVoidAsync("textInputFocus", focus, ownerId).AsTask()
+            .ContinueWith(static _ => { }, TaskContinuationOptions.OnlyOnFaulted);
+    }
+
+    // The hidden textarea has the page focus (a tap opened the on-screen keyboard): the editor's overlay element must
+    // not take it, that would close the keyboard. Synchronous: Blazor runs in WebAssembly, in the page's thread.
+    internal static bool TextInputHasFocus()
+    {
+        try
+        {
+            return _module is IJSInProcessObjectReference module && module.Invoke<bool>("textInputHasFocus");
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>Text the on-screen keyboard or an input method typed into a focused drawn editor.</summary>
+    [JSInvokable]
+    public static void HandleTextInput(string? text)
+    {
+        if (!string.IsNullOrEmpty(text))
+            KeyboardChar(text, false);
+    }
+
+    /// <summary>An editing key (DOM code: Backspace, Delete, Enter) the on-screen keyboard reported as text input.</summary>
+    [JSInvokable]
+    public static void HandleTextKey(string? code)
+    {
+        var key = MapToMaui(code);
+        KeyboardPressed(key, false);
+        KeyboardReleased(key, false);
+    }
+
     /// <param name="code">DOM <c>KeyboardEvent.code</c>.</param>
     /// <param name="forOtherElement">A page element outside the canvas has the key, see <see cref="KeyboardManager.IsKeyForOtherElement"/>.</param>
     [JSInvokable]
