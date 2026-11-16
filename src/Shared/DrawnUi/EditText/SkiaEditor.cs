@@ -894,6 +894,11 @@ namespace DrawnUi.Draw
                 return this;
             }
 
+            // a finger or a pen: the field takes the caret and the focus on the tap, as native fields do, so a drag
+            // that starts on it scrolls the page around it; the press only grabs a selection handle. The mouse places
+            // the caret on the press.
+            var touch = args.Event.Pointer?.DeviceType != PointerDeviceType.Mouse;
+
             var thisOffset = TranslateInputCoords(apply.ChildOffset);
             var x = args.Event.Location.X + thisOffset.X;
             var y = args.Event.Location.Y + thisOffset.Y;
@@ -939,6 +944,9 @@ namespace DrawnUi.Draw
             }
 
             _selectionDragMode = SelectionDragMode.None;
+            if (touch)
+                break;
+
             var pos = GetCursorPosition(x, y);
             Debug.WriteLine($"[EditorDown] x={x:F0} y={y:F0} pos={pos} Text.Length={Text?.Length ?? 0}");
 
@@ -972,28 +980,25 @@ namespace DrawnUi.Draw
                 return this;
             }
 
-            CursorPosition = pos;
-
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                SelectionLength = 0;
-                if (IsFocused)
-                {
-                    // Already logically focused: the IsFocused BindableProperty callback won't fire
-                    // again, but the native sink may have lost the IME meanwhile (Android BACK
-                    // dismisses the keyboard without unfocusing; WinUI shifts keyboard focus to the
-                    // canvas on tap) — force the native focus + keyboard re-show path directly.
-                    SetFocusInternal(true);
-                }
-                else
-                {
-                    IsFocused = true;
-                }
-                Superview.FocusedChild = this;
-            });
-
+            PlaceCaretAndFocus(pos);
             return this;
             break;
+
+            case TouchActionResult.Tapped when args.Event.Pointer?.DeviceType != PointerDeviceType.Mouse
+                                               && args.Event.Pointer?.Button is null or AppoMobi.Gestures.MouseButton.Left:
+            {
+                // a touch tap (see Down): the caret goes where the finger lifted and the field takes the focus
+                var tapOffset = TranslateInputCoords(apply.ChildOffset);
+                var tx = args.Event.Location.X + tapOffset.X;
+                var ty = args.Event.Location.Y + tapOffset.Y;
+                if (_scroll != null)
+                {
+                    tx += (float)(_scroll.ViewportOffsetX * RenderingScale);
+                    ty += (float)(_scroll.ViewportOffsetY * RenderingScale);
+                }
+                PlaceCaretAndFocus(GetCursorPosition(tx, ty));
+                return this;
+            }
 
             case TouchActionResult.Panning:
             if (_selectionDragMode != SelectionDragMode.None)
@@ -1030,6 +1035,30 @@ namespace DrawnUi.Draw
         }
 
 
+
+        /// <summary>Puts the caret at <paramref name="pos"/> and focuses the field (a press with the mouse, a tap by touch).</summary>
+        void PlaceCaretAndFocus(int pos)
+        {
+            CursorPosition = pos;
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                SelectionLength = 0;
+                if (IsFocused)
+                {
+                    // Already logically focused: the IsFocused BindableProperty callback won't fire
+                    // again, but the native sink may have lost the IME meanwhile (Android BACK
+                    // dismisses the keyboard without unfocusing; WinUI shifts keyboard focus to the
+                    // canvas on tap) — force the native focus + keyboard re-show path directly.
+                    SetFocusInternal(true);
+                }
+                else
+                {
+                    IsFocused = true;
+                }
+                Superview.FocusedChild = this;
+            });
+        }
 
         protected void SetFocusInternal(bool value)
         {
