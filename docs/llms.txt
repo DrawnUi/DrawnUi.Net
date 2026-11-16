@@ -15,6 +15,7 @@ Save under `~/.claude/skills/<name>/SKILL.md` (or your agent's skill folder) to 
 - [DrawnUI headless testing skill](https://drawnui.net/skills/drawnui-net-harness/SKILL.md): pure-.NET headless harness — render frames offscreen, simulate gestures, reproduce scroll/virtualization bugs without a device
 - [DrawnUI PDF skill](https://drawnui.net/skills/drawnui-pdf/SKILL.md): render a layout to PDF, JPEG or any Skia canvas — report templates bound to a view model, real paper pages split between table rows, async images, preview window, headless server-side export
 - [DrawnUI shaders skill](https://drawnui.net/skills/drawnui-shaders/SKILL.md): writing SkSL shaders for VisualEffects and porting GLSL / Shadertoy / CodePen shaders to DrawnUI
+- [DrawnUI 3D skill](https://drawnui.net/skills/drawnui-3d/SKILL.md): the 3D add-on — SkiaModel3D and SkiaScene3D, glTF loading, animations, materials, looks, framing, interaction, performance; .NET, React and Rust
 - [SkiaSharp SKMesh skill](https://drawnui.net/skills/skmech/SKILL.md): experimental SKMesh custom mesh drawing with SkSL — spec/buffers/DrawMesh, WASM trimming and backend traps. Bundle — also fetch [references/api-overview.md](https://drawnui.net/skills/skmech/references/api-overview.md) and [references/examples.md](https://drawnui.net/skills/skmech/references/examples.md)
 - [Fiddle driving skill](https://drawfiddle.com/skills/drawnui-fiddle/SKILL.md): drive the in-browser playground programmatically (window.fiddle API)
 
