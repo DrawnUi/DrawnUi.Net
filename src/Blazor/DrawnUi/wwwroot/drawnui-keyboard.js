@@ -80,7 +80,8 @@ export function attachGlobalKeyboard() {
 // the page focus at once (the drawn editor takes its own focus from the same tap), and the touchend's default is
 // prevented while that textarea has the focus. What the keyboard types reaches the editor as text (HandleTextInput) or
 // as an editing key (HandleTextKey); the textarea keeps two spaces with its caret at the end, so a Backspace always has
-// something to delete and is reported. Mouse and physical keyboards keep the overlay element model.
+// something to delete and is reported. A field focused by the mouse or the keyboard (Tab) uses the same textarea, placed
+// at the field, so an input method (Chinese, Japanese, Korean) composes into it and shows its candidates there.
 const TEXT_INPUT_REST = "  ";
 const EDITOR_KEYS = new Set(["Backspace", "Delete", "Enter", "NumpadEnter",
     "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown"]);
@@ -180,7 +181,9 @@ function textInputKeyDown(e, state) {
     }
     const shortcut = e.ctrlKey || e.metaKey;
     if (EDITOR_KEYS.has(e.code) || (shortcut && e.code === "KeyA")) e.preventDefault();
-    // its text comes from the textarea's input; editing keys and shortcuts (Ctrl+C, Ctrl+V...) go as keys
+    // Ctrl / Cmd + V: the textarea's paste event types the text (no clipboard permission needed)
+    if (shortcut && e.code === "KeyV") return;
+    // its text comes from the textarea's input; editing keys and shortcuts (Ctrl+C, Ctrl+X, Ctrl+A...) go as keys
     if (e.code) invoke("HandleGlobalKeyDown", e.code, false);
 }
 
@@ -214,6 +217,7 @@ function attachTouchTextInput(state) {
             const field = textFieldAt(host, t.clientX, t.clientY);
             if (field) {
                 const el = ensureTextInput(state);
+                placeTextInput(el, null);
                 state.textOwner = field;
                 state.textOwnerId = field.getAttribute("data-a11y-id");
                 // a tap on the focused field again: focus anew, so a keyboard the user closed opens again
@@ -234,6 +238,21 @@ function attachTouchTextInput(state) {
     };
     document.addEventListener("touchstart", state.touchStartHandler, { capture: true, passive: true });
     document.addEventListener("touchend", state.touchEndHandler, { capture: true, passive: false });
+    // a mouse press on the canvas leaves the textarea its focus: the drawn controls decide whether the editor keeps it
+    document.addEventListener("mousedown", e => {
+        if (state.textInput && document.activeElement === state.textInput && e.target && e.target.closest
+            && e.target.closest(".xaml-canvas")) e.preventDefault();
+    }, true);
+}
+
+// Focused by a touch: the textarea stays in the page's corner (over a field low on the screen iOS would pan the whole
+// page to reveal it). Focused by the mouse or the keyboard: it sits at the field's bottom-left, where an input method
+// shows its candidates.
+function placeTextInput(el, owner) {
+    const r = owner ? owner.getBoundingClientRect() : null;
+    const placed = r && r.width > 0;
+    el.style.left = placed ? r.left + "px" : "0px";
+    el.style.top = placed ? Math.max(0, r.bottom - 1) + "px" : "0px";
 }
 
 // a tap the editor does not take as focus (a read-only field) gives the page focus back
@@ -255,6 +274,17 @@ export function textInputFocus(focus, ownerId) {
         state.editorFocused = true;
         state.editorFocusCount = (state.editorFocusCount || 0) + 1;
         state.textOwnerId = id;
+        const el = ensureTextInput(state);
+        if (document.activeElement !== el) {
+            // focused by the mouse, the keyboard or code: the textarea takes the page focus at the field
+            const owner = document.querySelector('.xaml-a11y-overlay [data-a11y-id="' + id + '"]');
+            state.textOwner = owner;
+            state.composing = "";
+            restTextInput(el);
+            placeTextInput(el, owner);
+            state.textInputFocusing = true;
+            try { el.focus({ preventScroll: true }); } finally { state.textInputFocusing = false; }
+        }
         return;
     }
     if (state.textOwnerId != null && state.textOwnerId !== id) return;
