@@ -2340,8 +2340,9 @@ namespace DrawnUi.Draw
 
         protected override string? GetDefaultAccessibilityRole() => DefaultAccessibilityRole;
 
+        /// <summary>The typed text, else the placeholder. A password field never exposes its text: only the placeholder.</summary>
         protected override string? DefaultAccessibilityLabel()
-            => !string.IsNullOrEmpty(Text) ? Text : (string.IsNullOrEmpty(PlaceholderText) ? null : PlaceholderText);
+            => !IsPassword && !string.IsNullOrEmpty(Text) ? Text : (string.IsNullOrEmpty(PlaceholderText) ? null : PlaceholderText);
 
         /// <summary>A text field is a Tab stop by default, like a native text box, with no Tapped handler needed.</summary>
         protected override bool DefaultAccessibilityCanInteract() => true;

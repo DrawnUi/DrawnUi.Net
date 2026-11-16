@@ -279,7 +279,7 @@ internal sealed class DrawnUiVirtualAutomationPeer : AutomationPeer, Microsoft.U
     protected override bool IsContentElementCore()    => true;
     protected override bool IsControlElementCore()    => true;
     protected override bool HasKeyboardFocusCore()    => ReferenceEquals(this, _parent.FocusedPeer);
-    protected override bool IsPasswordCore()          => false;
+    protected override bool IsPasswordCore()          => Source is SkiaEditor { IsPassword: true };
     protected override bool IsRequiredForFormCore()   => false;
 
     protected override AutomationLiveSetting GetLiveSettingCore() => (_node.Live ?? Source?.AccessibilityLive) switch
