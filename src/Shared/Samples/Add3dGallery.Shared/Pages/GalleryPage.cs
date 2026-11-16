@@ -84,7 +84,7 @@ public partial class GalleryPage : DrawnGame
                                     Children =
                                     {
                                         Theme.Link("Read the 3D article", Theme.ArticleUrl).WithTooltip("DrawnUI official site"),
-                                        Theme.Link("Source on GitHub", Theme.RepoUrl).WithTooltip("Please star if you like it"),
+                                        Theme.Link("Source on GitHub", Theme.SourceUrl).WithTooltip("Please star if you like it"),
                                     }
                                 },
                             }
@@ -163,7 +163,7 @@ public partial class GalleryPage : DrawnGame
                 {
                     Theme.Link("3D article", Theme.ArticleUrl),
                     Theme.Link("DrawnUI docs", Theme.DocsUrl),
-                    Theme.Link("Source on GitHub", Theme.RepoUrl),
+                    Theme.Link("Source on GitHub", Theme.SourceUrl),
                     Theme.Link("Same demo in Rust", Theme.RustDemoUrl),
                     Theme.Link("Same demo in React", Theme.ReactDemoUrl),
                 }

@@ -77,6 +77,9 @@ public static class Theme
     public const string ArticleUrl = "https://drawnui.net/articles/add3d.html";
     public const string DocsUrl = "https://drawnui.net/";
     public const string RepoUrl = "https://github.com/DrawnUi/DrawnUi.Net";
+
+    /// <summary>This head's own code on GitHub ("Source on GitHub"), set by <see cref="GalleryRoot"/>.</summary>
+    public static string SourceUrl { get; set; } = RepoUrl;
     public const string RustDemoUrl = "https://add3d.drawnui.net/";
     public const string ReactDemoUrl = "https://add3dreact.drawnui.net/";
 

@@ -11,7 +11,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        var root = new GalleryRoot("Add3D addon to DrawnUI for WPF");
+        var root = new GalleryRoot("Add3D addon to DrawnUI for WPF", "src/Wpf/Samples/Add3dGalleryWpf");
         Drawn.Canvas.BackgroundColor = Theme.Page;
         Drawn.Canvas.Content = root;
         var perf = Environment.GetEnvironmentVariable("ADD3D_PERF");

@@ -25,7 +25,7 @@ Super.UseDrawnUi()
     }))
     .Build();
 
-var root = new GalleryRoot("Add3D addon to DrawnUI for OpenTK");
+var root = new GalleryRoot("Add3D addon to DrawnUI for OpenTK", "src/OpenTk/Samples/Add3dGalleryOpenTk");
 // ADD3D_PERF=mobs (globe, globechip...) measures the gallery; results go to the console.
 var perf = Environment.GetEnvironmentVariable("ADD3D_PERF");
 if (!string.IsNullOrEmpty(perf))
