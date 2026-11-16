@@ -728,7 +728,12 @@ public partial class SkiaScroll
 
                         if (!ScrollLocked && canSwipe && Orientation != ScrollOrientation.Neither)
                         {
+#if WEB
+                            // pure Wasm dates the samples by the browser's event time: judge them at the release's time
+                            var finalVelocity = SwipeVelocityAccumulator.CalculateFinalVelocity(this.MaxVelocity, args.ArrivedTimeNanos);
+#else
                             var finalVelocity = SwipeVelocityAccumulator.CalculateFinalVelocity(this.MaxVelocity);
+#endif
 
                             // a cancelled pointer (a parent or the browser took the pan to scroll itself) settles in
                             // place: flinging from the few moves that arrived before the cancel scrolls both at once

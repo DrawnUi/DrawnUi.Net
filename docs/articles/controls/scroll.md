@@ -170,6 +170,10 @@ Virtualization is on by default: a templated layout inside a `SkiaScroll` draws 
 
 How rows get measured is `MeasureItemsStrategy` on the layout: `MeasureAll` (default) measures every item, so rows of any height come out exact; `MeasureFirst` measures one row and gives every row its size, for lists whose rows all share one height; `MeasureVisible` measures what is on screen and the rest in background, for thousands of uneven rows. See [Scrolling Lists](lists.md) to pick a setup.
 
+### Forms and the on-screen keyboard
+
+On phones, `AdaptToKeyboardAuto = true` keeps the focused field of a form above the on-screen keyboard: the scroll moves the field up, `AdaptToKeyboardGap` points above the keyboard (8 by default), and makes room for the last field while the keyboard is up. See [On-screen Keyboard over a Form](../advanced/keyboard.md).
+
 ### Pull-to-Refresh
 
 SkiaScroll supports pull-to-refresh functionality. It needs `RefreshEnabled`, a `RefreshIndicator` and a `RefreshCommand`:

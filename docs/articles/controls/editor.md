@@ -163,6 +163,10 @@ On a single-line editor the confirm key always fires `TextSubmitted`; on Android
 | `CommandOnFocusChanged` | `bool` (focus state) | Executed on focus change |
 | `CommandOnTextChanged` | `string` (current text) | Executed on every keystroke |
 
+## On-screen keyboard
+
+Put a form's editors in a `SkiaScroll` with `AdaptToKeyboardAuto = true`, and on phones the focused editor rises above the on-screen keyboard by itself. See [On-screen Keyboard over a Form](../advanced/keyboard.md).
+
 ## Keyboard navigation
 
 An editor is a Tab stop by default. Tab into it and it takes the caret, so typing goes into it; `IsFocused` and the canvas `FocusedChild` are set exactly as after a click. Tab and Shift+Tab leave the field and move on from it, also after a click into it (no tab characters, except in an OpenTK `CanvasHost` overlay), and while editing the arrows, Home / End and Enter work on the text. The next control keeps the keyboard, so Enter or Space presses a button reached this way. See [Accessibility](../advanced/accessibility.md#keyboard-navigation).
