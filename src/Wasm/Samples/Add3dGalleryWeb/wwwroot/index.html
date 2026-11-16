@@ -56,6 +56,25 @@
             loader.classList.add("done");
             setTimeout(() => loader.remove(), 400);
         };
+        // The on-screen keyboard's height over the page, in points (0 = none), to onChange whenever it changes: a phone
+        // browser shrinks the visual viewport under the keyboard. Pinch zoom shrinks it too, so a zoomed page reports none.
+        window.add3dWatchKeyboard = onChange => {
+            const vv = window.visualViewport;
+            if (!vv) return;
+            let last = -1;
+            const report = () => {
+                let h = vv.scale > 1.05 ? 0 : Math.round(window.innerHeight - vv.height - vv.offsetTop);
+                if (h < 80) h = 0; // the browser's own bars moving, not a keyboard
+                if (h !== last) {
+                    last = h;
+                    onChange(h);
+                }
+            };
+            window.add3dKeyboardChanged = report;
+            vv.addEventListener("resize", report);
+            vv.addEventListener("scroll", report);
+            report();
+        };
     </script>
     <script type="module" src="./main.js"></script>
 </body>

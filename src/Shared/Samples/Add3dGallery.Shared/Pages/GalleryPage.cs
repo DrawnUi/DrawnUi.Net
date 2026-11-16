@@ -60,6 +60,8 @@ public partial class GalleryPage : DrawnGame
                 // dragged; not held on hover (the mouse is always over the page, it would never hide)
                 ScrollBar = new SkiaScrollBar { IsDraggable = true, Thickness = 6 },
                 ShowScrollBarsOnHover = false,
+                // a focused field ends 16 pt clear of the on-screen keyboard, as in DrawnUI for React and Rust
+                AdaptToKeyboardGap = 16,
                 ScrollBarThumbColor = Theme.Muted,
                 ScrollBarTrackColor = Color.FromRgba(255, 255, 255, 18),
                 HorizontalOptions = LayoutOptions.Fill,

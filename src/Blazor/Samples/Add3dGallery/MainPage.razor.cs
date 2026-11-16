@@ -38,5 +38,21 @@ public partial class MainPage
             _ = JS.InvokeVoidAsync("add3dLoaderDone");
         };
         _canvas.WasDrawn += drawn;
+        // The sign-up form on a phone: the focused field is scrolled above the on-screen keyboard, also when the focus
+        // moves to the next field while it shows (as the MAUI head does with DrawnUiBasePage.KeyboardSize).
+        _canvas.FocusedItemChanged += (_, _) => FollowKeyboard();
+        _ = JS.InvokeVoidAsync("add3dWatchKeyboardFor", DotNetObjectReference.Create(this));
     }
+
+    double _keyboard;
+
+    /// <summary>The on-screen keyboard's height in points, 0 when it closed (from wwwroot/index.html).</summary>
+    [JSInvokable]
+    public void OnKeyboard(double height)
+    {
+        _keyboard = height;
+        FollowKeyboard();
+    }
+
+    void FollowKeyboard() => _content.Gallery.OnKeyboard(_keyboard, _canvas?.FocusedChild as SkiaControl);
 }
