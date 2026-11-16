@@ -13,8 +13,10 @@ public class GalleryRoot : SkiaLayer
     public GalleryPage Gallery => (GalleryPage)_pages[0];
 
     /// <param name="subtitle">The line under the app name, naming the head.</param>
-    public GalleryRoot(string subtitle)
+    /// <param name="sourcePath">The head's folder in the DrawnUi.Net repository: "Source on GitHub" opens it.</param>
+    public GalleryRoot(string subtitle, string sourcePath)
     {
+        Theme.SourceUrl = $"{Theme.RepoUrl}/tree/main/{sourcePath}";
         VerticalOptions = LayoutOptions.Fill;
         BackgroundColor = Theme.Page;
         // titles and descriptions can be selected and copied: their selection in the gallery's gold
