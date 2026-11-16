@@ -56,6 +56,12 @@ public partial class GalleryPage : DrawnGame
             {
                 // The 3D pieces draw every frame: nothing to keep in a cache.
                 AutoCache = false,
+                // an overlay bar, as on phones and the Mac: it shows while the page moves and fades out after; it can be
+                // dragged; not held on hover (the mouse is always over the page, it would never hide)
+                ScrollBar = new SkiaScrollBar { IsDraggable = true, Thickness = 6 },
+                ShowScrollBarsOnHover = false,
+                ScrollBarThumbColor = Theme.Muted,
+                ScrollBarTrackColor = Color.FromRgba(255, 255, 255, 18),
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 Content = new SkiaStack
