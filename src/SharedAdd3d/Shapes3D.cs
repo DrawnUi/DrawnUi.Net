@@ -25,7 +25,9 @@ public sealed class Mesh3D
     static readonly Vector2[] Whole = { new(0, 1), new(1, 1), new(1, 0), new(0, 0) };
 
     /// <summary>A quad from its bottom left corner counter-clockwise, seen from outside; <paramref name="uvs"/> in that order.</summary>
-    void Quad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Vector3 normal, Vector2[] uvs)
+    // `in`: five Vector3 by value overflow the 8 float argument registers, and Mono AOT on arm64 (iOS Release) reads
+    // the ones passed on the stack wrong (dotnet/runtime#135197)
+    void Quad(in Vector3 a, in Vector3 b, in Vector3 c, in Vector3 d, in Vector3 normal, Vector2[] uvs)
     {
         var at = (uint)Positions.Count;
         Positions.Add(a);

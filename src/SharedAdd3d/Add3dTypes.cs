@@ -130,7 +130,9 @@ internal struct NodeTransform
     public Quaternion R;
     public Vector3 S;
 
-    public NodeTransform(Vector3 t, Quaternion r, Vector3 s)
+    // `in`: past the 8 float argument registers, Mono AOT on arm64 (iOS Release) reads stack-passed float structs
+    // wrong (dotnet/runtime#135197)
+    public NodeTransform(in Vector3 t, in Quaternion r, in Vector3 s)
     {
         T = t;
         R = r;

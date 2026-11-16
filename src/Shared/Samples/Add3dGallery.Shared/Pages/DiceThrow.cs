@@ -65,7 +65,8 @@ public sealed class DiceThrow
     /// Throws both dice from where they lie: up, across the felt (<paramref name="direction"/>: -1 left, 1 right, 0
     /// either) and spinning around a random axis. <see cref="Run"/> then moves them on.
     /// </summary>
-    public void Throw(Vector3 at0, Quaternion turn0, Vector3 at1, Quaternion turn1, int direction, Random random)
+    // `in`: four float structs by value overflow the 8 float argument registers (Mono AOT arm64, dotnet/runtime#135197)
+    public void Throw(in Vector3 at0, in Quaternion turn0, in Vector3 at1, in Quaternion turn1, int direction, Random random)
     {
         if (direction == 0)
             direction = random.Next(2) * 2 - 1;
