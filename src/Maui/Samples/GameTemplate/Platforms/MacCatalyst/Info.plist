@@ -11,9 +11,10 @@
     <!-- Please consult https://developer.apple.com/documentation/bundleresources/information_property_list/lsapplicationcategorytype -->
     <!-- <key>LSApplicationCategoryType</key> -->
     <!-- <string>public.app-category.YOUR-CATEGORY-HERE</string> -->
+	<!-- 6 = a Mac app at 1:1; the iPad family (2) makes macOS draw the whole app at 77% -->
 	<key>UIDeviceFamily</key>
 	<array>
-		<integer>2</integer>
+		<integer>6</integer>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

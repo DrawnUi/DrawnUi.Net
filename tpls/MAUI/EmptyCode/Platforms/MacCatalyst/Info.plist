@@ -4,10 +4,10 @@
 <dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- 6 = a Mac app at 1:1; the iPad family (2) makes macOS draw the whole app at 77% -->
 	<key>UIDeviceFamily</key>
 	<array>
-		<integer>1</integer>
-		<integer>2</integer>
+		<integer>6</integer>
 	</array>
   <key>UIRequiredDeviceCapabilities</key>
 	<array>
