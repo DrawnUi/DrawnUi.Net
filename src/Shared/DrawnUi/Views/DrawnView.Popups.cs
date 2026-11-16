@@ -448,7 +448,11 @@ namespace DrawnUi.Views
                     root.TranslationY = y;
                 }
                 if (root.Opacity < 1)
+                {
                     root.Opacity = 1;
+                    // shown now: its lines reach screen readers and Tab at this frame's end, not at the next timed rebuild
+                    _canvas.AccessibilityManager.ForceRebuildOnNextFrame();
+                }
 
                 if (!own)
                 {

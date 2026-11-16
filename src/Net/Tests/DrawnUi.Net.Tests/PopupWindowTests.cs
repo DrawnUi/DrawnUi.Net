@@ -415,4 +415,44 @@ public class PopupWindowTests
         Assert.False(host.Canvas.IsPopupWindowOpen(id));
         Assert.Null(host.Canvas.TopPopupWindow);
     }
+
+    /// <summary>
+    /// A popup's lines reach screen readers (the accessibility snapshot) the moment it shows, not at the next timed
+    /// rebuild up to a second later: a reader user hears the menu that just opened.
+    /// </summary>
+    [Fact]
+    public void OpenedPopup_ItsLinesAreInTheSnapshotAtOnce()
+    {
+        using var host = Scene(out var opener, out _);
+        opener.AccessibilityRole = Aria.RoleButton;
+        opener.AccessibilityLabel = "Open";
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 0;
+        host.AdvanceFrames(3); // the page is in the snapshot
+        Assert.Contains(host.Canvas.AccessibilityManager.Snapshot, n => n.Label == "Open");
+        host.Canvas.AccessibilityManager.MinUpdateIntervalMs = 60_000; // from now on only forced rebuilds happen
+
+        // as an app's menu panel: a frame with the menu inside it
+        host.Canvas.OpenPopupWindow(new SkiaShape
+        {
+            WidthRequest = 120,
+            BackgroundColor = Colors.DarkGray,
+            Children =
+            {
+                new SkiaStack
+                {
+                    AccessibilityRole = Aria.RoleMenu,
+                    AccessibilityLabel = "Text",
+                    Children =
+                    {
+                        new SkiaShape { HeightRequest = 30, HorizontalOptions = LayoutOptions.Fill, AccessibilityRole = Aria.RoleMenuItem, AccessibilityCanInteract = true, AccessibilityLabel = "Copy" },
+                        new SkiaShape { HeightRequest = 30, HorizontalOptions = LayoutOptions.Fill, AccessibilityRole = Aria.RoleMenuItem, AccessibilityCanInteract = true, AccessibilityLabel = "Cancel" },
+                    }
+                }
+            }
+        }, new SKPoint(150, 150));
+        host.AdvanceFrames(3);
+
+        var labels = host.Canvas.AccessibilityManager.Snapshot.Where(n => n.Role == Aria.RoleMenuItem).Select(n => n.Label).ToArray();
+        Assert.Equal(new[] { "Copy", "Cancel" }, labels);
+    }
 }
