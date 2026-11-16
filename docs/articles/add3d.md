@@ -28,9 +28,18 @@ Add the package for your framework and head, then use the controls. There is no 
 | DrawnUI for Rust | Windows, Linux, macOS, iOS, Android, Web | crate `drawnui-add3d` | OpenGL, Metal, Vulkan, WebGL2 |
 | DrawnUi.React | Web | npm `drawnui-react-add3d` | WebGL2 |
 
-The .NET namespace is `DrawnUi.Add3d`. The controls and their properties have the same names in every framework, in that language's style (`PlayOnce` in C#, `play_once` in Rust). The examples below are C#.
+The controls, properties and methods have the same names in every framework, in each language's style:
 
-On desktop heads the canvas draws with `RenderingMode = RenderingModeType.Accelerated`: the 3D pass uses the canvas's GPU context.
+| | C# | React (TSX) | Rust |
+|---|---|---|---|
+| Import | `using DrawnUi.Add3d;` | `import { SkiaModel3D, SkiaScene3D } from "drawnui-react-add3d";` | `use drawnui_add3d::prelude::*;` |
+| A property | `PinchZoom = true` | `PinchZoom={true}` | `.pinch_zoom(true)` |
+| A method | `PlayOnce("Wave")` | `PlayOnce("Wave")` | `play_once("Wave")` |
+| A tap | `.OnTapped3D((me, hit) => ...)` | `Tapped3D={(me, hit) => ...}` | `.on_tapped_3d(\|me, app, cx, hit\| ...)` |
+
+The text below uses the C# names; every example comes in all three languages.
+
+On .NET desktop heads the canvas draws with `RenderingMode = RenderingModeType.Accelerated`: the 3D pass uses the canvas's GPU context.
 
 ## Two controls
 
@@ -38,6 +47,8 @@ On desktop heads the canvas draws with `RenderingMode = RenderingModeType.Accele
 - **`SkiaScene3D`**: one 3D layer over 2D content. Objects are placed in the layer's points like sprites, each with its own animation, and the whole layer draws in one pass.
 
 ## Showing a model
+
+# [C#](#tab/csharp)
 
 ```csharp
 using DrawnUi.Add3d;
@@ -54,6 +65,42 @@ new SkiaModel3D(avatarGlb)            // the .glb file's bytes
 .Assign(out _avatar)
 .OnTapped3D((me, hit) => me.PlayOnce("CharacterArmature|Wave"));
 ```
+
+# [React (TSX)](#tab/tsx)
+
+```tsx
+import { SkiaModel3D } from "drawnui-react-add3d";
+
+<SkiaModel3D
+  Glb={avatarGlb}                     // the .glb file's bytes
+  Animation="CharacterArmature|Idle"
+  Yaw={25} Pitch={10}
+  PinchZoom={true}
+  ResetOnDoubleTap={true}
+  HorizontalOptions="Fill"
+  HeightRequest={320}
+  Tapped3D={(me, hit) => me.PlayOnce("CharacterArmature|Wave")}
+/>
+```
+
+# [Rust](#tab/rust)
+
+```rust
+use drawnui::prelude::*;
+use drawnui_add3d::prelude::*;
+
+SkiaModel3D::new(include_bytes!("assets/avatar.glb"))
+    .animation("CharacterArmature|Idle")
+    .view_angles(25.0, 10.0)
+    .pinch_zoom(true)
+    .reset_on_double_tap(true)
+    .assign(&mut app.avatar)
+    .on_tapped_3d(|me, _app: &mut App, _cx, _hit| {
+        me.play_once("CharacterArmature|Wave");
+    })
+```
+
+---
 
 Names come from the file: `Animations`, `NodeNames` and `MaterialNames` list them. Look them up there, never guess them.
 
@@ -101,11 +148,35 @@ The control fits its model tightly and never cuts it: it fits the model's real o
 
 Simple objects need no file: build a `Model3D` from parts.
 
+# [C#](#tab/csharp)
+
 ```csharp
 new SkiaModel3D(new Model3D()
     .Part("earth", Mesh3D.Sphere(1), Colors.White))
     .MaterialImage("earth", Texture3D.Decode(earthJpg));
 ```
+
+# [React (TSX)](#tab/tsx)
+
+```tsx
+import { SkiaModel3D, Model3D, Mesh3D, Texture3D, type SkiaModel3DCtrl } from "drawnui-react-add3d";
+
+const globe = useRef<SkiaModel3DCtrl>(null);
+
+<SkiaModel3D ref={globe} Model={new Model3D().Part("earth", Mesh3D.Sphere(1), "#FFFFFF")} />
+
+// once it is mounted
+globe.current?.SetMaterialImage("earth", Texture3D.Decode(earthJpg));
+```
+
+# [Rust](#tab/rust)
+
+```rust
+SkiaModel3D::from_model(&Model3D::new().part("earth", Mesh3D::sphere(1.0), Color::WHITE))
+    .material_image("earth", Texture3D::decode(include_bytes!("assets/earth.jpg")).unwrap())
+```
+
+---
 
 Meshes:
 
@@ -116,6 +187,8 @@ Meshes:
 Each part is placed with `At`, `Turned`, `Scaled` and `Inside(parent)`. `Texture3D.FromImage` takes any Skia image: a photo, or a pattern drawn in code.
 
 ## A 3D layer: SkiaScene3D
+
+# [C#](#tab/csharp)
 
 ```csharp
 new SkiaScene3D
@@ -134,6 +207,53 @@ _layer.SetPosition("player", x, y);
 _layer.SetFacing("player", 90);
 _layer.Play("player", "CharacterArmature|Walk");
 ```
+
+# [React (TSX)](#tab/tsx)
+
+```tsx
+import { SkiaScene3D, type SkiaScene3DCtrl } from "drawnui-react-add3d";
+
+const layer = useRef<SkiaScene3DCtrl>(null);
+
+<SkiaScene3D
+  ref={layer}
+  Tilt={30}                           // how much of the objects' tops is seen
+  HorizontalOptions="Fill"
+  VerticalOptions="Fill"
+  Tapped3D={(me, hit) => me.PlayOnce(hit.Object, "CharacterArmature|HitRecieve")}
+/>
+
+// once it is mounted, then from code
+const l = layer.current!;
+l.Model("character", characterGlb);
+l.Add("player", "character", x, y, 48);        // object name, model, position in points, height
+l.SetPosition("player", x, y);
+l.SetFacing("player", 90);
+l.Play("player", "CharacterArmature|Walk");
+```
+
+# [Rust](#tab/rust)
+
+```rust
+SkiaScene3D::new()
+    .model("character", include_bytes!("assets/character.glb"))
+    .tilt(30.0)                       // how much of the objects' tops is seen
+    .fill()
+    .assign(&mut app.layer)
+    .on_tapped_3d(|me, _app: &mut App, _cx, hit| {
+        me.play_once(&hit.object, "CharacterArmature|HitRecieve");
+    })
+
+// place and drive objects from code
+if let Some(mut layer) = cx.get_mut(app.layer) {
+    layer.add("player", "character", x, y, 48.0); // object name, model, position in points, height
+    layer.set_position("player", x, y);
+    layer.set_facing("player", 90.0);
+    layer.play("player", "CharacterArmature|Walk");
+}
+```
+
+---
 
 - `Model(name, ...)` registers a model once; `Add` places an object that uses it, `Remove` and `ClearObjects` take objects away.
 - `SetPosition`, `SetFacing`, `SetSize` and `SetVisible` move and change an object; moving it never re-measures the layout.
