@@ -253,9 +253,15 @@ namespace DrawnUi.Draw
                     if (Control != null)
                     {
                         Control.IsFocused = false;
-                        // the keyboard already belongs to the input that took first responder: leave it up
-                        if (Control.IsFirstResponder)
-                            Control.ResignFirstResponder();
+                        // Resign a moment later, and only if no other field took the keyboard meanwhile: on a field
+                        // switch the next field becomes first responder itself and the keyboard stays up, as between
+                        // native fields (resigning first dropped the keyboard and brought it back).
+                        var sink = Control;
+                        Tasks.StartDelayed(TimeSpan.FromMilliseconds(100), () => MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            if (!sink.IsFocused && sink.IsFirstResponder)
+                                sink.ResignFirstResponder();
+                        }));
                     }
                 }
             }

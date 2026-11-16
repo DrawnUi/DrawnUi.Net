@@ -102,6 +102,8 @@ public partial class Super
 
         InitShared();
 
+        TrackKeyboard(activity);
+
         _thermalService = new ThermalStateService();
         OnThermalStateChanged(_thermalService.CurrentState);
         _thermalService.StateChanged += OnThermalStateChanged;

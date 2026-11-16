@@ -232,6 +232,7 @@ namespace DrawnUi.Views
             }
 
             WatchSystemTheme(Handler != null);
+            WatchKeyboard(Handler != null);
 
             HandlerWasSet?.Invoke(this, Handler != null);
             //InvalidateChildren(); //need clear gfx cache

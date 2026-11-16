@@ -52,6 +52,8 @@ namespace DrawnUi.Draw
 
             InitShared();
 
+            TrackKeyboard();
+
             InsetsChanged?.Invoke(null, null);
 
             // the safe area changes with a rotation, a status bar shown or hidden, a split view: the key window reports it

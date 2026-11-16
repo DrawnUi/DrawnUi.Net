@@ -4197,6 +4197,23 @@ namespace DrawnUi.Draw
             }
         }
 
+        public static readonly BindableProperty AdaptToKeyboardAutoProperty = BindableProperty.Create(
+            nameof(AdaptToKeyboardAuto),
+            typeof(bool),
+            typeof(SkiaScroll),
+            false);
+
+        /// <summary>
+        /// When true, the canvas keeps the focused text field of this scroll above the on-screen keyboard by itself
+        /// (it sets <see cref="AdaptToKeyboardFor"/> and <see cref="AdaptToKeyboardSize"/>). Off by default: an app
+        /// that wires those two itself keeps doing so.
+        /// </summary>
+        public bool AdaptToKeyboardAuto
+        {
+            get { return (bool)GetValue(AdaptToKeyboardAutoProperty); }
+            set { SetValue(AdaptToKeyboardAutoProperty, value); }
+        }
+
         public static readonly BindableProperty AdaptToKeyboardGapProperty = BindableProperty.Create(
             nameof(AdaptToKeyboardGap),
             typeof(double),
@@ -4211,6 +4228,47 @@ namespace DrawnUi.Draw
         {
             get { return (double)GetValue(AdaptToKeyboardGapProperty); }
             set { SetValue(AdaptToKeyboardGapProperty, value); }
+        }
+
+        /// <summary>
+        /// Points of this scroll's viewport the keyboard covers, with <see cref="AdaptToKeyboardAuto"/>: added as room
+        /// at the content end, so the last fields can rise above the keyboard and stay there (as native scroll views
+        /// do with the keyboard inset). 0 without a keyboard.
+        /// </summary>
+        float _keyboardInset;
+
+        void UpdateKeyboardInset()
+        {
+            float inset = 0;
+            if (AdaptToKeyboardAuto && AdaptToKeyboardSize > 0 && Superview != null && LayoutReady
+                && Orientation == ScrollOrientation.Vertical)
+            {
+                var scale = RenderingScale;
+                if (scale > 0)
+                {
+                    var viewportBottom = (GetSelfDrawingPosition().Y + LastDrawnAt.Height) / scale;
+                    var covered = viewportBottom - (Superview.Height - AdaptToKeyboardSize);
+                    // the gap too: the last field rests that far above the keyboard
+                    if (covered > 0)
+                        inset = (float)(covered + Math.Max(0, AdaptToKeyboardGap));
+                }
+            }
+
+            if (Math.Abs(inset - _keyboardInset) < 0.5f)
+                return;
+
+            var shrinking = inset < _keyboardInset;
+            _keyboardInset = inset;
+            ContentOffsetBounds = GetContentOffsetBounds();
+            _scrollMinY = ContentOffsetBounds.Top;
+            if (ContentOffsetBounds.Height > 0)
+                HasContentToScroll = true;
+
+            // the keyboard closed: content past the new end settles at the end, animated, as native scroll views do
+            if (shrinking && ViewportOffsetY < ContentOffsetBounds.Top && !IsUserPanning)
+                ScrollToY(ContentOffsetBounds.Top, true);
+
+            Update();
         }
 
         /// <summary>The offset that brings the focused field above the keyboard; NaN = nothing to move.</summary>
@@ -4268,6 +4326,7 @@ namespace DrawnUi.Draw
             Tasks.StartDelayed(TimeSpan.FromMilliseconds(150), () =>
             {
                 _keyboardAdaptPending = false;
+                UpdateKeyboardInset();
                 CalculateNeededScrollForKeyboard();
 
                 if (LayoutReady && !double.IsNaN(_scrollTo))

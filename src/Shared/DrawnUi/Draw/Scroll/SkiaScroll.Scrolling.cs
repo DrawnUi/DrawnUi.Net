@@ -699,7 +699,7 @@ public partial class SkiaScroll
 
         if (Orientation == ScrollOrientation.Vertical)
         {
-            ptsContentHeight += HeaderSize.Units.Height + FooterSize.Units.Height + (float)ContentOffset;
+            ptsContentHeight += HeaderSize.Units.Height + FooterSize.Units.Height + (float)ContentOffset + _keyboardInset;
         }
 
         if (Orientation == ScrollOrientation.Horizontal)
