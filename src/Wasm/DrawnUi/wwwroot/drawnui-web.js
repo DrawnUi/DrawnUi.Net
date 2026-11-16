@@ -899,11 +899,24 @@ export function textInputAttach(onText, onKey) {
 // Focused by a touch (a phone's on-screen keyboard): the textarea stays in the page's corner, since over a field low on
 // the screen iOS would pan the whole page to reveal it. Focused by the mouse or the keyboard: it sits at the field's
 // bottom-left (its overlay element), where an input method (Chinese, Japanese, Korean) shows its candidates.
+// It follows the field while the page scrolls: the overlay element moves with the drawn field.
+let textInputFollow = null;
 function placeTextInput(el, owner) {
-    const r = owner ? owner.getBoundingClientRect() : null;
-    const placed = r && r.width > 0;
-    el.style.left = placed ? r.left + 'px' : '0px';
-    el.style.top = placed ? Math.max(0, r.bottom - 1) + 'px' : '0px';
+    if (textInputFollow) {
+        textInputFollow.disconnect();
+        textInputFollow = null;
+    }
+    const place = () => {
+        const r = owner ? owner.getBoundingClientRect() : null;
+        const placed = r && r.width > 0;
+        el.style.left = placed ? r.left + 'px' : '0px';
+        el.style.top = placed ? Math.max(0, r.bottom - 1) + 'px' : '0px';
+        return placed;
+    };
+    if (place() && typeof MutationObserver === 'function') {
+        textInputFollow = new MutationObserver(place);
+        textInputFollow.observe(owner, { attributes: true, attributeFilter: ['style'] });
+    }
 }
 
 /**
@@ -919,8 +932,9 @@ export function textInputFocus(focus, ownerId, soft) {
         placeTextInput(el, soft ? null : _a11y?.map.get(ownerId));
         if (document.activeElement !== el) el.focus({ preventScroll: true });
         restTextInput();
-    } else if (document.activeElement === el) {
-        el.blur();
+    } else {
+        placeTextInput(el, null);
+        if (document.activeElement === el) el.blur();
     }
 }
 

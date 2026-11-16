@@ -247,12 +247,24 @@ function attachTouchTextInput(state) {
 
 // Focused by a touch: the textarea stays in the page's corner (over a field low on the screen iOS would pan the whole
 // page to reveal it). Focused by the mouse or the keyboard: it sits at the field's bottom-left, where an input method
-// shows its candidates.
+// shows its candidates, and follows the field while the page scrolls (the overlay element moves with the drawn field).
 function placeTextInput(el, owner) {
-    const r = owner ? owner.getBoundingClientRect() : null;
-    const placed = r && r.width > 0;
-    el.style.left = placed ? r.left + "px" : "0px";
-    el.style.top = placed ? Math.max(0, r.bottom - 1) + "px" : "0px";
+    const state = getState();
+    if (state.textFollow) {
+        state.textFollow.disconnect();
+        state.textFollow = null;
+    }
+    const place = () => {
+        const r = owner ? owner.getBoundingClientRect() : null;
+        const placed = r && r.width > 0;
+        el.style.left = placed ? r.left + "px" : "0px";
+        el.style.top = placed ? Math.max(0, r.bottom - 1) + "px" : "0px";
+        return placed;
+    };
+    if (place() && typeof MutationObserver === "function") {
+        state.textFollow = new MutationObserver(place);
+        state.textFollow.observe(owner, { attributes: true, attributeFilter: ["style"] });
+    }
 }
 
 // a tap the editor does not take as focus (a read-only field) gives the page focus back
@@ -293,6 +305,7 @@ export function textInputFocus(focus, ownerId) {
     state.editorFocused = false;
     state.textOwnerId = null;
     state.textOwner = null;
+    if (state.textInput) placeTextInput(state.textInput, null);
     if (state.textInput && document.activeElement === state.textInput) state.textInput.blur();
 }
 
