@@ -22,6 +22,8 @@ public static class Theme
     public static readonly Color Ink = Color.FromRgb(242, 241, 248);
     public static readonly Color Muted = Color.FromRgb(154, 152, 176);
     public static readonly Color Accent = Color.FromRgb(242, 179, 61);
+    /// <summary>The text on an accent surface (the active button, tooltips).</summary>
+    public static readonly Color AccentInk = Color.FromRgb(40, 28, 6);
     public static readonly Color Quiet = Color.FromRgb(70, 76, 106);
     /// <summary>Prices.</summary>
     public static readonly Color Gold = Color.FromRgb(255, 196, 61);
@@ -153,7 +155,7 @@ public class Button3D : SkiaButton
     /// <summary>A light face (the gold accent) takes dark ink, a dark face light ink.</summary>
     bool LightFace => 0.299 * _fill.Red + 0.587 * _fill.Green + 0.114 * _fill.Blue > 0.55;
 
-    Color Ink => LightFace ? Color.FromRgb(40, 28, 6) : Theme.Ink.WithAlpha(0.92f);
+    Color Ink => LightFace ? Theme.AccentInk : Theme.Ink.WithAlpha(0.92f);
 
     public override void ApplyProperties()
     {
