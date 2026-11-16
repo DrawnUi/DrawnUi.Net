@@ -268,6 +268,33 @@ function attachTouchTextInput(state) {
     };
     document.addEventListener("touchstart", state.touchStartHandler, { capture: true, passive: true });
     document.addEventListener("touchend", state.touchEndHandler, { capture: true, passive: false });
+    // iOS Safari takes the second tap of a double tap for itself: no pointer or touch event for it, only click, click
+    // and dblclick. A dblclick on a canvas that follows ONE touch release (the other browsers deliver both taps first)
+    // brings that tap back as a touch tap at its place, so a double tap reaches the controls (a 3D viewer's reset), as
+    // in DrawnUi.React. For a mouse, or when both taps came, it adds nothing.
+    const touchUps = [];
+    let replaying = false;
+    document.addEventListener("pointerup", e => {
+        if (replaying || e.pointerType === "mouse" || !(e.target && e.target.closest && e.target.closest(".xaml-canvas"))) return;
+        touchUps.push(performance.now());
+        if (touchUps.length > 2) touchUps.shift();
+    }, true);
+    document.addEventListener("dblclick", e => {
+        const target = e.target;
+        if (!(target && target.closest && target.closest(".xaml-canvas"))) return;
+        const now = performance.now(), recent = touchUps.filter(t => now - t < 700);
+        touchUps.length = 0;
+        if (recent.length !== 1 || typeof PointerEvent !== "function") return;
+        const at = { pointerId: 2000000 + Math.floor(now), pointerType: "touch", isPrimary: true, clientX: e.clientX,
+            clientY: e.clientY, screenX: e.screenX, screenY: e.screenY, button: 0, bubbles: true, cancelable: true, composed: true };
+        replaying = true;
+        try {
+            target.dispatchEvent(new PointerEvent("pointerdown", { ...at, buttons: 1 }));
+            target.dispatchEvent(new PointerEvent("pointerup", { ...at, buttons: 0 }));
+        } finally {
+            replaying = false;
+        }
+    }, true);
     // a mouse press on the canvas leaves the textarea its focus: the drawn controls decide whether the editor keeps it
     document.addEventListener("mousedown", e => {
         if (state.textInput && document.activeElement === state.textInput && e.target && e.target.closest

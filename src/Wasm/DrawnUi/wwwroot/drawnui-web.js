@@ -365,7 +365,27 @@ function setupInputHandlers() {
     const relY = e => e.clientY - canvas.getBoundingClientRect().top;
     canvas.addEventListener('pointerdown', e => onPointerDown?.(e.pointerId, relX(e), relY(e), e.button, e.buttons, e.pointerType ?? 'mouse'));
     canvas.addEventListener('pointermove', e => onPointerMove?.(e.pointerId, relX(e), relY(e), e.buttons, e.pointerType ?? 'mouse'));
-    canvas.addEventListener('pointerup', e => { onPointerUp?.(e.pointerId, relX(e), relY(e), e.button, e.buttons, e.pointerType ?? 'mouse'); if (e.pointerType !== 'mouse') _updateTouchAction?.(); });
+    canvas.addEventListener('pointerup', e => {
+        onPointerUp?.(e.pointerId, relX(e), relY(e), e.button, e.buttons, e.pointerType ?? 'mouse');
+        if (e.pointerType !== 'mouse') {
+            _updateTouchAction?.();
+            touchUps.push(performance.now());
+            if (touchUps.length > 2) touchUps.shift();
+        }
+    });
+    // iOS Safari takes the second tap of a double tap for itself: no pointer or touch event for it, only click, click
+    // and dblclick. A dblclick that follows ONE touch release (the other browsers deliver both taps first) brings that
+    // tap back as a touch tap at its place, so a double tap reaches the controls (a 3D viewer's reset), as in
+    // DrawnUi.React. For a mouse, or when both taps came, it adds nothing.
+    const touchUps = [];
+    canvas.addEventListener('dblclick', e => {
+        const now = performance.now(), recent = touchUps.filter(t => now - t < 700);
+        touchUps.length = 0;
+        if (recent.length !== 1) return;
+        const id = 2_000_000 + Math.floor(now);
+        onPointerDown?.(id, relX(e), relY(e), 0, 1, 'touch');
+        onPointerUp?.(id, relX(e), relY(e), 0, 0, 'touch');
+    });
     canvas.addEventListener('pointercancel', e => { onPointerCancel?.(e.pointerId); if (e.pointerType !== 'mouse') _updateTouchAction?.(); });
     // Gestures="Enabled" shares the wheel with the page: the default is prevented only when a control used it
     canvas.addEventListener('wheel', e => { const used = moduleOnWheel?.(e.deltaX, e.deltaY, e.deltaMode, relX(e), relY(e), e.ctrlKey || e.metaKey); if (!_shareInput || used) e.preventDefault(); }, { passive: false });
