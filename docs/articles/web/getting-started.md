@@ -13,6 +13,8 @@ This walks through a standalone pure-WebAssembly DrawnUI app (no Blazor).
     <TargetFramework>net10.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <WasmBuildNative>true</WasmBuildNative>
+    <!-- index.html's import map gets each script's fingerprinted name -->
+    <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
     <!-- DRAWNUI_NET = non-Blazor base; BROWSER enables web defaults -->
     <DefineConstants>$(DefineConstants);DRAWNUI_NET;WEB;NET;NET10;BROWSER</DefineConstants>
   </PropertyGroup>
@@ -37,7 +39,7 @@ This walks through a standalone pure-WebAssembly DrawnUI app (no Blazor).
 
 ## index.html
 
-A static page with one `<canvas id>` and the loader module:
+A static page with one `<canvas id>`, an import map and the loader module. The build fills the import map with each script's fingerprinted name, so every new deploy loads its own `drawnui-web.js` and `main.js`, never an old cached copy:
 
 ```html
 <!DOCTYPE html>
@@ -53,7 +55,9 @@ A static page with one `<canvas id>` and the loader module:
 </head>
 <body>
     <canvas id="drawnui-canvas"></canvas>
-    <script type="module" src="./main.js"></script>
+    <!-- filled at build with each script's fingerprinted name -->
+    <script type="importmap"></script>
+    <script type="module">import "./main.js";</script>
 </body>
 </html>
 ```

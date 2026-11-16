@@ -48,6 +48,8 @@ Put in shared: scenes, controls, game logic, view models, the `Canvas`/scene fac
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <WasmBuildNative>true</WasmBuildNative>
+    <!-- index.html's import map gets each script's fingerprinted name: a deploy never runs an old cached copy -->
+    <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
     <!-- DRAWNUI_NET = non-Blazor base; WEB/BROWSER = web defaults -->
     <DefineConstants>$(DefineConstants);DRAWNUI_NET;WEB;NET;NET10;BROWSER</DefineConstants>
   </PropertyGroup>
@@ -96,7 +98,9 @@ One `<canvas id>` + the loader module. Set `touch-action:none` on the canvas as 
 </head>
 <body>
   <canvas id="drawnui-canvas"></canvas>
-  <script type="module" src="./main.js"></script>
+  <!-- filled at build with each script's fingerprinted name (OverrideHtmlAssetPlaceholders) -->
+  <script type="importmap"></script>
+  <script type="module">import "./main.js";</script>
 </body>
 </html>
 ```
