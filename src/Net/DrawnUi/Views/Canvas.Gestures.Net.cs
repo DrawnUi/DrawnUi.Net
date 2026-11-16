@@ -278,10 +278,6 @@ public partial class Canvas
             return;
 
         var args = SkiaGesturesParameters.Create(touchAction, args1, RenderingScale);
-#if WEB
-        // the browser event happened before a slow frame let it through: its arrival is dated back to then
-        args.ArrivedTimeNanos -= WebInput.EventAgeNanos;
-#endif
 
         try
         {

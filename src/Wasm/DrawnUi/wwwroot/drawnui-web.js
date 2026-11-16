@@ -363,13 +363,10 @@ function setupInputHandlers() {
     // aspect-locked / centered / letterboxed canvas); harmless when it is at 0,0.
     const relX = e => e.clientX - canvas.getBoundingClientRect().left;
     const relY = e => e.clientY - canvas.getBoundingClientRect().top;
-    // how long ago the event happened (ms): a slow frame holds the events back, and a double tap is judged by when the
-    // taps happened, not by when they were handled
-    const age = e => Math.max(0, performance.now() - e.timeStamp);
-    canvas.addEventListener('pointerdown', e => onPointerDown?.(e.pointerId, relX(e), relY(e), e.button, e.buttons, e.pointerType ?? 'mouse', age(e)));
-    canvas.addEventListener('pointermove', e => onPointerMove?.(e.pointerId, relX(e), relY(e), e.buttons, e.pointerType ?? 'mouse', age(e)));
+    canvas.addEventListener('pointerdown', e => onPointerDown?.(e.pointerId, relX(e), relY(e), e.button, e.buttons, e.pointerType ?? 'mouse'));
+    canvas.addEventListener('pointermove', e => onPointerMove?.(e.pointerId, relX(e), relY(e), e.buttons, e.pointerType ?? 'mouse'));
     canvas.addEventListener('pointerup', e => {
-        onPointerUp?.(e.pointerId, relX(e), relY(e), e.button, e.buttons, e.pointerType ?? 'mouse', age(e));
+        onPointerUp?.(e.pointerId, relX(e), relY(e), e.button, e.buttons, e.pointerType ?? 'mouse');
         if (e.pointerType !== 'mouse') {
             _updateTouchAction?.();
             touchUps.push(performance.now());
@@ -386,8 +383,8 @@ function setupInputHandlers() {
         touchUps.length = 0;
         if (recent.length !== 1) return;
         const id = 2_000_000 + Math.floor(now);
-        onPointerDown?.(id, relX(e), relY(e), 0, 1, 'touch', age(e));
-        onPointerUp?.(id, relX(e), relY(e), 0, 0, 'touch', age(e));
+        onPointerDown?.(id, relX(e), relY(e), 0, 1, 'touch');
+        onPointerUp?.(id, relX(e), relY(e), 0, 0, 'touch');
     });
     canvas.addEventListener('pointercancel', e => { onPointerCancel?.(e.pointerId); if (e.pointerType !== 'mouse') _updateTouchAction?.(); });
     // Gestures="Enabled" shares the wheel with the page: the default is prevented only when a control used it
