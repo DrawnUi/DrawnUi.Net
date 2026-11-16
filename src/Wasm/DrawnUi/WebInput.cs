@@ -163,7 +163,7 @@ public static partial class WebInput
             // a long press that fired is not a tap too, as on the other heads
             if (!_longPressFired && Math.Abs(args.Distance.Total.X) < threshold && Math.Abs(args.Distance.Total.Y) < threshold)
             {
-                WebTextInput.FocusOnTap(TargetCanvas, x, y); // inside the browser event: iOS raises its keyboard
+                WebTextInput.FocusOnTap(TargetCanvas, x, y, pointerType); // inside the browser event: iOS raises its keyboard
                 TargetCanvas?.OnGestureEvent(TouchActionType.Released, args, TouchActionResult.Tapped);
             }
         }

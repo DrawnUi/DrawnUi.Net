@@ -5,6 +5,11 @@ namespace DrawnUi.Draw;
 
 public partial class KeyboardManager
 {
+    /// <summary>
+    /// The focused drawn editor types from a phone's on-screen keyboard (a touch focused it, web heads): its return key
+    /// in a single-line field ends editing, as a native single-line field does on phones (drawnui-cross 6ck).
+    /// </summary>
+    internal static bool SoftKeyboardInput;
 
     public static event EventHandler<InputKey> KeyDown;
 

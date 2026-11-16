@@ -224,6 +224,7 @@ function attachTouchTextInput(state) {
                 // element yet: textInputHasFocus answers for the textarea during that
                 state.textInputFocusing = true;
                 try { el.focus({ preventScroll: true }); } finally { state.textInputFocusing = false; }
+                DotNet.invokeMethodAsync(assemblyName, "HandleSoftKeyboard", true).catch(() => { });
                 giveBackIfNotTaken(state);
             }
         }
@@ -257,6 +258,8 @@ export function textInputFocus(focus, ownerId) {
         return;
     }
     if (state.textOwnerId != null && state.textOwnerId !== id) return;
+    // the field that had the on-screen keyboard gave it back (not the one a tap just moved from)
+    DotNet.invokeMethodAsync(assemblyName, "HandleSoftKeyboard", false).catch(() => { });
     state.editorFocused = false;
     state.textOwnerId = null;
     state.textOwner = null;
