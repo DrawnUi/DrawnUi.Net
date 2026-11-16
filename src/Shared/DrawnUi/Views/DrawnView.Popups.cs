@@ -379,6 +379,14 @@ namespace DrawnUi.Views
             var hadKeyboard = popup.ReturnFocus != null
                               && (KeyboardManager.IsDispatchingKeyDown
                                   || focus is SkiaControl focused && IsInside(focused, popup.Root));
+            // the keyboard was on one of its lines and has nowhere to go back to: it goes to nothing, never on to a
+            // control of the page (which would scroll the page to it)
+            if (popup.ReturnFocus == null && focus is SkiaControl inside && IsInside(inside, popup.Root))
+            {
+                if (ReferenceEquals(_canvas.KeyboardFocusNode, focus))
+                    _canvas.KeyboardFocusNode = null;
+                manager.NotifyFocused(null);
+            }
 
             _popups.Remove(popup);
             if (!popup.ShownAt.IsEmpty)
