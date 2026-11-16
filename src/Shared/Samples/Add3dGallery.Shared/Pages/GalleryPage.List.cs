@@ -33,7 +33,7 @@ public partial class GalleryPage
 
     SkiaScroll _listScroll;
     SkiaLabel _listCount;
-    readonly SkiaModel3D[] _thumbs = new SkiaModel3D[ListRows];
+    readonly SkiaLayout[] _rows = new SkiaLayout[ListRows];
     int _thumbsDrawn = -1;
 
     SkiaControl ListCard()
@@ -120,7 +120,6 @@ public partial class GalleryPage
         // Each piece is one material (the sofa: its upholstery first): the finish tints it.
         if (finish.Tint != null && model.MaterialNames.Count > 0)
             model.SetMaterialColor(model.MaterialNames[0], finish.Tint);
-        _thumbs[index] = model;
         var added = false;
         return new SkiaRow
             {
@@ -168,6 +167,7 @@ public partial class GalleryPage
                         }),
                 }
             }
+            .Assign(out _rows[index])
             // The row under the mouse turns its piece; the others stay still and are only blitted.
             .OnHovered((_, on) => model.AutoRotate = on ? 40 : 0)
             // Narrow, the button goes under the text.
@@ -179,12 +179,19 @@ public partial class GalleryPage
     {
         if (!_listScroll.WasInLastFrame())
             return;
-        // Drawn by the list, and inside the page's window too (a row below the window's edge is drawn but not seen).
+        // Rows the list showed this frame (a still row is blitted from its cache, its thumbnail not drawn again but on
+        // screen all the same), inside the list's viewport and the page's window (a row past either edge is not seen).
         var window = _scroll.GetAccessibilityPixelRect();
+        var list = _listScroll.GetAccessibilityPixelRect();
         var drawn = 0;
-        foreach (var thumb in _thumbs)
-            if (thumb.WasInLastFrame() && thumb.GetAccessibilityPixelRect().IntersectsWith(window))
+        foreach (var row in _rows)
+        {
+            if (!row.WasInLastFrame())
+                continue;
+            var r = row.GetAccessibilityPixelRect();
+            if (r.IntersectsWith(window) && r.IntersectsWith(list))
                 drawn++;
+        }
         if (drawn == _thumbsDrawn)
             return;
         _thumbsDrawn = drawn;
