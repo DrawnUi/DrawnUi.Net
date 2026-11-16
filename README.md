@@ -89,13 +89,10 @@ Please star ⭐ if you like it!
 ## What's New 1.10.9.1
 
   * New: the 3D add-on. Real 3D models (glTF), a product viewer that turns and zooms, 3D characters on a 2D field, shapes made in code, inside any DrawnUI screen: DrawnUi.Maui.Add3d, DrawnUi.Blazor.Add3d, DrawnUi.Web.Add3d, DrawnUi.Wpf.Add3d, DrawnUi.OpenTk.Add3d. See [3D](https://drawnui.net/articles/add3d.html).
-  * Android: fixed a crash that could happen some time after an app was closed with Back and opened again.
-  * Android: fixed a crash on start in apps whose effects read the screen behind them (GPU canvas).
-  * Android: fixed a crash when an app rebuilt its screen in-process (for example after a language change) on devices without Vulkan.
+  * Multiple crash and memory leaks fixes
   * Much lower memory for images: every image that shows the same file or URL now shares one decoded copy instead of holding its own. 69 images of one photo take about 7 MB instead of over 900 MB. Code that disposes or edits bitmaps it gets from SkiaImageManager sets `SkiaImageManager.ReuseBitmaps = false`.
   * Image memory stays within a budget: `SkiaImageManager.CacheBudgetMb` (128 MB by default) caps the decoded pictures the cache keeps; pictures on screen always stay.
   * `SkiaImageManager.CancelAll` also cancels waiting network loads on the Net and Blazor heads.
-  * Android, iOS, Mac, Windows: pages of a closed window are freed, and their canvases release their GPU memory.
   * Forms follow the on-screen keyboard by themselves: set `AdaptToKeyboardAuto = true` on a SkiaScroll and the focused field rises above the keyboard on any page, with room for the last field; the page settles back when the keyboard closes (Android, iOS and the web).
   * `SkiaScroll.AdaptToKeyboardGap` sets the space between the focused field and the keyboard (8 by default).
   * Phones: tapping a text field focuses it, and a drag that starts on a field scrolls the page, as native fields do.
