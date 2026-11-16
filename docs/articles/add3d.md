@@ -4,7 +4,7 @@ DrawnUI comes with a separate, optional 3D add-on, for every head DrawnUI runs o
 
 <a href="https://add3d.drawnui.net"><img src="../images/add3d-gallery.jpg" alt="The 3D gallery: a sofa product viewer with fabric swatches and hotspots" width="720" /></a>
 
-[See it live: the 3D gallery](https://add3d.drawnui.net)
+[See it live: the 3D gallery](https://add3d.drawnui.net). The same gallery comes in every framework, with its code: see [Samples](#samples).
 
 ## Where it fits
 
