@@ -271,4 +271,44 @@ public class KeyboardTabScrollTests
         Assert.Equal("C", host.Canvas.KeyboardFocusNode?.AccessibilityLabel);
         Assert.Equal("D", Press(host, false));
     }
+
+    /// <summary>
+    /// A menu item that had the keyboard is picked and its popup closes: the keyboard goes nowhere (no page stop takes
+    /// it), so the page does not scroll to one.
+    /// </summary>
+    [Fact]
+    public void PickedPopupItem_HandsTheKeyboardToNothing_PageStaysPut()
+    {
+        var (host, scroll) = Page(false, 30);
+        using var _ = host;
+        var picked = 0;
+        string closedOn = null;
+        var id = host.Canvas.OpenPopupWindow(new SkiaStack
+        {
+            WidthRequest = 120,
+            AccessibilityRole = Aria.RoleMenu,
+            Children =
+            {
+                Button("Copy Link").OnTapped(me =>
+                {
+                    picked++;
+                    me.Superview?.ClosePopupWindow(default);
+                }),
+            }
+        }, new SKPoint(60, 60));
+        host.AdvanceFrames(4);
+
+        Assert.Equal("Copy Link", Press(host, false)); // Tab: the keyboard goes into the open popup
+        var offset = scroll.ViewportOffsetY;
+
+        host.Canvas.HandleKeyboardNavigation(InputKey.Enter, false);
+        host.Canvas.ClosePopupWindow(id);
+        host.AdvanceFrames(30);
+
+        Assert.Equal(1, picked);
+        Assert.False(host.Canvas.IsPopupWindowOpen(id));
+        closedOn = host.Canvas.KeyboardFocusNode?.AccessibilityLabel;
+        Assert.Null(closedOn);
+        Assert.Equal(offset, scroll.ViewportOffsetY, 1);
+    }
 }
