@@ -1,10 +1,17 @@
+---
+ogTitle: "Embed real 3D in your 2D UI | DrawnUI"
+ogDescription: "Render glTF models with gestures, effects and animations inside your app on the web, desktop, and mobile."
+ogImage: "https://drawnui.net/images/add3d-og.jpg"
+ogUrl: "https://drawnui.net/articles/add3d.html"
+description: "Render glTF models with gestures, effects and animations inside your app on the web, desktop, and mobile."
+---
 # 3D in DrawnUI
 
 Real 3D models, live, inside your DrawnUI screens: they scroll with the page, take taps, and share the GPU your UI already uses. No WebView, no native 3D view, no game engine.
 
 The 3D add-on runs everywhere DrawnUI runs: .NET MAUI (Android, iOS, Mac, Windows), WPF, OpenTK (Windows, Linux), Blazor, pure WebAssembly, React, and Rust (Windows, macOS, Linux, iOS, Android, web). It draws glTF models with their skeleton animations, shapes made in code and images on 3D surfaces, through the GPU context Skia already uses, so a 3D control lays out, scrolls, caches and takes gestures like any other control.
 
-<a href="https://add3d.drawnui.net"><img src="../images/add3d-hero.jpg" alt="Real 3D, right in your UI: a sign-up form with a 3D mascot, a globe with a pin on London, a loyalty card and dice, drawn by DrawnUI" width="100%" /></a>
+<a href="https://add3d.drawnui.net"><img src="../images/add3d-hero.jpg" alt="Real 3D, right in your UI: a shop list with 3D thumbnails, a globe with a pin on London, a loyalty card and dice, drawn by DrawnUI" width="100%" /></a>
 
 ## Try it now
 
