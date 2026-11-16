@@ -45,6 +45,7 @@ internal static unsafe class Gl
     static delegate* unmanaged<uint, uint, int, void> _glTexParameteri;
     static delegate* unmanaged<uint, void> _glGenerateMipmap;
     static delegate* unmanaged<uint, void> _glActiveTexture;
+    static delegate* unmanaged<uint, uint, void> _glBindSampler;
     static delegate* unmanaged<uint, int, void> _glPixelStorei;
     static delegate* unmanaged<int, uint*, void> _glGenRenderbuffers;
     static delegate* unmanaged<int, uint*, void> _glDeleteRenderbuffers;
@@ -106,6 +107,7 @@ internal static unsafe class Gl
         _glTexParameteri = (delegate* unmanaged<uint, uint, int, void>)Load("glTexParameteri");
         _glGenerateMipmap = (delegate* unmanaged<uint, void>)Load("glGenerateMipmap");
         _glActiveTexture = (delegate* unmanaged<uint, void>)Load("glActiveTexture");
+        _glBindSampler = (delegate* unmanaged<uint, uint, void>)Load("glBindSampler");
         _glPixelStorei = (delegate* unmanaged<uint, int, void>)Load("glPixelStorei");
         _glGenRenderbuffers = (delegate* unmanaged<int, uint*, void>)Load("glGenRenderbuffers");
         _glDeleteRenderbuffers = (delegate* unmanaged<int, uint*, void>)Load("glDeleteRenderbuffers");
@@ -174,6 +176,7 @@ internal static unsafe class Gl
     public static void glTexParameteri(uint target, uint pname, int param) => _glTexParameteri(target, pname, param);
     public static void glGenerateMipmap(uint target) => _glGenerateMipmap(target);
     public static void glActiveTexture(uint texture) => _glActiveTexture(texture);
+    public static void glBindSampler(uint unit, uint sampler) => _glBindSampler(unit, sampler);
     public static void glPixelStorei(uint pname, int param) => _glPixelStorei(pname, param);
     public static void glGenRenderbuffers(int n, uint* renderbuffers) => _glGenRenderbuffers(n, renderbuffers);
     public static void glDeleteRenderbuffers(int n, uint* renderbuffers) => _glDeleteRenderbuffers(n, renderbuffers);
@@ -242,6 +245,7 @@ internal static unsafe class Gl
     [DllImport(Lib)] public static extern void glTexParameteri(uint target, uint pname, int param);
     [DllImport(Lib)] public static extern void glGenerateMipmap(uint target);
     [DllImport(Lib)] public static extern void glActiveTexture(uint texture);
+    [DllImport(Lib)] public static extern void glBindSampler(uint unit, uint sampler);
     [DllImport(Lib)] public static extern void glPixelStorei(uint pname, int param);
     [DllImport(Lib)] public static extern void glGenRenderbuffers(int n, uint* renderbuffers);
     [DllImport(Lib)] public static extern void glDeleteRenderbuffers(int n, uint* renderbuffers);

@@ -632,6 +632,9 @@ void main() {
         var outlineColor = style.OutlineColor;
         Gl.glUniform4fv(_u.OutlineColor, 1, (float*)&outlineColor);
         Gl.glActiveTexture(TEXTURE0);
+        // Skia samples its images through sampler objects and leaves one bound to the unit: a bound sampler overrides
+        // the texture's own filtering, and the pictures on the model came out unfiltered (hard, stepped edges).
+        Gl.glBindSampler(0, 0);
         // Joints and weights of a primitive without a skin: no joint moves it (generic values, used where its vertex
         // array has no such attribute).
         Gl.glVertexAttrib4f(3, 0, 0, 0, 0);
