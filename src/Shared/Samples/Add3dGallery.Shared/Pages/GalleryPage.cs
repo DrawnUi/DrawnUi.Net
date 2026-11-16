@@ -83,8 +83,8 @@ public partial class GalleryPage : DrawnGame
                                     HorizontalOptions = LayoutOptions.Center,
                                     Children =
                                     {
-                                        Theme.Link("Read the 3D article", Theme.ArticleUrl),
-                                        Theme.Link("Source on GitHub", Theme.RepoUrl),
+                                        Theme.Link("Read the 3D article", Theme.ArticleUrl).WithTooltip("DrawnUI official site"),
+                                        Theme.Link("Source on GitHub", Theme.RepoUrl).WithTooltip("Please star if you like it"),
                                     }
                                 },
                             }
