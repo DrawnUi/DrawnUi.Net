@@ -112,6 +112,9 @@ namespace DrawnUi.Views
                 return;
             if (consumed != null && consumed is not SkiaScroll && consumed is not SkiaLabel { AccessibilityTextSelectable: true })
                 return;
+            // a press on a draggable scroll bar drags the bar
+            if (consumed is SkiaScroll { ScrollBarOwnsGesture: true })
+                return;
 
             var labels = new List<SkiaLabel>();
             foreach (var root in Views)

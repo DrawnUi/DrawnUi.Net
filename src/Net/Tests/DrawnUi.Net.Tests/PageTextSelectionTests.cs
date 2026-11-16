@@ -322,4 +322,31 @@ public class PageTextSelectionTests
         }
         Assert.Equal("Alpha", copied);
     }
+
+    /// <summary>A mouse drag on the draggable scroll bar of a scroll holding selectable text moves the bar, selects nothing.</summary>
+    [Fact]
+    public void ScrollBarDrag_InAScrollWithSelectableText_ScrollsAndSelectsNothing()
+    {
+        SkiaScroll scroll = null;
+        var lines = Enumerable.Range(0, 30).Select(i => Text($"Line {i} of selectable text")).ToArray();
+        var (host, robot) = Host(new SkiaScroll
+        {
+            HeightRequest = 300,
+            HorizontalOptions = LayoutOptions.Fill,
+            ScrollBar = new SkiaScrollBar { IsDraggable = true, Thickness = 6 },
+            Content = new SkiaStack { Children = lines },
+        }.Assign(out scroll));
+        using var _ = host;
+
+        // the thumb sits at the top of the bar, on the right edge
+        var x = Rect(scroll).Right - 3;
+        robot.PointerDown(x, 10);
+        for (var y = 20; y <= 200; y += 10)
+            robot.PointerMoveTo(x, y);
+        robot.PointerUp();
+        host.AdvanceFrames(5);
+
+        Assert.True(scroll.ViewportOffsetY < -50, $"the bar drag scrolled: {scroll.ViewportOffsetY}");
+        Assert.All(lines, l => Assert.Equal(string.Empty, l.SelectedText));
+    }
 }
