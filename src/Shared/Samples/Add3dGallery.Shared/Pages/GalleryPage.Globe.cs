@@ -131,7 +131,7 @@ public partial class GalleryPage
                         Margin = new Thickness(0, 6, 0, 0),
                         Children =
                         {
-                            new SkiaLabel("Spin") { FontSize = 14, FontFamily = Theme.Title, TextColor = Theme.Ink, VerticalOptions = LayoutOptions.Center },
+                            new SkiaLabel("Spin") { FontSize = 14, FontFamily = Theme.Title, TextColor = Theme.Ink, VerticalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RolePresentation }, // the switch says it
                             new Switch3D
                                 {
                                     IsToggled = true, VerticalOptions = LayoutOptions.Center,

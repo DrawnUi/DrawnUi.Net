@@ -393,7 +393,7 @@ public partial class GalleryPage : DrawnGame
                         VerticalOptions = LayoutOptions.Center,
                         Children =
                         {
-                            new SkiaLabel("Drawn") { FontSize = 14, FontFamily = Theme.Title, TextColor = Theme.Ink, VerticalOptions = LayoutOptions.Center },
+                            new SkiaLabel("Drawn") { FontSize = 14, FontFamily = Theme.Title, TextColor = Theme.Ink, VerticalOptions = LayoutOptions.Center, AccessibilityRole = Aria.RolePresentation }, // the switch says it
                             new Switch3D { VerticalOptions = LayoutOptions.Center, AccessibilityLabel = "Drawn look" }
                                 .Assign(out _drawnSwitch)
                                 .ObserveSelf((me, prop) =>

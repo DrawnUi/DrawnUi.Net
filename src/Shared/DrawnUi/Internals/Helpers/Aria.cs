@@ -134,6 +134,15 @@ namespace DrawnUi.Models
             or "menuitem" or "menuitemcheckbox" or "menuitemradio" or "scrollbar";
 
         /// <summary>
+        /// Roles whose content is their look, not more nodes (ARIA "children presentational": button, check box, radio,
+        /// switch, tab, option, slider, progress bar, image...): a screen reader says the control's name once, never the
+        /// texts inside it again. A link, a group, a list keep their content.
+        /// </summary>
+        public static bool ChildrenArePresentational(string? role) => role is "button" or "checkbox" or "radio" or "switch"
+            or "tab" or "option" or "slider" or "progressbar" or "meter" or "scrollbar" or "separator" or "img"
+            or "menuitemcheckbox" or "menuitemradio";
+
+        /// <summary>
         /// The ARIA attribute that carries a node's pressed state (<c>AccessibilityIsPressed</c>) for its role: aria-checked
         /// for check boxes, switches and radios, aria-selected for options and tabs, aria-pressed for the rest (a toggle
         /// button). Browsers read a switch's state only from aria-checked: with aria-pressed it reads as off.
