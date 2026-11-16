@@ -1024,12 +1024,7 @@ public class SkiaModel3D : SkiaControl, IPrefetch3D
             {
                 _dragged = false;
                 // the drag's speed when let go, in points per second, turned the way the drag turns the model
-#if WEB
-                // the web heads date pointer events back to when they happened: the release too (as SkiaScroll)
-                var v = _velocity.CalculateFinalVelocity(4000, args.ArrivedTimeNanos);
-#else
                 var v = _velocity.CalculateFinalVelocity(4000);
-#endif
                 StartFling(-v.X * 0.5f, v.Y * 0.3f);
             }
             // A gesture that had two fingers on it never turns the model, up to its last finger: the jump between the
