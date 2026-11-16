@@ -28,19 +28,11 @@ public static partial class WebInput
     public static float RenderingScale { get; set; } = 1.0f;
 
     /// <summary>
-    /// How long before its handling the browser event being handled happened (its timeStamp), in nanoseconds: a slow frame
-    /// holds pointer events back, and the gestures they raise date their arrival back by this (a double tap is judged by
-    /// when the taps happened). 0 outside a pointer event.
-    /// </summary>
-    internal static long EventAgeNanos;
-
-    /// <summary>
     /// Called by JS when pointer goes down
     /// </summary>
     [JSExport]
-    public static void OnPointerDown(int pointerId, double x, double y, int button, int buttons, string pointerType, double ageMs)
+    public static void OnPointerDown(int pointerId, double x, double y, int button, int buttons, string pointerType)
     {
-        EventAgeNanos = (long)(ageMs * 1_000_000);
         var scale = Math.Max(0.1f, RenderingScale);
         var location = new PointF((float)x * scale, (float)y * scale);
         var args = MakeTouchArgs(pointerId, TouchActionType.Pressed, location);
@@ -81,7 +73,6 @@ public static partial class WebInput
         if (cts.IsCancellationRequested || !ReferenceEquals(_pointerDownArgs, downArgs))
             return;
         _longPressFired = true;
-        EventAgeNanos = 0; // raised by the timer, now
         TargetCanvas?.OnGestureEvent(TouchActionType.Pressing, downArgs, TouchActionResult.LongPressing);
     }
 
@@ -95,9 +86,8 @@ public static partial class WebInput
     /// Called by JS when pointer moves
     /// </summary>
     [JSExport]
-    public static void OnPointerMove(int pointerId, double x, double y, int buttons, string pointerType, double ageMs)
+    public static void OnPointerMove(int pointerId, double x, double y, int buttons, string pointerType)
     {
-        EventAgeNanos = (long)(ageMs * 1_000_000);
         var scale = Math.Max(0.1f, RenderingScale);
         var location = new PointF((float)x * scale, (float)y * scale);
         var isDragging = buttons != 0;
@@ -147,9 +137,8 @@ public static partial class WebInput
     /// Called by JS when pointer goes up
     /// </summary>
     [JSExport]
-    public static void OnPointerUp(int pointerId, double x, double y, int button, int buttons, string pointerType, double ageMs)
+    public static void OnPointerUp(int pointerId, double x, double y, int button, int buttons, string pointerType)
     {
-        EventAgeNanos = (long)(ageMs * 1_000_000);
         var scale = Math.Max(0.1f, RenderingScale);
         var location = new PointF((float)x * scale, (float)y * scale);
         var args = MakeTouchArgs(pointerId, TouchActionType.Released, location);
@@ -219,7 +208,6 @@ public static partial class WebInput
             };
         }
 
-        EventAgeNanos = 0;
         TargetCanvas?.OnGestureEvent(TouchActionType.ContextMenu, args, TouchActionResult.ContextMenu);
 
         return args.Handled;
@@ -239,7 +227,6 @@ public static partial class WebInput
         args.IsInContact = false;
         CancelLongPress();
 
-        EventAgeNanos = 0;
         TargetCanvas?.OnGestureEvent(TouchActionType.Cancelled, args, TouchActionResult.Up);
 
         _pointerDownArgs = null;
@@ -288,7 +275,6 @@ public static partial class WebInput
 
         if (TargetCanvas != null)
             TargetCanvas.WheelDeltaPerNotch = 100; // pixels after the deltaMode conversion: 100 a mouse notch in Chrome and Edge
-        EventAgeNanos = 0;
         TargetCanvas?.OnGestureEvent(TouchActionType.Wheel, args, TouchActionResult.Wheel);
         return TargetCanvas?.LastInputUsed ?? false; // Gestures="Enabled": the page scrolls unless a control used it
     }

@@ -10,6 +10,8 @@
         <!-- Links native Skia into dotnet.native.wasm; needs the wasm-tools workload. -->
         <WasmBuildNative>true</WasmBuildNative>
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <!-- index.html's import map gets each script's fingerprinted name: a new deploy never runs an old cached copy -->
+        <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
     </PropertyGroup>
 
     <PropertyGroup>
