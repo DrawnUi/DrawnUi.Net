@@ -10,6 +10,8 @@
         <!-- Links native Skia into dotnet.native.wasm; needs the wasm-tools workload. -->
         <WasmBuildNative>true</WasmBuildNative>
         <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+        <!-- English only, numbers formatted with the invariant culture: no ICU data to download at start (~0.5 MB). -->
+        <InvariantGlobalization>true</InvariantGlobalization>
         <!-- index.html's import map gets each script's fingerprinted name: a new deploy never runs an old cached copy -->
         <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
     </PropertyGroup>
