@@ -61,6 +61,7 @@ there, and screens move between them.
 * **Keyboard:** Tab, arrows, Enter and Escape move through every control, list, menu and dialog.
 * **Accessibility:** screen readers read your drawn UI on every platform (Narrator, NVDA, VoiceOver, TalkBack, Orca, browser readers).
 * **Fast:** caching, drawing only what is on screen, an idle canvas that uses no CPU.
+* **Tested:** covered by 1k+ automated tests.
 * **Games:** a game loop and sprites.
 * **AI-ready:** [skill files](https://drawnui.net/llms.txt) teach coding agents to build with it.
 
@@ -73,6 +74,7 @@ Please star ⭐ if you like it!
 ## Addons
 
 * Create games: `DrawnUi.Maui.Game`, `DrawnUi.Blazor.Game`, `DrawnUi.Web.Game`, `DrawnUi.OpenTk.Game`, `DrawnUi.Wpf.Game`.
+* Real 3D models inside your screens: `DrawnUi.Maui.Add3d`, `DrawnUi.Blazor.Add3d`, `DrawnUi.Web.Add3d`, `DrawnUi.Wpf.Add3d`, `DrawnUi.OpenTk.Add3d` - see [3D](https://drawnui.net/articles/add3d.html).
 * .NET MAUI only: `DrawnUi.MauiGraphics`
 * .NET MAUI only: `DrawnUi.Maui.MapsUi`
 * .NET MAUI only: `DrawnUi.Maui.Camera` - [Separate repo](https://github.com/taublast/DrawnUi.Maui.Camera).
