@@ -40,7 +40,7 @@ internal sealed class Win32TooltipHost : ITooltipHost, IDisposable
                 if (_hwnd == IntPtr.Zero)
                 {
                     _hwnd = Win32Layered.Create(ClassName, Win32Layered.WS_EX_LAYERED | Win32Layered.WS_EX_TOOLWINDOW
-                        | Win32Layered.WS_EX_NOACTIVATE | Win32Layered.WS_EX_TOPMOST | Win32Layered.WS_EX_TRANSPARENT, _owner());
+                        | Win32Layered.WS_EX_NOACTIVATE | Win32Layered.WS_EX_TRANSPARENT, _owner());
                     if (_hwnd == IntPtr.Zero)
                         return;
                 }

@@ -66,7 +66,7 @@ internal sealed class Win32PopupHost : IPopupWindowHost, IDisposable
                 if (!_windows.TryGetValue(id.Value, out var entry) || entry.Hwnd == IntPtr.Zero)
                 {
                     var hwnd = Win32Layered.Create(ClassName, Win32Layered.WS_EX_LAYERED | Win32Layered.WS_EX_TOOLWINDOW
-                        | Win32Layered.WS_EX_NOACTIVATE | Win32Layered.WS_EX_TOPMOST, _owner(), WndProcPointer);
+                        | Win32Layered.WS_EX_NOACTIVATE, _owner(), WndProcPointer);
                     if (hwnd == IntPtr.Zero)
                         return;
                     entry = (hwnd, canvasRect);
@@ -87,13 +87,20 @@ internal sealed class Win32PopupHost : IPopupWindowHost, IDisposable
 
     public void HidePopup(PopupId id)
     {
-        _post(() =>
+        void Hide()
         {
             if (!_windows.Remove(id.Value, out var entry))
                 return;
             Hosts.Remove(entry.Hwnd);
             Win32Layered.DestroyWindow(entry.Hwnd);
-        });
+        }
+
+        // Closed from the app window's own thread (a tap or key handler): the window goes at once, so a dialog the
+        // same handler opens next (a file picker, a message box) never shows under it.
+        if (Win32Layered.IsWindowThread(_owner()))
+            Hide();
+        else
+            _post(Hide);
     }
 
     public void Dispose()
@@ -193,12 +200,11 @@ internal static class Win32Layered
     public const int WS_EX_LAYERED = 0x00080000;
     public const int WS_EX_TOOLWINDOW = 0x00000080;
     public const int WS_EX_NOACTIVATE = 0x08000000;
-    public const int WS_EX_TOPMOST = 0x00000008;
     public const int WS_EX_TRANSPARENT = 0x00000020;
     private const int ULW_ALPHA = 2;
     private const uint SWP_NOACTIVATE = 0x0010;
     private const uint SWP_SHOWWINDOW = 0x0040;
-    private static readonly IntPtr HWND_TOPMOST = new(-1);
+    private static readonly IntPtr HWND_TOP = IntPtr.Zero;
     private static readonly HashSet<string> Registered = new();
 
     public delegate IntPtr WndProc(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
@@ -276,7 +282,9 @@ internal static class Win32Layered
             var blend = new BLENDFUNCTION { BlendOp = 0, SourceConstantAlpha = 255, AlphaFormat = 1 }; // AC_SRC_ALPHA
             UpdateLayeredWindow(hwnd, screen, ref position, ref size, memory, ref source, 0, ref blend, ULW_ALPHA);
             SelectObject(memory, previous);
-            SetWindowPos(hwnd, HWND_TOPMOST, x, y, width, height, SWP_NOACTIVATE | SWP_SHOWWINDOW);
+            // owned by the app window, so it stays above it; not topmost, so the app's dialogs and other apps can
+            // come in front
+            SetWindowPos(hwnd, HWND_TOP, x, y, width, height, SWP_NOACTIVATE | SWP_SHOWWINDOW);
         }
         finally
         {
@@ -323,6 +331,12 @@ internal static class Win32Layered
 
     [DllImport("user32.dll")] public static extern IntPtr DefWindowProcW(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
     [DllImport("user32.dll")] public static extern bool DestroyWindow(IntPtr hwnd);
+    [DllImport("user32.dll")] private static extern uint GetWindowThreadProcessId(IntPtr hwnd, out uint processId);
+    [DllImport("kernel32.dll")] private static extern uint GetCurrentThreadId();
+
+    /// <summary>True when called on the thread that owns <paramref name="hwnd"/>.</summary>
+    public static bool IsWindowThread(IntPtr hwnd) =>
+        hwnd != IntPtr.Zero && GetWindowThreadProcessId(hwnd, out _) == GetCurrentThreadId();
     [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hwnd, int cmd);
     [DllImport("user32.dll")] public static extern IntPtr SetCapture(IntPtr hwnd);
     [DllImport("user32.dll")] public static extern bool ReleaseCapture();
