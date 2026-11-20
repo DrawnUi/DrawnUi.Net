@@ -519,6 +519,10 @@ public class DrawnUiWindow : GameWindow
         _renderTarget?.Dispose();
         _renderTarget = null;
 
+        // the window's own framebuffer: Skia leaves the last offscreen target it drew (a GPU cache) bound, and a
+        // surface made on that one draws every later frame off screen while the window keeps the old picture
+        GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        _grContext.ResetContext();
         GL.GetInteger(GetPName.FramebufferBinding, out var framebuffer);
         GL.GetInteger(GetPName.Samples, out var samples);
 
