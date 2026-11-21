@@ -94,7 +94,10 @@ public class ImageRecolorTests
             HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
             TileWidth = 20, TileHeight = 20, RescalingQuality = FilterQuality.Medium,
         };
-        using var bmp = Render(tiles, i => i.SetImageInternal(TwoGrays(40, 40)));
+        using var host = new HeadlessCanvasHost(100, 100, 1f, Colors.Black);
+        host.Canvas.Content = new SkiaLayout { HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill, Children = { tiles } };
+        tiles.SetImageInternal(TwoGrays(40, 40));
+        host.RenderFrame(); host.RenderFrame();
         Assert.NotNull(tiles.Inner);
         Assert.Equal(FilterQuality.Medium, tiles.Inner.RescalingQuality);
     }
