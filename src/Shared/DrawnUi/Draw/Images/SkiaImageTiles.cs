@@ -136,6 +136,7 @@ public class SkiaImageTiles : SkiaImage
         var tile = new SkiaImage()
         {
             Aspect = this.TileAspect,
+            RescalingQuality = this.RescalingQuality,
             WidthRequest = width,
             HeightRequest = height,
             HorizontalOptions = LayoutOptions.Fill,

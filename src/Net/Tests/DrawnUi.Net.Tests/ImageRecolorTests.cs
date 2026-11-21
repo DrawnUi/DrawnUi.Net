@@ -80,4 +80,22 @@ public class ImageRecolorTests
             AssertNear(Expected(191, tint, 1.6f), bmp.GetPixel(x + 15, 50), $"tile {x} light");
         }
     }
+
+    class TilesProbe : SkiaImageTiles
+    {
+        public SkiaImage Inner => Tile;
+    }
+
+    [Fact]
+    public void Tiles_DrawWithTheControlsRescalingQuality()
+    {
+        var tiles = new TilesProbe
+        {
+            HorizontalOptions = LayoutOptions.Fill, VerticalOptions = LayoutOptions.Fill,
+            TileWidth = 20, TileHeight = 20, RescalingQuality = FilterQuality.Medium,
+        };
+        using var bmp = Render(tiles, i => i.SetImageInternal(TwoGrays(40, 40)));
+        Assert.NotNull(tiles.Inner);
+        Assert.Equal(FilterQuality.Medium, tiles.Inner.RescalingQuality);
+    }
 }
