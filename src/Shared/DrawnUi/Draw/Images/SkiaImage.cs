@@ -1327,6 +1327,9 @@ public class SkiaImage : SkiaControl
                     SkiaImageEffect.Tint when ColorTint != Colors.Transparent
                         => SkiaImageEffects.Tint(ColorTint, EffectBlendMode),
 
+                    SkiaImageEffect.Recolor when ColorTint != Colors.Transparent
+                        => SkiaImageEffects.Recolor(ColorTint, (float)Contrast),
+
                     SkiaImageEffect.Darken when Darken != 0.0
                         => SkiaImageEffects.Darken((float)Darken),
 

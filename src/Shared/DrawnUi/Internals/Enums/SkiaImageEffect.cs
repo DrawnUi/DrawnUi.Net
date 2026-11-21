@@ -20,6 +20,12 @@
 		Gamma,
 		TSL,
 		HSL,
-        Custom
+        Custom,
+
+        /// <summary>
+        /// The picture's brightness painted in ColorTint, stretched around its middle by Contrast (1 = as is).
+        /// Gives a gray or any picture one color: a texture recolored per theme, a room, a team.
+        /// </summary>
+        Recolor
 	}
 }

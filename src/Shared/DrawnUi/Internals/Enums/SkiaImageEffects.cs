@@ -29,6 +29,23 @@ public static class SkiaImageEffects
             mode);
     }
 
+    /// <summary>
+    /// The picture's brightness (0.30 R + 0.57 G + 0.13 B) painted in the tint color, stretched around 0.5 by contrast
+    /// (1 = as is, 2 = twice the contrast). Alpha is kept.
+    /// </summary>
+    public static SKColorFilter Recolor(Color tint, float contrast)
+    {
+        float r = (float)tint.Red, g = (float)tint.Green, b = (float)tint.Blue;
+        var o = 0.5f * (1 - contrast);
+        return SKColorFilter.CreateColorMatrix(new float[]
+        {
+            0.30f * r * contrast, 0.57f * r * contrast, 0.13f * r * contrast, 0, o * r,
+            0.30f * g * contrast, 0.57f * g * contrast, 0.13f * g * contrast, 0, o * g,
+            0.30f * b * contrast, 0.57f * b * contrast, 0.13f * b * contrast, 0, o * b,
+            0, 0, 0, 1, 0,
+        });
+    }
+
     public static SKColorFilter TintSL(Color tint, float saturation, float lightness, SKBlendMode mode)
     {
 

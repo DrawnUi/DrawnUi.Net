@@ -108,6 +108,9 @@ public class SkiaImageTiles : SkiaImage
     /// </summary>
     protected SkiaImage Tile { get; set; }
 
+    SKPaint _layerPaint;
+    int _layerRestore = -1;
+
     /// <summary>
     /// Whether tiles are setup for rendering
     /// </summary>
@@ -258,6 +261,16 @@ public class SkiaImageTiles : SkiaImage
             var offsetX = useOffsetX > 0 ? (float)Math.Round(useOffsetX * RenderingScale) : TileWidthPixels + (float)Math.Round(useOffsetX * RenderingScale);
             var offsetY = useOffsetY > 0 ? (float)Math.Round(useOffsetY * RenderingScale) : TileHeightPixels + (float)Math.Round(useOffsetY * RenderingScale);
 
+            // the image effects (AddEffect, Blur, PaintColorFilter...) apply to the whole tiled result, once
+            var filtered = paint != null && (paint.ColorFilter != null || paint.ImageFilter != null);
+            if (filtered)
+            {
+                _layerPaint ??= new SKPaint();
+                _layerPaint.ColorFilter = paint.ColorFilter;
+                _layerPaint.ImageFilter = paint.ImageFilter;
+                _layerRestore = ctx.Context.Canvas.SaveLayer(dest, _layerPaint);
+            }
+
             var tilesX = (int)Math.Ceiling((dest.Width + offsetX) / TileWidthPixels);
             var tilesY = (int)Math.Ceiling((dest.Height + Math.Abs(offsetY)) / TileHeightPixels);
 
@@ -283,10 +296,21 @@ public class SkiaImageTiles : SkiaImage
             }
 
 
+
         }
         catch (Exception e)
         {
             Trace.WriteLine(e);
+        }
+        finally
+        {
+            if (_layerRestore >= 0)
+            {
+                ctx.Context.Canvas.RestoreToCount(_layerRestore);
+                _layerRestore = -1;
+                _layerPaint.ColorFilter = null;
+                _layerPaint.ImageFilter = null;
+            }
         }
 
 
@@ -300,6 +324,8 @@ public class SkiaImageTiles : SkiaImage
         base.OnDisposing();
 
         Tile = null;
+        _layerPaint?.Dispose();
+        _layerPaint = null;
 
     }
 }
