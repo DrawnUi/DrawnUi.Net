@@ -149,7 +149,7 @@ This repeats the image to fill the entire control. Perfect for background patter
 <!-- Tiles of a size you choose, each tile drawn with its own aspect -->
 <draw:SkiaImageTiles Source="pattern.png" TileWidth="64" TileHeight="64" />
 ```
-`SkiaImageTiles` sets the tile size in points and draws the image into each tile with `TileAspect`.
+`SkiaImageTiles` sets the tile size in points and draws the image into each tile with `TileAspect`, which takes the `Aspect` values with the same meanings: the default `AspectCover` fills each tile, `Fill` only enlarges and never shrinks, so a tile picture bigger than its tile needs `Cover` or `AspectCover`. Image effects (`AddEffect`, `ColorTint`, `Blur`...) apply once to the whole tiled result: a gray tile with `Recolor` gives a colored tiled background.
 
 ```xml
 <!-- High-quality rescaling for photos -->
@@ -210,6 +210,7 @@ SkiaImage supports various built-in effects through the `AddEffect` property. Ef
 | `Grayscale` | Converts to grayscale (weights 0.21, 0.72, 0.07) | - |
 | `Pastel` | Applies pastel color effect | - |
 | `Tint` | Applies color tint | `ColorTint`, `EffectBlendMode` |
+| `Recolor` | Paints the picture's brightness in one color | `ColorTint`, `Contrast` (1 = as is) |
 | `Darken` | Darkens the image | `Darken` (amount) |
 | `Lighten` | Lightens the image | `Lighten` (amount) |
 | `Sepia` | Applies sepia tone | - |
@@ -221,6 +222,20 @@ SkiaImage supports various built-in effects through the `AddEffect` property. Ef
 | `TSL` | Tint with Saturation and Lightness | `BackgroundColor`, `Saturation`, `Brightness`, `EffectBlendMode` |
 | `HSL` | Hue, Saturation, Lightness adjustment | `Gamma` (hue), `Saturation`, `Brightness`, `EffectBlendMode`; applies only when `BackgroundColor` is set |
 | `Custom` | Use custom effects via VisualEffects | - |
+
+#### Recolor: one gray picture in any color
+
+`Recolor` paints the picture's brightness in `ColorTint` and keeps its transparency, so one gray picture or texture serves every color: themes, rooms, teams. `Contrast` stretches the brightness around its middle (1 = as is). With a transparent `ColorTint` the picture draws as it is.
+
+```csharp
+new SkiaImage
+{
+    Source = "floor.png",
+    AddEffect = SkiaImageEffect.Recolor,
+    ColorTint = Color.FromRgb(97, 56, 140),
+    Contrast = 1.6,
+}
+```
 
 #### Basic Effects Examples
 
