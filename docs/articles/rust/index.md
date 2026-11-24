@@ -112,6 +112,7 @@ In the browser your code and Skia live in one WebAssembly module and call each o
 
 - **The demo app**: [hellorust.drawnui.net](https://hellorust.drawnui.net), one page per feature, source in the repository.
 - **A game**: [Dungeon Run](https://run.drawnui.net), source in [`examples/dungeon`](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/dungeon).
+- **A shipped app**: [Net Connect](https://github.com/taublast/DrawnVpnClient), a VLESS + REALITY client for Android, iOS, macOS and Windows from one Rust source: a shell with pages, a recycled server list, popup menus, a language dropdown, toasts, and a connect button drawn with an SkSL shader. Source on GitHub, downloads in its releases.
 
 The demo app lives in [`examples/hellorust`](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/hellorust): one canvas and a `SkiaShell` whose root menu opens a page per feature. The same app runs on the desktop and in the browser. To run it locally:
 

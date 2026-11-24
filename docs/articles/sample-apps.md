@@ -184,6 +184,13 @@ _Real-time pitch detection, BPM/tempo detection_
 - **Architecture**: App drawn on a single DrawnUI `Canvas`
 - **Features**: Real-time pitch detection, BPM/tempo detection, SKSL Shaders effects and confetti! 
 
+### Net Connect
+_VLESS + REALITY client, built with DrawnUI for Rust_
+- **Browse Code**: [Github repository](https://github.com/taublast/DrawnVpnClient)
+- **Download**: [Latest release](https://github.com/taublast/DrawnVpnClient/releases/latest) for Android, iOS, macOS and Windows (x64 + ARM64)
+- **Architecture**: One Rust source drawn by DrawnUI for Rust on every platform
+- **Features**: A shell with pages, a recycled server list, popup menus, a language dropdown, toasts, and a connect button drawn with an SkSL shader
+
 - **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
 
 ## Contributing Samples
