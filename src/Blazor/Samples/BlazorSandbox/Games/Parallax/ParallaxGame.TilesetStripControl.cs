@@ -62,7 +62,8 @@ namespace ParallaxGameLoop.Game
                     return;
                 }
 
-                _bitmap?.Dispose();
+                // the bitmap comes from SkiaImageManager, which shares one decoded copy (ReuseBitmaps):
+                // it belongs to the cache, so only the images made from it are released here
                 _image?.Dispose();
                 _gpuImage?.Dispose();
 
