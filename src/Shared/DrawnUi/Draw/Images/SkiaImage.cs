@@ -44,13 +44,17 @@ public class SkiaImage : SkiaControl
     /// <summary>
     /// Uncached we hand over the rescaled SOURCE, which is rasterized at DISPLAY size and
     /// therefore spans <see cref="DisplayRect"/> — not the control box. AspectCover driven by
-    /// height/width, zoom and offsets all make the two differ.
+    /// height/width, zoom and offsets all make the two differ. Only a copy made at the current
+    /// display size is handed over: after a size change the image draws the source as is or
+    /// stretches the copy, and effects then snapshot what is drawn.
     /// </summary>
     public override CachedTexture CachedImage
     {
         get
         {
-            if (RenderObject == null && ScaledSource != null)
+            if (RenderObject == null && ScaledSource?.Bitmap is { } scaled
+                && scaled.Width == (int)Math.Round(DisplayRect.Width)
+                && scaled.Height == (int)Math.Round(DisplayRect.Height))
             {
                 return new CachedTexture(ScaledSource.Image, DisplayRect);
             }
