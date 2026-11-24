@@ -9,6 +9,8 @@ tags: [drawnui, skiasharp, mesh, shader, sksl]
 
 Use this skill for the experimental SkiaSharp mesh API that wraps Skia's `SkMesh`.
 
+**DrawnUI apps: use DrawnUi's own `SKMesh` (`using DrawnUi.Draw.Meshes;`) on the regular SkiaSharp NuGet.** It is pure C# (no interop, no special SkiaSharp build): the same classes and methods as SkiaSharp's upcoming `SKMesh`, drawn through `SKCanvas.DrawVertices` and one runtime shader, so it also draws on CPU canvases. When SkiaSharp ships its own, removing that `using` switches to it. Reference: the Dungeon Run .NET sample (`Dungeon.Shared/Game/Scene.cs`). The PR packages below are only for trying SkiaSharp's own API.
+
 This API is not the ordinary released 4.147.0 preview surface. Verified on:
 
 - SkiaSharp source branch: `mattleibow/dev-skmesh-api`

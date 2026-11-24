@@ -160,3 +160,8 @@ The fastest way to run shared DrawnUI code on desktop: a tiny OpenTK head over y
 - `src/OpenTk/Samples/OpenTkOverlay` — mixed host: custom `GameWindow` + `CanvasHost`, raw GL cube + transparent overlay with `SkiaBackdrop` glass + `SkiaEditor`.
 
 Docs: `docs/articles/opentk/` (window, gestures, resources, faq, samples).
+
+## Resizing a window with GPU-cached content
+
+- Skia leaves the last offscreen target it drew (a `UseCache = GPU` / `ImageCompositeGPU` control) bound. A surface made after a resize on "the currently bound framebuffer" then draws every later frame off screen, and the window keeps showing its last real frame stretched to the new size. `DrawnUiWindow` binds framebuffer 0 before it makes the surface (DrawnUi 01f5efe94). A `CanvasHost` app does the same: bind its own target (0 for the window) right before calling `Resize`.
+- A canvas that fits a fixed logical screen by multiplying `context.Scale` in `Draw` (a "rescaling canvas") must arrange to the whole destination: `DrawnUiWindow` sets the canvas `WidthRequest` / `HeightRequest` to the window size in points every frame, and the canvas arranges by those requests at the scale it is drawn at, so a fit below 1 shrinks the content area (a narrow window squeezes the game). Override `Arrange(destination, -1, -1, scale)` in such a canvas.

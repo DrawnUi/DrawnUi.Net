@@ -564,6 +564,8 @@ new SkiaImageTiles()
 
 Scroll animation: mutate `ParallaxLayer.TileOffsetY` in game loop / animation tick.
 
+How it draws (read in the lib 2026-11-21): it loads the picture once and wraps it in ONE inner `SkiaImage` of `TileWidth` x `TileHeight` points (`Aspect = TileAspect`, cached by `TileCacheType`, Image by default), then renders that inner image once per grid cell, from `-TileOffset % TileSize`, clipped to its own bounds. So each tile is a cache blit; the grid itself is drawn again whenever the control redraws, so a still background wants a cache on the SkiaImageTiles itself (or on its parent). Its image effects (`AddEffect`, `ColorTint`, `Blur`...) apply once to the whole tiled result (since DrawnUi 0c12ec284), so `AddEffect = SkiaImageEffect.Recolor` + `ColorTint` turns one gray tile into any color. `TileAspect` follows the `TransformAspect` meanings: `Fill` only ENLARGES, it never shrinks, so a tile picture bigger than its cell is drawn at its own pixel size and cut (seams); use `Cover` (both ways, no aspect) or the default `AspectCover`. A seamless tile cut from a bigger picture: find its exact repeat (pixel period), cut that, set TileWidth/TileHeight = period x the picture's points per pixel. Tiles are drawn with the control's `RescalingQuality` (since DrawnUi f0da51c38; before, always Low): set `Medium` when a tile is shrunk and has thin lines, or 1 px details vanish in whole columns of tiles (the same fixed sampling phase repeats in every tile). For a picture repeated at its own pixel size, `SkiaImage { Aspect = TransformAspect.Tile }` is the lighter option; SkiaImageTiles is for a tile size in points and for scrolling offsets (parallax).
+
 ---
 
 ## SkiaBackdrop (blur effect)

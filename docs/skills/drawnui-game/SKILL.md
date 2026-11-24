@@ -1151,3 +1151,7 @@ Validation: Network tab filtered to `fonts/` — boot fetches only subsets, full
 - `src/Shared/Samples/Pong.Shared/` - Pong: `Game/PongGame.cs`, `Game/PongGame.Loop.cs` (loop + AI integration), `Game/Ai/PongAI.cs`, `Views/RescalingCanvas.cs`; heads listed in the table at the top
 - `src/Maui/Samples/GameTemplate/` - MAUI game starter (pooled sprites, `IReusableSprite`, `IWithHitBox`)
 - https://github.com/DrawnUi/DrawnUi.Net.Breakout - MAUI+Blazor shared game (Arkanoid pattern: shproj/projitems, IAudioService per head, raycast collision)
+
+## Clipping a game field
+
+A `SkiaLayer { IsClippedToBounds = true }` does not hold its sprites inside its bounds when they carry shadows or glows: the outer clip grows by the children's effect margins, so capsules, the ball's light and the paddle show a few points past the field's edge. Make the field a `SkiaShape` instead (it clips its children to its outline in its own paint, exactly): `new SkiaShape { UseCache = SkiaCacheType.None, CornerRadius = 10, HorizontalOptions = LayoutOptions.Fill, HeightRequest = ..., Children = { ... } }`. Set `UseCache = None`, since a shape is Operations-cached by default and a field's sprites move every frame. Draw the border on the field's own edge (no margin), so the line is where the ball bounces.
