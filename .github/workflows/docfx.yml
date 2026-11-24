@@ -40,10 +40,8 @@ jobs:
           if (Test-Path ./_site) {
               Remove-Item ./_site -Recurse -Force
           }
-          if (Test-Path ./api) {
-            Get-ChildItem ./api -Filter *.yml -File | Remove-Item -Force
-          }
-          docfx metadata ./docfx.json
+          # API reference: docs/api/*.yml are generated locally (docs/build.ps1 -NoServe) and committed;
+          # docfx metadata cannot compile the MAUI projects on this runner (missing workloads).
           docfx build ./docfx.json
 
       - name: Restore cached WASM samples
