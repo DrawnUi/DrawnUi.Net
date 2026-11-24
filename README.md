@@ -88,8 +88,12 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.9.2
+## What's New 1.10.9.3
 
+  * Shader effects on images stay correct after the image changes size.
+  * New SkiaImage Recolor effect: paints the picture's brightness in ColorTint, with Contrast.
+  * SkiaImageTiles: tiles keep their thin lines when shrunk, and effects apply to the whole tiled result.
+  * OpenTK: frames keep reaching the window after it is resized.
   * Windows: popup menus and tooltips no longer stay above dialogs and other apps, and a menu closes before a dialog opened from it shows.
   * New: the 3D add-on. Real 3D models (glTF), a product viewer that turns and zooms, 3D characters on a 2D field, shapes made in code, inside any DrawnUI screen: DrawnUi.Maui.Add3d, DrawnUi.Blazor.Add3d, DrawnUi.Web.Add3d, DrawnUi.Wpf.Add3d, DrawnUi.OpenTk.Add3d. See [3D](https://drawnui.net/articles/add3d.html).
   * Multiple crash and memory leaks fixes

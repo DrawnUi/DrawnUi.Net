@@ -17,7 +17,7 @@ Load `drawnui` for engine semantics and the skill of your engine (`drawnui-rust`
 
 | Engine | Install | Import |
 |---|---|---|
-| DrawnUI for .NET | NuGet `DrawnUi.Maui.Add3d`, `DrawnUi.Wpf.Add3d`, `DrawnUi.OpenTk.Add3d`, `DrawnUi.Blazor.Add3d` or `DrawnUi.Web.Add3d`, version 1.10.9.2 (the one matching your head) | `using DrawnUi.Add3d;` |
+| DrawnUI for .NET | NuGet `DrawnUi.Maui.Add3d`, `DrawnUi.Wpf.Add3d`, `DrawnUi.OpenTk.Add3d`, `DrawnUi.Blazor.Add3d` or `DrawnUi.Web.Add3d`, version 1.10.9.3 (the one matching your head) | `using DrawnUi.Add3d;` |
 | DrawnUI for React | `npm i drawnui-react drawnui-react-add3d` (`drawnui-react-add3d` ^1.0.1) | `import { SkiaModel3D } from "drawnui-react-add3d";` |
 | DrawnUI for Rust | `drawnui-add3d = "1.0"` in `[dependencies]` | `use drawnui_add3d::prelude::*;` |
 
