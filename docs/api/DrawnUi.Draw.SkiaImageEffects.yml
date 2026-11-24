@@ -16,6 +16,7 @@ items:
   - DrawnUi.Draw.SkiaImageEffects.Lighten(System.Single)
   - DrawnUi.Draw.SkiaImageEffects.Lightness(System.Single)
   - DrawnUi.Draw.SkiaImageEffects.Pastel
+  - DrawnUi.Draw.SkiaImageEffects.Recolor(Microsoft.Maui.Graphics.Color,System.Single)
   - DrawnUi.Draw.SkiaImageEffects.Saturation(System.Single)
   - DrawnUi.Draw.SkiaImageEffects.Sepia
   - DrawnUi.Draw.SkiaImageEffects.Tint(Microsoft.Maui.Graphics.Color,SkiaSharp.SKBlendMode)
@@ -89,6 +90,47 @@ items:
       description: ''
     content.vb: Public Shared Function Tint(color As Color, mode As SKBlendMode) As SKColorFilter
   overload: DrawnUi.Draw.SkiaImageEffects.Tint*
+- uid: DrawnUi.Draw.SkiaImageEffects.Recolor(Microsoft.Maui.Graphics.Color,System.Single)
+  commentId: M:DrawnUi.Draw.SkiaImageEffects.Recolor(Microsoft.Maui.Graphics.Color,System.Single)
+  id: Recolor(Microsoft.Maui.Graphics.Color,System.Single)
+  parent: DrawnUi.Draw.SkiaImageEffects
+  langs:
+  - csharp
+  - vb
+  name: Recolor(Color, float)
+  nameWithType: SkiaImageEffects.Recolor(Color, float)
+  fullName: DrawnUi.Draw.SkiaImageEffects.Recolor(Microsoft.Maui.Graphics.Color, float)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Recolor
+    path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
+    startLine: 35
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The picture's brightness (0.30 R + 0.57 G + 0.13 B) painted in the tint color, stretched around 0.5 by contrast
+
+    (1 = as is, 2 = twice the contrast). Alpha is kept.
+  example: []
+  syntax:
+    content: public static SKColorFilter Recolor(Color tint, float contrast)
+    parameters:
+    - id: tint
+      type: Microsoft.Maui.Graphics.Color
+    - id: contrast
+      type: System.Single
+    return:
+      type: SkiaSharp.SKColorFilter
+    content.vb: Public Shared Function Recolor(tint As Color, contrast As Single) As SKColorFilter
+  overload: DrawnUi.Draw.SkiaImageEffects.Recolor*
+  nameWithType.vb: SkiaImageEffects.Recolor(Color, Single)
+  fullName.vb: DrawnUi.Draw.SkiaImageEffects.Recolor(Microsoft.Maui.Graphics.Color, Single)
+  name.vb: Recolor(Color, Single)
 - uid: DrawnUi.Draw.SkiaImageEffects.TintSL(Microsoft.Maui.Graphics.Color,System.Single,System.Single,SkiaSharp.SKBlendMode)
   commentId: M:DrawnUi.Draw.SkiaImageEffects.TintSL(Microsoft.Maui.Graphics.Color,System.Single,System.Single,SkiaSharp.SKBlendMode)
   id: TintSL(Microsoft.Maui.Graphics.Color,System.Single,System.Single,SkiaSharp.SKBlendMode)
@@ -107,7 +149,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TintSL
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 31
+    startLine: 48
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -147,7 +189,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HSL
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 46
+    startLine: 63
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -187,7 +229,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Darken
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 72
+    startLine: 89
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -221,7 +263,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Lighten
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 85
+    startLine: 102
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -255,7 +297,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Grayscale
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 102
+    startLine: 119
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -286,7 +328,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Grayscale2
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 123
+    startLine: 140
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -317,7 +359,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Pastel
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 135
+    startLine: 152
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -345,7 +387,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Sepia
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 152
+    startLine: 169
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -376,7 +418,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvertColors
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 169
+    startLine: 186
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -407,7 +449,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Contrast
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 186
+    startLine: 203
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -445,7 +487,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Saturation
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 205
+    startLine: 222
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -483,7 +525,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Brightness
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 228
+    startLine: 245
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -521,7 +563,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Lightness
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 244
+    startLine: 261
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -559,7 +601,7 @@ items:
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Gamma
     path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffects.cs
-    startLine: 262
+    startLine: 279
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -917,12 +959,12 @@ references:
   name: SkiaSharp
   nameWithType: SkiaSharp
   fullName: SkiaSharp
-- uid: DrawnUi.Draw.SkiaImageEffects.TintSL*
-  commentId: Overload:DrawnUi.Draw.SkiaImageEffects.TintSL
-  href: DrawnUi.Draw.SkiaImageEffects.html#DrawnUi_Draw_SkiaImageEffects_TintSL_Microsoft_Maui_Graphics_Color_System_Single_System_Single_SkiaSharp_SKBlendMode_
-  name: TintSL
-  nameWithType: SkiaImageEffects.TintSL
-  fullName: DrawnUi.Draw.SkiaImageEffects.TintSL
+- uid: DrawnUi.Draw.SkiaImageEffects.Recolor*
+  commentId: Overload:DrawnUi.Draw.SkiaImageEffects.Recolor
+  href: DrawnUi.Draw.SkiaImageEffects.html#DrawnUi_Draw_SkiaImageEffects_Recolor_Microsoft_Maui_Graphics_Color_System_Single_
+  name: Recolor
+  nameWithType: SkiaImageEffects.Recolor
+  fullName: DrawnUi.Draw.SkiaImageEffects.Recolor
 - uid: System.Single
   commentId: T:System.Single
   parent: System
@@ -934,6 +976,12 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
+- uid: DrawnUi.Draw.SkiaImageEffects.TintSL*
+  commentId: Overload:DrawnUi.Draw.SkiaImageEffects.TintSL
+  href: DrawnUi.Draw.SkiaImageEffects.html#DrawnUi_Draw_SkiaImageEffects_TintSL_Microsoft_Maui_Graphics_Color_System_Single_System_Single_SkiaSharp_SKBlendMode_
+  name: TintSL
+  nameWithType: SkiaImageEffects.TintSL
+  fullName: DrawnUi.Draw.SkiaImageEffects.TintSL
 - uid: DrawnUi.Draw.SkiaImageEffects.HSL*
   commentId: Overload:DrawnUi.Draw.SkiaImageEffects.HSL
   href: DrawnUi.Draw.SkiaImageEffects.html#DrawnUi_Draw_SkiaImageEffects_HSL_System_Single_System_Single_System_Single_SkiaSharp_SKBlendMode_

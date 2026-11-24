@@ -17,6 +17,7 @@ items:
   - DrawnUi.Draw.SkiaImageEffect.Lighten
   - DrawnUi.Draw.SkiaImageEffect.None
   - DrawnUi.Draw.SkiaImageEffect.Pastel
+  - DrawnUi.Draw.SkiaImageEffect.Recolor
   - DrawnUi.Draw.SkiaImageEffect.Saturation
   - DrawnUi.Draw.SkiaImageEffect.Sepia
   - DrawnUi.Draw.SkiaImageEffect.TSL
@@ -460,6 +461,37 @@ items:
   namespace: DrawnUi.Draw
   syntax:
     content: Custom = 15
+    return:
+      type: DrawnUi.Draw.SkiaImageEffect
+- uid: DrawnUi.Draw.SkiaImageEffect.Recolor
+  commentId: F:DrawnUi.Draw.SkiaImageEffect.Recolor
+  id: Recolor
+  parent: DrawnUi.Draw.SkiaImageEffect
+  langs:
+  - csharp
+  - vb
+  name: Recolor
+  nameWithType: SkiaImageEffect.Recolor
+  fullName: DrawnUi.Draw.SkiaImageEffect.Recolor
+  type: Field
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Internals/Enums/SkiaImageEffect.cs
+      branch: Cells
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: Recolor
+    path: ../src/Shared/DrawnUi/Internals/Enums/SkiaImageEffect.cs
+    startLine: 28
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    The picture's brightness painted in ColorTint, stretched around its middle by Contrast (1 = as is).
+
+    Gives a gray or any picture one color: a texture recolored per theme, a room, a team.
+  example: []
+  syntax:
+    content: Recolor = 16
     return:
       type: DrawnUi.Draw.SkiaImageEffect
 references:
