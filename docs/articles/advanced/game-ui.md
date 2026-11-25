@@ -4,6 +4,8 @@ DrawnUi is not just for business apps — with direct SkiaSharp rendering, real-
 
 Check out [Breakout (Bricks Breaker) source code](https://github.com/DrawnUi/DrawnUi.Net.Breakout)
 
+Play [Parallax](https://drawnui.net/sandbox/parallax-gameloop) in your browser: a side-scroller where the pillars in front turn see-through around the heroine and a sparkle trail follows her as she runs and jumps, two shader effects at 60 fps.
+
 ## Why Use DrawnUi for 2D-Games?
 
 - **True cross-platform**  

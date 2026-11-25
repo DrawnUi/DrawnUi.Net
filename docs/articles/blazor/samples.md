@@ -20,6 +20,7 @@ This is the best sample to start with if you want the strongest current Blazor r
 Hosted sample:
 
 - <a href="https://drawnui.net/sandbox/" target="_blank" rel="noopener noreferrer">Open Blazor WebAssembly sample</a>
+- <a href="https://drawnui.net/sandbox/parallax-gameloop" target="_blank" rel="noopener noreferrer">Play the Parallax game</a>: a side-scroller with two shader effects (see-through pillars around the heroine, a sparkle trail behind her) at 60 fps
 
 ## BlazorSandboxServer
 

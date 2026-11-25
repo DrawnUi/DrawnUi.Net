@@ -120,6 +120,7 @@ More examples to run and edit: the Community feed on [drawfiddle.com](https://dr
   - Control and layout probes
   - Tutorial ports for browser runtime
   - Current Blazor validation pages
+  - [Parallax](https://drawnui.net/sandbox/parallax-gameloop), a side-scroller game with shader effects: see-through pillars around the heroine and a sparkle trail behind her
 
   [See it live in browser!](https://drawnui.net/sandbox/)
 
