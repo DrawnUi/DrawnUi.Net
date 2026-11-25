@@ -88,8 +88,11 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.9.3
+## What's New 1.10.9.4
 
+  * Fixed a crash on iOS when a page with a list closes while the app is in the background.
+  * Timers, tooltips and double-click detection keep working after the computer wakes from sleep.
+  * SkiaEditor on iOS: number, decimal and phone keyboards open without an extra toolbar.
   * Shader effects on images stay correct after the image changes size.
   * New SkiaImage Recolor effect: paints the picture's brightness in ColorTint, with Contrast.
   * SkiaImageTiles: tiles keep their thin lines when shrunk, and effects apply to the whole tiled result.
