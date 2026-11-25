@@ -103,6 +103,47 @@ public class BackgroundMeasureRaceTests
         host.AdvanceFrames(2);
     }
 
+    /// <summary>
+    /// A pass starts 50 ms after it is scheduled, on a worker thread. A page torn down in that window (the app sent to
+    /// the background) clears the layout's ItemsSource or disposes it: the pass must end quietly, not hit a null
+    /// (on iOS a crash reporter's signal handler turns that null access into an app crash).
+    /// </summary>
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void PassScheduled_ThenItemsSourceClearedOrDisposed_EndsWithoutError(bool dispose)
+    {
+        var capture = new ErrorCapture();
+        Trace.Listeners.Add(capture);
+        try
+        {
+            for (var n = 0; n < 5; n++)
+            {
+                var items = Items(500);
+                var (host, row) = Scene(items, 10);
+                using (host)
+                {
+                    host.RenderFrame(16); // measures the visible items, schedules the background pass
+                    Assert.True(row.IsBackgroundMeasuring);
+                    if (dispose)
+                        row.Dispose();
+                    else
+                        row.ItemsSource = null;
+
+                    var wait = Stopwatch.StartNew();
+                    while (row.IsBackgroundMeasuring && wait.ElapsedMilliseconds < 3000)
+                        Thread.Sleep(10);
+                }
+            }
+
+            Assert.Equal(0, capture.Errors);
+        }
+        finally
+        {
+            Trace.Listeners.Remove(capture);
+        }
+    }
+
     [Fact]
     public void BatchesWhileFramesAppend_NoPassFails_EveryItemInPlace()
     {

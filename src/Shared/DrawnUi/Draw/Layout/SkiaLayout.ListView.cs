@@ -4114,7 +4114,15 @@ public partial class SkiaLayout
             return;
         }
 
-        var totalItems = EffectiveItemsSource.Count;
+        // The pass starts 50 ms after it was scheduled, on a worker thread: the layout can be disposed or lose its
+        // ItemsSource meanwhile (a page torn down while the app is in the background).
+        var itemsSource = EffectiveItemsSource;
+        if (IsDisposed || itemsSource == null)
+        {
+            return;
+        }
+
+        var totalItems = itemsSource.Count;
         var currentBatchStart = startIndex;
         var maxIterations = Math.Max(1, (totalItems / BackgroundMeasurementBatchSize) + 10); // Safety limit
         var iterationCount = 0;
@@ -4124,6 +4132,11 @@ public partial class SkiaLayout
         while (currentBatchStart < totalItems && !cancellationToken.IsCancellationRequested &&
                iterationCount < maxIterations)
         {
+            if (IsDisposed)
+            {
+                break;
+            }
+
             lock (_structureChangesLock)
             {
                 // Stop only for REAL structure mutations (their apply shifts positions this loop's
