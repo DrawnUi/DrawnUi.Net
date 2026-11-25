@@ -362,6 +362,20 @@ public override void OnDisposing()
 the destination's top-left, as above, or `fragCoord - iOffset` will not start at
 zero for a control that is not at the canvas origin.
 
+### See it in a game
+
+The [Parallax Game Etude](https://drawnui.net/sandbox/parallax-gameloop) uses
+shaders drawn inside its own controls in two ways:
+
+- **See-through pillars**: when the heroine walks behind a pillar, the pillar
+  fades to partly transparent in a soft oval around her. A small runtime shader
+  runs only over that oval.
+- **Sparkle trail**: when she runs or jumps, she leaves twinkling glints. Their
+  sprites are baked once by a shader, and all glints draw in one atlas call.
+
+Both hold 60 fps in the browser. The source is in the Blazor sandbox
+(`Games/Parallax`).
+
 ## Custom uniforms
 
 ### SetUniform
