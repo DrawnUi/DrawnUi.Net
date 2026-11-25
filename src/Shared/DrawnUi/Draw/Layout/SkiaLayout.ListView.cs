@@ -4117,7 +4117,7 @@ public partial class SkiaLayout
         // The pass starts 50 ms after it was scheduled, on a worker thread: the layout can be disposed or lose its
         // ItemsSource meanwhile (a page torn down while the app is in the background).
         var itemsSource = EffectiveItemsSource;
-        if (IsDisposed)
+        if (IsDisposed || IsDisposing)
         {
             return;
         }
@@ -4140,7 +4140,7 @@ public partial class SkiaLayout
         while (currentBatchStart < totalItems && !cancellationToken.IsCancellationRequested &&
                iterationCount < maxIterations)
         {
-            if (IsDisposed)
+            if (IsDisposed || IsDisposing)
             {
                 break;
             }
