@@ -243,6 +243,11 @@ public sealed partial class ParallaxGame : DrawnGame
     private readonly GhostSprite _ghost;
 
     /// <summary>
+    /// Sparkles the heroine leaves behind while she moves.
+    /// </summary>
+    private readonly SparkleTrailControl _sparkles;
+
+    /// <summary>
     /// Tracks whether one-time asset initialization has already completed.
     /// </summary>
     private bool _initialized;
@@ -354,6 +359,13 @@ public sealed partial class ParallaxGame : DrawnGame
             Top = GhostBaseTop,
             ZIndex = 6,
         };
+        _sparkles = new SparkleTrailControl
+        {
+            ZIndex = 7,
+        };
+
+        _foreground.SeeThroughWindow = GetPlayerBody;
+
         _ghost.AnimationState = GhostSprite.GhostAnimState.AppearLeft;
         _ghost.State = GhostState.Appearing;
 
@@ -366,6 +378,7 @@ public sealed partial class ParallaxGame : DrawnGame
             _torchBand,
             _tileset,
             _ghost,
+            _sparkles,
             _player,
             _foreground,
         ];
@@ -447,6 +460,21 @@ public sealed partial class ParallaxGame : DrawnGame
         _ghost.Left = (ghostWorldX - _worldPosition) - (GhostRenderWidth * 0.5f);
         _ghost.Top = GhostBaseTop + (_ghost.State == GhostState.Gone ? 0f : MathF.Sin(_ghost._ghostBobTime) * GhostSprite.GhostBobAmplitude);
 
+    }
+
+    /// <summary>
+    /// The heroine's body inside her sprite frame (frames are 128x64 with the body near the bottom center),
+    /// in scene units.
+    /// </summary>
+    private SKRect GetPlayerBody()
+    {
+        var centerX = (float)_player.Left + PlayerRenderWidth * (_facingLeft ? 0.48f : 0.52f);
+        var top = (float)_player.Top;
+        return new SKRect(
+            centerX - PlayerRenderWidth * 0.14f,
+            top + PlayerRenderHeight * 0.2f,
+            centerX + PlayerRenderWidth * 0.14f,
+            top + PlayerRenderHeight);
     }
 
     /// <summary>

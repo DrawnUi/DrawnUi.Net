@@ -22,6 +22,40 @@ namespace ParallaxGameLoop.Game
             private int _repeatBandWidthPixels;
             private int _repeatBandHeightPixels;
 
+            private const string SeeThroughShader = """
+                uniform shader band;
+                uniform float2 uOrigin;
+                uniform float2 uCenter;
+                uniform float2 uRadius;
+                uniform float uKeep;
+
+                half4 main(float2 p) {
+                    half4 c = band.eval(p - uOrigin);
+                    float r = length((p - uCenter) / uRadius);
+                    float w = 1.0 - smoothstep(0.35, 1.0, r);
+                    return c * half(mix(1.0, uKeep, w));
+                }
+                """;
+
+            private static SKRuntimeEffect _seeThroughEffect;
+            private SKRuntimeEffectUniforms _seeThroughUniforms;
+            private SKRuntimeEffectChildren _seeThroughChildren;
+            private readonly SKPaint _seeThroughPaint = new() { IsAntialias = false };
+            private readonly float[] _origin = new float[2];
+            private readonly float[] _center = new float[2];
+            private readonly float[] _radius = new float[2];
+            private float _opaqueFrom = -1f;
+            private float _opaqueTo = -1f;
+            private SKShader _bandShader;
+            private SKImage _bandShaderImage;
+            private SKSize _bandShaderSize;
+
+            /// <summary>
+            /// When set, returns the box to see through (the player's body), in scene units relative to this strip:
+            /// where the strip covers it, the strip fades smoothly to partly transparent in a soft oval around it.
+            /// </summary>
+            public Func<SKRect> SeeThroughWindow { get; set; }
+
             /// <summary>
             /// Horizontal scroll offset applied to the repeating strip.
             /// </summary>
@@ -67,6 +101,10 @@ namespace ParallaxGameLoop.Game
                 _repeatBandImage = null;
                 _drawPaint.Dispose();
                 _uploadPaint.Dispose();
+                _seeThroughPaint.Dispose();
+                _seeThroughUniforms?.Dispose();
+                _bandShader?.Dispose();
+                _seeThroughChildren?.Dispose();
                 base.OnDisposing();
             }
 
@@ -122,6 +160,16 @@ namespace ParallaxGameLoop.Game
 
                 if (activeBand != null)
                 {
+                    var window = SKRect.Empty;
+                    if (SeeThroughWindow != null)
+                    {
+                        var body = SeeThroughWindow();
+                        window = new SKRect(
+                            dest.Left + body.Left * pixelScale,
+                            dest.Top + body.Top * pixelScale,
+                            dest.Left + body.Right * pixelScale,
+                            dest.Top + body.Bottom * pixelScale);
+                    }
                     for (var bandX = startX; bandX < dest.Right + repeatWidth; bandX += repeatWidth)
                     {
                         var bandDest = new SKRect(
@@ -129,6 +177,31 @@ namespace ParallaxGameLoop.Game
                             dest.Top,
                             MathF.Round(bandX + repeatWidth),
                             dest.Bottom);
+                        if (!window.IsEmpty && bandDest.IntersectsWith(window))
+                        {
+                            // An oval a bit larger than the body; the shader runs only inside its bounds,
+                            // and only when an opaque part of the strip (a pillar) is actually there.
+                            var radiusX = window.Width * 0.5f + 34f * pixelScale;
+                            var radiusY = window.Height * 0.5f + 30f * pixelScale;
+                            var area = new SKRect(
+                                MathF.Floor(window.MidX - radiusX),
+                                MathF.Floor(window.MidY - radiusY),
+                                MathF.Ceiling(window.MidX + radiusX),
+                                MathF.Ceiling(window.MidY + radiusY));
+                            area.Intersect(bandDest);
+
+                            if (!area.IsEmpty && CoversOpaque(source, bandDest, area, segmentWidth) && EnsureSeeThrough())
+                            {
+                                var canvas = ctx.Context.Canvas;
+                                canvas.Save();
+                                canvas.ClipRect(area, SKClipOperation.Difference);
+                                canvas.DrawImage(activeBand, bandDest, PixelSampling, activePaint);
+                                canvas.Restore();
+                                DrawSeeThrough(canvas, activeBand, bandDest, area, new SKPoint(window.MidX, window.MidY), radiusX, radiusY, activePaint);
+                                continue;
+                            }
+                        }
+
                         ctx.Context.Canvas.DrawImage(activeBand, bandDest, PixelSampling, activePaint);
                     }
                     return;
@@ -152,6 +225,121 @@ namespace ParallaxGameLoop.Game
                         }
                     }
                 }
+            }
+
+            private bool EnsureSeeThrough()
+            {
+                if (_seeThroughEffect == null)
+                {
+                    _seeThroughEffect = SKRuntimeEffect.CreateShader(SeeThroughShader, out var errors);
+                    if (_seeThroughEffect == null)
+                    {
+                        Console.WriteLine($"[ParallaxGame] see-through shader: {errors}");
+                        SeeThroughWindow = null;
+                        return false;
+                    }
+                }
+
+                _seeThroughUniforms ??= new SKRuntimeEffectUniforms(_seeThroughEffect);
+                _seeThroughChildren ??= new SKRuntimeEffectChildren(_seeThroughEffect);
+                return true;
+            }
+
+            /// <summary>
+            /// True when an opaque column of the source (a pillar) falls inside the area. The opaque column span
+            /// of the source is read once from its pixels.
+            /// </summary>
+            private bool CoversOpaque(LoadedImageSource source, SKRect bandDest, SKRect area, float segmentWidth)
+            {
+                if (_opaqueFrom < 0f)
+                {
+                    FindOpaqueColumns(source);
+                    if (_opaqueFrom < 0f)
+                    {
+                        return true;
+                    }
+                }
+
+                for (var x = bandDest.Left; x < bandDest.Right; x += segmentWidth)
+                {
+                    var from = x + _opaqueFrom * segmentWidth;
+                    var to = x + _opaqueTo * segmentWidth;
+                    if (to > area.Left && from < area.Right)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            private void FindOpaqueColumns(LoadedImageSource source)
+            {
+                var bitmap = source.Bitmap;
+                using var fromImage = bitmap == null && source.Image != null ? SKBitmap.FromImage(source.Image) : null;
+                bitmap ??= fromImage;
+                if (bitmap == null || bitmap.Width == 0)
+                {
+                    return;
+                }
+
+                int first = -1, last = -1;
+                for (var x = 0; x < bitmap.Width; x++)
+                {
+                    for (var y = 0; y < bitmap.Height; y++)
+                    {
+                        if (bitmap.GetPixel(x, y).Alpha > 8)
+                        {
+                            if (first < 0)
+                            {
+                                first = x;
+                            }
+                            last = x;
+                            break;
+                        }
+                    }
+                }
+
+                if (first >= 0)
+                {
+                    _opaqueFrom = first / (float)bitmap.Width;
+                    _opaqueTo = (last + 1) / (float)bitmap.Width;
+                }
+            }
+
+            /// <summary>
+            /// Draws the oval area of one band through the see-through shader: one pass over a small rect,
+            /// no offscreen layer. The band's image shader is made once per band image and moved by a uniform.
+            /// </summary>
+            private void DrawSeeThrough(SKCanvas canvas, SKImage band, SKRect bandDest, SKRect area, SKPoint center, float radiusX, float radiusY, SKPaint paint)
+            {
+                var size = new SKSize(bandDest.Width, bandDest.Height);
+                if (_bandShader == null || _bandShaderImage != band || _bandShaderSize != size)
+                {
+                    _bandShader?.Dispose();
+                    _bandShader = band.ToShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, PixelSampling,
+                        SKMatrix.CreateScale(size.Width / band.Width, size.Height / band.Height));
+                    _bandShaderImage = band;
+                    _bandShaderSize = size;
+                    _seeThroughChildren["band"] = _bandShader;
+                }
+
+                _origin[0] = bandDest.Left;
+                _origin[1] = bandDest.Top;
+                _center[0] = center.X;
+                _center[1] = center.Y;
+                _radius[0] = radiusX;
+                _radius[1] = radiusY;
+                _seeThroughUniforms["uOrigin"] = _origin;
+                _seeThroughUniforms["uCenter"] = _center;
+                _seeThroughUniforms["uRadius"] = _radius;
+                _seeThroughUniforms["uKeep"] = 0.3f;
+
+                using var shader = _seeThroughEffect.ToShader(_seeThroughUniforms, _seeThroughChildren);
+                _seeThroughPaint.Shader = shader;
+                _seeThroughPaint.Color = paint.Color;
+                canvas.DrawRect(area, _seeThroughPaint);
+                _seeThroughPaint.Shader = null;
             }
 
             private void EnsureRepeatBandImage(

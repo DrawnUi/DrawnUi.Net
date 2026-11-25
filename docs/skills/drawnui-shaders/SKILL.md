@@ -233,3 +233,39 @@ var effect = SKRuntimeEffect.CreateShader(File.ReadAllText(args[0]), out var err
 ```
 
 Set the standard uniforms (`SKRuntimeEffectUniforms`), pass a picture as `iImage1` (`SKRuntimeEffectChildren`), draw a rect into an `SKBitmap` and save it (`dotnet run check.cs -- myeffect.sksl`). Render the same picture at N and 4N pixels to check that patterns scale with the picture (section 5). In the DrawnUI Fiddle use inline code (`ShaderCode`, `TransitionShaderCode`). Working samples: HelloMaui `Pages/ShadersPage.cs` in the DrawnUi repo.
+
+## 12. Game layers: see-through foreground, sparkle trails
+
+Both run inside a control's own `Paint` / `DrawSource` with a plain `SKRuntimeEffect`: no `VisualEffects`, no offscreen layer, so they cost almost nothing per frame (well under 1 ms of CPU in a Debug WASM build). Working sample: the Blazor sandbox Parallax game (`ParallaxGame.RepeatingStripControl.cs`, `ParallaxGame.SparkleTrailControl.cs`).
+
+**See-through foreground** (a pillar or wall in front of the player turns partly transparent around the player, as in most platformers):
+
+```glsl
+uniform shader band;     // the layer's image: an image shader made ONCE, scale-only matrix
+uniform float2 uOrigin;  // where the image is drawn this frame
+uniform float2 uCenter;  // the player's body center, pixels
+uniform float2 uRadius;  // oval radii: body half size + a margin
+uniform float uKeep;     // 0.3: the layer stays faintly visible
+
+half4 main(float2 p) {
+    half4 c = band.eval(p - uOrigin);
+    float w = 1.0 - smoothstep(0.35, 1.0, length((p - uCenter) / uRadius));
+    return c * half(mix(1.0, uKeep, w));
+}
+```
+
+- Draw the layer as usual with `canvas.ClipRect(ovalBounds, SKClipOperation.Difference)`, then `DrawRect(ovalBounds)` with the shader: it runs only over the small oval, and the rest stays a plain blit.
+- Skip the shader when no opaque part of the layer is inside the oval (read the opaque column span of the source image once). Then the effect costs nothing while the player is in the open.
+- Move the image with the `uOrigin` uniform, not a new image shader per frame. Reuse the uniform `float[]` arrays.
+- A smooth oval falloff and no outline read cleanest; drawn edge lines on the pillar sides look dull.
+- Coordinates: `main(p)` gets the draw's local coordinates, the same space as the rects you draw with, so the player box comes from scene units times `ctx.Scale` from the layer's `ctx.Destination`.
+
+**Sparkle / particle trail** (glints left behind a moving character, drifting, shrinking, twinkling out):
+
+- Bake the sprites once: draw an SkSL shader into a small GPU surface (`DrawnView.CreateSurface`). It holds a star cell (soft core, thin cross rays, faint diagonals) and a dot cell, white with premultiplied alpha.
+- Draw every particle in ONE `canvas.DrawAtlas(atlas, sprites, transforms, colors, SKBlendMode.Modulate, sampling, paint)` call with `paint.BlendMode = SKBlendMode.Plus`: colors tint the white sprites, and additive blending makes them glow on a dark scene.
+- Fixed arrays sized to the pool (about 160), so there are no allocations. A free slot gets a transparent color and a zero-scale transform; when the pool is full, the oldest particle is reused.
+- Keep particles in world space (x plus the camera offset at birth) so they stay where they were born while the scene scrolls. Emit only while the character moves, and let the live ones finish their fade.
+- Twinkle = alpha times `0.55 + 0.45 * sin(phase + age * 24)`; fade = `1 - t²`; shrink with age. Warm gold and white read as magic over cool blue scenes.
+
+**Measuring frame rate in a shared browser**: CDP CPU throttling (`Emulation.setCPUThrottlingRate`) slows the whole tab. The app's own FPS badge then shows the throttled numbers to anyone watching it (at 6x a 60 fps scene shows about 20). Compare against a baseline built from a git worktree, run back to back in the same browser and window size, and report the unthrottled run as the result.

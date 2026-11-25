@@ -61,6 +61,9 @@ public sealed partial class ParallaxGame : DrawnGame
 
         UpdateWorldVisuals();
 
+        var moving = moveInput != 0 || _heroineJumpOffset != 0 || _heroineVelocityY != 0;
+        _sparkles.Step(deltaSeconds, moving, GetPlayerBody(), _facingLeft, _worldPosition);
+
         if (_attackTimeRemaining > 0)
         {
             TryAttackGhost();
