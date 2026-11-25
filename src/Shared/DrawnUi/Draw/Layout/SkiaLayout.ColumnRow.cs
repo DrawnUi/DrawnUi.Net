@@ -2827,6 +2827,11 @@ else
             Tasks.StartDelayed(TimeSpan.FromMilliseconds(50),
                 () =>
                 {
+                    if (IsDisposed || IsDisposing)
+                    {
+                        return;
+                    }
+
                     ChildrenFactory.FillPoolInBackgroundAsync(warmTarget);
                     OnPropertyChanged(nameof(DebugString));
                 });

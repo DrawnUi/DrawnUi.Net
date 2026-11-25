@@ -2675,6 +2675,11 @@ public partial class SkiaLayout
         {
             try
             {
+                if (IsDisposed || IsDisposing)
+                {
+                    return;
+                }
+
                 var measured = MeasureHeadBatchDirect(items, constraints, scale);
 
                 if (measured.Count == count && stamp == MeasureStamp && epoch == _itemsShiftEpoch)
@@ -4107,6 +4112,11 @@ public partial class SkiaLayout
         CancellationToken cancellationToken,
         BackgroundMeasurementContext context = null)
     {
+        if (IsDisposed || IsDisposing)
+        {
+            return;
+        }
+
         // Special case for single item remeasurement
         if (context?.IsSingleItemRemeasurement == true && context.SingleItemIndex.HasValue)
         {
@@ -4117,11 +4127,6 @@ public partial class SkiaLayout
         // The pass starts 50 ms after it was scheduled, on a worker thread: the layout can be disposed or lose its
         // ItemsSource meanwhile (a page torn down while the app is in the background).
         var itemsSource = EffectiveItemsSource;
-        if (IsDisposed || IsDisposing)
-        {
-            return;
-        }
-
         if (itemsSource == null)
         {
             // new items may be set right after: measurement restarts from this layout's next draw, which a cached
