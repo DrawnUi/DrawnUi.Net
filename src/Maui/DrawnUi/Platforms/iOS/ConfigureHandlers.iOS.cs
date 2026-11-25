@@ -29,6 +29,16 @@ namespace DrawnUi.Draw
                         layout.IgnoreSafeArea = useFullScreen;
                     }
                 });
+
+                // MAUI 10 pads a ScrollView by the safe area on its own (SafeAreaEdges defaults to Container),
+                // which would defeat MobileIsFullscreen, as on Android
+                ScrollViewHandler.Mapper.AppendToMapping("Custom", (h, v) =>
+                {
+                    if (v is ScrollView scroll && useFullScreen)
+                    {
+                        scroll.SafeAreaEdges = Microsoft.Maui.SafeAreaEdges.None;
+                    }
+                });
             }
 
             //handlers.AddHandler(typeof(DrawnView), typeof(DrawnViewHandler));
