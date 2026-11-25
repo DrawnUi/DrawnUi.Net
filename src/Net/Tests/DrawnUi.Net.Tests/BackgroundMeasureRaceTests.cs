@@ -144,6 +144,42 @@ public class BackgroundMeasureRaceTests
         }
     }
 
+    /// <summary>
+    /// Clearing the list and setting new items right away, while a scheduled pass has not started yet: the new
+    /// items are all measured, also inside a SkiaScroll that caches itself (the pass asks for the draw that restarts
+    /// measurement).
+    /// </summary>
+    [Fact]
+    public void PassScheduled_ThenItemsSourceReplaced_NewItemsAllMeasured()
+    {
+        var capture = new ErrorCapture();
+        Trace.Listeners.Add(capture);
+        try
+        {
+            for (var n = 0; n < 5; n++)
+            {
+                var (host, row) = Scene(Items(300), 10);
+                using (host)
+                {
+                    host.RenderFrame(16); // schedules the background pass
+                    row.ItemsSource = null;
+                    Thread.Sleep(80); // the scheduled pass starts on the empty list
+                    var fresh = Items(400);
+                    row.ItemsSource = fresh;
+                    RunUntilMeasured(host, row, fresh.Count);
+                    Assert.Equal(fresh.Count, row.GetStackStructure().GetCount());
+                    Assert.Equal(fresh.Count - 1, row.LastMeasuredIndex);
+                }
+            }
+
+            Assert.Equal(0, capture.Errors);
+        }
+        finally
+        {
+            Trace.Listeners.Remove(capture);
+        }
+    }
+
     [Fact]
     public void BatchesWhileFramesAppend_NoPassFails_EveryItemInPlace()
     {

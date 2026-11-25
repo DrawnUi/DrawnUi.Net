@@ -4117,8 +4117,16 @@ public partial class SkiaLayout
         // The pass starts 50 ms after it was scheduled, on a worker thread: the layout can be disposed or lose its
         // ItemsSource meanwhile (a page torn down while the app is in the background).
         var itemsSource = EffectiveItemsSource;
-        if (IsDisposed || itemsSource == null)
+        if (IsDisposed)
         {
+            return;
+        }
+
+        if (itemsSource == null)
+        {
+            // new items may be set right after: measurement restarts from this layout's next draw, which a cached
+            // parent makes only when asked
+            Repaint();
             return;
         }
 
