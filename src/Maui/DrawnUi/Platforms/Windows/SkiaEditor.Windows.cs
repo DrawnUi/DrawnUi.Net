@@ -308,7 +308,7 @@ namespace DrawnUi.Draw
                 Debug.WriteLine($"[SkiaEditor] TextChanged '{Text}'");
                 // WinUI can fire a spurious pointer event immediately after keyboard input.
                 // Block out-of-bounds Down processing for 250 ms to prevent focus theft.
-                _spuriousDownBlockUntilMs = Environment.TickCount64 + 250;
+                _spuriousDownBlockUntilMs = DrawnUi.Draw.MonotonicTime.Ms + 250;
                 _updatingText = false;
 
                 // the text and its selection, together and at once

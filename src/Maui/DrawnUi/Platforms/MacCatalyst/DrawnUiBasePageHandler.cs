@@ -101,7 +101,7 @@ public class DrawnUiBasePageHandler : Microsoft.Maui.Handlers.PageHandler
         /// </summary>
         bool TakeTab()
         {
-            var now = Environment.TickCount64;
+            var now = DrawnUi.Draw.MonotonicTime.Ms;
             if (now - _lastTabMs < 15)
                 return false;
             _lastTabMs = now;

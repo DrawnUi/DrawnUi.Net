@@ -148,7 +148,7 @@ namespace DrawnUi.Views
                 var control = _control;
                 if (control != null && control.IsHiddenInViewTree)
                 {
-                    var now = Environment.TickCount64;
+                    var now = DrawnUi.Draw.MonotonicTime.Ms;
                     if (now - _lastCheck > 100)
                     {
                         _lastCheck = now;

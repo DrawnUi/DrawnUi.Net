@@ -2887,7 +2887,7 @@ namespace DrawnUi.Views
             // hidden. While hidden, re-check from the frame loop every 250 ms; a visible canvas pays one bool check.
             if (IsHiddenInViewTree && !NeedCheckParentVisibility)
             {
-                var now = Environment.TickCount64;
+                var now = DrawnUi.Draw.MonotonicTime.Ms;
                 if (now - _lastHiddenCheckMs >= 250)
                 {
                     _lastHiddenCheckMs = now;

@@ -33,7 +33,7 @@ public class RestartingTimer<T>
     public void Kick(T param)
     {
         Context = param;
-        Volatile.Write(ref this.dueAtMs, Environment.TickCount64 + (long)this.timespan.TotalMilliseconds);
+        Volatile.Write(ref this.dueAtMs, DrawnUi.Draw.MonotonicTime.Ms + (long)this.timespan.TotalMilliseconds);
 
         if (Interlocked.CompareExchange(ref this.running, 1, 0) == 0)
         {
@@ -123,7 +123,7 @@ public class RestartingTimer : IDisposable
     /// </summary>
     public void Kick()
     {
-        Volatile.Write(ref this.dueAtMs, Environment.TickCount64 + (long)this.timespan.TotalMilliseconds);
+        Volatile.Write(ref this.dueAtMs, DrawnUi.Draw.MonotonicTime.Ms + (long)this.timespan.TotalMilliseconds);
 
         if (Interlocked.CompareExchange(ref this.running, 1, 0) == 0)
         {
@@ -192,7 +192,7 @@ public class RestartingTimer : IDisposable
             {
                 //a Kick landing in the sub-ms window between this check and Ended() is lost and the
                 //callback fires one cycle early, which is fine for inactivity/debounce use
-                var wait = dueAt() - Environment.TickCount64;
+                var wait = dueAt() - DrawnUi.Draw.MonotonicTime.Ms;
                 if (wait <= 0)
                 {
                     invoke = !cts.IsCancellationRequested;

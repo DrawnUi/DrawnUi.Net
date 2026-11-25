@@ -215,6 +215,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Helpers\IntersectionUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Helpers\Looper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Helpers\Pendulum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Internals\Helpers\MonotonicTime.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Helpers\RestartingTimer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Helpers\RubberBandUtils.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Internals\Helpers\Screen.cs" />

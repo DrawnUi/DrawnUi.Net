@@ -889,9 +889,9 @@ public class Canvas : DrawnView, IGestureListener
         // the context menu once, as on Windows and the web heads
         if (touchAction is TouchActionResult.Pointer or TouchActionResult.Up
             && args1.Pointer is { Button: MouseButton.Right, State: MouseButtonState.Released } secondary
-            && Environment.TickCount64 - _lastSecondaryClick > 300)
+            && DrawnUi.Draw.MonotonicTime.Ms - _lastSecondaryClick > 300)
         {
-            _lastSecondaryClick = Environment.TickCount64;
+            _lastSecondaryClick = DrawnUi.Draw.MonotonicTime.Ms;
             var menuArgs = new TouchActionEventArgs(args1.Id, TouchActionType.ContextMenu, args1.Location, null, (float)RenderingScale)
             {
                 IsInsideView = true,

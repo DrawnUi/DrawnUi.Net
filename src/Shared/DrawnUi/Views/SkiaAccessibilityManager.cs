@@ -253,7 +253,7 @@ namespace DrawnUi.Views
             {
                 Control = control,
                 Direction = direction,
-                Deadline = Environment.TickCount64 + 3000,
+                Deadline = DrawnUi.Draw.MonotonicTime.Ms + 3000,
             });
             control.Superview?.Update();
         }
@@ -276,7 +276,7 @@ namespace DrawnUi.Views
                 return;
 
             var control = request.Control;
-            if (control.IsDisposed || Environment.TickCount64 > request.Deadline)
+            if (control.IsDisposed || DrawnUi.Draw.MonotonicTime.Ms > request.Deadline)
             {
                 Interlocked.CompareExchange(ref _reveal, null, request);
                 return;
@@ -529,7 +529,7 @@ namespace DrawnUi.Views
         internal void RequestFocusInside(SkiaControl root)
         {
             _focusReturn = null;
-            _focusInsideDeadline = Environment.TickCount64 + 1000;
+            _focusInsideDeadline = DrawnUi.Draw.MonotonicTime.Ms + 1000;
             Volatile.Write(ref _focusInside, root);
         }
 
@@ -543,7 +543,7 @@ namespace DrawnUi.Views
                 && !_appFocusRequested) // and so does the app's own SetAccessibilityFocus in this frame
             {
                 // the control may take input only a moment later (an app that shows it again after the close): wait for it
-                _focusReturnDeadline = Environment.TickCount64 + 1000;
+                _focusReturnDeadline = DrawnUi.Draw.MonotonicTime.Ms + 1000;
                 _focusReturnFrom = (node as SkiaControl)?.Superview?.KeyboardFocusNode;
                 Volatile.Write(ref _focusReturn, node);
             }
@@ -615,7 +615,7 @@ namespace DrawnUi.Views
         {
             _appFocusRequested = true;
             Volatile.Write(ref _focusReturn, null);
-            _accessibilityFocusDeadline = Environment.TickCount64 + 3000;
+            _accessibilityFocusDeadline = DrawnUi.Draw.MonotonicTime.Ms + 3000;
             Volatile.Write(ref _accessibilityFocusTarget, control);
             control?.Superview?.Update();
         }
@@ -626,7 +626,7 @@ namespace DrawnUi.Views
             var wanted = Volatile.Read(ref _accessibilityFocusTarget);
             if (wanted != null)
             {
-                if (wanted.IsDisposed || Environment.TickCount64 > _accessibilityFocusDeadline)
+                if (wanted.IsDisposed || DrawnUi.Draw.MonotonicTime.Ms > _accessibilityFocusDeadline)
                 {
                     _accessibilityFocusTarget = null;
                 }
@@ -652,7 +652,7 @@ namespace DrawnUi.Views
             var inside = Volatile.Read(ref _focusInside);
             if (inside != null)
             {
-                if (inside.IsDisposed || Environment.TickCount64 > _focusInsideDeadline)
+                if (inside.IsDisposed || DrawnUi.Draw.MonotonicTime.Ms > _focusInsideDeadline)
                 {
                     _focusInside = null;
                 }
@@ -678,7 +678,7 @@ namespace DrawnUi.Views
                 var moved = canvas?.KeyboardFocusNode is { } now && !ReferenceEquals(now, _focusReturnFrom)
                                                                 && !ReferenceEquals(now, back);
                 if (back is not SkiaControl { IsDisposed: false } control || moved
-                    || Environment.TickCount64 > _focusReturnDeadline)
+                    || DrawnUi.Draw.MonotonicTime.Ms > _focusReturnDeadline)
                 {
                     Interlocked.CompareExchange(ref _focusReturn, null, back); // gone, the keyboard went elsewhere, or too late
                 }
@@ -847,7 +847,7 @@ namespace DrawnUi.Views
                     Index = target,
                     Step = forward ? 1 : -1,
                     Last = !forward,
-                    Deadline = Environment.TickCount64 + 3000,
+                    Deadline = DrawnUi.Draw.MonotonicTime.Ms + 3000,
                 };
             }
 
@@ -977,7 +977,7 @@ namespace DrawnUi.Views
                     Scroll = scroll,
                     Index = target,
                     Step = step,
-                    Deadline = Environment.TickCount64 + 3000,
+                    Deadline = DrawnUi.Draw.MonotonicTime.Ms + 3000,
                 };
             }
 
@@ -1182,12 +1182,12 @@ namespace DrawnUi.Views
                     return;
                 }
 
-                request.Deadline = Environment.TickCount64 + 3000;
+                request.Deadline = DrawnUi.Draw.MonotonicTime.Ms + 3000;
                 request.ScrollIssued = false;
                 cell = CellAt(request.Index);
             }
 
-            if (Environment.TickCount64 > request.Deadline || request.Group.IsDisposed)
+            if (DrawnUi.Draw.MonotonicTime.Ms > request.Deadline || request.Group.IsDisposed)
             {
                 ClearGroupRequest(request);
                 return;
@@ -1329,7 +1329,7 @@ namespace DrawnUi.Views
 
             if (!_dirty && _nodes.IsEmpty) return;
 
-            var now = Environment.TickCount64;
+            var now = DrawnUi.Draw.MonotonicTime.Ms;
             if (now - _lastRebuildTick < MinUpdateIntervalMs)
             {
                 if (!_stale)
@@ -1374,7 +1374,7 @@ namespace DrawnUi.Views
             var before = Snapshot;
             _dirty = false;
             _stale = false;
-            _lastRebuildTick = Environment.TickCount64;
+            _lastRebuildTick = DrawnUi.Draw.MonotonicTime.Ms;
 
             _sortBuffer.Clear();
             var modal = ActiveModal;

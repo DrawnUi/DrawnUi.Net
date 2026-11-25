@@ -102,7 +102,7 @@ namespace DrawnUi.Views
 
             var style = TooltipStyleUsed;
             if (_tooltipShownText != null
-                || (_tooltipClosedAt != 0 && Environment.TickCount64 - _tooltipClosedAt < style.FollowWindowMs))
+                || (_tooltipClosedAt != 0 && DrawnUi.Draw.MonotonicTime.Ms - _tooltipClosedAt < style.FollowWindowMs))
             {
                 // moving from one tooltip to the next: no new wait
                 _tooltipGeneration++;
@@ -141,7 +141,7 @@ namespace DrawnUi.Views
                 return false;
 
             _tooltipShownText = null;
-            _tooltipClosedAt = Environment.TickCount64;
+            _tooltipClosedAt = DrawnUi.Draw.MonotonicTime.Ms;
             return true;
         }
 
