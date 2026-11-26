@@ -94,7 +94,7 @@ public partial class SkiaImageManager
 
     /// <summary>
     /// "native://name.png": an image the app packages itself (MAUI Resources/Images), written next to the app as
-    /// name.scale-100.png .. name.scale-400.png; the one for the screen's scale is used.
+    /// name.scale-100.png .. name.scale-400.png (an svg becomes png); the one for the screen's scale is used.
     /// </summary>
     static SKBitmap LoadNativeImage(string name)
     {
@@ -104,7 +104,7 @@ public partial class SkiaImageManager
         {
             var stem = Path.GetFileNameWithoutExtension(name);
             var wanted = (int)Math.Round(Super.Screen.Density * 100);
-            path = Directory.GetFiles(dir, $"{stem}.scale-*{Path.GetExtension(name)}")
+            path = Directory.GetFiles(dir, $"{stem}.scale-*")
                 .Select(f => (file: f, scale: int.TryParse(Path.GetFileNameWithoutExtension(f).Substring(stem.Length + ".scale-".Length), out var s) ? s : 0))
                 .OrderBy(x => x.scale >= wanted ? 0 : 1)
                 .ThenBy(x => x.scale >= wanted ? x.scale : -x.scale)
