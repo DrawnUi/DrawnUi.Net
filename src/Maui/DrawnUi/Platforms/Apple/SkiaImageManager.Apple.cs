@@ -53,6 +53,8 @@ public partial class SkiaImageManager
                         TraceLog($"[LoadImageOnPlatformAsync] loaded {source} ToSKBitmap");
                         return iosImage.ToSKBitmap();
                     }
+
+                    return null; // not in the app bundle: no web download for a native:// name
                 }
 
                 #if USENUKE
@@ -99,6 +101,13 @@ public partial class SkiaImageManager
     {
         if (source == null)
             return null;
+
+        // "native://name.png": an image the app packages itself (MAUI Resources/Images), read from the app bundle
+        if (source is UriImageSource nativeUri && nativeUri.Uri.OriginalString.StartsWith(PrefixNative, StringComparison.OrdinalIgnoreCase))
+        {
+            var name = nativeUri.Uri.OriginalString.Substring(PrefixNative.Length).Trim('/');
+            return UIImage.FromBundle(name) ?? UIImage.FromBundle(Path.GetFileNameWithoutExtension(name));
+        }
 
         try
         {
