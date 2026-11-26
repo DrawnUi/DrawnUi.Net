@@ -88,8 +88,13 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.9.4
+## What's New 1.10.9.5
 
+  * New: DrawnUI images load your MAUI app's `Resources/Images` with `native://`, on Android, iOS, Mac Catalyst and Windows: `Source="native://logo.png"` (or `native://logo.svg`) shows the same file MAUI's `Image` uses, in the version made for the screen. See [Images](https://drawnui.net/articles/controls/images.html).
+  * An image that cannot load raises `Error`, so a missing picture is reported instead of leaving an empty box.
+  * `resource://` images set from C# code load on .NET MAUI.
+  * Android: images from a full file path, such as the app's cache folder, load.
+  * iOS and Mac: images from streams and embedded resources load.
   * Fixed a crash on iOS when a page with a list closes while the app is in the background.
   * Timers, tooltips and double-click detection keep working after the computer wakes from sleep.
   * SkiaEditor on iOS: number, decimal and phone keyboards open without an extra toolbar.
