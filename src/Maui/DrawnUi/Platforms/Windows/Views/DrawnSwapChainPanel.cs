@@ -43,6 +43,10 @@ public class DrawnSwapChainPanel : SwapChainPanel
 
 	private bool pendingSizeChange;
 
+	private bool inFrame;
+
+	private bool frameRequestedInFrame;
+
 	public bool DrawInBackground { get; set; }
 
 	public double ContentsScale { get; private set; }
@@ -219,6 +223,13 @@ public class DrawnSwapChainPanel : SwapChainPanel
 
 	private void RenderFrame()
 	{
+		if (inFrame)
+		{
+			// asked from inside the frame being drawn (a tap handler run by the drawing changed the window layout):
+			// a nested frame would recreate the surfaces the current frame still draws on, so it comes right after
+			frameRequestedInFrame = true;
+			return;
+		}
 		if (designMode || !isLoaded || !isVisible)
 		{
 			return;
@@ -239,8 +250,21 @@ public class DrawnSwapChainPanel : SwapChainPanel
 		}
 		glesContext.GetSurfaceDimensions(out var width, out var height);
 		glesContext.SetViewportSize(width, height);
-		OnRenderFrame(new Windows.Foundation.Rect(0f, 0f, (float)width, (float)height));
-		glesContext.SwapBuffers();
+		inFrame = true;
+		try
+		{
+			OnRenderFrame(new Windows.Foundation.Rect(0f, 0f, (float)width, (float)height));
+			glesContext?.SwapBuffers();
+		}
+		finally
+		{
+			inFrame = false;
+		}
+		if (frameRequestedInFrame)
+		{
+			frameRequestedInFrame = false;
+			DispatcherQueue?.TryEnqueue(DispatcherQueuePriority.Normal, Invalidate);
+		}
 	}
 
 	private void UpdateRenderLoop(bool start)
