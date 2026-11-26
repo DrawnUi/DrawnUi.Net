@@ -10,8 +10,6 @@ Build rich, fluid UI by drawing it. Every control is painted on one hardware-acc
 rendering engine on [SkiaSharp](https://github.com/mono/SkiaSharp) that works along your framework: .NET MAUI,
 Blazor, WebAssembly, WPF and OpenTK. Compose it in C# code, XAML or Razor, the way you already work.
 
-**.NET 9 apps:** use the 1.10.9.4 packages, the last ones with .NET 9 targets. Version 1.11 and later target .NET 10 and .NET 11.
-
 Docs: [drawnui.net](https://drawnui.net) · Playground: [drawfiddle.com](https://drawfiddle.com) · Blazor demo: [drawnui.net/sandbox](https://drawnui.net/sandbox/)
 
 ```csharp
@@ -90,11 +88,8 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.11.0.1
+## What's New 1.10.9.4
 
-  * .NET 11: DrawnUi.Maui and its add-ons target net11.0 for Android, iOS, Mac Catalyst and Windows, with no MAUI Compatibility package needed. See [Moving to .NET 11](https://drawnui.net/articles/maui/net11.html).
-  * The packages target .NET 10 and .NET 11. .NET 9 apps keep the 1.10.9.4 packages.
-  * iOS: images from streams and app images given as `native://` load.
   * Fixed a crash on iOS when a page with a list closes while the app is in the background.
   * Timers, tooltips and double-click detection keep working after the computer wakes from sleep.
   * SkiaEditor on iOS: number, decimal and phone keyboards open without an extra toolbar.

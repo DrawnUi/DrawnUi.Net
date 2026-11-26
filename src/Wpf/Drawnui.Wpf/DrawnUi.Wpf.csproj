@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net10.0-windows</TargetFramework>
+        <TargetFrameworks>net9.0-windows;net10.0-windows</TargetFrameworks>
         <UseWPF>true</UseWPF>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -27,7 +27,7 @@
             src\Directory.Build.props define ONPLATFORM. In shared code both mean "this is the MAUI
             WinUI head" and select MAUI platform partials (DrawnView.Windows.cs, Super.Windows.cs).
             This head is not one, so both tokens are removed while WINDOWS7_0 and friends stay.
-            The Net and OpenTK heads get the same treatment for free by targeting plain net10.0.
+            The Net and OpenTK heads get the same treatment for free by targeting plain net9.0.
         -->
         <DefineConstants>;$(DefineConstants);</DefineConstants>
         <DefineConstants>$(DefineConstants.Replace(';ONPLATFORM;', ';'))</DefineConstants>

@@ -36,11 +36,6 @@ public partial class SkiaImageManager
             {
                 return await LoadFromFile(fileSource.File, cancel);
             }
-            else if (source is StreamImageSource streamSource)
-            {
-                using var stream = await streamSource.Stream(cancel);
-                return SKBitmap.Decode(stream);
-            }
             else if (source is UriImageSource uriSource)
             {
                 var url = uriSource.Uri.AbsoluteUri;
@@ -73,15 +68,6 @@ public partial class SkiaImageManager
 
                 return await LoadImageFromInternetAsync(uriSource, cancel);
             }
-            else
-            {
-                var iosImage = await LoadNativeImage(source, cancel, 1.0f);
-                if (iosImage != null)
-                {
-                    TraceLog($"[LoadImageOnPlatformAsync] loaded {source} ToSKBitmap");
-                    return iosImage.ToSKBitmap();
-                }
-            }
         }
         catch (TaskCanceledException)
         {
@@ -111,20 +97,8 @@ public partial class SkiaImageManager
 
         try
         {
-            if (source is UriImageSource uriSource && uriSource.Uri.AbsoluteUri.Contains(PrefixNative))
-            {
-                var native = uriSource.Uri.AbsoluteUri.Replace(PrefixNative, string.Empty).Trim('/');
-                source = new FileImageSource() { File = native };
-            }
-
-            var context = Application.Current?.Handler?.MauiContext;
-            if (context == null)
-                return null;
-
-            using var result = await source.GetPlatformImageAsync(context);
-            var image = result?.Value;
-            // the result owns its image and is disposed here: hand out an own reference
-            return image == null ? null : new UIImage(image.CGImage, image.CurrentScale, image.Orientation);
+            var handler = source.GetHandler();
+            return await handler.LoadImageAsync(source, token);
         }
         catch (Exception e)
         {

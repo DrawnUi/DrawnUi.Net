@@ -2,11 +2,11 @@
 
     <PropertyGroup>
 
-        <!--<TargetFrameworks>net10.0-windows10.0.19041.0</TargetFrameworks>-->
-        <!--<TargetFrameworks>net10.0-android</TargetFrameworks>-->
+        <!--<TargetFrameworks>net9.0-windows10.0.19041.0</TargetFrameworks>-->
+        <!--<TargetFrameworks>net9.0-android</TargetFrameworks>-->
 
-        <TargetFrameworks>net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
-        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+        <TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
 
         <ApplicationId>com.drawnioui.player</ApplicationId>
         <ApplicationIdGuid>220e66b0-efc2-4fde-9ac8-074d5c3299b3</ApplicationIdGuid>
@@ -130,7 +130,7 @@
 
         <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.70" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
-        <!--<PackageReference Include="DrawnUi.Maui" Version="1.11.0.1" />-->
+        <!--<PackageReference Include="DrawnUi.Maui" Version="1.10.9.4" />-->
 	</ItemGroup>
 
     <ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">

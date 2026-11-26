@@ -1,8 +1,6 @@
 ﻿using System.Buffers;
 using DrawnUi.Draw;
-#if !NET11
 using Microsoft.Maui.Controls.Compatibility.Platform.UWP;
-#endif
 using Microsoft.Maui.Controls.Platform;
 using Microsoft.Maui.Handlers;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -45,7 +43,6 @@ public static class WindowsExtensions
 
 
 
-#if !NET11
 	public static IImageSourceHandler GetHandler(this ImageSource source)
 	{
 		//Image source handler to return
@@ -60,6 +57,5 @@ public static class WindowsExtensions
 		}
 		return returnValue;
 	}
-#endif
 
 }

@@ -5,12 +5,12 @@ using Android.Graphics;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
+using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 using static DrawnUi.Views.SkiaViewAccelerated;
 using Canvas = Android.Graphics.Canvas;
 using Color = Android.Graphics.Color;
 using Context = Android.Content.Context;
 using Platform = Microsoft.Maui.ApplicationModel.Platform;
-using Microsoft.Maui.Platform;
 
 namespace DrawnUi.Draw;
 
@@ -468,7 +468,7 @@ public partial class Super
 
         if (Build.VERSION.SdkInt >= (BuildVersionCodes)35)
         {
-            _navigationBarColor = colorBar.ToPlatform();
+            _navigationBarColor = colorBar.ToAndroid();
             PaintSystemBarStrips(activity);
             if (window.InsetsController != null)
             {
@@ -485,12 +485,12 @@ public partial class Super
                 {
                     if (colorSeparator == Colors.Transparent)
                         window.NavigationBarDividerColor =
-                            Microsoft.Maui.Graphics.Color.FromArgb("#FF222222").ToPlatform();
+                            Microsoft.Maui.Graphics.Color.FromArgb("#FF222222").ToAndroid();
                     else
-                        window.NavigationBarDividerColor = colorSeparator.ToPlatform();
+                        window.NavigationBarDividerColor = colorSeparator.ToAndroid();
                 }
 
-                window.SetNavigationBarColor(colorBar.ToPlatform());
+                window.SetNavigationBarColor(colorBar.ToAndroid());
 
                 if (Build.VERSION.SdkInt > (BuildVersionCodes)26)
                 {
@@ -510,12 +510,12 @@ public partial class Super
                 {
                     if (colorSeparator == Colors.Transparent)
                         window.NavigationBarDividerColor =
-                            Microsoft.Maui.Graphics.Color.FromArgb("#FFeeeeee").ToPlatform();
+                            Microsoft.Maui.Graphics.Color.FromArgb("#FFeeeeee").ToAndroid();
                     else
-                        window.NavigationBarDividerColor = colorSeparator.ToPlatform();
+                        window.NavigationBarDividerColor = colorSeparator.ToAndroid();
                 }
 
-                window.SetNavigationBarColor(colorBar.ToPlatform());
+                window.SetNavigationBarColor(colorBar.ToAndroid());
 
                 if (Build.VERSION.SdkInt > (BuildVersionCodes)26)
                 {

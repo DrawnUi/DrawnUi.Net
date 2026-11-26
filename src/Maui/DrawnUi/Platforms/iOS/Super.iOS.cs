@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using CoreAnimation;
 using Foundation;
+using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
  
 using SkiaSharp.Views.iOS;
  
@@ -33,7 +34,7 @@ namespace DrawnUi.Draw
             if (UIDevice.CurrentDevice.CheckSystemVersion(11, 0))
             {
                 var window = new UIWindow(frame: UIScreen.MainScreen.Bounds)
-                { BackgroundColor = UIColor.Clear };
+                { BackgroundColor = Colors.Transparent.ToUIColor() };
 
                 Super.Screen.TopInset = (int)(window.SafeAreaInsets.Top);
                 Super.Screen.BottomInset = (int)(window.SafeAreaInsets.Bottom);

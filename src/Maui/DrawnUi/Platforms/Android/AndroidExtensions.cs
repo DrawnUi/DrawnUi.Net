@@ -1,7 +1,5 @@
 ﻿using Android.Graphics.Drawables;
-#if !NET11
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
-#endif
 using Microsoft.Maui.Controls.Platform;
 using Microsoft.Maui.Handlers;
 using Microsoft.Maui.Platform;
@@ -143,7 +141,6 @@ public static class AndroidExtensions
         return service;
     }
 
-#if !NET11
     public static IImageSourceHandler GetHandler(this ImageSource source)
     {
         //Image source handler to return
@@ -167,5 +164,4 @@ public static class AndroidExtensions
         }
         return returnValue;
     }
-#endif
 }

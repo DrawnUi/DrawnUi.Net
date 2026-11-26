@@ -6,6 +6,7 @@ using Android.Widget;
 using Bumptech.Glide;
 using Bumptech.Glide.Load.Engine;
 using Bumptech.Glide.Request.Target;
+using Microsoft.Maui.Controls.Compatibility.Platform.Android;
 using System.Diagnostics;
 using Bumptech.Glide.Load.Model;
 using Activity = Android.App.Activity;
@@ -124,7 +125,7 @@ public static class GlideExtensions
         RequestBuilder builder;
 
         var fileName = source.File;
-        var drawable = context.Resources?.GetIdentifier(System.IO.Path.GetFileNameWithoutExtension(fileName), "drawable", context.PackageName) ?? 0;
+        var drawable = ResourceManager.GetDrawableId(context, fileName);
         if (drawable != 0)
         {
             builder = request.Load(drawable);

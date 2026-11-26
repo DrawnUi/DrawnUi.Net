@@ -8,7 +8,7 @@
     -->
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net10.0-windows</TargetFramework>
+        <TargetFramework>net9.0-windows</TargetFramework>
         <UseWPF>true</UseWPF>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
@@ -18,7 +18,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DrawnUi.Wpf" Version="1.11.0.1" />
+        <PackageReference Include="DrawnUi.Wpf" Version="1.10.9.4" />
     </ItemGroup>
 
 </Project>
