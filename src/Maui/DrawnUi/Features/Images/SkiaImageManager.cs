@@ -1035,8 +1035,7 @@ public partial class SkiaImageManager : IDisposable
             {
                 // a query ("glass2.jpg?queue=3") is not part of the file name: it only makes a separate cache entry
                 var query = filename.IndexOf('?');
-                using var stream = await FileSystem.OpenAppPackageFileAsync(query > 0 ? filename[..query] : filename);
-                using var reader = new StreamReader(stream);
+                using var stream = await OpenLocalFileAsync(query > 0 ? filename[..query] : filename);
                 bitmap = SKBitmap.Decode(stream);
             }
 
@@ -1092,7 +1091,18 @@ public partial class SkiaImageManager : IDisposable
             return await client.GetStreamAsync(uri, cancel);
         }
 
-        return await FileSystem.OpenAppPackageFileAsync(source);
+        return await OpenLocalFileAsync(source);
+    }
+
+    /// <summary>
+    /// A full path on disk opens that file; any other name is a file packaged with the app (Resources/Raw).
+    /// </summary>
+    static Task<Stream> OpenLocalFileAsync(string filename)
+    {
+        if (Path.IsPathRooted(filename) && File.Exists(filename))
+            return Task.FromResult<Stream>(new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read));
+
+        return FileSystem.OpenAppPackageFileAsync(filename);
     }
 
     /// <summary>
