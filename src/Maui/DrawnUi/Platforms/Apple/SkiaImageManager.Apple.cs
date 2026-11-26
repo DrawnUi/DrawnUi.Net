@@ -36,6 +36,11 @@ public partial class SkiaImageManager
             {
                 return await LoadFromFile(fileSource.File, cancel);
             }
+            else if (source is StreamImageSource streamSource)
+            {
+                using var stream = await streamSource.Stream(cancel);
+                return SKBitmap.Decode(stream);
+            }
             else if (source is UriImageSource uriSource)
             {
                 var url = uriSource.Uri.AbsoluteUri;
