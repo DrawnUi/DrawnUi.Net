@@ -10,7 +10,7 @@ Build rich, fluid UI by drawing it. Every control is painted on one hardware-acc
 rendering engine on [SkiaSharp](https://github.com/mono/SkiaSharp) that works along your framework: .NET MAUI,
 Blazor, WebAssembly, WPF and OpenTK. Compose it in C# code, XAML or Razor, the way you already work.
 
-**.NET 9 apps:** use the 1.10.9.4 packages, the last ones with .NET 9 targets. Version 1.11 and later target .NET 10 and .NET 11.
+**.NET 9 apps:** use the 1.10.9.5 packages, the last ones with .NET 9 targets. Version 1.11 and later target .NET 10 and .NET 11.
 
 Docs: [drawnui.net](https://drawnui.net) · Playground: [drawfiddle.com](https://drawfiddle.com) · Blazor demo: [drawnui.net/sandbox](https://drawnui.net/sandbox/)
 
@@ -92,9 +92,13 @@ Please star ⭐ if you like it!
 
 ## What's New 1.11.0.1
 
-  * .NET 11: DrawnUi.Maui and its add-ons target net11.0 for Android, iOS, Mac Catalyst and Windows, with no MAUI Compatibility package needed. See [Moving to .NET 11](https://drawnui.net/articles/maui/net11.html).
-  * The packages target .NET 10 and .NET 11. .NET 9 apps keep the 1.10.9.4 packages.
-  * iOS: images from streams and app images given as `native://` load.
+  * .NET 11: DrawnUi.Maui and its add-ons target net11.0 for Android, iOS, Mac Catalyst and Windows, with no MAUI Compatibility package needed, and DrawnUi.Net, DrawnUi.OpenTk, DrawnUi.Wpf and their add-ons target net11.0 too. See [Moving to .NET 11](https://drawnui.net/articles/maui/net11.html).
+  * The packages target .NET 10 and .NET 11. .NET 9 apps keep the 1.10.9.5 packages, the last ones with .NET 9 targets.
+  * New: `native://` loads the images your app framework keeps for you. .NET MAUI: the app's `Resources/Images` on Android, iOS, Mac Catalyst and Windows, `Source="native://logo.png"` (or `native://logo.svg`), the same file MAUI's `Image` uses, in the version made for the screen. WPF: images with build action Resource, `native://Images/logo.png` (or `pack://application:,,,/Images/logo.png`). OpenTK, DrawnUi.Net and the web: the file a plain name loads, so code written with `native://` works on every head. See [Images](https://drawnui.net/articles/controls/images.html).
+  * An image that cannot load raises `Error`, so a missing picture is reported instead of leaving an empty box.
+  * `resource://` images set from C# code load on .NET MAUI.
+  * Android: images from a full file path, such as the app's cache folder, load.
+  * iOS and Mac: images from streams and embedded resources load.
   * Fixed a crash on iOS when a page with a list closes while the app is in the background.
   * Timers, tooltips and double-click detection keep working after the computer wakes from sleep.
   * SkiaEditor on iOS: number, decimal and phone keyboards open without an extra toolbar.
