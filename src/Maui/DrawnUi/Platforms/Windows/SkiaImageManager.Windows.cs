@@ -90,6 +90,35 @@ public partial class SkiaImageManager
         return url;
     }
 
+    static string PrefixNative = "native://";
+
+    /// <summary>
+    /// "native://name.png": an image the app packages itself (MAUI Resources/Images), written next to the app as
+    /// name.scale-100.png .. name.scale-400.png; the one for the screen's scale is used.
+    /// </summary>
+    static SKBitmap LoadNativeImage(string name)
+    {
+        var dir = AppContext.BaseDirectory;
+        var path = Path.Combine(dir, name);
+        if (!File.Exists(path))
+        {
+            var stem = Path.GetFileNameWithoutExtension(name);
+            var wanted = (int)Math.Round(Super.Screen.Density * 100);
+            path = Directory.GetFiles(dir, $"{stem}.scale-*{Path.GetExtension(name)}")
+                .Select(f => (file: f, scale: int.TryParse(Path.GetFileNameWithoutExtension(f).Substring(stem.Length + ".scale-".Length), out var s) ? s : 0))
+                .OrderBy(x => x.scale >= wanted ? 0 : 1)
+                .ThenBy(x => x.scale >= wanted ? x.scale : -x.scale)
+                .Select(x => x.file)
+                .FirstOrDefault();
+        }
+
+        if (path == null)
+            return null;
+
+        using var stream = File.OpenRead(path);
+        return SKBitmap.Decode(stream);
+    }
+
     public static async Task<SKBitmap> LoadImageOnPlatformAsync(ImageSource source, CancellationToken cancel)
     {
         if (source == null)
@@ -103,6 +132,11 @@ public partial class SkiaImageManager
                 {
                     return SKBitmap.Decode(stream);
                 }
+            }
+            else
+            if (source is UriImageSource nativeUri && nativeUri.Uri.OriginalString.StartsWith(PrefixNative, StringComparison.OrdinalIgnoreCase))
+            {
+                return LoadNativeImage(nativeUri.Uri.OriginalString.Substring(PrefixNative.Length).Trim('/'));
             }
             else
             if (source is UriImageSource uriSource)
