@@ -75,7 +75,7 @@ A: Subclass `SkiaControl` for custom, `SkiaLayout` for container etc, . Override
 A: Yes, on the **MAUI** host. Use `SkiaMauiElement` to embed native MAUI controls like WebView inside your DrawnUI canvas.
 
 **Q: Can I use MAUI's default `Resources/Images` folder?**  
-A: Sorry, no, drawn resources lives inside `Resources/Raw` and subfolders. Note that MAUI supports only lowercase filenames of resources and while uppercase might works for you on some plaforms they will not be read on iOS.
+A: Yes: `native://` loads the app's own `Resources/Images` in a `SkiaImage` (`Source="native://dotnet_bot.png"`, an svg as `native://logo.svg`), at the density of the screen, on Android, iOS, Mac Catalyst and Windows. DrawnUI's own assets (svg, Lottie, shaders, images by plain file name) live in `Resources/Raw` and its subfolders. Use lowercase file names for resources: iOS reads only those. See [Images](controls/images.md#loading-from-different-sources).
 
 **Q: How do I change SkiaSvg source not from file/url?**  
 A: set `SvgString` property to svg text string.
