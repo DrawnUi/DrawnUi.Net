@@ -90,7 +90,7 @@ Please star ⭐ if you like it!
 
 ## What's New 1.10.9.5
 
-  * New: DrawnUI images load your MAUI app's `Resources/Images` with `native://`, on Android, iOS, Mac Catalyst and Windows: `Source="native://logo.png"` (or `native://logo.svg`) shows the same file MAUI's `Image` uses, in the version made for the screen. See [Images](https://drawnui.net/articles/controls/images.html).
+  * New: `native://` loads the images your app framework keeps for you. .NET MAUI: the app's `Resources/Images` on Android, iOS, Mac Catalyst and Windows, `Source="native://logo.png"` (or `native://logo.svg`), the same file MAUI's `Image` uses, in the version made for the screen. WPF: images with build action Resource, `native://Images/logo.png` (or `pack://application:,,,/Images/logo.png`). OpenTK, DrawnUi.Net and the web: the file a plain name loads, so code written with `native://` works on every head. See [Images](https://drawnui.net/articles/controls/images.html).
   * An image that cannot load raises `Error`, so a missing picture is reported instead of leaving an empty box.
   * `resource://` images set from C# code load on .NET MAUI.
   * Android: images from a full file path, such as the app's cache folder, load.
