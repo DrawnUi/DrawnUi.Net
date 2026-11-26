@@ -23,7 +23,7 @@ public class LabelSpanEffectsSpacingTests
 
     static LabelSpanEffectsSpacingTests()
     {
-        SkiaFontManager.Instance.RegisterFont("SpanEffectsText", RepoFile(@"Tests\PreviewTests\Resources\Fonts\OpenSans-Regular.ttf"));
+        SkiaFontManager.Instance.RegisterFont("SpanEffectsText", RepoFile(@"src\Net\Tests\DrawnUi.Net.Tests\Resources\Fonts\OpenSans-Regular.ttf"));
         SkiaFontManager.Instance.Initialize();
     }
 

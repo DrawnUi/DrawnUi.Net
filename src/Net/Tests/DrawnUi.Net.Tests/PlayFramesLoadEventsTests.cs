@@ -27,7 +27,7 @@ public class PlayFramesLoadEventsTests
     [Fact]
     public async Task Lottie_Success_WithFrames()
     {
-        var path = RepoFile(@"Tests\PreviewTests\Resources\Raw\Lottie\ok.json");
+        var path = RepoFile(@"src\Net\Tests\DrawnUi.Net.Tests\Resources\Lottie\ok.json");
         var lottie = new SkiaLottie { AutoPlay = false };
         var result = WaitFor(lottie, (c, set) =>
         {

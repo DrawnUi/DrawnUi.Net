@@ -30,7 +30,7 @@ public class LabelMeasureGoldenTests
 
     static LabelMeasureGoldenTests()
     {
-        SkiaFontManager.Instance.RegisterFont("GoldenText", RepoFile(@"Tests\PreviewTests\Resources\Fonts\OpenSans-Regular.ttf"));
+        SkiaFontManager.Instance.RegisterFont("GoldenText", RepoFile(@"src\Net\Tests\DrawnUi.Net.Tests\Resources\Fonts\OpenSans-Regular.ttf"));
         SkiaFontManager.Instance.RegisterFont("GoldenMath", RepoFile(@"src\Blazor\DrawnUi\wwwroot\fonts\NotoSansMathSymbols-Subset.ttf"));
         SkiaFontManager.Instance.RegisterFont("GoldenEmoji", RepoFile(@"src\Wpf\Samples\HelloWpf\fonts\NotoColorEmoji-Subset-COLRv0.ttf"));
         SkiaFontManager.Instance.Initialize();

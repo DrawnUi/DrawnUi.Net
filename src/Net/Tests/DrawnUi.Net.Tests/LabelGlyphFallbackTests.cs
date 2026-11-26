@@ -23,7 +23,7 @@ public class LabelGlyphFallbackTests
 
     static LabelGlyphFallbackTests()
     {
-        SkiaFontManager.Instance.RegisterFont("FallbackTestText", RepoFile(@"Tests\PreviewTests\Resources\Fonts\OpenSans-Regular.ttf"));
+        SkiaFontManager.Instance.RegisterFont("FallbackTestText", RepoFile(@"src\Net\Tests\DrawnUi.Net.Tests\Resources\Fonts\OpenSans-Regular.ttf"));
         SkiaFontManager.Instance.RegisterFont("FallbackTestMath", RepoFile(@"src\Blazor\DrawnUi\wwwroot\fonts\NotoSansMathSymbols-Subset.ttf"));
         SkiaFontManager.Instance.RegisterFont("FallbackTestSym2", RepoFile(@"src\Blazor\DrawnUi\wwwroot\fonts\NotoSansSymbols2-Subset.ttf"));
         SkiaFontManager.Instance.RegisterFont("FallbackTestEmoji", RepoFile(@"src\Wpf\Samples\HelloWpf\fonts\NotoColorEmoji-Subset-COLRv0.ttf"));

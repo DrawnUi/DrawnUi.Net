@@ -134,7 +134,7 @@ public class AnimatedFramesTimingTests
     {
         var lottie = new SkiaLottie { AutoPlay = false, WidthRequest = 40, HeightRequest = 40, SpeedRatio = ratio };
         using var host = Host(lottie);
-        var json = File.ReadAllText(RepoFile(@"Tests\PreviewTests\Resources\Raw\Lottie\ok.json"));
+        var json = File.ReadAllText(RepoFile(@"src\Net\Tests\DrawnUi.Net.Tests\Resources\Lottie\ok.json"));
         lottie.SetAnimation(lottie.LoadAnimationFromJson(json), false);
         var ms = lottie.Animation.Duration.TotalMilliseconds; // 164 frames at 80 fps
 

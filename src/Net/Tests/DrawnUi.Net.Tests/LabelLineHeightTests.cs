@@ -22,7 +22,7 @@ public class LabelLineHeightTests
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir != null && !Path.Exists(Path.Combine(dir.FullName, ".git")))
             dir = dir.Parent;
-        var fonts = Path.Combine(dir!.FullName, @"Tests\PreviewTests\Resources\Fonts");
+        var fonts = Path.Combine(dir!.FullName, @"src\Net\Tests\DrawnUi.Net.Tests\Resources\Fonts");
         SkiaFontManager.Instance.RegisterFont("LineOrbitron", Path.Combine(fonts, "Orbitron-Black.ttf"));
         SkiaFontManager.Instance.RegisterFont("LineSans", Path.Combine(fonts, "OpenSans-Regular.ttf"));
         SkiaFontManager.Instance.Initialize();

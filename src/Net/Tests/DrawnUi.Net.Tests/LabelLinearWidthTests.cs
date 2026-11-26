@@ -17,7 +17,7 @@ public class LabelLinearWidthTests
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir != null && !Path.Exists(Path.Combine(dir.FullName, ".git")))
             dir = dir.Parent;
-        SkiaFontManager.Instance.RegisterFont("LinearTestText", Path.Combine(dir!.FullName, @"Tests\PreviewTests\Resources\Fonts\OpenSans-Regular.ttf"));
+        SkiaFontManager.Instance.RegisterFont("LinearTestText", Path.Combine(dir!.FullName, @"src\Net\Tests\DrawnUi.Net.Tests\Resources\Fonts\OpenSans-Regular.ttf"));
         SkiaFontManager.Instance.Initialize();
     }
 
