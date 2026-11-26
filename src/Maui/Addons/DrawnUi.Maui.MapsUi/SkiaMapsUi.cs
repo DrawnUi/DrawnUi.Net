@@ -350,10 +350,9 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
         ctx.Context.Canvas.Save();
         ctx.Context.Canvas.ClipRect(ctx.Destination);
         ctx.Context.Canvas.Translate(ctx.Destination.Left, ctx.Destination.Top);
-        ctx.Context.Canvas.Scale(PixelDensity, PixelDensity);
 
-        //paint map into the layout area
-        CommonDrawControl(ctx.Context.Canvas);
+        //paint map into the layout area, the render controller scales it to pixels
+        _renderController?.Render(ctx.Context.Canvas, GetPixelDensity());
 
         ctx.Context.Canvas.Restore();
 
@@ -382,8 +381,7 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
     {
         base.OnLayoutReady();
 
-        // Start the invalidation timer
-        StartUpdates(false);
+        RefreshGraphics();
     }
 
     private static bool GetShiftPressed() => KeyboardManager.IsShiftPressed;
@@ -508,7 +506,7 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
             if (_positions.Count == 1) // Not sure if this check is necessary.
                 _manipulationTracker.Restart(_positions.Values.ToArray());
 
-            OnMapPointerPressed(_positions.Values.ToArray());
+            OnPointerPressed(_positions.Values.ToArray());
 
             return base.ProcessGestures(args, apply);
         }
@@ -516,7 +514,7 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
         {
             _positions[args.Event.Id] = position;
 
-            if (OnMapPointerMoved(_positions.Values.ToArray(), false))
+            if (OnPointerMoved(_positions.Values.ToArray(), false))
                 return consumed;
 
             //if (args.Event.NumberOfTouches > 1)
@@ -547,7 +545,7 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
         {
             //            _positions.Remove(args.Id, out var releasedTouch);
             _positions.Clear();
-            OnMapPointerReleased([position]);
+            OnPointerReleased([position]);
 
             Refresh();
         }
@@ -739,28 +737,11 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
     }
 
     //---------------------------------------------------
-    //from shared but already changed a bit:
+    // from Mapsui.UI.Shared MapControl (Mapsui 5.2), adapted to DrawnUI
     //---------------------------------------------------
 
-    // Flag indicating if a drawing process is running
-    private bool _drawing;
-
-    // Flag indicating if the control has to be redrawn
-    private bool _invalidated;
-
-    // Flag indicating if a new drawing process should start
-    private bool _refresh;
-    private IRenderer _renderer = new MapRenderer();
-    //private IRenderer _renderer = new DrawnUiSkiaMapRenderer();
-
-    // Timer for loop to invalidating the control
-    private Timer? _invalidateTimer;
-
-    // Interval between two calls of the invalidate function in ms
-    private int _updateInterval = 16;
-
-    // Stopwatch for measuring drawing times
-    private readonly System.Diagnostics.Stopwatch _stopwatch = new();
+    // draws the map and runs Mapsui's invalidate loop (animations, partial refreshes, drawables per layer)
+    private RenderController? _renderController;
     private readonly TapGestureTracker _tapGestureTracker = new();
     private readonly FlingTracker _flingTracker = new();
 
@@ -770,49 +751,58 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
     public int MaxTapGestureMovement { get; set; } = 8;
 
     /// <summary>
-    /// Use fling gesture to move the map. Default is true. Fling means that the map will continue to move for a 
+    /// Use fling gesture to move the map. Default is true. Fling means that the map will continue to move for a
     /// short time after the user has lifted the finger.
     /// </summary>
     public bool UseFling { get; set; } = true;
 
+    /// <summary>
+    /// Event that is triggered when the map is tapped. Can be a single tap, double tap or long press.
+    /// </summary>
+    public event EventHandler<MapEventArgs>? MapTapped;
+
+    /// <summary>
+    /// Event that is triggered on pointer down.
+    /// </summary>
+    public event EventHandler<MapEventArgs>? MapPointerPressed;
+
+    /// <summary>
+    /// Event that is triggered on pointer move. Can be a drag or hover.
+    /// </summary>
+    public event EventHandler<MapEventArgs>? MapPointerMoved;
+
+    /// <summary>
+    /// Event that is triggered on pointer up.
+    /// </summary>
+    public event EventHandler<MapEventArgs>? MapPointerReleased;
+
     private void SharedConstructor()
     {
         PlatformUtilities.SetOpenInBrowserFunc(OpenUrl);
-        // Create timer for invalidating the control
-        _invalidateTimer?.Dispose();
-        _invalidateTimer = new Timer(InvalidateTimerCallback, null,
-            Timeout.Infinite, 16);
 
         // Mapsui.Rendering.Skia use Mapsui.Nts where GetDbaseLanguageDriver need encoding providers
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+        _renderController = new(() => Map, InvalidateCanvas);
     }
 
-    private protected void CommonDrawControl(object canvas)
+    /// <summary>
+    /// Asks DrawnUI for a new frame; called by Mapsui's render loop when the map needs a redraw.
+    /// </summary>
+    public void InvalidateCanvas()
     {
-        if (_drawing) return;
-        if (Renderer is null) return;
-        if (Map is null) return;
-        if (!Map.Navigator.Viewport.HasSize()) return;
+        if (IsDisposing || IsDisposed)
+            return;
 
-        // Start drawing
-        _drawing = true;
+        Update();
+    }
 
-        // Start stopwatch before updating animations and drawing control
-        _stopwatch.Restart();
-
-        // All requested updates up to this point will be handled by this redraw
-        _refresh = false;
-        Renderer.Render(canvas, Map.Navigator.Viewport, Map.Layers, Map.Widgets, Map.BackColor);
-
-        // Stop stopwatch after drawing control
-        _stopwatch.Stop();
-
-        // If we are interested in performance measurements, we save the new drawing time
-        _performance?.Add(_stopwatch.Elapsed.TotalMilliseconds);
-
-        // End drawing
-        _drawing = false;
-        _invalidated = false;
+    /// <summary>
+    /// Replaces the renderer that draws the map.
+    /// </summary>
+    public void SetMapRenderer(IMapRenderer mapRenderer)
+    {
+        _renderController?.SetMapRenderer(mapRenderer);
     }
 
     public event EventHandler<bool> LoadingChanged;
@@ -821,176 +811,58 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
 
     public bool IsLoading { get; protected set; }
 
-    object lockTimer = new();
-
-    private void InvalidateTimerCallback(object? state)
+    // follows the tile layer's Busy: raises LoadingChanged when tiles start and finish loading
+    private void UpdateLoadingState()
     {
-        lock (lockTimer)
-        {
-            try
-            {
-                // In MAUI if you use binding there is an event where the new value is null even though
-                // the current value en the value you are binding to are not null. Perhaps this should be
-                // considered a bug.
-                if (Map is null) return;
+        if (LayerMap is not TileLayer tileLayer)
+            return;
 
-                // Access the tile layer
-                var tileLayer = LayerMap as TileLayer;
-                if (tileLayer != null)
-                {
-                    // Check if tiles are still loading
-                    if (tileLayer.Busy)
-                    {
-                        if (!IsLoading)
-                        {
-                            IsLoading = true;
-                            // Tiles are still loading
-                            LoadingChanged?.Invoke(this, true);
-                        }
-                    }
-                    else
-                    {
-                        if (IsLoading)
-                        {
-                            IsLoading = false;
-                            // All tiles in view are loaded - safe to capture PDF
-                            LoadingChanged?.Invoke(this, false);
-                        }
-                    }
-                }
+        var busy = tileLayer.Busy;
+        if (busy == IsLoading)
+            return;
 
-                // Check, if we have to redraw the screen
-
-                if (Map?.UpdateAnimations() == true)
-                    _refresh = true;
-
-                // seems that this could be null sometimes
-                if (Map?.Navigator?.UpdateAnimations() ?? false)
-                    _refresh = true;
-
-                // Check if widgets need refresh
-                if (!_refresh && (Map?.Widgets?.Any(w => w.NeedsRedraw) ?? false))
-                    _refresh = true;
-
-                if (!_refresh)
-                    return;
-
-                if (_drawing)
-                {
-                    if (_performance != null)
-                        _performance.Dropped++;
-
-                    return;
-                }
-
-                if (_invalidated)
-                {
-                    return;
-                }
-
-                _invalidated = true;
-                Update();
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(LogLevel.Error, ex.Message, ex);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Start updates for control
-    /// </summary>
-    /// <remarks>
-    /// When this function is called, the control is redrawn if needed
-    /// </remarks>
-    public void StartUpdates(bool refresh = true)
-    {
-        _refresh = refresh;
-        _invalidateTimer?.Change(0, _updateInterval);
-    }
-
-
-    /// <summary>
-    /// Stop updates for control
-    /// </summary>
-    /// <remarks>
-    /// When this function is called, the control stops to redraw itself, 
-    /// even if it is needed
-    /// </remarks>
-    public void StopUpdates()
-    {
-        _invalidateTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+        IsLoading = busy;
+        LoadingChanged?.Invoke(this, busy);
     }
 
     /// <summary>
     /// Force a update of control
     /// </summary>
     /// <remarks>
-    /// When this function is called, the control draws itself once 
+    /// When this function is called, the control draws itself once
     /// </remarks>
     public void ForceUpdate()
     {
-        _invalidated = true;
-        Update();
+        InvalidateCanvas();
     }
-
-    /// <summary>
-    /// Interval between two redraws of the SkiaMapControl in ms
-    /// </summary>
-    public int UpdateInterval
-    {
-        get => _updateInterval;
-        set
-        {
-            if (value <= 0)
-                throw new ArgumentOutOfRangeException(nameof(UpdateInterval), value,
-                    "Parameter must be greater than zero");
-
-            if (_updateInterval != value)
-            {
-                _updateInterval = value;
-                StartUpdates();
-            }
-        }
-    }
-
-    private Performance? _performance;
 
     /// <summary>
     /// Object to save performance information about the drawing of the map
     /// </summary>
     /// <remarks>
-    /// If this is null, no performance information is saved.
+    /// The map's own performance record (Mapsui keeps it on the Map).
     /// </remarks>
-    public Performance? Performance
-    {
-        get => _performance;
-        set
-        {
-            if (_performance != value)
-            {
-                _performance = value;
-                OnPropertyChanged();
-            }
-        }
-    }
+    public Performance? Performance => Map?.Performance;
 
     public float PixelDensity => this.RenderingScale;
 
     /// <summary>
-    /// Renderer that is used from this SkiaMapControl
+    /// Returns the number of pixels per device independent unit
     /// </summary>
-    public IRenderer Renderer => _renderer;
+    public float? GetPixelDensity()
+    {
+        var density = RenderingScale;
+        return density > 0 ? density : null;
+    }
 
     /// <summary>
     /// Called whenever the map is clicked. The MapInfoEventArgs contain the features that were hit in
-    /// the layers that have IsMapInfoLayer set to true. 
+    /// the layers that have IsMapInfoLayer set to true.
     /// </summary>
     public event EventHandler<MapInfoEventArgs> Info;
 
     /// <summary>
-    /// Unsubscribe from map events 
+    /// Unsubscribe from map events
     /// </summary>
     public void Unsubscribe()
     {
@@ -1014,7 +886,8 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
 
     private void Map_RefreshGraphicsRequest(object? sender, EventArgs e)
     {
-        RefreshGraphics();
+        var request = (e as RefreshGraphicsEventArgs)?.Request;
+        _renderController?.RefreshGraphics(request);
     }
 
     /// <summary>
@@ -1037,29 +910,26 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
     public void Refresh(ChangeType changeType = ChangeType.Discrete)
     {
         Map.Refresh(changeType);
-
-        Update();
     }
 
     public void RefreshGraphics()
     {
-        _refresh = true;
-
-        Update();
+        _renderController?.RefreshGraphics();
     }
 
     private void Map_DataChanged(object? sender, DataChangedEventArgs? e)
     {
         try
         {
+            if (sender is ILayer layer)
+            {
+                _renderController?.UpdateDrawables(Map.Navigator.Viewport, layer, Map.RenderService);
+            }
+
             if (e == null)
             {
                 Logger.Log(LogLevel.Warning, "Unexpected error: DataChangedEventArgs can not be null");
             }
-            //else if (e.Cancelled)
-            //{
-            //    Logger.Log(LogLevel.Warning, "Fetching data was cancelled.");
-            //}
             else if (e.Error is WebException)
             {
                 Logger.Log(LogLevel.Warning,
@@ -1079,6 +949,8 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
         {
             Logger.Log(LogLevel.Warning, $"Unexpected exception in {nameof(Map_DataChanged)}", exception);
         }
+
+        UpdateLoadingState();
     }
 
     // ReSharper disable RedundantNameQualifier - needed for iOS for disambiguation
@@ -1107,6 +979,10 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
         else if (e.PropertyName == nameof(Map.Layers))
         {
             Refresh();
+        }
+        else if (e.PropertyName == nameof(Mapsui.Layers.ILayer.Busy))
+        {
+            UpdateLoadingState();
         }
     }
 
@@ -1153,6 +1029,7 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
             return; // Although the Map property can not null the map argument can null during initializing and binding.
 
         SubscribeToMapEvents(map);
+        _renderController?.SetupDrawableFactory(map.RenderService);
         UpdateViewportSize();
     }
 
@@ -1184,40 +1061,60 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
         Info?.Invoke(this, mapInfoEventArgs);
     }
 
-    /// <inheritdoc />
-    public MapInfo GetMapInfo(ScreenPosition screenPosition, int margin = 0)
+    /// <summary>
+    /// Check, if a feature at a given screen position is hit.
+    /// </summary>
+    public MapInfo GetMapInfo(ScreenPosition screenPosition, IEnumerable<ILayer> layers)
     {
-        return Renderer.GetMapInfo(screenPosition.X, screenPosition.Y, Map.Navigator.Viewport, Map?.Layers ?? [],
-            margin);
-    }
-
-    /// <inheritdoc />
-    public byte[] GetSnapshot(IEnumerable<ILayer>? layers = null)
-    {
-        using var stream = Renderer.RenderToBitmapStream(Map.Navigator.Viewport, layers ?? Map?.Layers ?? [],
-            pixelDensity: PixelDensity);
-        return stream.ToArray();
+        return _renderController?.GetMapInfo(screenPosition, Map.Navigator.Viewport, layers, Map.RenderService)
+               ?? throw new ArgumentNullException(nameof(_renderController));
     }
 
     /// <summary>
-    /// Check if a widget or feature at a given screen position is clicked/tapped
+    /// Check, if a feature at a given screen position is hit, in all layers of the map.
     /// </summary>
-    /// <param name="screenPosition">Screen position to check for widgets and features</param>
-    /// <param name="tapType">single or double tap</param>
-    /// <returns>True, if something done </returns>
-    private MapInfoEventArgs CreateMapInfoEventArgs(ScreenPosition screenPosition, TapType tapType)
+    public MapInfo GetMapInfo(ScreenPosition screenPosition, int margin = 0)
     {
-        var mapInfo =
-            Renderer.GetMapInfo(screenPosition.X, screenPosition.Y, Map.Navigator.Viewport, Map?.Layers ?? []);
+        return _renderController?.GetMapInfo(screenPosition, Map.Navigator.Viewport, Map?.Layers ?? [],
+                   Map.RenderService, margin)
+               ?? throw new ArgumentNullException(nameof(_renderController));
+    }
 
-        return new MapInfoEventArgs(mapInfo, tapType, false);
+    protected Task<MapInfo> GetRemoteMapInfoAsync(ScreenPosition screenPosition, Viewport viewport,
+        IEnumerable<ILayer> layers)
+    {
+        return RemoteMapInfoFetcher.GetRemoteMapInfoAsync(screenPosition, viewport, layers);
+    }
+
+    /// <inheritdoc />
+    public byte[] GetSnapshot(IEnumerable<ILayer>? layers = null, RenderFormat renderFormat = RenderFormat.Png,
+        int quality = 100)
+    {
+        if (GetPixelDensity() is not float pixelDensity)
+            throw new Exception("PixelDensity is not initialized");
+
+        using var stream = _renderController?.RenderToBitmapStream(Map.Navigator.Viewport,
+                               layers ?? Map.Layers ?? [], Map.RenderService, pixelDensity: pixelDensity,
+                               renderFormat: renderFormat, quality: quality)
+                           ?? throw new ArgumentNullException(nameof(_renderController));
+        return stream.ToArray();
+    }
+
+    private MapInfoEventArgs CreateMapInfoEventArgs(ScreenPosition screenPosition, MPoint worldPosition,
+        GestureType gestureType)
+    {
+        return new MapInfoEventArgs(screenPosition, worldPosition, gestureType, Map, GetMapInfo,
+            GetRemoteMapInfoAsync);
     }
 
     public virtual void UpdateViewportSize()
     {
-        var hadSize = Map.Navigator.Viewport.HasSize();
-        Map.Navigator.SetSize(ViewportWidth, ViewportHeight);
-        if (!hadSize && Map.Navigator.Viewport.HasSize()) Map.OnViewportSizeInitialized();
+        if (Map is not Map map || ViewportWidth <= 0 || ViewportHeight <= 0)
+            return;
+
+        var hadSize = map.Navigator.Viewport.HasSize();
+        map.Navigator.SetSize(ViewportWidth, ViewportHeight);
+        if (!hadSize && map.Navigator.Viewport.HasSize()) map.OnViewportSizeInitialized();
         Refresh();
     }
 
@@ -1226,111 +1123,202 @@ public partial class SkiaMapsUi : SkiaLayout, IMapControl, ISkiaGestureListener
         if (disposing)
         {
             Unsubscribe();
-            StopUpdates();
-            _invalidateTimer?.Dispose();
-            _invalidateTimer = null;
-            _renderer.Dispose();
+            _renderController?.Dispose();
+            _renderController = null;
             _map?.Dispose();
             _map = null;
         }
-
-        _invalidateTimer = null;
     }
 
-    private bool OnWidgetPointerPressed(ScreenPosition position, bool shiftPressed)
+    private bool OnWidgetTapped(ScreenPosition screenPosition, MPoint worldPosition, GestureType gestureType,
+        bool shiftPressed)
     {
-        foreach (var widget in WidgetInput.GetWidgetsAtPosition(position, Map))
+        var eventArgs = new WidgetEventArgs(screenPosition, worldPosition, gestureType, Map, shiftPressed,
+            GetMapInfo, GetRemoteMapInfoAsync);
+
+        foreach (var widget in WidgetInput.GetWidgetsAtPosition(screenPosition, Map))
         {
-            Logger.Log(LogLevel.Information, $"Widget.PointerPressed: {widget.GetType().Name}");
-            if (widget.OnPointerPressed(Map.Navigator,
-                    new WidgetEventArgs(position, 0, true, shiftPressed, () => GetMapInfo(position))))
+            if (Logger.Settings.LogWidgetEvents)
+                Logger.Log(LogLevel.Information,
+                    $"{nameof(OnWidgetTapped)} - {widget.GetType().Name} {nameof(GestureType)}: {gestureType} KeyState: {shiftPressed}");
+            widget.OnTapped(eventArgs);
+            if (eventArgs.Handled)
                 return true;
         }
 
         return false;
     }
 
-    private bool OnWidgetPointerMoved(ScreenPosition position, bool leftButton, bool shiftPressed)
+    private bool OnWidgetPointerPressed(ScreenPosition screenPosition, MPoint worldPosition, bool shiftPressed)
     {
-        foreach (var widget in WidgetInput.GetWidgetsAtPosition(position, Map))
-            if (widget.OnPointerMoved(Map.Navigator,
-                    new WidgetEventArgs(position, 0, leftButton, shiftPressed, () => GetMapInfo(position))))
-                return true;
-        return false;
-    }
+        var eventArgs = new WidgetEventArgs(screenPosition, worldPosition, GestureType.Press, Map, shiftPressed,
+            GetMapInfo, GetRemoteMapInfoAsync);
 
-    private bool OnWidgetPointerReleased(ScreenPosition position, bool shiftPressed)
-    {
-        foreach (var widget in WidgetInput.GetWidgetsAtPosition(position, Map))
+        foreach (var widget in WidgetInput.GetWidgetsAtPosition(screenPosition, Map))
         {
-            Logger.Log(LogLevel.Information, $"Widget.Released: {widget.GetType().Name}");
-            if (widget.OnPointerReleased(Map.Navigator,
-                    new WidgetEventArgs(position, 0, true, shiftPressed, () => GetMapInfo(position))))
+            if (Logger.Settings.LogWidgetEvents)
+                Logger.Log(LogLevel.Information, $"{nameof(OnWidgetPointerPressed)} - {widget.GetType().Name}");
+            widget.OnPointerPressed(eventArgs);
+            if (eventArgs.Handled)
                 return true;
         }
 
         return false;
     }
 
-    private bool OnWidgetTapped(ScreenPosition position, TapType tapType, bool shiftPressed)
+    private bool OnWidgetPointerMoved(ScreenPosition screenPosition, MPoint worldPosition, GestureType gestureType,
+        bool shiftPressed)
     {
-        var touchedWidgets = WidgetInput.GetWidgetsAtPosition(position, Map);
-        foreach (var widget in touchedWidgets)
+        var eventArgs = new WidgetEventArgs(screenPosition, worldPosition, gestureType, Map, shiftPressed,
+            GetMapInfo, GetRemoteMapInfoAsync);
+
+        foreach (var widget in WidgetInput.GetWidgetsAtPosition(screenPosition, Map))
         {
-            Logger.Log(LogLevel.Information,
-                $"Widget.Tapped: {widget.GetType().Name} TapType: {tapType} KeyState: {shiftPressed}");
-            var e = new WidgetEventArgs(position, tapType, true, shiftPressed, () => GetMapInfo(position));
-            if (widget.OnTapped(Map.Navigator, e))
+            widget.OnPointerMoved(eventArgs);
+            if (eventArgs.Handled)
                 return true;
         }
 
         return false;
     }
 
-    private bool OnMapPointerPressed(ReadOnlySpan<ScreenPosition> positions)
+    private bool OnWidgetPointerReleased(ScreenPosition screenPosition, MPoint worldPosition, bool shiftPressed)
+    {
+        var eventArgs = new WidgetEventArgs(screenPosition, worldPosition, GestureType.Release, Map, shiftPressed,
+            GetMapInfo, GetRemoteMapInfoAsync);
+
+        foreach (var widget in WidgetInput.GetWidgetsAtPosition(screenPosition, Map))
+        {
+            if (Logger.Settings.LogWidgetEvents)
+                Logger.Log(LogLevel.Information, $"{nameof(OnWidgetPointerReleased)} - {widget.GetType().Name}");
+            widget.OnPointerReleased(eventArgs);
+            if (eventArgs.Handled)
+                return true;
+        }
+
+        return false;
+    }
+
+    private bool OnTapped(ScreenPosition screenPosition, GestureType gestureType)
+    {
+        var worldPosition = Map.Navigator.Viewport.ScreenToWorld(screenPosition);
+        if (OnWidgetTapped(screenPosition, worldPosition, gestureType, GetShiftPressed()))
+            return true;
+        if (Map is null)
+            return false;
+        if (OnMapTapped(screenPosition, worldPosition, gestureType))
+            return true;
+        OnMapInfo(CreateMapInfoEventArgs(screenPosition, worldPosition, gestureType));
+        return false;
+    }
+
+    private bool OnPointerPressed(ReadOnlySpan<ScreenPosition> positions)
     {
         if (positions.Length != 1)
             return false;
 
         _flingTracker.Restart();
         _tapGestureTracker.Restart(positions[0]);
-        return OnWidgetPointerPressed(positions[0], GetShiftPressed());
+        var screenPosition = positions[0];
+        var worldPosition = Map.Navigator.Viewport.ScreenToWorld(screenPosition);
+        if (OnWidgetPointerPressed(screenPosition, worldPosition, GetShiftPressed()))
+            return true;
+        return OnMapPointerPressed(screenPosition, worldPosition);
     }
 
-    private bool OnMapPointerMoved(ReadOnlySpan<ScreenPosition> positions, bool isHovering = false)
+    private bool OnPointerMoved(ReadOnlySpan<ScreenPosition> screenPositions, bool isHovering)
     {
-        if (positions.Length != 1)
+        if (screenPositions.Length != 1)
             return false;
 
-        if (OnWidgetPointerMoved(positions[0], !isHovering, GetShiftPressed()))
+        var gestureType = isHovering ? GestureType.Hover : GestureType.Drag;
+        var screenPosition = screenPositions[0];
+        var worldPosition = Map.Navigator.Viewport.ScreenToWorld(screenPosition);
+        if (OnWidgetPointerMoved(screenPosition, worldPosition, gestureType, GetShiftPressed()))
+            return true;
+        if (OnMapPointerMoved(screenPosition, worldPosition, gestureType))
             return true;
         if (!isHovering)
-            _flingTracker.AddEvent(positions[0], DateTime.Now.Ticks);
+            _flingTracker.AddEvent(screenPosition, DateTime.Now.Ticks);
         return false;
     }
 
-    private bool OnMapPointerReleased(ReadOnlySpan<ScreenPosition> positions)
+    private bool OnPointerReleased(ReadOnlySpan<ScreenPosition> screenPositions)
     {
-        if (positions.Length != 1)
+        if (screenPositions.Length != 1)
+            return false;
+        if (GetPixelDensity() is not float pixelDensity)
             return false;
 
         var handled = false;
-        if (OnWidgetPointerReleased(positions[0], GetShiftPressed()))
+        var screenPosition = screenPositions[0];
+        var worldPosition = Map.Navigator.Viewport.ScreenToWorld(screenPosition);
+        if (OnWidgetPointerReleased(screenPosition, worldPosition, GetShiftPressed()))
             handled = true; // Set to handled but still handle tap in the next line
-        if (_tapGestureTracker.TapIfNeeded(positions[0], MaxTapGestureMovement * PixelDensity, OnMapTapped))
+        if (!handled && OnMapPointerReleased(screenPosition, worldPosition))
+            handled = true;
+        if (_tapGestureTracker.TapIfNeeded(screenPositions[0], MaxTapGestureMovement * pixelDensity, OnTapped))
             handled = true;
         if (UseFling)
             _flingTracker.FlingIfNeeded((vX, vY) => Map.Navigator.Fling(vX, vY, 1000));
-        Refresh();
+        // A handler that set Handled owns the refresh (it may want a partial one)
+        if (!handled)
+            Refresh();
         return handled;
     }
 
-    private bool OnMapTapped(ScreenPosition position, TapType tapType)
+    protected virtual bool OnMapTapped(ScreenPosition screenPosition, MPoint worldPosition, GestureType gestureType)
     {
-        if (OnWidgetTapped(position, tapType, GetShiftPressed()))
-            return true;
-        OnMapInfo(CreateMapInfoEventArgs(position, TapType.Single));
-        return false;
+        if (Logger.Settings.LogMapEvents)
+            Logger.Log(LogLevel.Information, $"{nameof(OnMapTapped)} - {nameof(GestureType)}: {gestureType}");
+
+        var eventArgs = new MapEventArgs(screenPosition, worldPosition, gestureType, Map, GetMapInfo,
+            GetRemoteMapInfoAsync);
+        Map.OnTapped(eventArgs);
+        if (!eventArgs.Handled)
+            MapTapped?.Invoke(this, eventArgs);
+
+        return eventArgs.Handled;
+    }
+
+    protected virtual bool OnMapPointerPressed(ScreenPosition screenPosition, MPoint worldPosition)
+    {
+        if (Logger.Settings.LogMapEvents)
+            Logger.Log(LogLevel.Information, $"{nameof(OnMapPointerPressed)}");
+
+        var eventArgs = new MapEventArgs(screenPosition, worldPosition, GestureType.Press, Map, GetMapInfo,
+            GetRemoteMapInfoAsync);
+        Map.OnPointerPressed(eventArgs);
+        if (!eventArgs.Handled)
+            MapPointerPressed?.Invoke(this, eventArgs);
+
+        return eventArgs.Handled;
+    }
+
+    protected virtual bool OnMapPointerMoved(ScreenPosition screenPosition, MPoint worldPosition,
+        GestureType gestureType)
+    {
+        var eventArgs = new MapEventArgs(screenPosition, worldPosition, gestureType, Map, GetMapInfo,
+            GetRemoteMapInfoAsync);
+        Map.OnPointerMoved(eventArgs);
+        if (!eventArgs.Handled)
+            MapPointerMoved?.Invoke(this, eventArgs);
+
+        return eventArgs.Handled;
+    }
+
+    protected virtual bool OnMapPointerReleased(ScreenPosition screenPosition, MPoint worldPosition)
+    {
+        if (Logger.Settings.LogMapEvents)
+            Logger.Log(LogLevel.Information, $"{nameof(OnMapPointerReleased)}");
+
+        var eventArgs = new MapEventArgs(screenPosition, worldPosition, GestureType.Release, Map, GetMapInfo,
+            GetRemoteMapInfoAsync);
+        Map.OnPointerReleased(eventArgs);
+        if (!eventArgs.Handled)
+            MapPointerReleased?.Invoke(this, eventArgs);
+
+        return eventArgs.Handled;
     }
 
     #region HELPERS
