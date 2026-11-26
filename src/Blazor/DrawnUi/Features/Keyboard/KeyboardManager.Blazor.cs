@@ -18,8 +18,34 @@ public partial class KeyboardManager
         }
 
         _module ??= await jsRuntime.InvokeAsync<IJSObjectReference>("import", KeyboardModulePath);
-        await _module.InvokeVoidAsync("attachGlobalKeyboard");
+        // the page calls back through this reference: a static call cannot pick a runtime when the page runs
+        // several (Blazor Server + WebAssembly)
+        _bridge ??= DotNetObjectReference.Create(new KeyboardJsBridge());
+        await _module.InvokeVoidAsync("attachGlobalKeyboard", _bridge);
         _attached = true;
+    }
+
+    private static DotNetObjectReference<KeyboardJsBridge>? _bridge;
+
+    /// <summary>
+    /// The object the page's keyboard script calls back into; forwards to the static handlers.
+    /// </summary>
+    public sealed class KeyboardJsBridge
+    {
+        /// <summary>See <see cref="KeyboardManager.HandleSoftKeyboard"/>.</summary>
+        [JSInvokable] public void HandleSoftKeyboard(bool soft) => KeyboardManager.HandleSoftKeyboard(soft);
+        /// <summary>See <see cref="KeyboardManager.HandleKeyboardTop"/>.</summary>
+        [JSInvokable] public void HandleKeyboardTop(double top) => KeyboardManager.HandleKeyboardTop(top);
+        /// <summary>See <see cref="KeyboardManager.HandleTextInput"/>.</summary>
+        [JSInvokable] public void HandleTextInput(string? text) => KeyboardManager.HandleTextInput(text);
+        /// <summary>See <see cref="KeyboardManager.HandleTextKey"/>.</summary>
+        [JSInvokable] public void HandleTextKey(string? code) => KeyboardManager.HandleTextKey(code);
+        /// <summary>See <see cref="KeyboardManager.HandleGlobalKeyDown"/>.</summary>
+        [JSInvokable] public void HandleGlobalKeyDown(string? code, bool forOtherElement) => KeyboardManager.HandleGlobalKeyDown(code, forOtherElement);
+        /// <summary>See <see cref="KeyboardManager.HandleGlobalKeyUp"/>.</summary>
+        [JSInvokable] public void HandleGlobalKeyUp(string? code, bool forOtherElement) => KeyboardManager.HandleGlobalKeyUp(code, forOtherElement);
+        /// <summary>See <see cref="KeyboardManager.HandleGlobalKeyChar"/>.</summary>
+        [JSInvokable] public void HandleGlobalKeyChar(string? ch, bool forOtherElement) => KeyboardManager.HandleGlobalKeyChar(ch, forOtherElement);
     }
 
     // Drops DOM focus from an external page text input (e.g. a Monaco code editor) so the
