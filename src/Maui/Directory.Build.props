@@ -3,11 +3,12 @@
     <!--For MAUI-->
 
     <PropertyGroup>
-        <TargetFrameworks>net9.0;net9.0-android;net9.0-ios;net9.0-maccatalyst;net10.0;net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
-        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0;net10.0-windows10.0.19041.0</TargetFrameworks>
-        <!-- the .NET 11 SDK builds .NET 10 and .NET 11 (it cannot build the .NET 9 MAUI targets, see Directory.Build.targets) -->
-        <TargetFrameworks Condition="'$(NETCoreSdkVersion)' != '' And $([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '11.0'))">net10.0;net10.0-android;net10.0-ios;net10.0-maccatalyst;net11.0;net11.0-android;net11.0-ios;net11.0-maccatalyst</TargetFrameworks>
-        <TargetFrameworks Condition="'$(NETCoreSdkVersion)' != '' And $([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '11.0')) And $([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0;net11.0-windows10.0.19041.0</TargetFrameworks>
+        <!-- .NET 9 apps stay on the 1.10.9.x packages, the last ones with net9 targets -->
+        <TargetFrameworks>net10.0;net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
+        <!-- the .NET 11 targets need the .NET 11 SDK (src/Maui/global.json picks it); an older SDK makes the .NET 10 ones only -->
+        <TargetFrameworks Condition="'$(NETCoreSdkVersion)' != '' And $([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '11.0'))">$(TargetFrameworks);net11.0;net11.0-android;net11.0-ios;net11.0-maccatalyst</TargetFrameworks>
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0</TargetFrameworks>
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) And '$(NETCoreSdkVersion)' != '' And $([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '11.0'))">$(TargetFrameworks);net11.0-windows10.0.19041.0</TargetFrameworks>
         <UseMaui>true</UseMaui>
         <SingleProject>true</SingleProject>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -21,16 +22,6 @@
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</TargetPlatformMinVersion>
     </PropertyGroup>
 
-    <!-- .NET 9 MAUI packages -->
-    <PropertyGroup Condition="$(TargetFramework.StartsWith('net9.0'))">
-        <DefineConstants>$(DefineConstants);NET9</DefineConstants>
-    </PropertyGroup>
-    
-    <ItemGroup Condition="$(TargetFramework.StartsWith('net9.0'))">
-        <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.120" />
-        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.120" />
-    </ItemGroup>
-
     <!-- .NET 10 MAUI packages -->
     <PropertyGroup Condition="$(TargetFramework.StartsWith('net10.0'))">
         <DefineConstants>$(DefineConstants);NET10</DefineConstants>
@@ -40,6 +31,11 @@
         <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.80" />
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.80" />
     </ItemGroup>
+
+    <!-- the packages are packed on the .NET 11 SDK, which makes the .NET 11 targets too -->
+    <Target Name="DrawnUiPackNeedsNet11Sdk" BeforeTargets="GenerateNuspec" Condition="!$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '11.0'))">
+        <Error Text="Pack $(MSBuildProjectName) with the .NET 11 SDK (run dotnet pack from src\Maui, where global.json selects it): SDK $(NETCoreSdkVersion) makes no net11 targets." />
+    </Target>
 
     <!-- .NET 11 MAUI packages: MAUI 11 has no Compatibility package, DrawnUI does not need it -->
     <PropertyGroup Condition="$(TargetFramework.StartsWith('net11.0'))">
