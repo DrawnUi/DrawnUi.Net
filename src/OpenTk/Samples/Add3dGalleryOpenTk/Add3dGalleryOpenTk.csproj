@@ -23,7 +23,7 @@
         <ProjectReference Include="..\..\Addons\DrawnUi.OpenTk.Game\DrawnUi.OpenTk.Game.csproj" />
         <ProjectReference Include="..\..\Addons\DrawnUi.OpenTk.Add3d\DrawnUi.OpenTk.Add3d.csproj" />
         <!-- native Skia for the Linux build -->
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.148.0" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="$(DrawnUiSkiaSharpVersion)" />
     </ItemGroup>
 
     <!-- Fonts resolve relative to the output folder on this head: CopyToOutputDirectory is mandatory. -->

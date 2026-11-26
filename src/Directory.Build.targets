@@ -22,6 +22,16 @@
         <TargetFrameworks>$([MSBuild]::Unescape($([System.Text.RegularExpressions.Regex]::Replace('$(TargetFrameworks)', 'net9\.0[^;]*;?', ''))))</TargetFrameworks>
     </PropertyGroup>
 
+    <!-- SkiaSharp line per .NET version: .NET 11 needs SkiaSharp 4.159 (its browser build links only with it), which also brings Skia's own SKMesh -->
+    <PropertyGroup>
+        <DrawnUiSkiaSharpVersion>4.148.0</DrawnUiSkiaSharpVersion>
+        <DrawnUiHarfBuzzSharpVersion>14.2.0</DrawnUiHarfBuzzSharpVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition="$(TargetFramework.StartsWith('net11.0'))">
+        <DrawnUiSkiaSharpVersion>4.159.0-rc.1.26567.13</DrawnUiSkiaSharpVersion>
+        <DrawnUiHarfBuzzSharpVersion>15.0.0.100-rc.1.26567.13</DrawnUiHarfBuzzSharpVersion>
+    </PropertyGroup>
+
     <!-- packages are packed on the .NET 11 SDK (nugets/global.json selects it), which makes the .NET 11 targets too -->
     <Target Name="DrawnUiPackNeedsNet11Sdk" BeforeTargets="GenerateNuspec" Condition="!$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '11.0'))">
         <Error Text="Pack $(MSBuildProjectName) with the .NET 11 SDK (run nugets/makenugets.bat, or dotnet pack from the nugets folder, where global.json selects it): SDK $(NETCoreSdkVersion) makes no net11 targets." />

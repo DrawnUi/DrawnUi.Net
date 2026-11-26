@@ -8,7 +8,9 @@
         <PackageTags>blazor drawnui skia skiasharp 3d gltf glb webgl game wasm</PackageTags>
         <Packable>true</Packable>
         <CreatePackage>false</CreatePackage>
-        <TargetFramework>net10.0</TargetFramework>
+        <TargetFrameworks>net10.0</TargetFrameworks>
+        <!-- the .NET 11 SDK (packing uses it, see nugets/global.json) adds the .NET 11 target -->
+        <TargetFrameworks Condition="'$(NETCoreSdkVersion)' != '' And $([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '11.0'))">net10.0;net11.0</TargetFrameworks>
         <RootNamespace>DrawnUi.Add3d</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

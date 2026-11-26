@@ -20,7 +20,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Addons\DrawnUi.OpenTk.Game\DrawnUi.OpenTk.Game.csproj" />
         <!-- native Skia for the Linux build -->
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.148.0" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="$(DrawnUiSkiaSharpVersion)" />
     </ItemGroup>
 
     <!-- The Pong page hosts the shared game, the same code as every Pong sample. -->

@@ -86,9 +86,9 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="SkiaSharp.HarfBuzz" Version="4.148.0" />
-        <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="4.148.0" />
-        <PackageReference Include="SkiaSharp.Skottie" Version="4.148.0" />
+        <PackageReference Include="SkiaSharp.HarfBuzz" Version="$(DrawnUiSkiaSharpVersion)" />
+        <PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="$(DrawnUiSkiaSharpVersion)" />
+        <PackageReference Include="SkiaSharp.Skottie" Version="$(DrawnUiSkiaSharpVersion)" />
         <PackageReference Include="Svg.Skia" Version="4.9.0" />
 
         <!--MIT open source-->
@@ -143,7 +143,7 @@
     -->
     <ItemGroup Condition="$(TargetFramework.Contains('windows')) == true">
 
-        <PackageReference Include="SkiaSharp.Views.WinUI" Version="4.148.0" />
+        <PackageReference Include="SkiaSharp.Views.WinUI" Version="$(DrawnUiSkiaSharpVersion)" />
 
         <None Update="Platforms/Windows/Natives/libEGL.dll">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -166,7 +166,7 @@
     <!--ANDROID ONLY-->
     <ItemGroup Condition="$(TargetFramework.Contains('android')) == true">
         <!--fix android bad alignement-->
-        <PackageReference Include="HarfBuzzSharp" Version="14.2.0" />
+        <PackageReference Include="HarfBuzzSharp" Version="$(DrawnUiHarfBuzzSharpVersion)" />
     </ItemGroup>
 
     <ItemGroup>
