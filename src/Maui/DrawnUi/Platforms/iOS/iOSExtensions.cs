@@ -1,9 +1,12 @@
-﻿using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
+﻿#if !NET11
+using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
+#endif
 
 namespace DrawnUi.Draw;
 
 public static class IOSExtensions
 {
+#if !NET11
     public static IImageSourceHandler GetHandler(this ImageSource source)
     {
         //Image source handler to return
@@ -27,4 +30,5 @@ public static class IOSExtensions
         }
         return returnValue;
     }
+#endif
 }

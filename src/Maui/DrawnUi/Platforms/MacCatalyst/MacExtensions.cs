@@ -1,6 +1,8 @@
 ﻿using CoreGraphics;
 using Foundation;
+#if !NET11
 using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
+#endif
 using Microsoft.Maui.Handlers;
 using UIKit;
 
@@ -71,6 +73,7 @@ public class CustomizedWindowHandler : WindowHandler
 
 public static class MacExtensions
 {
+#if !NET11
     public static IImageSourceHandler GetHandler(this ImageSource source)
     {
         //Image source handler to return
@@ -94,4 +97,5 @@ public static class MacExtensions
         }
         return returnValue;
     }
+#endif
 }

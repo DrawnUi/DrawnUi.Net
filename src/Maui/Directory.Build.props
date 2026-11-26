@@ -5,6 +5,9 @@
     <PropertyGroup>
         <TargetFrameworks>net9.0;net9.0-android;net9.0-ios;net9.0-maccatalyst;net10.0;net10.0-android;net10.0-ios;net10.0-maccatalyst</TargetFrameworks>
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0;net10.0-windows10.0.19041.0</TargetFrameworks>
+        <!-- the .NET 11 SDK builds .NET 10 and .NET 11 (it cannot build the .NET 9 MAUI targets, see Directory.Build.targets) -->
+        <TargetFrameworks Condition="'$(NETCoreSdkVersion)' != '' And $([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '11.0'))">net10.0;net10.0-android;net10.0-ios;net10.0-maccatalyst;net11.0;net11.0-android;net11.0-ios;net11.0-maccatalyst</TargetFrameworks>
+        <TargetFrameworks Condition="'$(NETCoreSdkVersion)' != '' And $([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '11.0')) And $([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net10.0-windows10.0.19041.0;net11.0-windows10.0.19041.0</TargetFrameworks>
         <UseMaui>true</UseMaui>
         <SingleProject>true</SingleProject>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -12,6 +15,8 @@
             Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.2</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+        <!-- .NET 11 Android needs API 24 at least -->
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android' And $(TargetFramework.StartsWith('net11.0'))">24.0</SupportedOSPlatformVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</SupportedOSPlatformVersion>
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</TargetPlatformMinVersion>
     </PropertyGroup>
@@ -34,6 +39,15 @@
     <ItemGroup Condition="$(TargetFramework.StartsWith('net10.0'))">
         <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.80" />
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.80" />
+    </ItemGroup>
+
+    <!-- .NET 11 MAUI packages: MAUI 11 has no Compatibility package, DrawnUI does not need it -->
+    <PropertyGroup Condition="$(TargetFramework.StartsWith('net11.0'))">
+        <DefineConstants>$(DefineConstants);NET11</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup Condition="$(TargetFramework.StartsWith('net11.0'))">
+        <PackageReference Include="Microsoft.Maui.Controls" Version="11.0.10" />
     </ItemGroup>
 
 

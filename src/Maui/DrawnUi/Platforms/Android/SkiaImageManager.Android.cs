@@ -30,12 +30,11 @@ public partial class SkiaImageManager
                 {
                     var native = url.Replace(PrefixNative, string.Empty).Trim('/');
                     source = new FileImageSource() { File = native };
-                    var handlerFile = source.GetHandler();
-                    var nativeFile = await handlerFile.LoadImageAsync(source, Platform.CurrentActivity, cancel);
+                    var nativeFile = await LoadViaMauiAsync(source);
                     if (nativeFile != null)
                     {
                         SkiaImageManager.TraceLog($"[LoadImageOnPlatformAsync] loaded {source} ToSKBitmap");
-                        return nativeFile.ToSKBitmap();
+                        return nativeFile;
                     }
                 }
                 else
@@ -64,13 +63,17 @@ public partial class SkiaImageManager
                 return await LoadFromFile(fileSource.File, cancel);
             }
 
-            var handler = source.GetHandler();
-            var androidBitmap = await handler.LoadImageAsync(source, Platform.CurrentActivity, cancel);
+            if (source is StreamImageSource streamSource)
+            {
+                using var stream = await streamSource.Stream(cancel);
+                return SKBitmap.Decode(stream);
+            }
 
-            if (androidBitmap != null)
+            var bitmap = await LoadViaMauiAsync(source);
+            if (bitmap != null)
             {
                 SkiaImageManager.TraceLog($"[LoadImageOnPlatformAsync] loaded {source} ToSKBitmap");
-                return androidBitmap.ToSKBitmap();
+                return bitmap;
             }
         }
         catch (TaskCanceledException)
@@ -84,5 +87,31 @@ public partial class SkiaImageManager
 
         SkiaImageManager.TraceLog($"[LoadImageOnPlatformAsync] loaded NULL for {source}");
         return null;
+    }
+
+    /// <summary>
+    /// Loads an image source with the MAUI image services of the app (app resources, fonts..)
+    /// </summary>
+    static async Task<SKBitmap> LoadViaMauiAsync(ImageSource source)
+    {
+        var context = Application.Current?.Handler?.MauiContext;
+        if (context == null)
+            return null;
+
+        using var result = await source.GetPlatformImageAsync(context);
+        var drawable = result?.Value;
+        if (drawable == null)
+            return null;
+
+        if (drawable is Android.Graphics.Drawables.BitmapDrawable bitmapDrawable && bitmapDrawable.Bitmap != null)
+            return bitmapDrawable.Bitmap.ToSKBitmap();
+
+        var width = Math.Max(1, drawable.IntrinsicWidth);
+        var height = Math.Max(1, drawable.IntrinsicHeight);
+        using var androidBitmap = Android.Graphics.Bitmap.CreateBitmap(width, height, Android.Graphics.Bitmap.Config.Argb8888);
+        using var canvas = new Android.Graphics.Canvas(androidBitmap);
+        drawable.SetBounds(0, 0, width, height);
+        drawable.Draw(canvas);
+        return androidBitmap.ToSKBitmap();
     }
 }

@@ -1,6 +1,5 @@
 ﻿using CoreGraphics;
 using Foundation;
-using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
 using Microsoft.Maui.Handlers;
 using Microsoft.Maui.Platform;
 using UIKit;

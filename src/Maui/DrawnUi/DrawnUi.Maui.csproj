@@ -81,7 +81,8 @@
         <PackageReference Include="CommonMark.NET" Version="0.15.1" />
         <!-- the DrawnUI Designer agent: flows to apps, its buildTransitive targets attach it to Debug builds only -->
         <PackageReference Include="DrawnUi.Designer.Agent" Version="0.1.0-preview.11" />
-        <PackageReference Include="Plugin.Maui.ApplePlatform" Version="1.0.0.1">
+        <!-- shares Platforms/Apple between iOS and Mac Catalyst; MAUI 11 does it itself with MauiPlatformSpecificFolder below -->
+        <PackageReference Include="Plugin.Maui.ApplePlatform" Version="1.0.0.1" Condition="!$(TargetFramework.StartsWith('net11.0'))">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -95,6 +96,11 @@
         <PackageReference Include="AppoMobi.Specials" Version="10.0.2" />
         <!--caching bitmaps etc-->
         <PackageReference Include="EasyCaching.InMemory" Version="1.9.2" />
+    </ItemGroup>
+
+    <!-- MAUI 11 compiles only the files of declared platform folders: Platforms/Apple is shared by iOS and Mac Catalyst -->
+    <ItemGroup>
+        <MauiPlatformSpecificFolder Include="Platforms\Apple\" TargetPlatformIdentifiers="ios;maccatalyst" />
     </ItemGroup>
 
     <ItemGroup Condition="$(TargetFramework.Contains('windows')) == true">
