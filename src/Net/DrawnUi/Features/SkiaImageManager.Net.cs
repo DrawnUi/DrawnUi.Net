@@ -572,6 +572,52 @@ public partial class SkiaImageManager : IDisposable
         return null;
     }
 
+    /// <summary>
+    /// "native://name.png", the image a framework keeps for the app in its own place. WPF: a file with build action
+    /// Resource (also as "pack://application:,,,/Images/logo.png"), else the file next to the app. OpenTK, DrawnUi.Net
+    /// and the web: the same file a plain name loads (next to the app, or on the site).
+    /// </summary>
+    static string AppImageName(ImageSource source)
+    {
+        var text = source is UriImageSource uri ? uri.Uri?.OriginalString : (source as FileImageSource)?.File;
+        if (text == null)
+            return null;
+        if (text.StartsWith("native://", StringComparison.OrdinalIgnoreCase))
+            return text.Substring("native://".Length).Trim('/');
+#if WPF
+        if (text.StartsWith("pack://", StringComparison.OrdinalIgnoreCase))
+            return text;
+#endif
+        return null;
+    }
+
+    static async Task<SKBitmap> LoadAppImageAsync(string name, CancellationToken cancel)
+    {
+#if WPF
+        try
+        {
+            _ = System.IO.Packaging.PackUriHelper.UriSchemePack; // registers pack://
+            var uri = name.StartsWith("pack://", StringComparison.OrdinalIgnoreCase)
+                ? new Uri(name)
+                : new Uri(name, UriKind.Relative);
+            var info = System.Windows.Application.GetResourceStream(uri);
+            if (info?.Stream != null)
+            {
+                using var resource = info.Stream;
+                return SKBitmap.Decode(resource);
+            }
+        }
+        catch (Exception)
+        {
+            // not one of the app's WPF resources: the file next to the app below
+        }
+
+        if (name.StartsWith("pack://", StringComparison.OrdinalIgnoreCase))
+            return null;
+#endif
+        return await LoadFromFile(name, cancel);
+    }
+
     public static async Task<SKBitmap> LoadImageOnPlatformAsync(ImageSource source, CancellationToken cancel)
     {
         if (source == null)
@@ -579,6 +625,8 @@ public partial class SkiaImageManager : IDisposable
 
         try
         {
+            if (AppImageName(source) is { } appImage)
+                return await LoadAppImageAsync(appImage, cancel);
             if (source is StreamImageSource streamSource)
             {
                 using var stream = await streamSource.Stream(cancel);
