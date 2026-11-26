@@ -1,6 +1,8 @@
 # Moving your DrawnUI app to .NET 11
 
-`DrawnUi.Maui` and its MAUI add-ons (`DrawnUi.Maui.Game`, `DrawnUi.Maui.MapsUi`, `DrawnUi.MauiGraphics`, `DrawnUi.Maui.Add3d`) ship .NET 11 targets next to the .NET 10 ones: `net11.0`, `net11.0-android`, `net11.0-ios`, `net11.0-maccatalyst` and `net11.0-windows10.0.19041.0`. Moving a DrawnUI MAUI app to .NET 11 is a short csproj change.
+Since DrawnUI 1.11.0.1, `DrawnUi.Maui` and its MAUI add-ons (`DrawnUi.Maui.Game`, `DrawnUi.Maui.MapsUi`, `DrawnUi.MauiGraphics`, `DrawnUi.Maui.Add3d`) ship .NET 11 targets next to the .NET 10 ones: `net11.0`, `net11.0-android`, `net11.0-ios`, `net11.0-maccatalyst` and `net11.0-windows10.0.19041.0`. Moving a DrawnUI MAUI app to .NET 11 is a short csproj change.
+
+**.NET 9 apps:** use the 1.10.9.4 packages, the last ones with .NET 9 targets. Version 1.11 and later target .NET 10 and .NET 11.
 
 ## Checklist
 
@@ -36,7 +38,7 @@
 ```
 
 1. **Target frameworks:** change every `net10.0-*` to `net11.0-*`, and reference `Microsoft.Maui.Controls` 11.0.10 (or `$(MauiVersion)`).
-2. **SDK:** build with the .NET 11 SDK (11.0.100 or newer). If the repository pins an SDK in `global.json`, move it to 11.0.100. The .NET 11 SDK builds .NET 10 and .NET 11 MAUI targets, so a project with .NET 9 targets moves them to .NET 10 or 11.
+2. **SDK:** build with the .NET 11 SDK (11.0.100 or newer). If the repository pins an SDK in `global.json`, move it to 11.0.100. The .NET 11 SDK builds .NET 10 and .NET 11 MAUI targets.
 3. **Compatibility package:** remove the `Microsoft.Maui.Controls.Compatibility` package and any `.UseMauiCompatibility()` call in `MauiProgram`. MAUI 11 has no such package, and DrawnUI does not need it.
 4. **Android:** set `SupportedOSPlatformVersion` to 24 or higher (a lower value stops the build with XA4216).
 5. **iOS launch time:** to keep the fast .NET 10 launch on iPhone, set these in the iOS part of the csproj and measure launch before and after:
