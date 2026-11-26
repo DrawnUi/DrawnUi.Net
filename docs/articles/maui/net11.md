@@ -2,7 +2,7 @@
 
 Since DrawnUI 1.11.0.1, `DrawnUi.Maui` and its MAUI add-ons (`DrawnUi.Maui.Game`, `DrawnUi.Maui.MapsUi`, `DrawnUi.MauiGraphics`, `DrawnUi.Maui.Add3d`) ship .NET 11 targets next to the .NET 10 ones: `net11.0`, `net11.0-android`, `net11.0-ios`, `net11.0-maccatalyst` and `net11.0-windows10.0.19041.0`. Moving a DrawnUI MAUI app to .NET 11 is a short csproj change.
 
-**.NET 9 apps:** use the 1.10.9.4 packages, the last ones with .NET 9 targets. Version 1.11 and later target .NET 10 and .NET 11.
+**.NET 9 apps:** use the 1.10.9.5 packages, the last ones with .NET 9 targets. Version 1.11 and later target .NET 10 and .NET 11.
 
 ## Checklist
 
