@@ -9,10 +9,22 @@ function getState() {
     return window[globalStateKey];
 }
 
+// Calls the .NET side. Through the object reference .NET passed to attachGlobalKeyboard: a page that runs
+// several .NET runtimes (Blazor Server + WebAssembly) cannot resolve a static DotNet.invokeMethodAsync.
+function call(methodName, ...args) {
+    try {
+        const dotnet = getState().dotnet;
+        const pending = dotnet
+            ? dotnet.invokeMethodAsync(methodName, ...args)
+            : DotNet.invokeMethodAsync(assemblyName, methodName, ...args);
+        return pending.catch(() => { /* teardown races during app shutdown/reload */ });
+    } catch {
+        return Promise.resolve();
+    }
+}
+
 function invoke(methodName, code, forOtherElement) {
-    return DotNet.invokeMethodAsync(assemblyName, methodName, code, forOtherElement).catch(() => {
-        // Ignore teardown races during app shutdown/reload.
-    });
+    return call(methodName, code, forOtherElement);
 }
 
 // A page element outside the canvas host (an input, a textarea, a button...) has the key: DrawnUI still sees it,
@@ -30,8 +42,9 @@ function isTextFieldElement(t) {
         && (t.getAttribute("role") === "textbox" || t.getAttribute("role") === "searchbox");
 }
 
-export function attachGlobalKeyboard() {
+export function attachGlobalKeyboard(dotnet) {
     const state = getState();
+    if (dotnet) state.dotnet = dotnet;
     if (state.keyDownHandler && state.keyUpHandler) {
         return;
     }
@@ -86,7 +99,7 @@ function watchKeyboardTop(state) {
         const top = vv.scale > 1.05 || covered < 80 ? -1 : bottom; // under 80: the browser's own bars moving
         if (top === last) return;
         last = top;
-        DotNet.invokeMethodAsync(assemblyName, "HandleKeyboardTop", top).catch(() => { });
+        call("HandleKeyboardTop", top);
     };
     vv.addEventListener("resize", state.keyboardTopHandler);
     vv.addEventListener("scroll", state.keyboardTopHandler);
@@ -119,11 +132,11 @@ function graphemes(s) {
 }
 
 function sendText(text) {
-    DotNet.invokeMethodAsync(assemblyName, "HandleTextInput", text).catch(() => { });
+    call("HandleTextInput", text);
 }
 
 function sendKey(code) {
-    DotNet.invokeMethodAsync(assemblyName, "HandleTextKey", code).catch(() => { });
+    call("HandleTextKey", code);
 }
 
 function restTextInput(el) {
@@ -258,7 +271,7 @@ function attachTouchTextInput(state) {
                 // element yet: textInputHasFocus answers for the textarea during that
                 state.textInputFocusing = true;
                 try { el.focus({ preventScroll: true }); } finally { state.textInputFocusing = false; }
-                DotNet.invokeMethodAsync(assemblyName, "HandleSoftKeyboard", true).catch(() => { });
+                call("HandleSoftKeyboard", true);
                 giveBackIfNotTaken(state);
             }
         }
@@ -355,13 +368,13 @@ export function textInputFocus(focus, ownerId) {
             placeTextInput(el, byTouch ? null : owner);
             state.textInputFocusing = true;
             try { el.focus({ preventScroll: true }); } finally { state.textInputFocusing = false; }
-            if (byTouch) DotNet.invokeMethodAsync(assemblyName, "HandleSoftKeyboard", true).catch(() => { });
+            if (byTouch) call("HandleSoftKeyboard", true);
         }
         return;
     }
     if (state.textOwnerId != null && state.textOwnerId !== id) return;
     // the field that had the on-screen keyboard gave it back (not the one a tap just moved from)
-    DotNet.invokeMethodAsync(assemblyName, "HandleSoftKeyboard", false).catch(() => { });
+    call("HandleSoftKeyboard", false);
     state.editorFocused = false;
     state.textOwnerId = null;
     state.textOwner = null;
