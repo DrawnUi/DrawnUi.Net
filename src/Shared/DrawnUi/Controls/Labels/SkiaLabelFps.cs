@@ -104,11 +104,7 @@ public class SkiaLabelFps : SkiaLabel, ISkiaAnimator
         }
 
         UpdateForceRefresh();
-
-        // the canvas keeps drawing while the label shows (drawnui-cross 5e): ask for the next frame on every frame,
-        // not only when the number changes, or a still page stays at the first reading (00.0) for good
-        Superview.Update();
-
+ 
         FinalizeDrawingWithRenderObject(context);
     }
 
