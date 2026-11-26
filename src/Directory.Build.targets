@@ -30,6 +30,8 @@
     <PropertyGroup Condition="$(TargetFramework.StartsWith('net11.0'))">
         <DrawnUiSkiaSharpVersion>4.159.0-rc.1.26567.13</DrawnUiSkiaSharpVersion>
         <DrawnUiHarfBuzzSharpVersion>15.0.0.100-rc.1.26567.13</DrawnUiHarfBuzzSharpVersion>
+        <!-- DrawnUi.Draw.Meshes draws through Skia's own SkMesh on GPU canvases -->
+        <DefineConstants>$(DefineConstants);SKIASHARP_MESH</DefineConstants>
     </PropertyGroup>
 
     <!-- packages are packed on the .NET 11 SDK (nugets/global.json selects it), which makes the .NET 11 targets too -->

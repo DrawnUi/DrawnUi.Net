@@ -2,6 +2,16 @@ using System.Runtime.InteropServices;
 using DrawnUi.Draw.Meshes;
 using SkiaSharp;
 using Xunit;
+// SkiaSharp 4.159+ (.NET 11) has its own SKMesh types: these tests are about DrawnUI's
+using SKMesh = DrawnUi.Draw.Meshes.SKMesh;
+using SKMeshIndexBuffer = DrawnUi.Draw.Meshes.SKMeshIndexBuffer;
+using SKMeshMode = DrawnUi.Draw.Meshes.SKMeshMode;
+using SKMeshSpecification = DrawnUi.Draw.Meshes.SKMeshSpecification;
+using SKMeshSpecificationAttribute = DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute;
+using SKMeshSpecificationAttributeType = DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType;
+using SKMeshSpecificationVarying = DrawnUi.Draw.Meshes.SKMeshSpecificationVarying;
+using SKMeshSpecificationVaryingType = DrawnUi.Draw.Meshes.SKMeshSpecificationVaryingType;
+using SKMeshVertexBuffer = DrawnUi.Draw.Meshes.SKMeshVertexBuffer;
 
 namespace DrawnUi.Net.Tests;
 

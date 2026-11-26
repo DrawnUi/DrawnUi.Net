@@ -8,7 +8,7 @@ using SkiaSharp;
 namespace DrawnUi.Draw.Meshes;
 
 /// <summary>Raw vertex bytes of a mesh, copied at creation (stand-in for SkiaSharp's SKMeshVertexBuffer).</summary>
-public sealed class SKMeshVertexBuffer : IDisposable
+public sealed partial class SKMeshVertexBuffer : IDisposable
 {
     // Pooled: a mesh rebuilt every frame does not put its vertex copy on the large object heap. Returned to the
     // pool when the buffer and every mesh made from it are disposed, and Skia let go of the image wrapping the
@@ -75,6 +75,9 @@ public sealed class SKMeshVertexBuffer : IDisposable
             return;
         lock (_lock)
         {
+#if SKIASHARP_MESH
+            DisposeNative();
+#endif
             _geometry?.Release();
             _geometry = null;
             _packed?.Release();
@@ -151,7 +154,7 @@ public sealed class SKMeshVertexBuffer : IDisposable
 }
 
 /// <summary>Raw 16-bit index bytes of a mesh, copied at creation (stand-in for SkiaSharp's SKMeshIndexBuffer).</summary>
-public sealed class SKMeshIndexBuffer : IDisposable
+public sealed partial class SKMeshIndexBuffer : IDisposable
 {
     // Pooled, padded to the image size the programs read (a new draw order every frame allocates nothing).
     // Returned when the buffer and every mesh made from it are disposed, and Skia let go of its image.
@@ -213,6 +216,9 @@ public sealed class SKMeshIndexBuffer : IDisposable
             return;
         lock (_lock)
         {
+#if SKIASHARP_MESH
+            DisposeNative();
+#endif
             if (_image != null)
                 _image.Dispose(); // the bytes go back to the pool when Skia releases the image
             else
@@ -320,7 +326,7 @@ sealed class MeshData : IDisposable
 /// <see cref="SKMeshCanvasExtensions.DrawMesh(SKCanvas, SKMesh, SKPaint)"/> (stand-in for SkiaSharp's SKMesh).
 /// Drawn through <c>SKCanvas.DrawVertices</c> and one runtime shader, so it also draws on raster (CPU) canvases.
 /// </summary>
-public sealed class SKMesh : IDisposable
+public sealed partial class SKMesh : IDisposable
 {
     static readonly SKBlender Modulate = SKBlender.CreateBlendMode(SKBlendMode.Modulate);
 
@@ -496,6 +502,10 @@ public sealed class SKMesh : IDisposable
 
     internal void Draw(SKCanvas canvas, SKBlender blender, SKPaint paint)
     {
+#if SKIASHARP_MESH
+        if (TryDrawNative(canvas, blender, paint))
+            return;
+#endif
         lock (_lock)
         {
             if (!_built)
@@ -611,6 +621,9 @@ public sealed class SKMesh : IDisposable
     {
         lock (_lock)
         {
+#if SKIASHARP_MESH
+            DisposeNative();
+#endif
             _shader?.Dispose();
             _shader = null;
             if (_ownVertices != null)

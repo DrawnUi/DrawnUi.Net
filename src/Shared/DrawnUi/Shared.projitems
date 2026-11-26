@@ -133,6 +133,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaEditorSelection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EditText\SkiaRichEditor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Meshes\SKMesh.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Features\Meshes\SKMesh.Native.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Meshes\SKMeshSpecification.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\AnimatedShaderEffect.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Features\Effects\ChainDropShadowsEffect.cs" />

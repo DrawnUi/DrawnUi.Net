@@ -97,7 +97,7 @@ public struct SKMeshSpecificationVarying
 /// SKMeshSpecification). Same rules as Skia's SkMesh: vertex program <c>Varyings main(const Attributes a)</c>,
 /// fragment program <c>float2 main(const Varyings v)</c> or <c>float2 main(const Varyings v, out half4|float4 color)</c>.
 /// </summary>
-public sealed class SKMeshSpecification : IDisposable
+public sealed partial class SKMeshSpecification : IDisposable
 {
     const int MaxAttributes = 8;
     const int MaxVaryings = 6;
@@ -113,6 +113,13 @@ public sealed class SKMeshSpecification : IDisposable
     public int UniformSize { get; }
 
     internal SKMeshSpecificationAttribute[] Attributes { get; }
+
+    // the programs as given, for Skia's own SkMesh on GPU canvases (SkiaSharp 4.159+)
+    internal string SourceVertexShader { get; private init; }
+    internal string SourceFragmentShader { get; private init; }
+    internal SKMeshSpecificationVarying[] SourceVaryings { get; private init; }
+    internal SKColorSpace SourceColorSpace { get; private init; }
+    internal SKAlphaType SourceAlphaType { get; private init; }
     internal bool HasColor { get; }
     internal int TexelsPerVertex { get; }      // RGBA texels of a vertex's attributes, packed (Ubyte4Unorm as 4 floats)
 
@@ -539,7 +546,9 @@ public sealed class SKMeshSpecification : IDisposable
         }
 
         return new SKMeshSpecification(vertexStride, attrs, texels, hasColor, convertEffect, drawEffect, positionEffect, positionFloat,
-            uniforms.ToArray(), vertexUniforms, uniformSize, children) { _drawSource = drawSource, _varyingsSource = varyingsSource, VaryingsEffect = varyingsEffect, Varyings = layout };
+            uniforms.ToArray(), vertexUniforms, uniformSize, children) { _drawSource = drawSource, _varyingsSource = varyingsSource, VaryingsEffect = varyingsEffect, Varyings = layout,
+            SourceVertexShader = vertexShader, SourceFragmentShader = fragmentShader, SourceVaryings = varyings.ToArray(),
+            SourceColorSpace = colorSpace, SourceAlphaType = alphaType };
     }
 
     static int UniformBytes(string type, string array, out bool isInt)
@@ -1049,6 +1058,9 @@ public sealed class SKMeshSpecification : IDisposable
     {
         lock (EffectLock)
         {
+#if SKIASHARP_MESH
+            DisposeNative();
+#endif
             _drawUniforms?.Dispose();
             _drawChildren?.Dispose();
             _positionUniforms?.Dispose();
