@@ -10,8 +10,6 @@ namespace Sandbox
 
             InitializeComponent();
 
-            MainPage = new AppShell();
-
             var mask = "MainPage";
 
             // Get XAML-based pages from XamlResourceIdAttribute
@@ -53,11 +51,14 @@ namespace Sandbox
 
         public static List<MainPageVariant> MainPages { get; protected set; }
 
+        protected override Window CreateWindow(IActivationState activationState) => new Window(new AppShell());
+
         public void SetMainPage(Page page)
         {
-            MainThread.BeginInvokeOnMainThread(async () =>
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                MainPage = page;
+                if (Windows.Count > 0)
+                    Windows[0].Page = page;
             });
         }
 

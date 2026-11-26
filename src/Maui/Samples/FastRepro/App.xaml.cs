@@ -9,17 +9,18 @@ namespace Sandbox
             Super.SetLocale("en");
 
             InitializeComponent();
-
-            MainPage = new AppShell();
         }
 
 
 
+        protected override Window CreateWindow(IActivationState activationState) => new Window(new AppShell());
+
         public void SetMainPage(Page page)
         {
-            MainThread.BeginInvokeOnMainThread(async () =>
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                MainPage = page;
+                if (Windows.Count > 0)
+                    Windows[0].Page = page;
             });
         }
 
