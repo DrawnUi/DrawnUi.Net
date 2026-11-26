@@ -32,10 +32,6 @@
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.80" />
     </ItemGroup>
 
-    <!-- the packages are packed on the .NET 11 SDK, which makes the .NET 11 targets too -->
-    <Target Name="DrawnUiPackNeedsNet11Sdk" BeforeTargets="GenerateNuspec" Condition="!$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '11.0'))">
-        <Error Text="Pack $(MSBuildProjectName) with the .NET 11 SDK (run dotnet pack from src\Maui, where global.json selects it): SDK $(NETCoreSdkVersion) makes no net11 targets." />
-    </Target>
 
     <!-- .NET 11 MAUI packages: MAUI 11 has no Compatibility package, DrawnUI does not need it -->
     <PropertyGroup Condition="$(TargetFramework.StartsWith('net11.0'))">

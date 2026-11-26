@@ -22,4 +22,9 @@
         <TargetFrameworks>$([MSBuild]::Unescape($([System.Text.RegularExpressions.Regex]::Replace('$(TargetFrameworks)', 'net9\.0[^;]*;?', ''))))</TargetFrameworks>
     </PropertyGroup>
 
+    <!-- packages are packed on the .NET 11 SDK (nugets/global.json selects it), which makes the .NET 11 targets too -->
+    <Target Name="DrawnUiPackNeedsNet11Sdk" BeforeTargets="GenerateNuspec" Condition="!$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '11.0'))">
+        <Error Text="Pack $(MSBuildProjectName) with the .NET 11 SDK (run nugets/makenugets.bat, or dotnet pack from the nugets folder, where global.json selects it): SDK $(NETCoreSdkVersion) makes no net11 targets." />
+    </Target>
+
 </Project>
