@@ -569,6 +569,13 @@ public class SkiaImage : SkiaControl
         if (IsDisposing || IsDisposed)
             return;
 
+        // a "resource://" string assigned in C# arrives as a uri: read it as the embedded resource it names
+        // (the original string, as the uri form lowercases the resource name)
+        if (source is UriImageSource resourceUri && string.Equals(resourceUri.Uri?.Scheme, "resource", StringComparison.OrdinalIgnoreCase))
+        {
+            source = FrameworkImageSourceConverter.FromInvariantString(resourceUri.Uri.OriginalString);
+        }
+
         if (source is FileImageSource plainFile && UseAssembly is { } useAssembly)
         {
             try

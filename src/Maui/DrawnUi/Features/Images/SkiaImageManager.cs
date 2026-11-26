@@ -617,8 +617,11 @@ public partial class SkiaImageManager : IDisposable
                 }
                 else
                 {
-                    //might happen when task was canceled
-                    queueItem.Task.TrySetCanceled();
+                    // canceled, or the image could not be loaded: a failure resolves to null, so the image reports Error
+                    if (queueItem.Cancel?.IsCancellationRequested == true)
+                        queueItem.Task.TrySetCanceled();
+                    else
+                        queueItem.Task.TrySetResult(null);
 
                     FreedQueuedItem(queueItem);
                     ReleasePendingLoads(GetQueuedUri(queueItem));
