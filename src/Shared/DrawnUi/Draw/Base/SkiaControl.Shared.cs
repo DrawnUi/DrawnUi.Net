@@ -3121,7 +3121,16 @@ namespace DrawnUi.Draw
         /// <param name="newvalue"></param>
         public virtual void OnParentVisibilityChanged(bool newvalue)
         {
+            var wasHiddenByParent = hiddenParent;
             hiddenParent = !newvalue;
+
+            // measured while a parent was hidden, the control kept its old size (nothing on a first layout):
+            // shown again, it is measured again, and so is the layout holding it
+            if (newvalue && wasHiddenByParent && (!WasMeasured || NeedMeasure))
+            {
+                NeedMeasure = true;
+                InvalidateParent();
+            }
 
             if (!newvalue)
             {
