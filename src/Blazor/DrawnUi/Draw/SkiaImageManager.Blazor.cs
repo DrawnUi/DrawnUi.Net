@@ -736,6 +736,13 @@ public partial class SkiaImageManager : IDisposable
 
         try
         {
+            // "native://name.png": the web has no images of its own besides the site's files, so it is the file a plain name loads
+            if (source is UriImageSource nativeUri && nativeUri.Uri?.OriginalString is { } original
+                && original.StartsWith("native://", StringComparison.OrdinalIgnoreCase))
+            {
+                return await LoadFromFile(original.Substring("native://".Length).Trim('/'), cancel);
+            }
+
             if (source is StreamImageSource streamSource)
             {
                 using var stream = await streamSource.Stream(cancel);
