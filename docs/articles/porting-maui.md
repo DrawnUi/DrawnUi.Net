@@ -27,7 +27,7 @@ First, please follow the [Getting Started guide](./maui/getting-started.md) to s
 
 Replacing native controls with DrawnUI ones involves several steps:
 
-1. Move used images to the `Resources/Raw` folder. Note that MAUI supports only lowercase filenames of resources and while uppercase might works for you on some plaforms they will not be read on iOS.  
+1. Keep the app's images where they are: a `SkiaImage` shows an image from `Resources/Images` with `native://` (`Source="native://logo.png"`). Files that SkiaSvg, SkiaLottie or shaders read go to `Resources/Raw`. Use lowercase file names for resources: iOS reads only those.  
 
 2. Create copies of your existing views.
 

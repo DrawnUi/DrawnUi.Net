@@ -25,7 +25,7 @@ SkiaImage is the core image control in DrawnUI, providing efficient image loadin
 #### Core Properties
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `Source` | ImageSource | null | Source of the image (URL, file, resource, stream) |
+| `Source` | ImageSource | null | Source of the image: a file in the app package, an app image (`native://`), a full path on disk, a URL, an embedded resource or a stream |
 | `Aspect` | TransformAspect | AspectCover | How the image scales to fit (AspectFit, AspectFill, etc.) |
 | `HorizontalAlignment` | DrawImageAlignment | Center | Horizontal positioning of the image |
 | `VerticalAlignment` | DrawImageAlignment | Center | Vertical positioning of the image |
@@ -381,11 +381,14 @@ Control how and when images are loaded:
 #### Loading from Different Sources
 
 ```xml
+<!-- From a file in the app package (Resources/Raw on MAUI) -->
+<draw:SkiaImage Source="Images/local-image.png" />
+
+<!-- From the MAUI app's own images (Resources/Images), the ones MAUI's Image uses -->
+<draw:SkiaImage Source="native://dotnet_bot.png" />
+
 <!-- From URL -->
 <draw:SkiaImage Source="https://example.com/image.jpg" />
-
-<!-- From file -->
-<draw:SkiaImage Source="Images/local-image.png" />
 
 <!-- From embedded resource: resource://<path inside the assembly>?assembly=<assembly name> -->
 <draw:SkiaImage Source="resource://Images.embedded-image.png?assembly=MyApp" />
@@ -397,13 +400,23 @@ Control how and when images are loaded:
 ```
 
 ```csharp
-// Load from stream
+// A full path on disk, on every MAUI head
+myImage.Source = Path.Combine(FileSystem.CacheDirectory, "photo.jpg");
+
+// An embedded resource from C#, the same as in XAML
+myImage.Source = "resource://Images.embedded-image.png?assembly=MyApp";
+
+// Load from stream (every head, iOS and Mac included)
 myImage.SetSource(async (cancellationToken) =>
 {
     var stream = await GetImageStreamAsync();
     return stream;
 });
 ```
+
+**App images with `native://`.** On the MAUI heads (Android, iOS, Mac Catalyst, Windows), `native://` loads the app's own `Resources/Images` (the `MauiImage` items MAUI's `Image` uses), so the images an app already has work in DrawnUI as they are. Each platform gives the version made for the screen's density: the Android drawable, the iOS and Mac `@2x` / `@3x` file from the app bundle, the Windows `scale-NNN` file. An svg in `Resources/Images` is named as written, `native://logo.svg`: MAUI turns it into a png at build time and DrawnUI finds it. `Resources/Raw` stays the usual place for DrawnUI's own assets, named by their plain file name. Web heads have no app images, so `native://` raises `Error` there.
+
+Every load ends with `Success` or `Error`: an image that cannot load raises `Error`.
 
 With `UseAssembly`, the folders of the plain path become dots, so `Images/embedded-image.png` in `MyApp` loads the resource `MyApp.Images.embedded-image.png` (the default name of a file marked `EmbeddedResource`, as long as the root namespace is the assembly name). Urls and `resource://` sources are not affected. Set `UseAssembly` before `Source`, or the image loads a second time. In code you can pass the assembly itself: `UseAssembly = typeof(App).Assembly`.
 
