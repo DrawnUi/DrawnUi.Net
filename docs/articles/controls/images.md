@@ -25,7 +25,7 @@ SkiaImage is the core image control in DrawnUI, providing efficient image loadin
 #### Core Properties
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `Source` | ImageSource | null | Source of the image: a file in the app package, an app image (`native://`), a full path on disk, a URL, an embedded resource or a stream |
+| `Source` | ImageSource | null | Source of the image: a file in the app package, an app image (`native://`, the framework's own images on MAUI and WPF), a full path on disk, a URL, an embedded resource or a stream |
 | `Aspect` | TransformAspect | AspectCover | How the image scales to fit (AspectFit, AspectFill, etc.) |
 | `HorizontalAlignment` | DrawImageAlignment | Center | Horizontal positioning of the image |
 | `VerticalAlignment` | DrawImageAlignment | Center | Vertical positioning of the image |
@@ -384,8 +384,11 @@ Control how and when images are loaded:
 <!-- From a file in the app package (Resources/Raw on MAUI) -->
 <draw:SkiaImage Source="Images/local-image.png" />
 
-<!-- From the MAUI app's own images (Resources/Images), the ones MAUI's Image uses -->
+<!-- From the app's own images: MAUI Resources/Images, a WPF Resource, or the file next to the exe / on the site -->
 <draw:SkiaImage Source="native://dotnet_bot.png" />
+
+<!-- WPF: a project image with build action Resource, by its path inside the project -->
+<draw:SkiaImage Source="native://Images/logo.png" />
 
 <!-- From URL -->
 <draw:SkiaImage Source="https://example.com/image.jpg" />
@@ -414,7 +417,16 @@ myImage.SetSource(async (cancellationToken) =>
 });
 ```
 
-**App images with `native://`.** On the MAUI heads (Android, iOS, Mac Catalyst, Windows), `native://` loads the app's own `Resources/Images` (the `MauiImage` items MAUI's `Image` uses), so the images an app already has work in DrawnUI as they are. Each platform gives the version made for the screen's density: the Android drawable, the iOS and Mac `@2x` / `@3x` file from the app bundle, the Windows `scale-NNN` file. An svg in `Resources/Images` is named as written, `native://logo.svg`: MAUI turns it into a png at build time and DrawnUI finds it. `Resources/Raw` stays the usual place for DrawnUI's own assets, named by their plain file name. Web heads have no app images, so `native://` raises `Error` there.
+**App images with `native://`.** `native://` loads an image from the place the host framework keeps its own app images, so the images an app already has work in DrawnUI as they are, and code written with `native://` works on every head:
+
+| Head | `native://` loads |
+|---|---|
+| .NET MAUI (Android, iOS, Mac Catalyst, Windows) | the app's `Resources/Images` (the `MauiImage` items MAUI's `Image` uses), in the version made for the screen's density: the Android drawable, the iOS and Mac `@2x` / `@3x` file from the app bundle, the Windows `scale-NNN` file |
+| WPF | an image added to the project with build action `Resource` (WPF's default for images), by its path inside the project: `native://Images/logo.png`; when there is no such resource, the file of that name next to the exe |
+| OpenTK, DrawnUi.Net | the file next to the exe, the same as a plain name |
+| Blazor, DrawnUi.Web | the file from the site (`wwwroot`), the same as a plain name |
+
+On MAUI an svg in `Resources/Images` is named as written, `native://logo.svg`: MAUI turns it into a png at build time and DrawnUI finds it. On WPF the image's own form works too: `Source="pack://application:,,,/Images/logo.png"`. A name that is not there raises `Error`, on every head. `Resources/Raw` stays the usual place for DrawnUI's own assets on MAUI, named by their plain file name.
 
 Every load ends with `Success` or `Error`: an image that cannot load raises `Error`.
 

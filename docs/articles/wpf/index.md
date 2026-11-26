@@ -36,7 +36,7 @@ Super.UseDrawnUi()
     .Build();
 ```
 
-Fonts, images, Lottie and `.sksl` shader files are read from next to the executable. Mark them as content:
+Fonts, images, Lottie and `.sksl` shader files are read from next to the executable. Mark them as content (images can also be WPF resources, see below):
 
 ```xml
 <ItemGroup>
@@ -45,6 +45,8 @@ Fonts, images, Lottie and `.sksl` shader files are read from next to the executa
   </Content>
 </ItemGroup>
 ```
+
+A `SkiaImage` also shows the app's own WPF images: an image added with build action `Resource` (WPF's default for images, `<Resource Include="Images\logo.png" />`) loads as `Source="native://Images/logo.png"`, the path inside the project with `/` separators, or in WPF's own form `Source="pack://application:,,,/Images/logo.png"`. When no such resource exists, `native://` loads the file of that name next to the executable. See [Images](../controls/images.md#loading-from-different-sources).
 
 ### Startup settings
 
