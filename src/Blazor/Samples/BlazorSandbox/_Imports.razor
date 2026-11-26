@@ -9,3 +9,13 @@
 @using BlazorSandbox
 @using BlazorSandbox.Layout
 @using DrawnUi.Blazor.Views
+@* SkiaSharp 4.159 (.NET 11) has its own SKMesh types; the probes use DrawnUI's, which draw with Skia's SkMesh on GPU canvases *@
+@using SKMesh = DrawnUi.Draw.Meshes.SKMesh
+@using SKMeshIndexBuffer = DrawnUi.Draw.Meshes.SKMeshIndexBuffer
+@using SKMeshMode = DrawnUi.Draw.Meshes.SKMeshMode
+@using SKMeshSpecification = DrawnUi.Draw.Meshes.SKMeshSpecification
+@using SKMeshSpecificationAttribute = DrawnUi.Draw.Meshes.SKMeshSpecificationAttribute
+@using SKMeshSpecificationAttributeType = DrawnUi.Draw.Meshes.SKMeshSpecificationAttributeType
+@using SKMeshSpecificationVarying = DrawnUi.Draw.Meshes.SKMeshSpecificationVarying
+@using SKMeshSpecificationVaryingType = DrawnUi.Draw.Meshes.SKMeshSpecificationVaryingType
+@using SKMeshVertexBuffer = DrawnUi.Draw.Meshes.SKMeshVertexBuffer

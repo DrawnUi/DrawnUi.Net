@@ -263,7 +263,7 @@ static void RunEmojiProbe(string[] args, string outputDirectory)
     probeHost.Render();
 
     var defaultTypeface = autoRich.TypeFace;
-    var spanData = SkiaRichLabel.BuildSpanData(emojiText, defaultTypeface);
+    var spanData = autoRich.BuildSpanData(emojiText, defaultTypeface);
     var summary = DescribeEmojiProbe(emojiText, registerNoto, notoPath, defaultTypeface, spanData, autoPlain, explicitPlainSegoe, explicitPlainFontEmoji, explicitPlainFontEmojiCached, autoRich, segoueRich, fontEmojiRich);
 
     var summaryPath = Path.Combine(outputDirectory, registerNoto ? "emoji-probe-noto.txt" : "emoji-probe-default.txt");

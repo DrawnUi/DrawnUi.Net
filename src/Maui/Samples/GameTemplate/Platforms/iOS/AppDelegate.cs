@@ -5,7 +5,7 @@ namespace Breakout;
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate
 {
-	protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+	protected override MauiApp CreateMauiApp() => GameTemplate.MauiProgram.CreateMauiApp();
 
     // iOS scene lifecycle: on a system-forced exit MAUI destroys the window a second time and throws
     // (dotnet/maui #40438); the scene disconnect already destroyed it

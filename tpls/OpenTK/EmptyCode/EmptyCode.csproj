@@ -3,7 +3,7 @@
     <PropertyGroup>
         <!-- WinExe: no console window on Windows; on Linux it is an ordinary executable. -->
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net10.0</TargetFramework>
+        <TargetFramework>net11.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <RootNamespace>EmptyCode</RootNamespace>
@@ -34,7 +34,7 @@
     <ItemGroup>
         <PackageReference Include="DrawnUi.OpenTk" Version="1.11.0.1" />
         <!-- Native Skia for Linux; the Windows natives come with SkiaSharp itself. -->
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.148.0" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="4.159.0-rc.1.26567.13" />
     </ItemGroup>
 
     <ItemGroup>

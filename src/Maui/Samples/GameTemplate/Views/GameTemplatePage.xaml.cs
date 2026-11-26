@@ -6,11 +6,11 @@ using GameTemplate.Sprites;
 using SkiaSharp;
 using System.Collections.Concurrent;
 using System.Windows.Input;
-using AppoMobi.Maui.Gestures;
+using AppoMobi.Gestures;
 
 namespace GameTemplate.Views;
 
-public partial class GameTemplatePage : MauiGame
+public partial class GameTemplatePage : DrawnGame
 {
     // Constants
     const int MAX_POOL = 64;
@@ -192,18 +192,18 @@ public partial class GameTemplatePage : MauiGame
     }
 
     // Keyboard
-    readonly Dictionary<MauiKey, GameKey> _keys = new()
+    readonly Dictionary<InputKey, GameKey> _keys = new()
     {
-        { MauiKey.ArrowLeft, GameKey.Left },
-        { MauiKey.ArrowRight, GameKey.Right },
-        { MauiKey.ArrowUp, GameKey.Up },
-        { MauiKey.ArrowDown, GameKey.Down },
-        { MauiKey.Space, GameKey.Fire },
+        { InputKey.ArrowLeft, GameKey.Left },
+        { InputKey.ArrowRight, GameKey.Right },
+        { InputKey.ArrowUp, GameKey.Up },
+        { InputKey.ArrowDown, GameKey.Down },
+        { InputKey.Space, GameKey.Fire },
     };
 
-    GameKey Map(MauiKey key) => _keys.TryGetValue(key, out var g) ? g : GameKey.Unset;
+    GameKey Map(InputKey key) => _keys.TryGetValue(key, out var g) ? g : GameKey.Unset;
 
-    public override void OnKeyDown(MauiKey key)
+    public override void OnKeyDown(InputKey key)
     {
         if (State != GameState.Playing) return;
         switch (Map(key))
@@ -216,7 +216,7 @@ public partial class GameTemplatePage : MauiGame
         }
     }
 
-    public override void OnKeyUp(MauiKey key)
+    public override void OnKeyUp(InputKey key)
     {
         switch (Map(key))
         {

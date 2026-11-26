@@ -43,7 +43,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Dev\Cases\GitHub\DrawnUi\src\OpenTk\Samples\OpenTkPong\bin\Release\net10.0\publish\win-x64\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Dev\Cases\GitHub\DrawnUi\src\OpenTk\Samples\OpenTkPong\bin\Release\net11.0\publish\win-x64\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

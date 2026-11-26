@@ -98,7 +98,7 @@
 
 
                         <!--  project-specific custom control with shader  -->
-                        <controls:ContentFolder SecondarySource="Images/leather.jpg" VerticalMargin="{Binding Source={x:Reference Texture}, Path=Margins.Top}">
+                        <controls:ContentFolder SecondarySource="Images/leather.jpg" VerticalMargin="{Binding Source={x:Reference Texture}, Path=Margins.Top, Mode=OneWay}">
 
                             <!--  this cache will be used by our folder custom control  -->
                             <draw:SkiaLayout UseCache="Image">
