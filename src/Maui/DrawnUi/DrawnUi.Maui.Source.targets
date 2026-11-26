@@ -1,0 +1,18 @@
+<Project>
+
+    <!--
+        For apps that reference DrawnUi.Maui.csproj from source (the NuGet package does this by itself):
+        <Import Project="<DrawnUi checkout>\src\Maui\DrawnUi\DrawnUi.Maui.Source.targets" />
+
+        Windows: DrawnUi ships its own ANGLE (libEGL.dll, libGLESv2.dll) next to the app. SkiaSharp.NativeAssets.WinUI
+        brings its ANGLE under the same names; an MSIX payload refuses two different files with one name, so SkiaSharp's
+        copies are dropped and DrawnUi's stay. Nothing else changes.
+    -->
+    <Target Name="DrawnUiUseOwnAngle" AfterTargets="ResolvePackageAssets" Condition="$(TargetFramework.Contains('windows'))">
+        <ItemGroup>
+            <NativeCopyLocalItems Remove="@(NativeCopyLocalItems)"
+                                  Condition="'%(NativeCopyLocalItems.NuGetPackageId)' == 'SkiaSharp.NativeAssets.WinUI' And ('%(NativeCopyLocalItems.Filename)' == 'libEGL' Or '%(NativeCopyLocalItems.Filename)' == 'libGLESv2')" />
+        </ItemGroup>
+    </Target>
+
+</Project>
