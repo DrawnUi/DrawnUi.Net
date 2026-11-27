@@ -595,12 +595,8 @@ namespace DrawnUi.Draw
                         return v;
                 }
 
-                if (TryReserveCreateSlot())
-                {
-                    create = true;
-                    return null;
-                }
-
+                // Reuse a cell whose context is no longer wanted before creating a new one: creating first
+                // filled the pool up to its ceiling with baked cells nobody would draw again.
                 if (isTagEvictable != null)
                 {
                     foreach (var kvp in _byContext)
@@ -611,6 +607,12 @@ namespace DrawnUi.Draw
                             return kvp.Value;
                         }
                     }
+                }
+
+                if (TryReserveCreateSlot())
+                {
+                    create = true;
+                    return null;
                 }
 
                 return null;

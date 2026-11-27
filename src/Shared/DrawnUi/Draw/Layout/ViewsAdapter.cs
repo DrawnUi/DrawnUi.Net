@@ -783,10 +783,17 @@ namespace DrawnUi.Draw
             if (contexts == null)
                 return true;
 
+            // A context still in the source stays protected only while preparation can still want it:
+            // preparation works 2 viewports ahead and 1 behind, so anything further than 3 viewports from the
+            // visible rows is reused instead of keeping a baked cell for every item of the source.
+            var first = _parent.FirstVisibleIndexLocal;
+            var last = _parent.LastVisibleIndexLocal;
+            var reach = 3 * Math.Max(1, last - first + 1);
+
             for (int i = 0; i < contexts.Count; i++)
             {
                 if (ReferenceEquals(contexts[i], taggedContext))
-                    return false;
+                    return first >= 0 && last >= first && (i < first - reach || i > last + reach);
             }
 
             return true;
