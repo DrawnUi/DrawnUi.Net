@@ -1667,6 +1667,9 @@ namespace DrawnUi.Draw
             _templatedViewsPool.MaxSize = size;
         }
 
+        /// <summary>Cells the pool has created and not disposed (in use and parked).</summary>
+        public int PoolCreatedCount => _templatedViewsPool?.CreatedCount ?? 0;
+
         public int PoolMaxSize
         {
             get

@@ -982,6 +982,47 @@ public partial class SkiaLayout
     /// ahead of the scroll direction, then behind) and posts it to CellPreparationService. Posts nothing
     /// while everything nearby is prepared (steady state = zero allocations here).
     /// </summary>
+    private int _prefillRunning;
+
+    /// <summary>
+    /// Creates, in the background, the cells preparation will need while scrolling (the viewport, 2 viewports ahead,
+    /// 1 behind), so they are not constructed in the middle of a scroll: a row cell builds its whole control tree, and
+    /// building dozens of them while scrolling feeds .NET collections that pause the render thread.
+    /// </summary>
+    private void PrefillPoolForPreparation(int visibleCount)
+    {
+#if BROWSER || WEB
+        // single-threaded WebAssembly: a "background" fill would run on the only thread, inside the scroll
+        return;
+#endif
+        var adapter = ChildrenFactory;
+        if (adapter == null || adapter.IsDisposed || !adapter.TemplatesAvailable)
+            return;
+
+        // viewport + 2 ahead + 1 behind, plus the cells whose bakes are in flight and the window slides: measured ~6 viewports
+        var need = Math.Min(visibleCount * 6 + 4, adapter.PoolMaxSize);
+        var missing = need - adapter.PoolCreatedCount;
+        if (missing <= 0 || Interlocked.CompareExchange(ref _prefillRunning, 1, 0) != 0)
+            return;
+
+        Task.Run(() =>
+        {
+            try
+            {
+                if (!adapter.IsDisposed)
+                    adapter.FillPool(adapter.PoolSize + missing);
+            }
+            catch (Exception e)
+            {
+                Super.Log(e);
+            }
+            finally
+            {
+                Interlocked.Exchange(ref _prefillRunning, 0);
+            }
+        });
+    }
+
     private void PostCellPreparationWants()
     {
         var first = FirstVisibleIndexLocal;
@@ -1000,6 +1041,7 @@ public partial class SkiaLayout
         }
 
         var visibleCount = Math.Max(1, last - first + 1);
+        PrefillPoolForPreparation(visibleCount);
         var forward = first >= _prepPrevFirstVisible; // scrolling toward higher indices
         _prepPrevFirstVisible = first;
 
