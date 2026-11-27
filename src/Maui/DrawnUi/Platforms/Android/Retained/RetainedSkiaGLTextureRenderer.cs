@@ -68,8 +68,8 @@ namespace DrawnUi
             {
                 var glInterface = GRGlInterface.Create();
                 Context = GRContext.CreateGl(glInterface);
-                if (Super.GpuResourceCacheBytes > 0)
-                    Context?.SetResourceCacheLimit(Super.GpuResourceCacheBytes);
+                if (Super.ResolveGpuResourceCacheBytes(ScreenPixels()) is var gpuBudget and > 0)
+                    Context?.SetResourceCacheLimit(gpuBudget);
             }
 
             // SHARED: Ensure renderTarget is ready (used by both fast and normal paths)
@@ -216,6 +216,12 @@ namespace DrawnUi
             }
 
             base.Dispose(disposing);
+        }
+
+        static long ScreenPixels()
+        {
+            var metrics = Android.Content.Res.Resources.System?.DisplayMetrics;
+            return metrics == null ? 0 : (long)metrics.WidthPixels * metrics.HeightPixels;
         }
     }
 }

@@ -32,8 +32,8 @@ public abstract partial class SkiaGLTextureRenderer : Java.Lang.Object, SkiaGLTe
         {
             var glInterface = GRGlInterface.Create();
             Context = GRContext.CreateGl(glInterface);
-            if (Super.GpuResourceCacheBytes > 0)
-                Context?.SetResourceCacheLimit(Super.GpuResourceCacheBytes);
+            if (Super.ResolveGpuResourceCacheBytes(ScreenPixels()) is var gpuBudget and > 0)
+                Context?.SetResourceCacheLimit(gpuBudget);
         }
 
         // manage the drawing surface
@@ -132,5 +132,11 @@ public abstract partial class SkiaGLTextureRenderer : Java.Lang.Object, SkiaGLTe
         renderTarget = null;
         Context?.Dispose();
         Context = null;
+    }
+
+    static long ScreenPixels()
+    {
+        var metrics = Android.Content.Res.Resources.System?.DisplayMetrics;
+        return metrics == null ? 0 : (long)metrics.WidthPixels * metrics.HeightPixels;
     }
 }
