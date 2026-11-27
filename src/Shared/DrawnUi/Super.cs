@@ -79,10 +79,20 @@ public partial class Super
 
     /// <summary>
     /// GPU memory Skia may keep for uploaded images and other GPU resources of a canvas (its resource cache budget),
-    /// set when the canvas creates its GPU context. 64 MB by default; 0 keeps Skia's own default (256 MB).
+    /// set when the canvas creates its GPU context. -1 (default) = 12 screens of 4-byte pixels, the rule Android's own
+    /// UI renderer uses (HWUI: screen area x 48); 0 = Skia's own default (256 MB); above 0 = that many bytes.
     /// Applied on Android for now.
     /// </summary>
-    public static long GpuResourceCacheBytes { get; set; } = 64L * 1024 * 1024;
+    public static long GpuResourceCacheBytes { get; set; } = -1;
+
+    /// <summary>The budget <see cref="GpuResourceCacheBytes"/> asks for on a screen of this many pixels; 0 = leave Skia's default.</summary>
+    public static long ResolveGpuResourceCacheBytes(long screenPixels)
+    {
+        var setting = GpuResourceCacheBytes;
+        if (setting >= 0)
+            return setting;
+        return screenPixels > 0 ? screenPixels * 4 * 12 : 0;
+    }
 
     private static int _maxFps;
 

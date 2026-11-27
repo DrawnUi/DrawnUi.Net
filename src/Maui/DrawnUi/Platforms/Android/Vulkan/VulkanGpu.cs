@@ -215,8 +215,8 @@ internal sealed unsafe class VulkanGpu : IDisposable
         while (Parked.TryTake(out var parked))
         {
             parked.Context = GRContext.CreateVulkan(parked._backend);
-            if (Super.GpuResourceCacheBytes > 0)
-                parked.Context?.SetResourceCacheLimit(Super.GpuResourceCacheBytes);
+            if (Super.ResolveGpuResourceCacheBytes(ScreenPixels()) is var gpuBudget and > 0)
+                parked.Context?.SetResourceCacheLimit(gpuBudget);
             if (parked.Context != null)
                 return parked;
             parked.Dispose();
@@ -300,8 +300,8 @@ internal sealed unsafe class VulkanGpu : IDisposable
         };
 
         Context = GRContext.CreateVulkan(_backend);
-        if (Super.GpuResourceCacheBytes > 0)
-            Context?.SetResourceCacheLimit(Super.GpuResourceCacheBytes);
+        if (Super.ResolveGpuResourceCacheBytes(ScreenPixels()) is var gpuBudget and > 0)
+            Context?.SetResourceCacheLimit(gpuBudget);
         return Context != null;
     }
 
@@ -382,5 +382,11 @@ internal sealed unsafe class VulkanGpu : IDisposable
         for (var i = 0; i < count; i++)
             Marshal.FreeHGlobal(Marshal.ReadIntPtr(array, i * IntPtr.Size));
         Marshal.FreeHGlobal(array);
+    }
+
+    static long ScreenPixels()
+    {
+        var metrics = Android.Content.Res.Resources.System?.DisplayMetrics;
+        return metrics == null ? 0 : (long)metrics.WidthPixels * metrics.HeightPixels;
     }
 }
