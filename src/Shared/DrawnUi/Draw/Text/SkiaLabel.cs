@@ -1463,10 +1463,11 @@ namespace DrawnUi.Draw
             return SpanMeasurement.LastNonSpaceIndexSpan(textSpan);
         }
 
-        private readonly record struct WordKey(
-            string Family, int Weight, int Width, SKFontStyleSlant Slant, float TextSize, string Word);
-
-        private Dictionary<WordKey, float>? _wordCache;
+        // Word widths per font object and size, looked up by the word as a span of the text: a probe of a line allocates
+        // nothing for words already measured (no key string per word, no font name or style read per call).
+        private Dictionary<(SKTypeface Typeface, float Size), Dictionary<string, float>>? _wordCache;
+        private (SKTypeface Typeface, float Size) _wordCacheKey;
+        private Dictionary<string, float>? _wordWidths;
 
         private bool IsComplexMeasuring =>
             Spans.Count > 0 || _fallbackRuns != null ||
@@ -1487,12 +1488,18 @@ namespace DrawnUi.Draw
             if (string.IsNullOrEmpty(text))
                 return (0f, null);
 
-            _wordCache ??= new Dictionary<WordKey, float>();
-
             var typeface = font.Typeface ?? SkiaFontManager.DefaultTypeface;
-            var style = typeface.FontStyle;
-            var family = typeface.FamilyName;
             var textSize = font.Size;
+            var fontKey = (typeface, textSize);
+            if (_wordWidths == null || !_wordCacheKey.Equals(fontKey))
+            {
+                _wordCache ??= new();
+                if (!_wordCache.TryGetValue(fontKey, out _wordWidths))
+                    _wordCache[fontKey] = _wordWidths = new Dictionary<string, float>(StringComparer.Ordinal);
+                _wordCacheKey = fontKey;
+            }
+
+            var widths = _wordWidths.GetAlternateLookup<ReadOnlySpan<char>>();
 
             float total = 0f;
             int start = 0;
@@ -1504,26 +1511,23 @@ namespace DrawnUi.Draw
 
                 if (end > start)
                 {
-                    var key = new WordKey(family, style.Weight, style.Width, style.Slant, textSize, text.Substring(start, end - start));
-                    if (!_wordCache.TryGetValue(key, out var w))
+                    var word = text.AsSpan(start, end - start);
+                    if (!widths.TryGetValue(word, out var w))
                     {
-                        w = MeasureTextWidthWithAdvance(paint, font, text.AsSpan(start, end - start));
-                        _wordCache[key] = w;
+                        w = MeasureTextWidthWithAdvance(paint, font, word);
+                        widths[word] = w;
                     }
                     total += w;
                 }
 
                 if (spaceIdx < 0) break;
 
+                if (!widths.TryGetValue(" ", out var sw))
                 {
-                    var spaceKey = new WordKey(family, style.Weight, style.Width, style.Slant, textSize, " ");
-                    if (!_wordCache.TryGetValue(spaceKey, out var sw))
-                    {
-                        sw = MeasureTextWidthWithAdvance(paint, font, " ");
-                        _wordCache[spaceKey] = sw;
-                    }
-                    total += sw;
+                    sw = MeasureTextWidthWithAdvance(paint, font, " ");
+                    widths[" "] = sw;
                 }
+                total += sw;
                 start = spaceIdx + 1;
             }
 
@@ -1763,8 +1767,6 @@ namespace DrawnUi.Draw
 
             var paintTypeface = font.Typeface ?? SkiaFontManager.DefaultTypeface;
 
-            var glyphs = GetGlyphs(text, paintTypeface);
-
             // Use pooled list to avoid allocation
             using var pooledPositions = PooledLineGlyphList.Get();
             var positions = pooledPositions.List;
@@ -1800,6 +1802,8 @@ namespace DrawnUi.Draw
 
             if (charMonoWidthPixels > 0)
             {
+                // glyphs are built only by the branches that position them: a plain line needs its width only
+                var glyphs = GetGlyphs(text, paintTypeface);
                 foreach (var g in glyphs)
                 {
                     if (g.Symbol == 0xFE0F || g.Symbol == 0xFE0E)
@@ -1853,6 +1857,7 @@ namespace DrawnUi.Draw
                 var pos = 0;
 
                 // italic slant room is added once at the end of a line (AddItalicOverhangAtLineEnds), not per run
+                var glyphs = GetGlyphs(text, paintTypeface);
                 foreach (var g in glyphs)
                 {
                     // VS16/VS15 variation selectors are zero-width modifiers; some Windows fonts report non-zero advance
@@ -2451,31 +2456,29 @@ namespace DrawnUi.Draw
 
         List<string> SplitLineToWords(string line, char space)
         {
-            if (line == space.ToString())
+            if (line.Length == 1 && line[0] == space)
             {
                 return new() { line };
             }
 
-            string GetSpaces(string str, bool leading)
-            {
-                var spaces = leading
-                    ? str.TakeWhile(c => c == space).ToArray()
-                    : str.Reverse().TakeWhile(c => c == space).ToArray();
-                return new string(spaces);
-            }
-
-            var leadingSpaces = GetSpaces(line, leading: true);
-            var trailingSpaces = GetSpaces(line, leading: false);
+            // runs of the space char at both ends (plain loops: no iterator or char array per line)
+            int leading = 0;
+            while (leading < line.Length && line[leading] == space)
+                leading++;
+            int trailing = 0;
+            while (trailing < line.Length && line[line.Length - 1 - trailing] == space)
+                trailing++;
 
             // Now trim the line and split by space, without removing empty entries
             var trimmedLine = line.Trim();
-            var splitWords = trimmedLine.Split(new[] { space }, StringSplitOptions.None);
+            var splitWords = trimmedLine.Split(space);
             Array.Reverse(splitWords);
-            var words = splitWords.ToList();
+            var words = new List<string>(splitWords.Length + 2);
+            words.AddRange(splitWords);
 
             // words list is inverted!
-            if (leadingSpaces.Length > 0) words.Add(leadingSpaces);
-            if (trailingSpaces.Length > 0) words.Insert(0, trailingSpaces);
+            if (leading > 0) words.Add(new string(space, leading));
+            if (trailing > 0) words.Insert(0, new string(space, trailing));
 
             //if (words.Count > 0 && NeedsRTL(words[0]))
             //{
