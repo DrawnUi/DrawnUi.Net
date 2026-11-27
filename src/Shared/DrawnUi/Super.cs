@@ -85,6 +85,21 @@ public partial class Super
     /// </summary>
     public static long GpuResourceCacheBytes { get; set; } = -1;
 
+    /// <summary>
+    /// Bytes of CPU drawing surfaces a canvas keeps for reuse by its caches (its surface pool). -1 (default) = 4 canvases
+    /// of 4-byte pixels, at least 16 MB; above 0 = that many bytes; 0 = keep none.
+    /// </summary>
+    public static long SurfacePoolBytes { get; set; } = -1;
+
+    /// <summary>The surface pool budget <see cref="SurfacePoolBytes"/> asks for on a canvas of this many pixels.</summary>
+    public static long ResolveSurfacePoolBytes(long canvasPixels)
+    {
+        var setting = SurfacePoolBytes;
+        if (setting >= 0)
+            return setting;
+        return Math.Max(16L * 1024 * 1024, canvasPixels * 4 * 4);
+    }
+
     /// <summary>The budget <see cref="GpuResourceCacheBytes"/> asks for on a screen of this many pixels; 0 = leave Skia's default.</summary>
     public static long ResolveGpuResourceCacheBytes(long screenPixels)
     {

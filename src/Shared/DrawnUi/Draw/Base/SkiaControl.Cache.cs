@@ -1798,6 +1798,19 @@ public partial class SkiaControl
     /// cell is drawn: when it scrolls in, its bitmap is ready instead of a placeholder. Runs off the render thread,
     /// so it never reads the frame canvas (no distortion check: a list cell is drawn undistorted).
     /// </summary>
+    /// <summary>
+    /// A double-buffered cell parked in a recycling pool drops its previous bitmap: that one is only drawn while the same
+    /// item rebakes on screen, which a parked cell never does. Its surface goes back to the canvas surface pool.
+    /// </summary>
+    internal void DropPreviousCacheWhenParked()
+    {
+        if (!UsesCacheDoubleBuffering || _renderObjectPrevious == null)
+            return;
+
+        lock (LockDraw)
+            RenderObjectPrevious = null;
+    }
+
     internal void QueueBakeForPreparedCell(DrawingContext clone, SKRect recordArea)
     {
         var paintDestination = DrawingRect;

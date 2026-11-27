@@ -2313,6 +2313,8 @@ namespace DrawnUi.Views
             if (surface == null) //fallback if gpu failed
             {
                 //non-gpu
+                SurfaceCacheManager.MaxPooledBytes = Super.ResolveSurfacePoolBytes(
+                    (long)(Width * RenderingScale) * (long)(Height * RenderingScale));
                 surface = SurfaceCacheManager.GetSurface(width, height);
             }
 
