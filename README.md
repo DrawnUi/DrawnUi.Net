@@ -88,8 +88,12 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.9.5
+## What's New 1.10.9.6
 
+  * Fixed a crash on Windows when a tap opens another page.
+  * Pages opened quickly one after another lay out correctly every time.
+  * Keyboard works in Blazor apps that mix Server and WebAssembly on one page (Auto render mode).
+  * Apps that build DrawnUI from source can be packaged as MSIX: import `src/Maui/DrawnUi/DrawnUi.Maui.Source.targets`.
   * New: `native://` loads the images your app framework keeps for you. .NET MAUI: the app's `Resources/Images` on Android, iOS, Mac Catalyst and Windows, `Source="native://logo.png"` (or `native://logo.svg`), the same file MAUI's `Image` uses, in the version made for the screen. WPF: images with build action Resource, `native://Images/logo.png` (or `pack://application:,,,/Images/logo.png`). OpenTK, DrawnUi.Net and the web: the file a plain name loads, so code written with `native://` works on every head. See [Images](https://drawnui.net/articles/controls/images.html).
   * An image that cannot load raises `Error`, so a missing picture is reported instead of leaving an empty box.
   * `resource://` images set from C# code load on .NET MAUI.
