@@ -8,18 +8,18 @@ BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).RunAll();
 // Thin wrappers that expose protected measurement methods for direct benchmarking
 class BenchLabel : SkiaLabel
 {
-    public new (float Width, LineGlyph[] Glyphs) MeasureLineGlyphs(SKPaint p, string t, bool shaping, float scale)
-        => base.MeasureLineGlyphs(p, t, shaping, scale);
-    public new (float Width, LineGlyph[] Glyphs) MeasureLineGlyphsProbe(SKPaint p, string t, bool shaping, float scale)
-        => base.MeasureLineGlyphsProbe(p, t, shaping, scale);
+    public new (float Width, LineGlyph[] Glyphs) MeasureLineGlyphs(SKPaint p, SKFont f, string t, bool shaping, float scale)
+        => base.MeasureLineGlyphs(p, f, t, shaping, scale);
+    public new (float Width, LineGlyph[] Glyphs) MeasureLineGlyphsProbe(SKPaint p, SKFont f, string t, bool shaping, float scale)
+        => base.MeasureLineGlyphsProbe(p, f, t, shaping, scale);
 }
 
 class BenchRichLabel : SkiaRichLabel
 {
-    public new (float Width, LineGlyph[] Glyphs) MeasureLineGlyphs(SKPaint p, string t, bool shaping, float scale)
-        => base.MeasureLineGlyphs(p, t, shaping, scale);
-    public new (float Width, LineGlyph[] Glyphs) MeasureLineGlyphsProbe(SKPaint p, string t, bool shaping, float scale)
-        => base.MeasureLineGlyphsProbe(p, t, shaping, scale);
+    public new (float Width, LineGlyph[] Glyphs) MeasureLineGlyphs(SKPaint p, SKFont f, string t, bool shaping, float scale)
+        => base.MeasureLineGlyphs(p, f, t, shaping, scale);
+    public new (float Width, LineGlyph[] Glyphs) MeasureLineGlyphsProbe(SKPaint p, SKFont f, string t, bool shaping, float scale)
+        => base.MeasureLineGlyphsProbe(p, f, t, shaping, scale);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -33,6 +33,7 @@ public class SkiaLabelMeasureBenchmark
 {
     private BenchLabel _label = null!;
     private SKPaint _paint = null!;
+    private SKFont _font = null!;
     private string[] _accumulatedLines = null!;
 
     [Params(20, 50, 100)]
@@ -42,7 +43,8 @@ public class SkiaLabelMeasureBenchmark
     public void Setup()
     {
         _label = new BenchLabel();
-        _paint = new SKPaint { Typeface = SKTypeface.Default, TextSize = 16f };
+        _paint = new SKPaint();
+        _font = new SKFont(SKTypeface.Default, 16f);
 
         var words = Enumerable.Range(0, WordCount).Select(GenerateWord).ToArray();
         _accumulatedLines = new string[WordCount];
@@ -51,14 +53,14 @@ public class SkiaLabelMeasureBenchmark
     }
 
     [GlobalCleanup]
-    public void Cleanup() => _paint.Dispose();
+    public void Cleanup() { _paint.Dispose(); _font.Dispose(); }
 
     [Benchmark(Baseline = true, Description = "MeasureLineGlyphs (committed)")]
     public float Committed()
     {
         float total = 0;
         foreach (var line in _accumulatedLines)
-            total += _label.MeasureLineGlyphs(_paint, line, false, 1f).Width;
+            total += _label.MeasureLineGlyphs(_paint, _font, line, false, 1f).Width;
         return total;
     }
 
@@ -67,7 +69,7 @@ public class SkiaLabelMeasureBenchmark
     {
         float total = 0;
         foreach (var line in _accumulatedLines)
-            total += _label.MeasureLineGlyphsProbe(_paint, line, false, 1f).Width;
+            total += _label.MeasureLineGlyphsProbe(_paint, _font, line, false, 1f).Width;
         return total;
     }
 
@@ -85,6 +87,7 @@ public class SkiaRichLabelMeasureBenchmark
 {
     private BenchRichLabel _label = null!;
     private SKPaint _paint = null!;
+    private SKFont _font = null!;
     private string[] _accumulatedLines = null!;
 
     [Params(20, 50, 100)]
@@ -99,7 +102,8 @@ public class SkiaRichLabelMeasureBenchmark
         var dummySpan = new TextSpan { Text = "x", TypeFace = SKTypeface.Default };
         _label.Spans.Add(dummySpan);
 
-        _paint = new SKPaint { Typeface = SKTypeface.Default, TextSize = 16f };
+        _paint = new SKPaint();
+        _font = new SKFont(SKTypeface.Default, 16f);
 
         var words = Enumerable.Range(0, WordCount).Select(GenerateWord).ToArray();
         _accumulatedLines = new string[WordCount];
@@ -108,14 +112,14 @@ public class SkiaRichLabelMeasureBenchmark
     }
 
     [GlobalCleanup]
-    public void Cleanup() => _paint.Dispose();
+    public void Cleanup() { _paint.Dispose(); _font.Dispose(); }
 
     [Benchmark(Baseline = true, Description = "MeasureLineGlyphs (committed)")]
     public float Committed()
     {
         float total = 0;
         foreach (var line in _accumulatedLines)
-            total += _label.MeasureLineGlyphs(_paint, line, false, 1f).Width;
+            total += _label.MeasureLineGlyphs(_paint, _font, line, false, 1f).Width;
         return total;
     }
 
@@ -124,7 +128,7 @@ public class SkiaRichLabelMeasureBenchmark
     {
         float total = 0;
         foreach (var line in _accumulatedLines)
-            total += _label.MeasureLineGlyphsProbe(_paint, line, false, 1f).Width;
+            total += _label.MeasureLineGlyphsProbe(_paint, _font, line, false, 1f).Width;
         return total;
     }
 
@@ -146,6 +150,7 @@ public class SkiaLabelMarkdownBenchmark
 {
     private BenchLabel _label = null!;
     private SKPaint _paint = null!;
+    private SKFont _font = null!;
 
     private static readonly string[] _doc =
     [
@@ -218,18 +223,19 @@ public class SkiaLabelMarkdownBenchmark
     public void Setup()
     {
         _label = new BenchLabel();
-        _paint = new SKPaint { Typeface = SKTypeface.Default, TextSize = 16f };
+        _paint = new SKPaint();
+        _font = new SKFont(SKTypeface.Default, 16f);
     }
 
     [GlobalCleanup]
-    public void Cleanup() => _paint.Dispose();
+    public void Cleanup() { _paint.Dispose(); _font.Dispose(); }
 
     [Benchmark(Baseline = true, Description = "MeasureLineGlyphs/Markdown (committed)")]
     public float Committed()
     {
         float total = 0;
         foreach (var line in _doc)
-            total += _label.MeasureLineGlyphs(_paint, line, false, 1f).Width;
+            total += _label.MeasureLineGlyphs(_paint, _font, line, false, 1f).Width;
         return total;
     }
 
@@ -238,7 +244,7 @@ public class SkiaLabelMarkdownBenchmark
     {
         float total = 0;
         foreach (var line in _doc)
-            total += _label.MeasureLineGlyphsProbe(_paint, line, false, 1f).Width;
+            total += _label.MeasureLineGlyphsProbe(_paint, _font, line, false, 1f).Width;
         return total;
     }
 }
@@ -249,6 +255,7 @@ public class SkiaRichLabelMarkdownBenchmark
 {
     private BenchRichLabel _label = null!;
     private SKPaint _paint = null!;
+    private SKFont _font = null!;
 
     private static readonly string[] _doc =
     [
@@ -325,18 +332,19 @@ public class SkiaRichLabelMarkdownBenchmark
         var dummySpan = new TextSpan { Text = "x", TypeFace = SKTypeface.Default };
         _label.Spans.Add(dummySpan);
 
-        _paint = new SKPaint { Typeface = SKTypeface.Default, TextSize = 16f };
+        _paint = new SKPaint();
+        _font = new SKFont(SKTypeface.Default, 16f);
     }
 
     [GlobalCleanup]
-    public void Cleanup() => _paint.Dispose();
+    public void Cleanup() { _paint.Dispose(); _font.Dispose(); }
 
     [Benchmark(Baseline = true, Description = "MeasureLineGlyphs/Markdown (committed)")]
     public float Committed()
     {
         float total = 0;
         foreach (var line in _doc)
-            total += _label.MeasureLineGlyphs(_paint, line, false, 1f).Width;
+            total += _label.MeasureLineGlyphs(_paint, _font, line, false, 1f).Width;
         return total;
     }
 
@@ -345,7 +353,7 @@ public class SkiaRichLabelMarkdownBenchmark
     {
         float total = 0;
         foreach (var line in _doc)
-            total += _label.MeasureLineGlyphsProbe(_paint, line, false, 1f).Width;
+            total += _label.MeasureLineGlyphsProbe(_paint, _font, line, false, 1f).Width;
         return total;
     }
 }
