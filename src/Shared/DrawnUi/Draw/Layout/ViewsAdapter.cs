@@ -272,7 +272,29 @@ namespace DrawnUi.Draw
             if (LogEnabled)
                 Super.Log($"[ViewsAdapter] InitializeTemplates {args.Action} count={dataContexts?.Count} needReset={needReset} busy={TemplatesBusy} invalidating={TemplesInvalidating}");
 
-            if (needReset)
+            // A new ItemsSource (or a Reset) for the same template, scale and split needs new bindings, not new
+            // views: recycled cells are returned to the pool and rebound, instead of disposing every cell and
+            // building the pool again (cell constructors + new caches for each swap).
+            var keepViews = needReset && !layoutChanged && _templatedViewsPool != null && !CheckTemplateChanged()
+                            && _parent.RecyclingTemplate != RecyclingTemplate.Disabled;
+
+            if (keepViews)
+            {
+                CancelBackgroundPoolFilling();
+
+                lock (_lockTemplates)
+                {
+                    _wrappers.Clear();
+                    _dataContexts = null;
+                    _dataContextsSource = null;
+                    AddedMore = 0;
+                    InvalidateAllPooledCells();
+                }
+
+                InitializeSoft(false, dataContexts, poolSize);
+                SetTemplatesAvailable(dataContexts);
+            }
+            else if (needReset)
             {
                 CancelBackgroundPoolFilling();
 
