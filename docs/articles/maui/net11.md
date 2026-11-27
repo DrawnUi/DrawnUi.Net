@@ -29,6 +29,7 @@ Since DrawnUI 1.11.0.1, `DrawnUi.Maui` and its MAUI add-ons (`DrawnUi.Maui.Game`
   <TargetFrameworks>net11.0-android;net11.0-ios;net11.0-maccatalyst</TargetFrameworks>
   <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net11.0-windows10.0.19041.0</TargetFrameworks>
   <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
+  <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">17.0</SupportedOSPlatformVersion>
 </PropertyGroup>
 
 <ItemGroup>
@@ -52,7 +53,8 @@ Since DrawnUI 1.11.0.1, `DrawnUi.Maui` and its MAUI add-ons (`DrawnUi.Maui.Game`
 
 3. **Compatibility package:** remove the `Microsoft.Maui.Controls.Compatibility` package and any `.UseMauiCompatibility()` call in `MauiProgram`. MAUI 11 has no such package, and DrawnUI does not need it.
 4. **Android:** set `SupportedOSPlatformVersion` to 24 or higher (a lower value stops the build with XA4216).
-5. **iOS launch time:** to keep the fast .NET 10 launch on iPhone, set these in the iOS part of the csproj and measure launch before and after:
+5. **Mac Catalyst:** set `SupportedOSPlatformVersion` to 17.0 or higher, the minimum of the .NET 11 Mac Catalyst SDK. iOS keeps 15.0.
+6. **iOS launch time:** to keep the fast .NET 10 launch on iPhone, set these in the iOS part of the csproj and measure launch before and after:
 
 ```xml
 <PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
@@ -79,7 +81,7 @@ public class SceneDelegate : MauiUISceneDelegate
 }
 ```
 
-2. A scene manifest in `Info.plist` pointing at it:
+2. A scene manifest pointing at it, in the `Info.plist` of `Platforms/iOS` and of `Platforms/MacCatalyst` (without it the build stops with MT7199):
 
 ```xml
 <key>UIApplicationSceneManifest</key>
