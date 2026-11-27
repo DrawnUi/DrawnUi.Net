@@ -54,17 +54,7 @@ Since DrawnUI 1.11.0.1, `DrawnUi.Maui` and its MAUI add-ons (`DrawnUi.Maui.Game`
 3. **Compatibility package:** remove the `Microsoft.Maui.Controls.Compatibility` package and any `.UseMauiCompatibility()` call in `MauiProgram`. MAUI 11 has no such package, and DrawnUI does not need it.
 4. **Android:** set `SupportedOSPlatformVersion` to 24 or higher (a lower value stops the build with XA4216).
 5. **Mac Catalyst:** set `SupportedOSPlatformVersion` to 17.0 or higher, the minimum of the .NET 11 Mac Catalyst SDK. iOS keeps 15.0.
-6. **iOS launch time:** to keep the fast .NET 10 launch on iPhone, set these in the iOS part of the csproj and measure launch before and after:
-
-```xml
-<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
-  <Registrar>managed-static</Registrar>
-  <PrepareAssemblies>false</PrepareAssemblies>
-  <PostProcessAssemblies>false</PostProcessAssemblies>
-</PropertyGroup>
-```
-
-The app keeps the number of linked frameworks it had on .NET 10 (about 35) instead of about 150.
+6. **iOS launch:** keep the .NET 11 defaults. Apps start faster than on .NET 10 (CoreCLR with ReadyToRun and the trimmable registrar): on an iPhone 16 Pro, the DrawnUI sandbox reaches its first drawn frame in about 260 ms, against about 390 ms on .NET 10. The `Registrar`, `PrepareAssemblies` and `PostProcessAssemblies` overrides make the launch slower, so leave them out.
 
 ## iOS and Mac Catalyst: the scene lifecycle
 
