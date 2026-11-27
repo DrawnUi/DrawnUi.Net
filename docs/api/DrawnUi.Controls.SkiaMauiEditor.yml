@@ -82,12 +82,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor
   type: Class
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaMauiEditor
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -932,6 +928,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1162,12 +1159,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.SkiaMauiEditor()
   type: Constructor
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -1191,12 +1184,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.Paint(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Paint
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -1229,12 +1218,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 22
   assemblies:
   - DrawnUi.Maui
@@ -1264,12 +1249,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.ClaimFocus()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClaimFocus
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 58
   assemblies:
   - DrawnUi.Maui
@@ -1295,12 +1276,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.MaxLinesProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLinesProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 78
   assemblies:
   - DrawnUi.Maui
@@ -1322,12 +1299,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.MaxLines
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLines
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 83
   assemblies:
   - DrawnUi.Maui
@@ -1353,12 +1326,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.ActionGo
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionGo
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 104
   assemblies:
   - DrawnUi.Maui
@@ -1380,12 +1349,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.ActionNext
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionNext
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 105
   assemblies:
   - DrawnUi.Maui
@@ -1407,12 +1372,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.ActionSend
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionSend
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 106
   assemblies:
   - DrawnUi.Maui
@@ -1434,12 +1395,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.ActionSearch
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionSearch
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 107
   assemblies:
   - DrawnUi.Maui
@@ -1461,12 +1418,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.ActionDone
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionDone
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 108
   assemblies:
   - DrawnUi.Maui
@@ -1488,12 +1441,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.TextChanged
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextChanged
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 115
   assemblies:
   - DrawnUi.Maui
@@ -1515,12 +1464,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.FocusChanged
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusChanged
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 117
   assemblies:
   - DrawnUi.Maui
@@ -1542,12 +1487,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.TextSubmitted
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextSubmitted
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 119
   assemblies:
   - DrawnUi.Maui
@@ -1569,12 +1510,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.WillClipBounds
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WillClipBounds
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 123
   assemblies:
   - DrawnUi.Maui
@@ -1601,12 +1538,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.MapProps(DrawnUi.Controls.MauiEditor)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MapProps
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 126
   assemblies:
   - DrawnUi.Maui
@@ -1630,12 +1563,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.GetOrCreateControl()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOrCreateControl
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 142
   assemblies:
   - DrawnUi.Maui
@@ -1658,12 +1587,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.Control
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Control
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 166
   assemblies:
   - DrawnUi.Maui
@@ -1687,12 +1612,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.PlaceholderLabel
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderLabel
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 167
   assemblies:
   - DrawnUi.Maui
@@ -1714,12 +1635,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.FocusNative()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusNative
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 169
   assemblies:
   - DrawnUi.Maui
@@ -1740,12 +1657,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.UnfocusNative()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnfocusNative
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 174
   assemblies:
   - DrawnUi.Maui
@@ -1766,12 +1679,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.SetFocus(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFocus
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 183
   assemblies:
   - DrawnUi.Maui
@@ -1798,12 +1707,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.AdaptControlSize()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptControlSize
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 201
   assemblies:
   - DrawnUi.Maui
@@ -1824,12 +1729,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.CreatePlaceholderLabel()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreatePlaceholderLabel
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 216
   assemblies:
   - DrawnUi.Maui
@@ -1852,12 +1753,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.UpdateControl()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateControl
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 235
   assemblies:
   - DrawnUi.Maui
@@ -1878,12 +1775,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.UpdatePlaceholderLabel()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdatePlaceholderLabel
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 249
   assemblies:
   - DrawnUi.Maui
@@ -1904,12 +1797,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.UpdatePlaceholderVisibility()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdatePlaceholderVisibility
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 267
   assemblies:
   - DrawnUi.Maui
@@ -1930,12 +1819,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.OnLayoutChanged()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 275
   assemblies:
   - DrawnUi.Maui
@@ -1959,12 +1844,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.SubscribeToControl(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SubscribeToControl
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 282
   assemblies:
   - DrawnUi.Maui
@@ -1991,12 +1872,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.SetFrameworkFocus(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFrameworkFocus
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 366
   assemblies:
   - DrawnUi.Maui
@@ -2034,12 +1911,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.OnDisposing()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 384
   assemblies:
   - DrawnUi.Maui
@@ -2063,12 +1936,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.CheckChildAdded()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckChildAdded
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 406
   assemblies:
   - DrawnUi.Maui
@@ -2091,12 +1960,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.OnMeasuring(float, float, float)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMeasuring
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 411
   assemblies:
   - DrawnUi.Maui
@@ -2136,12 +2001,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.SetFocusInternal(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFocusInternal
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 426
   assemblies:
   - DrawnUi.Maui
@@ -2168,12 +2029,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.KeyboardTypeProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardTypeProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 486
   assemblies:
   - DrawnUi.Maui
@@ -2195,12 +2052,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.KeyboardType
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardType
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 493
   assemblies:
   - DrawnUi.Maui
@@ -2236,12 +2089,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.FontFamilyProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 500
   assemblies:
   - DrawnUi.Maui
@@ -2263,12 +2112,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.FontFamily
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamily
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 502
   assemblies:
   - DrawnUi.Maui
@@ -2292,12 +2137,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.TextColorProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColorProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 508
   assemblies:
   - DrawnUi.Maui
@@ -2319,12 +2160,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.TextColor
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColor
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 512
   assemblies:
   - DrawnUi.Maui
@@ -2348,12 +2185,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.PlaceholderTextColorProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderTextColorProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 518
   assemblies:
   - DrawnUi.Maui
@@ -2375,12 +2208,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.PlaceholderTextColor
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderTextColor
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 522
   assemblies:
   - DrawnUi.Maui
@@ -2404,12 +2233,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.FontWeightProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeightProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 528
   assemblies:
   - DrawnUi.Maui
@@ -2431,12 +2256,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.FontWeight
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeight
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 535
   assemblies:
   - DrawnUi.Maui
@@ -2460,12 +2281,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.FontSizeProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSizeProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 541
   assemblies:
   - DrawnUi.Maui
@@ -2487,12 +2304,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.FontSize
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSize
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 545
   assemblies:
   - DrawnUi.Maui
@@ -2516,12 +2329,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.TextProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 551
   assemblies:
   - DrawnUi.Maui
@@ -2543,12 +2352,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.Text
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Text
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 560
   assemblies:
   - DrawnUi.Maui
@@ -2572,12 +2377,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.PlaceholderTextProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderTextProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 566
   assemblies:
   - DrawnUi.Maui
@@ -2599,12 +2400,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.PlaceholderText
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderText
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 573
   assemblies:
   - DrawnUi.Maui
@@ -2628,12 +2425,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.PlaceholderFontFamilyProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderFontFamilyProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 579
   assemblies:
   - DrawnUi.Maui
@@ -2655,12 +2448,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.PlaceholderFontFamily
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderFontFamily
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 582
   assemblies:
   - DrawnUi.Maui
@@ -2684,12 +2473,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.PlaceholderFontSizeProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderFontSizeProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 588
   assemblies:
   - DrawnUi.Maui
@@ -2711,12 +2496,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.PlaceholderFontSize
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderFontSize
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 595
   assemblies:
   - DrawnUi.Maui
@@ -2740,12 +2521,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.PlaceholderHorizontalAlignmentProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderHorizontalAlignmentProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 601
   assemblies:
   - DrawnUi.Maui
@@ -2767,12 +2544,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.PlaceholderHorizontalAlignment
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderHorizontalAlignment
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 608
   assemblies:
   - DrawnUi.Maui
@@ -2796,12 +2569,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.PlaceholderVerticalAlignmentProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderVerticalAlignmentProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 614
   assemblies:
   - DrawnUi.Maui
@@ -2823,12 +2592,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.PlaceholderVerticalAlignment
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderVerticalAlignment
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 621
   assemblies:
   - DrawnUi.Maui
@@ -2852,12 +2617,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.ReturnTypeProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnTypeProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 627
   assemblies:
   - DrawnUi.Maui
@@ -2879,12 +2640,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.ReturnType
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnType
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 633
   assemblies:
   - DrawnUi.Maui
@@ -2908,12 +2665,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.CommandOnSubmitProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnSubmitProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 639
   assemblies:
   - DrawnUi.Maui
@@ -2935,12 +2688,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.CommandOnSubmit
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnSubmit
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 645
   assemblies:
   - DrawnUi.Maui
@@ -2964,12 +2713,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.CommandOnFocusChangedProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnFocusChangedProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 651
   assemblies:
   - DrawnUi.Maui
@@ -2991,12 +2736,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.CommandOnFocusChanged
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnFocusChanged
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 657
   assemblies:
   - DrawnUi.Maui
@@ -3020,12 +2761,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.CommandOnTextChangedProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnTextChangedProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 663
   assemblies:
   - DrawnUi.Maui
@@ -3047,12 +2784,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.CommandOnTextChanged
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnTextChanged
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 669
   assemblies:
   - DrawnUi.Maui
@@ -3076,12 +2809,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.IsFocusedProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsFocusedProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 675
   assemblies:
   - DrawnUi.Maui
@@ -3103,12 +2832,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.WhenFocusChanged(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WhenFocusChanged
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 696
   assemblies:
   - DrawnUi.Maui
@@ -3137,12 +2862,8 @@ items:
   fullName: DrawnUi.Controls.SkiaMauiEditor.IsFocused
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsFocused
-    path: ../src/Maui/DrawnUi/Controls/EditText/SkiaMauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\SkiaMauiEditor.cs
     startLine: 701
   assemblies:
   - DrawnUi.Maui
@@ -21023,6 +20744,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

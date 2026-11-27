@@ -49,12 +49,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaGradient
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -114,12 +110,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.Parent
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Parent
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -143,12 +135,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.Clone()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clone
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 10
   assemblies:
   - DrawnUi.Maui
@@ -176,12 +164,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.FromBrush(Microsoft.Maui.Controls.GradientBrush)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FromBrush
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 27
   assemblies:
   - DrawnUi.Maui
@@ -207,12 +191,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.LinearGradientAngleToPoints(double)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinearGradientAngleToPoints
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 59
   assemblies:
   - DrawnUi.Maui
@@ -241,12 +221,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.Version
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Version
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 108
   assemblies:
   - DrawnUi.Maui
@@ -275,12 +251,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.CompareTo(object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompareTo
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 111
   assemblies:
   - DrawnUi.Maui
@@ -322,12 +294,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.CompareTo(DrawnUi.Draw.SkiaGradient)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompareTo
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 126
   assemblies:
   - DrawnUi.Maui
@@ -343,7 +311,7 @@ items:
     return:
       type: System.Int32
       description: >-
-        A value that indicates the relative order of the objects being compared. The return value has these meanings:  
+        A value that indicates the relative order of the objects being compared. The return value has these meanings:
 
          <table><thead><tr><th class="term"> Value</th><th class="description"> Meaning</th></tr></thead><tbody><tr><td class="term"> Less than zero</td><td class="description"> This instance precedes <code class="paramref">other</code> in the sort order.</td></tr><tr><td class="term"> Zero</td><td class="description"> This instance occurs in the same position in the sort order as <code class="paramref">other</code>.</td></tr><tr><td class="term"> Greater than zero</td><td class="description"> This instance follows <code class="paramref">other</code> in the sort order.</td></tr></tbody></table>
     content.vb: Public Function CompareTo(other As SkiaGradient) As Integer
@@ -362,12 +330,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.Equals(DrawnUi.Draw.SkiaGradient)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Equals
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 201
   assemblies:
   - DrawnUi.Maui
@@ -399,12 +363,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.Equals(object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Equals
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 209
   assemblies:
   - DrawnUi.Maui
@@ -438,12 +398,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.GetHashCode()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetHashCode
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 214
   assemblies:
   - DrawnUi.Maui
@@ -470,12 +426,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.operator ==(DrawnUi.Draw.SkiaGradient, DrawnUi.Draw.SkiaGradient)
   type: Operator
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: op_Equality
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 247
   assemblies:
   - DrawnUi.Maui
@@ -506,12 +458,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.operator !=(DrawnUi.Draw.SkiaGradient, DrawnUi.Draw.SkiaGradient)
   type: Operator
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: op_Inequality
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 252
   assemblies:
   - DrawnUi.Maui
@@ -542,12 +490,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.AngleProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AngleProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 359
   assemblies:
   - DrawnUi.Maui
@@ -569,12 +513,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.Angle
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Angle
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 366
   assemblies:
   - DrawnUi.Maui
@@ -598,12 +538,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.TypeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TypeProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 384
   assemblies:
   - DrawnUi.Maui
@@ -625,12 +561,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.Type
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Type
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 387
   assemblies:
   - DrawnUi.Maui
@@ -654,12 +586,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.BlendModeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BlendModeProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 393
   assemblies:
   - DrawnUi.Maui
@@ -681,12 +609,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.BlendMode
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BlendMode
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 397
   assemblies:
   - DrawnUi.Maui
@@ -710,12 +634,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.TileModeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TileModeProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 403
   assemblies:
   - DrawnUi.Maui
@@ -737,12 +657,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.TileMode
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TileMode
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 406
   assemblies:
   - DrawnUi.Maui
@@ -766,12 +682,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.LightProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LightProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 413
   assemblies:
   - DrawnUi.Maui
@@ -793,12 +705,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.Light
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Light
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 415
   assemblies:
   - DrawnUi.Maui
@@ -822,12 +730,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.OpacityProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OpacityProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 421
   assemblies:
   - DrawnUi.Maui
@@ -849,12 +753,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.Opacity
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Opacity
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 425
   assemblies:
   - DrawnUi.Maui
@@ -878,12 +778,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.StartXRatioProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartXRatioProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 431
   assemblies:
   - DrawnUi.Maui
@@ -905,12 +801,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.StartXRatio
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartXRatio
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 433
   assemblies:
   - DrawnUi.Maui
@@ -934,12 +826,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.StartYRatioProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartYRatioProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 439
   assemblies:
   - DrawnUi.Maui
@@ -961,12 +849,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.StartYRatio
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StartYRatio
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 441
   assemblies:
   - DrawnUi.Maui
@@ -990,12 +874,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.EndXRatioProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EndXRatioProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 447
   assemblies:
   - DrawnUi.Maui
@@ -1017,12 +897,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.EndXRatio
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EndXRatio
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 449
   assemblies:
   - DrawnUi.Maui
@@ -1046,12 +922,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.EndYRatioProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EndYRatioProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 455
   assemblies:
   - DrawnUi.Maui
@@ -1073,12 +945,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.EndYRatio
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EndYRatio
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 457
   assemblies:
   - DrawnUi.Maui
@@ -1102,12 +970,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.ColorsProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorsProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 466
   assemblies:
   - DrawnUi.Maui
@@ -1129,12 +993,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.Colors
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Colors
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 481
   assemblies:
   - DrawnUi.Maui
@@ -1158,12 +1018,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.ColorPositionsProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorPositionsProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 528
   assemblies:
   - DrawnUi.Maui
@@ -1185,12 +1041,8 @@ items:
   fullName: DrawnUi.Draw.SkiaGradient.ColorPositions
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorPositions
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaGradient.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaGradient.cs
     startLine: 543
   assemblies:
   - DrawnUi.Maui

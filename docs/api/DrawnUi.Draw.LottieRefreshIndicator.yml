@@ -19,12 +19,8 @@ items:
   fullName: DrawnUi.Draw.LottieRefreshIndicator
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LottieRefreshIndicator
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\RefreshIndicator.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -1074,6 +1070,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1315,12 +1312,8 @@ items:
   fullName: DrawnUi.Draw.LottieRefreshIndicator.Loader
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Loader
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\RefreshIndicator.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -1342,12 +1335,8 @@ items:
   fullName: DrawnUi.Draw.LottieRefreshIndicator.SetAnimationState(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetAnimationState
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\RefreshIndicator.cs
     startLine: 33
   assemblies:
   - DrawnUi.Maui
@@ -1376,12 +1365,8 @@ items:
   fullName: DrawnUi.Draw.LottieRefreshIndicator.SetDragRatio(float, float, double, double)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetDragRatio
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\RefreshIndicator.cs
     startLine: 39
   assemblies:
   - DrawnUi.Maui
@@ -1418,12 +1403,8 @@ items:
   fullName: DrawnUi.Draw.LottieRefreshIndicator.OnIsRunningChanged(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnIsRunningChanged
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\RefreshIndicator.cs
     startLine: 51
   assemblies:
   - DrawnUi.Maui
@@ -1452,12 +1433,8 @@ items:
   fullName: DrawnUi.Draw.LottieRefreshIndicator.OnParentVisibilityChanged(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnParentVisibilityChanged
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\RefreshIndicator.cs
     startLine: 70
   assemblies:
   - DrawnUi.Maui
@@ -1488,12 +1465,8 @@ items:
   fullName: DrawnUi.Draw.LottieRefreshIndicator.OnVisibilityChanged(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnVisibilityChanged
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/RefreshIndicator.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\RefreshIndicator.cs
     startLine: 80
   assemblies:
   - DrawnUi.Maui
@@ -23703,6 +23676,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

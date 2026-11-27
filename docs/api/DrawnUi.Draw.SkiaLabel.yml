@@ -199,12 +199,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Line.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaLabel
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Line.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.Line.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -1051,6 +1047,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1296,12 +1293,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FormattedTextProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Draw/Text/SkiaLabel.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FormattedTextProperty
-    path: ../src/Maui/DrawnUi/Draw/Text/SkiaLabel.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Draw\Text\SkiaLabel.Maui.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -1323,12 +1316,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FormattedText
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Draw/Text/SkiaLabel.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FormattedText
-    path: ../src/Maui/DrawnUi/Draw/Text/SkiaLabel.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Draw\Text\SkiaLabel.Maui.cs
     startLine: 13
   assemblies:
   - DrawnUi.Maui
@@ -1352,12 +1341,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontRegistrar
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontRegistrar
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 44
   assemblies:
   - DrawnUi.Maui
@@ -1381,12 +1366,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.ReplaceSpans(System.Collections.Generic.IEnumerable<DrawnUi.Draw.TextSpan>)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReplaceSpans
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 73
   assemblies:
   - DrawnUi.Maui
@@ -1416,12 +1397,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.OnDisposing()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 85
   assemblies:
   - DrawnUi.Maui
@@ -1445,12 +1422,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.Font
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Font
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 115
   assemblies:
   - DrawnUi.Maui
@@ -1478,12 +1451,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DebugColor
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DebugColor
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 117
   assemblies:
   - DrawnUi.Maui
@@ -1505,12 +1474,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DebugSpans
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DebugSpans
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 120
   assemblies:
   - DrawnUi.Maui
@@ -1532,12 +1497,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SkiaLabel()
   type: Constructor
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 131
   assemblies:
   - DrawnUi.Maui
@@ -1561,12 +1522,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SkiaLabel(string)
   type: Constructor
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 136
   assemblies:
   - DrawnUi.Maui
@@ -1593,12 +1550,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.Invalidate()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Invalidate
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 143
   assemblies:
   - DrawnUi.Maui
@@ -1622,12 +1575,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.CalculateMargins()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateMargins
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 152
   assemblies:
   - DrawnUi.Maui
@@ -1651,12 +1600,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.OnLayoutReady()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutReady
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 160
   assemblies:
   - DrawnUi.Maui
@@ -1680,12 +1625,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.OnScaleChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnScaleChanged
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 168
   assemblies:
   - DrawnUi.Maui
@@ -1708,12 +1649,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.CanDraw
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanDraw
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 173
   assemblies:
   - DrawnUi.Maui
@@ -1741,12 +1678,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.ApplyBindingContext()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyBindingContext
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 186
   assemblies:
   - DrawnUi.Maui
@@ -1770,12 +1703,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.OnPropertyChanged(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 197
   assemblies:
   - DrawnUi.Maui
@@ -1806,12 +1735,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.ToString()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToString
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 207
   assemblies:
   - DrawnUi.Maui
@@ -1838,12 +1763,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.Spans
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Spans
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 262
   assemblies:
   - DrawnUi.Maui
@@ -1905,12 +1826,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel._spans
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _spans
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 309
   assemblies:
   - DrawnUi.Maui
@@ -1932,12 +1849,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SpansCollectionChanged
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpansCollectionChanged
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 311
   assemblies:
   - DrawnUi.Maui
@@ -1959,12 +1872,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.OnWillDisposeWithChildren()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWillDisposeWithChildren
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 332
   assemblies:
   - DrawnUi.Maui
@@ -1991,12 +1900,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.Paint(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Paint
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 341
   assemblies:
   - DrawnUi.Maui
@@ -2029,12 +1934,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SetupDefaultPaint(float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupDefaultPaint
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 371
   assemblies:
   - DrawnUi.Maui
@@ -2061,12 +1962,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DrawCharacter(SkiaSharp.SKCanvas, int, int, System.ReadOnlySpan<char>, float, float, SkiaSharp.SKPaint, SkiaSharp.SKFont, SkiaSharp.SKPaint, SkiaSharp.SKFont, SkiaSharp.SKPaint, SkiaSharp.SKFont, SkiaSharp.SKRect, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawCharacter
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 443
   assemblies:
   - DrawnUi.Maui
@@ -2135,12 +2032,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DrawLines(DrawnUi.Draw.DrawingContext, SkiaSharp.SKPaint, SkiaSharp.SKFont, SkiaSharp.SKPoint, System.Collections.Generic.IEnumerable<DrawnUi.Draw.TextLine>)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawLines
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 456
   assemblies:
   - DrawnUi.Maui
@@ -2175,12 +2068,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DrawText(SkiaSharp.SKCanvas, float, float, string, SkiaSharp.SKPaint, SkiaSharp.SKFont, SkiaSharp.SKPaint, SkiaSharp.SKFont, SkiaSharp.SKPaint, SkiaSharp.SKFont, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawText
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 914
   assemblies:
   - DrawnUi.Maui
@@ -2236,12 +2125,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DrawText(SkiaSharp.SKCanvas, float, float, System.ReadOnlySpan<char>, SkiaSharp.SKPaint, SkiaSharp.SKFont, SkiaSharp.SKPaint, SkiaSharp.SKFont, SkiaSharp.SKPaint, SkiaSharp.SKFont, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawText
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 936
   assemblies:
   - DrawnUi.Maui
@@ -2288,12 +2173,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SpanPostDraw(SkiaSharp.SKCanvas, DrawnUi.Draw.TextSpan, SkiaSharp.SKRect, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpanPostDraw
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 948
   assemblies:
   - DrawnUi.Maui
@@ -2326,12 +2207,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DrawSpanDecorations(SkiaSharp.SKCanvas, DrawnUi.Draw.TextSpan, float, float, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawSpanDecorations
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 972
   assemblies:
   - DrawnUi.Maui
@@ -2366,12 +2243,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SetupBackgroundPaint(SkiaSharp.SKPaint, SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupBackgroundPaint
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 1085
   assemblies:
   - DrawnUi.Maui
@@ -2405,12 +2278,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.OnMeasuring(float, float, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMeasuring
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 1135
   assemblies:
   - DrawnUi.Maui
@@ -2450,12 +2319,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.LastNonSpaceIndexOptimized(System.ReadOnlySpan<char>)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastNonSpaceIndexOptimized
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 1460
   assemblies:
   - DrawnUi.Maui
@@ -2486,12 +2351,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.MeasureLineGlyphsProbe(SkiaSharp.SKPaint, SkiaSharp.SKFont, string, bool, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureLineGlyphsProbe
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 1480
   assemblies:
   - DrawnUi.Maui
@@ -2528,12 +2389,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.ApplyBidiToLines(DrawnUi.Draw.TextLine[], float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyBidiToLines
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 1541
   assemblies:
   - DrawnUi.Maui
@@ -2571,12 +2428,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.AddItalicOverhangAtLineEnds(DrawnUi.Draw.TextLine[], float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddItalicOverhangAtLineEnds
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 1730
   assemblies:
   - DrawnUi.Maui
@@ -2616,12 +2469,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.MeasureLineGlyphs(SkiaSharp.SKPaint, SkiaSharp.SKFont, string, bool, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureLineGlyphs
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 1757
   assemblies:
   - DrawnUi.Maui
@@ -2658,12 +2507,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DecomposeText(string, SkiaSharp.SKPaint, SkiaSharp.SKFont, SkiaSharp.SKPoint, float, float, int, bool, DrawnUi.Draw.TextSpan, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DecomposeText
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 1884
   assemblies:
   - DrawnUi.Maui
@@ -2710,12 +2555,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.CanBreakInsideWord(string, int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanBreakInsideWord
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 2405
   assemblies:
   - DrawnUi.Maui
@@ -2755,12 +2596,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.HasCjk(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasCjk
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 2422
   assemblies:
   - DrawnUi.Maui
@@ -2791,12 +2628,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SplitLines(string, SkiaSharp.SKPaint, SkiaSharp.SKFont, SkiaSharp.SKPoint, float, float, int, bool, DrawnUi.Draw.TextSpan, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SplitLines
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 2487
   assemblies:
   - DrawnUi.Maui
@@ -2843,12 +2676,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.MergeSpansForLines(DrawnUi.Draw.TextSpan, DrawnUi.Draw.TextLine, DrawnUi.Draw.TextLine)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MergeSpansForLines
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 2671
   assemblies:
   - DrawnUi.Maui
@@ -2876,12 +2705,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.CutLineToFit(SkiaSharp.SKPaint, SkiaSharp.SKFont, string, float, bool, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CutLineToFit
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 2744
   assemblies:
   - DrawnUi.Maui
@@ -2927,12 +2752,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.MeasureTextWidthWithAdvance(SkiaSharp.SKPaint, SkiaSharp.SKFont, string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureTextWidthWithAdvance
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 2799
   assemblies:
   - DrawnUi.Maui
@@ -2965,12 +2786,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.MeasureTextWidthWithAdvance(SkiaSharp.SKPaint, SkiaSharp.SKFont, System.ReadOnlySpan<char>)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureTextWidthWithAdvance
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 2806
   assemblies:
   - DrawnUi.Maui
@@ -3003,12 +2820,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.MeasureText(SkiaSharp.SKPaint, SkiaSharp.SKFont, string, ref SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureText
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 2821
   assemblies:
   - DrawnUi.Maui
@@ -3047,12 +2860,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.LastNonSpaceIndex(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastNonSpaceIndex
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 2857
   assemblies:
   - DrawnUi.Maui
@@ -3081,12 +2890,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.AreAllGlyphsAvailable(string, SkiaSharp.SKTypeface)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AreAllGlyphsAvailable
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 2872
   assemblies:
   - DrawnUi.Maui
@@ -3117,12 +2922,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.BuildGlyphsFromShaping(SkiaSharp.HarfBuzz.SKShaper.Result, string, float[])
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BuildGlyphsFromShaping
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 2905
   assemblies:
   - DrawnUi.Maui
@@ -3166,12 +2967,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.GetResultSize(SkiaSharp.HarfBuzz.SKShaper.Result)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetResultSize
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 2986
   assemblies:
   - DrawnUi.Maui
@@ -3197,12 +2994,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.GetShapedText(SkiaSharp.HarfBuzz.SKShaper, string, SkiaSharp.SKFont, out float[], bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetShapedText
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3012
   assemblies:
   - DrawnUi.Maui
@@ -3246,12 +3039,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.GetShapedText(SkiaSharp.HarfBuzz.SKShaper, string, float, float, SkiaSharp.SKPaint, SkiaSharp.SKFont)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetShapedText
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3043
   assemblies:
   - DrawnUi.Maui
@@ -3290,12 +3079,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.GetGlyphs(string, SkiaSharp.SKTypeface)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetGlyphs
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3062
   assemblies:
   - DrawnUi.Maui
@@ -3326,12 +3111,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.IsGlyphAlwaysAvailable(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsGlyphAlwaysAvailable
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3124
   assemblies:
   - DrawnUi.Maui
@@ -3360,12 +3141,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TextNeedsShaping(System.ReadOnlySpan<char>)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextNeedsShaping
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3137
   assemblies:
   - DrawnUi.Maui
@@ -3401,12 +3178,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.UnicodeNeedsShaping(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnicodeNeedsShaping
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3159
   assemblies:
   - DrawnUi.Maui
@@ -3435,12 +3208,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.NeedsRTL(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedsRTL
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3250
   assemblies:
   - DrawnUi.Maui
@@ -3469,12 +3238,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SpaceBetweenParagraphs
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SpaceBetweenParagraphs
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3334
   assemblies:
   - DrawnUi.Maui
@@ -3503,12 +3268,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.GetLinesHeightPixels(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetLinesHeightPixels
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3344
   assemblies:
   - DrawnUi.Maui
@@ -3544,12 +3305,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.GetSpaceBetweenLines(float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSpaceBetweenLines
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3362
   assemblies:
   - DrawnUi.Maui
@@ -3578,12 +3335,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.ResetTextCalculations()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResetTextCalculations
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3377
   assemblies:
   - DrawnUi.Maui
@@ -3604,12 +3357,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.OnFontUpdated()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnFontUpdated
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3507
   assemblies:
   - DrawnUi.Maui
@@ -3632,12 +3381,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.GliphsInvalidated
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GliphsInvalidated
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3513
   assemblies:
   - DrawnUi.Maui
@@ -3659,12 +3404,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.LockSetup
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockSetup
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3523
   assemblies:
   - DrawnUi.Maui
@@ -3686,12 +3427,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel._fontFamily
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _fontFamily
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3525
   assemblies:
   - DrawnUi.Maui
@@ -3713,12 +3450,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel._fontFamilyFallback
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _fontFamilyFallback
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3526
   assemblies:
   - DrawnUi.Maui
@@ -3740,12 +3473,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TypeFaceFallback
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TypeFaceFallback
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3531
   assemblies:
   - DrawnUi.Maui
@@ -3769,12 +3498,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TypeFaceFallbacks
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TypeFaceFallbacks
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3536
   assemblies:
   - DrawnUi.Maui
@@ -3798,12 +3523,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontFamilyFallbackProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyFallbackProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3538
   assemblies:
   - DrawnUi.Maui
@@ -3825,12 +3546,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontFamilyFallback
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyFallback
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3547
   assemblies:
   - DrawnUi.Maui
@@ -3863,12 +3580,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.UpdateFont()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateFont
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3682
   assemblies:
   - DrawnUi.Maui
@@ -3889,12 +3602,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.ReplaceFont()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReplaceFont
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3726
   assemblies:
   - DrawnUi.Maui
@@ -3915,12 +3624,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.NeedUpdateFont(Microsoft.Maui.Controls.BindableObject, object, object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedUpdateFont
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3752
   assemblies:
   - DrawnUi.Maui
@@ -3951,12 +3656,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontDefault
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontDefault
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3793
   assemblies:
   - DrawnUi.Maui
@@ -3978,12 +3679,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.PaintDefault
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintDefault
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3794
   assemblies:
   - DrawnUi.Maui
@@ -4005,12 +3702,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.PaintStroke
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintStroke
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3803
   assemblies:
   - DrawnUi.Maui
@@ -4032,12 +3725,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontStroke
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontStroke
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3804
   assemblies:
   - DrawnUi.Maui
@@ -4059,12 +3748,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.PaintShadow
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintShadow
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3809
   assemblies:
   - DrawnUi.Maui
@@ -4086,12 +3771,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontShadow
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontShadow
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3810
   assemblies:
   - DrawnUi.Maui
@@ -4113,12 +3794,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.PaintDeco
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintDeco
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3815
   assemblies:
   - DrawnUi.Maui
@@ -4140,12 +3817,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SetupShaper(SkiaSharp.SKTypeface)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupShaper
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3817
   assemblies:
   - DrawnUi.Maui
@@ -4169,12 +3842,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.Shaper
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Shaper
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3827
   assemblies:
   - DrawnUi.Maui
@@ -4196,12 +3865,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.charMonoWidthPixels
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: charMonoWidthPixels
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3853
   assemblies:
   - DrawnUi.Maui
@@ -4223,12 +3888,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.RenderLimit
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderLimit
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3854
   assemblies:
   - DrawnUi.Maui
@@ -4250,12 +3911,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.fontUnderline
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: fontUnderline
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3855
   assemblies:
   - DrawnUi.Maui
@@ -4277,12 +3934,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.Trail
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Trail
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3863
   assemblies:
   - DrawnUi.Maui
@@ -4304,12 +3957,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontAttributesProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontAttributesProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3868
   assemblies:
   - DrawnUi.Maui
@@ -4331,12 +3980,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontAttributes
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontAttributes
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3874
   assemblies:
   - DrawnUi.Maui
@@ -4372,12 +4017,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DrawWhenEmptyProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawWhenEmptyProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3881
   assemblies:
   - DrawnUi.Maui
@@ -4399,12 +4040,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DrawWhenEmpty
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawWhenEmpty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3886
   assemblies:
   - DrawnUi.Maui
@@ -4428,12 +4065,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.NeedsGlyphPositions
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedsGlyphPositions
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3896
   assemblies:
   - DrawnUi.Maui
@@ -4462,12 +4095,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.KeepSpacesOnLineBreaksProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeepSpacesOnLineBreaksProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3898
   assemblies:
   - DrawnUi.Maui
@@ -4489,12 +4118,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.KeepSpacesOnLineBreaks
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeepSpacesOnLineBreaks
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3909
   assemblies:
   - DrawnUi.Maui
@@ -4523,12 +4148,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontWeightProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeightProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3916
   assemblies:
   - DrawnUi.Maui
@@ -4550,12 +4171,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontWeight
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeight
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3950
   assemblies:
   - DrawnUi.Maui
@@ -4623,12 +4240,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.AutoFontProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoFontProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3956
   assemblies:
   - DrawnUi.Maui
@@ -4650,12 +4263,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.AutoFont
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoFont
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3965
   assemblies:
   - DrawnUi.Maui
@@ -4681,12 +4290,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TypeFaceProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TypeFaceProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3971
   assemblies:
   - DrawnUi.Maui
@@ -4708,12 +4313,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TypeFace
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TypeFace
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3978
   assemblies:
   - DrawnUi.Maui
@@ -4737,12 +4338,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.HorizontalTextAlignmentProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalTextAlignmentProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 3984
   assemblies:
   - DrawnUi.Maui
@@ -4764,12 +4361,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.HorizontalTextAlignment
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalTextAlignment
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4007
   assemblies:
   - DrawnUi.Maui
@@ -4816,12 +4409,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.ViewportConstraintWidth
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ViewportConstraintWidth
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4019
   assemblies:
   - DrawnUi.Maui
@@ -4854,12 +4443,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.VerticalTextAlignmentProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalTextAlignmentProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4021
   assemblies:
   - DrawnUi.Maui
@@ -4881,12 +4466,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.VerticalTextAlignment
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalTextAlignment
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4041
   assemblies:
   - DrawnUi.Maui
@@ -4927,12 +4508,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.LineHeightProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeightProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4048
   assemblies:
   - DrawnUi.Maui
@@ -4954,12 +4531,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.LineHeight
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeight
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4059
   assemblies:
   - DrawnUi.Maui
@@ -4988,12 +4561,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SensorRotationProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SensorRotationProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4065
   assemblies:
   - DrawnUi.Maui
@@ -5015,12 +4584,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SensorRotation
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SensorRotation
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4072
   assemblies:
   - DrawnUi.Maui
@@ -5044,12 +4609,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontFamilyProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4078
   assemblies:
   - DrawnUi.Maui
@@ -5071,12 +4632,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontFamily
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamily
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4106
   assemblies:
   - DrawnUi.Maui
@@ -5126,12 +4683,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.MaxLinesProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLinesProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4112
   assemblies:
   - DrawnUi.Maui
@@ -5153,12 +4706,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.MaxLines
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLines
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4134
   assemblies:
   - DrawnUi.Maui
@@ -5207,12 +4756,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.AutoSizeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoSizeProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4153
   assemblies:
   - DrawnUi.Maui
@@ -5234,12 +4779,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.AutoSize
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoSize
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4178
   assemblies:
   - DrawnUi.Maui
@@ -5289,12 +4830,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.AutoSizeTextProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoSizeTextProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4184
   assemblies:
   - DrawnUi.Maui
@@ -5316,12 +4853,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.AutoSizeText
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoSizeText
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4194
   assemblies:
   - DrawnUi.Maui
@@ -5347,12 +4880,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.LineSpacingProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineSpacingProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4200
   assemblies:
   - DrawnUi.Maui
@@ -5374,12 +4903,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.LineSpacing
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineSpacing
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4207
   assemblies:
   - DrawnUi.Maui
@@ -5405,12 +4930,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.ParagraphSpacingProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParagraphSpacingProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4213
   assemblies:
   - DrawnUi.Maui
@@ -5432,12 +4953,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.ParagraphSpacing
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParagraphSpacing
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4221
   assemblies:
   - DrawnUi.Maui
@@ -5463,12 +4980,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.CharacterSpacingProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CharacterSpacingProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4227
   assemblies:
   - DrawnUi.Maui
@@ -5490,12 +5003,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.CharacterSpacing
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CharacterSpacing
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4235
   assemblies:
   - DrawnUi.Maui
@@ -5523,12 +5032,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.LineBreakModeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineBreakModeProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4241
   assemblies:
   - DrawnUi.Maui
@@ -5550,12 +5055,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.LineBreakMode
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineBreakMode
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4266
   assemblies:
   - DrawnUi.Maui
@@ -5605,12 +5106,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FormatProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FormatProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4273
   assemblies:
   - DrawnUi.Maui
@@ -5632,12 +5129,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.Format
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Format
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4278
   assemblies:
   - DrawnUi.Maui
@@ -5661,12 +5154,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TextWasChanged(Microsoft.Maui.Controls.BindableObject, object, object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextWasChanged
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4284
   assemblies:
   - DrawnUi.Maui
@@ -5697,12 +5186,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.Text
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Text
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4307
   assemblies:
   - DrawnUi.Maui
@@ -5748,12 +5233,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TextProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4313
   assemblies:
   - DrawnUi.Maui
@@ -5775,12 +5256,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TextTransformProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextTransformProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4319
   assemblies:
   - DrawnUi.Maui
@@ -5802,12 +5279,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TextTransform
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextTransform
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4325
   assemblies:
   - DrawnUi.Maui
@@ -5831,12 +5304,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.OnTextChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTextChanged
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4331
   assemblies:
   - DrawnUi.Maui
@@ -5857,12 +5326,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.InvalidateText()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateText
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4338
   assemblies:
   - DrawnUi.Maui
@@ -5883,12 +5348,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.NeedSetText
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedSetText
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4349
   assemblies:
   - DrawnUi.Maui
@@ -5912,12 +5373,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SetTextInternal()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetTextInternal
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4358
   assemblies:
   - DrawnUi.Maui
@@ -5940,12 +5397,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TextInternal
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextInternal
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4405
   assemblies:
   - DrawnUi.Maui
@@ -5969,12 +5422,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.OnTextInternalChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTextInternalChanged
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4418
   assemblies:
   - DrawnUi.Maui
@@ -5995,12 +5444,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DefaultAccessibilityRole
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityRole
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4427
   assemblies:
   - DrawnUi.Maui
@@ -6027,12 +5472,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.GetDefaultAccessibilityRole()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetDefaultAccessibilityRole
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4429
   assemblies:
   - DrawnUi.Maui
@@ -6058,12 +5499,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DefaultAccessibilityLabel()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityLabel
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4432
   assemblies:
   - DrawnUi.Maui
@@ -6089,12 +5526,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FallbackCharacterProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FallbackCharacterProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4435
   assemblies:
   - DrawnUi.Maui
@@ -6116,12 +5549,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FallbackCharacter
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FallbackCharacter
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4444
   assemblies:
   - DrawnUi.Maui
@@ -6147,12 +5576,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.MonoForDigitsProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MonoForDigitsProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4450
   assemblies:
   - DrawnUi.Maui
@@ -6174,12 +5599,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.MonoForDigits
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MonoForDigits
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4457
   assemblies:
   - DrawnUi.Maui
@@ -6205,12 +5626,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.LineHeightUniformProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeightUniformProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4463
   assemblies:
   - DrawnUi.Maui
@@ -6232,12 +5649,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.LineHeightUniform
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeightUniform
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4471
   assemblies:
   - DrawnUi.Maui
@@ -6266,12 +5679,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TextColorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColorProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4477
   assemblies:
   - DrawnUi.Maui
@@ -6293,12 +5702,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TextColor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColor
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4495
   assemblies:
   - DrawnUi.Maui
@@ -6340,12 +5745,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.StrokeColorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeColorProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4501
   assemblies:
   - DrawnUi.Maui
@@ -6367,12 +5768,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.StrokeColor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeColor
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4522
   assemblies:
   - DrawnUi.Maui
@@ -6414,12 +5811,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.StrokeWidthProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeWidthProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4528
   assemblies:
   - DrawnUi.Maui
@@ -6441,12 +5834,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.StrokeWidth
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeWidth
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4535
   assemblies:
   - DrawnUi.Maui
@@ -6470,12 +5859,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.ComputeEffectsMargin(float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ComputeEffectsMargin
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4565
   assemblies:
   - DrawnUi.Maui
@@ -6518,12 +5903,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DropShadowColorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowColorProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4593
   assemblies:
   - DrawnUi.Maui
@@ -6545,12 +5926,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DropShadowColor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowColor
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4600
   assemblies:
   - DrawnUi.Maui
@@ -6574,12 +5951,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DropShadowSizeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowSizeProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4606
   assemblies:
   - DrawnUi.Maui
@@ -6601,12 +5974,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DropShadowSize
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowSize
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4613
   assemblies:
   - DrawnUi.Maui
@@ -6630,12 +5999,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DropShadowOffsetYProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowOffsetYProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4619
   assemblies:
   - DrawnUi.Maui
@@ -6657,12 +6022,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DropShadowOffsetY
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowOffsetY
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4627
   assemblies:
   - DrawnUi.Maui
@@ -6686,12 +6047,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DropShadowOffsetXProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowOffsetXProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4633
   assemblies:
   - DrawnUi.Maui
@@ -6713,12 +6070,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DropShadowOffsetX
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DropShadowOffsetX
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4643
   assemblies:
   - DrawnUi.Maui
@@ -6744,12 +6097,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontSizeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSizeProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4651
   assemblies:
   - DrawnUi.Maui
@@ -6771,12 +6120,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontSize
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSize
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4675
   assemblies:
   - DrawnUi.Maui
@@ -6834,12 +6179,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TextFillGradient
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextFillGradient
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4704
   assemblies:
   - DrawnUi.Maui
@@ -6870,12 +6211,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.GradientByLinesProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GradientByLinesProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4717
   assemblies:
   - DrawnUi.Maui
@@ -6897,12 +6234,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.GradientByLines
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GradientByLines
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4724
   assemblies:
   - DrawnUi.Maui
@@ -6926,12 +6259,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.StrokeGradientProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeGradientProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4731
   assemblies:
   - DrawnUi.Maui
@@ -6953,12 +6282,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.StrokeGradient
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeGradient
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4738
   assemblies:
   - DrawnUi.Maui
@@ -6982,12 +6307,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.OnSpanTapped(DrawnUi.Draw.TextSpan)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSpanTapped
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4776
   assemblies:
   - DrawnUi.Maui
@@ -7017,12 +6338,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SetFrameworkFocus(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFrameworkFocus
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4786
   assemblies:
   - DrawnUi.Maui
@@ -7059,12 +6376,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4797
   assemblies:
   - DrawnUi.Maui
@@ -7094,12 +6407,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectableProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AccessibilityTextSelectableProperty
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4844
   assemblies:
   - DrawnUi.Maui
@@ -7121,12 +6430,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.AccessibilityTextSelectable
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AccessibilityTextSelectable
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4871
   assemblies:
   - DrawnUi.Maui
@@ -7161,12 +6466,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.TextSelectionColor
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextSelectionColor
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4880
   assemblies:
   - DrawnUi.Maui
@@ -7190,12 +6491,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.CopyButtonText
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CopyButtonText
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4885
   assemblies:
   - DrawnUi.Maui
@@ -7219,12 +6516,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SelectionStart
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionStart
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4908
   assemblies:
   - DrawnUi.Maui
@@ -7253,12 +6546,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SelectionLength
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionLength
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4913
   assemblies:
   - DrawnUi.Maui
@@ -7284,12 +6573,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SelectedText
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedText
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4918
   assemblies:
   - DrawnUi.Maui
@@ -7315,12 +6600,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.Select(int, int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Select
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4934
   assemblies:
   - DrawnUi.Maui
@@ -7351,12 +6632,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.SelectAll()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectAll
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4949
   assemblies:
   - DrawnUi.Maui
@@ -7379,12 +6656,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.ClearSelection()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClearSelection
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4958
   assemblies:
   - DrawnUi.Maui
@@ -7407,12 +6680,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.CopySelection()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CopySelection
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 4984
   assemblies:
   - DrawnUi.Maui
@@ -7437,12 +6706,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.ProcessTextSelection(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessTextSelection
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 5194
   assemblies:
   - DrawnUi.Maui
@@ -7472,12 +6737,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.DrawTextSelection(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawTextSelection
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 5292
   assemblies:
   - DrawnUi.Maui
@@ -7503,12 +6764,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.GetLineGlyphs(DrawnUi.Draw.TextLine)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetLineGlyphs
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.cs
     startLine: 5388
   assemblies:
   - DrawnUi.Maui
@@ -7539,12 +6796,8 @@ items:
   fullName: DrawnUi.Draw.SkiaLabel.FontMetrics
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Text/SkiaLabel.Line.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontMetrics
-    path: ../src/Shared/DrawnUi/Draw/Text/SkiaLabel.Line.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Text\SkiaLabel.Line.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -24767,6 +24020,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

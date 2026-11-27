@@ -43,12 +43,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaHotspot
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -869,6 +865,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1099,12 +1096,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.SkiaHotspot()
   type: Constructor
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -1128,12 +1121,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.Draw(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 16
   assemblies:
   - DrawnUi.Maui
@@ -1159,12 +1148,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.PanThreshold
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PanThreshold
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 39
   assemblies:
   - DrawnUi.Maui
@@ -1186,12 +1171,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.TouchDown
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TouchDown
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 42
   assemblies:
   - DrawnUi.Maui
@@ -1215,12 +1196,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 60
   assemblies:
   - DrawnUi.Maui
@@ -1250,12 +1227,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.TotalTapped
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TotalTapped
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 149
   assemblies:
   - DrawnUi.Maui
@@ -1279,12 +1252,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.TotalDown
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TotalDown
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 166
   assemblies:
   - DrawnUi.Maui
@@ -1308,12 +1277,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.DelayCallbackMs
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DelayCallbackMs
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 185
   assemblies:
   - DrawnUi.Maui
@@ -1337,12 +1302,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.Up
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Up
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 187
   assemblies:
   - DrawnUi.Maui
@@ -1364,12 +1325,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.Down
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Down
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 189
   assemblies:
   - DrawnUi.Maui
@@ -1391,12 +1348,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.OnWillDisposeWithChildren()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWillDisposeWithChildren
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 192
   assemblies:
   - DrawnUi.Maui
@@ -1423,12 +1376,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.SetFrameworkFocus(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFrameworkFocus
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 204
   assemblies:
   - DrawnUi.Maui
@@ -1466,12 +1415,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.ShimmerEffectColorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectColorProperty
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 209
   assemblies:
   - DrawnUi.Maui
@@ -1493,12 +1438,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.ShimmerEffectColor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectColor
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 213
   assemblies:
   - DrawnUi.Maui
@@ -1522,12 +1463,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.ShimmerEffectAngleProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectAngleProperty
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 219
   assemblies:
   - DrawnUi.Maui
@@ -1549,12 +1486,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.ShimmerEffectAngle
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectAngle
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 223
   assemblies:
   - DrawnUi.Maui
@@ -1578,12 +1511,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.ShimmerEffectWidthProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectWidthProperty
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 229
   assemblies:
   - DrawnUi.Maui
@@ -1605,12 +1534,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.ShimmerEffectWidth
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectWidth
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 233
   assemblies:
   - DrawnUi.Maui
@@ -1634,12 +1559,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.ShimmerEffectSpeedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectSpeedProperty
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 239
   assemblies:
   - DrawnUi.Maui
@@ -1661,12 +1582,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.ShimmerEffectSpeed
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectSpeed
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 243
   assemblies:
   - DrawnUi.Maui
@@ -1690,12 +1607,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.CommandTappedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedProperty
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 251
   assemblies:
   - DrawnUi.Maui
@@ -1717,12 +1630,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.CommandTapped
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTapped
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 254
   assemblies:
   - DrawnUi.Maui
@@ -1746,12 +1655,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.CommandTappedParameterProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameterProperty
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 260
   assemblies:
   - DrawnUi.Maui
@@ -1773,12 +1678,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.CommandTappedParameter
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameter
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 263
   assemblies:
   - DrawnUi.Maui
@@ -1802,12 +1703,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.CommandLongPressingProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingProperty
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 269
   assemblies:
   - DrawnUi.Maui
@@ -1829,12 +1726,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.CommandLongPressing
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressing
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 272
   assemblies:
   - DrawnUi.Maui
@@ -1858,12 +1751,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.CommandLongPressingParameterProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingParameterProperty
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 278
   assemblies:
   - DrawnUi.Maui
@@ -1885,12 +1774,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.CommandLongPressingParameter
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingParameter
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 281
   assemblies:
   - DrawnUi.Maui
@@ -1914,12 +1799,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.LockPanningProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockPanningProperty
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 287
   assemblies:
   - DrawnUi.Maui
@@ -1941,12 +1822,8 @@ items:
   fullName: DrawnUi.Draw.SkiaHotspot.LockPanning
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockPanning
-    path: ../src/Shared/DrawnUi/Controls/Touch/SkiaHotspot.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Touch\SkiaHotspot.cs
     startLine: 291
   assemblies:
   - DrawnUi.Maui
@@ -19469,6 +19346,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

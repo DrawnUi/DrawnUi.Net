@@ -19,12 +19,8 @@ items:
   fullName: DrawnUi.Draw.InfiniteLayout
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InfiniteLayout
-    path: ../src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\InfiniteLayout.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -1076,6 +1072,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1318,12 +1315,8 @@ items:
   fullName: DrawnUi.Draw.InfiniteLayout.OnPropertyChanged(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
-    path: ../src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\InfiniteLayout.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -1354,12 +1347,8 @@ items:
   fullName: DrawnUi.Draw.InfiniteLayout.OrientationProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrientationProperty
-    path: ../src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\InfiniteLayout.cs
     startLine: 20
   assemblies:
   - DrawnUi.Maui
@@ -1381,12 +1370,8 @@ items:
   fullName: DrawnUi.Draw.InfiniteLayout.Orientation
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Orientation
-    path: ../src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\InfiniteLayout.cs
     startLine: 26
   assemblies:
   - DrawnUi.Maui
@@ -1412,12 +1397,8 @@ items:
   fullName: DrawnUi.Draw.InfiniteLayout.ScrollTypeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollTypeProperty
-    path: ../src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\InfiniteLayout.cs
     startLine: 32
   assemblies:
   - DrawnUi.Maui
@@ -1439,12 +1420,8 @@ items:
   fullName: DrawnUi.Draw.InfiniteLayout.ScrollType
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollType
-    path: ../src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\InfiniteLayout.cs
     startLine: 38
   assemblies:
   - DrawnUi.Maui
@@ -1470,12 +1447,8 @@ items:
   fullName: DrawnUi.Draw.InfiniteLayout.GetContentAvailableRect(SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetContentAvailableRect
-    path: ../src/Shared/DrawnUi/Draw/Layout/InfiniteLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\InfiniteLayout.cs
     startLine: 46
   assemblies:
   - DrawnUi.Maui
@@ -23720,6 +23693,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

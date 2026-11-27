@@ -19,19 +19,15 @@ items:
   fullName: DrawnUi.Controls.MauiEntry
   type: Class
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MauiEntry
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEntry.cs
     startLine: 3
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   syntax:
-    content: 'public class MauiEntry : Entry, INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IViewController, IVisualElementController, IElementController, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, IEntryController, IElementConfiguration<Entry>, IEntry, IEditor, IView, IElement, ITransform, ITextInput, IText, ITextStyle, IPlaceholder, ITextAlignment'
-    content.vb: Public Class MauiEntry Inherits Entry Implements INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IViewController, IVisualElementController, IElementController, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, IEntryController, IElementConfiguration(Of Entry), IEntry, IEditor, IView, IElement, ITransform, ITextInput, IText, ITextStyle, IPlaceholder, ITextAlignment
+    content: 'public class MauiEntry : Entry, INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IViewController, IVisualElementController, IElementController, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, ITextElement, ITextAlignmentElement, IEntryController, IElementConfiguration<Entry>, IEntry, IEditor, IView, IElement, ITransform, ITextInput, IText, ITextStyle, IPlaceholder, ITextAlignment'
+    content.vb: Public Class MauiEntry Inherits Entry Implements INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IViewController, IVisualElementController, IElementController, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, ITextElement, ITextAlignmentElement, IEntryController, IElementConfiguration(Of Entry), IEntry, IEditor, IView, IElement, ITransform, ITextInput, IText, ITextStyle, IPlaceholder, ITextAlignment
   inheritance:
   - System.Object
   - Microsoft.Maui.Controls.BindableObject
@@ -57,6 +53,8 @@ items:
   - Microsoft.Maui.IPropertyMapperView
   - Microsoft.Maui.HotReload.IHotReloadableView
   - Microsoft.Maui.IReplaceableView
+  - Microsoft.Maui.Controls.ITextElement
+  - Microsoft.Maui.Controls.ITextAlignmentElement
   - Microsoft.Maui.Controls.IEntryController
   - Microsoft.Maui.Controls.IElementConfiguration{Microsoft.Maui.Controls.Entry}
   - Microsoft.Maui.IEntry
@@ -188,6 +186,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
   - Microsoft.Maui.Controls.VisualElement.ArrangeOverride(Microsoft.Maui.Graphics.Rect)
@@ -327,12 +326,8 @@ items:
   fullName: DrawnUi.Controls.MauiEntry.MauiEntry()
   type: Constructor
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEntry.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -356,12 +351,8 @@ items:
   fullName: DrawnUi.Controls.MauiEntry.MaxLinesProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLinesProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEntry.cs
     startLine: 15
   assemblies:
   - DrawnUi.Maui
@@ -383,12 +374,8 @@ items:
   fullName: DrawnUi.Controls.MauiEntry.MaxLines
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLines
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEntry.cs
     startLine: 20
   assemblies:
   - DrawnUi.Maui
@@ -414,12 +401,8 @@ items:
   fullName: DrawnUi.Controls.MauiEntry.OnCompleted
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCompleted
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEntry.cs
     startLine: 29
   assemblies:
   - DrawnUi.Maui
@@ -443,12 +426,8 @@ items:
   fullName: DrawnUi.Controls.MauiEntry.Completed()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Completed
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEntry.cs
     startLine: 31
   assemblies:
   - DrawnUi.Maui
@@ -473,12 +452,8 @@ items:
   fullName: DrawnUi.Controls.MauiEntry.OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHandlerChanging
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEntry.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEntry.cs
     startLine: 36
   assemblies:
   - DrawnUi.Maui
@@ -705,6 +680,22 @@ references:
   name: IReplaceableView
   nameWithType: IReplaceableView
   fullName: Microsoft.Maui.IReplaceableView
+- uid: Microsoft.Maui.Controls.ITextElement
+  commentId: T:Microsoft.Maui.Controls.ITextElement
+  parent: Microsoft.Maui.Controls
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.itextelement
+  name: ITextElement
+  nameWithType: ITextElement
+  fullName: Microsoft.Maui.Controls.ITextElement
+- uid: Microsoft.Maui.Controls.ITextAlignmentElement
+  commentId: T:Microsoft.Maui.Controls.ITextAlignmentElement
+  parent: Microsoft.Maui.Controls
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.itextalignmentelement
+  name: ITextAlignmentElement
+  nameWithType: ITextAlignmentElement
+  fullName: Microsoft.Maui.Controls.ITextAlignmentElement
 - uid: Microsoft.Maui.Controls.IEntryController
   commentId: T:Microsoft.Maui.Controls.IEntryController
   parent: Microsoft.Maui.Controls
@@ -2387,6 +2378,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   commentId: M:Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty

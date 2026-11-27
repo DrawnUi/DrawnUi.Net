@@ -19,12 +19,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.TypeRouteFactory
   type: Class
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TypeRouteFactory
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2144
   assemblies:
   - DrawnUi.Maui
@@ -55,12 +51,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.TypeRouteFactory.TypeRouteFactory(DrawnUi.Controls.SkiaShell, System.Type)
   type: Constructor
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2149
   assemblies:
   - DrawnUi.Maui
@@ -89,21 +81,19 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.TypeRouteFactory.GetOrCreate()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOrCreate
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2155
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
+  summary: Gets or creates the element for this route.
   example: []
   syntax:
     content: public override Element GetOrCreate()
     return:
       type: Microsoft.Maui.Controls.Element
+      description: The element associated with the route.
     content.vb: Public Overrides Function GetOrCreate() As Element
   overridden: Microsoft.Maui.Controls.RouteFactory.GetOrCreate
   overload: DrawnUi.Controls.SkiaShell.TypeRouteFactory.GetOrCreate*
@@ -119,12 +109,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.TypeRouteFactory.GetOrCreateObject(System.IServiceProvider)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOrCreateObject
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2160
   assemblies:
   - DrawnUi.Maui
@@ -150,24 +136,23 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.TypeRouteFactory.GetOrCreate(System.IServiceProvider)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOrCreate
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2186
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
+  summary: Gets or creates the element for this route using dependency injection.
   example: []
   syntax:
     content: public override Element GetOrCreate(IServiceProvider services)
     parameters:
     - id: services
       type: System.IServiceProvider
+      description: The service provider for dependency injection.
     return:
       type: Microsoft.Maui.Controls.Element
+      description: The element associated with the route.
     content.vb: Public Overrides Function GetOrCreate(services As IServiceProvider) As Element
   overridden: Microsoft.Maui.Controls.RouteFactory.GetOrCreate(System.IServiceProvider)
   overload: DrawnUi.Controls.SkiaShell.TypeRouteFactory.GetOrCreate*
@@ -183,12 +168,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.TypeRouteFactory.Equals(object)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Equals
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2202
   assemblies:
   - DrawnUi.Maui
@@ -222,12 +203,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.TypeRouteFactory.GetHashCode()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetHashCode
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2210
   assemblies:
   - DrawnUi.Maui

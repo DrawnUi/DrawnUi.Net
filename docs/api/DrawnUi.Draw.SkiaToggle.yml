@@ -49,12 +49,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaToggle
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -1101,6 +1097,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1344,12 +1341,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.ReceivesHoverByDefault
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReceivesHoverByDefault
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -1376,12 +1369,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 13
   assemblies:
   - DrawnUi.Maui
@@ -1411,12 +1400,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.OnLayoutChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 30
   assemblies:
   - DrawnUi.Maui
@@ -1440,12 +1425,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.OnToggledChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnToggledChanged
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 40
   assemblies:
   - DrawnUi.Maui
@@ -1468,12 +1449,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.IsInternalCall
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsInternalCall
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 49
   assemblies:
   - DrawnUi.Maui
@@ -1495,12 +1472,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityIsPressed()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityIsPressed
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 51
   assemblies:
   - DrawnUi.Maui
@@ -1526,12 +1499,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.DefaultAccessibilityCanInteract()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityCanInteract
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 53
   assemblies:
   - DrawnUi.Maui
@@ -1557,12 +1526,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.AcceptsInput()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AcceptsInput
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 56
   assemblies:
   - DrawnUi.Maui
@@ -1588,12 +1553,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.ChangeDefaultValue()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChangeDefaultValue
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 58
   assemblies:
   - DrawnUi.Maui
@@ -1614,12 +1575,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.NotifyWasToggled()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyWasToggled
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 66
   assemblies:
   - DrawnUi.Maui
@@ -1640,12 +1597,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.OnDisposing()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 78
   assemblies:
   - DrawnUi.Maui
@@ -1669,12 +1622,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.Toggled
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Toggled
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 85
   assemblies:
   - DrawnUi.Maui
@@ -1696,12 +1645,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.ApplyProperties()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyProperties
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 90
   assemblies:
   - DrawnUi.Maui
@@ -1724,12 +1669,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.CommandToggledProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandToggledProperty
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 97
   assemblies:
   - DrawnUi.Maui
@@ -1751,12 +1692,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.CommandToggled
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandToggled
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 100
   assemblies:
   - DrawnUi.Maui
@@ -1780,12 +1717,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.IsToggledProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsToggledProperty
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 106
   assemblies:
   - DrawnUi.Maui
@@ -1807,12 +1740,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.IsToggled
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsToggled
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 119
   assemblies:
   - DrawnUi.Maui
@@ -1836,12 +1765,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.DefaultValueProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultValueProperty
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 125
   assemblies:
   - DrawnUi.Maui
@@ -1863,12 +1788,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.DefaultValue
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultValue
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 137
   assemblies:
   - DrawnUi.Maui
@@ -1892,12 +1813,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.RespondsToGesturesProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGesturesProperty
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 143
   assemblies:
   - DrawnUi.Maui
@@ -1919,12 +1836,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.RespondsToGestures
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGestures
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 149
   assemblies:
   - DrawnUi.Maui
@@ -1948,12 +1861,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.CommandTappedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedProperty
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 155
   assemblies:
   - DrawnUi.Maui
@@ -1975,12 +1884,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.CommandTapped
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTapped
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 161
   assemblies:
   - DrawnUi.Maui
@@ -2004,12 +1909,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.CommandTappedParameterProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameterProperty
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 167
   assemblies:
   - DrawnUi.Maui
@@ -2031,12 +1932,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.CommandTappedParameter
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameter
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 173
   assemblies:
   - DrawnUi.Maui
@@ -2060,12 +1957,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.NeedUpdateProperties(Microsoft.Maui.Controls.BindableObject, object, object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedUpdateProperties
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 179
   assemblies:
   - DrawnUi.Maui
@@ -2096,12 +1989,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.ColorThumbOnProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorThumbOnProperty
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 186
   assemblies:
   - DrawnUi.Maui
@@ -2123,12 +2012,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.ColorThumbOn
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorThumbOn
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 192
   assemblies:
   - DrawnUi.Maui
@@ -2152,12 +2037,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.ColorFrameOnProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorFrameOnProperty
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 198
   assemblies:
   - DrawnUi.Maui
@@ -2179,12 +2060,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.ColorFrameOn
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorFrameOn
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 204
   assemblies:
   - DrawnUi.Maui
@@ -2208,12 +2085,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.ColorThumbOffProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorThumbOffProperty
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 210
   assemblies:
   - DrawnUi.Maui
@@ -2235,12 +2108,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.ColorThumbOff
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorThumbOff
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 216
   assemblies:
   - DrawnUi.Maui
@@ -2264,12 +2133,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.ColorFrameOffProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorFrameOffProperty
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 222
   assemblies:
   - DrawnUi.Maui
@@ -2291,12 +2156,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.ColorFrameOff
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorFrameOff
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 228
   assemblies:
   - DrawnUi.Maui
@@ -2320,12 +2181,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.IsAnimatedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAnimatedProperty
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 234
   assemblies:
   - DrawnUi.Maui
@@ -2347,12 +2204,8 @@ items:
   fullName: DrawnUi.Draw.SkiaToggle.IsAnimated
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAnimated
-    path: ../src/Shared/DrawnUi/Controls/Switches/SkiaToggle.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Switches\SkiaToggle.cs
     startLine: 240
   assemblies:
   - DrawnUi.Maui
@@ -24410,6 +24263,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

@@ -17,12 +17,8 @@ items:
   fullName: DrawnUi.Draw.ShaderTransitionEffect
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/ShaderTransitionEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderTransitionEffect
-    path: ../src/Shared/DrawnUi/Features/Effects/ShaderTransitionEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\ShaderTransitionEffect.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -202,12 +198,8 @@ items:
   fullName: DrawnUi.Draw.ShaderTransitionEffect.DefaultTemplate
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/ShaderTransitionEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultTemplate
-    path: ../src/Shared/DrawnUi/Features/Effects/ShaderTransitionEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\ShaderTransitionEffect.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -218,10 +210,10 @@ items:
     with the GLSL bottom-left to SkSL top-left Y flip. The transition source replaces <code>//script-goes-here</code>.
   example: []
   syntax:
-    content: public const string DefaultTemplate = "\nuniform float ratio; // width / height\nuniform float progress; // 0.0 - 1.0\nuniform shader iImage1; // Texture\nuniform shader iImage2; // Texture for backside\nuniform float2 iOffset; // Top-left corner of DrawingRect\nuniform float2 iResolution; // Viewport resolution (pixels)\nuniform float2 iImageResolution; // iImage1 resolution (pixels)\nuniform float  iTime; // Shader playback time (s)\nuniform float4 iMouse; // Mouse drag pos=.xy Click pos=.zw (pixels)\n\n//In GLSL, the texture coordinate origin is at the bottom-left corner,\n//whereas in SKSL the origin is at the top-left corner.\n\nvec4 getFromColor(vec2 uv) {\n    vec2 adjustedUV = float2(uv.x, 1.0 - uv.y) * iImageResolution;\n    return iImage1.eval(adjustedUV);\n}\n\nvec4 getToColor(vec2 uv) {\n    vec2 adjustedUV = float2(uv.x, 1.0 - uv.y) * iImageResolution;\n    return iImage2.eval(adjustedUV);\n}\n\n//script-goes-here\n"
+    content: public const string DefaultTemplate = "\r\nuniform float ratio; // width / height\r\nuniform float progress; // 0.0 - 1.0\r\nuniform shader iImage1; // Texture\r\nuniform shader iImage2; // Texture for backside\r\nuniform float2 iOffset; // Top-left corner of DrawingRect\r\nuniform float2 iResolution; // Viewport resolution (pixels)\r\nuniform float2 iImageResolution; // iImage1 resolution (pixels)\r\nuniform float  iTime; // Shader playback time (s)\r\nuniform float4 iMouse; // Mouse drag pos=.xy Click pos=.zw (pixels)\r\n\r\n//In GLSL, the texture coordinate origin is at the bottom-left corner,\r\n//whereas in SKSL the origin is at the top-left corner.\r\n\r\nvec4 getFromColor(vec2 uv) {\r\n    vec2 adjustedUV = float2(uv.x, 1.0 - uv.y) * iImageResolution;\r\n    return iImage1.eval(adjustedUV);\r\n}\r\n\r\nvec4 getToColor(vec2 uv) {\r\n    vec2 adjustedUV = float2(uv.x, 1.0 - uv.y) * iImageResolution;\r\n    return iImage2.eval(adjustedUV);\r\n}\r\n\r\n//script-goes-here\r\n"
     return:
       type: System.String
-    content.vb: Public Const DefaultTemplate As String = vbLf & "uniform float ratio; // width / height" & vbLf & "uniform float progress; // 0.0 - 1.0" & vbLf & "uniform shader iImage1; // Texture" & vbLf & "uniform shader iImage2; // Texture for backside" & vbLf & "uniform float2 iOffset; // Top-left corner of DrawingRect" & vbLf & "uniform float2 iResolution; // Viewport resolution (pixels)" & vbLf & "uniform float2 iImageResolution; // iImage1 resolution (pixels)" & vbLf & "uniform float  iTime; // Shader playback time (s)" & vbLf & "uniform float4 iMouse; // Mouse drag pos=.xy Click pos=.zw (pixels)" & vbLf & vbLf & "//In GLSL, the texture coordinate origin is at the bottom-left corner," & vbLf & "//whereas in SKSL the origin is at the top-left corner." & vbLf & vbLf & "vec4 getFromColor(vec2 uv) {" & vbLf & "    vec2 adjustedUV = float2(uv.x, 1.0 - uv.y) * iImageResolution;" & vbLf & "    return iImage1.eval(adjustedUV);" & vbLf & "}" & vbLf & vbLf & "vec4 getToColor(vec2 uv) {" & vbLf & "    vec2 adjustedUV = float2(uv.x, 1.0 - uv.y) * iImageResolution;" & vbLf & "    return iImage2.eval(adjustedUV);" & vbLf & "}" & vbLf & vbLf & "//script-goes-here" & vbLf
+    content.vb: Public Const DefaultTemplate As String = vbCrLf & "uniform float ratio; // width / height" & vbCrLf & "uniform float progress; // 0.0 - 1.0" & vbCrLf & "uniform shader iImage1; // Texture" & vbCrLf & "uniform shader iImage2; // Texture for backside" & vbCrLf & "uniform float2 iOffset; // Top-left corner of DrawingRect" & vbCrLf & "uniform float2 iResolution; // Viewport resolution (pixels)" & vbCrLf & "uniform float2 iImageResolution; // iImage1 resolution (pixels)" & vbCrLf & "uniform float  iTime; // Shader playback time (s)" & vbCrLf & "uniform float4 iMouse; // Mouse drag pos=.xy Click pos=.zw (pixels)" & vbCrLf & vbCrLf & "//In GLSL, the texture coordinate origin is at the bottom-left corner," & vbCrLf & "//whereas in SKSL the origin is at the top-left corner." & vbCrLf & vbCrLf & "vec4 getFromColor(vec2 uv) {" & vbCrLf & "    vec2 adjustedUV = float2(uv.x, 1.0 - uv.y) * iImageResolution;" & vbCrLf & "    return iImage1.eval(adjustedUV);" & vbCrLf & "}" & vbCrLf & vbCrLf & "vec4 getToColor(vec2 uv) {" & vbCrLf & "    vec2 adjustedUV = float2(uv.x, 1.0 - uv.y) * iImageResolution;" & vbCrLf & "    return iImage2.eval(adjustedUV);" & vbCrLf & "}" & vbCrLf & vbCrLf & "//script-goes-here" & vbCrLf
 - uid: DrawnUi.Draw.ShaderTransitionEffect.Progress
   commentId: P:DrawnUi.Draw.ShaderTransitionEffect.Progress
   id: Progress
@@ -234,12 +226,8 @@ items:
   fullName: DrawnUi.Draw.ShaderTransitionEffect.Progress
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/ShaderTransitionEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Progress
-    path: ../src/Shared/DrawnUi/Features/Effects/ShaderTransitionEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\ShaderTransitionEffect.cs
     startLine: 49
   assemblies:
   - DrawnUi.Maui
@@ -270,12 +258,8 @@ items:
   fullName: DrawnUi.Draw.ShaderTransitionEffect.CompileShader(string, bool, System.Action<string>)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/ShaderTransitionEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompileShader
-    path: ../src/Shared/DrawnUi/Features/Effects/ShaderTransitionEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\ShaderTransitionEffect.cs
     startLine: 51
   assemblies:
   - DrawnUi.Maui
@@ -308,12 +292,8 @@ items:
   fullName: DrawnUi.Draw.ShaderTransitionEffect.CreateUniforms(SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/ShaderTransitionEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateUniforms
-    path: ../src/Shared/DrawnUi/Features/Effects/ShaderTransitionEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\ShaderTransitionEffect.cs
     startLine: 61
   assemblies:
   - DrawnUi.Maui

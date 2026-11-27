@@ -21,12 +21,8 @@ items:
   fullName: DrawnUi.Draw.VirtualScroll
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VirtualScroll
-    path: ../src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Scroll\VirtualScroll.cs
     startLine: 10
   assemblies:
   - DrawnUi.Maui
@@ -1156,6 +1152,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1387,12 +1384,8 @@ items:
   fullName: DrawnUi.Draw.VirtualScroll.VirtualScroll()
   type: Constructor
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Scroll\VirtualScroll.cs
     startLine: 13
   assemblies:
   - DrawnUi.Maui
@@ -1416,12 +1409,8 @@ items:
   fullName: DrawnUi.Draw.VirtualScroll.IsContentActive
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsContentActive
-    path: ../src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Scroll\VirtualScroll.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -1447,12 +1436,8 @@ items:
   fullName: DrawnUi.Draw.VirtualScroll.UseVirtual
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseVirtual
-    path: ../src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Scroll\VirtualScroll.cs
     startLine: 29
   assemblies:
   - DrawnUi.Maui
@@ -1484,12 +1469,8 @@ items:
   fullName: DrawnUi.Draw.VirtualScroll.SetDetectIndexChildPoint(DrawnUi.Draw.RelativePositionType)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetDetectIndexChildPoint
-    path: ../src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Scroll\VirtualScroll.cs
     startLine: 37
   assemblies:
   - DrawnUi.Maui
@@ -1515,12 +1496,8 @@ items:
   fullName: DrawnUi.Draw.VirtualScroll.SetContentSize()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetContentSize
-    path: ../src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Scroll\VirtualScroll.cs
     startLine: 42
   assemblies:
   - DrawnUi.Maui
@@ -1541,12 +1518,8 @@ items:
   fullName: DrawnUi.Draw.VirtualScroll.OnMeasured()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMeasured
-    path: ../src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Scroll\VirtualScroll.cs
     startLine: 54
   assemblies:
   - DrawnUi.Maui
@@ -1569,12 +1542,8 @@ items:
   fullName: DrawnUi.Draw.VirtualScroll.GetMeasuredView(int, SkiaSharp.SKRect, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetMeasuredView
-    path: ../src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Scroll\VirtualScroll.cs
     startLine: 68
   assemblies:
   - DrawnUi.Maui
@@ -1613,12 +1582,8 @@ items:
   fullName: DrawnUi.Draw.VirtualScroll.PositionViewport(SkiaSharp.SKRect, SkiaSharp.SKPoint, float, float, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PositionViewport
-    path: ../src/Shared/DrawnUi/Draw/Scroll/VirtualScroll.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Scroll\VirtualScroll.cs
     startLine: 76
   assemblies:
   - DrawnUi.Maui
@@ -23611,6 +23576,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

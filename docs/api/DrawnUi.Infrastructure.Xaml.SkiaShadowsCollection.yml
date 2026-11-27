@@ -14,12 +14,8 @@ items:
   fullName: DrawnUi.Infrastructure.Xaml.SkiaShadowsCollection
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadowsCollection.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaShadowsCollection
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadowsCollection.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadowsCollection.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -88,12 +84,8 @@ items:
   fullName: DrawnUi.Infrastructure.Xaml.SkiaShadowsCollection.Add(object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadowsCollection.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Add
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadowsCollection.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadowsCollection.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -115,9 +107,9 @@ items:
   - type: System.NotSupportedException
     commentId: T:System.NotSupportedException
     description: >-
-      The <xref href="System.Collections.IList" data-throw-if-not-resolved="false"></xref> is read-only.  
+      The <xref href="System.Collections.IList" data-throw-if-not-resolved="false"></xref> is read-only.
 
-       -or-  
+       -or-
 
        The <xref href="System.Collections.IList" data-throw-if-not-resolved="false"></xref> has a fixed size.
   implements:

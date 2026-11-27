@@ -103,12 +103,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaCarousel
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -1190,6 +1186,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1431,12 +1428,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.SkiaCarousel()
   type: Constructor
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 13
   assemblies:
   - DrawnUi.Maui
@@ -1460,12 +1453,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.WillClipBounds
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WillClipBounds
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 22
   assemblies:
   - DrawnUi.Maui
@@ -1492,12 +1481,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.RenderVisibleChild(DrawnUi.Draw.DrawingContext, DrawnUi.Draw.SkiaControl, System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderVisibleChild
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 24
   assemblies:
   - DrawnUi.Maui
@@ -1525,12 +1510,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.AnimateVisibleChild(DrawnUi.Draw.SkiaControl, System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimateVisibleChild
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 38
   assemblies:
   - DrawnUi.Maui
@@ -1556,12 +1537,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ScrollToNearestAnchor(System.Numerics.Vector2, System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToNearestAnchor
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 53
   assemblies:
   - DrawnUi.Maui
@@ -1589,12 +1566,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.SelectNextAnchor(System.Numerics.Vector2, System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectNextAnchor
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 110
   assemblies:
   - DrawnUi.Maui
@@ -1628,12 +1601,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.OnDisposing()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 225
   assemblies:
   - DrawnUi.Maui
@@ -1657,12 +1626,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.SelectedIndexChanged
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexChanged
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 237
   assemblies:
   - DrawnUi.Maui
@@ -1684,12 +1649,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ItemAppearing
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ItemAppearing
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 239
   assemblies:
   - DrawnUi.Maui
@@ -1711,12 +1672,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ItemDisappearing
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ItemDisappearing
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 241
   assemblies:
   - DrawnUi.Maui
@@ -1738,12 +1695,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.Stopped
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Stopped
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 244
   assemblies:
   - DrawnUi.Maui
@@ -1765,12 +1718,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ItemsVisibility
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ItemsVisibility
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 246
   assemblies:
   - DrawnUi.Maui
@@ -1794,12 +1743,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ApplyPosition(System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyPosition
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 287
   assemblies:
   - DrawnUi.Maui
@@ -1827,12 +1772,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.FixIndex()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FixIndex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 294
   assemblies:
   - DrawnUi.Maui
@@ -1853,12 +1794,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ApplyIndex(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyIndex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 325
   assemblies:
   - DrawnUi.Maui
@@ -1885,12 +1822,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.UpdateReportedPosition()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateReportedPosition
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 354
   assemblies:
   - DrawnUi.Maui
@@ -1913,12 +1846,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.OnTemplatesAvailable()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTemplatesAvailable
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 394
   assemblies:
   - DrawnUi.Maui
@@ -1942,12 +1871,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.CanRender
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanRender
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 401
   assemblies:
   - DrawnUi.Maui
@@ -1971,12 +1896,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ChildrenReady
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenReady
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 412
   assemblies:
   - DrawnUi.Maui
@@ -2000,12 +1921,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.OnScrollProgressChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnScrollProgressChanged
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 423
   assemblies:
   - DrawnUi.Maui
@@ -2026,12 +1943,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.RenderViewsList(DrawnUi.Draw.DrawingContext, System.Collections.Generic.IEnumerable<DrawnUi.Draw.SkiaControl>)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderViewsList
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 427
   assemblies:
   - DrawnUi.Maui
@@ -2070,12 +1983,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ScrollAmount
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollAmount
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 585
   assemblies:
   - DrawnUi.Maui
@@ -2101,12 +2010,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ScrollProgress
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollProgress
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 606
   assemblies:
   - DrawnUi.Maui
@@ -2137,12 +2042,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.LastScrollProgress
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastScrollProgress
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 621
   assemblies:
   - DrawnUi.Maui
@@ -2166,12 +2067,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.TransitionProgress
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TransitionProgress
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 623
   assemblies:
   - DrawnUi.Maui
@@ -2195,12 +2092,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.AdaptTemplate(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptTemplate
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 646
   assemblies:
   - DrawnUi.Maui
@@ -2224,12 +2117,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.CreateContentFromTemplate()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateContentFromTemplate
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 678
   assemblies:
   - DrawnUi.Maui
@@ -2254,12 +2143,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.OnItemSourceChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnItemSourceChanged
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 722
   assemblies:
   - DrawnUi.Maui
@@ -2282,12 +2167,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.IsSlideHitTestable(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsSlideHitTestable
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 750
   assemblies:
   - DrawnUi.Maui
@@ -2323,12 +2204,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.CalculateChildPosition(System.Numerics.Vector2, int, int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateChildPosition
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 752
   assemblies:
   - DrawnUi.Maui
@@ -2361,12 +2238,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.FixPosition()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FixPosition
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 854
   assemblies:
   - DrawnUi.Maui
@@ -2389,12 +2262,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.OnTransitionChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTransitionChanged
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 868
   assemblies:
   - DrawnUi.Maui
@@ -2421,12 +2290,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ScrollToOffset(System.Numerics.Vector2, System.Numerics.Vector2, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToOffset
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 882
   assemblies:
   - DrawnUi.Maui
@@ -2463,12 +2328,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ApplyOptions(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyOptions
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1072
   assemblies:
   - DrawnUi.Maui
@@ -2497,12 +2358,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.CheckTransitionEnded()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckTransitionEnded
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1089
   assemblies:
   - DrawnUi.Maui
@@ -2527,12 +2384,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.GetContentOffsetBounds()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetContentOffsetBounds
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1150
   assemblies:
   - DrawnUi.Maui
@@ -2558,12 +2411,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.CheckConstraints()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckConstraints
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1206
   assemblies:
   - DrawnUi.Maui
@@ -2584,12 +2433,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.OnChildAdded(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildAdded
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1216
   assemblies:
   - DrawnUi.Maui
@@ -2615,12 +2460,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.OnLayoutChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1226
   assemblies:
   - DrawnUi.Maui
@@ -2644,12 +2485,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.SetupViewport()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupViewport
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1245
   assemblies:
   - DrawnUi.Maui
@@ -2670,12 +2507,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ChildrenInitialized
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenInitialized
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1281
   assemblies:
   - DrawnUi.Maui
@@ -2697,12 +2530,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.MaxIndex
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxIndex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1285
   assemblies:
   - DrawnUi.Maui
@@ -2726,12 +2555,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.InitializeChildren()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitializeChildren
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1307
   assemblies:
   - DrawnUi.Maui
@@ -2754,12 +2579,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.OnChildrenInitialized()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildrenInitialized
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1399
   assemblies:
   - DrawnUi.Maui
@@ -2780,12 +2601,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.CellSize
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CellSize
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1405
   assemblies:
   - DrawnUi.Maui
@@ -2809,12 +2626,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.AdaptChildren()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptChildren
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1410
   assemblies:
   - DrawnUi.Maui
@@ -2837,12 +2650,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ChildrenCount
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenCount
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1435
   assemblies:
   - DrawnUi.Maui
@@ -2866,12 +2675,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.GetTemplatesPoolLimit()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTemplatesPoolLimit
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1449
   assemblies:
   - DrawnUi.Maui
@@ -2896,12 +2701,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.GetTemplatesPoolPrefill()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTemplatesPoolPrefill
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1465
   assemblies:
   - DrawnUi.Maui
@@ -2926,12 +2727,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.GetVirtualSnapPoints()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetVirtualSnapPoints
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1499
   assemblies:
   - DrawnUi.Maui
@@ -2954,12 +2751,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.GetVirtualAnchor(System.Numerics.Vector2, System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetVirtualAnchor
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1522
   assemblies:
   - DrawnUi.Maui
@@ -2987,12 +2780,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.FindNearestAnchorInternal(System.Numerics.Vector2, System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindNearestAnchorInternal
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1528
   assemblies:
   - DrawnUi.Maui
@@ -3022,12 +2811,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.SnapPointsVirtual
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapPointsVirtual
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1551
   assemblies:
   - DrawnUi.Maui
@@ -3051,12 +2836,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.SwipeSpeedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SwipeSpeedProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1557
   assemblies:
   - DrawnUi.Maui
@@ -3078,12 +2859,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.SwipeSpeed
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SwipeSpeed
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1566
   assemblies:
   - DrawnUi.Maui
@@ -3109,12 +2886,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.PreloadNeighboorsProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreloadNeighboorsProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1572
   assemblies:
   - DrawnUi.Maui
@@ -3136,12 +2909,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.PreloadNeighboors
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreloadNeighboors
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1581
   assemblies:
   - DrawnUi.Maui
@@ -3167,12 +2936,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.DynamicSizeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DynamicSizeProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1587
   assemblies:
   - DrawnUi.Maui
@@ -3194,12 +2959,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.DynamicSize
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DynamicSize
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1598
   assemblies:
   - DrawnUi.Maui
@@ -3230,12 +2991,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.IsLoopedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsLoopedProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1605
   assemblies:
   - DrawnUi.Maui
@@ -3257,12 +3014,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.IsLooped
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsLooped
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1614
   assemblies:
   - DrawnUi.Maui
@@ -3288,12 +3041,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.IsVerticalProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsVerticalProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1621
   assemblies:
   - DrawnUi.Maui
@@ -3315,12 +3064,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.IsVertical
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsVertical
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1630
   assemblies:
   - DrawnUi.Maui
@@ -3346,12 +3091,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ApplyDynamicSize(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyDynamicSize
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1637
   assemblies:
   - DrawnUi.Maui
@@ -3378,12 +3119,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.SafeIndex
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SafeIndex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1677
   assemblies:
   - DrawnUi.Maui
@@ -3412,12 +3149,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.InterruptSnapping()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InterruptSnapping
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1692
   assemblies:
   - DrawnUi.Maui
@@ -3455,12 +3188,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.GoNext()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoNext
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1718
   assemblies:
   - DrawnUi.Maui
@@ -3481,12 +3210,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ScrollTo(int, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollTo
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1737
   assemblies:
   - DrawnUi.Maui
@@ -3522,12 +3247,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.GoPrev()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoPrev
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1761
   assemblies:
   - DrawnUi.Maui
@@ -3548,12 +3269,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.IsAtStart
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAtStart
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1775
   assemblies:
   - DrawnUi.Maui
@@ -3577,12 +3294,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.IsAtEnd
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAtEnd
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1780
   assemblies:
   - DrawnUi.Maui
@@ -3606,12 +3319,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.OnSelectedIndexChanged(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSelectedIndexChanged
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1785
   assemblies:
   - DrawnUi.Maui
@@ -3638,12 +3347,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.LinearSpeedMsProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinearSpeedMsProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1819
   assemblies:
   - DrawnUi.Maui
@@ -3665,12 +3370,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.LinearSpeedMs
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinearSpeedMs
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1830
   assemblies:
   - DrawnUi.Maui
@@ -3701,12 +3402,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.LastIndex
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastIndex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1838
   assemblies:
   - DrawnUi.Maui
@@ -3730,12 +3427,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.SelectedIndexProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1852
   assemblies:
   - DrawnUi.Maui
@@ -3757,12 +3450,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.SelectedIndex
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1870
   assemblies:
   - DrawnUi.Maui
@@ -3788,12 +3477,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ChildrenTotal
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenTotal
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1880
   assemblies:
   - DrawnUi.Maui
@@ -3819,12 +3504,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ChildrenTotalProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenTotalProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1886
   assemblies:
   - DrawnUi.Maui
@@ -3846,12 +3527,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.IsRightToLeftProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsRightToLeftProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1893
   assemblies:
   - DrawnUi.Maui
@@ -3873,12 +3550,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.IsRightToLeft
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsRightToLeft
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1902
   assemblies:
   - DrawnUi.Maui
@@ -3904,12 +3577,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.SidesOffsetProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SidesOffsetProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1908
   assemblies:
   - DrawnUi.Maui
@@ -3931,12 +3600,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.SidesOffset
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SidesOffset
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1917
   assemblies:
   - DrawnUi.Maui
@@ -3962,12 +3627,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.IsUserFocused
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUserFocused
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1936
   assemblies:
   - DrawnUi.Maui
@@ -3991,12 +3652,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.IsUserPanning
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUserPanning
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1937
   assemblies:
   - DrawnUi.Maui
@@ -4020,12 +3677,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel._panningOffset
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _panningOffset
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1943
   assemblies:
   - DrawnUi.Maui
@@ -4047,12 +3700,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel._panningStartOffset
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _panningStartOffset
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1944
   assemblies:
   - DrawnUi.Maui
@@ -4074,12 +3723,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.VelocityAccumulator
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VelocityAccumulator
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1947
   assemblies:
   - DrawnUi.Maui
@@ -4103,12 +3748,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ReceivesHoverByDefault
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReceivesHoverByDefault
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1950
   assemblies:
   - DrawnUi.Maui
@@ -4135,12 +3776,8 @@ items:
   fullName: DrawnUi.Controls.SkiaCarousel.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaCarousel.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaCarousel.cs
     startLine: 1952
   assemblies:
   - DrawnUi.Maui
@@ -26547,6 +26184,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

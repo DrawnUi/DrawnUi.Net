@@ -82,12 +82,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaShaderEffect
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -168,12 +164,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.Engine
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Engine
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 13
   assemblies:
   - DrawnUi.Maui
@@ -202,12 +194,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.CompiledShader
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompiledShader
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 18
   assemblies:
   - DrawnUi.Maui
@@ -233,12 +221,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.CreateEngine()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateEngine
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 23
   assemblies:
   - DrawnUi.Maui
@@ -263,12 +247,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.GetEngine()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetEngine
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 32
   assemblies:
   - DrawnUi.Maui
@@ -291,12 +271,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.CompareTo(object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompareTo
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 40
   assemblies:
   - DrawnUi.Maui
@@ -338,12 +314,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.CompareTo(DrawnUi.Draw.SkiaShaderEffect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompareTo
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 55
   assemblies:
   - DrawnUi.Maui
@@ -359,7 +331,7 @@ items:
     return:
       type: System.Int32
       description: >-
-        A value that indicates the relative order of the objects being compared. The return value has these meanings:  
+        A value that indicates the relative order of the objects being compared. The return value has these meanings:
 
          <table><thead><tr><th class="term"> Value</th><th class="description"> Meaning</th></tr></thead><tbody><tr><td class="term"> Less than zero</td><td class="description"> This instance precedes <code class="paramref">other</code> in the sort order.</td></tr><tr><td class="term"> Zero</td><td class="description"> This instance occurs in the same position in the sort order as <code class="paramref">other</code>.</td></tr><tr><td class="term"> Greater than zero</td><td class="description"> This instance follows <code class="paramref">other</code> in the sort order.</td></tr></tbody></table>
     content.vb: Public Function CompareTo(other As SkiaShaderEffect) As Integer
@@ -378,12 +350,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.Equals(DrawnUi.Draw.SkiaShaderEffect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Equals
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 142
   assemblies:
   - DrawnUi.Maui
@@ -415,12 +383,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.Equals(object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Equals
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 150
   assemblies:
   - DrawnUi.Maui
@@ -454,12 +418,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.GetHashCode()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetHashCode
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 155
   assemblies:
   - DrawnUi.Maui
@@ -486,12 +446,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.operator ==(DrawnUi.Draw.SkiaShaderEffect, DrawnUi.Draw.SkiaShaderEffect)
   type: Operator
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: op_Equality
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 177
   assemblies:
   - DrawnUi.Maui
@@ -522,12 +478,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.operator !=(DrawnUi.Draw.SkiaShaderEffect, DrawnUi.Draw.SkiaShaderEffect)
   type: Operator
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: op_Inequality
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 182
   assemblies:
   - DrawnUi.Maui
@@ -558,12 +510,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.UseBackground
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseBackground
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 201
   assemblies:
   - DrawnUi.Maui
@@ -591,12 +539,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.AquiredBackground
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AquiredBackground
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 204
   assemblies:
   - DrawnUi.Maui
@@ -624,12 +568,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ReleaseFrozenSnapshot()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReleaseFrozenSnapshot
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 210
   assemblies:
   - DrawnUi.Maui
@@ -650,12 +590,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.UseContextProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseContextProperty
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 228
   assemblies:
   - DrawnUi.Maui
@@ -677,12 +613,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.UseContext
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseContext
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 237
   assemblies:
   - DrawnUi.Maui
@@ -708,12 +640,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.AutoCreateInputTextureProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoCreateInputTextureProperty
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 243
   assemblies:
   - DrawnUi.Maui
@@ -735,12 +663,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.AutoCreateInputTexture
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoCreateInputTexture
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 254
   assemblies:
   - DrawnUi.Maui
@@ -769,12 +693,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCacheProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShouldInvalidateParentCacheProperty
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 262
   assemblies:
   - DrawnUi.Maui
@@ -796,12 +716,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ShouldInvalidateParentCache
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShouldInvalidateParentCache
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 276
   assemblies:
   - DrawnUi.Maui
@@ -838,12 +754,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.UpdateUniforms()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateUniforms
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 287
   assemblies:
   - DrawnUi.Maui
@@ -871,12 +783,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.BlendMode
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BlendMode
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 303
   assemblies:
   - DrawnUi.Maui
@@ -905,12 +813,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.Flush(DrawnUi.Draw.SkiaDrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Flush
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 307
   assemblies:
   - DrawnUi.Maui
@@ -934,12 +838,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.CreateSnapshot(DrawnUi.Draw.SkiaDrawingContext, SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateSnapshot
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 322
   assemblies:
   - DrawnUi.Maui
@@ -969,12 +869,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.GetPrimaryTexture(DrawnUi.Draw.SkiaDrawingContext, SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetPrimaryTexture
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 349
   assemblies:
   - DrawnUi.Maui
@@ -1011,12 +907,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ControlArea
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ControlArea
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 396
   assemblies:
   - DrawnUi.Maui
@@ -1047,12 +939,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ControlAreaOr(SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ControlAreaOr
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 399
   assemblies:
   - DrawnUi.Maui
@@ -1080,12 +968,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ParentCache(SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParentCache
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 403
   assemblies:
   - DrawnUi.Maui
@@ -1113,12 +997,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.CacheAt(DrawnUi.Draw.SkiaControl, SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CacheAt
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 410
   assemblies:
   - DrawnUi.Maui
@@ -1153,12 +1033,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.SyncEngineState(SkiaSharp.SKRect, SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SyncEngineState
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 434
   assemblies:
   - DrawnUi.Maui
@@ -1186,12 +1062,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.Render(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Render
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 450
   assemblies:
   - DrawnUi.Maui
@@ -1219,12 +1091,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ShouldDisposePreviousTexture(DrawnUi.Draw.CachedTexture)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShouldDisposePreviousTexture
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 496
   assemblies:
   - DrawnUi.Maui
@@ -1255,12 +1123,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.CreateShader(DrawnUi.Draw.DrawingContext, DrawnUi.Draw.CachedTexture)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateShader
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 507
   assemblies:
   - DrawnUi.Maui
@@ -1290,12 +1154,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.NeedApply
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedApply
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 583
   assemblies:
   - DrawnUi.Maui
@@ -1323,12 +1183,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.TimeSeconds
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TimeSeconds
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 591
   assemblies:
   - DrawnUi.Maui
@@ -1354,12 +1210,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ShaderTimeOriginNanos
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderTimeOriginNanos
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 601
   assemblies:
   - DrawnUi.Maui
@@ -1392,12 +1244,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.GetShaderTime(long)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetShaderTime
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 613
   assemblies:
   - DrawnUi.Maui
@@ -1431,12 +1279,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.MouseCurrent
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MouseCurrent
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 624
   assemblies:
   - DrawnUi.Maui
@@ -1462,12 +1306,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.MouseInitial
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MouseInitial
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 629
   assemblies:
   - DrawnUi.Maui
@@ -1493,12 +1333,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.Uniforms
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Uniforms
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 638
   assemblies:
   - DrawnUi.Maui
@@ -1533,12 +1369,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 641
   assemblies:
   - DrawnUi.Maui
@@ -1571,12 +1403,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 645
   assemblies:
   - DrawnUi.Maui
@@ -1611,12 +1439,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float, float, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 649
   assemblies:
   - DrawnUi.Maui
@@ -1653,12 +1477,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float, float, float, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 653
   assemblies:
   - DrawnUi.Maui
@@ -1697,12 +1517,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.SetUniform(string, float[])
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetUniform
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 657
   assemblies:
   - DrawnUi.Maui
@@ -1735,12 +1551,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.CreateUniforms(SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateUniforms
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 671
   assemblies:
   - DrawnUi.Maui
@@ -1771,12 +1583,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.CreateTexturesUniforms(DrawnUi.Draw.SkiaDrawingContext, SkiaSharp.SKRect, SkiaSharp.SKShader)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateTexturesUniforms
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 721
   assemblies:
   - DrawnUi.Maui
@@ -1808,12 +1616,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect._template
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _template
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 733
   assemblies:
   - DrawnUi.Maui
@@ -1835,12 +1639,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect._templatePlacehodler
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _templatePlacehodler
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 734
   assemblies:
   - DrawnUi.Maui
@@ -1862,12 +1662,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.LoadedCode
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadedCode
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 736
   assemblies:
   - DrawnUi.Maui
@@ -1891,12 +1687,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.CompileShader()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompileShader
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 741
   assemblies:
   - DrawnUi.Maui
@@ -1919,12 +1711,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.OnCompilationError
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCompilationError
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 784
   assemblies:
   - DrawnUi.Maui
@@ -1946,12 +1734,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.SendError(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SendError
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 786
   assemblies:
   - DrawnUi.Maui
@@ -1978,12 +1762,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.CompileShader(string, bool, System.Action<string>)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompileShader
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 795
   assemblies:
   - DrawnUi.Maui
@@ -2014,12 +1794,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ApplyShaderSource()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyShaderSource
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 821
   assemblies:
   - DrawnUi.Maui
@@ -2040,12 +1816,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.NeedChangeSource(Microsoft.Maui.Controls.BindableObject, object, object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedChangeSource
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 837
   assemblies:
   - DrawnUi.Maui
@@ -2076,12 +1848,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ShaderCodeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderCodeProperty
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 847
   assemblies:
   - DrawnUi.Maui
@@ -2103,12 +1871,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ShaderCode
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderCode
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 855
   assemblies:
   - DrawnUi.Maui
@@ -2134,12 +1898,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ShaderSourceProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderSourceProperty
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 861
   assemblies:
   - DrawnUi.Maui
@@ -2161,12 +1921,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ShaderSource
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderSource
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 869
   assemblies:
   - DrawnUi.Maui
@@ -2192,12 +1948,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ShaderTemplateProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderTemplateProperty
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 875
   assemblies:
   - DrawnUi.Maui
@@ -2219,12 +1971,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.ShaderTemplate
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShaderTemplate
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 880
   assemblies:
   - DrawnUi.Maui
@@ -2248,12 +1996,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.FilterModeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FilterModeProperty
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 886
   assemblies:
   - DrawnUi.Maui
@@ -2275,12 +2019,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.MipmapModeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MipmapModeProperty
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 893
   assemblies:
   - DrawnUi.Maui
@@ -2302,12 +2042,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.FilterMode
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FilterMode
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 900
   assemblies:
   - DrawnUi.Maui
@@ -2331,12 +2067,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.MipmapMode
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MipmapMode
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 906
   assemblies:
   - DrawnUi.Maui
@@ -2360,12 +2092,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.TileModeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TileModeProperty
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 912
   assemblies:
   - DrawnUi.Maui
@@ -2387,12 +2115,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.TileMode
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TileMode
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 920
   assemblies:
   - DrawnUi.Maui
@@ -2418,12 +2142,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShaderEffect.OnDisposing()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
-    path: ../src/Shared/DrawnUi/Features/Effects/SkiaShaderEffect.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Features\Effects\SkiaShaderEffect.cs
     startLine: 928
   assemblies:
   - DrawnUi.Maui

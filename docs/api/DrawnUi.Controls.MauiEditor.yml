@@ -20,19 +20,15 @@ items:
   fullName: DrawnUi.Controls.MauiEditor
   type: Class
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MauiEditor
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEditor.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Controls
   syntax:
-    content: 'public class MauiEditor : Editor, INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, IEditorController, IViewController, IVisualElementController, IElementController, IElementConfiguration<Editor>, IEditor, IView, IElement, ITransform, ITextInput, IText, ITextStyle, IPlaceholder, ITextAlignment, ISmartNative'
-    content.vb: Public Class MauiEditor Inherits Editor Implements INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, IEditorController, IViewController, IVisualElementController, IElementController, IElementConfiguration(Of Editor), IEditor, IView, IElement, ITransform, ITextInput, IText, ITextStyle, IPlaceholder, ITextAlignment, ISmartNative
+    content: 'public class MauiEditor : Editor, INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, ITextElement, IEditorController, IViewController, IVisualElementController, IElementController, ITextAlignmentElement, IElementConfiguration<Editor>, IEditor, IView, IElement, ITransform, ITextInput, IText, ITextStyle, IPlaceholder, ITextAlignment, ISmartNative'
+    content.vb: Public Class MauiEditor Inherits Editor Implements INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, IGestureController, IGestureRecognizers, IPropertyMapperView, IHotReloadableView, IReplaceableView, ITextElement, IEditorController, IViewController, IVisualElementController, IElementController, ITextAlignmentElement, IElementConfiguration(Of Editor), IEditor, IView, IElement, ITransform, ITextInput, IText, ITextStyle, IPlaceholder, ITextAlignment, ISmartNative
   inheritance:
   - System.Object
   - Microsoft.Maui.Controls.BindableObject
@@ -55,10 +51,12 @@ items:
   - Microsoft.Maui.IPropertyMapperView
   - Microsoft.Maui.HotReload.IHotReloadableView
   - Microsoft.Maui.IReplaceableView
+  - Microsoft.Maui.Controls.ITextElement
   - Microsoft.Maui.Controls.IEditorController
   - Microsoft.Maui.Controls.IViewController
   - Microsoft.Maui.Controls.IVisualElementController
   - Microsoft.Maui.Controls.IElementController
+  - Microsoft.Maui.Controls.ITextAlignmentElement
   - Microsoft.Maui.Controls.IElementConfiguration{Microsoft.Maui.Controls.Editor}
   - Microsoft.Maui.IEditor
   - Microsoft.Maui.IView
@@ -183,6 +181,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
   - Microsoft.Maui.Controls.VisualElement.Layout(Microsoft.Maui.Graphics.Rect)
@@ -321,12 +320,8 @@ items:
   fullName: DrawnUi.Controls.MauiEditor.NeededHeight
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeededHeight
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEditor.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -353,12 +348,8 @@ items:
   fullName: DrawnUi.Controls.MauiEditor.Measure(double, double, Microsoft.Maui.Controls.MeasureFlags)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Measure
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEditor.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -411,12 +402,8 @@ items:
   fullName: DrawnUi.Controls.MauiEditor.ArrangeOverride(Microsoft.Maui.Graphics.Rect)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ArrangeOverride
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEditor.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui
@@ -448,12 +435,8 @@ items:
   fullName: DrawnUi.Controls.MauiEditor.MaxLinesProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLinesProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEditor.cs
     startLine: 26
   assemblies:
   - DrawnUi.Maui
@@ -475,12 +458,8 @@ items:
   fullName: DrawnUi.Controls.MauiEditor.MaxLines
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLines
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEditor.cs
     startLine: 31
   assemblies:
   - DrawnUi.Maui
@@ -506,12 +485,8 @@ items:
   fullName: DrawnUi.Controls.MauiEditor.ReturnTypeProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnTypeProperty
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEditor.cs
     startLine: 37
   assemblies:
   - DrawnUi.Maui
@@ -533,12 +508,8 @@ items:
   fullName: DrawnUi.Controls.MauiEditor.ReturnType
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnType
-    path: ../src/Maui/DrawnUi/Controls/EditText/MauiEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\EditText\MauiEditor.cs
     startLine: 41
   assemblies:
   - DrawnUi.Maui
@@ -736,6 +707,14 @@ references:
   name: IReplaceableView
   nameWithType: IReplaceableView
   fullName: Microsoft.Maui.IReplaceableView
+- uid: Microsoft.Maui.Controls.ITextElement
+  commentId: T:Microsoft.Maui.Controls.ITextElement
+  parent: Microsoft.Maui.Controls
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.itextelement
+  name: ITextElement
+  nameWithType: ITextElement
+  fullName: Microsoft.Maui.Controls.ITextElement
 - uid: Microsoft.Maui.Controls.IEditorController
   commentId: T:Microsoft.Maui.Controls.IEditorController
   parent: Microsoft.Maui.Controls
@@ -768,6 +747,14 @@ references:
   name: IElementController
   nameWithType: IElementController
   fullName: Microsoft.Maui.Controls.IElementController
+- uid: Microsoft.Maui.Controls.ITextAlignmentElement
+  commentId: T:Microsoft.Maui.Controls.ITextAlignmentElement
+  parent: Microsoft.Maui.Controls
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.itextalignmentelement
+  name: ITextAlignmentElement
+  nameWithType: ITextAlignmentElement
+  fullName: Microsoft.Maui.Controls.ITextAlignmentElement
 - uid: Microsoft.Maui.Controls.IElementConfiguration{Microsoft.Maui.Controls.Editor}
   commentId: T:Microsoft.Maui.Controls.IElementConfiguration{Microsoft.Maui.Controls.Editor}
   parent: Microsoft.Maui.Controls
@@ -2415,6 +2402,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   commentId: M:Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty

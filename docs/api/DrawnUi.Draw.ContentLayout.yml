@@ -21,12 +21,8 @@ items:
   fullName: DrawnUi.Draw.ContentLayout
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentLayout
-    path: ../src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\ContentLayout.cs
     startLine: 3
   assemblies:
   - DrawnUi.Maui
@@ -1084,6 +1080,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1332,12 +1329,8 @@ items:
   fullName: DrawnUi.Draw.ContentLayout.Invalidate()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Invalidate
-    path: ../src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\ContentLayout.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -1361,12 +1354,8 @@ items:
   fullName: DrawnUi.Draw.ContentLayout.IsContentActive
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsContentActive
-    path: ../src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\ContentLayout.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -1390,12 +1379,8 @@ items:
   fullName: DrawnUi.Draw.ContentLayout.Viewport
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Viewport
-    path: ../src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\ContentLayout.cs
     startLine: 22
   assemblies:
   - DrawnUi.Maui
@@ -1419,12 +1404,8 @@ items:
   fullName: DrawnUi.Draw.ContentLayout.GetContentAvailableRect(SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetContentAvailableRect
-    path: ../src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\ContentLayout.cs
     startLine: 30
   assemblies:
   - DrawnUi.Maui
@@ -1454,12 +1435,8 @@ items:
   fullName: DrawnUi.Draw.ContentLayout.ContentAvailableSpace
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentAvailableSpace
-    path: ../src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\ContentLayout.cs
     startLine: 100
   assemblies:
   - DrawnUi.Maui
@@ -1483,12 +1460,8 @@ items:
   fullName: DrawnUi.Draw.ContentLayout.SetContent(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetContent
-    path: ../src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\ContentLayout.cs
     startLine: 104
   assemblies:
   - DrawnUi.Maui
@@ -1512,12 +1485,8 @@ items:
   fullName: DrawnUi.Draw.ContentLayout.ContentProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentProperty
-    path: ../src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\ContentLayout.cs
     startLine: 133
   assemblies:
   - DrawnUi.Maui
@@ -1539,12 +1508,8 @@ items:
   fullName: DrawnUi.Draw.ContentLayout.Content
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Content
-    path: ../src/Shared/DrawnUi/Draw/Layout/ContentLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\ContentLayout.cs
     startLine: 139
   assemblies:
   - DrawnUi.Maui
@@ -23730,6 +23695,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

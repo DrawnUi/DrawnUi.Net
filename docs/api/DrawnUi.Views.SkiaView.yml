@@ -29,12 +29,8 @@ items:
   fullName: DrawnUi.Views.SkiaView
   type: Class
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaView
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -147,6 +143,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
   - Microsoft.Maui.Controls.VisualElement.ArrangeOverride(Microsoft.Maui.Graphics.Rect)
@@ -285,12 +282,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.Uid
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Uid
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -317,12 +310,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.IsHardwareAccelerated
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsHardwareAccelerated
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -349,12 +338,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.SignalFrame(long)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SignalFrame
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 10
   assemblies:
   - DrawnUi.Maui
@@ -384,12 +369,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.OnDraw
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDraw
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 15
   assemblies:
   - DrawnUi.Maui
@@ -417,12 +398,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.Superview
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Superview
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 17
   assemblies:
   - DrawnUi.Maui
@@ -446,12 +423,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.Dispose()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -476,12 +449,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.SkiaView()
   type: Constructor
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 31
   assemblies:
   - DrawnUi.Maui
@@ -505,12 +474,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.Disconnect()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Disconnect
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 36
   assemblies:
   - DrawnUi.Maui
@@ -531,12 +496,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHandlerChanging
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 46
   assemblies:
   - DrawnUi.Maui
@@ -565,12 +526,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.OnHandlerChanged()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHandlerChanged
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 57
   assemblies:
   - DrawnUi.Maui
@@ -595,12 +552,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.Surface
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Surface
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 83
   assemblies:
   - DrawnUi.Maui
@@ -627,12 +580,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.FPS
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FPS
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 91
   assemblies:
   - DrawnUi.Maui
@@ -659,12 +608,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.FrameTime
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FrameTime
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 141
   assemblies:
   - DrawnUi.Maui
@@ -691,12 +636,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.IsDrawing
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDrawing
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 143
   assemblies:
   - DrawnUi.Maui
@@ -723,12 +664,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.HasDrawn
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasDrawn
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 145
   assemblies:
   - DrawnUi.Maui
@@ -755,12 +692,8 @@ items:
   fullName: DrawnUi.Views.SkiaView.Update(long)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/SkiaView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Update
-    path: ../src/Maui/DrawnUi/Views/SkiaView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\SkiaView.cs
     startLine: 260
   assemblies:
   - DrawnUi.Maui
@@ -2093,6 +2026,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   commentId: M:Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty

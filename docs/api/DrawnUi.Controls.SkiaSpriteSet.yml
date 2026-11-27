@@ -22,12 +22,8 @@ items:
   fullName: DrawnUi.Controls.SkiaSpriteSet
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaSpriteSet
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\SkiaSpriteSet.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -1085,6 +1081,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1327,12 +1324,8 @@ items:
   fullName: DrawnUi.Controls.SkiaSpriteSet.SkiaSpriteSet()
   type: Constructor
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\SkiaSpriteSet.cs
     startLine: 24
   assemblies:
   - DrawnUi.Maui
@@ -1356,12 +1349,8 @@ items:
   fullName: DrawnUi.Controls.SkiaSpriteSet.MeasureSelf(SkiaSharp.SKRect, float, float, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureSelf
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\SkiaSpriteSet.cs
     startLine: 29
   assemblies:
   - DrawnUi.Maui
@@ -1401,12 +1390,8 @@ items:
   fullName: DrawnUi.Controls.SkiaSpriteSet.StateProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StateProperty
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\SkiaSpriteSet.cs
     startLine: 39
   assemblies:
   - DrawnUi.Maui
@@ -1428,12 +1413,8 @@ items:
   fullName: DrawnUi.Controls.SkiaSpriteSet.State
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: State
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\SkiaSpriteSet.cs
     startLine: 46
   assemblies:
   - DrawnUi.Maui
@@ -1459,12 +1440,8 @@ items:
   fullName: DrawnUi.Controls.SkiaSpriteSet.InvalidateInternal()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateInternal
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\SkiaSpriteSet.cs
     startLine: 52
   assemblies:
   - DrawnUi.Maui
@@ -1488,12 +1465,8 @@ items:
   fullName: DrawnUi.Controls.SkiaSpriteSet.Define(int, string, int, int, double, int, bool, DrawnUi.Controls.SpritePlacementConfig)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Define
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\SkiaSpriteSet.cs
     startLine: 67
   assemblies:
   - DrawnUi.Maui
@@ -1541,12 +1514,8 @@ items:
   fullName: DrawnUi.Controls.SkiaSpriteSet.CurrentSprite
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CurrentSprite
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\SkiaSpriteSet.cs
     startLine: 97
   assemblies:
   - DrawnUi.Maui
@@ -1572,12 +1541,8 @@ items:
   fullName: DrawnUi.Controls.SkiaSpriteSet.HitBoxAuto
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HitBoxAuto
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\SkiaSpriteSet.cs
     startLine: 99
   assemblies:
   - DrawnUi.Maui
@@ -1615,12 +1580,8 @@ items:
   fullName: DrawnUi.Controls.SkiaSpriteSet.OnChangeState(int, int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChangeState
-    path: ../src/Shared/DrawnUi/Controls/PlayFrames/SkiaSpriteSet.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\PlayFrames\SkiaSpriteSet.cs
     startLine: 149
   assemblies:
   - DrawnUi.Maui
@@ -23834,6 +23795,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

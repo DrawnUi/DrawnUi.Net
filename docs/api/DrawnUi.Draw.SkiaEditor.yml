@@ -167,12 +167,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaEditor
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -1270,6 +1266,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1515,12 +1512,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SkiaEditor()
   type: Constructor
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -1544,12 +1537,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CreateDefaultContent()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultContent
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 20
   assemblies:
   - DrawnUi.Maui
@@ -1582,12 +1571,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.WillClipBounds
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WillClipBounds
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 25
   assemblies:
   - DrawnUi.Maui
@@ -1614,12 +1599,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CalculateClipSizeForStroke(SkiaSharp.SKRect, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateClipSizeForStroke
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 37
   assemblies:
   - DrawnUi.Maui
@@ -1668,12 +1649,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ClipDependsOnlyOnShape
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClipDependsOnlyOnShape
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 40
   assemblies:
   - DrawnUi.Maui
@@ -1713,12 +1690,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CalculateContentSizeForStroke(SkiaSharp.SKRect, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateContentSizeForStroke
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 50
   assemblies:
   - DrawnUi.Maui
@@ -1763,12 +1736,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.OnWillDisposeWithChildren()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWillDisposeWithChildren
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 53
   assemblies:
   - DrawnUi.Maui
@@ -1795,12 +1764,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.TextChanged
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextChanged
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 68
   assemblies:
   - DrawnUi.Maui
@@ -1824,12 +1789,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.FocusChanged
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusChanged
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 73
   assemblies:
   - DrawnUi.Maui
@@ -1853,12 +1814,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CursorMoved
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorMoved
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 78
   assemblies:
   - DrawnUi.Maui
@@ -1882,12 +1839,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.TextSubmitted
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextSubmitted
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 83
   assemblies:
   - DrawnUi.Maui
@@ -1911,12 +1864,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor._scroll
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _scroll
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 89
   assemblies:
   - DrawnUi.Maui
@@ -1938,12 +1887,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor._contentLayer
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _contentLayer
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 90
   assemblies:
   - DrawnUi.Maui
@@ -1965,12 +1910,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor._selectionControl
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _selectionControl
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 91
   assemblies:
   - DrawnUi.Maui
@@ -1992,12 +1933,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor._placeholderLabel
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _placeholderLabel
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 92
   assemblies:
   - DrawnUi.Maui
@@ -2019,12 +1956,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ParagraphBreakChar
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParagraphBreakChar
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 93
   assemblies:
   - DrawnUi.Maui
@@ -2046,12 +1979,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SoftLineBreakChar
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SoftLineBreakChar
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 94
   assemblies:
   - DrawnUi.Maui
@@ -2073,12 +2002,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.UpdateLabel()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateLabel
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 121
   assemblies:
   - DrawnUi.Maui
@@ -2099,12 +2024,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.UpdateCursorStyle()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateCursorStyle
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 183
   assemblies:
   - DrawnUi.Maui
@@ -2125,12 +2046,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.UpdatePlaceholder()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdatePlaceholder
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 191
   assemblies:
   - DrawnUi.Maui
@@ -2151,12 +2068,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.OnCreatingLabel(DrawnUi.Draw.SkiaLabel)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCreatingLabel
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 218
   assemblies:
   - DrawnUi.Maui
@@ -2182,12 +2095,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CreatePlaceholderLabel()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreatePlaceholderLabel
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 223
   assemblies:
   - DrawnUi.Maui
@@ -2210,12 +2119,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CreateLabel()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateLabel
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 242
   assemblies:
   - DrawnUi.Maui
@@ -2238,12 +2143,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CreateCursor()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateCursor
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 266
   assemblies:
   - DrawnUi.Maui
@@ -2266,12 +2167,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.GetSingleLineHeightPts()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSingleLineHeightPts
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 280
   assemblies:
   - DrawnUi.Maui
@@ -2296,12 +2193,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ApplyControlStyleVisuals()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyControlStyleVisuals
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 327
   assemblies:
   - DrawnUi.Maui
@@ -2331,12 +2224,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CreateControl()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateControl
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 368
   assemblies:
   - DrawnUi.Maui
@@ -2357,12 +2246,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.Label
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Label
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 419
   assemblies:
   - DrawnUi.Maui
@@ -2386,12 +2271,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.Cursor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Cursor
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 421
   assemblies:
   - DrawnUi.Maui
@@ -2415,12 +2296,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.InvalidateCaret()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateCaret
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 439
   assemblies:
   - DrawnUi.Maui
@@ -2446,12 +2323,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.Paint(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Paint
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 478
   assemblies:
   - DrawnUi.Maui
@@ -2484,12 +2357,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.NormalizeEditorLineBreaks(string?)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NormalizeEditorLineBreaks
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 514
   assemblies:
   - DrawnUi.Maui
@@ -2518,12 +2387,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.GetEditorBreakText(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetEditorBreakText
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 522
   assemblies:
   - DrawnUi.Maui
@@ -2552,12 +2417,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.IsEditorBreak(char)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsEditorBreak
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 525
   assemblies:
   - DrawnUi.Maui
@@ -2586,12 +2447,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.IsTrailingEditorBreak(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsTrailingEditorBreak
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 528
   assemblies:
   - DrawnUi.Maui
@@ -2620,12 +2477,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ReplaceEditorBreaksWithSpaces(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReplaceEditorBreaksWithSpaces
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 531
   assemblies:
   - DrawnUi.Maui
@@ -2654,12 +2507,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.OnMeasuring(float, float, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMeasuring
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 659
   assemblies:
   - DrawnUi.Maui
@@ -2699,12 +2548,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.GetContentSizeForAutosizeInPixels()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetContentSizeForAutosizeInPixels
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 686
   assemblies:
   - DrawnUi.Maui
@@ -2731,12 +2576,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.Submit()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Submit
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 703
   assemblies:
   - DrawnUi.Maui
@@ -2759,12 +2600,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ExecuteSubmit(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExecuteSubmit
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 716
   assemblies:
   - DrawnUi.Maui
@@ -2791,12 +2628,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.IsMultiline
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsMultiline
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 725
   assemblies:
   - DrawnUi.Maui
@@ -2820,12 +2653,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SetFrameworkFocus(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFrameworkFocus
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 733
   assemblies:
   - DrawnUi.Maui
@@ -2864,12 +2693,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.GetLineGlyphs(DrawnUi.Draw.TextLine)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetLineGlyphs
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 752
   assemblies:
   - DrawnUi.Maui
@@ -2912,12 +2737,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.GetCursorPosition(float, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCursorPosition
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 760
   assemblies:
   - DrawnUi.Maui
@@ -2953,12 +2774,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor._spuriousDownBlockUntilMs
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _spuriousDownBlockUntilMs
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 845
   assemblies:
   - DrawnUi.Maui
@@ -2980,12 +2797,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 847
   assemblies:
   - DrawnUi.Maui
@@ -3015,12 +2828,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SetFocusInternal(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFocusInternal
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1062
   assemblies:
   - DrawnUi.Maui
@@ -3047,12 +2856,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.MoveInternalCursor()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MoveInternalCursor
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1115
   assemblies:
   - DrawnUi.Maui
@@ -3078,12 +2883,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SelectAll()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectAll
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1135
   assemblies:
   - DrawnUi.Maui
@@ -3104,12 +2905,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.UpdateCursorVisibility()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateCursorVisibility
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1167
   assemblies:
   - DrawnUi.Maui
@@ -3132,12 +2929,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SetCursorVisible(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCursorVisible
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1401
   assemblies:
   - DrawnUi.Maui
@@ -3164,12 +2957,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.MoveCursorTo(double, double)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MoveCursorTo
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1422
   assemblies:
   - DrawnUi.Maui
@@ -3202,12 +2991,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.OnCursorMoved()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCursorMoved
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1484
   assemblies:
   - DrawnUi.Maui
@@ -3230,12 +3015,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.LayoutText
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LayoutText
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1516
   assemblies:
   - DrawnUi.Maui
@@ -3266,12 +3047,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ToLayoutIndex(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToLayoutIndex
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1546
   assemblies:
   - DrawnUi.Maui
@@ -3305,12 +3082,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.FromLayoutIndex(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FromLayoutIndex
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1574
   assemblies:
   - DrawnUi.Maui
@@ -3344,12 +3117,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.VisualArrowTarget(int, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VisualArrowTarget
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1621
   assemblies:
   - DrawnUi.Maui
@@ -3391,12 +3160,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SelectionEdgeByX(int, int, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionEdgeByX
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1690
   assemblies:
   - DrawnUi.Maui
@@ -3436,12 +3201,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.GetCursorLine()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCursorLine
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1707
   assemblies:
   - DrawnUi.Maui
@@ -3466,12 +3227,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.HandleVerticalArrow(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HandleVerticalArrow
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1736
   assemblies:
   - DrawnUi.Maui
@@ -3498,12 +3255,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.OnControlCreated()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnControlCreated
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1788
   assemblies:
   - DrawnUi.Maui
@@ -3524,12 +3277,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CursorPositionProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorPositionProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1793
   assemblies:
   - DrawnUi.Maui
@@ -3551,12 +3300,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CursorPosition
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorPosition
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1807
   assemblies:
   - DrawnUi.Maui
@@ -3580,12 +3325,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SetCursorFromNative(int, int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCursorFromNative
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1824
   assemblies:
   - DrawnUi.Maui
@@ -3625,12 +3366,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SnapNativeCaret(int, int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapNativeCaret
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1869
   assemblies:
   - DrawnUi.Maui
@@ -3670,12 +3407,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SetSelection(int, int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetSelection
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1884
   assemblies:
   - DrawnUi.Maui
@@ -3704,12 +3437,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.GetWordBoundaries(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetWordBoundaries
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1892
   assemblies:
   - DrawnUi.Maui
@@ -3738,12 +3467,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SelectWord(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectWord
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1912
   assemblies:
   - DrawnUi.Maui
@@ -3770,12 +3495,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.GetSelectedText()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSelectedText
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1923
   assemblies:
   - DrawnUi.Maui
@@ -3798,12 +3519,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CodeUnitsBeforeCaret(string, int, int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CodeUnitsBeforeCaret
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1938
   assemblies:
   - DrawnUi.Maui
@@ -3845,12 +3562,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CodeUnitsAfterCaret(string, int, int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CodeUnitsAfterCaret
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1965
   assemblies:
   - DrawnUi.Maui
@@ -3888,12 +3601,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.DeleteSelection()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DeleteSelection
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1978
   assemblies:
   - DrawnUi.Maui
@@ -3914,12 +3623,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.InsertAtCursor(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InsertAtCursor
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 1991
   assemblies:
   - DrawnUi.Maui
@@ -3946,12 +3651,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CutSelection()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CutSelection
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2006
   assemblies:
   - DrawnUi.Maui
@@ -3972,12 +3673,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CopySelection()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CopySelection
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2026
   assemblies:
   - DrawnUi.Maui
@@ -3998,12 +3695,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.PasteFromClipboard()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PasteFromClipboard
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2033
   assemblies:
   - DrawnUi.Maui
@@ -4024,12 +3717,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.OnDisposing()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2054
   assemblies:
   - DrawnUi.Maui
@@ -4053,12 +3742,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.OnLayoutChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2062
   assemblies:
   - DrawnUi.Maui
@@ -4082,12 +3767,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ReturnTypeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnTypeProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2095
   assemblies:
   - DrawnUi.Maui
@@ -4109,12 +3790,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ReturnType
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnType
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2113
   assemblies:
   - DrawnUi.Maui
@@ -4147,12 +3824,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ShouldSubmitOnEnter
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShouldSubmitOnEnter
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2123
   assemblies:
   - DrawnUi.Maui
@@ -4181,12 +3854,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.KeyboardTypeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardTypeProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2125
   assemblies:
   - DrawnUi.Maui
@@ -4208,12 +3877,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.KeyboardType
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardType
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2132
   assemblies:
   - DrawnUi.Maui
@@ -4237,12 +3902,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.IsPasswordProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPasswordProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2138
   assemblies:
   - DrawnUi.Maui
@@ -4264,12 +3925,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.IsPassword
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPassword
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2152
   assemblies:
   - DrawnUi.Maui
@@ -4293,12 +3950,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.IsSpellCheckEnabledProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsSpellCheckEnabledProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2158
   assemblies:
   - DrawnUi.Maui
@@ -4320,12 +3973,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.IsSpellCheckEnabled
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsSpellCheckEnabled
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2173
   assemblies:
   - DrawnUi.Maui
@@ -4362,12 +4011,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CommandOnSubmitProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnSubmitProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2179
   assemblies:
   - DrawnUi.Maui
@@ -4389,12 +4034,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CommandOnSubmit
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnSubmit
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2185
   assemblies:
   - DrawnUi.Maui
@@ -4418,12 +4059,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CommandOnFocusChangedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnFocusChangedProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2191
   assemblies:
   - DrawnUi.Maui
@@ -4445,12 +4082,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CommandOnFocusChanged
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnFocusChanged
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2197
   assemblies:
   - DrawnUi.Maui
@@ -4474,12 +4107,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CommandOnTextChangedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnTextChangedProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2203
   assemblies:
   - DrawnUi.Maui
@@ -4501,12 +4130,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CommandOnTextChanged
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandOnTextChanged
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2209
   assemblies:
   - DrawnUi.Maui
@@ -4530,12 +4155,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.UseMarkdownProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseMarkdownProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2215
   assemblies:
   - DrawnUi.Maui
@@ -4557,12 +4178,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.UseMarkdown
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseMarkdown
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2231
   assemblies:
   - DrawnUi.Maui
@@ -4586,12 +4203,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.UseUnicodeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseUnicodeProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2237
   assemblies:
   - DrawnUi.Maui
@@ -4613,12 +4226,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.UseUnicode
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseUnicode
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2250
   assemblies:
   - DrawnUi.Maui
@@ -4651,12 +4260,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CanShowCursorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanShowCursorProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2257
   assemblies:
   - DrawnUi.Maui
@@ -4678,12 +4283,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CanShowCursor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanShowCursor
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2263
   assemblies:
   - DrawnUi.Maui
@@ -4707,12 +4308,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.IsFocusedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsFocusedProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2269
   assemblies:
   - DrawnUi.Maui
@@ -4734,12 +4331,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.IsFocused
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsFocused
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2309
   assemblies:
   - DrawnUi.Maui
@@ -4763,12 +4356,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.TextProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2323
   assemblies:
   - DrawnUi.Maui
@@ -4790,12 +4379,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.Text
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Text
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2332
   assemblies:
   - DrawnUi.Maui
@@ -4819,12 +4404,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityRole
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityRole
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2338
   assemblies:
   - DrawnUi.Maui
@@ -4848,12 +4429,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.GetDefaultAccessibilityRole()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetDefaultAccessibilityRole
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2340
   assemblies:
   - DrawnUi.Maui
@@ -4879,12 +4456,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityLabel()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityLabel
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2343
   assemblies:
   - DrawnUi.Maui
@@ -4910,12 +4483,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.DefaultAccessibilityCanInteract()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityCanInteract
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2347
   assemblies:
   - DrawnUi.Maui
@@ -4941,12 +4510,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.OnAccessibilityFocused(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAccessibilityFocused
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2353
   assemblies:
   - DrawnUi.Maui
@@ -4979,12 +4544,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.OnAccessibilityActivated()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAccessibilityActivated
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2371
   assemblies:
   - DrawnUi.Maui
@@ -5011,12 +4572,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.OnAccessibilityKey(DrawnUi.Draw.InputKey)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAccessibilityKey
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2378
   assemblies:
   - DrawnUi.Maui
@@ -5045,12 +4602,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.FontSizeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSizeProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2402
   assemblies:
   - DrawnUi.Maui
@@ -5072,12 +4625,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.FontSize
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSize
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2406
   assemblies:
   - DrawnUi.Maui
@@ -5101,12 +4650,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.HorizontalTextAlignmentProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalTextAlignmentProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2412
   assemblies:
   - DrawnUi.Maui
@@ -5128,12 +4673,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.HorizontalTextAlignment
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HorizontalTextAlignment
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2419
   assemblies:
   - DrawnUi.Maui
@@ -5157,12 +4698,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.VerticalTextAlignmentProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalTextAlignmentProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2425
   assemblies:
   - DrawnUi.Maui
@@ -5184,12 +4721,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.VerticalTextAlignment
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VerticalTextAlignment
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2432
   assemblies:
   - DrawnUi.Maui
@@ -5213,12 +4746,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.LineHeightProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeightProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2439
   assemblies:
   - DrawnUi.Maui
@@ -5240,12 +4769,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.LineHeight
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineHeight
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2446
   assemblies:
   - DrawnUi.Maui
@@ -5269,12 +4794,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.FontFamilyProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2452
   assemblies:
   - DrawnUi.Maui
@@ -5296,12 +4817,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.FontFamily
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamily
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2454
   assemblies:
   - DrawnUi.Maui
@@ -5325,12 +4842,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.TextColorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColorProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2460
   assemblies:
   - DrawnUi.Maui
@@ -5352,12 +4865,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.TextColor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColor
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2464
   assemblies:
   - DrawnUi.Maui
@@ -5381,12 +4890,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.FontWeightProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeightProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2470
   assemblies:
   - DrawnUi.Maui
@@ -5408,12 +4913,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.FontWeight
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontWeight
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2477
   assemblies:
   - DrawnUi.Maui
@@ -5437,12 +4938,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.TextGradientProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextGradientProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2484
   assemblies:
   - DrawnUi.Maui
@@ -5464,12 +4961,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.TextGradient
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextGradient
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2491
   assemblies:
   - DrawnUi.Maui
@@ -5493,12 +4986,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CursorColorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorColorProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2497
   assemblies:
   - DrawnUi.Maui
@@ -5520,12 +5009,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CursorColor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorColor
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2504
   assemblies:
   - DrawnUi.Maui
@@ -5549,12 +5034,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CursorGradientProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorGradientProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2511
   assemblies:
   - DrawnUi.Maui
@@ -5576,12 +5057,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.CursorGradient
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CursorGradient
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2519
   assemblies:
   - DrawnUi.Maui
@@ -5605,12 +5082,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SelectionLengthProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionLengthProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2526
   assemblies:
   - DrawnUi.Maui
@@ -5632,12 +5105,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SelectionLength
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionLength
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2541
   assemblies:
   - DrawnUi.Maui
@@ -5661,12 +5130,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SelectionColorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionColorProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2547
   assemblies:
   - DrawnUi.Maui
@@ -5688,12 +5153,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SelectionColor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectionColor
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2554
   assemblies:
   - DrawnUi.Maui
@@ -5717,12 +5178,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.PlaceholderTextProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderTextProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2560
   assemblies:
   - DrawnUi.Maui
@@ -5744,12 +5201,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.PlaceholderText
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderText
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2567
   assemblies:
   - DrawnUi.Maui
@@ -5773,12 +5226,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.PlaceholderColorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderColorProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2573
   assemblies:
   - DrawnUi.Maui
@@ -5800,12 +5249,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.PlaceholderColor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderColor
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2580
   assemblies:
   - DrawnUi.Maui
@@ -5829,12 +5274,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.PlaceholderHorizontalAlignmentProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderHorizontalAlignmentProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2586
   assemblies:
   - DrawnUi.Maui
@@ -5856,12 +5297,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.PlaceholderHorizontalAlignment
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlaceholderHorizontalAlignment
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2593
   assemblies:
   - DrawnUi.Maui
@@ -5885,12 +5322,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.MaxLinesProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLinesProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2615
   assemblies:
   - DrawnUi.Maui
@@ -5912,12 +5345,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.MaxLines
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxLines
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2617
   assemblies:
   - DrawnUi.Maui
@@ -5941,12 +5370,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.AutoHeightProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoHeightProperty
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2623
   assemblies:
   - DrawnUi.Maui
@@ -5968,12 +5393,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.AutoHeight
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoHeight
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2631
   assemblies:
   - DrawnUi.Maui
@@ -6004,12 +5425,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ActionGo
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionGo
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2643
   assemblies:
   - DrawnUi.Maui
@@ -6031,12 +5448,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ActionNext
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionNext
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2644
   assemblies:
   - DrawnUi.Maui
@@ -6058,12 +5471,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ActionSend
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionSend
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2645
   assemblies:
   - DrawnUi.Maui
@@ -6085,12 +5494,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ActionSearch
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionSearch
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2646
   assemblies:
   - DrawnUi.Maui
@@ -6112,12 +5517,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ActionDone
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActionDone
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2647
   assemblies:
   - DrawnUi.Maui
@@ -6139,12 +5540,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SetCursorPositionNative(int, int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCursorPositionNative
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2654
   assemblies:
   - DrawnUi.Maui
@@ -6173,12 +5570,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.DisposePlatform()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposePlatform
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2659
   assemblies:
   - DrawnUi.Maui
@@ -6199,12 +5592,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.SetFocusNative(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFocusNative
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2664
   assemblies:
   - DrawnUi.Maui
@@ -6231,12 +5620,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.UpdateNativePosition()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateNativePosition
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2669
   assemblies:
   - DrawnUi.Maui
@@ -6257,12 +5642,8 @@ items:
   fullName: DrawnUi.Draw.SkiaEditor.ApplyKeyboardType()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/EditText/SkiaEditor.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyKeyboardType
-    path: ../src/Shared/DrawnUi/EditText/SkiaEditor.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\EditText\SkiaEditor.cs
     startLine: 2674
   assemblies:
   - DrawnUi.Maui
@@ -29249,6 +28630,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

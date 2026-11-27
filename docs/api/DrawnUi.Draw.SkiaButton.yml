@@ -113,12 +113,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaButton
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.Maui.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -1156,6 +1152,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1398,12 +1395,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.SkiaButton()
   type: Constructor
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 13
   assemblies:
   - DrawnUi.Maui
@@ -1427,12 +1420,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.SkiaButton(string)
   type: Constructor
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 18
   assemblies:
   - DrawnUi.Maui
@@ -1459,12 +1448,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ButtonPadding
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ButtonPadding
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 23
   assemblies:
   - DrawnUi.Maui
@@ -1488,12 +1473,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.OnPaddingSet(Microsoft.Maui.Thickness)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPaddingSet
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 25
   assemblies:
   - DrawnUi.Maui
@@ -1524,12 +1505,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CreateDefaultContent()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultContent
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 48
   assemblies:
   - DrawnUi.Maui
@@ -1562,12 +1539,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CreateDefaultStyleContent()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDefaultStyleContent
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 105
   assemblies:
   - DrawnUi.Maui
@@ -1588,12 +1561,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CreateCupertinoStyleContent()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateCupertinoStyleContent
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 146
   assemblies:
   - DrawnUi.Maui
@@ -1614,12 +1583,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CreateMaterialStyleContent()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateMaterialStyleContent
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 203
   assemblies:
   - DrawnUi.Maui
@@ -1640,12 +1605,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CreateMaterial3StyleContent()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateMaterial3StyleContent
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 263
   assemblies:
   - DrawnUi.Maui
@@ -1671,12 +1632,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CreateWindowsStyleContent()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateWindowsStyleContent
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 305
   assemblies:
   - DrawnUi.Maui
@@ -1697,12 +1654,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.IsInsideTapRegion(DrawnUi.Draw.SkiaGesturesParameters)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsInsideTapRegion
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 359
   assemblies:
   - DrawnUi.Maui
@@ -1728,12 +1681,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CreateElevation()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateElevation
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 370
   assemblies:
   - DrawnUi.Maui
@@ -1756,12 +1705,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.OnButtonPropertyChanged(DrawnUi.Draw.SkiaButton, string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnButtonPropertyChanged
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 378
   assemblies:
   - DrawnUi.Maui
@@ -1790,12 +1735,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CreateClip(object, bool, SkiaSharp.SKPath)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateClip
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 497
   assemblies:
   - DrawnUi.Maui
@@ -1832,12 +1773,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.MainWrapper
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MainWrapper
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 511
   assemblies:
   - DrawnUi.Maui
@@ -1859,12 +1796,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.MainLabel
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MainLabel
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 512
   assemblies:
   - DrawnUi.Maui
@@ -1886,12 +1819,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.MainFrame
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MainFrame
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 513
   assemblies:
   - DrawnUi.Maui
@@ -1913,12 +1842,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.OnChildrenChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildrenChanged
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 515
   assemblies:
   - DrawnUi.Maui
@@ -1942,12 +1867,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.RebuildDefaultContent()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RebuildDefaultContent
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 522
   assemblies:
   - DrawnUi.Maui
@@ -1980,12 +1901,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.FindViews()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindViews
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 535
   assemblies:
   - DrawnUi.Maui
@@ -2006,12 +1923,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.DefaultAccessibilityRole
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityRole
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 557
   assemblies:
   - DrawnUi.Maui
@@ -2038,12 +1951,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.GetDefaultAccessibilityRole()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetDefaultAccessibilityRole
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 559
   assemblies:
   - DrawnUi.Maui
@@ -2069,12 +1978,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.DefaultAccessibilityLabel()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityLabel
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 562
   assemblies:
   - DrawnUi.Maui
@@ -2100,12 +2005,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.DefaultAccessibilityCanInteract()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DefaultAccessibilityCanInteract
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 564
   assemblies:
   - DrawnUi.Maui
@@ -2131,12 +2032,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.AcceptsInput()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AcceptsInput
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 567
   assemblies:
   - DrawnUi.Maui
@@ -2162,12 +2059,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ApplyProperties()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyProperties
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 569
   assemblies:
   - DrawnUi.Maui
@@ -2188,12 +2081,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.OnDown(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDown
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 740
   assemblies:
   - DrawnUi.Maui
@@ -2221,12 +2110,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.OnUp(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnUp
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 772
   assemblies:
   - DrawnUi.Maui
@@ -2252,12 +2137,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.OnTapped(DrawnUi.Draw.SkiaGesturesParameters, SkiaSharp.SKPoint)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTapped
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 777
   assemblies:
   - DrawnUi.Maui
@@ -2285,12 +2166,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.PanThreshold
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PanThreshold
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 811
   assemblies:
   - DrawnUi.Maui
@@ -2312,12 +2189,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ReceivesHoverByDefault
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReceivesHoverByDefault
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 814
   assemblies:
   - DrawnUi.Maui
@@ -2344,12 +2217,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 816
   assemblies:
   - DrawnUi.Maui
@@ -2379,12 +2248,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.DelayCallbackMs
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DelayCallbackMs
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 899
   assemblies:
   - DrawnUi.Maui
@@ -2408,12 +2273,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.OnDisposing()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 901
   assemblies:
   - DrawnUi.Maui
@@ -2437,12 +2298,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.Up
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Up
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 912
   assemblies:
   - DrawnUi.Maui
@@ -2464,12 +2321,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.Down
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Down
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 913
   assemblies:
   - DrawnUi.Maui
@@ -2491,12 +2344,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.Clicked
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clicked
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 919
   assemblies:
   - DrawnUi.Maui
@@ -2520,12 +2369,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.Released
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Released
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 924
   assemblies:
   - DrawnUi.Maui
@@ -2549,12 +2394,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.Pressed
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Pressed
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 929
   assemblies:
   - DrawnUi.Maui
@@ -2578,12 +2419,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.TotalTapped
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TotalTapped
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 933
   assemblies:
   - DrawnUi.Maui
@@ -2607,12 +2444,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.TotalDown
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TotalDown
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 948
   assemblies:
   - DrawnUi.Maui
@@ -2636,12 +2469,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ButtonStyleProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ButtonStyleProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1000
   assemblies:
   - DrawnUi.Maui
@@ -2663,12 +2492,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ButtonStyle
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ButtonStyle
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1010
   assemblies:
   - DrawnUi.Maui
@@ -2694,12 +2519,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.TextCaseProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextCaseProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1016
   assemblies:
   - DrawnUi.Maui
@@ -2721,12 +2542,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.TextCase
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextCase
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1026
   assemblies:
   - DrawnUi.Maui
@@ -2752,12 +2569,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ElevationEnabledProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ElevationEnabledProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1032
   assemblies:
   - DrawnUi.Maui
@@ -2779,12 +2592,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ElevationEnabled
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ElevationEnabled
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1042
   assemblies:
   - DrawnUi.Maui
@@ -2810,12 +2619,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.IconPositionProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IconPositionProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1048
   assemblies:
   - DrawnUi.Maui
@@ -2837,12 +2642,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.IconPosition
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IconPosition
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1058
   assemblies:
   - DrawnUi.Maui
@@ -2868,12 +2669,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.LockPanningProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockPanningProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1072
   assemblies:
   - DrawnUi.Maui
@@ -2895,12 +2692,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.LockPanning
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockPanning
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1077
   assemblies:
   - DrawnUi.Maui
@@ -2924,12 +2717,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.FontSizeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSizeProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1083
   assemblies:
   - DrawnUi.Maui
@@ -2951,12 +2740,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.FontSize
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSize
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1090
   assemblies:
   - DrawnUi.Maui
@@ -2980,12 +2765,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.FontFamilyProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamilyProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1096
   assemblies:
   - DrawnUi.Maui
@@ -3007,12 +2788,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.FontFamily
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontFamily
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1103
   assemblies:
   - DrawnUi.Maui
@@ -3036,12 +2813,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.RespondsToGesturesProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGesturesProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1109
   assemblies:
   - DrawnUi.Maui
@@ -3063,12 +2836,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.RespondsToGestures
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGestures
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1120
   assemblies:
   - DrawnUi.Maui
@@ -3099,12 +2868,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.IsDisabledProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisabledProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1126
   assemblies:
   - DrawnUi.Maui
@@ -3126,12 +2891,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.IsDisabled
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisabled
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1137
   assemblies:
   - DrawnUi.Maui
@@ -3169,12 +2930,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.IsPressedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPressedProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1144
   assemblies:
   - DrawnUi.Maui
@@ -3196,12 +2953,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.IsPressed
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPressed
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1154
   assemblies:
   - DrawnUi.Maui
@@ -3227,12 +2980,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.TextProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1160
   assemblies:
   - DrawnUi.Maui
@@ -3254,12 +3003,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.Text
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Text
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1169
   assemblies:
   - DrawnUi.Maui
@@ -3285,12 +3030,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ShimmerEffectColorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectColorProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1175
   assemblies:
   - DrawnUi.Maui
@@ -3312,12 +3053,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ShimmerEffectColor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectColor
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1181
   assemblies:
   - DrawnUi.Maui
@@ -3341,12 +3078,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ShimmerEffectAngleProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectAngleProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1187
   assemblies:
   - DrawnUi.Maui
@@ -3368,12 +3101,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ShimmerEffectAngle
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectAngle
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1193
   assemblies:
   - DrawnUi.Maui
@@ -3397,12 +3126,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ShimmerEffectWidthProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectWidthProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1199
   assemblies:
   - DrawnUi.Maui
@@ -3424,12 +3149,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ShimmerEffectWidth
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectWidth
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1205
   assemblies:
   - DrawnUi.Maui
@@ -3453,12 +3174,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ShimmerEffectSpeedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectSpeedProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1211
   assemblies:
   - DrawnUi.Maui
@@ -3480,12 +3197,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ShimmerEffectSpeed
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShimmerEffectSpeed
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1217
   assemblies:
   - DrawnUi.Maui
@@ -3509,12 +3222,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ApplyEffectProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyEffectProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1224
   assemblies:
   - DrawnUi.Maui
@@ -3536,12 +3245,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.ApplyEffect
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyEffect
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1228
   assemblies:
   - DrawnUi.Maui
@@ -3565,12 +3270,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CommandTappedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1235
   assemblies:
   - DrawnUi.Maui
@@ -3592,12 +3293,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CommandTapped
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTapped
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1240
   assemblies:
   - DrawnUi.Maui
@@ -3621,12 +3318,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CommandTappedParameterProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameterProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1246
   assemblies:
   - DrawnUi.Maui
@@ -3648,12 +3341,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CommandTappedParameter
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandTappedParameter
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1251
   assemblies:
   - DrawnUi.Maui
@@ -3677,12 +3366,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CommandLongPressingProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1257
   assemblies:
   - DrawnUi.Maui
@@ -3704,12 +3389,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CommandLongPressing
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressing
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1262
   assemblies:
   - DrawnUi.Maui
@@ -3733,12 +3414,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CommandLongPressingParameterProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingParameterProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1268
   assemblies:
   - DrawnUi.Maui
@@ -3760,12 +3437,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CommandLongPressingParameter
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommandLongPressingParameter
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1273
   assemblies:
   - DrawnUi.Maui
@@ -3789,12 +3462,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.StrokeColorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeColorProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1279
   assemblies:
   - DrawnUi.Maui
@@ -3816,12 +3485,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.StrokeColor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeColor
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1286
   assemblies:
   - DrawnUi.Maui
@@ -3845,12 +3510,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.StrokeWidthProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeWidthProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1292
   assemblies:
   - DrawnUi.Maui
@@ -3872,12 +3533,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.StrokeWidth
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StrokeWidth
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1298
   assemblies:
   - DrawnUi.Maui
@@ -3901,12 +3558,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton._lastDownPts
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _lastDownPts
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1304
   assemblies:
   - DrawnUi.Maui
@@ -3928,12 +3581,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.TextColorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColorProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1306
   assemblies:
   - DrawnUi.Maui
@@ -3955,12 +3604,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.TextColor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextColor
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1313
   assemblies:
   - DrawnUi.Maui
@@ -3984,12 +3629,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.TextStrokeColorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextStrokeColorProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1319
   assemblies:
   - DrawnUi.Maui
@@ -4011,12 +3652,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.TextStrokeColor
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TextStrokeColor
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1326
   assemblies:
   - DrawnUi.Maui
@@ -4040,12 +3677,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.OnPropertyChanged(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1342
   assemblies:
   - DrawnUi.Maui
@@ -4076,12 +3709,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.SetupBackgroundPaint(SkiaSharp.SKPaint, SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupBackgroundPaint
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.cs
     startLine: 1367
   assemblies:
   - DrawnUi.Maui
@@ -4115,12 +3744,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CornerRadiusProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CornerRadiusProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.Maui.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -4142,12 +3767,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.CornerRadius
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CornerRadius
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.Maui.cs
     startLine: 16
   assemblies:
   - DrawnUi.Maui
@@ -4183,12 +3804,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.BevelProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BevelProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.Maui.cs
     startLine: 24
   assemblies:
   - DrawnUi.Maui
@@ -4210,12 +3827,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.Bevel
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Bevel
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.Maui.cs
     startLine: 31
   assemblies:
   - DrawnUi.Maui
@@ -4239,12 +3852,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.BevelTypeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BevelTypeProperty
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.Maui.cs
     startLine: 37
   assemblies:
   - DrawnUi.Maui
@@ -4266,12 +3875,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.BevelType
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BevelType
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.Maui.cs
     startLine: 44
   assemblies:
   - DrawnUi.Maui
@@ -4295,12 +3900,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.InitialBackgroundColor
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitialBackgroundColor
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.Maui.cs
     startLine: 50
   assemblies:
   - DrawnUi.Maui
@@ -4322,12 +3923,8 @@ items:
   fullName: DrawnUi.Draw.SkiaButton.InitialBackground
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitialBackground
-    path: ../src/Shared/DrawnUi/Controls/Button/SkiaButton.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Button\SkiaButton.Maui.cs
     startLine: 51
   assemblies:
   - DrawnUi.Maui
@@ -26172,6 +25769,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

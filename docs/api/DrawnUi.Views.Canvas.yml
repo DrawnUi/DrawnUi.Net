@@ -75,12 +75,8 @@ items:
   fullName: DrawnUi.Views.Canvas
   type: Class
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Canvas
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -410,34 +406,38 @@ items:
   - DrawnUi.Views.DrawnView.SetSystemTheme(DrawnUi.Views.SystemTheme)
   - DrawnUi.Views.DrawnView.ReadWindowsSystemTheme
   - DrawnUi.Views.DrawnView.IsWindowsThemeMessage(System.Int32,System.IntPtr)
+  - Microsoft.Maui.Controls.ContentView.SafeAreaEdgesProperty
+  - Microsoft.Maui.Controls.ContentView.SafeAreaEdges
   - Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
-  - Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
-  - Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+  - Microsoft.Maui.Controls.TemplatedView.IsClippedToBoundsProperty
+  - Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparentProperty
+  - Microsoft.Maui.Controls.TemplatedView.PaddingProperty
+  - Microsoft.Maui.Controls.TemplatedView.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.TemplatedView.OnApplyTemplate
   - Microsoft.Maui.Controls.TemplatedView.OnChildRemoved(Microsoft.Maui.Controls.Element,System.Int32)
   - Microsoft.Maui.Controls.TemplatedView.GetTemplateChild(System.String)
   - Microsoft.Maui.Controls.TemplatedView.ResolveControlTemplate
   - Microsoft.Maui.Controls.TemplatedView.OnSizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.TemplatedView.LowerChild(Microsoft.Maui.Controls.View)
+  - Microsoft.Maui.Controls.TemplatedView.RaiseChild(Microsoft.Maui.Controls.View)
+  - Microsoft.Maui.Controls.TemplatedView.InvalidateLayout
+  - Microsoft.Maui.Controls.TemplatedView.OnChildMeasureInvalidated
+  - Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
+  - Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
+  - Microsoft.Maui.Controls.TemplatedView.UpdateChildrenLayout
+  - Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
+  - Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+  - Microsoft.Maui.Controls.TemplatedView.IsClippedToBounds
   - Microsoft.Maui.Controls.TemplatedView.ControlTemplate
-  - Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBoundsProperty
-  - Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparentProperty
-  - Microsoft.Maui.Controls.Compatibility.Layout.PaddingProperty
+  - Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparent
+  - Microsoft.Maui.Controls.TemplatedView.Padding
   - Microsoft.Maui.Controls.Compatibility.Layout.ForceLayout
   - Microsoft.Maui.Controls.Compatibility.Layout.Measure(System.Double,System.Double,Microsoft.Maui.Controls.MeasureFlags)
   - Microsoft.Maui.Controls.Compatibility.Layout.LayoutChildIntoBoundingRegion(Microsoft.Maui.Controls.VisualElement,Microsoft.Maui.Graphics.Rect)
-  - Microsoft.Maui.Controls.Compatibility.Layout.LowerChild(Microsoft.Maui.Controls.View)
-  - Microsoft.Maui.Controls.Compatibility.Layout.RaiseChild(Microsoft.Maui.Controls.View)
-  - Microsoft.Maui.Controls.Compatibility.Layout.InvalidateLayout
   - Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated(System.Object,System.EventArgs)
-  - Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated
-  - Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
-  - Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
-  - Microsoft.Maui.Controls.Compatibility.Layout.UpdateChildrenLayout
+  - Microsoft.Maui.Controls.Compatibility.Layout.OnChildAdded(Microsoft.Maui.Controls.Element)
   - Microsoft.Maui.Controls.Compatibility.Layout.CrossPlatformMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.Compatibility.Layout.CrossPlatformArrange(Microsoft.Maui.Graphics.Rect)
-  - Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBounds
-  - Microsoft.Maui.Controls.Compatibility.Layout.Padding
-  - Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparent
   - Microsoft.Maui.Controls.Compatibility.Layout.LayoutChanged
   - Microsoft.Maui.Controls.View.VerticalOptionsProperty
   - Microsoft.Maui.Controls.View.HorizontalOptionsProperty
@@ -493,7 +493,6 @@ items:
   - Microsoft.Maui.Controls.VisualElement.Focus
   - Microsoft.Maui.Controls.VisualElement.Measure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.Unfocus
-  - Microsoft.Maui.Controls.VisualElement.OnChildAdded(Microsoft.Maui.Controls.Element)
   - Microsoft.Maui.Controls.VisualElement.OnChildrenReordered
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
@@ -637,12 +636,8 @@ items:
   fullName: DrawnUi.Views.Canvas.LayoutVisibilityChanged()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LayoutVisibilityChanged
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 27
   assemblies:
   - DrawnUi.Maui
@@ -663,12 +658,8 @@ items:
   fullName: DrawnUi.Views.Canvas.SetChildren(System.Collections.Generic.IEnumerable<DrawnUi.Draw.SkiaControl>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetChildren
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 32
   assemblies:
   - DrawnUi.Maui
@@ -697,12 +688,8 @@ items:
   fullName: DrawnUi.Views.Canvas.DumpDebug()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DumpDebug
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 38
   assemblies:
   - DrawnUi.Maui
@@ -723,12 +710,8 @@ items:
   fullName: DrawnUi.Views.Canvas.OnChildAdded(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildAdded
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 44
   assemblies:
   - DrawnUi.Maui
@@ -754,12 +737,8 @@ items:
   fullName: DrawnUi.Views.Canvas.SetContent(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetContent
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 58
   assemblies:
   - DrawnUi.Maui
@@ -785,12 +764,8 @@ items:
   fullName: DrawnUi.Views.Canvas.OnSizeChanged()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSizeChanged
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 82
   assemblies:
   - DrawnUi.Maui
@@ -813,12 +788,8 @@ items:
   fullName: DrawnUi.Views.Canvas.InvalidateMeasure()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateMeasure
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 89
   assemblies:
   - DrawnUi.Maui
@@ -842,12 +813,8 @@ items:
   fullName: DrawnUi.Views.Canvas.AdaptSizeToContentIfNeeded(double, double, bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptSizeToContentIfNeeded
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 98
   assemblies:
   - DrawnUi.Maui
@@ -880,12 +847,8 @@ items:
   fullName: DrawnUi.Views.Canvas.ArrangeOverride(Microsoft.Maui.Graphics.Rect)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ArrangeOverride
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 128
   assemblies:
   - DrawnUi.Maui
@@ -919,12 +882,8 @@ items:
   fullName: DrawnUi.Views.Canvas.MeasureOverride(double, double)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureOverride
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 143
   assemblies:
   - DrawnUi.Maui
@@ -961,12 +920,8 @@ items:
   fullName: DrawnUi.Views.Canvas.Invalidate()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Invalidate
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 206
   assemblies:
   - DrawnUi.Maui
@@ -990,12 +945,8 @@ items:
   fullName: DrawnUi.Views.Canvas.AdaptWidthContraintToRequest(double)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptWidthContraintToRequest
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 225
   assemblies:
   - DrawnUi.Maui
@@ -1024,12 +975,8 @@ items:
   fullName: DrawnUi.Views.Canvas.AdaptHeightContraintToRequest(double)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptHeightContraintToRequest
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 233
   assemblies:
   - DrawnUi.Maui
@@ -1058,12 +1005,8 @@ items:
   fullName: DrawnUi.Views.Canvas.Measure(float, float)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Measure
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 241
   assemblies:
   - DrawnUi.Maui
@@ -1096,12 +1039,8 @@ items:
   fullName: DrawnUi.Views.Canvas.GetMeasuringRectForChildren(float, float, float)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetMeasuringRectForChildren
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 313
   assemblies:
   - DrawnUi.Maui
@@ -1140,12 +1079,8 @@ items:
   fullName: DrawnUi.Views.Canvas.AdaptWidthContraintToContentRequest(float, DrawnUi.Draw.ScaledSize, double)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptWidthContraintToContentRequest
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 328
   assemblies:
   - DrawnUi.Maui
@@ -1178,12 +1113,8 @@ items:
   fullName: DrawnUi.Views.Canvas.AdaptHeightContraintToContentRequest(float, DrawnUi.Draw.ScaledSize, double)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptHeightContraintToContentRequest
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 341
   assemblies:
   - DrawnUi.Maui
@@ -1216,12 +1147,8 @@ items:
   fullName: DrawnUi.Views.Canvas.AdaptSizeRequestToContent(double, double)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdaptSizeRequestToContent
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 360
   assemblies:
   - DrawnUi.Maui
@@ -1257,12 +1184,8 @@ items:
   fullName: DrawnUi.Views.Canvas.ContentSize
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentSize
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 378
   assemblies:
   - DrawnUi.Maui
@@ -1286,12 +1209,8 @@ items:
   fullName: DrawnUi.Views.Canvas.MeasureChild(DrawnUi.Draw.SkiaControl, double, double, double)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasureChild
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 399
   assemblies:
   - DrawnUi.Maui
@@ -1333,12 +1252,8 @@ items:
   fullName: DrawnUi.Views.Canvas.OnHandlerChanged()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHandlerChanged
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 412
   assemblies:
   - DrawnUi.Maui
@@ -1363,12 +1278,8 @@ items:
   fullName: DrawnUi.Views.Canvas.OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHandlerChanging
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 426
   assemblies:
   - DrawnUi.Maui
@@ -1397,12 +1308,8 @@ items:
   fullName: DrawnUi.Views.Canvas.DetachGestures()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DetachGestures
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 443
   assemblies:
   - DrawnUi.Maui
@@ -1423,12 +1330,8 @@ items:
   fullName: DrawnUi.Views.Canvas.OnDestroyingVew()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDestroyingVew
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 450
   assemblies:
   - DrawnUi.Maui
@@ -1451,12 +1354,8 @@ items:
   fullName: DrawnUi.Views.Canvas.OnGesturesAttachChanged()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnGesturesAttachChanged
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 457
   assemblies:
   - DrawnUi.Maui
@@ -1477,12 +1376,8 @@ items:
   fullName: DrawnUi.Views.Canvas.AttachedTouchEffect
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AttachedTouchEffect
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 484
   assemblies:
   - DrawnUi.Maui
@@ -1506,12 +1401,8 @@ items:
   fullName: DrawnUi.Views.Canvas.CreateDebugPointer()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateDebugPointer
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 486
   assemblies:
   - DrawnUi.Maui
@@ -1534,12 +1425,8 @@ items:
   fullName: DrawnUi.Views.Canvas.DebugPointer
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DebugPointer
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 499
   assemblies:
   - DrawnUi.Maui
@@ -1563,12 +1450,8 @@ items:
   fullName: DrawnUi.Views.Canvas.OnDisposing()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 501
   assemblies:
   - DrawnUi.Maui
@@ -1591,12 +1474,8 @@ items:
   fullName: DrawnUi.Views.Canvas.Context
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Context
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 512
   assemblies:
   - DrawnUi.Maui
@@ -1618,12 +1497,8 @@ items:
   fullName: DrawnUi.Views.Canvas.ReceivedInput
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReceivedInput
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 517
   assemblies:
   - DrawnUi.Maui
@@ -1649,12 +1524,8 @@ items:
   fullName: DrawnUi.Views.Canvas.HadInput
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HadInput
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 522
   assemblies:
   - DrawnUi.Maui
@@ -1680,12 +1551,8 @@ items:
   fullName: DrawnUi.Views.Canvas.IsSavedGesture(AppoMobi.Gestures.TouchActionResult)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsSavedGesture
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 529
   assemblies:
   - DrawnUi.Maui
@@ -1715,12 +1582,8 @@ items:
   fullName: DrawnUi.Views.Canvas.OnGestureListenerUnregistered(DrawnUi.Draw.ISkiaGestureListener)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnGestureListenerUnregistered
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 559
   assemblies:
   - DrawnUi.Maui
@@ -1750,12 +1613,8 @@ items:
   fullName: DrawnUi.Views.Canvas.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 569
   assemblies:
   - DrawnUi.Maui
@@ -1779,12 +1638,8 @@ items:
   fullName: DrawnUi.Views.Canvas.OnHoverCheck(DrawnUi.Draw.SkiaGesturesParameters)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHoverCheck
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 806
   assemblies:
   - DrawnUi.Maui
@@ -1811,12 +1666,8 @@ items:
   fullName: DrawnUi.Views.Canvas.SignalInput(DrawnUi.Draw.ISkiaGestureListener, AppoMobi.Gestures.TouchActionResult)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SignalInput
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 814
   assemblies:
   - DrawnUi.Maui
@@ -1846,12 +1697,8 @@ items:
   fullName: DrawnUi.Views.Canvas.Tapped
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tapped
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 833
   assemblies:
   - DrawnUi.Maui
@@ -1873,12 +1720,8 @@ items:
   fullName: DrawnUi.Views.Canvas.OnGestureEvent(AppoMobi.Gestures.TouchActionType, AppoMobi.Gestures.TouchActionEventArgs, AppoMobi.Gestures.TouchActionResult)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnGestureEvent
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 850
   assemblies:
   - DrawnUi.Maui
@@ -1914,12 +1757,8 @@ items:
   fullName: DrawnUi.Views.Canvas.BreakLine()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BreakLine
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 990
   assemblies:
   - DrawnUi.Maui
@@ -1940,12 +1779,8 @@ items:
   fullName: DrawnUi.Views.Canvas.LineBreaks
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LineBreaks
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 995
   assemblies:
   - DrawnUi.Maui
@@ -1967,12 +1802,8 @@ items:
   fullName: DrawnUi.Views.Canvas.Canvas()
   type: Constructor
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 997
   assemblies:
   - DrawnUi.Maui
@@ -1996,12 +1827,8 @@ items:
   fullName: DrawnUi.Views.Canvas.PlayRippleAnimation(Microsoft.Maui.Graphics.Color, double, double, bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlayRippleAnimation
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1002
   assemblies:
   - DrawnUi.Maui
@@ -2034,12 +1861,8 @@ items:
   fullName: DrawnUi.Views.Canvas.PlayShimmerAnimation(Microsoft.Maui.Graphics.Color, float, float, int, bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PlayShimmerAnimation
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1008
   assemblies:
   - DrawnUi.Maui
@@ -2074,12 +1897,8 @@ items:
   fullName: DrawnUi.Views.Canvas.TimeLastGC
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TimeLastGC
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1021
   assemblies:
   - DrawnUi.Maui
@@ -2103,12 +1922,8 @@ items:
   fullName: DrawnUi.Views.Canvas.DelayNanosBetweenGC
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DelayNanosBetweenGC
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1022
   assemblies:
   - DrawnUi.Maui
@@ -2132,12 +1947,8 @@ items:
   fullName: DrawnUi.Views.Canvas.CollectGarbage(long)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CollectGarbage
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1024
   assemblies:
   - DrawnUi.Maui
@@ -2164,12 +1975,8 @@ items:
   fullName: DrawnUi.Views.Canvas.OnPropertyChanged(string)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1041
   assemblies:
   - DrawnUi.Maui
@@ -2200,12 +2007,8 @@ items:
   fullName: DrawnUi.Views.Canvas.GesturesDebugColorProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesDebugColorProperty
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1054
   assemblies:
   - DrawnUi.Maui
@@ -2227,12 +2030,8 @@ items:
   fullName: DrawnUi.Views.Canvas.GesturesDebugColor
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesDebugColor
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1060
   assemblies:
   - DrawnUi.Maui
@@ -2256,12 +2055,8 @@ items:
   fullName: DrawnUi.Views.Canvas.ReserveSpaceAroundProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReserveSpaceAroundProperty
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1066
   assemblies:
   - DrawnUi.Maui
@@ -2283,12 +2078,8 @@ items:
   fullName: DrawnUi.Views.Canvas.ReserveSpaceAround
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReserveSpaceAround
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1072
   assemblies:
   - DrawnUi.Maui
@@ -2312,12 +2103,8 @@ items:
   fullName: DrawnUi.Views.Canvas.GesturesProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GesturesProperty
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1086
   assemblies:
   - DrawnUi.Maui
@@ -2339,12 +2126,8 @@ items:
   fullName: DrawnUi.Views.Canvas.Gestures
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Gestures
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1092
   assemblies:
   - DrawnUi.Maui
@@ -2368,12 +2151,8 @@ items:
   fullName: DrawnUi.Views.Canvas.ContentProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentProperty
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1100
   assemblies:
   - DrawnUi.Maui
@@ -2395,12 +2174,8 @@ items:
   fullName: DrawnUi.Views.Canvas.Content
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Content
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1116
   assemblies:
   - DrawnUi.Maui
@@ -2424,12 +2199,8 @@ items:
   fullName: DrawnUi.Views.Canvas.OnParentChanged()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnParentChanged
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1126
   assemblies:
   - DrawnUi.Maui
@@ -2454,12 +2225,8 @@ items:
   fullName: DrawnUi.Views.Canvas.EnableUpdates()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnableUpdates
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1136
   assemblies:
   - DrawnUi.Maui
@@ -2482,12 +2249,8 @@ items:
   fullName: DrawnUi.Views.Canvas.DisableUpdates()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisableUpdates
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1146
   assemblies:
   - DrawnUi.Maui
@@ -2510,12 +2273,8 @@ items:
   fullName: DrawnUi.Views.Canvas.Draw(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1151
   assemblies:
   - DrawnUi.Maui
@@ -2541,12 +2300,8 @@ items:
   fullName: DrawnUi.Views.Canvas.GetGesturePositionInsideControl(DrawnUi.Draw.SkiaControl, SkiaSharp.SKPoint)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetGesturePositionInsideControl
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1256
   assemblies:
   - DrawnUi.Maui
@@ -2588,12 +2343,8 @@ items:
   fullName: DrawnUi.Views.Canvas.FindViewCoordinatesRecursive(DrawnUi.Draw.SkiaControl, DrawnUi.Draw.SkiaControl, SkiaSharp.SKPoint)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/Canvas.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindViewCoordinatesRecursive
-    path: ../src/Maui/DrawnUi/Views/Canvas.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\Canvas.cs
     startLine: 1301
   assemblies:
   - DrawnUi.Maui
@@ -7838,6 +7589,22 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.intptr
   - name: )
+- uid: Microsoft.Maui.Controls.ContentView.SafeAreaEdgesProperty
+  commentId: F:Microsoft.Maui.Controls.ContentView.SafeAreaEdgesProperty
+  parent: Microsoft.Maui.Controls.ContentView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.contentview.safeareaedgesproperty
+  name: SafeAreaEdgesProperty
+  nameWithType: ContentView.SafeAreaEdgesProperty
+  fullName: Microsoft.Maui.Controls.ContentView.SafeAreaEdgesProperty
+- uid: Microsoft.Maui.Controls.ContentView.SafeAreaEdges
+  commentId: P:Microsoft.Maui.Controls.ContentView.SafeAreaEdges
+  parent: Microsoft.Maui.Controls.ContentView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.contentview.safeareaedges
+  name: SafeAreaEdges
+  nameWithType: ContentView.SafeAreaEdges
+  fullName: Microsoft.Maui.Controls.ContentView.SafeAreaEdges
 - uid: Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
   commentId: F:Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
   parent: Microsoft.Maui.Controls.TemplatedView
@@ -7846,119 +7613,59 @@ references:
   name: ControlTemplateProperty
   nameWithType: TemplatedView.ControlTemplateProperty
   fullName: Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
-- uid: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
-  commentId: M:Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
+- uid: Microsoft.Maui.Controls.TemplatedView.IsClippedToBoundsProperty
+  commentId: F:Microsoft.Maui.Controls.TemplatedView.IsClippedToBoundsProperty
   parent: Microsoft.Maui.Controls.TemplatedView
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.layoutchildren
-  name: LayoutChildren(double, double, double, double)
-  nameWithType: TemplatedView.LayoutChildren(double, double, double, double)
-  fullName: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(double, double, double, double)
-  nameWithType.vb: TemplatedView.LayoutChildren(Double, Double, Double, Double)
-  fullName.vb: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(Double, Double, Double, Double)
-  name.vb: LayoutChildren(Double, Double, Double, Double)
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
-    name: LayoutChildren
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.layoutchildren
-  - name: (
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
-    name: LayoutChildren
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.layoutchildren
-  - name: (
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: )
-- uid: Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
-  commentId: M:Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.isclippedtoboundsproperty
+  name: IsClippedToBoundsProperty
+  nameWithType: TemplatedView.IsClippedToBoundsProperty
+  fullName: Microsoft.Maui.Controls.TemplatedView.IsClippedToBoundsProperty
+- uid: Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparentProperty
+  commentId: F:Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparentProperty
   parent: Microsoft.Maui.Controls.TemplatedView
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onmeasure
-  name: OnMeasure(double, double)
-  nameWithType: TemplatedView.OnMeasure(double, double)
-  fullName: Microsoft.Maui.Controls.TemplatedView.OnMeasure(double, double)
-  nameWithType.vb: TemplatedView.OnMeasure(Double, Double)
-  fullName.vb: Microsoft.Maui.Controls.TemplatedView.OnMeasure(Double, Double)
-  name.vb: OnMeasure(Double, Double)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.cascadeinputtransparentproperty
+  name: CascadeInputTransparentProperty
+  nameWithType: TemplatedView.CascadeInputTransparentProperty
+  fullName: Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparentProperty
+- uid: Microsoft.Maui.Controls.TemplatedView.PaddingProperty
+  commentId: F:Microsoft.Maui.Controls.TemplatedView.PaddingProperty
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.paddingproperty
+  name: PaddingProperty
+  nameWithType: TemplatedView.PaddingProperty
+  fullName: Microsoft.Maui.Controls.TemplatedView.PaddingProperty
+- uid: Microsoft.Maui.Controls.TemplatedView.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: TemplatedView.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.TemplatedView.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   spec.csharp:
-  - uid: Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
-    name: OnMeasure
+  - uid: Microsoft.Maui.Controls.TemplatedView.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onmeasure
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.computeconstraintforview
   - name: (
-  - uid: System.Double
-    name: double
+  - uid: Microsoft.Maui.Controls.View
+    name: View
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
   spec.vb:
-  - uid: Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
-    name: OnMeasure
+  - uid: Microsoft.Maui.Controls.TemplatedView.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onmeasure
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.computeconstraintforview
   - name: (
-  - uid: System.Double
-    name: Double
+  - uid: Microsoft.Maui.Controls.View
+    name: View
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.TemplatedView.OnApplyTemplate
   commentId: M:Microsoft.Maui.Controls.TemplatedView.OnApplyTemplate
@@ -8127,6 +7834,314 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
   - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.LowerChild(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.LowerChild(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.lowerchild
+  name: LowerChild(View)
+  nameWithType: TemplatedView.LowerChild(View)
+  fullName: Microsoft.Maui.Controls.TemplatedView.LowerChild(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.LowerChild(Microsoft.Maui.Controls.View)
+    name: LowerChild
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.lowerchild
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.LowerChild(Microsoft.Maui.Controls.View)
+    name: LowerChild
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.lowerchild
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.RaiseChild(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.RaiseChild(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.raisechild
+  name: RaiseChild(View)
+  nameWithType: TemplatedView.RaiseChild(View)
+  fullName: Microsoft.Maui.Controls.TemplatedView.RaiseChild(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.RaiseChild(Microsoft.Maui.Controls.View)
+    name: RaiseChild
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.raisechild
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.RaiseChild(Microsoft.Maui.Controls.View)
+    name: RaiseChild
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.raisechild
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.InvalidateLayout
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.InvalidateLayout
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.invalidatelayout
+  name: InvalidateLayout()
+  nameWithType: TemplatedView.InvalidateLayout()
+  fullName: Microsoft.Maui.Controls.TemplatedView.InvalidateLayout()
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.InvalidateLayout
+    name: InvalidateLayout
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.invalidatelayout
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.InvalidateLayout
+    name: InvalidateLayout
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.invalidatelayout
+  - name: (
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.OnChildMeasureInvalidated
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.OnChildMeasureInvalidated
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onchildmeasureinvalidated
+  name: OnChildMeasureInvalidated()
+  nameWithType: TemplatedView.OnChildMeasureInvalidated()
+  fullName: Microsoft.Maui.Controls.TemplatedView.OnChildMeasureInvalidated()
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.OnChildMeasureInvalidated
+    name: OnChildMeasureInvalidated
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onchildmeasureinvalidated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.OnChildMeasureInvalidated
+    name: OnChildMeasureInvalidated
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onchildmeasureinvalidated
+  - name: (
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.shouldinvalidateonchildadded
+  name: ShouldInvalidateOnChildAdded(View)
+  nameWithType: TemplatedView.ShouldInvalidateOnChildAdded(View)
+  fullName: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
+    name: ShouldInvalidateOnChildAdded
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.shouldinvalidateonchildadded
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
+    name: ShouldInvalidateOnChildAdded
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.shouldinvalidateonchildadded
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.shouldinvalidateonchildremoved
+  name: ShouldInvalidateOnChildRemoved(View)
+  nameWithType: TemplatedView.ShouldInvalidateOnChildRemoved(View)
+  fullName: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
+    name: ShouldInvalidateOnChildRemoved
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.shouldinvalidateonchildremoved
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
+    name: ShouldInvalidateOnChildRemoved
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.shouldinvalidateonchildremoved
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.UpdateChildrenLayout
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.UpdateChildrenLayout
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.updatechildrenlayout
+  name: UpdateChildrenLayout()
+  nameWithType: TemplatedView.UpdateChildrenLayout()
+  fullName: Microsoft.Maui.Controls.TemplatedView.UpdateChildrenLayout()
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.UpdateChildrenLayout
+    name: UpdateChildrenLayout
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.updatechildrenlayout
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.UpdateChildrenLayout
+    name: UpdateChildrenLayout
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.updatechildrenlayout
+  - name: (
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.layoutchildren
+  name: LayoutChildren(double, double, double, double)
+  nameWithType: TemplatedView.LayoutChildren(double, double, double, double)
+  fullName: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(double, double, double, double)
+  nameWithType.vb: TemplatedView.LayoutChildren(Double, Double, Double, Double)
+  fullName.vb: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(Double, Double, Double, Double)
+  name.vb: LayoutChildren(Double, Double, Double, Double)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
+    name: LayoutChildren
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.layoutchildren
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
+    name: LayoutChildren
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.layoutchildren
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onmeasure
+  name: OnMeasure(double, double)
+  nameWithType: TemplatedView.OnMeasure(double, double)
+  fullName: Microsoft.Maui.Controls.TemplatedView.OnMeasure(double, double)
+  nameWithType.vb: TemplatedView.OnMeasure(Double, Double)
+  fullName.vb: Microsoft.Maui.Controls.TemplatedView.OnMeasure(Double, Double)
+  name.vb: OnMeasure(Double, Double)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+    name: OnMeasure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onmeasure
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+    name: OnMeasure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onmeasure
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.IsClippedToBounds
+  commentId: P:Microsoft.Maui.Controls.TemplatedView.IsClippedToBounds
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.isclippedtobounds
+  name: IsClippedToBounds
+  nameWithType: TemplatedView.IsClippedToBounds
+  fullName: Microsoft.Maui.Controls.TemplatedView.IsClippedToBounds
 - uid: Microsoft.Maui.Controls.TemplatedView.ControlTemplate
   commentId: P:Microsoft.Maui.Controls.TemplatedView.ControlTemplate
   parent: Microsoft.Maui.Controls.TemplatedView
@@ -8135,30 +8150,22 @@ references:
   name: ControlTemplate
   nameWithType: TemplatedView.ControlTemplate
   fullName: Microsoft.Maui.Controls.TemplatedView.ControlTemplate
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBoundsProperty
-  commentId: F:Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBoundsProperty
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
+- uid: Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparent
+  commentId: P:Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparent
+  parent: Microsoft.Maui.Controls.TemplatedView
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.isclippedtoboundsproperty
-  name: IsClippedToBoundsProperty
-  nameWithType: Layout.IsClippedToBoundsProperty
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBoundsProperty
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparentProperty
-  commentId: F:Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparentProperty
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.cascadeinputtransparent
+  name: CascadeInputTransparent
+  nameWithType: TemplatedView.CascadeInputTransparent
+  fullName: Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparent
+- uid: Microsoft.Maui.Controls.TemplatedView.Padding
+  commentId: P:Microsoft.Maui.Controls.TemplatedView.Padding
+  parent: Microsoft.Maui.Controls.TemplatedView
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.cascadeinputtransparentproperty
-  name: CascadeInputTransparentProperty
-  nameWithType: Layout.CascadeInputTransparentProperty
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparentProperty
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.PaddingProperty
-  commentId: F:Microsoft.Maui.Controls.Compatibility.Layout.PaddingProperty
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.paddingproperty
-  name: PaddingProperty
-  nameWithType: Layout.PaddingProperty
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.PaddingProperty
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.padding
+  name: Padding
+  nameWithType: TemplatedView.Padding
+  fullName: Microsoft.Maui.Controls.TemplatedView.Padding
 - uid: Microsoft.Maui.Controls.Compatibility.Layout.ForceLayout
   commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.ForceLayout
   parent: Microsoft.Maui.Controls.Compatibility.Layout
@@ -8280,88 +8287,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.rect
   - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.LowerChild(Microsoft.Maui.Controls.View)
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.LowerChild(Microsoft.Maui.Controls.View)
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.lowerchild
-  name: LowerChild(View)
-  nameWithType: Layout.LowerChild(View)
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.LowerChild(Microsoft.Maui.Controls.View)
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.LowerChild(Microsoft.Maui.Controls.View)
-    name: LowerChild
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.lowerchild
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.LowerChild(Microsoft.Maui.Controls.View)
-    name: LowerChild
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.lowerchild
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.RaiseChild(Microsoft.Maui.Controls.View)
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.RaiseChild(Microsoft.Maui.Controls.View)
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.raisechild
-  name: RaiseChild(View)
-  nameWithType: Layout.RaiseChild(View)
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.RaiseChild(Microsoft.Maui.Controls.View)
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.RaiseChild(Microsoft.Maui.Controls.View)
-    name: RaiseChild
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.raisechild
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.RaiseChild(Microsoft.Maui.Controls.View)
-    name: RaiseChild
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.raisechild
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.InvalidateLayout
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.InvalidateLayout
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.invalidatelayout
-  name: InvalidateLayout()
-  nameWithType: Layout.InvalidateLayout()
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.InvalidateLayout()
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.InvalidateLayout
-    name: InvalidateLayout
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.invalidatelayout
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.InvalidateLayout
-    name: InvalidateLayout
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.invalidatelayout
-  - name: (
-  - name: )
 - uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated(System.Object,System.EventArgs)
   commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated(System.Object,System.EventArgs)
   parent: Microsoft.Maui.Controls.Compatibility.Layout
@@ -8407,109 +8332,35 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.eventargs
   - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated
+- uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildAdded(Microsoft.Maui.Controls.Element)
+  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.OnChildAdded(Microsoft.Maui.Controls.Element)
   parent: Microsoft.Maui.Controls.Compatibility.Layout
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildmeasureinvalidated#microsoft-maui-controls-compatibility-layout-onchildmeasureinvalidated
-  name: OnChildMeasureInvalidated()
-  nameWithType: Layout.OnChildMeasureInvalidated()
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated()
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildadded
+  name: OnChildAdded(Element)
+  nameWithType: Layout.OnChildAdded(Element)
+  fullName: Microsoft.Maui.Controls.Compatibility.Layout.OnChildAdded(Microsoft.Maui.Controls.Element)
   spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated
-    name: OnChildMeasureInvalidated
+  - uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildAdded(Microsoft.Maui.Controls.Element)
+    name: OnChildAdded
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildmeasureinvalidated#microsoft-maui-controls-compatibility-layout-onchildmeasureinvalidated
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildadded
   - name: (
+  - uid: Microsoft.Maui.Controls.Element
+    name: Element
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.element
   - name: )
   spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated
-    name: OnChildMeasureInvalidated
+  - uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildAdded(Microsoft.Maui.Controls.Element)
+    name: OnChildAdded
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildmeasureinvalidated#microsoft-maui-controls-compatibility-layout-onchildmeasureinvalidated
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildadded
   - name: (
-  - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.shouldinvalidateonchildadded
-  name: ShouldInvalidateOnChildAdded(View)
-  nameWithType: Layout.ShouldInvalidateOnChildAdded(View)
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
-    name: ShouldInvalidateOnChildAdded
+  - uid: Microsoft.Maui.Controls.Element
+    name: Element
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.shouldinvalidateonchildadded
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
-    name: ShouldInvalidateOnChildAdded
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.shouldinvalidateonchildadded
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.shouldinvalidateonchildremoved
-  name: ShouldInvalidateOnChildRemoved(View)
-  nameWithType: Layout.ShouldInvalidateOnChildRemoved(View)
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
-    name: ShouldInvalidateOnChildRemoved
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.shouldinvalidateonchildremoved
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
-    name: ShouldInvalidateOnChildRemoved
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.shouldinvalidateonchildremoved
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.UpdateChildrenLayout
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.UpdateChildrenLayout
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.updatechildrenlayout
-  name: UpdateChildrenLayout()
-  nameWithType: Layout.UpdateChildrenLayout()
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.UpdateChildrenLayout()
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.UpdateChildrenLayout
-    name: UpdateChildrenLayout
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.updatechildrenlayout
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.UpdateChildrenLayout
-    name: UpdateChildrenLayout
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.updatechildrenlayout
-  - name: (
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.element
   - name: )
 - uid: Microsoft.Maui.Controls.Compatibility.Layout.CrossPlatformMeasure(System.Double,System.Double)
   commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.CrossPlatformMeasure(System.Double,System.Double)
@@ -8586,30 +8437,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.rect
   - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBounds
-  commentId: P:Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBounds
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.isclippedtobounds
-  name: IsClippedToBounds
-  nameWithType: Layout.IsClippedToBounds
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBounds
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.Padding
-  commentId: P:Microsoft.Maui.Controls.Compatibility.Layout.Padding
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.padding
-  name: Padding
-  nameWithType: Layout.Padding
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.Padding
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparent
-  commentId: P:Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparent
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.cascadeinputtransparent
-  name: CascadeInputTransparent
-  nameWithType: Layout.CascadeInputTransparent
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparent
 - uid: Microsoft.Maui.Controls.Compatibility.Layout.LayoutChanged
   commentId: E:Microsoft.Maui.Controls.Compatibility.Layout.LayoutChanged
   parent: Microsoft.Maui.Controls.Compatibility.Layout
@@ -9203,36 +9030,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.unfocus
   - name: (
-  - name: )
-- uid: Microsoft.Maui.Controls.VisualElement.OnChildAdded(Microsoft.Maui.Controls.Element)
-  commentId: M:Microsoft.Maui.Controls.VisualElement.OnChildAdded(Microsoft.Maui.Controls.Element)
-  parent: Microsoft.Maui.Controls.VisualElement
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.onchildadded
-  name: OnChildAdded(Element)
-  nameWithType: VisualElement.OnChildAdded(Element)
-  fullName: Microsoft.Maui.Controls.VisualElement.OnChildAdded(Microsoft.Maui.Controls.Element)
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.VisualElement.OnChildAdded(Microsoft.Maui.Controls.Element)
-    name: OnChildAdded
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.onchildadded
-  - name: (
-  - uid: Microsoft.Maui.Controls.Element
-    name: Element
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.element
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.VisualElement.OnChildAdded(Microsoft.Maui.Controls.Element)
-    name: OnChildAdded
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.onchildadded
-  - name: (
-  - uid: Microsoft.Maui.Controls.Element
-    name: Element
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.element
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.OnChildrenReordered
   commentId: M:Microsoft.Maui.Controls.VisualElement.OnChildrenReordered

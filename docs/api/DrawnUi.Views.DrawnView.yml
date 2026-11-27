@@ -290,12 +290,8 @@ items:
   fullName: DrawnUi.Views.DrawnView
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.SystemTheme.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawnView
-    path: ../src/Shared/DrawnUi/Views/DrawnView.SystemTheme.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.SystemTheme.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -352,10 +348,14 @@ items:
   - DrawnUi.Views.IDisposeManager
   inheritedMembers:
   - Microsoft.Maui.Controls.ContentView.ContentProperty
+  - Microsoft.Maui.Controls.ContentView.SafeAreaEdgesProperty
   - Microsoft.Maui.Controls.ContentView.Content
+  - Microsoft.Maui.Controls.ContentView.SafeAreaEdges
   - Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
-  - Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
-  - Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+  - Microsoft.Maui.Controls.TemplatedView.IsClippedToBoundsProperty
+  - Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparentProperty
+  - Microsoft.Maui.Controls.TemplatedView.PaddingProperty
+  - Microsoft.Maui.Controls.TemplatedView.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.TemplatedView.OnApplyTemplate
   - Microsoft.Maui.Controls.TemplatedView.OnChildRemoved(Microsoft.Maui.Controls.Element,System.Int32)
   - Microsoft.Maui.Controls.TemplatedView.GetTemplateChild(System.String)
@@ -363,26 +363,26 @@ items:
   - Microsoft.Maui.Controls.TemplatedView.MeasureOverride(System.Double,System.Double)
   - Microsoft.Maui.Controls.TemplatedView.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.TemplatedView.ArrangeOverride(Microsoft.Maui.Graphics.Rect)
+  - Microsoft.Maui.Controls.TemplatedView.LowerChild(Microsoft.Maui.Controls.View)
+  - Microsoft.Maui.Controls.TemplatedView.RaiseChild(Microsoft.Maui.Controls.View)
+  - Microsoft.Maui.Controls.TemplatedView.InvalidateLayout
+  - Microsoft.Maui.Controls.TemplatedView.OnChildMeasureInvalidated
+  - Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
+  - Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
+  - Microsoft.Maui.Controls.TemplatedView.UpdateChildrenLayout
+  - Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
+  - Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+  - Microsoft.Maui.Controls.TemplatedView.IsClippedToBounds
   - Microsoft.Maui.Controls.TemplatedView.ControlTemplate
-  - Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBoundsProperty
-  - Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparentProperty
-  - Microsoft.Maui.Controls.Compatibility.Layout.PaddingProperty
+  - Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparent
+  - Microsoft.Maui.Controls.TemplatedView.Padding
   - Microsoft.Maui.Controls.Compatibility.Layout.ForceLayout
   - Microsoft.Maui.Controls.Compatibility.Layout.Measure(System.Double,System.Double,Microsoft.Maui.Controls.MeasureFlags)
   - Microsoft.Maui.Controls.Compatibility.Layout.LayoutChildIntoBoundingRegion(Microsoft.Maui.Controls.VisualElement,Microsoft.Maui.Graphics.Rect)
-  - Microsoft.Maui.Controls.Compatibility.Layout.LowerChild(Microsoft.Maui.Controls.View)
-  - Microsoft.Maui.Controls.Compatibility.Layout.RaiseChild(Microsoft.Maui.Controls.View)
-  - Microsoft.Maui.Controls.Compatibility.Layout.InvalidateLayout
   - Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated(System.Object,System.EventArgs)
-  - Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated
-  - Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
-  - Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
-  - Microsoft.Maui.Controls.Compatibility.Layout.UpdateChildrenLayout
+  - Microsoft.Maui.Controls.Compatibility.Layout.OnChildAdded(Microsoft.Maui.Controls.Element)
   - Microsoft.Maui.Controls.Compatibility.Layout.CrossPlatformMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.Compatibility.Layout.CrossPlatformArrange(Microsoft.Maui.Graphics.Rect)
-  - Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBounds
-  - Microsoft.Maui.Controls.Compatibility.Layout.Padding
-  - Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparent
   - Microsoft.Maui.Controls.Compatibility.Layout.LayoutChanged
   - Microsoft.Maui.Controls.View.VerticalOptionsProperty
   - Microsoft.Maui.Controls.View.HorizontalOptionsProperty
@@ -439,7 +439,6 @@ items:
   - Microsoft.Maui.Controls.VisualElement.Measure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.Unfocus
   - Microsoft.Maui.Controls.VisualElement.InvalidateMeasure
-  - Microsoft.Maui.Controls.VisualElement.OnChildAdded(Microsoft.Maui.Controls.Element)
   - Microsoft.Maui.Controls.VisualElement.OnChildrenReordered
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
@@ -577,12 +576,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.GetEnumerator()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetEnumerator
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -610,12 +605,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Add(Microsoft.Maui.IView)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Add
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -648,12 +639,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Clear()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clear
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 29
   assemblies:
   - DrawnUi.Maui
@@ -682,12 +669,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Contains(Microsoft.Maui.IView)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Contains
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 34
   assemblies:
   - DrawnUi.Maui
@@ -719,12 +702,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CopyTo(Microsoft.Maui.IView[], int)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CopyTo
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 39
   assemblies:
   - DrawnUi.Maui
@@ -769,12 +748,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Remove(Microsoft.Maui.IView)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Remove
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 56
   assemblies:
   - DrawnUi.Maui
@@ -810,12 +785,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Count
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Count
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 71
   assemblies:
   - DrawnUi.Maui
@@ -844,12 +815,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IsReadOnly
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsReadOnly
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 76
   assemblies:
   - DrawnUi.Maui
@@ -878,12 +845,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IndexOf(Microsoft.Maui.IView)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IndexOf
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 78
   assemblies:
   - DrawnUi.Maui
@@ -915,12 +878,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Insert(int, Microsoft.Maui.IView)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Insert
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 89
   assemblies:
   - DrawnUi.Maui
@@ -962,12 +921,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RemoveAt(int)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemoveAt
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 97
   assemblies:
   - DrawnUi.Maui
@@ -1006,12 +961,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.this[int]
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: this[]
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 102
   assemblies:
   - DrawnUi.Maui
@@ -1053,12 +1004,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.FixDensity()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FixDensity
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 140
   assemblies:
   - DrawnUi.Maui
@@ -1079,12 +1026,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ReportHotreloadChildRemoved(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReportHotreloadChildRemoved
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 155
   assemblies:
   - DrawnUi.Maui
@@ -1108,12 +1051,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnHandlerChanging(Microsoft.Maui.Controls.HandlerChangingEventArgs)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHandlerChanging
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 202
   assemblies:
   - DrawnUi.Maui
@@ -1142,12 +1081,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnHandlerChanged()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHandlerChanged
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 216
   assemblies:
   - DrawnUi.Maui
@@ -1172,12 +1107,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnHotReload()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHotReload
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 264
   assemblies:
   - DrawnUi.Maui
@@ -1198,12 +1129,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.DestroyThis()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DestroyThis
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 276
   assemblies:
   - DrawnUi.Maui
@@ -1224,12 +1151,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.InitFramework(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/DrawnView.Maui.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitFramework
-    path: ../src/Maui/DrawnUi/Views/DrawnView.Maui.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\DrawnView.Maui.cs
     startLine: 304
   assemblies:
   - DrawnUi.Maui
@@ -1256,12 +1179,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.DumpLayersTree(DrawnUi.Draw.VisualLayer, string, bool, int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DumpLayersTree
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -1294,12 +1213,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Diagnostics
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Diagnostics
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 58
   assemblies:
   - DrawnUi.Maui
@@ -1321,12 +1236,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Update()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Update
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 60
   assemblies:
   - DrawnUi.Maui
@@ -1351,12 +1262,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RequestNextFrame()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RequestNextFrame
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 83
   assemblies:
   - DrawnUi.Maui
@@ -1386,12 +1293,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IsUsingHardwareAcceleration
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsUsingHardwareAcceleration
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 91
   assemblies:
   - DrawnUi.Maui
@@ -1415,12 +1318,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.NeedRedraw
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedRedraw
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 102
   assemblies:
   - DrawnUi.Maui
@@ -1444,12 +1343,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IsDirty
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDirty
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 104
   assemblies:
   - DrawnUi.Maui
@@ -1473,12 +1368,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IsVisibleInViewTree()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsVisibleInViewTree
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 124
   assemblies:
   - DrawnUi.Maui
@@ -1504,12 +1395,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.TakeScreenShot(System.Action<SkiaSharp.SKImage>)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TakeScreenShot
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 129
   assemblies:
   - DrawnUi.Maui
@@ -1536,12 +1423,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.InvalidateByChild(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateByChild
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 135
   assemblies:
   - DrawnUi.Maui
@@ -1569,12 +1452,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.UpdateByChild(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateByChild
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 140
   assemblies:
   - DrawnUi.Maui
@@ -1602,12 +1481,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.GetOnScreenVisibleArea(DrawnUi.Draw.DrawingContext, System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOnScreenVisibleArea
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 153
   assemblies:
   - DrawnUi.Maui
@@ -1646,12 +1521,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.HandlerWasSet
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HandlerWasSet
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 164
   assemblies:
   - DrawnUi.Maui
@@ -1673,12 +1544,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.TakeScreenShotInternal(SkiaSharp.SKSurface)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TakeScreenShotInternal
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 166
   assemblies:
   - DrawnUi.Maui
@@ -1702,12 +1569,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.PostponeExecutionBeforeDraw(System.Action, long)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PostponeExecutionBeforeDraw
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 183
   assemblies:
   - DrawnUi.Maui
@@ -1739,12 +1602,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SkipRepeatedTouchContextMenu(AppoMobi.Gestures.TouchActionResult, AppoMobi.Gestures.TouchActionEventArgs, System.Action<AppoMobi.Gestures.TouchActionEventArgs>)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkipRepeatedTouchContextMenu
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 201
   assemblies:
   - DrawnUi.Maui
@@ -1790,12 +1649,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.AfterTouchGesture(AppoMobi.Gestures.TouchActionResult, AppoMobi.Gestures.TouchActionEventArgs, System.Action<AppoMobi.Gestures.TouchActionEventArgs>)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AfterTouchGesture
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 254
   assemblies:
   - DrawnUi.Maui
@@ -1833,12 +1688,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.TouchContextMenuArgs(AppoMobi.Gestures.TouchActionEventArgs)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TouchContextMenuArgs
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 275
   assemblies:
   - DrawnUi.Maui
@@ -1866,12 +1717,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.AfterTouchContextMenu(AppoMobi.Gestures.TouchActionEventArgs)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AfterTouchContextMenu
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 291
   assemblies:
   - DrawnUi.Maui
@@ -1900,12 +1747,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.PostponeExecutionAfterDraw(System.Action)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PostponeExecutionAfterDraw
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 304
   assemblies:
   - DrawnUi.Maui
@@ -1932,12 +1775,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ExecuteBeforeDraw
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExecuteBeforeDraw
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 309
   assemblies:
   - DrawnUi.Maui
@@ -1961,12 +1800,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ExecuteAfterDraw
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExecuteAfterDraw
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 310
   assemblies:
   - DrawnUi.Maui
@@ -1990,12 +1825,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CallbackScreenshot
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CallbackScreenshot
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 311
   assemblies:
   - DrawnUi.Maui
@@ -2017,12 +1848,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RenderingSubscribers
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderingSubscribers
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 317
   assemblies:
   - DrawnUi.Maui
@@ -2046,12 +1873,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SubscribeToRenderingFinished(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SubscribeToRenderingFinished
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 323
   assemblies:
   - DrawnUi.Maui
@@ -2078,12 +1901,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.UsubscribeFromRenderingFinished(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UsubscribeFromRenderingFinished
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 328
   assemblies:
   - DrawnUi.Maui
@@ -2107,12 +1926,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RegisterGestureListener(DrawnUi.Draw.ISkiaGestureListener)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RegisterGestureListener
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 333
   assemblies:
   - DrawnUi.Maui
@@ -2139,12 +1954,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.UnregisterGestureListener(DrawnUi.Draw.ISkiaGestureListener)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnregisterGestureListener
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 342
   assemblies:
   - DrawnUi.Maui
@@ -2171,12 +1982,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnGestureListenerUnregistered(DrawnUi.Draw.ISkiaGestureListener)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnGestureListenerUnregistered
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 356
   assemblies:
   - DrawnUi.Maui
@@ -2205,12 +2012,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.LockIterateListeners
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockIterateListeners
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 360
   assemblies:
   - DrawnUi.Maui
@@ -2232,12 +2035,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.GestureListeners
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GestureListeners
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 365
   assemblies:
   - DrawnUi.Maui
@@ -2263,12 +2062,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.DrawingRect
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawingRect
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 369
   assemblies:
   - DrawnUi.Maui
@@ -2295,12 +2090,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.AddAnimator(DrawnUi.Draw.ISkiaAnimator)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddAnimator
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 374
   assemblies:
   - DrawnUi.Maui
@@ -2327,12 +2118,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RemoveAnimator(System.Guid)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemoveAnimator
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 395
   assemblies:
   - DrawnUi.Maui
@@ -2359,12 +2146,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RegisterAnimator(DrawnUi.Draw.ISkiaAnimator)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RegisterAnimator
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 412
   assemblies:
   - DrawnUi.Maui
@@ -2397,12 +2180,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.UnregisterAnimator(System.Guid)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnregisterAnimator
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 419
   assemblies:
   - DrawnUi.Maui
@@ -2429,12 +2208,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.UnregisterAllAnimatorsByType(System.Type)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnregisterAllAnimatorsByType
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 424
   assemblies:
   - DrawnUi.Maui
@@ -2463,12 +2238,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.UnregisterAllAnimatorsByParent(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnregisterAllAnimatorsByParent
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 445
   assemblies:
   - DrawnUi.Maui
@@ -2494,12 +2265,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SetViewTreeVisibilityByParent(DrawnUi.Draw.SkiaControl, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetViewTreeVisibilityByParent
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 472
   assemblies:
   - DrawnUi.Maui
@@ -2535,12 +2302,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SetPauseStateOfAllAnimatorsByParent(DrawnUi.Draw.SkiaControl, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetPauseStateOfAllAnimatorsByParent
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 493
   assemblies:
   - DrawnUi.Maui
@@ -2571,12 +2334,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ExecutePostAnimators(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExecutePostAnimators
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 517
   assemblies:
   - DrawnUi.Maui
@@ -2602,12 +2361,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.PostAnimators
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PostAnimators
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 557
   assemblies:
   - DrawnUi.Maui
@@ -2635,12 +2390,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ReportPointerOver(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReportPointerOver
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 568
   assemblies:
   - DrawnUi.Maui
@@ -2669,12 +2420,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CommitPointerOver()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommitPointerOver
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 574
   assemblies:
   - DrawnUi.Maui
@@ -2700,12 +2447,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ClearPointerOver()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClearPointerOver
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 596
   assemblies:
   - DrawnUi.Maui
@@ -2728,12 +2471,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.HoveredControls
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HoveredControls
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 622
   assemblies:
   - DrawnUi.Maui
@@ -2764,12 +2503,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.HasHover
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasHover
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 636
   assemblies:
   - DrawnUi.Maui
@@ -2800,12 +2535,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ReportHover(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReportHover
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 658
   assemblies:
   - DrawnUi.Maui
@@ -2834,12 +2565,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CommitHover(DrawnUi.Draw.SkiaGesturesParameters)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommitHover
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 672
   assemblies:
   - DrawnUi.Maui
@@ -2870,12 +2597,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ClearHover()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClearHover
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 696
   assemblies:
   - DrawnUi.Maui
@@ -2898,12 +2621,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.PauseHover(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PauseHover
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 714
   assemblies:
   - DrawnUi.Maui
@@ -2932,12 +2651,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ResumeHover(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResumeHover
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 724
   assemblies:
   - DrawnUi.Maui
@@ -2963,12 +2678,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RequestHoverCheck()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RequestHoverCheck
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 738
   assemblies:
   - DrawnUi.Maui
@@ -2996,12 +2707,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ForgetHover(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ForgetHover
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 752
   assemblies:
   - DrawnUi.Maui
@@ -3027,12 +2734,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.HasHoveredControls
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasHoveredControls
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 770
   assemblies:
   - DrawnUi.Maui
@@ -3058,12 +2761,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnHoverCheck(DrawnUi.Draw.SkiaGesturesParameters)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHoverCheck
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 797
   assemblies:
   - DrawnUi.Maui
@@ -3092,12 +2791,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SetAccessibilityFocus(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetAccessibilityFocus
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 875
   assemblies:
   - DrawnUi.Maui
@@ -3130,12 +2825,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.KeyboardFocusNode
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardFocusNode
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 877
   assemblies:
   - DrawnUi.Maui
@@ -3159,12 +2850,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.HandleKeyboardNavigation(DrawnUi.Draw.InputKey, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HandleKeyboardNavigation
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 902
   assemblies:
   - DrawnUi.Maui
@@ -3206,12 +2893,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ArrowsStartKeyboardNavigation
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ArrowsStartKeyboardNavigation
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 979
   assemblies:
   - DrawnUi.Maui
@@ -3244,12 +2927,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.HasNoKeyboardFocus
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasNoKeyboardFocus
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 990
   assemblies:
   - DrawnUi.Maui
@@ -3280,12 +2959,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ArrowStartsNavigation(DrawnUi.Draw.InputKey)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ArrowStartsNavigation
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 999
   assemblies:
   - DrawnUi.Maui
@@ -3311,12 +2986,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.KeyboardFocusColor
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardFocusColor
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1018
   assemblies:
   - DrawnUi.Maui
@@ -3340,12 +3011,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.WheelDeltaPerNotch
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WheelDeltaPerNotch
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1027
   assemblies:
   - DrawnUi.Maui
@@ -3380,12 +3047,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.DrawKeyboardFocus(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawKeyboardFocus
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1040
   assemblies:
   - DrawnUi.Maui
@@ -3414,12 +3077,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.AnimatingControls
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimatingControls
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1068
   assemblies:
   - DrawnUi.Maui
@@ -3448,12 +3107,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.FrameTimeInterpolator
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FrameTimeInterpolator
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1070
   assemblies:
   - DrawnUi.Maui
@@ -3475,12 +3130,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.LastFrameTimeNanos
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastFrameTimeNanos
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1071
   assemblies:
   - DrawnUi.Maui
@@ -3502,12 +3153,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.mLastFrameTime
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: mLastFrameTime
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1073
   assemblies:
   - DrawnUi.Maui
@@ -3531,12 +3178,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ExecuteAnimators(long)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExecuteAnimators
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1076
   assemblies:
   - DrawnUi.Maui
@@ -3565,12 +3208,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnCanvasViewChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCanvasViewChanged
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1182
   assemblies:
   - DrawnUi.Maui
@@ -3591,12 +3230,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CanvasView
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanvasView
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1190
   assemblies:
   - DrawnUi.Maui
@@ -3620,12 +3255,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RequestedCanvasViewIsHardwareAccelerated
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RequestedCanvasViewIsHardwareAccelerated
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1205
   assemblies:
   - DrawnUi.Maui
@@ -3649,12 +3280,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CanvasViewRequestVersion
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanvasViewRequestVersion
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1207
   assemblies:
   - DrawnUi.Maui
@@ -3678,12 +3305,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SetDeviceOrientation(DrawnUi.Draw.DeviceOrientation)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetDeviceOrientation
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1212
   assemblies:
   - DrawnUi.Maui
@@ -3707,12 +3330,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OrientationChanged
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrientationChanged
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1217
   assemblies:
   - DrawnUi.Maui
@@ -3734,12 +3353,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OrientationProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrientationProperty
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1219
   assemblies:
   - DrawnUi.Maui
@@ -3761,12 +3376,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Orientation
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Orientation
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1227
   assemblies:
   - DrawnUi.Maui
@@ -3790,12 +3401,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.HasHandler
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasHandler
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1246
   assemblies:
   - DrawnUi.Maui
@@ -3819,12 +3426,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.DisconnectedHandler()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisconnectedHandler
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1248
   assemblies:
   - DrawnUi.Maui
@@ -3845,12 +3448,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.NeedGlobalRefreshCount
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedGlobalRefreshCount
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1271
   assemblies:
   - DrawnUi.Maui
@@ -3874,12 +3473,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.UpdateGlobal()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateGlobal
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1278
   assemblies:
   - DrawnUi.Maui
@@ -3900,12 +3495,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.NeedMeasureDrawn
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedMeasureDrawn
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1290
   assemblies:
   - DrawnUi.Maui
@@ -3931,12 +3522,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnCanRenderChanged(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCanRenderChanged
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1296
   assemblies:
   - DrawnUi.Maui
@@ -3966,12 +3553,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ConnectedHandler()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ConnectedHandler
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1305
   assemblies:
   - DrawnUi.Maui
@@ -3992,12 +3575,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.StopDrawingWhenUpdateIsLocked
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StopDrawingWhenUpdateIsLocked
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1317
   assemblies:
   - DrawnUi.Maui
@@ -4023,12 +3602,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.TimeDrawingStarted
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TimeDrawingStarted
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1319
   assemblies:
   - DrawnUi.Maui
@@ -4052,12 +3627,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.TimeDrawingComplete
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TimeDrawingComplete
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1320
   assemblies:
   - DrawnUi.Maui
@@ -4081,12 +3652,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.InvalidateViewport()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateViewport
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1323
   assemblies:
   - DrawnUi.Maui
@@ -4110,12 +3677,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Repaint()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Repaint
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1328
   assemblies:
   - DrawnUi.Maui
@@ -4139,12 +3702,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ResetUpdate()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResetUpdate
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1335
   assemblies:
   - DrawnUi.Maui
@@ -4165,12 +3724,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.InvalidatedCanvas
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidatedCanvas
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1344
   assemblies:
   - DrawnUi.Maui
@@ -4196,12 +3751,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IsRendering
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsRendering
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1346
   assemblies:
   - DrawnUi.Maui
@@ -4225,12 +3776,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.GetDensity()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetDensity
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1348
   assemblies:
   - DrawnUi.Maui
@@ -4253,12 +3800,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CreateSkiaView()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateSkiaView
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1356
   assemblies:
   - DrawnUi.Maui
@@ -4281,12 +3824,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnDestroyingVew()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDestroyingVew
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1409
   assemblies:
   - DrawnUi.Maui
@@ -4307,12 +3846,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.DestroySkiaView()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DestroySkiaView
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1413
   assemblies:
   - DrawnUi.Maui
@@ -4333,12 +3868,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IsDisposing
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisposing
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1456
   assemblies:
   - DrawnUi.Maui
@@ -4365,12 +3896,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.~DrawnView()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Finalize
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1458
   assemblies:
   - DrawnUi.Maui
@@ -4394,12 +3921,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Dispose()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1465
   assemblies:
   - DrawnUi.Maui
@@ -4424,12 +3947,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ViewDisposing
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ViewDisposing
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1489
   assemblies:
   - DrawnUi.Maui
@@ -4451,12 +3970,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.WillDispose()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WillDispose
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1499
   assemblies:
   - DrawnUi.Maui
@@ -4477,12 +3992,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnDispose()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDispose
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1507
   assemblies:
   - DrawnUi.Maui
@@ -4503,12 +4014,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Invalidate()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Invalidate
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1562
   assemblies:
   - DrawnUi.Maui
@@ -4533,12 +4040,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.InvalidateParents()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateParents
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1568
   assemblies:
   - DrawnUi.Maui
@@ -4563,12 +4066,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnSuperviewShouldRenderChanged(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSuperviewShouldRenderChanged
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1573
   assemblies:
   - DrawnUi.Maui
@@ -4595,12 +4094,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.InvalidateChildren()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateChildren
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1584
   assemblies:
   - DrawnUi.Maui
@@ -4623,12 +4118,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.PrintDebug(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrintDebug
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1597
   assemblies:
   - DrawnUi.Maui
@@ -4655,12 +4146,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.NeedAutoSize
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedAutoSize
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1607
   assemblies:
   - DrawnUi.Maui
@@ -4684,12 +4171,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.NeedAutoHeight
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedAutoHeight
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1612
   assemblies:
   - DrawnUi.Maui
@@ -4713,12 +4196,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.NeedAutoWidth
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedAutoWidth
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1617
   assemblies:
   - DrawnUi.Maui
@@ -4742,12 +4221,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ShouldInvalidateByChildren
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShouldInvalidateByChildren
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1622
   assemblies:
   - DrawnUi.Maui
@@ -4774,12 +4249,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.UpdateLocks
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateLocks
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1627
   assemblies:
   - DrawnUi.Maui
@@ -4806,12 +4277,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnPropertyChanged(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPropertyChanged
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1629
   assemblies:
   - DrawnUi.Maui
@@ -4842,12 +4309,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Uid
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Uid
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1657
   assemblies:
   - DrawnUi.Maui
@@ -4871,12 +4334,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.LinearGradientAngleToPoints(double)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LinearGradientAngleToPoints
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1659
   assemblies:
   - DrawnUi.Maui
@@ -4905,12 +4364,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IsGhost
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsGhost
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1728
   assemblies:
   - DrawnUi.Maui
@@ -4934,12 +4389,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.DrawnView()
   type: Constructor
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1747
   assemblies:
   - DrawnUi.Maui
@@ -4963,12 +4414,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Clipping
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clipping
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1760
   assemblies:
   - DrawnUi.Maui
@@ -4992,12 +4439,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CreateClip(object, bool, SkiaSharp.SKPath)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateClip
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1762
   assemblies:
   - DrawnUi.Maui
@@ -5042,12 +4485,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CalculateLayout(SkiaSharp.SKRect, double, double, double)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CalculateLayout
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1786
   assemblies:
   - DrawnUi.Maui
@@ -5088,12 +4527,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Arrange(SkiaSharp.SKRect, double, double, double)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Arrange
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1902
   assemblies:
   - DrawnUi.Maui
@@ -5132,12 +4567,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.MeasuredSize
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MeasuredSize
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1907
   assemblies:
   - DrawnUi.Maui
@@ -5164,12 +4595,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Measure(float, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Measure
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1909
   assemblies:
   - DrawnUi.Maui
@@ -5200,12 +4627,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.NeedMeasure
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedMeasure
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1937
   assemblies:
   - DrawnUi.Maui
@@ -5231,12 +4654,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SetMeasured(float, float, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetMeasured
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1943
   assemblies:
   - DrawnUi.Maui
@@ -5269,12 +4688,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnMeasured()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMeasured
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1982
   assemblies:
   - DrawnUi.Maui
@@ -5295,12 +4710,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Measured
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Measured
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1987
   assemblies:
   - DrawnUi.Maui
@@ -5322,12 +4733,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IsDisposed
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisposed
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1994
   assemblies:
   - DrawnUi.Maui
@@ -5354,12 +4761,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CreateContext(SkiaSharp.SKSurface)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateContext
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 1996
   assemblies:
   - DrawnUi.Maui
@@ -5385,12 +4788,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.DrawingThreadId
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawingThreadId
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2012
   assemblies:
   - DrawnUi.Maui
@@ -5416,12 +4815,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.WasRendered
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WasRendered
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2014
   assemblies:
   - DrawnUi.Maui
@@ -5445,12 +4840,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.WasDrawn
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WasDrawn
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2019
   assemblies:
   - DrawnUi.Maui
@@ -5474,12 +4865,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.WillDraw
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WillDraw
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2024
   assemblies:
   - DrawnUi.Maui
@@ -5503,12 +4890,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.WillFirstTimeDraw
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WillFirstTimeDraw
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2029
   assemblies:
   - DrawnUi.Maui
@@ -5532,12 +4915,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.LastDrawnRect
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastDrawnRect
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2031
   assemblies:
   - DrawnUi.Maui
@@ -5559,12 +4938,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnDrawSurface(SkiaSharp.SKSurface, SkiaSharp.SKRect)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDrawSurface
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2033
   assemblies:
   - DrawnUi.Maui
@@ -5592,12 +4967,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CanRender
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanRender
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2091
   assemblies:
   - DrawnUi.Maui
@@ -5623,12 +4994,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnStartRendering(SkiaSharp.SKCanvas)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnStartRendering
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2106
   assemblies:
   - DrawnUi.Maui
@@ -5654,12 +5021,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IsDrawingOnCurrentThread
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDrawingOnCurrentThread
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2136
   assemblies:
   - DrawnUi.Maui
@@ -5688,12 +5051,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.AccessibilityManager
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AccessibilityManager
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2141
   assemblies:
   - DrawnUi.Maui
@@ -5717,12 +5076,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnGestureEvent(AppoMobi.Gestures.TouchActionType, AppoMobi.Gestures.TouchActionEventArgs, AppoMobi.Gestures.TouchActionResult)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnGestureEvent
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2143
   assemblies:
   - DrawnUi.Maui
@@ -5750,12 +5105,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnFinalizeRendering()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnFinalizeRendering
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2145
   assemblies:
   - DrawnUi.Maui
@@ -5776,12 +5127,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnDisposing()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2178
   assemblies:
   - DrawnUi.Maui
@@ -5802,12 +5149,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.AvailableDestination
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AvailableDestination
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2204
   assemblies:
   - DrawnUi.Maui
@@ -5831,12 +5174,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.GetOrderedSubviews()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOrderedSubviews
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2215
   assemblies:
   - DrawnUi.Maui
@@ -5862,12 +5201,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.InvalidateViewsList()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateViewsList
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2228
   assemblies:
   - DrawnUi.Maui
@@ -5892,12 +5227,8 @@ items:
   fullName: DrawnUi.Views.DrawnView._fps
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _fps
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2237
   assemblies:
   - DrawnUi.Maui
@@ -5919,12 +5250,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.FrameTime
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FrameTime
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2242
   assemblies:
   - DrawnUi.Maui
@@ -5950,12 +5277,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CanvasFps
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanvasFps
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2247
   assemblies:
   - DrawnUi.Maui
@@ -5981,12 +5304,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.FPS
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FPS
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2260
   assemblies:
   - DrawnUi.Maui
@@ -6012,12 +5331,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.LockDraw
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockDraw
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2264
   assemblies:
   - DrawnUi.Maui
@@ -6039,12 +5354,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.FrameNumber
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FrameNumber
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2266
   assemblies:
   - DrawnUi.Maui
@@ -6068,12 +5379,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SurfaceCacheManager
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SurfaceCacheManager
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2268
   assemblies:
   - DrawnUi.Maui
@@ -6097,12 +5404,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.GetGRContext()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetGRContext
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2273
   assemblies:
   - DrawnUi.Maui
@@ -6127,12 +5430,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CreateSurface(int, int, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateSurface
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2293
   assemblies:
   - DrawnUi.Maui
@@ -6171,12 +5470,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ReturnSurface(SkiaSharp.SKSurface)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnSurface
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2325
   assemblies:
   - DrawnUi.Maui
@@ -6203,12 +5498,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.DisposeObject(System.IDisposable, string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposeObject
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2342
   assemblies:
   - DrawnUi.Maui
@@ -6241,12 +5532,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.DisposeManager
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposeManager
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2365
   assemblies:
   - DrawnUi.Maui
@@ -6270,12 +5557,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SharedCache
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SharedCache
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2373
   assemblies:
   - DrawnUi.Maui
@@ -6304,12 +5587,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.PostponeInvalidation(DrawnUi.Draw.SkiaControl, System.Action)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PostponeInvalidation
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2394
   assemblies:
   - DrawnUi.Maui
@@ -6335,12 +5614,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.InvalidationActionsA
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidationActionsA
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2405
   assemblies:
   - DrawnUi.Maui
@@ -6362,12 +5637,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.InvalidationActionsB
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidationActionsB
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2406
   assemblies:
   - DrawnUi.Maui
@@ -6389,12 +5660,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.GetFrontInvalidations()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetFrontInvalidations
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2408
   assemblies:
   - DrawnUi.Maui
@@ -6417,12 +5684,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.GetBackInvalidations()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetBackInvalidations
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2416
   assemblies:
   - DrawnUi.Maui
@@ -6445,12 +5708,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SwapInvalidations()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SwapInvalidations
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2424
   assemblies:
   - DrawnUi.Maui
@@ -6471,12 +5730,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.DrawingThreads
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawingThreads
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2435
   assemblies:
   - DrawnUi.Maui
@@ -6502,12 +5757,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.DirtyChildrenTracker
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DirtyChildrenTracker
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2437
   assemblies:
   - DrawnUi.Maui
@@ -6529,12 +5780,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SetChildAsDirty(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetChildAsDirty
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2439
   assemblies:
   - DrawnUi.Maui
@@ -6558,12 +5805,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CommitInvalidations()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CommitInvalidations
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2449
   assemblies:
   - DrawnUi.Maui
@@ -6584,12 +5827,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.LockStartOffscreenQueue
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockStartOffscreenQueue
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2463
   assemblies:
   - DrawnUi.Maui
@@ -6611,12 +5850,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.semaphoreOffscreenProcess
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: semaphoreOffscreenProcess
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2470
   assemblies:
   - DrawnUi.Maui
@@ -6638,12 +5873,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.KickOffscreenCacheRendering()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KickOffscreenCacheRendering
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2477
   assemblies:
   - DrawnUi.Maui
@@ -6666,12 +5897,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.PushToOffscreenRendering(DrawnUi.Draw.SkiaControl, System.Threading.CancellationToken)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushToOffscreenRendering
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2499
   assemblies:
   - DrawnUi.Maui
@@ -6699,12 +5926,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ProcessOffscreenCacheRenderingAsync()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessOffscreenCacheRenderingAsync
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2505
   assemblies:
   - DrawnUi.Maui
@@ -6727,12 +5950,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Draw(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2571
   assemblies:
   - DrawnUi.Maui
@@ -6756,12 +5975,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RenderingScaleProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderingScaleProperty
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2763
   assemblies:
   - DrawnUi.Maui
@@ -6783,12 +5998,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.NeedInvalidateCanvas(Microsoft.Maui.Controls.BindableObject, object, object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedInvalidateCanvas
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2768
   assemblies:
   - DrawnUi.Maui
@@ -6819,12 +6030,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnDensityChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDensityChanged
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2779
   assemblies:
   - DrawnUi.Maui
@@ -6845,12 +6052,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RenderingScale
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderingScale
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2788
   assemblies:
   - DrawnUi.Maui
@@ -6878,12 +6081,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RenderingModeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderingModeProperty
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2826
   assemblies:
   - DrawnUi.Maui
@@ -6905,12 +6104,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RenderingMode
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RenderingMode
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2836
   assemblies:
   - DrawnUi.Maui
@@ -6936,12 +6131,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CanRenderOffScreenProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanRenderOffScreenProperty
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2842
   assemblies:
   - DrawnUi.Maui
@@ -6963,12 +6154,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CanRenderOffScreen
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanRenderOffScreen
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2851
   assemblies:
   - DrawnUi.Maui
@@ -6994,12 +6181,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CanDraw
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanDraw
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2861
   assemblies:
   - DrawnUi.Maui
@@ -7026,12 +6209,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.TagProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TagProperty
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2870
   assemblies:
   - DrawnUi.Maui
@@ -7053,12 +6232,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Tag
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tag
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2875
   assemblies:
   - DrawnUi.Maui
@@ -7085,12 +6260,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IsHiddenInViewTree
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsHiddenInViewTree
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2918
   assemblies:
   - DrawnUi.Maui
@@ -7119,12 +6290,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnChangingtIsHiddenInViewTree(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChangingtIsHiddenInViewTree
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2941
   assemblies:
   - DrawnUi.Maui
@@ -7166,12 +6333,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.NeedCheckParentVisibility
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedCheckParentVisibility
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2961
   assemblies:
   - DrawnUi.Maui
@@ -7195,12 +6358,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.StreamFromString(string)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StreamFromString
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2978
   assemblies:
   - DrawnUi.Maui
@@ -7229,12 +6388,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.PaintSystem
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintSystem
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2983
   assemblies:
   - DrawnUi.Maui
@@ -7258,12 +6413,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Destination
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Destination
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2984
   assemblies:
   - DrawnUi.Maui
@@ -7290,12 +6441,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.PaintTintBackground(SkiaSharp.SKCanvas)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintTintBackground
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 2986
   assemblies:
   - DrawnUi.Maui
@@ -7319,12 +6466,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RedrawCanvas(Microsoft.Maui.Controls.BindableObject, object, object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RedrawCanvas
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3001
   assemblies:
   - DrawnUi.Maui
@@ -7355,12 +6498,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnBindingContextChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnBindingContextChanged
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3012
   assemblies:
   - DrawnUi.Maui
@@ -7385,12 +6524,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Views
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Views
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3024
   assemblies:
   - DrawnUi.Maui
@@ -7418,12 +6553,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ClearChildren()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClearChildren
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3026
   assemblies:
   - DrawnUi.Maui
@@ -7444,12 +6575,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SetChildren(System.Collections.Generic.IEnumerable<DrawnUi.Draw.SkiaControl>)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetChildren
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3038
   assemblies:
   - DrawnUi.Maui
@@ -7476,12 +6603,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.AddSubView(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddSubView
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3047
   assemblies:
   - DrawnUi.Maui
@@ -7509,12 +6632,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ReportHotreloadChildAdded(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReportHotreloadChildAdded
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3057
   assemblies:
   - DrawnUi.Maui
@@ -7538,12 +6657,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnChildAdded(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildAdded
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3068
   assemblies:
   - DrawnUi.Maui
@@ -7567,12 +6682,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnChildRemoved(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildRemoved
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3073
   assemblies:
   - DrawnUi.Maui
@@ -7596,12 +6707,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Children
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Children
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3086
   assemblies:
   - DrawnUi.Maui
@@ -7625,12 +6732,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.AddOrRemoveView(DrawnUi.Draw.SkiaControl, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddOrRemoveView
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3131
   assemblies:
   - DrawnUi.Maui
@@ -7659,12 +6762,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.RemoveSubView(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemoveSubView
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3149
   assemblies:
   - DrawnUi.Maui
@@ -7695,12 +6794,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.UpdateModeProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateModeProperty
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3188
   assemblies:
   - DrawnUi.Maui
@@ -7722,12 +6817,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.UpdateMode
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateMode
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3203
   assemblies:
   - DrawnUi.Maui
@@ -7751,12 +6842,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ClipEffectsProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClipEffectsProperty
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3209
   assemblies:
   - DrawnUi.Maui
@@ -7778,12 +6865,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ClipEffects
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClipEffects
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3215
   assemblies:
   - DrawnUi.Maui
@@ -7810,12 +6893,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Value1Property
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value1Property
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3221
   assemblies:
   - DrawnUi.Maui
@@ -7837,12 +6916,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Value1
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value1
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3228
   assemblies:
   - DrawnUi.Maui
@@ -7866,12 +6941,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Value2Property
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value2Property
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3234
   assemblies:
   - DrawnUi.Maui
@@ -7893,12 +6964,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Value2
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value2
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3241
   assemblies:
   - DrawnUi.Maui
@@ -7922,12 +6989,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Value3Property
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value3Property
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3247
   assemblies:
   - DrawnUi.Maui
@@ -7949,12 +7012,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Value3
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value3
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3254
   assemblies:
   - DrawnUi.Maui
@@ -7978,12 +7037,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Value4Property
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value4Property
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3260
   assemblies:
   - DrawnUi.Maui
@@ -8005,12 +7060,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.Value4
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Value4
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3267
   assemblies:
   - DrawnUi.Maui
@@ -8034,12 +7085,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.FocusLocked
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusLocked
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3275
   assemblies:
   - DrawnUi.Maui
@@ -8063,12 +7110,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.FocusedItemChanged
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusedItemChanged
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3288
   assemblies:
   - DrawnUi.Maui
@@ -8090,12 +7133,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ReportFocus(DrawnUi.Draw.ISkiaGestureListener, DrawnUi.Draw.ISkiaGestureListener)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReportFocus
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3308
   assemblies:
   - DrawnUi.Maui
@@ -8121,12 +7160,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ResetFocusWithDelay(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResetFocusWithDelay
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3359
   assemblies:
   - DrawnUi.Maui
@@ -8153,12 +7188,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.FocusedChild
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FocusedChild
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3410
   assemblies:
   - DrawnUi.Maui
@@ -8184,12 +7215,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.InvalidateCanvas()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateCanvas
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3423
   assemblies:
   - DrawnUi.Maui
@@ -8224,12 +7251,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnParentSet()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnParentSet
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3502
   assemblies:
   - DrawnUi.Maui
@@ -8257,12 +7280,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.GetIsVisibleWithParent(Microsoft.Maui.Controls.VisualElement)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetIsVisibleWithParent
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3528
   assemblies:
   - DrawnUi.Maui
@@ -8288,12 +7307,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CheckElementVisibility(Microsoft.Maui.Controls.VisualElement)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckElementVisibility
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3569
   assemblies:
   - DrawnUi.Maui
@@ -8317,12 +7332,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnSizeChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSizeChanged
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3574
   assemblies:
   - DrawnUi.Maui
@@ -8343,12 +7354,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ClipSmart(SkiaSharp.SKCanvas, SkiaSharp.SKPath, SkiaSharp.SKClipOperation)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClipSmart
-    path: ../src/Shared/DrawnUi/Views/DrawnView.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.cs
     startLine: 3579
   assemblies:
   - DrawnUi.Maui
@@ -8383,12 +7390,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.KeyboardCovered
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Keyboard.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardCovered
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Keyboard.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Keyboard.cs
     startLine: 8
   assemblies:
   - DrawnUi.Maui
@@ -8417,12 +7420,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.GetBottomOnScreen()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Keyboard.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetBottomOnScreen
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Keyboard.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Keyboard.cs
     startLine: 106
   assemblies:
   - DrawnUi.Maui
@@ -8450,12 +7449,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.TooltipStyle
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Tooltip.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TooltipStyle
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Tooltip.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Tooltip.cs
     startLine: 25
   assemblies:
   - DrawnUi.Maui
@@ -8481,12 +7476,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.TooltipHost
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Tooltip.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TooltipHost
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Tooltip.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Tooltip.cs
     startLine: 31
   assemblies:
   - DrawnUi.Maui
@@ -8515,12 +7506,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ShownTooltip
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Tooltip.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShownTooltip
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Tooltip.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Tooltip.cs
     startLine: 34
   assemblies:
   - DrawnUi.Maui
@@ -8546,12 +7533,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ReportTooltip(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Tooltip.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReportTooltip
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Tooltip.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Tooltip.cs
     startLine: 49
   assemblies:
   - DrawnUi.Maui
@@ -8580,12 +7563,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CloseTooltipOnInput()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Tooltip.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CloseTooltipOnInput
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Tooltip.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Tooltip.cs
     startLine: 151
   assemblies:
   - DrawnUi.Maui
@@ -8611,12 +7590,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SelectedText
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.TextSelection.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedText
-    path: ../src/Shared/DrawnUi/Views/DrawnView.TextSelection.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.TextSelection.cs
     startLine: 30
   assemblies:
   - DrawnUi.Maui
@@ -8645,12 +7620,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.CopyTextSelection()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.TextSelection.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CopyTextSelection
-    path: ../src/Shared/DrawnUi/Views/DrawnView.TextSelection.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.TextSelection.cs
     startLine: 44
   assemblies:
   - DrawnUi.Maui
@@ -8675,12 +7646,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ClearTextSelection()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.TextSelection.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClearTextSelection
-    path: ../src/Shared/DrawnUi/Views/DrawnView.TextSelection.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.TextSelection.cs
     startLine: 54
   assemblies:
   - DrawnUi.Maui
@@ -8703,12 +7670,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OpenPopupWindow(DrawnUi.Draw.SkiaControl, DrawnUi.Views.PopupAnchor, DrawnUi.Views.PopupWindowOptions)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OpenPopupWindow
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 20
   assemblies:
   - DrawnUi.Maui
@@ -8752,12 +7715,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ClosePopupWindow(DrawnUi.Views.PopupId)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClosePopupWindow
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 58
   assemblies:
   - DrawnUi.Maui
@@ -8783,12 +7742,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ClosePopupWindows()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClosePopupWindows
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 65
   assemblies:
   - DrawnUi.Maui
@@ -8811,12 +7766,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnWindowDeactivated()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWindowDeactivated
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 75
   assemblies:
   - DrawnUi.Maui
@@ -8842,12 +7793,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.OnWindowActivated()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWindowActivated
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 86
   assemblies:
   - DrawnUi.Maui
@@ -8873,12 +7820,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IsWindowActive
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsWindowActive
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 92
   assemblies:
   - DrawnUi.Maui
@@ -8907,12 +7850,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.WindowActiveChanged
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WindowActiveChanged
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 95
   assemblies:
   - DrawnUi.Maui
@@ -8936,12 +7875,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SetWindowActive(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetWindowActive
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 101
   assemblies:
   - DrawnUi.Maui
@@ -8973,12 +7908,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.PreviewInputForPopups(DrawnUi.Draw.SkiaGesturesParameters)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreviewInputForPopups
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 113
   assemblies:
   - DrawnUi.Maui
@@ -9007,12 +7938,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.PopupWindowClosed
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopupWindowClosed
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 130
   assemblies:
   - DrawnUi.Maui
@@ -9039,12 +7966,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.PopupWindowHost
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopupWindowHost
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 138
   assemblies:
   - DrawnUi.Maui
@@ -9073,12 +7996,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IsPopupWindowOpen(DrawnUi.Views.PopupId)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPopupWindowOpen
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 141
   assemblies:
   - DrawnUi.Maui
@@ -9106,12 +8025,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.HasPopupWindows
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasPopupWindows
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 144
   assemblies:
   - DrawnUi.Maui
@@ -9137,12 +8052,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.TopPopupWindow
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.Popups.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TopPopupWindow
-    path: ../src/Shared/DrawnUi/Views/DrawnView.Popups.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.Popups.cs
     startLine: 147
   assemblies:
   - DrawnUi.Maui
@@ -9168,12 +8079,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SystemTheme
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.SystemTheme.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SystemTheme
-    path: ../src/Shared/DrawnUi/Views/DrawnView.SystemTheme.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.SystemTheme.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui
@@ -9202,12 +8109,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SystemThemeChanged
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.SystemTheme.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SystemThemeChanged
-    path: ../src/Shared/DrawnUi/Views/DrawnView.SystemTheme.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.SystemTheme.cs
     startLine: 25
   assemblies:
   - DrawnUi.Maui
@@ -9234,12 +8137,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.SetSystemTheme(DrawnUi.Views.SystemTheme)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.SystemTheme.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetSystemTheme
-    path: ../src/Shared/DrawnUi/Views/DrawnView.SystemTheme.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.SystemTheme.cs
     startLine: 28
   assemblies:
   - DrawnUi.Maui
@@ -9265,12 +8164,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.ReadWindowsSystemTheme()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.SystemTheme.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReadWindowsSystemTheme
-    path: ../src/Shared/DrawnUi/Views/DrawnView.SystemTheme.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.SystemTheme.cs
     startLine: 40
   assemblies:
   - DrawnUi.Maui
@@ -9298,12 +8193,8 @@ items:
   fullName: DrawnUi.Views.DrawnView.IsWindowsThemeMessage(int, nint)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Views/DrawnView.SystemTheme.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsWindowsThemeMessage
-    path: ../src/Shared/DrawnUi/Views/DrawnView.SystemTheme.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Views\DrawnView.SystemTheme.cs
     startLine: 56
   assemblies:
   - DrawnUi.Maui
@@ -9778,6 +8669,14 @@ references:
   name: ContentProperty
   nameWithType: ContentView.ContentProperty
   fullName: Microsoft.Maui.Controls.ContentView.ContentProperty
+- uid: Microsoft.Maui.Controls.ContentView.SafeAreaEdgesProperty
+  commentId: F:Microsoft.Maui.Controls.ContentView.SafeAreaEdgesProperty
+  parent: Microsoft.Maui.Controls.ContentView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.contentview.safeareaedgesproperty
+  name: SafeAreaEdgesProperty
+  nameWithType: ContentView.SafeAreaEdgesProperty
+  fullName: Microsoft.Maui.Controls.ContentView.SafeAreaEdgesProperty
 - uid: Microsoft.Maui.Controls.ContentView.Content
   commentId: P:Microsoft.Maui.Controls.ContentView.Content
   parent: Microsoft.Maui.Controls.ContentView
@@ -9786,6 +8685,14 @@ references:
   name: Content
   nameWithType: ContentView.Content
   fullName: Microsoft.Maui.Controls.ContentView.Content
+- uid: Microsoft.Maui.Controls.ContentView.SafeAreaEdges
+  commentId: P:Microsoft.Maui.Controls.ContentView.SafeAreaEdges
+  parent: Microsoft.Maui.Controls.ContentView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.contentview.safeareaedges
+  name: SafeAreaEdges
+  nameWithType: ContentView.SafeAreaEdges
+  fullName: Microsoft.Maui.Controls.ContentView.SafeAreaEdges
 - uid: Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
   commentId: F:Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
   parent: Microsoft.Maui.Controls.TemplatedView
@@ -9794,119 +8701,59 @@ references:
   name: ControlTemplateProperty
   nameWithType: TemplatedView.ControlTemplateProperty
   fullName: Microsoft.Maui.Controls.TemplatedView.ControlTemplateProperty
-- uid: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
-  commentId: M:Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
+- uid: Microsoft.Maui.Controls.TemplatedView.IsClippedToBoundsProperty
+  commentId: F:Microsoft.Maui.Controls.TemplatedView.IsClippedToBoundsProperty
   parent: Microsoft.Maui.Controls.TemplatedView
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.layoutchildren
-  name: LayoutChildren(double, double, double, double)
-  nameWithType: TemplatedView.LayoutChildren(double, double, double, double)
-  fullName: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(double, double, double, double)
-  nameWithType.vb: TemplatedView.LayoutChildren(Double, Double, Double, Double)
-  fullName.vb: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(Double, Double, Double, Double)
-  name.vb: LayoutChildren(Double, Double, Double, Double)
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
-    name: LayoutChildren
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.layoutchildren
-  - name: (
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
-    name: LayoutChildren
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.layoutchildren
-  - name: (
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: )
-- uid: Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
-  commentId: M:Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.isclippedtoboundsproperty
+  name: IsClippedToBoundsProperty
+  nameWithType: TemplatedView.IsClippedToBoundsProperty
+  fullName: Microsoft.Maui.Controls.TemplatedView.IsClippedToBoundsProperty
+- uid: Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparentProperty
+  commentId: F:Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparentProperty
   parent: Microsoft.Maui.Controls.TemplatedView
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onmeasure
-  name: OnMeasure(double, double)
-  nameWithType: TemplatedView.OnMeasure(double, double)
-  fullName: Microsoft.Maui.Controls.TemplatedView.OnMeasure(double, double)
-  nameWithType.vb: TemplatedView.OnMeasure(Double, Double)
-  fullName.vb: Microsoft.Maui.Controls.TemplatedView.OnMeasure(Double, Double)
-  name.vb: OnMeasure(Double, Double)
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.cascadeinputtransparentproperty
+  name: CascadeInputTransparentProperty
+  nameWithType: TemplatedView.CascadeInputTransparentProperty
+  fullName: Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparentProperty
+- uid: Microsoft.Maui.Controls.TemplatedView.PaddingProperty
+  commentId: F:Microsoft.Maui.Controls.TemplatedView.PaddingProperty
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.paddingproperty
+  name: PaddingProperty
+  nameWithType: TemplatedView.PaddingProperty
+  fullName: Microsoft.Maui.Controls.TemplatedView.PaddingProperty
+- uid: Microsoft.Maui.Controls.TemplatedView.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: TemplatedView.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.TemplatedView.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   spec.csharp:
-  - uid: Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
-    name: OnMeasure
+  - uid: Microsoft.Maui.Controls.TemplatedView.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onmeasure
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.computeconstraintforview
   - name: (
-  - uid: System.Double
-    name: double
+  - uid: Microsoft.Maui.Controls.View
+    name: View
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
   spec.vb:
-  - uid: Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
-    name: OnMeasure
+  - uid: Microsoft.Maui.Controls.TemplatedView.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onmeasure
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.computeconstraintforview
   - name: (
-  - uid: System.Double
-    name: Double
+  - uid: Microsoft.Maui.Controls.View
+    name: View
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
-  - name: ','
-  - name: " "
-  - uid: System.Double
-    name: Double
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.double
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.TemplatedView.OnApplyTemplate
   commentId: M:Microsoft.Maui.Controls.TemplatedView.OnApplyTemplate
@@ -10150,6 +8997,314 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.rect
   - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.LowerChild(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.LowerChild(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.lowerchild
+  name: LowerChild(View)
+  nameWithType: TemplatedView.LowerChild(View)
+  fullName: Microsoft.Maui.Controls.TemplatedView.LowerChild(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.LowerChild(Microsoft.Maui.Controls.View)
+    name: LowerChild
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.lowerchild
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.LowerChild(Microsoft.Maui.Controls.View)
+    name: LowerChild
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.lowerchild
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.RaiseChild(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.RaiseChild(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.raisechild
+  name: RaiseChild(View)
+  nameWithType: TemplatedView.RaiseChild(View)
+  fullName: Microsoft.Maui.Controls.TemplatedView.RaiseChild(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.RaiseChild(Microsoft.Maui.Controls.View)
+    name: RaiseChild
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.raisechild
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.RaiseChild(Microsoft.Maui.Controls.View)
+    name: RaiseChild
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.raisechild
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.InvalidateLayout
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.InvalidateLayout
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.invalidatelayout
+  name: InvalidateLayout()
+  nameWithType: TemplatedView.InvalidateLayout()
+  fullName: Microsoft.Maui.Controls.TemplatedView.InvalidateLayout()
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.InvalidateLayout
+    name: InvalidateLayout
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.invalidatelayout
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.InvalidateLayout
+    name: InvalidateLayout
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.invalidatelayout
+  - name: (
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.OnChildMeasureInvalidated
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.OnChildMeasureInvalidated
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onchildmeasureinvalidated
+  name: OnChildMeasureInvalidated()
+  nameWithType: TemplatedView.OnChildMeasureInvalidated()
+  fullName: Microsoft.Maui.Controls.TemplatedView.OnChildMeasureInvalidated()
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.OnChildMeasureInvalidated
+    name: OnChildMeasureInvalidated
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onchildmeasureinvalidated
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.OnChildMeasureInvalidated
+    name: OnChildMeasureInvalidated
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onchildmeasureinvalidated
+  - name: (
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.shouldinvalidateonchildadded
+  name: ShouldInvalidateOnChildAdded(View)
+  nameWithType: TemplatedView.ShouldInvalidateOnChildAdded(View)
+  fullName: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
+    name: ShouldInvalidateOnChildAdded
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.shouldinvalidateonchildadded
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
+    name: ShouldInvalidateOnChildAdded
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.shouldinvalidateonchildadded
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.shouldinvalidateonchildremoved
+  name: ShouldInvalidateOnChildRemoved(View)
+  nameWithType: TemplatedView.ShouldInvalidateOnChildRemoved(View)
+  fullName: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
+    name: ShouldInvalidateOnChildRemoved
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.shouldinvalidateonchildremoved
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
+    name: ShouldInvalidateOnChildRemoved
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.shouldinvalidateonchildremoved
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.UpdateChildrenLayout
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.UpdateChildrenLayout
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.updatechildrenlayout
+  name: UpdateChildrenLayout()
+  nameWithType: TemplatedView.UpdateChildrenLayout()
+  fullName: Microsoft.Maui.Controls.TemplatedView.UpdateChildrenLayout()
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.UpdateChildrenLayout
+    name: UpdateChildrenLayout
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.updatechildrenlayout
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.UpdateChildrenLayout
+    name: UpdateChildrenLayout
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.updatechildrenlayout
+  - name: (
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.layoutchildren
+  name: LayoutChildren(double, double, double, double)
+  nameWithType: TemplatedView.LayoutChildren(double, double, double, double)
+  fullName: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(double, double, double, double)
+  nameWithType.vb: TemplatedView.LayoutChildren(Double, Double, Double, Double)
+  fullName.vb: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(Double, Double, Double, Double)
+  name.vb: LayoutChildren(Double, Double, Double, Double)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
+    name: LayoutChildren
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.layoutchildren
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
+    name: LayoutChildren
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.layoutchildren
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+  commentId: M:Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onmeasure
+  name: OnMeasure(double, double)
+  nameWithType: TemplatedView.OnMeasure(double, double)
+  fullName: Microsoft.Maui.Controls.TemplatedView.OnMeasure(double, double)
+  nameWithType.vb: TemplatedView.OnMeasure(Double, Double)
+  fullName.vb: Microsoft.Maui.Controls.TemplatedView.OnMeasure(Double, Double)
+  name.vb: OnMeasure(Double, Double)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+    name: OnMeasure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onmeasure
+  - name: (
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedView.OnMeasure(System.Double,System.Double)
+    name: OnMeasure
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.onmeasure
+  - name: (
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: ','
+  - name: " "
+  - uid: System.Double
+    name: Double
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.TemplatedView.IsClippedToBounds
+  commentId: P:Microsoft.Maui.Controls.TemplatedView.IsClippedToBounds
+  parent: Microsoft.Maui.Controls.TemplatedView
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.isclippedtobounds
+  name: IsClippedToBounds
+  nameWithType: TemplatedView.IsClippedToBounds
+  fullName: Microsoft.Maui.Controls.TemplatedView.IsClippedToBounds
 - uid: Microsoft.Maui.Controls.TemplatedView.ControlTemplate
   commentId: P:Microsoft.Maui.Controls.TemplatedView.ControlTemplate
   parent: Microsoft.Maui.Controls.TemplatedView
@@ -10158,30 +9313,22 @@ references:
   name: ControlTemplate
   nameWithType: TemplatedView.ControlTemplate
   fullName: Microsoft.Maui.Controls.TemplatedView.ControlTemplate
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBoundsProperty
-  commentId: F:Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBoundsProperty
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
+- uid: Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparent
+  commentId: P:Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparent
+  parent: Microsoft.Maui.Controls.TemplatedView
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.isclippedtoboundsproperty
-  name: IsClippedToBoundsProperty
-  nameWithType: Layout.IsClippedToBoundsProperty
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBoundsProperty
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparentProperty
-  commentId: F:Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparentProperty
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.cascadeinputtransparent
+  name: CascadeInputTransparent
+  nameWithType: TemplatedView.CascadeInputTransparent
+  fullName: Microsoft.Maui.Controls.TemplatedView.CascadeInputTransparent
+- uid: Microsoft.Maui.Controls.TemplatedView.Padding
+  commentId: P:Microsoft.Maui.Controls.TemplatedView.Padding
+  parent: Microsoft.Maui.Controls.TemplatedView
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.cascadeinputtransparentproperty
-  name: CascadeInputTransparentProperty
-  nameWithType: Layout.CascadeInputTransparentProperty
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparentProperty
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.PaddingProperty
-  commentId: F:Microsoft.Maui.Controls.Compatibility.Layout.PaddingProperty
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.paddingproperty
-  name: PaddingProperty
-  nameWithType: Layout.PaddingProperty
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.PaddingProperty
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedview.padding
+  name: Padding
+  nameWithType: TemplatedView.Padding
+  fullName: Microsoft.Maui.Controls.TemplatedView.Padding
 - uid: Microsoft.Maui.Controls.Compatibility.Layout.ForceLayout
   commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.ForceLayout
   parent: Microsoft.Maui.Controls.Compatibility.Layout
@@ -10303,88 +9450,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.rect
   - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.LowerChild(Microsoft.Maui.Controls.View)
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.LowerChild(Microsoft.Maui.Controls.View)
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.lowerchild
-  name: LowerChild(View)
-  nameWithType: Layout.LowerChild(View)
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.LowerChild(Microsoft.Maui.Controls.View)
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.LowerChild(Microsoft.Maui.Controls.View)
-    name: LowerChild
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.lowerchild
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.LowerChild(Microsoft.Maui.Controls.View)
-    name: LowerChild
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.lowerchild
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.RaiseChild(Microsoft.Maui.Controls.View)
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.RaiseChild(Microsoft.Maui.Controls.View)
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.raisechild
-  name: RaiseChild(View)
-  nameWithType: Layout.RaiseChild(View)
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.RaiseChild(Microsoft.Maui.Controls.View)
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.RaiseChild(Microsoft.Maui.Controls.View)
-    name: RaiseChild
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.raisechild
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.RaiseChild(Microsoft.Maui.Controls.View)
-    name: RaiseChild
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.raisechild
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.InvalidateLayout
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.InvalidateLayout
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.invalidatelayout
-  name: InvalidateLayout()
-  nameWithType: Layout.InvalidateLayout()
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.InvalidateLayout()
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.InvalidateLayout
-    name: InvalidateLayout
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.invalidatelayout
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.InvalidateLayout
-    name: InvalidateLayout
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.invalidatelayout
-  - name: (
-  - name: )
 - uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated(System.Object,System.EventArgs)
   commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated(System.Object,System.EventArgs)
   parent: Microsoft.Maui.Controls.Compatibility.Layout
@@ -10430,109 +9495,35 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.eventargs
   - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated
+- uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildAdded(Microsoft.Maui.Controls.Element)
+  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.OnChildAdded(Microsoft.Maui.Controls.Element)
   parent: Microsoft.Maui.Controls.Compatibility.Layout
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildmeasureinvalidated#microsoft-maui-controls-compatibility-layout-onchildmeasureinvalidated
-  name: OnChildMeasureInvalidated()
-  nameWithType: Layout.OnChildMeasureInvalidated()
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated()
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildadded
+  name: OnChildAdded(Element)
+  nameWithType: Layout.OnChildAdded(Element)
+  fullName: Microsoft.Maui.Controls.Compatibility.Layout.OnChildAdded(Microsoft.Maui.Controls.Element)
   spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated
-    name: OnChildMeasureInvalidated
+  - uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildAdded(Microsoft.Maui.Controls.Element)
+    name: OnChildAdded
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildmeasureinvalidated#microsoft-maui-controls-compatibility-layout-onchildmeasureinvalidated
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildadded
   - name: (
+  - uid: Microsoft.Maui.Controls.Element
+    name: Element
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.element
   - name: )
   spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildMeasureInvalidated
-    name: OnChildMeasureInvalidated
+  - uid: Microsoft.Maui.Controls.Compatibility.Layout.OnChildAdded(Microsoft.Maui.Controls.Element)
+    name: OnChildAdded
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildmeasureinvalidated#microsoft-maui-controls-compatibility-layout-onchildmeasureinvalidated
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.onchildadded
   - name: (
-  - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.shouldinvalidateonchildadded
-  name: ShouldInvalidateOnChildAdded(View)
-  nameWithType: Layout.ShouldInvalidateOnChildAdded(View)
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
-    name: ShouldInvalidateOnChildAdded
+  - uid: Microsoft.Maui.Controls.Element
+    name: Element
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.shouldinvalidateonchildadded
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildAdded(Microsoft.Maui.Controls.View)
-    name: ShouldInvalidateOnChildAdded
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.shouldinvalidateonchildadded
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.shouldinvalidateonchildremoved
-  name: ShouldInvalidateOnChildRemoved(View)
-  nameWithType: Layout.ShouldInvalidateOnChildRemoved(View)
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
-    name: ShouldInvalidateOnChildRemoved
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.shouldinvalidateonchildremoved
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.ShouldInvalidateOnChildRemoved(Microsoft.Maui.Controls.View)
-    name: ShouldInvalidateOnChildRemoved
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.shouldinvalidateonchildremoved
-  - name: (
-  - uid: Microsoft.Maui.Controls.View
-    name: View
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
-  - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.UpdateChildrenLayout
-  commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.UpdateChildrenLayout
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.updatechildrenlayout
-  name: UpdateChildrenLayout()
-  nameWithType: Layout.UpdateChildrenLayout()
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.UpdateChildrenLayout()
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.UpdateChildrenLayout
-    name: UpdateChildrenLayout
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.updatechildrenlayout
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.Compatibility.Layout.UpdateChildrenLayout
-    name: UpdateChildrenLayout
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.updatechildrenlayout
-  - name: (
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.element
   - name: )
 - uid: Microsoft.Maui.Controls.Compatibility.Layout.CrossPlatformMeasure(System.Double,System.Double)
   commentId: M:Microsoft.Maui.Controls.Compatibility.Layout.CrossPlatformMeasure(System.Double,System.Double)
@@ -10609,30 +9600,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.graphics.rect
   - name: )
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBounds
-  commentId: P:Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBounds
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.isclippedtobounds
-  name: IsClippedToBounds
-  nameWithType: Layout.IsClippedToBounds
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.IsClippedToBounds
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.Padding
-  commentId: P:Microsoft.Maui.Controls.Compatibility.Layout.Padding
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.padding
-  name: Padding
-  nameWithType: Layout.Padding
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.Padding
-- uid: Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparent
-  commentId: P:Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparent
-  parent: Microsoft.Maui.Controls.Compatibility.Layout
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.compatibility.layout.cascadeinputtransparent
-  name: CascadeInputTransparent
-  nameWithType: Layout.CascadeInputTransparent
-  fullName: Microsoft.Maui.Controls.Compatibility.Layout.CascadeInputTransparent
 - uid: Microsoft.Maui.Controls.Compatibility.Layout.LayoutChanged
   commentId: E:Microsoft.Maui.Controls.Compatibility.Layout.LayoutChanged
   parent: Microsoft.Maui.Controls.Compatibility.Layout
@@ -11248,36 +10215,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.invalidatemeasure
   - name: (
-  - name: )
-- uid: Microsoft.Maui.Controls.VisualElement.OnChildAdded(Microsoft.Maui.Controls.Element)
-  commentId: M:Microsoft.Maui.Controls.VisualElement.OnChildAdded(Microsoft.Maui.Controls.Element)
-  parent: Microsoft.Maui.Controls.VisualElement
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.onchildadded
-  name: OnChildAdded(Element)
-  nameWithType: VisualElement.OnChildAdded(Element)
-  fullName: Microsoft.Maui.Controls.VisualElement.OnChildAdded(Microsoft.Maui.Controls.Element)
-  spec.csharp:
-  - uid: Microsoft.Maui.Controls.VisualElement.OnChildAdded(Microsoft.Maui.Controls.Element)
-    name: OnChildAdded
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.onchildadded
-  - name: (
-  - uid: Microsoft.Maui.Controls.Element
-    name: Element
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.element
-  - name: )
-  spec.vb:
-  - uid: Microsoft.Maui.Controls.VisualElement.OnChildAdded(Microsoft.Maui.Controls.Element)
-    name: OnChildAdded
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.onchildadded
-  - name: (
-  - uid: Microsoft.Maui.Controls.Element
-    name: Element
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.element
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.OnChildrenReordered
   commentId: M:Microsoft.Maui.Controls.VisualElement.OnChildrenReordered

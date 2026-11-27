@@ -39,12 +39,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaBackdrop
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -1095,6 +1091,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1337,12 +1334,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.OnMeasuring(float, float, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMeasuring
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -1382,12 +1375,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.ProcessGestures(DrawnUi.Draw.SkiaGesturesParameters, DrawnUi.Draw.GestureEventProcessingInfo)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessGestures
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 14
   assemblies:
   - DrawnUi.Maui
@@ -1417,12 +1406,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.ImagePaint
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ImagePaint
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui
@@ -1444,12 +1429,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.PaintImageFilter
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintImageFilter
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 20
   assemblies:
   - DrawnUi.Maui
@@ -1471,12 +1452,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.PaintColorFilter
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PaintColorFilter
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -1498,12 +1475,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.NeedInvalidateImageFilter
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedInvalidateImageFilter
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 23
   assemblies:
   - DrawnUi.Maui
@@ -1527,12 +1500,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.NeedInvalidateColorFilter
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedInvalidateColorFilter
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 24
   assemblies:
   - DrawnUi.Maui
@@ -1556,12 +1525,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.InvalidateImageFilter()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateImageFilter
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 26
   assemblies:
   - DrawnUi.Maui
@@ -1582,12 +1547,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.InvalidateColorFilter()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateColorFilter
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 31
   assemblies:
   - DrawnUi.Maui
@@ -1608,12 +1569,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.BlurProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BlurProperty
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 54
   assemblies:
   - DrawnUi.Maui
@@ -1635,12 +1592,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.Blur
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Blur
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 61
   assemblies:
   - DrawnUi.Maui
@@ -1664,12 +1617,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.BrightnessProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BrightnessProperty
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 67
   assemblies:
   - DrawnUi.Maui
@@ -1691,12 +1640,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.Brightness
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Brightness
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 74
   assemblies:
   - DrawnUi.Maui
@@ -1720,12 +1665,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.UseContextProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseContextProperty
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 80
   assemblies:
   - DrawnUi.Maui
@@ -1747,12 +1688,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.UseContext
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseContext
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 86
   assemblies:
   - DrawnUi.Maui
@@ -1776,12 +1713,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.HasEffects
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasEffects
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 92
   assemblies:
   - DrawnUi.Maui
@@ -1805,12 +1738,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.OnDisposing()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 100
   assemblies:
   - DrawnUi.Maui
@@ -1834,12 +1763,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.CanUseCacheDoubleBuffering
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanUseCacheDoubleBuffering
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 123
   assemblies:
   - DrawnUi.Maui
@@ -1866,12 +1791,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.Paint(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Paint
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 131
   assemblies:
   - DrawnUi.Maui
@@ -1904,12 +1825,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.Snapshot
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Snapshot
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 264
   assemblies:
   - DrawnUi.Maui
@@ -1933,12 +1850,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.CacheSourceProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CacheSourceProperty
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 268
   assemblies:
   - DrawnUi.Maui
@@ -1960,12 +1873,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.CacheSource
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CacheSource
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 276
   assemblies:
   - DrawnUi.Maui
@@ -1989,12 +1898,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.AttachSource()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AttachSource
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 290
   assemblies:
   - DrawnUi.Maui
@@ -2015,12 +1920,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.GetImage()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetImage
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 303
   assemblies:
   - DrawnUi.Maui
@@ -2043,12 +1944,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.OnScaleChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnScaleChanged
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 315
   assemblies:
   - DrawnUi.Maui
@@ -2071,12 +1968,8 @@ items:
   fullName: DrawnUi.Draw.SkiaBackdrop.BuildPaint()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BuildPaint
-    path: ../src/Shared/DrawnUi/Draw/SkiaBackdrop.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\SkiaBackdrop.cs
     startLine: 323
   assemblies:
   - DrawnUi.Maui
@@ -24217,6 +24110,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

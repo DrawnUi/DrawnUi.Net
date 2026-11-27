@@ -23,12 +23,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalWrapper
   type: Class
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ModalWrapper
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.ModalWrapper.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -1078,6 +1074,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1320,12 +1317,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalWrapper.ModalWrapper(bool, bool, bool, Microsoft.Maui.Graphics.Color, DrawnUi.Controls.SkiaShell)
   type: Constructor
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.ModalWrapper.cs
     startLine: 11
   assemblies:
   - DrawnUi.Maui
@@ -1360,12 +1353,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalWrapper.WrapContent(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WrapContent
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.ModalWrapper.cs
     startLine: 29
   assemblies:
   - DrawnUi.Maui
@@ -1389,12 +1378,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalWrapper.Drawer
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Drawer
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.ModalWrapper.cs
     startLine: 51
   assemblies:
   - DrawnUi.Maui
@@ -1418,12 +1403,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalWrapper.OnWillDisposeWithChildren()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWillDisposeWithChildren
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.ModalWrapper.cs
     startLine: 59
   assemblies:
   - DrawnUi.Maui
@@ -1450,12 +1431,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalWrapper.Backdrop
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Backdrop
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.ModalWrapper.cs
     startLine: 69
   assemblies:
   - DrawnUi.Maui
@@ -1479,12 +1456,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalWrapper.SetContent(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetContent
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.ModalWrapper.cs
     startLine: 71
   assemblies:
   - DrawnUi.Maui
@@ -1510,12 +1483,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalWrapper.DrawViews(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DrawViews
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.ModalWrapper.cs
     startLine: 112
   assemblies:
   - DrawnUi.Maui
@@ -1549,12 +1518,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalWrapper.SetupAppearingAnimation(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupAppearingAnimation
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.ModalWrapper.cs
     startLine: 123
   assemblies:
   - DrawnUi.Maui
@@ -1578,12 +1543,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalWrapper.IsFrozen
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsFrozen
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.ModalWrapper.cs
     startLine: 161
   assemblies:
   - DrawnUi.Maui
@@ -1607,12 +1568,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalWrapper.Draw(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.ModalWrapper.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.ModalWrapper.cs
     startLine: 163
   assemblies:
   - DrawnUi.Maui
@@ -23817,6 +23774,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

@@ -157,12 +157,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell
   type: Class
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.PopupWrapper.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaShell
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.PopupWrapper.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.PopupWrapper.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -170,8 +166,8 @@ items:
   summary: A Canvas with Navigation capabilities
   example: []
   syntax:
-    content: 'public class SkiaShell : BasePageReloadable, INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration<Page>, ISafeAreaView, ITitledElement, IToolbarElement, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView, IDisposable'
-    content.vb: Public Class SkiaShell Inherits BasePageReloadable Implements INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration(Of Page), ISafeAreaView, ITitledElement, IToolbarElement, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView, IDisposable
+    content: 'public class SkiaShell : BasePageReloadable, INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration<Page>, ITitledElement, IToolbarElement, ISafeAreaView, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView, IDisposable'
+    content.vb: Public Class SkiaShell Inherits BasePageReloadable Implements INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration(Of Page), ITitledElement, IToolbarElement, ISafeAreaView, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView, IDisposable
   inheritance:
   - System.Object
   - Microsoft.Maui.Controls.BindableObject
@@ -196,9 +192,9 @@ items:
   - Microsoft.Maui.Controls.IVisualElementController
   - Microsoft.Maui.Controls.IElementController
   - Microsoft.Maui.Controls.IElementConfiguration{Microsoft.Maui.Controls.Page}
-  - Microsoft.Maui.ISafeAreaView
   - Microsoft.Maui.ITitledElement
   - Microsoft.Maui.IToolbarElement
+  - Microsoft.Maui.ISafeAreaView
   - Microsoft.Maui.IContentView
   - Microsoft.Maui.IPadding
   - Microsoft.Maui.ICrossPlatformLayout
@@ -220,6 +216,7 @@ items:
   - DrawnUi.Views.DrawnUiBasePage.KeyboardSize
   - Microsoft.Maui.Controls.ContentPage.ContentProperty
   - Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTappedProperty
+  - Microsoft.Maui.Controls.ContentPage.SafeAreaEdgesProperty
   - Microsoft.Maui.Controls.ContentPage.OnBindingContextChanged
   - Microsoft.Maui.Controls.ContentPage.MeasureOverride(System.Double,System.Double)
   - Microsoft.Maui.Controls.ContentPage.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
@@ -227,7 +224,9 @@ items:
   - Microsoft.Maui.Controls.ContentPage.InvalidateMeasureOverride
   - Microsoft.Maui.Controls.ContentPage.Content
   - Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTapped
+  - Microsoft.Maui.Controls.ContentPage.SafeAreaEdges
   - Microsoft.Maui.Controls.TemplatedPage.ControlTemplateProperty
+  - Microsoft.Maui.Controls.TemplatedPage.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.TemplatedPage.OnApplyTemplate
   - Microsoft.Maui.Controls.TemplatedPage.OnChildRemoved(Microsoft.Maui.Controls.Element,System.Int32)
   - Microsoft.Maui.Controls.TemplatedPage.GetTemplateChild(System.String)
@@ -243,10 +242,16 @@ items:
   - Microsoft.Maui.Controls.Page.IconImageSourceProperty
   - Microsoft.Maui.Controls.Page.DisplayActionSheet(System.String,System.String,System.String,System.String[])
   - Microsoft.Maui.Controls.Page.DisplayActionSheet(System.String,System.String,System.String,Microsoft.Maui.FlowDirection,System.String[])
+  - Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,System.String[])
+  - Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection,System.String[])
   - Microsoft.Maui.Controls.Page.DisplayAlert(System.String,System.String,System.String)
   - Microsoft.Maui.Controls.Page.DisplayAlert(System.String,System.String,System.String,System.String)
   - Microsoft.Maui.Controls.Page.DisplayAlert(System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
   - Microsoft.Maui.Controls.Page.DisplayAlert(System.String,System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+  - Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String)
+  - Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String)
+  - Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+  - Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
   - Microsoft.Maui.Controls.Page.DisplayPromptAsync(System.String,System.String,System.String,System.String,System.String,System.Int32,Microsoft.Maui.Keyboard,System.String)
   - Microsoft.Maui.Controls.Page.ForceLayout
   - Microsoft.Maui.Controls.Page.SendBackButtonPressed
@@ -459,12 +464,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.Dispose(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 30
   assemblies:
   - DrawnUi.Maui
@@ -493,12 +494,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnDisposing()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 42
   assemblies:
   - DrawnUi.Maui
@@ -519,12 +516,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnHandlerChanged()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHandlerChanged
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 51
   assemblies:
   - DrawnUi.Maui
@@ -549,12 +542,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.FrozenLayers
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FrozenLayers
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 64
   assemblies:
   - DrawnUi.Maui
@@ -578,12 +567,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.Toasts
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Toasts
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 65
   assemblies:
   - DrawnUi.Maui
@@ -607,12 +592,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.Popups
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Popups
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 66
   assemblies:
   - DrawnUi.Maui
@@ -636,12 +617,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.NavigationStackScreens
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationStackScreens
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 67
   assemblies:
   - DrawnUi.Maui
@@ -665,12 +642,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.NavigationStackModals
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationStackModals
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 68
   assemblies:
   - DrawnUi.Maui
@@ -694,12 +667,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnModalStackChanged(int)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnModalStackChanged
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 70
   assemblies:
   - DrawnUi.Maui
@@ -726,12 +695,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnToastsStackChanged(int)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnToastsStackChanged
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 74
   assemblies:
   - DrawnUi.Maui
@@ -758,12 +723,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnPopupsStackChanged(int)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPopupsStackChanged
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 78
   assemblies:
   - DrawnUi.Maui
@@ -790,12 +751,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnPagesStackChanged(int)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnPagesStackChanged
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 82
   assemblies:
   - DrawnUi.Maui
@@ -822,12 +779,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalStackChanged
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ModalStackChanged
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 89
   assemblies:
   - DrawnUi.Maui
@@ -849,12 +802,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ToastsStackChanged
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastsStackChanged
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 90
   assemblies:
   - DrawnUi.Maui
@@ -876,12 +825,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PopupsStackChanged
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopupsStackChanged
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 91
   assemblies:
   - DrawnUi.Maui
@@ -903,12 +848,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PagesStackChanged
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PagesStackChanged
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 92
   assemblies:
   - DrawnUi.Maui
@@ -930,12 +871,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.Navigated
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Navigated
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 94
   assemblies:
   - DrawnUi.Maui
@@ -957,12 +894,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.Navigating
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Navigating
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 95
   assemblies:
   - DrawnUi.Maui
@@ -984,12 +917,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.RouteChanged
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RouteChanged
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 96
   assemblies:
   - DrawnUi.Maui
@@ -1011,12 +940,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnNavigated(DrawnUi.Controls.SkiaShellNavigatedArgs)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNavigated
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 102
   assemblies:
   - DrawnUi.Maui
@@ -1040,12 +965,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnNavigating(DrawnUi.Controls.SkiaShellNavigatingArgs)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNavigating
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 109
   assemblies:
   - DrawnUi.Maui
@@ -1069,12 +990,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.NotifyAndCheckCanNavigate(DrawnUi.Draw.SkiaControl, string, DrawnUi.Controls.NavigationSource)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NotifyAndCheckCanNavigate
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 116
   assemblies:
   - DrawnUi.Maui
@@ -1107,12 +1024,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnCurrentRouteChanged()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCurrentRouteChanged
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 125
   assemblies:
   - DrawnUi.Maui
@@ -1133,12 +1046,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ToastBackgroundColor
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastBackgroundColor
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 168
   assemblies:
   - DrawnUi.Maui
@@ -1160,12 +1069,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ToastTextColor
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastTextColor
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 169
   assemblies:
   - DrawnUi.Maui
@@ -1187,12 +1092,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ToastTextFont
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastTextFont
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 170
   assemblies:
   - DrawnUi.Maui
@@ -1214,12 +1115,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ToastTextFontWeight
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastTextFontWeight
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 171
   assemblies:
   - DrawnUi.Maui
@@ -1241,12 +1138,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ToastTextSize
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastTextSize
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 172
   assemblies:
   - DrawnUi.Maui
@@ -1268,12 +1161,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ToastTextMargins
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToastTextMargins
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 173
   assemblies:
   - DrawnUi.Maui
@@ -1295,12 +1184,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PopupBackgroundColor
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopupBackgroundColor
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 178
   assemblies:
   - DrawnUi.Maui
@@ -1324,12 +1209,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PopupsBackgroundBlur
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopupsBackgroundBlur
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 183
   assemblies:
   - DrawnUi.Maui
@@ -1353,12 +1234,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PopupsAnimationSpeed
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopupsAnimationSpeed
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 185
   assemblies:
   - DrawnUi.Maui
@@ -1380,12 +1257,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PopupsCancelAnimationsAfterMs
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopupsCancelAnimationsAfterMs
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 186
   assemblies:
   - DrawnUi.Maui
@@ -1407,12 +1280,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.LogEnabled
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LogEnabled
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 187
   assemblies:
   - DrawnUi.Maui
@@ -1434,12 +1303,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ZIndexModals
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZIndexModals
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 188
   assemblies:
   - DrawnUi.Maui
@@ -1461,12 +1326,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ZIndexPopups
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZIndexPopups
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 189
   assemblies:
   - DrawnUi.Maui
@@ -1488,12 +1349,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ZIndexToasts
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ZIndexToasts
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 190
   assemblies:
   - DrawnUi.Maui
@@ -1515,12 +1372,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.SkiaShell()
   type: Constructor
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 192
   assemblies:
   - DrawnUi.Maui
@@ -1544,12 +1397,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ShellLayout
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShellLayout
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 210
   assemblies:
   - DrawnUi.Maui
@@ -1573,12 +1422,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.NavigationLayout
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationLayout
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 215
   assemblies:
   - DrawnUi.Maui
@@ -1604,12 +1449,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.RootLayout
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RootLayout
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 220
   assemblies:
   - DrawnUi.Maui
@@ -1635,12 +1476,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.GetTopPopup()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTopPopup
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 224
   assemblies:
   - DrawnUi.Maui
@@ -1663,12 +1500,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.GetTopModal()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTopModal
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 238
   assemblies:
   - DrawnUi.Maui
@@ -1691,12 +1524,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.GetTopmostViewInternal()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTopmostViewInternal
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 263
   assemblies:
   - DrawnUi.Maui
@@ -1731,12 +1560,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.GetTopmostView()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTopmostView
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 299
   assemblies:
   - DrawnUi.Maui
@@ -1771,12 +1596,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.RemoveAsync(DrawnUi.Draw.SkiaControl, bool?, System.Collections.Generic.IDictionary<string, object>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemoveAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 321
   assemblies:
   - DrawnUi.Maui
@@ -1809,12 +1630,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PresentAsync(string, bool?, System.Collections.Generic.IDictionary<string, object>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PresentAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 378
   assemblies:
   - DrawnUi.Maui
@@ -1847,12 +1664,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PushModalRoute(DrawnUi.Draw.SkiaControl, string, bool?)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushModalRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 437
   assemblies:
   - DrawnUi.Maui
@@ -1885,12 +1698,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PushRegisteredPageAsync(string, bool, System.Collections.Generic.IDictionary<string, object>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushRegisteredPageAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 443
   assemblies:
   - DrawnUi.Maui
@@ -1923,12 +1732,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PushAsync(Microsoft.Maui.Controls.BindableObject, bool, bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 476
   assemblies:
   - DrawnUi.Maui
@@ -1966,12 +1771,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PushAsync(string, bool, System.Collections.Generic.IDictionary<string, object>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 511
   assemblies:
   - DrawnUi.Maui
@@ -2008,12 +1809,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnShellGoBack
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnShellGoBack
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 531
   assemblies:
   - DrawnUi.Maui
@@ -2037,12 +1834,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.GoBack(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoBack
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 533
   assemblies:
   - DrawnUi.Maui
@@ -2071,12 +1864,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.GoBackDefault(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoBackDefault
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 550
   assemblies:
   - DrawnUi.Maui
@@ -2105,12 +1894,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.GoBackInRoute(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoBackInRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 584
   assemblies:
   - DrawnUi.Maui
@@ -2143,12 +1928,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PopAsync(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 604
   assemblies:
   - DrawnUi.Maui
@@ -2181,12 +1962,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.WrapScreenshot(DrawnUi.Draw.SkiaControl, SkiaSharp.SKImage, Microsoft.Maui.Graphics.Color, float, bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WrapScreenshot
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 652
   assemblies:
   - DrawnUi.Maui
@@ -2227,12 +2004,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.CreateModalDrawer(bool, bool, bool, Microsoft.Maui.Graphics.Color)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateModalDrawer
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 713
   assemblies:
   - DrawnUi.Maui
@@ -2267,12 +2040,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PushModalAsync(Microsoft.Maui.Controls.BindableObject, bool, bool, bool, System.Collections.Generic.IDictionary<string, object>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushModalAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 737
   assemblies:
   - DrawnUi.Maui
@@ -2317,12 +2086,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.SetCurrentRouteNodes(System.Collections.Generic.List<DrawnUi.Controls.SkiaShell.ShellStackChild>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetCurrentRouteNodes
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 944
   assemblies:
   - DrawnUi.Maui
@@ -2349,12 +2114,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.AddToCurrentRouteNodes(string, DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddToCurrentRouteNodes
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 951
   assemblies:
   - DrawnUi.Maui
@@ -2383,12 +2144,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.RemoveFromCurrentRouteNodes(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemoveFromCurrentRouteNodes
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 960
   assemblies:
   - DrawnUi.Maui
@@ -2414,12 +2171,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.CurrentRouteAuto
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CurrentRouteAuto
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 978
   assemblies:
   - DrawnUi.Maui
@@ -2443,12 +2196,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PushModalAsync(string, bool, bool, bool, System.Collections.Generic.IDictionary<string, object>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushModalAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 997
   assemblies:
   - DrawnUi.Maui
@@ -2485,12 +2234,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PopModalAsync(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopModalAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1015
   assemblies:
   - DrawnUi.Maui
@@ -2519,12 +2264,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PopModalAsync(DrawnUi.Draw.SkiaControl, bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopModalAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1052
   assemblies:
   - DrawnUi.Maui
@@ -2555,12 +2296,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalRemoved
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ModalRemoved
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1163
   assemblies:
   - DrawnUi.Maui
@@ -2589,12 +2326,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnModalRemoved(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnModalRemoved
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1169
   assemblies:
   - DrawnUi.Maui
@@ -2621,12 +2354,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PopModalAsync(DrawnUi.Controls.SkiaShell.PageInStack, bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopModalAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1176
   assemblies:
   - DrawnUi.Maui
@@ -2657,12 +2386,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PopTabToRoot()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopTabToRoot
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1232
   assemblies:
   - DrawnUi.Maui
@@ -2685,12 +2410,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.CanFreezeLayout()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanFreezeLayout
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1241
   assemblies:
   - DrawnUi.Maui
@@ -2716,12 +2437,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.CanUnfreezeLayout()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanUnfreezeLayout
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1250
   assemblies:
   - DrawnUi.Maui
@@ -2747,12 +2464,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.LockLayers
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockLayers
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1255
   assemblies:
   - DrawnUi.Maui
@@ -2774,12 +2487,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.LockNavigation
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LockNavigation
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1256
   assemblies:
   - DrawnUi.Maui
@@ -2801,12 +2510,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.SetupFrozenLayersVisibility(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupFrozenLayersVisibility
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1258
   assemblies:
   - DrawnUi.Maui
@@ -2830,12 +2535,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.FreezingModals
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FreezingModals
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1267
   assemblies:
   - DrawnUi.Maui
@@ -2859,12 +2560,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.SetFrozenLayerVisibility(DrawnUi.Draw.SkiaControl, bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetFrozenLayerVisibility
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1275
   assemblies:
   - DrawnUi.Maui
@@ -2899,12 +2596,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.UnfreezeRootLayout(DrawnUi.Draw.SkiaControl, bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnfreezeRootLayout
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1300
   assemblies:
   - DrawnUi.Maui
@@ -2940,12 +2633,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.FreezeRootLayout(DrawnUi.Draw.SkiaControl, bool, Microsoft.Maui.Graphics.Color, float)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FreezeRootLayout
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1358
   assemblies:
   - DrawnUi.Maui
@@ -2982,12 +2671,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.FreezeRootLayout(DrawnUi.Draw.SkiaControl, SkiaSharp.SKImage, bool, Microsoft.Maui.Graphics.Color, float)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FreezeRootLayout
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1382
   assemblies:
   - DrawnUi.Maui
@@ -3024,12 +2709,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.FreezeRootLayoutInternal(DrawnUi.Draw.SkiaControl, DrawnUi.Draw.SkiaControl, bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FreezeRootLayoutInternal
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1406
   assemblies:
   - DrawnUi.Maui
@@ -3062,12 +2743,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ShowModalsFrom(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShowModalsFrom
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1438
   assemblies:
   - DrawnUi.Maui
@@ -3102,12 +2779,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.SetupModalsVisibility(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupModalsVisibility
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1457
   assemblies:
   - DrawnUi.Maui
@@ -3133,12 +2806,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell._topmost
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _topmost
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1492
   assemblies:
   - DrawnUi.Maui
@@ -3160,12 +2829,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell._lockLayers
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _lockLayers
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1493
   assemblies:
   - DrawnUi.Maui
@@ -3187,12 +2852,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnLayersChanged(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayersChanged
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1500
   assemblies:
   - DrawnUi.Maui
@@ -3223,12 +2884,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.SetupAppeared(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupAppeared
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1527
   assemblies:
   - DrawnUi.Maui
@@ -3252,12 +2909,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.SetupDisappeared(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupDisappeared
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1539
   assemblies:
   - DrawnUi.Maui
@@ -3281,12 +2934,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.CloseAllPopups()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CloseAllPopups
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1553
   assemblies:
   - DrawnUi.Maui
@@ -3309,12 +2958,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ClosePopupAsync(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClosePopupAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1564
   assemblies:
   - DrawnUi.Maui
@@ -3347,12 +2992,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ClosePopupAsync(DrawnUi.Draw.SkiaControl, bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClosePopupAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1573
   assemblies:
   - DrawnUi.Maui
@@ -3383,12 +3024,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OpenPopupAsync(DrawnUi.Draw.SkiaControl, bool, bool, bool, Microsoft.Maui.Graphics.Color, SkiaSharp.SKPoint?)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OpenPopupAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1621
   assemblies:
   - DrawnUi.Maui
@@ -3433,12 +3070,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.CloseAllToasts()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CloseAllToasts
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1768
   assemblies:
   - DrawnUi.Maui
@@ -3461,12 +3094,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ShowToast(DrawnUi.Draw.SkiaControl, int)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShowToast
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1774
   assemblies:
   - DrawnUi.Maui
@@ -3495,12 +3124,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.UnlockNavigation(string)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnlockNavigation
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1831
   assemblies:
   - DrawnUi.Maui
@@ -3527,12 +3152,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.AwaitNavigationLock(string)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AwaitNavigationLock
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1838
   assemblies:
   - DrawnUi.Maui
@@ -3561,12 +3182,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.UnlockLayers(string)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnlockLayers
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1845
   assemblies:
   - DrawnUi.Maui
@@ -3593,12 +3210,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.AwaitLayersLock(string)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AwaitLayersLock
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1852
   assemblies:
   - DrawnUi.Maui
@@ -3627,12 +3240,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ShowToast(string, int)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShowToast
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1859
   assemblies:
   - DrawnUi.Maui
@@ -3661,12 +3270,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.HasTopmostModalBindingContext<T>()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HasTopmostModalBindingContext
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1877
   assemblies:
   - DrawnUi.Maui
@@ -3694,12 +3299,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ApplyShellPropertiesToCanvas()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyShellPropertiesToCanvas
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1891
   assemblies:
   - DrawnUi.Maui
@@ -3720,12 +3321,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.Canvas
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Canvas
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1908
   assemblies:
   - DrawnUi.Maui
@@ -3749,12 +3346,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ReplaceShellLayout(DrawnUi.Draw.ISkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReplaceShellLayout
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1913
   assemblies:
   - DrawnUi.Maui
@@ -3778,12 +3371,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ReplaceRootLayout(DrawnUi.Draw.ISkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReplaceRootLayout
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1943
   assemblies:
   - DrawnUi.Maui
@@ -3807,12 +3396,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ImportRootLayout(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ImportRootLayout
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 1967
   assemblies:
   - DrawnUi.Maui
@@ -3839,12 +3424,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ImportNavigationLayout(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ImportNavigationLayout
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2004
   assemblies:
   - DrawnUi.Maui
@@ -3871,12 +3452,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.Reset()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Reset
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2017
   assemblies:
   - DrawnUi.Maui
@@ -3897,12 +3474,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.Initialized
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Initialized
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2031
   assemblies:
   - DrawnUi.Maui
@@ -3926,12 +3499,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.Initialize(string)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Initialize
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2033
   assemblies:
   - DrawnUi.Maui
@@ -3958,12 +3527,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnStarted()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnStarted
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2066
   assemblies:
   - DrawnUi.Maui
@@ -3984,12 +3549,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.RegisterActionRoute(string, System.Action)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RegisterActionRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2071
   assemblies:
   - DrawnUi.Maui
@@ -4018,12 +3579,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ExecuteActionRoute(string)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExecuteActionRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2079
   assemblies:
   - DrawnUi.Maui
@@ -4052,12 +3609,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.RegisterRoute(string, System.Type)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RegisterRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2096
   assemblies:
   - DrawnUi.Maui
@@ -4086,12 +3639,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.GetOrCreateContent(string)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOrCreateContent
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2101
   assemblies:
   - DrawnUi.Maui
@@ -4120,12 +3669,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.SetRoute(Microsoft.Maui.Controls.BindableObject, string)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2128
   assemblies:
   - DrawnUi.Maui
@@ -4154,12 +3699,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.RouteProperty
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RouteProperty
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2133
   assemblies:
   - DrawnUi.Maui
@@ -4181,12 +3722,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.FormatRoute(System.Collections.Generic.List<string>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FormatRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2244
   assemblies:
   - DrawnUi.Maui
@@ -4215,12 +3752,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.FormatRoute(string)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FormatRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2250
   assemblies:
   - DrawnUi.Maui
@@ -4249,12 +3782,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.RegisterRoute(string, DrawnUi.Controls.SkiaShell.TypeRouteFactory)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RegisterRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2255
   assemblies:
   - DrawnUi.Maui
@@ -4283,12 +3812,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.PopToRootAsync()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopToRootAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2272
   assemblies:
   - DrawnUi.Maui
@@ -4311,12 +3836,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ModalStack
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ModalStack
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2277
   assemblies:
   - DrawnUi.Maui
@@ -4340,12 +3861,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.NavigationStack
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationStack
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2286
   assemblies:
   - DrawnUi.Maui
@@ -4369,12 +3886,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OrderedRoute
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrderedRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2324
   assemblies:
   - DrawnUi.Maui
@@ -4398,12 +3911,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.GoToAsync(Microsoft.Maui.Controls.ShellNavigationState)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoToAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2335
   assemblies:
   - DrawnUi.Maui
@@ -4429,12 +3938,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell._rootRoute
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _rootRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2340
   assemblies:
   - DrawnUi.Maui
@@ -4456,12 +3961,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.Services
   type: Field
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Services
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2341
   assemblies:
   - DrawnUi.Maui
@@ -4483,12 +3984,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.BuildRoute(string, System.Collections.Generic.IDictionary<string, object>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BuildRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2344
   assemblies:
   - DrawnUi.Maui
@@ -4519,12 +4016,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.SetupRoot(DrawnUi.Draw.ISkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupRoot
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2364
   assemblies:
   - DrawnUi.Maui
@@ -4551,12 +4044,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.SetRoot(string, bool, System.Collections.Generic.IDictionary<string, object>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetRoot
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2376
   assemblies:
   - DrawnUi.Maui
@@ -4599,12 +4088,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.SetArguments(Microsoft.Maui.Controls.BindableObject, System.Collections.Generic.IDictionary<string, object>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetArguments
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2401
   assemblies:
   - DrawnUi.Maui
@@ -4633,12 +4118,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ParseState(Microsoft.Maui.Controls.ShellNavigationState)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParseState
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2434
   assemblies:
   - DrawnUi.Maui
@@ -4664,12 +4145,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.ParseRoute(string)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ParseRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2445
   assemblies:
   - DrawnUi.Maui
@@ -4698,12 +4175,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.GetOrCreateContentSetArguments<T>(string, System.Collections.Generic.IDictionary<string, object>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOrCreateContentSetArguments
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2469
   assemblies:
   - DrawnUi.Maui
@@ -4736,12 +4209,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.CurrentRoute
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CurrentRoute
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2493
   assemblies:
   - DrawnUi.Maui
@@ -4765,12 +4234,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.GoToAsync(Microsoft.Maui.Controls.ShellNavigationState, bool?, System.Collections.Generic.IDictionary<string, object>)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GoToAsync
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2503
   assemblies:
   - DrawnUi.Maui
@@ -4812,12 +4277,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.UpdateLayout()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateLayout
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2672
   assemblies:
   - DrawnUi.Maui
@@ -4838,12 +4299,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnLayoutInvalidated()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutInvalidated
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2677
   assemblies:
   - DrawnUi.Maui
@@ -4864,12 +4321,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.BottomInsets
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BottomInsets
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2689
   assemblies:
   - DrawnUi.Maui
@@ -4893,12 +4346,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.TopInsets
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TopInsets
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2704
   assemblies:
   - DrawnUi.Maui
@@ -4922,12 +4371,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.StatusBarHeight
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StatusBarHeight
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2719
   assemblies:
   - DrawnUi.Maui
@@ -4951,12 +4396,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.OnRotation
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnRotation
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2732
   assemblies:
   - DrawnUi.Maui
@@ -4978,12 +4419,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.TabReselected
   type: Event
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TabReselected
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2733
   assemblies:
   - DrawnUi.Maui
@@ -5005,12 +4442,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.MenuItems
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MenuItems
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2734
   assemblies:
   - DrawnUi.Maui
@@ -5034,12 +4467,8 @@ items:
   fullName: DrawnUi.Controls.SkiaShell.Buffer
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Buffer
-    path: ../src/Maui/DrawnUi/Controls/Navigation/SkiaShell.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Controls\Navigation\SkiaShell.cs
     startLine: 2743
   assemblies:
   - DrawnUi.Maui
@@ -5280,14 +4709,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page
   - name: )
-- uid: Microsoft.Maui.ISafeAreaView
-  commentId: T:Microsoft.Maui.ISafeAreaView
-  parent: Microsoft.Maui
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.isafeareaview
-  name: ISafeAreaView
-  nameWithType: ISafeAreaView
-  fullName: Microsoft.Maui.ISafeAreaView
 - uid: Microsoft.Maui.ITitledElement
   commentId: T:Microsoft.Maui.ITitledElement
   parent: Microsoft.Maui
@@ -5304,6 +4725,14 @@ references:
   name: IToolbarElement
   nameWithType: IToolbarElement
   fullName: Microsoft.Maui.IToolbarElement
+- uid: Microsoft.Maui.ISafeAreaView
+  commentId: T:Microsoft.Maui.ISafeAreaView
+  parent: Microsoft.Maui
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.isafeareaview
+  name: ISafeAreaView
+  nameWithType: ISafeAreaView
+  fullName: Microsoft.Maui.ISafeAreaView
 - uid: Microsoft.Maui.IContentView
   commentId: T:Microsoft.Maui.IContentView
   parent: Microsoft.Maui
@@ -5555,6 +4984,14 @@ references:
   name: HideSoftInputOnTappedProperty
   nameWithType: ContentPage.HideSoftInputOnTappedProperty
   fullName: Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTappedProperty
+- uid: Microsoft.Maui.Controls.ContentPage.SafeAreaEdgesProperty
+  commentId: F:Microsoft.Maui.Controls.ContentPage.SafeAreaEdgesProperty
+  parent: Microsoft.Maui.Controls.ContentPage
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.contentpage.safeareaedgesproperty
+  name: SafeAreaEdgesProperty
+  nameWithType: ContentPage.SafeAreaEdgesProperty
+  fullName: Microsoft.Maui.Controls.ContentPage.SafeAreaEdgesProperty
 - uid: Microsoft.Maui.Controls.ContentPage.OnBindingContextChanged
   commentId: M:Microsoft.Maui.Controls.ContentPage.OnBindingContextChanged
   parent: Microsoft.Maui.Controls.ContentPage
@@ -5759,6 +5196,14 @@ references:
   name: HideSoftInputOnTapped
   nameWithType: ContentPage.HideSoftInputOnTapped
   fullName: Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTapped
+- uid: Microsoft.Maui.Controls.ContentPage.SafeAreaEdges
+  commentId: P:Microsoft.Maui.Controls.ContentPage.SafeAreaEdges
+  parent: Microsoft.Maui.Controls.ContentPage
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.contentpage.safeareaedges
+  name: SafeAreaEdges
+  nameWithType: ContentPage.SafeAreaEdges
+  fullName: Microsoft.Maui.Controls.ContentPage.SafeAreaEdges
 - uid: Microsoft.Maui.Controls.TemplatedPage.ControlTemplateProperty
   commentId: F:Microsoft.Maui.Controls.TemplatedPage.ControlTemplateProperty
   parent: Microsoft.Maui.Controls.TemplatedPage
@@ -5767,6 +5212,36 @@ references:
   name: ControlTemplateProperty
   nameWithType: TemplatedPage.ControlTemplateProperty
   fullName: Microsoft.Maui.Controls.TemplatedPage.ControlTemplateProperty
+- uid: Microsoft.Maui.Controls.TemplatedPage.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.TemplatedPage.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.TemplatedPage
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedpage.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: TemplatedPage.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.TemplatedPage.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedPage.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedpage.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedPage.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedpage.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
 - uid: Microsoft.Maui.Controls.TemplatedPage.OnApplyTemplate
   commentId: M:Microsoft.Maui.Controls.TemplatedPage.OnApplyTemplate
   parent: Microsoft.Maui.Controls.TemplatedPage
@@ -6113,6 +5588,172 @@ references:
   - name: (
   - name: )
   - name: )
+- uid: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,System.String[])
+  commentId: M:Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,System.String[])
+  parent: Microsoft.Maui.Controls.Page
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayactionsheetasync#microsoft-maui-controls-page-displayactionsheetasync(system-string-system-string-system-string-system-string())
+  name: DisplayActionSheetAsync(string, string, string, params string[])
+  nameWithType: Page.DisplayActionSheetAsync(string, string, string, params string[])
+  fullName: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(string, string, string, params string[])
+  nameWithType.vb: Page.DisplayActionSheetAsync(String, String, String, ParamArray String())
+  fullName.vb: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(String, String, String, ParamArray String())
+  name.vb: DisplayActionSheetAsync(String, String, String, ParamArray String())
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,System.String[])
+    name: DisplayActionSheetAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayactionsheetasync#microsoft-maui-controls-page-displayactionsheetasync(system-string-system-string-system-string-system-string())
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,System.String[])
+    name: DisplayActionSheetAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayactionsheetasync#microsoft-maui-controls-page-displayactionsheetasync(system-string-system-string-system-string-system-string())
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+  - name: )
+- uid: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection,System.String[])
+  commentId: M:Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection,System.String[])
+  parent: Microsoft.Maui.Controls.Page
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayactionsheetasync#microsoft-maui-controls-page-displayactionsheetasync(system-string-system-string-system-string-microsoft-maui-flowdirection-system-string())
+  name: DisplayActionSheetAsync(string, string, string, FlowDirection, params string[])
+  nameWithType: Page.DisplayActionSheetAsync(string, string, string, FlowDirection, params string[])
+  fullName: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(string, string, string, Microsoft.Maui.FlowDirection, params string[])
+  nameWithType.vb: Page.DisplayActionSheetAsync(String, String, String, FlowDirection, ParamArray String())
+  fullName.vb: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(String, String, String, Microsoft.Maui.FlowDirection, ParamArray String())
+  name.vb: DisplayActionSheetAsync(String, String, String, FlowDirection, ParamArray String())
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection,System.String[])
+    name: DisplayActionSheetAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayactionsheetasync#microsoft-maui-controls-page-displayactionsheetasync(system-string-system-string-system-string-microsoft-maui-flowdirection-system-string())
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.FlowDirection
+    name: FlowDirection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.flowdirection
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection,System.String[])
+    name: DisplayActionSheetAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayactionsheetasync#microsoft-maui-controls-page-displayactionsheetasync(system-string-system-string-system-string-microsoft-maui-flowdirection-system-string())
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.FlowDirection
+    name: FlowDirection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.flowdirection
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+  - name: )
 - uid: Microsoft.Maui.Controls.Page.DisplayAlert(System.String,System.String,System.String)
   commentId: M:Microsoft.Maui.Controls.Page.DisplayAlert(System.String,System.String,System.String)
   parent: Microsoft.Maui.Controls.Page
@@ -6359,6 +6000,282 @@ references:
     name: DisplayAlert
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalert#microsoft-maui-controls-page-displayalert(system-string-system-string-system-string-system-string-microsoft-maui-flowdirection)
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.FlowDirection
+    name: FlowDirection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.flowdirection
+  - name: )
+- uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String)
+  commentId: M:Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String)
+  parent: Microsoft.Maui.Controls.Page
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string)
+  name: DisplayAlertAsync(string, string, string)
+  nameWithType: Page.DisplayAlertAsync(string, string, string)
+  fullName: Microsoft.Maui.Controls.Page.DisplayAlertAsync(string, string, string)
+  nameWithType.vb: Page.DisplayAlertAsync(String, String, String)
+  fullName.vb: Microsoft.Maui.Controls.Page.DisplayAlertAsync(String, String, String)
+  name.vb: DisplayAlertAsync(String, String, String)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string)
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string)
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String)
+  commentId: M:Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String)
+  parent: Microsoft.Maui.Controls.Page
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-system-string)
+  name: DisplayAlertAsync(string, string, string, string)
+  nameWithType: Page.DisplayAlertAsync(string, string, string, string)
+  fullName: Microsoft.Maui.Controls.Page.DisplayAlertAsync(string, string, string, string)
+  nameWithType.vb: Page.DisplayAlertAsync(String, String, String, String)
+  fullName.vb: Microsoft.Maui.Controls.Page.DisplayAlertAsync(String, String, String, String)
+  name.vb: DisplayAlertAsync(String, String, String, String)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-system-string)
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-system-string)
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+  commentId: M:Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+  parent: Microsoft.Maui.Controls.Page
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-microsoft-maui-flowdirection)
+  name: DisplayAlertAsync(string, string, string, FlowDirection)
+  nameWithType: Page.DisplayAlertAsync(string, string, string, FlowDirection)
+  fullName: Microsoft.Maui.Controls.Page.DisplayAlertAsync(string, string, string, Microsoft.Maui.FlowDirection)
+  nameWithType.vb: Page.DisplayAlertAsync(String, String, String, FlowDirection)
+  fullName.vb: Microsoft.Maui.Controls.Page.DisplayAlertAsync(String, String, String, Microsoft.Maui.FlowDirection)
+  name.vb: DisplayAlertAsync(String, String, String, FlowDirection)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-microsoft-maui-flowdirection)
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.FlowDirection
+    name: FlowDirection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.flowdirection
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-microsoft-maui-flowdirection)
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.FlowDirection
+    name: FlowDirection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.flowdirection
+  - name: )
+- uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+  commentId: M:Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+  parent: Microsoft.Maui.Controls.Page
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-system-string-microsoft-maui-flowdirection)
+  name: DisplayAlertAsync(string, string, string, string, FlowDirection)
+  nameWithType: Page.DisplayAlertAsync(string, string, string, string, FlowDirection)
+  fullName: Microsoft.Maui.Controls.Page.DisplayAlertAsync(string, string, string, string, Microsoft.Maui.FlowDirection)
+  nameWithType.vb: Page.DisplayAlertAsync(String, String, String, String, FlowDirection)
+  fullName.vb: Microsoft.Maui.Controls.Page.DisplayAlertAsync(String, String, String, String, Microsoft.Maui.FlowDirection)
+  name.vb: DisplayAlertAsync(String, String, String, String, FlowDirection)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-system-string-microsoft-maui-flowdirection)
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.FlowDirection
+    name: FlowDirection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.flowdirection
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-system-string-microsoft-maui-flowdirection)
   - name: (
   - uid: System.String
     name: String

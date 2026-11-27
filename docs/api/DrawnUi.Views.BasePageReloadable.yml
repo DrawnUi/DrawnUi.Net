@@ -22,12 +22,8 @@ items:
   fullName: DrawnUi.Views.BasePageReloadable
   type: Class
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/BasePageReloadable.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BasePageReloadable
-    path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\BasePageReloadable.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -38,8 +34,8 @@ items:
     Override `Build()`, see examples.
   example: []
   syntax:
-    content: 'public class BasePageReloadable : DrawnUiBasePage, INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration<Page>, ISafeAreaView, ITitledElement, IToolbarElement, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView, IDisposable'
-    content.vb: Public Class BasePageReloadable Inherits DrawnUiBasePage Implements INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration(Of Page), ISafeAreaView, ITitledElement, IToolbarElement, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView, IDisposable
+    content: 'public class BasePageReloadable : DrawnUiBasePage, INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration<Page>, ITitledElement, IToolbarElement, ISafeAreaView, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView, IDisposable'
+    content.vb: Public Class BasePageReloadable Inherits DrawnUiBasePage Implements INotifyPropertyChanged, IVisualTreeElement, IEffectControlProvider, IToolTipElement, IContextFlyoutElement, IAnimatable, ILayout, IPageController, IVisualElementController, IElementController, IElementConfiguration(Of Page), ITitledElement, IToolbarElement, ISafeAreaView, IContentView, IPadding, ICrossPlatformLayout, IHotReloadableView, IView, IElement, ITransform, IReplaceableView, IDisposable
   inheritance:
   - System.Object
   - Microsoft.Maui.Controls.BindableObject
@@ -65,9 +61,9 @@ items:
   - Microsoft.Maui.Controls.IVisualElementController
   - Microsoft.Maui.Controls.IElementController
   - Microsoft.Maui.Controls.IElementConfiguration{Microsoft.Maui.Controls.Page}
-  - Microsoft.Maui.ISafeAreaView
   - Microsoft.Maui.ITitledElement
   - Microsoft.Maui.IToolbarElement
+  - Microsoft.Maui.ISafeAreaView
   - Microsoft.Maui.IContentView
   - Microsoft.Maui.IPadding
   - Microsoft.Maui.ICrossPlatformLayout
@@ -83,6 +79,7 @@ items:
   - DrawnUi.Views.DrawnUiBasePage.KeyboardSize
   - Microsoft.Maui.Controls.ContentPage.ContentProperty
   - Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTappedProperty
+  - Microsoft.Maui.Controls.ContentPage.SafeAreaEdgesProperty
   - Microsoft.Maui.Controls.ContentPage.OnBindingContextChanged
   - Microsoft.Maui.Controls.ContentPage.MeasureOverride(System.Double,System.Double)
   - Microsoft.Maui.Controls.ContentPage.LayoutChildren(System.Double,System.Double,System.Double,System.Double)
@@ -90,7 +87,9 @@ items:
   - Microsoft.Maui.Controls.ContentPage.InvalidateMeasureOverride
   - Microsoft.Maui.Controls.ContentPage.Content
   - Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTapped
+  - Microsoft.Maui.Controls.ContentPage.SafeAreaEdges
   - Microsoft.Maui.Controls.TemplatedPage.ControlTemplateProperty
+  - Microsoft.Maui.Controls.TemplatedPage.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.TemplatedPage.OnApplyTemplate
   - Microsoft.Maui.Controls.TemplatedPage.OnChildRemoved(Microsoft.Maui.Controls.Element,System.Int32)
   - Microsoft.Maui.Controls.TemplatedPage.GetTemplateChild(System.String)
@@ -106,10 +105,16 @@ items:
   - Microsoft.Maui.Controls.Page.IconImageSourceProperty
   - Microsoft.Maui.Controls.Page.DisplayActionSheet(System.String,System.String,System.String,System.String[])
   - Microsoft.Maui.Controls.Page.DisplayActionSheet(System.String,System.String,System.String,Microsoft.Maui.FlowDirection,System.String[])
+  - Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,System.String[])
+  - Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection,System.String[])
   - Microsoft.Maui.Controls.Page.DisplayAlert(System.String,System.String,System.String)
   - Microsoft.Maui.Controls.Page.DisplayAlert(System.String,System.String,System.String,System.String)
   - Microsoft.Maui.Controls.Page.DisplayAlert(System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
   - Microsoft.Maui.Controls.Page.DisplayAlert(System.String,System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+  - Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String)
+  - Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String)
+  - Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+  - Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
   - Microsoft.Maui.Controls.Page.DisplayPromptAsync(System.String,System.String,System.String,System.String,System.String,System.Int32,Microsoft.Maui.Keyboard,System.String)
   - Microsoft.Maui.Controls.Page.ForceLayout
   - Microsoft.Maui.Controls.Page.SendBackButtonPressed
@@ -322,12 +327,8 @@ items:
   fullName: DrawnUi.Views.BasePageReloadable.BasePageReloadable()
   type: Constructor
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/BasePageReloadable.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\BasePageReloadable.cs
     startLine: 10
   assemblies:
   - DrawnUi.Maui
@@ -351,12 +352,8 @@ items:
   fullName: DrawnUi.Views.BasePageReloadable.OnHandlerChanged()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/BasePageReloadable.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnHandlerChanged
-    path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\BasePageReloadable.cs
     startLine: 19
   assemblies:
   - DrawnUi.Maui
@@ -381,12 +378,8 @@ items:
   fullName: DrawnUi.Views.BasePageReloadable.HotReloadPossible
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/BasePageReloadable.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HotReloadPossible
-    path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\BasePageReloadable.cs
     startLine: 44
   assemblies:
   - DrawnUi.Maui
@@ -417,12 +410,8 @@ items:
   fullName: DrawnUi.Views.BasePageReloadable.CountReloads
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/BasePageReloadable.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CountReloads
-    path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\BasePageReloadable.cs
     startLine: 69
   assemblies:
   - DrawnUi.Maui
@@ -446,12 +435,8 @@ items:
   fullName: DrawnUi.Views.BasePageReloadable.ReloadUi(System.Type[])
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/BasePageReloadable.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReloadUi
-    path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\BasePageReloadable.cs
     startLine: 75
   assemblies:
   - DrawnUi.Maui
@@ -481,12 +466,8 @@ items:
   fullName: DrawnUi.Views.BasePageReloadable.Build()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/BasePageReloadable.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Build
-    path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\BasePageReloadable.cs
     startLine: 87
   assemblies:
   - DrawnUi.Maui
@@ -509,12 +490,8 @@ items:
   fullName: DrawnUi.Views.BasePageReloadable.Dispose()
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/BasePageReloadable.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
-    path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\BasePageReloadable.cs
     startLine: 92
   assemblies:
   - DrawnUi.Maui
@@ -539,12 +516,8 @@ items:
   fullName: DrawnUi.Views.BasePageReloadable.IsDisposed
   type: Property
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/BasePageReloadable.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisposed
-    path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\BasePageReloadable.cs
     startLine: 98
   assemblies:
   - DrawnUi.Maui
@@ -568,12 +541,8 @@ items:
   fullName: DrawnUi.Views.BasePageReloadable.Dispose(bool)
   type: Method
   source:
-    remote:
-      path: src/Maui/DrawnUi/Views/BasePageReloadable.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
-    path: ../src/Maui/DrawnUi/Views/BasePageReloadable.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Maui\DrawnUi\Views\BasePageReloadable.cs
     startLine: 100
   assemblies:
   - DrawnUi.Maui
@@ -808,14 +777,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page
   - name: )
-- uid: Microsoft.Maui.ISafeAreaView
-  commentId: T:Microsoft.Maui.ISafeAreaView
-  parent: Microsoft.Maui
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.isafeareaview
-  name: ISafeAreaView
-  nameWithType: ISafeAreaView
-  fullName: Microsoft.Maui.ISafeAreaView
 - uid: Microsoft.Maui.ITitledElement
   commentId: T:Microsoft.Maui.ITitledElement
   parent: Microsoft.Maui
@@ -832,6 +793,14 @@ references:
   name: IToolbarElement
   nameWithType: IToolbarElement
   fullName: Microsoft.Maui.IToolbarElement
+- uid: Microsoft.Maui.ISafeAreaView
+  commentId: T:Microsoft.Maui.ISafeAreaView
+  parent: Microsoft.Maui
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.isafeareaview
+  name: ISafeAreaView
+  nameWithType: ISafeAreaView
+  fullName: Microsoft.Maui.ISafeAreaView
 - uid: Microsoft.Maui.IContentView
   commentId: T:Microsoft.Maui.IContentView
   parent: Microsoft.Maui
@@ -989,6 +958,14 @@ references:
   name: HideSoftInputOnTappedProperty
   nameWithType: ContentPage.HideSoftInputOnTappedProperty
   fullName: Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTappedProperty
+- uid: Microsoft.Maui.Controls.ContentPage.SafeAreaEdgesProperty
+  commentId: F:Microsoft.Maui.Controls.ContentPage.SafeAreaEdgesProperty
+  parent: Microsoft.Maui.Controls.ContentPage
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.contentpage.safeareaedgesproperty
+  name: SafeAreaEdgesProperty
+  nameWithType: ContentPage.SafeAreaEdgesProperty
+  fullName: Microsoft.Maui.Controls.ContentPage.SafeAreaEdgesProperty
 - uid: Microsoft.Maui.Controls.ContentPage.OnBindingContextChanged
   commentId: M:Microsoft.Maui.Controls.ContentPage.OnBindingContextChanged
   parent: Microsoft.Maui.Controls.ContentPage
@@ -1193,6 +1170,14 @@ references:
   name: HideSoftInputOnTapped
   nameWithType: ContentPage.HideSoftInputOnTapped
   fullName: Microsoft.Maui.Controls.ContentPage.HideSoftInputOnTapped
+- uid: Microsoft.Maui.Controls.ContentPage.SafeAreaEdges
+  commentId: P:Microsoft.Maui.Controls.ContentPage.SafeAreaEdges
+  parent: Microsoft.Maui.Controls.ContentPage
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.contentpage.safeareaedges
+  name: SafeAreaEdges
+  nameWithType: ContentPage.SafeAreaEdges
+  fullName: Microsoft.Maui.Controls.ContentPage.SafeAreaEdges
 - uid: Microsoft.Maui.Controls.TemplatedPage.ControlTemplateProperty
   commentId: F:Microsoft.Maui.Controls.TemplatedPage.ControlTemplateProperty
   parent: Microsoft.Maui.Controls.TemplatedPage
@@ -1201,6 +1186,36 @@ references:
   name: ControlTemplateProperty
   nameWithType: TemplatedPage.ControlTemplateProperty
   fullName: Microsoft.Maui.Controls.TemplatedPage.ControlTemplateProperty
+- uid: Microsoft.Maui.Controls.TemplatedPage.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.TemplatedPage.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.TemplatedPage
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedpage.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: TemplatedPage.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.TemplatedPage.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.TemplatedPage.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedpage.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.TemplatedPage.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.templatedpage.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
 - uid: Microsoft.Maui.Controls.TemplatedPage.OnApplyTemplate
   commentId: M:Microsoft.Maui.Controls.TemplatedPage.OnApplyTemplate
   parent: Microsoft.Maui.Controls.TemplatedPage
@@ -1547,6 +1562,172 @@ references:
   - name: (
   - name: )
   - name: )
+- uid: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,System.String[])
+  commentId: M:Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,System.String[])
+  parent: Microsoft.Maui.Controls.Page
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayactionsheetasync#microsoft-maui-controls-page-displayactionsheetasync(system-string-system-string-system-string-system-string())
+  name: DisplayActionSheetAsync(string, string, string, params string[])
+  nameWithType: Page.DisplayActionSheetAsync(string, string, string, params string[])
+  fullName: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(string, string, string, params string[])
+  nameWithType.vb: Page.DisplayActionSheetAsync(String, String, String, ParamArray String())
+  fullName.vb: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(String, String, String, ParamArray String())
+  name.vb: DisplayActionSheetAsync(String, String, String, ParamArray String())
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,System.String[])
+    name: DisplayActionSheetAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayactionsheetasync#microsoft-maui-controls-page-displayactionsheetasync(system-string-system-string-system-string-system-string())
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,System.String[])
+    name: DisplayActionSheetAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayactionsheetasync#microsoft-maui-controls-page-displayactionsheetasync(system-string-system-string-system-string-system-string())
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+  - name: )
+- uid: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection,System.String[])
+  commentId: M:Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection,System.String[])
+  parent: Microsoft.Maui.Controls.Page
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayactionsheetasync#microsoft-maui-controls-page-displayactionsheetasync(system-string-system-string-system-string-microsoft-maui-flowdirection-system-string())
+  name: DisplayActionSheetAsync(string, string, string, FlowDirection, params string[])
+  nameWithType: Page.DisplayActionSheetAsync(string, string, string, FlowDirection, params string[])
+  fullName: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(string, string, string, Microsoft.Maui.FlowDirection, params string[])
+  nameWithType.vb: Page.DisplayActionSheetAsync(String, String, String, FlowDirection, ParamArray String())
+  fullName.vb: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(String, String, String, Microsoft.Maui.FlowDirection, ParamArray String())
+  name.vb: DisplayActionSheetAsync(String, String, String, FlowDirection, ParamArray String())
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection,System.String[])
+    name: DisplayActionSheetAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayactionsheetasync#microsoft-maui-controls-page-displayactionsheetasync(system-string-system-string-system-string-microsoft-maui-flowdirection-system-string())
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.FlowDirection
+    name: FlowDirection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.flowdirection
+  - name: ','
+  - name: " "
+  - name: params
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '['
+  - name: ']'
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.Page.DisplayActionSheetAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection,System.String[])
+    name: DisplayActionSheetAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayactionsheetasync#microsoft-maui-controls-page-displayactionsheetasync(system-string-system-string-system-string-microsoft-maui-flowdirection-system-string())
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.FlowDirection
+    name: FlowDirection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.flowdirection
+  - name: ','
+  - name: " "
+  - name: ParamArray
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: (
+  - name: )
+  - name: )
 - uid: Microsoft.Maui.Controls.Page.DisplayAlert(System.String,System.String,System.String)
   commentId: M:Microsoft.Maui.Controls.Page.DisplayAlert(System.String,System.String,System.String)
   parent: Microsoft.Maui.Controls.Page
@@ -1793,6 +1974,282 @@ references:
     name: DisplayAlert
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalert#microsoft-maui-controls-page-displayalert(system-string-system-string-system-string-system-string-microsoft-maui-flowdirection)
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.FlowDirection
+    name: FlowDirection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.flowdirection
+  - name: )
+- uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String)
+  commentId: M:Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String)
+  parent: Microsoft.Maui.Controls.Page
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string)
+  name: DisplayAlertAsync(string, string, string)
+  nameWithType: Page.DisplayAlertAsync(string, string, string)
+  fullName: Microsoft.Maui.Controls.Page.DisplayAlertAsync(string, string, string)
+  nameWithType.vb: Page.DisplayAlertAsync(String, String, String)
+  fullName.vb: Microsoft.Maui.Controls.Page.DisplayAlertAsync(String, String, String)
+  name.vb: DisplayAlertAsync(String, String, String)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string)
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string)
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String)
+  commentId: M:Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String)
+  parent: Microsoft.Maui.Controls.Page
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-system-string)
+  name: DisplayAlertAsync(string, string, string, string)
+  nameWithType: Page.DisplayAlertAsync(string, string, string, string)
+  fullName: Microsoft.Maui.Controls.Page.DisplayAlertAsync(string, string, string, string)
+  nameWithType.vb: Page.DisplayAlertAsync(String, String, String, String)
+  fullName.vb: Microsoft.Maui.Controls.Page.DisplayAlertAsync(String, String, String, String)
+  name.vb: DisplayAlertAsync(String, String, String, String)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-system-string)
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-system-string)
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+  commentId: M:Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+  parent: Microsoft.Maui.Controls.Page
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-microsoft-maui-flowdirection)
+  name: DisplayAlertAsync(string, string, string, FlowDirection)
+  nameWithType: Page.DisplayAlertAsync(string, string, string, FlowDirection)
+  fullName: Microsoft.Maui.Controls.Page.DisplayAlertAsync(string, string, string, Microsoft.Maui.FlowDirection)
+  nameWithType.vb: Page.DisplayAlertAsync(String, String, String, FlowDirection)
+  fullName.vb: Microsoft.Maui.Controls.Page.DisplayAlertAsync(String, String, String, Microsoft.Maui.FlowDirection)
+  name.vb: DisplayAlertAsync(String, String, String, FlowDirection)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-microsoft-maui-flowdirection)
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.FlowDirection
+    name: FlowDirection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.flowdirection
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-microsoft-maui-flowdirection)
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.FlowDirection
+    name: FlowDirection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.flowdirection
+  - name: )
+- uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+  commentId: M:Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+  parent: Microsoft.Maui.Controls.Page
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-system-string-microsoft-maui-flowdirection)
+  name: DisplayAlertAsync(string, string, string, string, FlowDirection)
+  nameWithType: Page.DisplayAlertAsync(string, string, string, string, FlowDirection)
+  fullName: Microsoft.Maui.Controls.Page.DisplayAlertAsync(string, string, string, string, Microsoft.Maui.FlowDirection)
+  nameWithType.vb: Page.DisplayAlertAsync(String, String, String, String, FlowDirection)
+  fullName.vb: Microsoft.Maui.Controls.Page.DisplayAlertAsync(String, String, String, String, Microsoft.Maui.FlowDirection)
+  name.vb: DisplayAlertAsync(String, String, String, String, FlowDirection)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-system-string-microsoft-maui-flowdirection)
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: Microsoft.Maui.FlowDirection
+    name: FlowDirection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.flowdirection
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.Page.DisplayAlertAsync(System.String,System.String,System.String,System.String,Microsoft.Maui.FlowDirection)
+    name: DisplayAlertAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.page.displayalertasync#microsoft-maui-controls-page-displayalertasync(system-string-system-string-system-string-system-string-microsoft-maui-flowdirection)
   - name: (
   - uid: System.String
     name: String

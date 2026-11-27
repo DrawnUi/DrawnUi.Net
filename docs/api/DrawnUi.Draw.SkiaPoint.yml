@@ -26,12 +26,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaPoint
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -90,12 +86,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint.SkiaPoint()
   type: Constructor
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 4
   assemblies:
   - DrawnUi.Maui
@@ -119,12 +111,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint.SkiaPoint(double, double)
   type: Constructor
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -153,12 +141,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint.XProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: XProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 15
   assemblies:
   - DrawnUi.Maui
@@ -180,12 +164,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint.X
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: X
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 22
   assemblies:
   - DrawnUi.Maui
@@ -209,12 +189,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint.YProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: YProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 28
   assemblies:
   - DrawnUi.Maui
@@ -236,12 +212,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint.Y
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Y
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 35
   assemblies:
   - DrawnUi.Maui
@@ -265,12 +237,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint.CompareTo(object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompareTo
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 41
   assemblies:
   - DrawnUi.Maui
@@ -312,12 +280,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint.CompareTo(DrawnUi.Draw.SkiaPoint)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompareTo
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 56
   assemblies:
   - DrawnUi.Maui
@@ -333,7 +297,7 @@ items:
     return:
       type: System.Int32
       description: >-
-        A value that indicates the relative order of the objects being compared. The return value has these meanings:  
+        A value that indicates the relative order of the objects being compared. The return value has these meanings:
 
          <table><thead><tr><th class="term"> Value</th><th class="description"> Meaning</th></tr></thead><tbody><tr><td class="term"> Less than zero</td><td class="description"> This instance precedes <code class="paramref">other</code> in the sort order.</td></tr><tr><td class="term"> Zero</td><td class="description"> This instance occurs in the same position in the sort order as <code class="paramref">other</code>.</td></tr><tr><td class="term"> Greater than zero</td><td class="description"> This instance follows <code class="paramref">other</code> in the sort order.</td></tr></tbody></table>
     content.vb: Public Function CompareTo(other As SkiaPoint) As Integer
@@ -352,12 +316,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint.Equals(DrawnUi.Draw.SkiaPoint)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Equals
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 77
   assemblies:
   - DrawnUi.Maui
@@ -389,12 +349,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint.Equals(object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Equals
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 85
   assemblies:
   - DrawnUi.Maui
@@ -428,12 +384,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint.GetHashCode()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetHashCode
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 90
   assemblies:
   - DrawnUi.Maui
@@ -460,12 +412,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint.operator ==(DrawnUi.Draw.SkiaPoint, DrawnUi.Draw.SkiaPoint)
   type: Operator
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: op_Equality
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 96
   assemblies:
   - DrawnUi.Maui
@@ -496,12 +444,8 @@ items:
   fullName: DrawnUi.Draw.SkiaPoint.operator !=(DrawnUi.Draw.SkiaPoint, DrawnUi.Draw.SkiaPoint)
   type: Operator
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: op_Inequality
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaPoint.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaPoint.cs
     startLine: 101
   assemblies:
   - DrawnUi.Maui

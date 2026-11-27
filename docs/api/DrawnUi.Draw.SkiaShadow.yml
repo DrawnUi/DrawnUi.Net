@@ -36,12 +36,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaShadow
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 2
   assemblies:
   - DrawnUi.Maui
@@ -100,12 +96,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.Parent
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Parent
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 5
   assemblies:
   - DrawnUi.Maui
@@ -129,12 +121,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.Tag
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Tag
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 7
   assemblies:
   - DrawnUi.Maui
@@ -158,12 +146,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.Attach(DrawnUi.Draw.ICanBeUpdatedWithContext)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Attach
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 9
   assemblies:
   - DrawnUi.Maui
@@ -187,12 +171,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.Dettach()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dettach
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 15
   assemblies:
   - DrawnUi.Maui
@@ -213,12 +193,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.CompareTo(object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompareTo
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -260,12 +236,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.CompareTo(DrawnUi.Draw.SkiaShadow)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompareTo
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 36
   assemblies:
   - DrawnUi.Maui
@@ -281,7 +253,7 @@ items:
     return:
       type: System.Int32
       description: >-
-        A value that indicates the relative order of the objects being compared. The return value has these meanings:  
+        A value that indicates the relative order of the objects being compared. The return value has these meanings:
 
          <table><thead><tr><th class="term"> Value</th><th class="description"> Meaning</th></tr></thead><tbody><tr><td class="term"> Less than zero</td><td class="description"> This instance precedes <code class="paramref">other</code> in the sort order.</td></tr><tr><td class="term"> Zero</td><td class="description"> This instance occurs in the same position in the sort order as <code class="paramref">other</code>.</td></tr><tr><td class="term"> Greater than zero</td><td class="description"> This instance follows <code class="paramref">other</code> in the sort order.</td></tr></tbody></table>
     content.vb: Public Function CompareTo(other As SkiaShadow) As Integer
@@ -300,12 +272,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.Equals(DrawnUi.Draw.SkiaShadow)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Equals
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 81
   assemblies:
   - DrawnUi.Maui
@@ -337,12 +305,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.Equals(object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Equals
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 89
   assemblies:
   - DrawnUi.Maui
@@ -376,12 +340,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.GetHashCode()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetHashCode
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 94
   assemblies:
   - DrawnUi.Maui
@@ -408,12 +368,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.operator ==(DrawnUi.Draw.SkiaShadow, DrawnUi.Draw.SkiaShadow)
   type: Operator
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: op_Equality
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 100
   assemblies:
   - DrawnUi.Maui
@@ -444,12 +400,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.operator !=(DrawnUi.Draw.SkiaShadow, DrawnUi.Draw.SkiaShadow)
   type: Operator
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: op_Inequality
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 105
   assemblies:
   - DrawnUi.Maui
@@ -480,12 +432,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.OpacityProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OpacityProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 159
   assemblies:
   - DrawnUi.Maui
@@ -507,12 +455,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.Opacity
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Opacity
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 166
   assemblies:
   - DrawnUi.Maui
@@ -536,12 +480,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.ColorProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 173
   assemblies:
   - DrawnUi.Maui
@@ -563,12 +503,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.Color
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Color
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 176
   assemblies:
   - DrawnUi.Maui
@@ -592,12 +528,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.XProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: XProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 182
   assemblies:
   - DrawnUi.Maui
@@ -619,12 +551,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.X
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: X
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 185
   assemblies:
   - DrawnUi.Maui
@@ -648,12 +576,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.YProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: YProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 191
   assemblies:
   - DrawnUi.Maui
@@ -675,12 +599,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.Y
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Y
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 194
   assemblies:
   - DrawnUi.Maui
@@ -704,12 +624,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.BlurProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BlurProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 200
   assemblies:
   - DrawnUi.Maui
@@ -731,12 +647,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.Blur
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Blur
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 203
   assemblies:
   - DrawnUi.Maui
@@ -760,12 +672,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.ShadowOnlyProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShadowOnlyProperty
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 209
   assemblies:
   - DrawnUi.Maui
@@ -787,12 +695,8 @@ items:
   fullName: DrawnUi.Draw.SkiaShadow.ShadowOnly
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ShadowOnly
-    path: ../src/Shared/DrawnUi/Internals/Models/SkiaShadow.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Internals\Models\SkiaShadow.cs
     startLine: 212
   assemblies:
   - DrawnUi.Maui

@@ -64,12 +64,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnappingLayout
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 6
   assemblies:
   - DrawnUi.Maui
@@ -1114,6 +1110,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1355,12 +1352,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.ViewportReady
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ViewportReady
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 10
   assemblies:
   - DrawnUi.Maui
@@ -1382,12 +1375,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.TransitionChanged
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TransitionChanged
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 12
   assemblies:
   - DrawnUi.Maui
@@ -1409,12 +1398,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.OnWillDisposeWithChildren()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWillDisposeWithChildren
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 16
   assemblies:
   - DrawnUi.Maui
@@ -1441,12 +1426,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.ContentOffsetBounds
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ContentOffsetBounds
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 32
   assemblies:
   - DrawnUi.Maui
@@ -1472,12 +1453,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.ClampOffset(float, float, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClampOffset
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 34
   assemblies:
   - DrawnUi.Maui
@@ -1510,12 +1487,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.ClampOffsetWithRubberBand(float, float)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ClampOffsetWithRubberBand
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 53
   assemblies:
   - DrawnUi.Maui
@@ -1551,12 +1524,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.Viewport
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Viewport
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 63
   assemblies:
   - DrawnUi.Maui
@@ -1582,12 +1551,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.GetContentOffsetBounds()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetContentOffsetBounds
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 68
   assemblies:
   - DrawnUi.Maui
@@ -1612,12 +1577,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.SnapPoints
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapPoints
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 83
   assemblies:
   - DrawnUi.Maui
@@ -1641,12 +1602,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.FindNearestAnchor(System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindNearestAnchor
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 85
   assemblies:
   - DrawnUi.Maui
@@ -1672,12 +1629,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.FindNearestAnchorInternal(System.Numerics.Vector2, System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindNearestAnchorInternal
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 95
   assemblies:
   - DrawnUi.Maui
@@ -1705,12 +1658,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.SelectNextAnchor(System.Numerics.Vector2, System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectNextAnchor
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 111
   assemblies:
   - DrawnUi.Maui
@@ -1743,12 +1692,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.SnapDistanceRatio
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapDistanceRatio
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 139
   assemblies:
   - DrawnUi.Maui
@@ -1774,12 +1719,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.SnapVelocityThreshold
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapVelocityThreshold
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 146
   assemblies:
   - DrawnUi.Maui
@@ -1810,12 +1751,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.ScrollToNearestAnchor(System.Numerics.Vector2, System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToNearestAnchor
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 148
   assemblies:
   - DrawnUi.Maui
@@ -1841,12 +1778,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.CanAnimate
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanAnimate
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 175
   assemblies:
   - DrawnUi.Maui
@@ -1870,12 +1803,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.ScrollLocked
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollLocked
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 183
   assemblies:
   - DrawnUi.Maui
@@ -1899,12 +1828,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.VectorAnimatorSpring
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VectorAnimatorSpring
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 185
   assemblies:
   - DrawnUi.Maui
@@ -1926,12 +1851,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.AnimatorRange
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimatorRange
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 187
   assemblies:
   - DrawnUi.Maui
@@ -1953,12 +1874,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.CurrentSnap
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CurrentSnap
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 191
   assemblies:
   - DrawnUi.Maui
@@ -1982,12 +1899,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.GetAutoVelocity(System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetAutoVelocity
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 208
   assemblies:
   - DrawnUi.Maui
@@ -2017,12 +1930,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.ScrollToOffset(System.Numerics.Vector2, System.Numerics.Vector2, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollToOffset
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 221
   assemblies:
   - DrawnUi.Maui
@@ -2058,12 +1967,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.ApplyPosition(System.Numerics.Vector2)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyPosition
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 318
   assemblies:
   - DrawnUi.Maui
@@ -2087,12 +1992,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.Render(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Render
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 329
   assemblies:
   - DrawnUi.Maui
@@ -2118,12 +2019,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.SendScrolled()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SendScrolled
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 336
   assemblies:
   - DrawnUi.Maui
@@ -2144,12 +2041,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.Scrolled
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Scrolled
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 341
   assemblies:
   - DrawnUi.Maui
@@ -2171,12 +2064,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.CheckTransitionEnded()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CheckTransitionEnded
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 343
   assemblies:
   - DrawnUi.Maui
@@ -2199,12 +2088,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.CurrentPosition
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CurrentPosition
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 350
   assemblies:
   - DrawnUi.Maui
@@ -2228,12 +2113,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.UpdateReportedPosition()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateReportedPosition
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 362
   assemblies:
   - DrawnUi.Maui
@@ -2254,12 +2135,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.ApplyOptions(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyOptions
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 371
   assemblies:
   - DrawnUi.Maui
@@ -2286,12 +2163,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.AnimatedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimatedProperty
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 376
   assemblies:
   - DrawnUi.Maui
@@ -2313,12 +2186,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.Animated
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Animated
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 382
   assemblies:
   - DrawnUi.Maui
@@ -2342,12 +2211,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.NeedApplyOptions(Microsoft.Maui.Controls.BindableObject, object, object)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedApplyOptions
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 389
   assemblies:
   - DrawnUi.Maui
@@ -2378,12 +2243,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.RespondsToGesturesProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGesturesProperty
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 397
   assemblies:
   - DrawnUi.Maui
@@ -2405,12 +2266,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.RespondsToGestures
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RespondsToGestures
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 406
   assemblies:
   - DrawnUi.Maui
@@ -2436,12 +2293,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.AcceptsInput()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AcceptsInput
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 413
   assemblies:
   - DrawnUi.Maui
@@ -2467,12 +2320,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.IgnoreWrongDirectionProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IgnoreWrongDirectionProperty
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 415
   assemblies:
   - DrawnUi.Maui
@@ -2494,12 +2343,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.IgnoreWrongDirection
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IgnoreWrongDirection
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 424
   assemblies:
   - DrawnUi.Maui
@@ -2525,12 +2370,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.BouncesProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BouncesProperty
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 431
   assemblies:
   - DrawnUi.Maui
@@ -2552,12 +2393,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.Bounces
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Bounces
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 437
   assemblies:
   - DrawnUi.Maui
@@ -2581,12 +2418,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.TransitionDirectionProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TransitionDirectionProperty
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 444
   assemblies:
   - DrawnUi.Maui
@@ -2608,12 +2441,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.TransitionDirection
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TransitionDirection
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 450
   assemblies:
   - DrawnUi.Maui
@@ -2637,12 +2466,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.InTransitionProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InTransitionProperty
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 456
   assemblies:
   - DrawnUi.Maui
@@ -2664,12 +2489,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.InTransition
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InTransition
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 470
   assemblies:
   - DrawnUi.Maui
@@ -2693,12 +2514,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.OnTransitionChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnTransitionChanged
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 480
   assemblies:
   - DrawnUi.Maui
@@ -2724,12 +2541,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.RubberDampingProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RubberDampingProperty
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 490
   assemblies:
   - DrawnUi.Maui
@@ -2751,12 +2564,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.RubberDamping
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RubberDamping
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 499
   assemblies:
   - DrawnUi.Maui
@@ -2782,12 +2591,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.AutoVelocityMultiplyPtsProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoVelocityMultiplyPtsProperty
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 505
   assemblies:
   - DrawnUi.Maui
@@ -2809,12 +2614,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.AutoVelocityMultiplyPts
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AutoVelocityMultiplyPts
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 515
   assemblies:
   - DrawnUi.Maui
@@ -2843,12 +2644,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.RubberEffectProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RubberEffectProperty
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 521
   assemblies:
   - DrawnUi.Maui
@@ -2870,12 +2667,8 @@ items:
   fullName: DrawnUi.Draw.SnappingLayout.RubberEffect
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RubberEffect
-    path: ../src/Shared/DrawnUi/Draw/Layout/SnappingLayout.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Draw\Layout\SnappingLayout.cs
     startLine: 530
   assemblies:
   - DrawnUi.Maui
@@ -25009,6 +24802,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState

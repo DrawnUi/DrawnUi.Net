@@ -92,12 +92,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher
   type: Class
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaViewSwitcher
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 21
   assemblies:
   - DrawnUi.Maui
@@ -1136,6 +1132,7 @@ items:
   - Microsoft.Maui.Controls.VisualElement.OnMeasure(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.OnSizeAllocated(System.Double,System.Double)
   - Microsoft.Maui.Controls.VisualElement.SizeAllocated(System.Double,System.Double)
+  - Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
   - Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   - Microsoft.Maui.Controls.VisualElement.RefreshIsEnabledProperty
   - Microsoft.Maui.Controls.VisualElement.Arrange(Microsoft.Maui.Graphics.Rect)
@@ -1377,12 +1374,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.ApplyBindingContext()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyBindingContext
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 23
   assemblies:
   - DrawnUi.Maui
@@ -1406,12 +1399,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.ActiveView
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ActiveView
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 37
   assemblies:
   - DrawnUi.Maui
@@ -1435,12 +1424,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.SkiaViewSwitcher()
   type: Constructor
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 50
   assemblies:
   - DrawnUi.Maui
@@ -1464,12 +1449,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.SendOnAppearing(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SendOnAppearing
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 56
   assemblies:
   - DrawnUi.Maui
@@ -1493,12 +1474,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.SendOnAppeared(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SendOnAppeared
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 64
   assemblies:
   - DrawnUi.Maui
@@ -1522,12 +1499,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.SendOnDisappeared(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SendOnDisappeared
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 72
   assemblies:
   - DrawnUi.Maui
@@ -1551,12 +1524,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.SendOnLoaded(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SendOnLoaded
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 80
   assemblies:
   - DrawnUi.Maui
@@ -1580,12 +1549,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.OnLayoutChanged()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnLayoutChanged
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 88
   assemblies:
   - DrawnUi.Maui
@@ -1609,12 +1574,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.Draw(DrawnUi.Draw.DrawingContext)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Draw
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 101
   assemblies:
   - DrawnUi.Maui
@@ -1640,12 +1601,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.IsRendered
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsRendered
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 107
   assemblies:
   - DrawnUi.Maui
@@ -1667,12 +1624,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.IsAnimatingProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAnimatingProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 110
   assemblies:
   - DrawnUi.Maui
@@ -1694,12 +1647,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.IsAnimating
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsAnimating
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 115
   assemblies:
   - DrawnUi.Maui
@@ -1723,12 +1672,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.OnChildAdded(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnChildAdded
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 130
   assemblies:
   - DrawnUi.Maui
@@ -1754,12 +1699,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.SetChildren(System.Collections.Generic.IEnumerable<DrawnUi.Draw.SkiaControl>)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetChildren
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 151
   assemblies:
   - DrawnUi.Maui
@@ -1788,12 +1729,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.ResolveTab(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResolveTab
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 166
   assemblies:
   - DrawnUi.Maui
@@ -1831,12 +1768,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.GetNavigationStack(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetNavigationStack
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 174
   assemblies:
   - DrawnUi.Maui
@@ -1865,12 +1798,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.GetTopView(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTopView
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 200
   assemblies:
   - DrawnUi.Maui
@@ -1903,12 +1832,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.GetRootView(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetRootView
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 227
   assemblies:
   - DrawnUi.Maui
@@ -1946,12 +1871,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.PushView(DrawnUi.Draw.SkiaControl, bool, bool, int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushView
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 245
   assemblies:
   - DrawnUi.Maui
@@ -1984,12 +1905,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.GetCurrentPage(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCurrentPage
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 297
   assemblies:
   - DrawnUi.Maui
@@ -2018,12 +1935,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.FindPageInStack<T>(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FindPageInStack
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 322
   assemblies:
   - DrawnUi.Maui
@@ -2054,12 +1967,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.RemovePageFromStack<T>(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemovePageFromStack
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 346
   assemblies:
   - DrawnUi.Maui
@@ -2088,12 +1997,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.BringPageToFront(System.Type, int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BringPageToFront
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 368
   assemblies:
   - DrawnUi.Maui
@@ -2124,12 +2029,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.PopModal(bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopModal
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 399
   assemblies:
   - DrawnUi.Maui
@@ -2156,12 +2057,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.PopPage(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopPage
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 403
   assemblies:
   - DrawnUi.Maui
@@ -2190,12 +2087,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.GetCurrentTabNavigationIndex()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCurrentTabNavigationIndex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 441
   assemblies:
   - DrawnUi.Maui
@@ -2218,12 +2111,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.RevealNavigationView(DrawnUi.Controls.SkiaViewSwitcher.NavigationStackEntry)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RevealNavigationView
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 464
   assemblies:
   - DrawnUi.Maui
@@ -2250,12 +2139,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.PopTabToRoot()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopTabToRoot
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 480
   assemblies:
   - DrawnUi.Maui
@@ -2280,12 +2165,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.PopAllTabsToRoot()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PopAllTabsToRoot
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 521
   assemblies:
   - DrawnUi.Maui
@@ -2306,12 +2187,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.NavigationStacks
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationStacks
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 530
   assemblies:
   - DrawnUi.Maui
@@ -2335,12 +2212,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.SelectedIndexProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndexProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 532
   assemblies:
   - DrawnUi.Maui
@@ -2362,12 +2235,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.SelectedIndex
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SelectedIndex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 540
   assemblies:
   - DrawnUi.Maui
@@ -2391,12 +2260,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.DisplayingIndexProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisplayingIndexProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 546
   assemblies:
   - DrawnUi.Maui
@@ -2418,12 +2283,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.DisplayingIndex
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisplayingIndex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 552
   assemblies:
   - DrawnUi.Maui
@@ -2447,12 +2308,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.AnimatePages
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimatePages
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 558
   assemblies:
   - DrawnUi.Maui
@@ -2476,12 +2333,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.AnimateTabs
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AnimateTabs
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 559
   assemblies:
   - DrawnUi.Maui
@@ -2505,12 +2358,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.Reset()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Reset
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 561
   assemblies:
   - DrawnUi.Maui
@@ -2531,12 +2380,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.OnAppearing()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAppearing
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 574
   assemblies:
   - DrawnUi.Maui
@@ -2562,12 +2407,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.OnDisappearing()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisappearing
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 584
   assemblies:
   - DrawnUi.Maui
@@ -2592,12 +2433,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.OnAppeared()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnAppeared
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 594
   assemblies:
   - DrawnUi.Maui
@@ -2623,12 +2460,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.IsPushing
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPushing
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 612
   assemblies:
   - DrawnUi.Maui
@@ -2652,12 +2485,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.IsPopping
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPopping
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 613
   assemblies:
   - DrawnUi.Maui
@@ -2681,12 +2510,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.NavigationBusyProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationBusyProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 620
   assemblies:
   - DrawnUi.Maui
@@ -2708,12 +2533,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.NavigationBusy
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationBusy
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 623
   assemblies:
   - DrawnUi.Maui
@@ -2737,12 +2558,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.TabsAnimationSpeedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TabsAnimationSpeedProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 629
   assemblies:
   - DrawnUi.Maui
@@ -2764,12 +2581,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.TabsAnimationSpeed
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TabsAnimationSpeed
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 633
   assemblies:
   - DrawnUi.Maui
@@ -2793,12 +2606,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.PagesAnimationSpeedProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PagesAnimationSpeedProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 639
   assemblies:
   - DrawnUi.Maui
@@ -2820,12 +2629,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.PagesAnimationSpeed
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PagesAnimationSpeed
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 643
   assemblies:
   - DrawnUi.Maui
@@ -2849,12 +2654,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.TabsAnimationEasingProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TabsAnimationEasingProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 649
   assemblies:
   - DrawnUi.Maui
@@ -2876,12 +2677,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.TabsAnimationEasing
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TabsAnimationEasing
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 653
   assemblies:
   - DrawnUi.Maui
@@ -2905,12 +2702,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.PagesAnimationEasingProperty
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PagesAnimationEasingProperty
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 659
   assemblies:
   - DrawnUi.Maui
@@ -2932,12 +2725,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.PagesAnimationEasing
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PagesAnimationEasing
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 663
   assemblies:
   - DrawnUi.Maui
@@ -2961,12 +2750,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.Custom
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Custom
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 669
   assemblies:
   - DrawnUi.Maui
@@ -2988,12 +2773,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.PreviousVisibleViewIndex
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreviousVisibleViewIndex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 672
   assemblies:
   - DrawnUi.Maui
@@ -3015,12 +2796,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.PreviousVisibleView
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreviousVisibleView
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 673
   assemblies:
   - DrawnUi.Maui
@@ -3044,12 +2821,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.LauchTimerOnLock(int, (int index, bool animate))
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LauchTimerOnLock
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 675
   assemblies:
   - DrawnUi.Maui
@@ -3078,12 +2851,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.TimerUpdateLocked
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TimerUpdateLocked
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 689
   assemblies:
   - DrawnUi.Maui
@@ -3105,12 +2874,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.TopView
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TopView
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 690
   assemblies:
   - DrawnUi.Maui
@@ -3134,12 +2899,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.ChangeViewVisibility(DrawnUi.Draw.SkiaControl, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChangeViewVisibility
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 692
   assemblies:
   - DrawnUi.Maui
@@ -3168,12 +2929,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.PushIndex(DrawnUi.Infrastructure.Models.OrderedIndex)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PushIndex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 712
   assemblies:
   - DrawnUi.Maui
@@ -3197,12 +2954,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.SemaphoreNavigationStack
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SemaphoreNavigationStack
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 725
   assemblies:
   - DrawnUi.Maui
@@ -3224,12 +2977,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.DebugAction()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DebugAction
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 727
   assemblies:
   - DrawnUi.Maui
@@ -3250,12 +2999,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.ProcessIndexBufferAsync()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessIndexBufferAsync
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 739
   assemblies:
   - DrawnUi.Maui
@@ -3278,12 +3023,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.WaitForNextFrameAsync(int)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WaitForNextFrameAsync
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 832
   assemblies:
   - DrawnUi.Maui
@@ -3317,12 +3058,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.SetupTransitionAnimation(DrawnUi.Infrastructure.Enums.DoubleViewTransitionType, DrawnUi.Draw.SkiaControl, DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupTransitionAnimation
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 848
   assemblies:
   - DrawnUi.Maui
@@ -3352,12 +3089,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.ExecuteTransitionAnimation(DrawnUi.Infrastructure.Enums.DoubleViewTransitionType, DrawnUi.Draw.SkiaControl?, DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExecuteTransitionAnimation
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 896
   assemblies:
   - DrawnUi.Maui
@@ -3390,12 +3123,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.FirstViewAppeared
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FirstViewAppeared
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 1015
   assemblies:
   - DrawnUi.Maui
@@ -3417,12 +3146,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.IsApplyingIdex
   type: Field
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsApplyingIdex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 1016
   assemblies:
   - DrawnUi.Maui
@@ -3444,12 +3169,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.ApplySelectedIndex(DrawnUi.Infrastructure.Models.OrderedIndex)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplySelectedIndex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 1018
   assemblies:
   - DrawnUi.Maui
@@ -3475,12 +3196,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.OnSelectedIndexApplied()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnSelectedIndexApplied
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 1214
   assemblies:
   - DrawnUi.Maui
@@ -3501,12 +3218,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.OnDisposing()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnDisposing
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 1228
   assemblies:
   - DrawnUi.Maui
@@ -3530,12 +3243,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.BusyChanged
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BusyChanged
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 1236
   assemblies:
   - DrawnUi.Maui
@@ -3557,12 +3266,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.LoadedLazyView
   type: Event
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LoadedLazyView
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 1237
   assemblies:
   - DrawnUi.Maui
@@ -3584,12 +3289,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.SendOnDisappearing(DrawnUi.Draw.SkiaControl)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SendOnDisappearing
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 1243
   assemblies:
   - DrawnUi.Maui
@@ -3613,12 +3314,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.UnloadView(DrawnUi.Controls.SkiaViewSwitcher.NavigationStackEntry)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UnloadView
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 1251
   assemblies:
   - DrawnUi.Maui
@@ -3642,12 +3339,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.Viewport
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Viewport
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 1284
   assemblies:
   - DrawnUi.Maui
@@ -3674,12 +3367,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.UpdateVisibleIndex()
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateVisibleIndex
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 1286
   assemblies:
   - DrawnUi.Maui
@@ -3703,12 +3392,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.TrackIndexPosition
   type: Property
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TrackIndexPosition
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 1290
   assemblies:
   - DrawnUi.Maui
@@ -3735,12 +3420,8 @@ items:
   fullName: DrawnUi.Controls.SkiaViewSwitcher.ScrollTo(float, float, float, bool)
   type: Method
   source:
-    remote:
-      path: src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScrollTo
-    path: ../src/Shared/DrawnUi/Controls/Layouts/SkiaViewSwitcher.cs
+    path: C:\Dev\Cases\GitHub\DrawnUi-net11\src\Shared\DrawnUi\Controls\Layouts\SkiaViewSwitcher.cs
     startLine: 1292
   assemblies:
   - DrawnUi.Maui
@@ -25747,6 +25428,36 @@ references:
     name: Double
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.double
+  - name: )
+- uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  commentId: M:Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  parent: Microsoft.Maui.Controls.VisualElement
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  name: ComputeConstraintForView(View)
+  nameWithType: VisualElement.ComputeConstraintForView(View)
+  fullName: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+  spec.csharp:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
+  - name: )
+  spec.vb:
+  - uid: Microsoft.Maui.Controls.VisualElement.ComputeConstraintForView(Microsoft.Maui.Controls.View)
+    name: ComputeConstraintForView
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.visualelement.computeconstraintforview
+  - name: (
+  - uid: Microsoft.Maui.Controls.View
+    name: View
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.maui.controls.view
   - name: )
 - uid: Microsoft.Maui.Controls.VisualElement.ChangeVisualState
   commentId: M:Microsoft.Maui.Controls.VisualElement.ChangeVisualState
