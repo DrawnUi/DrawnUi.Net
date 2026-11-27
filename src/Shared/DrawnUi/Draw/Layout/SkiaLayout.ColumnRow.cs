@@ -1057,13 +1057,16 @@ else
 
                         var cell = layoutStructure.Get(column, row);
 
-                        // Inline GetChildForMeasurement
-                        var child = ChildrenFactory.GetViewForIndex(cell.ControlIndex, template, 0,
-                            RecyclingTemplate != RecyclingTemplate.Disabled);
+                        // Inline GetChildForMeasurement. MeasureFirst rows after the first copy its size, so they
+                        // need no view: binding the measuring template to every row cost a bind per row for nothing.
+                        var child = needMeasureAll
+                            ? ChildrenFactory.GetViewForIndex(cell.ControlIndex, template, 0,
+                                RecyclingTemplate != RecyclingTemplate.Disabled)
+                            : null;
                         if (!useOneTemplate && child != null)
                             cellsToRelease?.Add(child);
 
-                        if (child?.CanDraw != true)
+                        if (needMeasureAll && child?.CanDraw != true)
                         {
                             if (child != null)
                             {
@@ -1106,7 +1109,7 @@ else
                         }
 
                         // Track child as dirty for ImageComposite cache support
-                        if (IsCacheComposite)
+                        if (IsCacheComposite && child != null)
                         {
                             TrackChildAsDirty(child);
                         }
