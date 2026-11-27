@@ -2777,8 +2777,10 @@ else
 
                 // PREPARED VIEWS: post the priority want-list (visible skeletons first, then ahead of the
                 // scroll direction) to the preparation worker, once per draw pass.
-                if (!IsPlaneBakePass && UsePreparedViewsActive)
+                if (!IsPlaneBakePass && (UsePreparedViewsActive || BakesAheadActive))
                 {
+                    lock (_prepFrameLock)
+                        _prepFrameContext = ctx;
                     PostCellPreparationWants();
                 }
 

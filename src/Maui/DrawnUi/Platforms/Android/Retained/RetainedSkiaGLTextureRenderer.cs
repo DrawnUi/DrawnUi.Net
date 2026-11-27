@@ -68,6 +68,8 @@ namespace DrawnUi
             {
                 var glInterface = GRGlInterface.Create();
                 Context = GRContext.CreateGl(glInterface);
+                if (Super.GpuResourceCacheBytes > 0)
+                    Context?.SetResourceCacheLimit(Super.GpuResourceCacheBytes);
             }
 
             // SHARED: Ensure renderTarget is ready (used by both fast and normal paths)

@@ -1072,7 +1072,7 @@ public partial class SkiaControl
     // control on the render thread while the newer bake painted it on a worker).
     private long _offscreenBakeBusyGeneration;
 
-    bool OffscreenBakeBusy => Interlocked.Read(ref _offscreenBakeBusyGeneration) != 0;
+    internal bool OffscreenBakeBusy => Interlocked.Read(ref _offscreenBakeBusyGeneration) != 0;
 
     /// <summary>Marks a new offscreen bake as scheduled and returns its generation.</summary>
     long BeginOffscreenBake()
@@ -1792,6 +1792,31 @@ public partial class SkiaControl
 
     // The paint callbacks of a record, made once per control: a record does not allocate a new delegate.
     Action<DrawingContext> _paintAtDrawingRect, _recordPaint;
+
+    /// <summary>
+    /// Bakes the double-buffered cache of a cell the preparation worker has just bound and measured, before the
+    /// cell is drawn: when it scrolls in, its bitmap is ready instead of a placeholder. Runs off the render thread,
+    /// so it never reads the frame canvas (no distortion check: a list cell is drawn undistorted).
+    /// </summary>
+    internal void QueueBakeForPreparedCell(DrawingContext clone, SKRect recordArea)
+    {
+        var paintDestination = DrawingRect;
+        long bakeGeneration = BeginOffscreenBake();
+        PushToOffscreenRendering(() =>
+        {
+            try
+            {
+                var prepared = RecordOffscreenBake(clone, recordArea, paintDestination, false);
+                PublishOffscreenBake(prepared, bakeGeneration);
+            }
+            finally
+            {
+                EndOffscreenBake(bakeGeneration);
+            }
+
+            Repaint();
+        });
+    }
 
     public void PrepareOffscreenCache(DrawingContext clone, SKRect recordArea)
     {
