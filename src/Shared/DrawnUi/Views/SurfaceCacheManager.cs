@@ -14,7 +14,14 @@ namespace DrawnUi.Views
         private readonly int _maxTrackedSizes = 100; // Limit dictionary growth
         // Pixels kept for reuse, all sizes together: a resized window leaves its old sizes behind, each with pooled
         // window-sized surfaces nobody asks for again, so the least recently requested sizes go first
-        private readonly long _maxPooledBytes = 128L * 1024 * 1024;
+        private long _maxPooledBytes = 128L * 1024 * 1024;
+
+        /// <summary>Bytes of parked surfaces this pool may keep for reuse (128 MB until the canvas sets it).</summary>
+        public long MaxPooledBytes
+        {
+            get => Interlocked.Read(ref _maxPooledBytes);
+            set => Interlocked.Exchange(ref _maxPooledBytes, Math.Max(0, value));
+        }
         private long _pooledBytes;
         private readonly object _cleanupLock = new object();
 

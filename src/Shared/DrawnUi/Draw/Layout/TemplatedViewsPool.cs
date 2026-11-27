@@ -624,6 +624,8 @@ namespace DrawnUi.Draw
             if (viewModel == null)
                 return;
 
+            viewModel.DropPreviousCacheWhenParked();
+
             lock (_syncLock)
             {
                 if (IsDisposing)
