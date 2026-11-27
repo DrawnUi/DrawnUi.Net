@@ -215,6 +215,8 @@ internal sealed unsafe class VulkanGpu : IDisposable
         while (Parked.TryTake(out var parked))
         {
             parked.Context = GRContext.CreateVulkan(parked._backend);
+            if (Super.GpuResourceCacheBytes > 0)
+                parked.Context?.SetResourceCacheLimit(Super.GpuResourceCacheBytes);
             if (parked.Context != null)
                 return parked;
             parked.Dispose();
@@ -298,6 +300,8 @@ internal sealed unsafe class VulkanGpu : IDisposable
         };
 
         Context = GRContext.CreateVulkan(_backend);
+        if (Super.GpuResourceCacheBytes > 0)
+            Context?.SetResourceCacheLimit(Super.GpuResourceCacheBytes);
         return Context != null;
     }
 

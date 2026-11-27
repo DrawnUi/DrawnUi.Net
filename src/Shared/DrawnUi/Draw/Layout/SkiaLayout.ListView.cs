@@ -790,6 +790,16 @@ public partial class SkiaLayout
                          && MeasureItemsStrategy == MeasuringStrategy.MeasureVisible;
 
     /// <summary>
+    /// A recycled MeasureFirst list whose cells are double-buffered gets the rows ahead of the viewport bound and baked
+    /// by the preparation worker, so they scroll in with their bitmap ready instead of a placeholder. Turns itself off
+    /// when the cells turn out not to be double-buffered (nothing to bake ahead).
+    /// </summary>
+    internal bool BakesAheadActive => IsTemplated && MeasureItemsStrategy == MeasuringStrategy.MeasureFirst
+                                      && RecyclingTemplate != RecyclingTemplate.Disabled && !_bakeAheadUseless;
+
+    private volatile bool _bakeAheadUseless;
+
+    /// <summary>
     /// Diagnostics: how many times DrawStack measured a templated cell synchronously on the render
     /// thread. With <see cref="UsePreparedViews"/> active this must stay flat during scrolling —
     /// harness repros assert on it.
@@ -851,6 +861,10 @@ public partial class SkiaLayout
     // visible slots before holding it (see there). Reused to avoid per-publish allocation.
     private readonly HashSet<int> _measuredCurrentScratch = new();
     private int _prepPrevFirstVisible;
+
+    // the latest frame context, for bakes of prepared cells (they need its scale and canvas owner)
+    private DrawingContext? _prepFrameContext;
+    private readonly object _prepFrameLock = new();
     private bool _prepPostedNonEmpty;
 
     /// <summary>
@@ -861,7 +875,8 @@ public partial class SkiaLayout
     /// </summary>
     internal void PrepareCellOffthread(int index)
     {
-        if (IsDisposed || IsDisposing || !UsePreparedViewsActive)
+        var bakeAhead = !UsePreparedViewsActive && BakesAheadActive;
+        if (IsDisposed || IsDisposing || !(UsePreparedViewsActive || bakeAhead))
             return;
 
         var source = EffectiveItemsSource;
@@ -875,6 +890,17 @@ public partial class SkiaLayout
         var view = adapter.GetViewForPreparation(index, out var fromPool);
         if (view == null)
             return;
+
+        if (bakeAhead && (!fromPool || !view.UsesCacheDoubleBuffering))
+        {
+            // bake-ahead prepares pool cells only (a row on screen belongs to the render thread)
+            if (fromPool)
+            {
+                _bakeAheadUseless = !view.UsesCacheDoubleBuffering;
+                adapter.ReleaseMeasuringView(view);
+            }
+            return;
+        }
 
         var columnsCount = (Split > 0) ? Split : 1;
         var columnWidth = ComputeColumnWidth(columnsCount);
@@ -921,7 +947,26 @@ public partial class SkiaLayout
         {
             var item = GetItemForMemo(index);
             if (item != null && ReferenceEquals(view.BindingContext, item))
-                StoreMemoSize(item, w, measured);
+            {
+                if (!bakeAhead)
+                    StoreMemoSize(item, w, measured);
+
+                // a double-buffered cell gets its bitmap now, ahead of the viewport, not at its first draw
+                DrawingContext? latest;
+                lock (_prepFrameLock)
+                    latest = _prepFrameContext;
+                if (view.UsesCacheDoubleBuffering && latest is { } frame && !view.OffscreenBakeBusy
+                    && (view.RenderObject == null || view.PixelsForeign))
+                {
+                    var slot = Type == LayoutType.Row
+                        ? new SKRect(0, 0, measured.Pixels.Width, h)
+                        : new SKRect(0, 0, w, measured.Pixels.Height);
+                    view.Arrange(slot, view.SizeRequest.Width, view.SizeRequest.Height, RenderingScale);
+                    var area = view.DrawingRect;
+                    if (area.Width > 0 && area.Height > 0)
+                        view.QueueBakeForPreparedCell(frame.WithDestination(area), area);
+                }
+            }
 
             OnCellPreparedOffthread();
         }

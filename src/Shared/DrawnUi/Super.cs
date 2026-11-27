@@ -77,6 +77,13 @@ public partial class Super
 
 #endif
 
+    /// <summary>
+    /// GPU memory Skia may keep for uploaded images and other GPU resources of a canvas (its resource cache budget),
+    /// set when the canvas creates its GPU context. 64 MB by default; 0 keeps Skia's own default (256 MB).
+    /// Applied on Android for now.
+    /// </summary>
+    public static long GpuResourceCacheBytes { get; set; } = 64L * 1024 * 1024;
+
     private static int _maxFps;
 
     /// <summary>

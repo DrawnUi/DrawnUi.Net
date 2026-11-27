@@ -32,6 +32,8 @@ public abstract partial class SkiaGLTextureRenderer : Java.Lang.Object, SkiaGLTe
         {
             var glInterface = GRGlInterface.Create();
             Context = GRContext.CreateGl(glInterface);
+            if (Super.GpuResourceCacheBytes > 0)
+                Context?.SetResourceCacheLimit(Super.GpuResourceCacheBytes);
         }
 
         // manage the drawing surface
