@@ -39,6 +39,7 @@ namespace DrawnUi.Draw
             }
 #endif
             handlers.AddHandler(typeof(SkiaViewAccelerated), typeof(SKGLViewHandlerRetained));
+            handlers.AddHandler(typeof(SkiaView), typeof(SkiaViewHandler));
 
             handlers.AddHandler(typeof(DrawnUiBasePage), typeof(DrawnUiBasePageHandler));
             handlers.AddHandler(typeof(MauiEntry), typeof(MauiEntryHandler));
