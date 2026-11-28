@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UiaProviderOptions
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
@@ -54,7 +54,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ServerSideProvider
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
@@ -80,7 +80,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseComThreading
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs

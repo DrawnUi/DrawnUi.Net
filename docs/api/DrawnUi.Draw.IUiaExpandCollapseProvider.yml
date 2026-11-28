@@ -18,7 +18,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IUiaExpandCollapseProvider
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
@@ -75,7 +75,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Expand
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
@@ -101,7 +101,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Collapse
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
@@ -127,7 +127,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ExpandCollapseState
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs

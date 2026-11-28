@@ -8,6 +8,7 @@ items:
   - DrawnUi.Views.SurfaceCacheManager.#ctor(DrawnUi.Views.IDisposeManager)
   - DrawnUi.Views.SurfaceCacheManager.Dispose
   - DrawnUi.Views.SurfaceCacheManager.GetSurface(System.Int32,System.Int32)
+  - DrawnUi.Views.SurfaceCacheManager.MaxPooledBytes
   - DrawnUi.Views.SurfaceCacheManager.PooledBytes
   - DrawnUi.Views.SurfaceCacheManager.ReturnSurface(SkiaSharp.SKSurface)
   langs:
@@ -20,7 +21,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SurfaceCacheManager
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
@@ -43,6 +44,37 @@ items:
   - System.Object.ToString
   extensionMethods:
   - System.Object.DrawnUi.Extensions.InternalExtensions.FromPlatform
+- uid: DrawnUi.Views.SurfaceCacheManager.MaxPooledBytes
+  commentId: P:DrawnUi.Views.SurfaceCacheManager.MaxPooledBytes
+  id: MaxPooledBytes
+  parent: DrawnUi.Views.SurfaceCacheManager
+  langs:
+  - csharp
+  - vb
+  name: MaxPooledBytes
+  nameWithType: SurfaceCacheManager.MaxPooledBytes
+  fullName: DrawnUi.Views.SurfaceCacheManager.MaxPooledBytes
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
+      branch: net10
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: MaxPooledBytes
+    path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
+    startLine: 19
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Views
+  summary: Bytes of parked surfaces this pool may keep for reuse (128 MB until the canvas sets it).
+  example: []
+  syntax:
+    content: public long MaxPooledBytes { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property MaxPooledBytes As Long
+  overload: DrawnUi.Views.SurfaceCacheManager.MaxPooledBytes*
 - uid: DrawnUi.Views.SurfaceCacheManager.PooledBytes
   commentId: P:DrawnUi.Views.SurfaceCacheManager.PooledBytes
   id: PooledBytes
@@ -57,11 +89,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PooledBytes
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 21
+    startLine: 28
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -88,11 +120,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 23
+    startLine: 30
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -120,11 +152,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetSurface
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 28
+    startLine: 35
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -156,11 +188,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReturnSurface
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 51
+    startLine: 58
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -185,11 +217,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 168
+    startLine: 175
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -547,12 +579,12 @@ references:
   - uid: DrawnUi.Extensions
     name: Extensions
     href: DrawnUi.Extensions.html
-- uid: DrawnUi.Views.SurfaceCacheManager.PooledBytes*
-  commentId: Overload:DrawnUi.Views.SurfaceCacheManager.PooledBytes
-  href: DrawnUi.Views.SurfaceCacheManager.html#DrawnUi_Views_SurfaceCacheManager_PooledBytes
-  name: PooledBytes
-  nameWithType: SurfaceCacheManager.PooledBytes
-  fullName: DrawnUi.Views.SurfaceCacheManager.PooledBytes
+- uid: DrawnUi.Views.SurfaceCacheManager.MaxPooledBytes*
+  commentId: Overload:DrawnUi.Views.SurfaceCacheManager.MaxPooledBytes
+  href: DrawnUi.Views.SurfaceCacheManager.html#DrawnUi_Views_SurfaceCacheManager_MaxPooledBytes
+  name: MaxPooledBytes
+  nameWithType: SurfaceCacheManager.MaxPooledBytes
+  fullName: DrawnUi.Views.SurfaceCacheManager.MaxPooledBytes
 - uid: System.Int64
   commentId: T:System.Int64
   parent: System
@@ -564,6 +596,12 @@ references:
   nameWithType.vb: Long
   fullName.vb: Long
   name.vb: Long
+- uid: DrawnUi.Views.SurfaceCacheManager.PooledBytes*
+  commentId: Overload:DrawnUi.Views.SurfaceCacheManager.PooledBytes
+  href: DrawnUi.Views.SurfaceCacheManager.html#DrawnUi_Views_SurfaceCacheManager_PooledBytes
+  name: PooledBytes
+  nameWithType: SurfaceCacheManager.PooledBytes
+  fullName: DrawnUi.Views.SurfaceCacheManager.PooledBytes
 - uid: DrawnUi.Views.SurfaceCacheManager.#ctor*
   commentId: Overload:DrawnUi.Views.SurfaceCacheManager.#ctor
   href: DrawnUi.Views.SurfaceCacheManager.html#DrawnUi_Views_SurfaceCacheManager__ctor_DrawnUi_Views_IDisposeManager_

@@ -41,6 +41,7 @@ items:
   - DrawnUi.Draw.ViewsAdapter.MarkAllViewsAsHidden
   - DrawnUi.Draw.ViewsAdapter.MarkViewAsHidden(System.Int32)
   - DrawnUi.Draw.ViewsAdapter.PeekRealizedViewForIndex(System.Int32)
+  - DrawnUi.Draw.ViewsAdapter.PoolCreatedCount
   - DrawnUi.Draw.ViewsAdapter.PoolMaxSize
   - DrawnUi.Draw.ViewsAdapter.PoolSize
   - DrawnUi.Draw.ViewsAdapter.PrintDebugVisible
@@ -70,7 +71,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ViewsAdapter
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
@@ -111,7 +112,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LogEnabled
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
@@ -138,7 +139,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FillPoolInBackgroundAsync
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
@@ -176,7 +177,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CancelBackgroundPoolFilling
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
@@ -204,7 +205,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FillPool
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
@@ -245,7 +246,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CaptureContextsSnapshot
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
@@ -287,7 +288,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetContextAt
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
@@ -326,7 +327,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitializeTemplates
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
@@ -372,11 +373,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitializeSoft
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 343
+    startLine: 365
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -410,11 +411,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyInsertShift
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 483
+    startLine: 505
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -467,11 +468,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ApplyRemoveShift
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 498
+    startLine: 520
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -520,11 +521,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsViewRealizedForIndex
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 593
+    startLine: 615
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -565,11 +566,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PeekRealizedViewForIndex
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 605
+    startLine: 627
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -608,11 +609,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsViewPrepared
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 667
+    startLine: 689
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -642,11 +643,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetViewForPreparation
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 702
+    startLine: 724
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -693,11 +694,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _HandleSmartCollectionChange
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 801
+    startLine: 830
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -735,11 +736,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReleaseViewInUse
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1149
+    startLine: 1178
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -764,11 +765,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReleaseViewInUseForIndex
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1157
+    startLine: 1186
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -798,11 +799,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReleaseMeasuringView
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1193
+    startLine: 1222
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -836,11 +837,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCellInUseOrNull
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1213
+    startLine: 1242
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -877,11 +878,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCellsInUse
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1227
+    startLine: 1256
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -912,11 +913,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReleaseCellByIndex
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1236
+    startLine: 1265
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -946,11 +947,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetViewForIndex
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1259
+    startLine: 1288
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -998,11 +999,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetOrCreateViewForIndexInternal
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1360
+    startLine: 1389
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1038,11 +1039,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReleaseViewToPool
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1419
+    startLine: 1448
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1076,11 +1077,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsDisposed
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1482
+    startLine: 1511
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1103,11 +1104,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1485
+    startLine: 1514
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1135,11 +1136,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Dispose
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1490
+    startLine: 1519
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1165,11 +1166,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateVisibleViews
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1507
+    startLine: 1536
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1191,11 +1192,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposeVisibleViews
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1521
+    startLine: 1550
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1217,11 +1218,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposeViews
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1537
+    startLine: 1566
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1243,11 +1244,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AttachView
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1546
+    startLine: 1575
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1279,11 +1280,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetPoolMaxSize
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1632
+    startLine: 1661
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1304,6 +1305,37 @@ items:
   nameWithType.vb: ViewsAdapter.SetPoolMaxSize(Integer)
   fullName.vb: DrawnUi.Draw.ViewsAdapter.SetPoolMaxSize(Integer)
   name.vb: SetPoolMaxSize(Integer)
+- uid: DrawnUi.Draw.ViewsAdapter.PoolCreatedCount
+  commentId: P:DrawnUi.Draw.ViewsAdapter.PoolCreatedCount
+  id: PoolCreatedCount
+  parent: DrawnUi.Draw.ViewsAdapter
+  langs:
+  - csharp
+  - vb
+  name: PoolCreatedCount
+  nameWithType: ViewsAdapter.PoolCreatedCount
+  fullName: DrawnUi.Draw.ViewsAdapter.PoolCreatedCount
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+      branch: net10
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: PoolCreatedCount
+    path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
+    startLine: 1670
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: Cells the pool has created and not disposed (in use and parked).
+  example: []
+  syntax:
+    content: public int PoolCreatedCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property PoolCreatedCount As Integer
+  overload: DrawnUi.Draw.ViewsAdapter.PoolCreatedCount*
 - uid: DrawnUi.Draw.ViewsAdapter.PoolMaxSize
   commentId: P:DrawnUi.Draw.ViewsAdapter.PoolMaxSize
   id: PoolMaxSize
@@ -1318,11 +1350,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PoolMaxSize
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1640
+    startLine: 1672
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1347,11 +1379,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PoolSize
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1653
+    startLine: 1685
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1376,11 +1408,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MarkAllViewsAsHidden
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1672
+    startLine: 1704
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1402,11 +1434,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MarkViewAsHidden
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1684
+    startLine: 1716
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1434,11 +1466,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddedMore
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1712
+    startLine: 1744
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1463,11 +1495,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddMoreToPool
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1719
+    startLine: 1751
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1501,11 +1533,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FillPool
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1743
+    startLine: 1775
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1541,11 +1573,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FillPool
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1763
+    startLine: 1795
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1579,11 +1611,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InvalidateAllPooledCells
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1782
+    startLine: 1814
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1610,11 +1642,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TotalCellsCount
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1801
+    startLine: 1833
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1639,11 +1671,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetDebugInfo
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1809
+    startLine: 1841
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1667,11 +1699,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetChildrenCount
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1820
+    startLine: 1852
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1695,11 +1727,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: _lockTemplates
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1859
+    startLine: 1891
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1722,11 +1754,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TemplesInvalidating
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1864
+    startLine: 1896
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1749,11 +1781,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TemplatesInvalidated
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1868
+    startLine: 1900
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1778,11 +1810,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TemplatesBusy
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1881
+    startLine: 1913
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1805,11 +1837,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UpdateViews
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1887
+    startLine: 1919
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1837,11 +1869,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TemplatesAvailable
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1899
+    startLine: 1931
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1868,11 +1900,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetViewsIterator
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1909
+    startLine: 1941
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1896,11 +1928,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisposeWrapper
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1956
+    startLine: 1988
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1922,11 +1954,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PrintDebugVisible
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1968
+    startLine: 2000
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1948,11 +1980,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetTemplateInstance
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 1982
+    startLine: 2014
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1976,11 +2008,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ReleaseTemplateInstance
     path: ../src/Shared/DrawnUi/Draw/Layout/ViewsAdapter.cs
-    startLine: 2016
+    startLine: 2048
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -3026,6 +3058,12 @@ references:
   name: SetPoolMaxSize
   nameWithType: ViewsAdapter.SetPoolMaxSize
   fullName: DrawnUi.Draw.ViewsAdapter.SetPoolMaxSize
+- uid: DrawnUi.Draw.ViewsAdapter.PoolCreatedCount*
+  commentId: Overload:DrawnUi.Draw.ViewsAdapter.PoolCreatedCount
+  href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_PoolCreatedCount
+  name: PoolCreatedCount
+  nameWithType: ViewsAdapter.PoolCreatedCount
+  fullName: DrawnUi.Draw.ViewsAdapter.PoolCreatedCount
 - uid: DrawnUi.Draw.ViewsAdapter.PoolMaxSize*
   commentId: Overload:DrawnUi.Draw.ViewsAdapter.PoolMaxSize
   href: DrawnUi.Draw.ViewsAdapter.html#DrawnUi_Draw_ViewsAdapter_PoolMaxSize

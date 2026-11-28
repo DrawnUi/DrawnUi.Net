@@ -19,7 +19,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IRawElementProviderSimple
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
@@ -76,7 +76,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProviderOptions
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
@@ -105,7 +105,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetPatternProvider
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
@@ -139,7 +139,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetPropertyValue
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
@@ -173,7 +173,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HostRawElementProvider
     path: ../src/Shared/DrawnUi/Platforms/Windows/WindowsUiaInterfaces.cs

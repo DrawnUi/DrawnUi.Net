@@ -17,11 +17,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SurfaceStats
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 212
+    startLine: 219
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -54,11 +54,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RequestCount
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 214
+    startLine: 221
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views
@@ -83,11 +83,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: LastRequested
     path: ../src/Shared/DrawnUi/Views/SurfaceCacheManager.cs
-    startLine: 215
+    startLine: 222
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Views

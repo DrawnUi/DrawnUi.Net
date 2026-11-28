@@ -17,7 +17,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/IAnimatorsManager.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IAnimatorsManager
     path: ../src/Shared/DrawnUi/Internals/Interfaces/IAnimatorsManager.cs
@@ -46,7 +46,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/IAnimatorsManager.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AddAnimator
     path: ../src/Shared/DrawnUi/Internals/Interfaces/IAnimatorsManager.cs
@@ -75,7 +75,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Interfaces/IAnimatorsManager.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RemoveAnimator
     path: ../src/Shared/DrawnUi/Internals/Interfaces/IAnimatorsManager.cs

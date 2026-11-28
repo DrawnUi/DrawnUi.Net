@@ -26,6 +26,7 @@ items:
   - DrawnUi.Draw.Super.GetCurrentTimeMs
   - DrawnUi.Draw.Super.GetCurrentTimeNanos
   - DrawnUi.Draw.Super.GpuCacheEnabled
+  - DrawnUi.Draw.Super.GpuResourceCacheBytes
   - DrawnUi.Draw.Super.HotReload
   - DrawnUi.Draw.Super.InBackground
   - DrawnUi.Draw.Super.InitShared
@@ -59,6 +60,8 @@ items:
   - DrawnUi.Draw.Super.PreloadRegisteredFonts
   - DrawnUi.Draw.Super.ProcessBackgroundQueue
   - DrawnUi.Draw.Super.ResizeWindow(Microsoft.Maui.Controls.Window,System.Int32,System.Int32,System.Boolean)
+  - DrawnUi.Draw.Super.ResolveGpuResourceCacheBytes(System.Int64)
+  - DrawnUi.Draw.Super.ResolveSurfacePoolBytes(System.Int64)
   - DrawnUi.Draw.Super.RotationChanged
   - DrawnUi.Draw.Super.RunOnMainThreadAndWait(System.Action,System.Threading.CancellationToken)
   - DrawnUi.Draw.Super.RunOnMainThreadAndWaitAsync(System.Func{System.Threading.Tasks.Task},System.Threading.CancellationToken)
@@ -72,6 +75,7 @@ items:
   - DrawnUi.Draw.Super.SnapFps(System.Int32,System.Single)
   - DrawnUi.Draw.Super.StatusBarHeight
   - DrawnUi.Draw.Super.StopRenderingInBackground
+  - DrawnUi.Draw.Super.SurfacePoolBytes
   - DrawnUi.Draw.Super.ThermalState
   - DrawnUi.Draw.Super.ThermalStateChanged
   - DrawnUi.Draw.Super.TooltipStyle
@@ -89,7 +93,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.Keyboard.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Super
     path: ../src/Shared/DrawnUi/Super.Keyboard.cs
@@ -126,7 +130,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HotReload
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -155,7 +159,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorAccent
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -184,7 +188,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ColorPrimary
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -213,7 +217,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: App
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -242,7 +246,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DisplayException
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -277,7 +281,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Log
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -315,7 +319,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Log
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -353,7 +357,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Services
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -382,7 +386,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AppContext
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -411,7 +415,7 @@ items:
   source:
     remote:
       path: src/Maui/DrawnUi/Super.Maui.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ResizeWindow
     path: ../src/Maui/DrawnUi/Super.Maui.cs
@@ -455,7 +459,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UseFrozenVisualLayers
     path: ../src/Shared/DrawnUi/Super.cs
@@ -482,7 +486,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateHttpClient
     path: ../src/Shared/DrawnUi/Super.cs
@@ -515,7 +519,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SendTapsOnMainThread
     path: ../src/Shared/DrawnUi/Super.cs
@@ -544,7 +548,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Multithreaded
     path: ../src/Shared/DrawnUi/Super.cs
@@ -576,7 +580,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: PreloadRegisteredFonts
     path: ../src/Shared/DrawnUi/Super.cs
@@ -603,7 +607,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TooltipsFromAccessibility
     path: ../src/Shared/DrawnUi/Super.cs
@@ -639,7 +643,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: TooltipStyle
     path: ../src/Shared/DrawnUi/Super.cs
@@ -670,7 +674,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetClipboardText
     path: ../src/Shared/DrawnUi/Super.cs
@@ -706,7 +710,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OffscreenRenderingAtCanvasLevel
     path: ../src/Shared/DrawnUi/Super.cs
@@ -740,7 +744,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetupFrameLooper
     path: ../src/Shared/DrawnUi/Super.cs
@@ -752,6 +756,150 @@ items:
     content: protected static void SetupFrameLooper()
     content.vb: Protected Shared Sub SetupFrameLooper()
   overload: DrawnUi.Draw.Super.SetupFrameLooper*
+- uid: DrawnUi.Draw.Super.GpuResourceCacheBytes
+  commentId: P:DrawnUi.Draw.Super.GpuResourceCacheBytes
+  id: GpuResourceCacheBytes
+  parent: DrawnUi.Draw.Super
+  langs:
+  - csharp
+  - vb
+  name: GpuResourceCacheBytes
+  nameWithType: Super.GpuResourceCacheBytes
+  fullName: DrawnUi.Draw.Super.GpuResourceCacheBytes
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Super.cs
+      branch: net10
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: GpuResourceCacheBytes
+    path: ../src/Shared/DrawnUi/Super.cs
+    startLine: 85
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    GPU memory Skia may keep for uploaded images and other GPU resources of a canvas (its resource cache budget),
+
+    set when the canvas creates its GPU context. -1 (default) = 12 screens of 4-byte pixels, the rule Android's own
+
+    UI renderer uses (HWUI: screen area x 48); 0 = Skia's own default (256 MB); above 0 = that many bytes.
+
+    Applied on Android for now.
+  example: []
+  syntax:
+    content: public static long GpuResourceCacheBytes { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Shared Property GpuResourceCacheBytes As Long
+  overload: DrawnUi.Draw.Super.GpuResourceCacheBytes*
+- uid: DrawnUi.Draw.Super.SurfacePoolBytes
+  commentId: P:DrawnUi.Draw.Super.SurfacePoolBytes
+  id: SurfacePoolBytes
+  parent: DrawnUi.Draw.Super
+  langs:
+  - csharp
+  - vb
+  name: SurfacePoolBytes
+  nameWithType: Super.SurfacePoolBytes
+  fullName: DrawnUi.Draw.Super.SurfacePoolBytes
+  type: Property
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Super.cs
+      branch: net10
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: SurfacePoolBytes
+    path: ../src/Shared/DrawnUi/Super.cs
+    startLine: 91
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: >-
+    Bytes of CPU drawing surfaces a canvas keeps for reuse by its caches (its surface pool). -1 (default) = 4 canvases
+
+    of 4-byte pixels, at least 16 MB; above 0 = that many bytes; 0 = keep none.
+  example: []
+  syntax:
+    content: public static long SurfacePoolBytes { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Shared Property SurfacePoolBytes As Long
+  overload: DrawnUi.Draw.Super.SurfacePoolBytes*
+- uid: DrawnUi.Draw.Super.ResolveSurfacePoolBytes(System.Int64)
+  commentId: M:DrawnUi.Draw.Super.ResolveSurfacePoolBytes(System.Int64)
+  id: ResolveSurfacePoolBytes(System.Int64)
+  parent: DrawnUi.Draw.Super
+  langs:
+  - csharp
+  - vb
+  name: ResolveSurfacePoolBytes(long)
+  nameWithType: Super.ResolveSurfacePoolBytes(long)
+  fullName: DrawnUi.Draw.Super.ResolveSurfacePoolBytes(long)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Super.cs
+      branch: net10
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ResolveSurfacePoolBytes
+    path: ../src/Shared/DrawnUi/Super.cs
+    startLine: 94
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: The surface pool budget <xref href="DrawnUi.Draw.Super.SurfacePoolBytes" data-throw-if-not-resolved="false"></xref> asks for on a canvas of this many pixels.
+  example: []
+  syntax:
+    content: public static long ResolveSurfacePoolBytes(long canvasPixels)
+    parameters:
+    - id: canvasPixels
+      type: System.Int64
+    return:
+      type: System.Int64
+    content.vb: Public Shared Function ResolveSurfacePoolBytes(canvasPixels As Long) As Long
+  overload: DrawnUi.Draw.Super.ResolveSurfacePoolBytes*
+  nameWithType.vb: Super.ResolveSurfacePoolBytes(Long)
+  fullName.vb: DrawnUi.Draw.Super.ResolveSurfacePoolBytes(Long)
+  name.vb: ResolveSurfacePoolBytes(Long)
+- uid: DrawnUi.Draw.Super.ResolveGpuResourceCacheBytes(System.Int64)
+  commentId: M:DrawnUi.Draw.Super.ResolveGpuResourceCacheBytes(System.Int64)
+  id: ResolveGpuResourceCacheBytes(System.Int64)
+  parent: DrawnUi.Draw.Super
+  langs:
+  - csharp
+  - vb
+  name: ResolveGpuResourceCacheBytes(long)
+  nameWithType: Super.ResolveGpuResourceCacheBytes(long)
+  fullName: DrawnUi.Draw.Super.ResolveGpuResourceCacheBytes(long)
+  type: Method
+  source:
+    remote:
+      path: src/Shared/DrawnUi/Super.cs
+      branch: net10
+      repo: https://github.com/DrawnUi/DrawnUi.Net.git
+    id: ResolveGpuResourceCacheBytes
+    path: ../src/Shared/DrawnUi/Super.cs
+    startLine: 103
+  assemblies:
+  - DrawnUi.Maui
+  namespace: DrawnUi.Draw
+  summary: The budget <xref href="DrawnUi.Draw.Super.GpuResourceCacheBytes" data-throw-if-not-resolved="false"></xref> asks for on a screen of this many pixels; 0 = leave Skia's default.
+  example: []
+  syntax:
+    content: public static long ResolveGpuResourceCacheBytes(long screenPixels)
+    parameters:
+    - id: screenPixels
+      type: System.Int64
+    return:
+      type: System.Int64
+    content.vb: Public Shared Function ResolveGpuResourceCacheBytes(screenPixels As Long) As Long
+  overload: DrawnUi.Draw.Super.ResolveGpuResourceCacheBytes*
+  nameWithType.vb: Super.ResolveGpuResourceCacheBytes(Long)
+  fullName.vb: DrawnUi.Draw.Super.ResolveGpuResourceCacheBytes(Long)
+  name.vb: ResolveGpuResourceCacheBytes(Long)
 - uid: DrawnUi.Draw.Super.MaxFps
   commentId: P:DrawnUi.Draw.Super.MaxFps
   id: MaxFps
@@ -766,11 +914,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxFps
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 87
+    startLine: 119
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -804,11 +952,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapFps
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 107
+    startLine: 139
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -855,11 +1003,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: VsyncFrameTimeNanos
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 150
+    startLine: 182
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -893,11 +1041,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: AdjustTruncatedRate
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 159
+    startLine: 191
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -938,11 +1086,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CanUseHardwareAcceleration
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 184
+    startLine: 216
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -967,11 +1115,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsPrerenderingEnabled
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 191
+    startLine: 223
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1001,11 +1149,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Log
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 219
+    startLine: 251
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1039,11 +1187,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SetLocale
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 241
+    startLine: 273
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1071,11 +1219,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Initialized
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 249
+    startLine: 281
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1100,11 +1248,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitShared
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 259
+    startLine: 291
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1126,11 +1274,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnableRendering
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 269
+    startLine: 301
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1155,11 +1303,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsRtl
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 284
+    startLine: 316
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1186,11 +1334,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FontSubPixelRendering
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 301
+    startLine: 333
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1217,11 +1365,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InsetsChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 320
+    startLine: 352
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1246,11 +1394,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Screen
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 326
+    startLine: 358
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1275,11 +1423,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CapMicroSecs
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 339
+    startLine: 371
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1304,11 +1452,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCurrentTimeMs
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 341
+    startLine: 373
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1332,11 +1480,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetCurrentTimeNanos
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 348
+    startLine: 380
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1360,11 +1508,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavBarHeight
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 358
+    startLine: 390
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1391,11 +1539,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StatusBarHeight
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 363
+    startLine: 395
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1422,11 +1570,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NavigationBarHeight
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 368
+    startLine: 400
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1453,11 +1601,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: BottomTabsHeight
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 373
+    startLine: 405
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1484,11 +1632,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: MaxFrameLengthMs
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 377
+    startLine: 409
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1513,11 +1661,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ThermalState
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 379
+    startLine: 411
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1542,11 +1690,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ThermalStateChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 381
+    startLine: 413
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1569,11 +1717,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ChildrenChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 399
+    startLine: 431
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1603,11 +1751,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNativeAppCreated
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 409
+    startLine: 441
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1632,11 +1780,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNativeAppPaused
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 411
+    startLine: 443
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1659,11 +1807,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNativeAppResumed
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 413
+    startLine: 445
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1686,11 +1834,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnNativeAppDestroyed
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 415
+    startLine: 447
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1713,11 +1861,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InitialWindowSize
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 417
+    startLine: 449
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1740,11 +1888,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnCreated
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 423
+    startLine: 455
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1766,11 +1914,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWentBackground
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 430
+    startLine: 462
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1792,11 +1940,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnWentForeground
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 436
+    startLine: 468
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1818,11 +1966,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OnMauiAppCreated
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 446
+    startLine: 478
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1847,11 +1995,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedGlobalRefresh
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 452
+    startLine: 484
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1876,11 +2024,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: NeedGlobalUpdate
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 458
+    startLine: 490
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1904,11 +2052,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: InBackground
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 469
+    startLine: 501
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1933,11 +2081,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: StopRenderingInBackground
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 509
+    startLine: 541
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1962,11 +2110,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RunOnMainThreadAndWait
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 532
+    startLine: 564
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -1993,11 +2141,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RunOnMainThreadAndWaitAsync
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 556
+    startLine: 588
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2029,11 +2177,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CacheEnabled
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 594
+    startLine: 626
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2058,11 +2206,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GpuCacheEnabled
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 596
+    startLine: 628
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2087,11 +2235,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: UserAgent
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 598
+    startLine: 630
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2116,11 +2264,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SkiaGeneration
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 600
+    startLine: 632
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2143,11 +2291,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: EnqueueBackgroundTask
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 607
+    startLine: 639
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2175,11 +2323,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ProcessBackgroundQueue
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 612
+    startLine: 644
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2203,11 +2351,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: RotationChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 632
+    startLine: 664
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2230,11 +2378,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DeviceRotation
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 637
+    startLine: 669
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2261,11 +2409,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: OrientationChanged
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 650
+    startLine: 682
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2288,11 +2436,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DeviceOrientation
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 652
+    startLine: 684
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2317,11 +2465,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: DeviceRotationSnap
     path: ../src/Shared/DrawnUi/Super.cs
-    startLine: 666
+    startLine: 698
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -2346,7 +2494,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.Keyboard.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardTop
     path: ../src/Shared/DrawnUi/Super.Keyboard.cs
@@ -2380,7 +2528,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Super.Keyboard.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: KeyboardChanged
     path: ../src/Shared/DrawnUi/Super.Keyboard.cs
@@ -3283,6 +3431,53 @@ references:
   name: SetupFrameLooper
   nameWithType: Super.SetupFrameLooper
   fullName: DrawnUi.Draw.Super.SetupFrameLooper
+- uid: DrawnUi.Draw.Super.GpuResourceCacheBytes*
+  commentId: Overload:DrawnUi.Draw.Super.GpuResourceCacheBytes
+  href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_GpuResourceCacheBytes
+  name: GpuResourceCacheBytes
+  nameWithType: Super.GpuResourceCacheBytes
+  fullName: DrawnUi.Draw.Super.GpuResourceCacheBytes
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: DrawnUi.Draw.Super.SurfacePoolBytes*
+  commentId: Overload:DrawnUi.Draw.Super.SurfacePoolBytes
+  href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_SurfacePoolBytes
+  name: SurfacePoolBytes
+  nameWithType: Super.SurfacePoolBytes
+  fullName: DrawnUi.Draw.Super.SurfacePoolBytes
+- uid: DrawnUi.Draw.Super.SurfacePoolBytes
+  commentId: P:DrawnUi.Draw.Super.SurfacePoolBytes
+  href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_SurfacePoolBytes
+  name: SurfacePoolBytes
+  nameWithType: Super.SurfacePoolBytes
+  fullName: DrawnUi.Draw.Super.SurfacePoolBytes
+- uid: DrawnUi.Draw.Super.ResolveSurfacePoolBytes*
+  commentId: Overload:DrawnUi.Draw.Super.ResolveSurfacePoolBytes
+  href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_ResolveSurfacePoolBytes_System_Int64_
+  name: ResolveSurfacePoolBytes
+  nameWithType: Super.ResolveSurfacePoolBytes
+  fullName: DrawnUi.Draw.Super.ResolveSurfacePoolBytes
+- uid: DrawnUi.Draw.Super.GpuResourceCacheBytes
+  commentId: P:DrawnUi.Draw.Super.GpuResourceCacheBytes
+  href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_GpuResourceCacheBytes
+  name: GpuResourceCacheBytes
+  nameWithType: Super.GpuResourceCacheBytes
+  fullName: DrawnUi.Draw.Super.GpuResourceCacheBytes
+- uid: DrawnUi.Draw.Super.ResolveGpuResourceCacheBytes*
+  commentId: Overload:DrawnUi.Draw.Super.ResolveGpuResourceCacheBytes
+  href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_ResolveGpuResourceCacheBytes_System_Int64_
+  name: ResolveGpuResourceCacheBytes
+  nameWithType: Super.ResolveGpuResourceCacheBytes
+  fullName: DrawnUi.Draw.Super.ResolveGpuResourceCacheBytes
 - uid: DrawnUi.Draw.Super.MaxFps*
   commentId: Overload:DrawnUi.Draw.Super.MaxFps
   href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_MaxFps
@@ -3306,17 +3501,6 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
-- uid: System.Int64
-  commentId: T:System.Int64
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.int64
-  name: long
-  nameWithType: long
-  fullName: long
-  nameWithType.vb: Long
-  fullName.vb: Long
-  name.vb: Long
 - uid: DrawnUi.Draw.Super.AdjustTruncatedRate*
   commentId: Overload:DrawnUi.Draw.Super.AdjustTruncatedRate
   href: DrawnUi.Draw.Super.html#DrawnUi_Draw_Super_AdjustTruncatedRate_System_Single_

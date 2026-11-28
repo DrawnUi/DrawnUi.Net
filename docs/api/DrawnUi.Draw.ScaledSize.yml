@@ -27,7 +27,6 @@ items:
   - DrawnUi.Draw.ScaledSize.Units
   - DrawnUi.Draw.ScaledSize.WidthCut
   - DrawnUi.Draw.ScaledSize.WithCut(System.Boolean,System.Boolean)
-  - DrawnUi.Draw.ScaledSize._scale
   - DrawnUi.Draw.ScaledSize.op_Equality(DrawnUi.Draw.ScaledSize,DrawnUi.Draw.ScaledSize)
   - DrawnUi.Draw.ScaledSize.op_Inequality(DrawnUi.Draw.ScaledSize,DrawnUi.Draw.ScaledSize)
   langs:
@@ -40,14 +39,19 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ScaledSize
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 2
+    startLine: 6
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: >-
+    A measured or available size in units and pixels. Immutable: every value is set when it is made, so it can be shared
+
+    as it is (<xref href="DrawnUi.Draw.ScaledSize.Default" data-throw-if-not-resolved="false"></xref> is one instance, <xref href="DrawnUi.Draw.ScaledSize.Clone" data-throw-if-not-resolved="false"></xref> returns the same instance).
+  example: []
   syntax:
     content: 'public class ScaledSize : IComparable, IComparable<ScaledSize>, IEquatable<ScaledSize>'
     content.vb: Public Class ScaledSize Implements IComparable, IComparable(Of ScaledSize), IEquatable(Of ScaledSize)
@@ -78,11 +82,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: .ctor
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 5
+    startLine: 9
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -107,11 +111,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WithCut
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 14
+    startLine: 18
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -143,7 +147,7 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Default
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
@@ -151,6 +155,8 @@ items:
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: The empty default size (scale 1). One shared instance.
+  example: []
   syntax:
     content: public static ScaledSize Default { get; }
     parameters: []
@@ -158,33 +164,6 @@ items:
       type: DrawnUi.Draw.ScaledSize
     content.vb: Public Shared ReadOnly Property [Default] As ScaledSize
   overload: DrawnUi.Draw.ScaledSize.Default*
-- uid: DrawnUi.Draw.ScaledSize._scale
-  commentId: F:DrawnUi.Draw.ScaledSize._scale
-  id: _scale
-  parent: DrawnUi.Draw.ScaledSize
-  langs:
-  - csharp
-  - vb
-  name: _scale
-  nameWithType: ScaledSize._scale
-  fullName: DrawnUi.Draw.ScaledSize._scale
-  type: Field
-  source:
-    remote:
-      path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
-      repo: https://github.com/DrawnUi/DrawnUi.Net.git
-    id: _scale
-    path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 28
-  assemblies:
-  - DrawnUi.Maui
-  namespace: DrawnUi.Draw
-  syntax:
-    content: public float _scale
-    return:
-      type: System.Single
-    content.vb: Public _scale As Single
 - uid: DrawnUi.Draw.ScaledSize.Scale
   commentId: P:DrawnUi.Draw.ScaledSize.Scale
   id: Scale
@@ -199,16 +178,16 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Scale
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 29
+    startLine: 31
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public float Scale { get; set; }
+    content: public float Scale { get; init; }
     parameters: []
     return:
       type: System.Single
@@ -228,16 +207,16 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Units
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 41
+    startLine: 33
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public SKSize Units { get; set; }
+    content: public SKSize Units { get; init; }
     parameters: []
     return:
       type: SkiaSharp.SKSize
@@ -257,16 +236,16 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Pixels
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 42
+    startLine: 34
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public SKSize Pixels { get; set; }
+    content: public SKSize Pixels { get; init; }
     parameters: []
     return:
       type: SkiaSharp.SKSize
@@ -286,16 +265,16 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: WidthCut
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 43
+    startLine: 35
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public bool WidthCut { get; set; }
+    content: public bool WidthCut { get; init; }
     parameters: []
     return:
       type: System.Boolean
@@ -315,16 +294,16 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: HeightCut
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 44
+    startLine: 36
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
   syntax:
-    content: public bool HeightCut { get; set; }
+    content: public bool HeightCut { get; init; }
     parameters: []
     return:
       type: System.Boolean
@@ -344,11 +323,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompareTo
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 46
+    startLine: 38
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -391,11 +370,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CompareTo
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 61
+    startLine: 53
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -431,11 +410,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Equals
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 82
+    startLine: 74
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -468,11 +447,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Equals
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 87
+    startLine: 79
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -507,11 +486,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: GetHashCode
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 92
+    startLine: 84
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -539,11 +518,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: op_Equality
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 97
+    startLine: 89
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -575,11 +554,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: op_Inequality
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 102
+    startLine: 94
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -611,14 +590,16 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: Clone
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 107
+    startLine: 100
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
+  summary: 'Returns this instance: a ScaledSize never changes after it is made, so a copy is not needed.'
+  example: []
   syntax:
     content: public ScaledSize Clone()
     return:
@@ -639,11 +620,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: CreateEmpty
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 119
+    startLine: 102
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -673,11 +654,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: IsEmpty
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 129
+    startLine: 107
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -702,11 +683,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: ToString
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 137
+    startLine: 115
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -734,11 +715,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: SnapToPixel
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 142
+    startLine: 120
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -770,11 +751,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FromUnits
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 148
+    startLine: 126
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -808,11 +789,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FromPixels
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 180
+    startLine: 153
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -844,11 +825,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FromPixels
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 185
+    startLine: 158
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -882,11 +863,11 @@ items:
   source:
     remote:
       path: src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-      branch: Cells
+      branch: net10
       repo: https://github.com/DrawnUi/DrawnUi.Net.git
     id: FromPixels
     path: ../src/Shared/DrawnUi/Internals/Models/ScaledSize.cs
-    startLine: 190
+    startLine: 163
   assemblies:
   - DrawnUi.Maui
   namespace: DrawnUi.Draw
@@ -911,6 +892,30 @@ items:
   fullName.vb: DrawnUi.Draw.ScaledSize.FromPixels(Single, Single, Boolean, Boolean, Single)
   name.vb: FromPixels(Single, Single, Boolean, Boolean, Single)
 references:
+- uid: DrawnUi.Draw.ScaledSize.Default
+  commentId: P:DrawnUi.Draw.ScaledSize.Default
+  href: DrawnUi.Draw.ScaledSize.html#DrawnUi_Draw_ScaledSize_Default
+  name: Default
+  nameWithType: ScaledSize.Default
+  fullName: DrawnUi.Draw.ScaledSize.Default
+- uid: DrawnUi.Draw.ScaledSize.Clone
+  commentId: M:DrawnUi.Draw.ScaledSize.Clone
+  href: DrawnUi.Draw.ScaledSize.html#DrawnUi_Draw_ScaledSize_Clone
+  name: Clone()
+  nameWithType: ScaledSize.Clone()
+  fullName: DrawnUi.Draw.ScaledSize.Clone()
+  spec.csharp:
+  - uid: DrawnUi.Draw.ScaledSize.Clone
+    name: Clone
+    href: DrawnUi.Draw.ScaledSize.html#DrawnUi_Draw_ScaledSize_Clone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: DrawnUi.Draw.ScaledSize.Clone
+    name: Clone
+    href: DrawnUi.Draw.ScaledSize.html#DrawnUi_Draw_ScaledSize_Clone
+  - name: (
+  - name: )
 - uid: DrawnUi.Draw
   commentId: N:DrawnUi.Draw
   href: DrawnUi.html
@@ -1348,6 +1353,12 @@ references:
   name: Default
   nameWithType: ScaledSize.Default
   fullName: DrawnUi.Draw.ScaledSize.Default
+- uid: DrawnUi.Draw.ScaledSize.Scale*
+  commentId: Overload:DrawnUi.Draw.ScaledSize.Scale
+  href: DrawnUi.Draw.ScaledSize.html#DrawnUi_Draw_ScaledSize_Scale
+  name: Scale
+  nameWithType: ScaledSize.Scale
+  fullName: DrawnUi.Draw.ScaledSize.Scale
 - uid: System.Single
   commentId: T:System.Single
   parent: System
@@ -1359,12 +1370,6 @@ references:
   nameWithType.vb: Single
   fullName.vb: Single
   name.vb: Single
-- uid: DrawnUi.Draw.ScaledSize.Scale*
-  commentId: Overload:DrawnUi.Draw.ScaledSize.Scale
-  href: DrawnUi.Draw.ScaledSize.html#DrawnUi_Draw_ScaledSize_Scale
-  name: Scale
-  nameWithType: ScaledSize.Scale
-  fullName: DrawnUi.Draw.ScaledSize.Scale
 - uid: DrawnUi.Draw.ScaledSize.Units*
   commentId: Overload:DrawnUi.Draw.ScaledSize.Units
   href: DrawnUi.Draw.ScaledSize.html#DrawnUi_Draw_ScaledSize_Units
