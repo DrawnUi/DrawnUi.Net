@@ -891,12 +891,12 @@ public partial class SkiaLayout
         if (view == null)
             return;
 
-        if (bakeAhead && (!fromPool || !view.UsesCacheDoubleBuffering))
+        if (bakeAhead && (!fromPool || !view.CanBakeAhead))
         {
             // bake-ahead prepares pool cells only (a row on screen belongs to the render thread)
             if (fromPool)
             {
-                _bakeAheadUseless = !view.UsesCacheDoubleBuffering;
+                _bakeAheadUseless = !view.CanBakeAhead;
                 adapter.ReleaseMeasuringView(view);
             }
             return;
@@ -951,12 +951,15 @@ public partial class SkiaLayout
                 if (!bakeAhead)
                     StoreMemoSize(item, w, measured);
 
-                // a double-buffered cell gets its bitmap now, ahead of the viewport, not at its first draw
+                // a cell with a bitmap cache gets it now, ahead of the viewport, not at its first draw
                 DrawingContext? latest;
                 lock (_prepFrameLock)
                     latest = _prepFrameContext;
-                if (view.UsesCacheDoubleBuffering && latest is { } frame && !view.OffscreenBakeBusy
-                    && (view.RenderObject == null || view.PixelsForeign))
+                var doubleBuffered = view.UsesCacheDoubleBuffering;
+                var needsBitmap = doubleBuffered
+                    ? !view.OffscreenBakeBusy && (view.RenderObject == null || view.PixelsForeign)
+                    : fromPool && view.CanBakeAhead && (view.RenderObject == null || view.RenderObjectNeedsUpdate);
+                if (needsBitmap && latest is { } frame)
                 {
                     var slot = Type == LayoutType.Row
                         ? new SKRect(0, 0, measured.Pixels.Width, h)
@@ -964,7 +967,12 @@ public partial class SkiaLayout
                     view.Arrange(slot, view.SizeRequest.Width, view.SizeRequest.Height, RenderingScale);
                     var area = view.DrawingRect;
                     if (area.Width > 0 && area.Height > 0)
-                        view.QueueBakeForPreparedCell(frame.WithDestination(area), area);
+                    {
+                        if (doubleBuffered)
+                            view.QueueBakeForPreparedCell(frame.WithDestination(area), area);
+                        else
+                            view.RecordCacheForPreparedCell(frame.WithDestination(area), area);
+                    }
                 }
             }
 

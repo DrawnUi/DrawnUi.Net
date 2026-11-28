@@ -1811,6 +1811,48 @@ public partial class SkiaControl
             RenderObjectPrevious = null;
     }
 
+    /// <summary>
+    /// A cell whose cache the preparation worker can make ahead of the viewport: double-buffered (baked on the bake
+    /// workers), or a plain CPU bitmap (recorded on the preparation thread). Not on single-threaded WebAssembly, where
+    /// preparation runs inside the frame.
+    /// </summary>
+    internal bool CanBakeAhead
+    {
+        get
+        {
+#if BROWSER || WEB
+            return false;
+#else
+            return UsesCacheDoubleBuffering || UsingCacheType == SkiaCacheType.Image;
+#endif
+        }
+    }
+
+    /// <summary>
+    /// Records the plain CPU-bitmap cache of a pooled cell the preparation worker has just bound and measured, on that
+    /// thread, so the cell is drawn from its bitmap when it scrolls in instead of rasterizing in that frame. Child GPU
+    /// caches paint live into it, as in a background bake.
+    /// </summary>
+    /// <summary>
+    /// The cache was recorded ahead for the current content while the cell sat in the pool: the next attach to its
+    /// layout keeps it (redraw only) instead of invalidating it. Cleared on that attach.
+    /// </summary>
+    internal bool CacheMadeAheadForAttach;
+
+    internal void RecordCacheForPreparedCell(DrawingContext clone, SKRect recordArea)
+    {
+        var created = RecordOffscreenBake(clone, recordArea, recordArea, false);
+        if (created == null)
+            return;
+
+        lock (LockDraw)
+        {
+            RenderObject = created;
+            RenderObjectNeedsUpdate = false;
+            CacheMadeAheadForAttach = true;
+        }
+    }
+
     internal void QueueBakeForPreparedCell(DrawingContext clone, SKRect recordArea)
     {
         var paintDestination = DrawingRect;
