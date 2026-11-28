@@ -1,5 +1,9 @@
 ﻿namespace DrawnUi.Draw;
 
+/// <summary>
+/// A measured or available size in units and pixels. Immutable: every value is set when it is made, so it can be shared
+/// as it is (<see cref="Default"/> is one instance, <see cref="Clone"/> returns the same instance).
+/// </summary>
 [DebuggerDisplay("{ToString()}")]
 public class ScaledSize : IComparable, IComparable<ScaledSize>, IEquatable<ScaledSize>
 {
@@ -14,35 +18,23 @@ public class ScaledSize : IComparable, IComparable<ScaledSize>, IEquatable<Scale
 
     public ScaledSize WithCut(bool widthCut, bool heightCut)
     {
-        return new ScaledSize
-        {
-            Scale = this.Scale,
-            Units = this.Units,
-            Pixels = this.Pixels,
-            WidthCut = widthCut,
-            HeightCut = heightCut
-        };
+        if (widthCut == WidthCut && heightCut == HeightCut)
+            return this;
+        return Reuse(Scale, Units, Pixels, widthCut, heightCut);
     }
 
-    public static ScaledSize Default => new();
+    /// <summary>The empty default size (scale 1). One shared instance.</summary>
+    public static ScaledSize Default { get; } = new();
 
-    public float _scale = 1;
-    public float Scale
-    {
-        get
-        {
-            return _scale;
-        }
-        set
-        {
-            _scale = value;
-        }
-    }
+    private static ScaledSize Reuse(float scale, SKSize units, SKSize pixels, bool widthCut, bool heightCut)
+        => new() { Scale = scale, Units = units, Pixels = pixels, WidthCut = widthCut, HeightCut = heightCut };
 
-    public SKSize Units { get; set; }
-    public SKSize Pixels { get; set; }
-    public bool WidthCut { get; set; }
-    public bool HeightCut { get; set; }
+    public float Scale { get; init; }
+
+    public SKSize Units { get; init; }
+    public SKSize Pixels { get; init; }
+    public bool WidthCut { get; init; }
+    public bool HeightCut { get; init; }
 
     public int CompareTo(object obj)
     {
@@ -105,26 +97,12 @@ public class ScaledSize : IComparable, IComparable<ScaledSize>, IEquatable<Scale
         return !Equals(left, right);
     }
 
-    public ScaledSize Clone()
-    {
-        return new()
-        {
-            Scale = this.Scale,
-            Units = this.Units,
-            Pixels = this.Pixels,
-            HeightCut = this.HeightCut,
-            WidthCut = this.WidthCut
-        };
-    }
+    /// <summary>Returns this instance: a ScaledSize never changes after it is made, so a copy is not needed.</summary>
+    public ScaledSize Clone() => this;
 
     public static ScaledSize CreateEmpty(float scale)
     {
-        return new()
-        {
-            Scale = scale,
-            Units = SKSize.Empty,
-            Pixels = SKSize.Empty
-        };
+        return Reuse(scale, SKSize.Empty, SKSize.Empty, false, false);
     }
 
     public bool IsEmpty
@@ -170,12 +148,7 @@ public class ScaledSize : IComparable, IComparable<ScaledSize>, IEquatable<Scale
             nHeight = float.PositiveInfinity;
         }
 
-        return new ScaledSize()
-        {
-            Scale = scale,
-            Units = new SKSize(width, height),
-            Pixels = new SKSize((float)Math.Round(nWidth), (float)Math.Round(nHeight))
-        };
+        return Reuse(scale, new SKSize(width, height), new SKSize((float)Math.Round(nWidth), (float)Math.Round(nHeight)), false, false);
     }
 
     public static ScaledSize FromPixels(SKSize size, float scale)
@@ -215,13 +188,6 @@ public class ScaledSize : IComparable, IComparable<ScaledSize>, IEquatable<Scale
         height = (float)Math.Round(height);
 #endif
 
-        return new ScaledSize()
-        {
-            Scale = scale,
-            Pixels = new SKSize(width, height),
-            Units = new SKSize(nWidth, nHeight),
-            WidthCut = widthCut,
-            HeightCut = heighCut
-        };
+        return Reuse(scale, new SKSize(nWidth, nHeight), new SKSize(width, height), widthCut, heighCut);
     }
 }
