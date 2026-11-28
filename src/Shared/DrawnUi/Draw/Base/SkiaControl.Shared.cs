@@ -10157,7 +10157,16 @@ namespace DrawnUi.Draw
                 // First attach: the object initializer / fluent chain that built this control has completed.
                 RunExecuteAfterCreated();
 
-                Update();
+                if (CacheMadeAheadForAttach)
+                {
+                    // a pooled cell whose bitmap was recorded ahead for this content: keep it, only redraw
+                    CacheMadeAheadForAttach = false;
+                    Repaint();
+                }
+                else
+                {
+                    Update();
+                }
             }
 
             // a popup or page came or went, or the hovered control was detached: what is under a still mouse may
