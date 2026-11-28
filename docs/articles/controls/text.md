@@ -21,7 +21,7 @@ SkiaLabel is the primary text rendering control in DrawnUI, rendering text direc
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `Text` | string | The text content to display |
+| `Text` | string | Text content to display |
 | `TextColor` | Color | Text color |
 | `FontFamily` | string | Font family name |
 | `FontSize` | double | Font size in points (default 12) |
@@ -187,13 +187,13 @@ Use the following properties for shadow effects:
 
 | Mode | What it does |
 |------|--------------|
-| `None` | The default. The font size is `FontSize`. |
+| `None` | Default. The font size is `FontSize`. |
 | `FitHorizontal` | Makes the font smaller until each paragraph fits the width on one line and nothing is cut. A text that already fits keeps `FontSize`, and the size goes back up when the text gets shorter or the label wider. Works with `LineBreakMode="NoWrap"` too. |
 | `FitVertical` | Makes the font smaller until the wrapped text is not cut by the height or `MaxLines`. Never bigger than `FontSize`. |
 | `FillHorizontal` | Makes the font bigger than `FontSize` while the widest line still has room in the width. |
 | `FillVertical` | Makes the font bigger than `FontSize` while there is room for another line below the text. |
 | `FitFillHorizontal` | Smaller to fit the width, bigger to fill it. Starts from the size it used last time, so it is the faster choice for text that changes often. The size can go above `FontSize`. |
-| `FitFillVertical` | The same on the height. |
+| `FitFillVertical` | Same on the height. |
 
 `AutoSizeText` computes the size from that text instead of `Text`. Put the longest value you expect there (for example `"00:00:00"` for a timer), so the size does not change with every new value.
 

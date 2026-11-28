@@ -97,7 +97,7 @@ Settings apply when the first element loads, so they need no window to exist at 
 
 ---
 
-## The element
+## Element
 
 ```xml
 <Window xmlns:draw="http://schemas.appomobi.com/drawnUi/2023/draw" ...>

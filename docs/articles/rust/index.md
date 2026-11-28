@@ -7,7 +7,7 @@ The crate is stable since version 1.0, on [crates.io](https://crates.io/crates/d
 - Source: [github.com/DrawnUi/DrawnUi.Rust](https://github.com/DrawnUi/DrawnUi.Rust)
 - Crate: [`drawnui`](https://crates.io/crates/drawnui) · API docs: [docs.rs/drawnui](https://docs.rs/drawnui)
 - Live demo: [hellorust.drawnui.net](https://hellorust.drawnui.net)
-- A game made with it: [run.drawnui.net](https://run.drawnui.net) (Dungeon Run, a 3D runner drawn with SkMesh)
+- Game made with it: [run.drawnui.net](https://run.drawnui.net) (Dungeon Run, a 3D runner drawn with SkMesh)
 - Emulator made with it: [cpc.drawnui.net](https://cpc.drawnui.net) (DrawnCPC, Amstrad CPC 6128 emulator, [source](https://github.com/taublast/DrawnCPC))
 - Agent skill: [drawnui-rust/SKILL.md](https://hellorust.drawnui.net/skills/drawnui-rust/SKILL.md)
 - Porting a .NET DrawnUI app to Rust: [drawnui-port-net-to-rust/SKILL.md](https://hellorust.drawnui.net/skills/drawnui-port-net-to-rust/SKILL.md)
@@ -111,10 +111,10 @@ In the browser your code and Skia live in one WebAssembly module and call each o
 
 ## Samples
 
-- **The demo app**: [hellorust.drawnui.net](https://hellorust.drawnui.net), one page per feature, source in the repository.
-- **A game**: [Dungeon Run](https://run.drawnui.net), source in [`examples/dungeon`](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/dungeon).
+- **Demo app**: [hellorust.drawnui.net](https://hellorust.drawnui.net), one page per feature, source in the repository.
+- **Game**: [Dungeon Run](https://run.drawnui.net), source in [`examples/dungeon`](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/dungeon).
 - **Emulator**: [DrawnCPC](https://cpc.drawnui.net), Amstrad CPC 6128 emulator with catalogue of CPC games, demos and music: desktop menu bar with keyboard navigation, popup windows, settings kept on desktop and web, tool screens (debugger, hex editor, selectable text), on-screen keyboard with phone layout, sound through drawnui-audio, web build, accessibility throughout. Source on [GitHub](https://github.com/taublast/DrawnCPC).
-- **A shipped app**: [Net Connect](https://github.com/taublast/DrawnVpnClient), a VLESS + REALITY client for Android, iOS, macOS and Windows from one Rust source: a shell with pages, a recycled server list, popup menus, a language dropdown, toasts, and a connect button drawn with an SkSL shader. Source on GitHub, downloads in its releases.
+- **Shipped app**: [Net Connect](https://github.com/taublast/DrawnVpnClient), a VLESS + REALITY client for Android, iOS, macOS and Windows from one Rust source: a shell with pages, a recycled server list, popup menus, a language dropdown, toasts, and a connect button drawn with an SkSL shader. Source on GitHub, downloads in its releases.
 
 The demo app lives in [`examples/hellorust`](https://github.com/DrawnUi/DrawnUi.Rust/tree/main/examples/hellorust): one canvas and a `SkiaShell` whose root menu opens a page per feature. The same app runs on the desktop and in the browser. To run it locally:
 
@@ -145,7 +145,7 @@ The repository builds against a few checkouts next to it; the [README](https://g
 | [Shaders](https://hellorust.drawnui.net/#/shaders) | `SkiaShaderEffect` and shader slide transitions |
 | [Sprites](https://hellorust.drawnui.net/#/sprites) | `SkiaSprite` sheets and a keyboard-driven `SkiaSpriteSet` |
 | [Transforms](https://hellorust.drawnui.net/#/transforms) | Rotation, scale, skew, translation, with hit-testing through them |
-| [Drag to reorder](https://hellorust.drawnui.net/#/reorder) | A list row lifted and dragged, reordering live |
+| [Drag to reorder](https://hellorust.drawnui.net/#/reorder) | List row lifted and dragged, reordering live |
 | [Pong](https://hellorust.drawnui.net/#/pong) | `DrawnGame`: the .NET Pong sample ([source](https://github.com/DrawnUi/DrawnUi.Rust/blob/main/examples/hellorust/src/pages/pong.rs)) |
 | [Accessibility](https://hellorust.drawnui.net/#/a11y) | Roles, labels, live regions, keyboard |
 

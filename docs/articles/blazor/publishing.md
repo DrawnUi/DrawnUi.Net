@@ -4,7 +4,7 @@ This article exists because of one very bad evening. A DrawnUI game that ran at 
 
 If you publish a DrawnUI Blazor WebAssembly app and skip this page, you will ship a slideshow. Please don't.
 
-## The trap: your Release build is NOT compiled
+## Trap: your Release build is NOT compiled
 
 Here is the thing almost everyone gets wrong, and we got wrong too.
 
@@ -36,13 +36,13 @@ Roughly **2x the framerate and 4x fewer visible hitches**, from one csproj line.
 
 And the bonus nobody expects: AOT does **not** bloat the download. Yes, `dotnet.native.wasm` grows about 5x (ours went 9.8 MB → 46 MB), but the IL gets stripped after compilation and native code compresses beautifully — our total Brotli payload actually went **down**, from 14.6 MB to 13.5 MB.
 
-### The costs, honestly
+### Costs, honestly
 
 - **Publish time**: ~1 minute becomes ~10 minutes. Every AOT publish recompiles all assemblies to wasm. Annoying, worth it.
 - **Publish only**: `dotnet run` and Debug builds still use the interpreter. Your dev loop doesn't change — which is exactly why you never feel the production pain locally. Don't trust your dev-machine FPS. Ever.
 - You need the `wasm-tools` workload installed (`dotnet workload install wasm-tools`) — if you already build with SkiaSharp/`WasmBuildNative`, you have it.
 
-## The second trap: your server is serving 48 MB raw
+## Second trap: your server is serving 48 MB raw
 
 This one hurt more, because we walked into it *immediately after* fixing the first one.
 
@@ -52,7 +52,7 @@ Read that again: .NET compresses everything for you at publish time, for free, a
 
 Before AOT, the raw file was 9.8 MB and nobody noticed the missing compression. AOT made the file 5x bigger and turned a hidden inefficiency into a dead site. The compression config was *always* wrong — AOT just sent the bill.
 
-### The fix (nginx)
+### Fix (nginx)
 
 Install the brotli static module (Ubuntu):
 
@@ -85,15 +85,15 @@ curl -sI -H "Accept-Encoding: br" https://yoursite.com/_framework/dotnet.native.
 
 You want to see `Content-Encoding: br` and a number around 10 MB, **not** a naked 48 MB `Content-Length`. This one curl command would have saved us the whole evening. Make it part of your deploy ritual.
 
-## The loading bar will lie to you
+## Loading bar will lie to you
 
 One more thing we learned the hard way: the Blazor boot progress bar tracks *downloads only*. While the browser compiles a 46 MB wasm module, the bar sits completely frozen and your app looks hung — even when everything is fine. With compression fixed, the whole cold boot is a few seconds and this stops mattering. But if anyone ever tells you "the site is stuck at the loading bar," check `Content-Encoding` before you check anything else.
 
-## A note on hand-patching deployed files
+## Note on hand-patching deployed files
 
 Blazor's integrity checking (those SHA-256 hashes in the boot manifest) covers **only** the `_framework` assets. Your static content — sounds, images, fonts outside the manifest — can be uploaded or replaced individually on the server without any integrity errors. Touching anything under `_framework` by hand, however, will break the boot. Republish instead.
 
-## The checklist
+## Checklist
 
 Every DrawnUI Blazor WASM production deploy, in order:
 

@@ -20,7 +20,7 @@ If you are choosing a host first, start with [Platforms and Packages](../platfor
 ## Intermediate tutorials
 
 - **[Interactive Cards](../interactive-cards.md)** - Animated cards, gesture handling, effects, and reusable composition patterns. The article now points to the matching Blazor sandbox route.
-- **[A Custom Drawn Control](../interactive-button.md)** - A custom game-style button with composed visuals and press feedback, plus a Blazor host note for the same control pattern.
+- **[Custom Drawn Control](../interactive-button.md)** - Custom game-style button with composed visuals and press feedback, plus a Blazor host note for the same control pattern.
 
 ## Advanced tutorial
 

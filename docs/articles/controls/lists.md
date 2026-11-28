@@ -31,10 +31,10 @@ This is the general guide: how the pieces fit, which setup matches your content,
 ```
 
 - **`SkiaScroll`** owns the viewport: offset, gestures, inertia, `LoadMoreCommand`, programmatic scrolls (`ScrollToIndex`).
-- **The templated `SkiaLayout`** (usually via `SkiaStack`) owns the items: measurement, cell creation/recycling, virtualization.
-- **The cell** is any control created from `ItemTemplate` — for recycling scenarios derive from `SkiaDynamicDrawnCell` (see [Recycled Cells](../advanced/recycled-cells.md)).
+- **Templated `SkiaLayout`** (usually via `SkiaStack`) owns the items: measurement, cell creation/recycling, virtualization.
+- **Cell**: any control created from `ItemTemplate` — for recycling scenarios derive from `SkiaDynamicDrawnCell` (see [Recycled Cells](../advanced/recycled-cells.md)).
 
-## The two main knobs
+## Two main knobs
 
 **`RecyclingTemplate`** (default `Enabled`) — who owns cell instances:
 - `Disabled`: one view per item, kept alive and bound. Fast revisits, memory grows with item count.

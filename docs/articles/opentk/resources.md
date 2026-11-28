@@ -4,7 +4,7 @@ On the OpenTK head there is **no MAUI asset pipeline**. DrawnUI resolves a sourc
 `"Images/banana.gif"` as a path **relative to the application's output directory** (next to the
 executable, e.g. `bin/Debug/net10.0/`). So every raw asset must be **copied to the output directory**.
 
-## The rule
+## Rule
 
 Add the asset to your `.csproj` as `Content` **with `CopyToOutputDirectory`**:
 

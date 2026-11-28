@@ -16,7 +16,7 @@ Plain drawn controls are not exposed by default, so you choose which parts of a 
 | .NET MAUI iOS | VoiceOver | Virtual `UIAccessibilityElement` container on the canvas view | No |
 | .NET MAUI Mac Catalyst | VoiceOver | Virtual `UIAccessibilityElement` container on the canvas view | Keyboard navigation, focus ring on the canvas |
 | Blazor | Any browser screen reader | Invisible ARIA overlay over the canvas | Keyboard navigation through the overlay (CSS focus outline) |
-| WebAssembly (`DrawnUi.Web`) | Any browser screen reader | The same ARIA overlay as Blazor | Keyboard navigation through the overlay, focus ring on the canvas |
+| WebAssembly (`DrawnUi.Web`) | Any browser screen reader | Same ARIA overlay as Blazor | Keyboard navigation through the overlay, focus ring on the canvas |
 
 Every target uses the same C# metadata on `SkiaControl`. A platform layer reads the `SkiaAccessibilityManager` snapshot and exposes it through that platform's accessibility API, so a control behaves the same for a screen reader on every target.
 
@@ -292,7 +292,7 @@ new SkiaScroll
 - The group roles are `Aria.RoleList`, `RoleListBox`, `RoleGrid`, `RoleToolbar`, `RoleRadioGroup`, `RoleTabList`, `RoleMenu` and `RoleMenuBar`. They work on any layout: `SkiaStack`, `SkiaRow`, `SkiaWrap`, `SkiaGrid`, a templated layout or plain children.
 - **One Tab stop.** Tab enters the group on the item that had focus last there (the first item on the first visit), plus the controls inside that item (a remove button on a card). The next Tab leaves the group. Shift+Tab works the same way back.
 - **Arrows move by item index**, not by screen position: Down / Up in a `Column`, Right / Left in a `Row`, all four in a `Wrap`, a `Grid` or a `Split` layout (Up / Down by one row, counted on the first row). Home / End go to the first / last item, PageDown / PageUp move by one viewport of the scroll around the group. There is no wrap at the ends.
-- **The control first.** A focused control that uses the key keeps it: a slider inside an item steps its value, and the group does not move.
+- **Control first.** A focused control that uses the key keeps it: a slider inside an item steps its value, and the group does not move.
 - **Recycled cells.** An item whose cell is not realized is scrolled in (`ScrollToIndex`, when the group is the scroll's `Content`) and focused once drawn, so the arrows walk the whole list, a large windowed `ItemsSource` included. Focus lands on the item itself when it is a node, else on its first interactive node.
 - Items the pointer cannot use are skipped (see above). A container without a group role leaves the arrow keys alone.
 

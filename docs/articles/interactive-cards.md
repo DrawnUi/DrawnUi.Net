@@ -611,7 +611,7 @@ private void OnCardGestures(object sender, SkiaGesturesInfo e)
 
 The gesture handler stays synchronous so `e.Consumed = true` is applied immediately, while the tap animation itself runs in a dedicated async helper.
 
-**The Pattern:**
+**Pattern:**
 1. **Synchronous gesture handling** - Set `e.Consumed = true` immediately
 2. **Async helper method** - Kick off `AnimateTapAsync(control)` from the handler
 3. **Serialized animation flow** - Await scale, rotation, and gradient tasks inside that helper

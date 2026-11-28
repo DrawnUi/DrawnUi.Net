@@ -185,7 +185,7 @@ public partial class ScreenBrowser
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `Content` | VisualElement | The native MAUI control to embed |
+| `Content` | VisualElement | Native MAUI control to embed |
 | `AnimateSnapshot` | bool | Android: draw a snapshot instead of the native view while it moves (default `False`) |
 | `FreezeTimeMs` | int | Android: how long after the last movement the snapshot stays (default 250) |
 

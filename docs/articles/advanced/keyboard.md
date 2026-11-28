@@ -12,7 +12,7 @@ On phones the on-screen keyboard covers the bottom of the screen. A DrawnUI form
 
 On iOS, MAUI's own keyboard scrolling (`KeyboardAutoManagerScroll`) is switched off under DrawnUI, so the `SkiaScroll` is the only thing that moves the form.
 
-## The simple way: AdaptToKeyboardAuto
+## Simple way: AdaptToKeyboardAuto
 
 Set `AdaptToKeyboardAuto = true` on the form's `SkiaScroll`. That is all: no special page, no spacer.
 

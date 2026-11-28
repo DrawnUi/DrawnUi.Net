@@ -72,7 +72,7 @@ The zoom properties control the behavior:
 | Property | Type | Description |
 |----------|------|-------------|
 | `Orientation` | ScrollOrientation | Direction of scrolling: `Vertical`, `Horizontal`, `Both`, or `Neither` to lock the scroll in place (no pan, fling or mouse wheel; the wheel reaches a parent scroll) |
-| `Content` | SkiaControl | The scrollable content |
+| `Content` | SkiaControl | Scrollable content |
 | `Header` | SkiaControl | Optional header element |
 | `Footer` | SkiaControl | Optional footer element |
 | `HeaderSticky` | bool | If true, header remains fixed during scrolling |

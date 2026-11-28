@@ -23,7 +23,7 @@ This guide will help you port your existing native MAUI controls to DrawnUI.
 
 First, please follow the [Getting Started guide](./maui/getting-started.md) to set up your project for DrawnUI.
 
-## The Theory
+## Theory
 
 Replacing native controls with DrawnUI ones involves several steps:
 
@@ -111,7 +111,7 @@ You can also place MAUI controls over the canvas if you need to stick with nativ
 | `TableView` | `SkiaMauiElement`+`TableView` | Grouped table display, create custom |
 | `SearchBar` | ❌ Do not use, create custom | Search input with built-in styling |
 
-## The practice
+## Practice
 
 Let's look at a simple example of porting a native MAUI page to DrawnUI.
 

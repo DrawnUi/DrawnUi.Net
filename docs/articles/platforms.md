@@ -15,7 +15,7 @@ Use this page first when you need to decide which package to install and which r
 | OpenTK (Windows/Linux) | `DrawnUi.OpenTk` (+ `DrawnUi.OpenTk.Game` for games) | You need fast and small-sized desktop app/game | create from scratch or overlay drawn layouts on top of your OpenGL window |
 | WPF (Windows) | `DrawnUi.Wpf` (+ `DrawnUi.Wpf.Game` for games) | You have or want a WPF app and need drawn, GPU-rendered UI inside it | Drawn controls declared in WPF XAML with `{Binding}` and styles, a full drawn window with `SkiaShell`, or a game |
 | Platform-agnostic .NET | `DrawnUi.Net` | You need DrawnUI without a framework-specific UI host | Headless rendering, console app, server-side, image/PDF generation, harnesses, shared-logic debugging |
-| React (browser) | `drawnui-react` (npm) | You have or want a React web app and need drawn UI on a canvas in it | The same controls in TypeScript on CanvasKit, composed with React components |
+| React (browser) | `drawnui-react` (npm) | You have or want a React web app and need drawn UI on a canvas in it | Same controls in TypeScript on CanvasKit, composed with React components |
 | Rust (desktop, mobile, browser) | `drawnui` (crate) | You write your app in Rust | One Rust source for Windows, macOS, Linux, iOS, Android and the browser |
 
 Every host with a screen gives drawn controls to screen readers: UI Automation on Windows, TalkBack on Android, VoiceOver on iOS and Mac Catalyst, AT-SPI2 (Orca) on Linux, an ARIA overlay in the browser. Keyboard navigation works on the desktop and browser hosts. See [Accessibility](advanced/accessibility.md).

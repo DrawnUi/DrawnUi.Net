@@ -54,7 +54,7 @@ Caching follows the .NET model: `UseCache` takes the same values. `Operations` r
 
 ## Samples
 
-- **The demo app**: [helloreact.drawnui.net](https://helloreact.drawnui.net), one page per feature, source in the repository.
+- **Demo app**: [helloreact.drawnui.net](https://helloreact.drawnui.net), one page per feature, source in the repository.
 - **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
 
 The demo app lives in [`samples/demo`](https://github.com/DrawnUi/DrawnUi.React/tree/master/samples/demo): one React app with one `<Canvas>`, and a `SkiaShell` whose root menu opens a page per feature. To run it locally:
@@ -87,9 +87,9 @@ Startup, fonts and routes are in [`samples/demo/main.tsx`](https://github.com/Dr
 | [Shaders](https://helloreact.drawnui.net/#/shaders) | `SkiaShaderEffect` and shader slide transitions |
 | [Sprites](https://helloreact.drawnui.net/#/sprites) | `SkiaSprite` sheets and a keyboard-driven `SkiaSpriteSet` |
 | [Transforms](https://helloreact.drawnui.net/#/transforms) | Rotation, scale, skew, translation, with hit-testing through them |
-| [Drag to reorder](https://helloreact.drawnui.net/#/reorder) | A list row lifted and dragged, reordering live |
+| [Drag to reorder](https://helloreact.drawnui.net/#/reorder) | List row lifted and dragged, reordering live |
 | [Pong](https://helloreact.drawnui.net/#/pong) | `DrawnGame`: the .NET Pong sample ([source](https://github.com/DrawnUi/DrawnUi.React/tree/master/samples/demo/pages/pong)) |
-| [Accessibility](https://helloreact.drawnui.net/#/a11y) | The ARIA overlay: roles, labels, live regions, keyboard |
+| [Accessibility](https://helloreact.drawnui.net/#/a11y) | ARIA overlay: roles, labels, live regions, keyboard |
 
 The pages describe DrawnUi features rather than React ones, and most are ports of the .NET samples, so the same code reads the same on both sides.
 
