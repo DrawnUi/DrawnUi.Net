@@ -1,5 +1,6 @@
 ﻿global using DrawnUi.Draw;
 global using SkiaSharp;
+using LightNavigation;
 using Microsoft.Extensions.Logging;
 
 namespace Sandbox
@@ -29,6 +30,7 @@ namespace Sandbox
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseLightNavigation() // demo pages hear when they leave the stack for good and dispose
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("NotoColorEmoji-Regular.ttf", "FontEmoji");

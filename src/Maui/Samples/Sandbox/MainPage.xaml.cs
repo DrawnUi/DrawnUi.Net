@@ -45,7 +45,7 @@ public partial class MainPage : BasePageCodeBehind
             {
                 var instance = (ContentPage)Activator.CreateInstance(page.Type);
 
-                App.Instance.SetMainPage(instance);
+                App.Instance.OpenPage(instance);
 
             }
         }

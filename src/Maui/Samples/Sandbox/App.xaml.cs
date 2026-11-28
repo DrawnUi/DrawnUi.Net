@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using LightNavigation;
 
 namespace Sandbox
 {
@@ -9,6 +10,7 @@ namespace Sandbox
             Super.SetLocale("en");
 
             InitializeComponent();
+
 
             var mask = "MainPage";
 
@@ -51,16 +53,18 @@ namespace Sandbox
 
         public static List<MainPageVariant> MainPages { get; protected set; }
 
-        protected override Window CreateWindow(IActivationState activationState) => new Window(new AppShell());
+        /// <summary>
+        /// The menu at the root of a LightNavigationPage: a demo page is pushed over it and popped back, so it is told
+        /// when it leaves the stack and disposes itself (BasePageCodeBehind.OnRemoved).
+        /// </summary>
+        protected override Window CreateWindow(IActivationState activationState) =>
+            new Window(new LightNavigationPage(new MauiNet8.MainPage()));
 
-        public void SetMainPage(Page page)
-        {
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                if (Windows.Count > 0)
-                    Windows[0].Page = page;
-            });
-        }
+        static INavigation Navigation => Current?.Windows.FirstOrDefault()?.Page?.Navigation;
+
+        public void OpenPage(Page page) => MainThread.BeginInvokeOnMainThread(async () => await Navigation.PushAsync(page));
+
+        public void GoToRoot() => MainThread.BeginInvokeOnMainThread(async () => await Navigation.PopToRootAsync());
 
         public static App Instance => App.Current as App;
     }

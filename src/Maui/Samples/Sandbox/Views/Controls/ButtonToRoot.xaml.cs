@@ -16,6 +16,6 @@ public partial class ButtonToRoot
         if (TouchEffect.CheckLockAndSet())
             return;
 
-        App.Instance.SetMainPage(new MainPage());
+        App.Instance.GoToRoot();
     }
 }
