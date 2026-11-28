@@ -192,6 +192,13 @@ _VLESS + REALITY client, built with DrawnUI for Rust_
 - **Architecture**: One Rust source drawn by DrawnUI for Rust on Android, iOS, macOS and Windows
 - **Features**: A shell with pages, a recycled server list, popup menus, a language dropdown, toasts, and a connect button drawn with an SkSL shader
 
+### DrawnCPC
+_Amstrad CPC 6128 emulator with catalogue of CPC games, demos and music, built with DrawnUI for Rust_
+- **Browse Code**: [Github repository](https://github.com/taublast/DrawnCPC)
+- **Try it**: [cpc.drawnui.net](https://cpc.drawnui.net) in your browser
+- **Architecture**: One Rust source drawn by DrawnUI for Rust, on desktop and web
+- **Features**: Desktop menu bar with keyboard navigation, popup windows, settings kept on desktop and web, tool screens (debugger, hex editor, selectable text), on-screen keyboard with phone layout, sound through drawnui-audio, accessibility throughout
+
 - **Snippets**: more DrawnUI snippets you can run and edit right in the browser at [drawfiddle.com](https://drawfiddle.com).
 
 ## Contributing Samples
