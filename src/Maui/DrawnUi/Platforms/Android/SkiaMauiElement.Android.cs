@@ -68,9 +68,16 @@ public partial class SkiaMauiElement
     private bool NativeInvalidated;
     public SKPoint ArrangedAt { get; set; }
 
+    /// <summary>
+    /// The view that goes into the canvas: the handler's container when MAUI wraps the platform view (a WrapperView,
+    /// for clip, shadow or input transparency; .NET 11 wraps a WebView), otherwise the platform view itself.
+    /// </summary>
+    protected static View GetHostView(VisualElement element) =>
+        element?.Handler is IPlatformViewHandler { ContainerView: View container } ? container : element?.Handler?.PlatformView as View;
+
     protected virtual void LayoutNativeView(VisualElement element)
     {
-        if (element?.Handler?.PlatformView is View nativeView)
+        if (GetHostView(element) is View nativeView)
         {
             nativeView.Visibility = VisualTransformNative.IsVisible && IsNativeVisible && element.IsVisible
                 ? ViewStates.Visible
@@ -123,7 +130,7 @@ public partial class SkiaMauiElement
             {
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    if (element.Handler?.PlatformView is View nativeView)
+                    if (GetHostView(element as VisualElement) is View nativeView)
                     {
                         layout.RemoveView(nativeView);
                         if (element is IDisposable disposable)
@@ -165,7 +172,7 @@ public partial class SkiaMauiElement
                 }
 
                 //add native view to canvas
-                var view = element.Handler?.PlatformView as Android.Views.View;
+                var view = GetHostView(element);
                 var layout = Superview.Handler?.PlatformView as ViewGroup;
                 if (layout != null && view != null && view.Parent == null)
                     layout.AddView(view);
