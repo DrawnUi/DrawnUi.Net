@@ -18,9 +18,9 @@ Ready-made subclasses of `SkiaShaderEffect`:
 
 | Type | Adds |
 |---|---|
-| `AnimatedShaderEffect` | A 0..1 `progress` animation with `Play()` / `Completed`, plus an `iCenter` uniform. |
-| `ShaderDoubleTexturesEffect` | A second input texture, `iImage2`. |
-| `ShaderTransitionEffect` | Two textures plus `progress` and `ratio`, with a built-in gl-transitions template. Used by `SkiaShaderCarousel`. |
+| `AnimatedShaderEffect` | 0..1 `progress` animation with `Play()` / `Completed`, plus `iCenter` uniform. |
+| `ShaderDoubleTexturesEffect` | Second input texture, `iImage2`. |
+| `ShaderTransitionEffect` | Two textures plus `progress` and `ratio`, with built-in gl-transitions template. Used by `SkiaShaderCarousel`. |
 
 ## Quick start — effect on a control
 
@@ -200,15 +200,15 @@ Compiler error line numbers count the template lines that precede the snippet.
 
 | Property | Default | Purpose |
 |---|---|---|
-| `ShaderSource` | — | Path of the `.sksl` file (see [Resource loading](#resource-loading)). |
+| `ShaderSource` | — | Path of `.sksl` file (see [Resource loading](#resource-loading)). |
 | `ShaderCode` | — | SkSL source string. |
-| `ShaderTemplate` | — | Path of a wrapping template (see [Templates](#templates)). |
+| `ShaderTemplate` | — | Path of wrapping template (see [Templates](#templates)). |
 | `UseBackground` | `Always` | How `iImage1` is sourced (see below). |
-| `AutoCreateInputTexture` | `true` | Take a snapshot of the drawn area when no cache image is available. Set `false` for output-only shaders. |
-| `UseContext` | `true` | Snapshot from the current drawing context (which may be a parent's cache surface). `false` reads the canvas surface instead. |
-| `ShouldInvalidateParentCache` | `false` | `true`: animation ticks and `SetUniform` also rebuild the parent's cache (see [Uniform changes and the parent's cache](#uniform-changes-and-the-parents-cache)). |
-| `BlendMode` | `SrcOver` | Blend used to draw the shader output. `Plus` suits additive generative overlays. |
-| `FilterMode` / `MipmapMode` / `TileMode` | `Linear` / `None` / `Clamp` | Sampling of the `iImage1` texture. |
+| `AutoCreateInputTexture` | `true` | Take snapshot of drawn area when no cache image is available. Set `false` for output-only shaders. |
+| `UseContext` | `true` | Snapshot from current drawing context (may be parent's cache surface). `false` reads canvas surface instead. |
+| `ShouldInvalidateParentCache` | `false` | `true`: animation ticks and `SetUniform` also rebuild parent's cache (see [Uniform changes and the parent's cache](#uniform-changes-and-the-parents-cache)). |
+| `BlendMode` | `SrcOver` | Blend used to draw shader output. `Plus` suits additive generative overlays. |
+| `FilterMode` / `MipmapMode` / `TileMode` | `Linear` / `None` / `Clamp` | Sampling of `iImage1` texture. |
 | `MouseCurrent` / `MouseInitial` | `(0,0)` | Values written to `iMouse`. |
 | `Uniforms`, `SetUniform(...)` | empty | Custom uniforms (see below). |
 
@@ -221,8 +221,8 @@ sourced:
 
 | Mode | Behavior | When to use |
 |---|---|---|
-| `Always` | Uses the control's own cache image when it has one; otherwise snapshots the drawn area every frame. | Live effects over animated content. |
-| `Once` | Takes the texture on first render, freezes, and keeps feeding the same image. Reset with `AquiredBackground = false`. | One-shot transitions, reveal animations. |
+| `Always` | Uses control's own cache image when it has one; otherwise snapshots drawn area every frame. | Live effects over animated content. |
+| `Once` | Takes texture on first render, freezes, and keeps feeding same image. Reset with `AquiredBackground = false`. | One-shot transitions, reveal animations. |
 | `Never` | Passes no texture; `iImage1` is not set. `iOffset` is the control's corner, so a shader that places itself by `iOffset` draws inside its control (DrawnUi 1.10.8.25 and earlier pass 0 there). | Generative shaders (noise, gradients, procedural patterns). |
 
 > **Tip:** For `Always` mode, set a cache type on the control that carries the
@@ -449,8 +449,8 @@ set only when both textures are available.
 
 | Texture | Source, first match wins |
 |---|---|
-| `iImage1` | `ControlFrom` — that control's cache image (the control must be cached). `PrimarySource` — an image file, loaded in the background and resized to the control's `DrawingRect`. Otherwise the normal `UseBackground` logic. |
-| `iImage2` | `ControlTo` — that control's cache image, re-imported whenever its cache is recreated. `SecondarySource` — an image file. Or call `CompileSecondaryTexture(SKImage)` yourself. |
+| `iImage1` | `ControlFrom` — that control's cache image (control must be cached). `PrimarySource` — image file, loaded in the background and resized to the control's `DrawingRect`. Otherwise the normal `UseBackground` logic. |
+| `iImage2` | `ControlTo` — that control's cache image, re-imported whenever its cache is recreated. `SecondarySource` — image file. Or call `CompileSecondaryTexture(SKImage)` yourself. |
 
 File sources starting with `file://` are read from the local file system; other
 paths come from the app package on MAUI and over `HttpClient` on web and desktop hosts.
@@ -560,9 +560,9 @@ The shader is a gl-transitions style `transition(vec2 uv)` function using
 [gl-transitions](https://github.com/gl-transitions/gl-transitions) ported to SkSL works.
 Provide it via:
 
-- `TransitionShader` — path to a file in the app package (MAUI Resources/Raw, next to the exe on desktop, `wwwroot` on the web)
+- `TransitionShader` — path to file in app package (MAUI Resources/Raw, next to exe on desktop, `wwwroot` on web)
 - `TransitionShaderCode` — raw SkSL string (dynamic shaders)
-- `TransitionTemplate` — replace the built-in adapter template
+- `TransitionTemplate` — replace built-in adapter template
   (`ShaderTransitionEffect.DefaultTemplate`) when you need custom uniforms or sampling.
   A custom template must declare every standard uniform, including `iTime` and `iMouse`.
 
@@ -592,7 +592,7 @@ destination.
 
 ## See also
 
-- [Drawing Pipeline](drawing-pipeline.md) — where effects fit in the render loop
+- [Drawing Pipeline](drawing-pipeline.md) — where effects fit in render loop
 - [Visual Effects](controls/effects.md) — effect kinds and how effects affect caching
 - [Fluent C# Extensions](fluent-extensions.md) — attaching effects from code
 - [Carousels](controls/carousels.md) — `SkiaShaderCarousel` details and gallery patterns
