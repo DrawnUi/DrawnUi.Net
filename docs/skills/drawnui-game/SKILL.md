@@ -946,6 +946,32 @@ Frame-skip is already the default on Android (`DrawnGame.FrameInterpolatorDisabl
 
 ---
 
+## Surviving the PC sleeping (timers and audio)
+
+A game left open while the computer sleeps must come back with working delays and working sound. Two rules:
+
+**Elapsed-time checks use a clock that never goes back.** `Environment.TickCount64` is not one: on Windows .NET reads it from the unbiased interrupt time, and a PC with Modern Standby winds that clock back by hours after a sleep (measured 2026-11-25: a value taken just after wake was 22 million ms higher than the same clock read ten minutes later). Every `now - last >= delay` check started before the sleep then comes out negative for hours: input throttles, dialog key delays and device checks stay blocked. Use the performance counter, which Windows guarantees monotonic:
+
+```csharp
+public static class GameClock
+{
+    public static long Now => Stopwatch.GetTimestamp() * 1000 / Stopwatch.Frequency; // ms, never goes back
+}
+```
+
+Use it for every "has enough time passed" check in the game (input repeat guards, dialog action delays, "screen is in" locks, audio watchdogs). Frame timing that comes from the engine (`deltaSeconds`, `LastFrameTimeNanos`) is fine as it is.
+
+**The audio device is watched and replaced when it dies.** After a sleep (or when the output device goes away) Windows invalidates the audio stream, and an engine opened on it stays silent for good. A live engine's clock always advances (it plays silence too), so a clock that stood still between two checks means the device is gone. The watchdog that works (desktop, miniaudio engine):
+
+- check about once a second on a timer, not only when a sound is played, so music alone on a menu also recovers;
+- compare the engine's frame clock (`TimeInPcmFrames`) with the last check; unchanged = dead device;
+- create the new engine first and swap it in only when that succeeds (right at wake the device may not exist yet: keep the old engine and try again on the next check);
+- then dispose the old sounds and engine, load sounds again as they are played, and restart the music.
+
+To prove which case you have, read the Windows audio sessions of the process (Core Audio `IAudioSessionManager2` on each active render endpoint): a dead device shows no session for the game at all, a working one shows an active session on the default endpoint with a peak above zero while it plays.
+
+---
+
 ## Common mistakes
 
 - **Creating sprites in GameLoop** → GC spikes, frame drops. Always pool.
