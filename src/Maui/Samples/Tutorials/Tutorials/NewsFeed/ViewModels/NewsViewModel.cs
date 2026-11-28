@@ -119,20 +119,19 @@ public class NewsViewModel : BaseViewModel
 
             await Task.Delay(800); // simulate network latency, like RefreshFeed does
 
-            var newItems = _dataProvider.GetNewsFeed(DataChunkSize/2);
-            
-            // Add new items to the end of the collection
+            var newItems = _dataProvider.GetNewsFeed(DataChunkSize);
+
+            // add to the end of the collection, then let the next page load: the spinner stays until the rows exist
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 NewsItems.AddRange(newItems);
+                IsLoadingMore = false;
+                IsBusy = false;
             });
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Error loading more: {ex.Message}");
-        }
-        finally
-        {
             IsLoadingMore = false;
             IsBusy = false;
         }
