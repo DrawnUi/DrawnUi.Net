@@ -6,7 +6,7 @@ namespace DrawnUi.Draw;
 public class ControlInStack
 {
     private bool isVisible;
-    private ScaledSize measured = ScaledSize.Default;
+    private ScaledSize measured; // made on first read: most cells get their measure before anything reads it
 
     public ControlInStack()
     {
@@ -25,18 +25,8 @@ public class ControlInStack
     /// </summary>
     public ScaledSize Measured
     {
-        get => measured;
-        set
-        {
-            if (value == null)
-            {
-                measured = ScaledSize.Default;
-            }
-            else
-            {
-                measured = value;
-            }
-        }
+        get => measured ??= ScaledSize.Default;
+        set => measured = value;
     }
 
     public SKRect Layout { get; set; }

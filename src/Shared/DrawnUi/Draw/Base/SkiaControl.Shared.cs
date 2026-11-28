@@ -4394,6 +4394,33 @@ namespace DrawnUi.Draw
         public virtual ScaledSize DefineAvailableSize(SKRect destination,
             float widthRequest, float heightRequest, float scale, bool useModifiers = true)
         {
+            var pixels = DefineAvailablePixels(destination, widthRequest, heightRequest, scale, useModifiers);
+            return ScaledSize.FromPixels(pixels.Width, pixels.Height, scale);
+        }
+
+        static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, bool> _overridesDefineAvailableSize = new();
+
+        /// <summary>
+        /// Available size in pixels for layout: <see cref="DefineAvailableSize"/> when a subclass overrides it, else the same
+        /// computation without allocating (it runs for every control arranged or measured).
+        /// </summary>
+        SKSize AvailablePixels(SKRect destination, float widthRequest, float heightRequest, float scale, bool useModifiers = true)
+        {
+            var type = GetType();
+            if (type != typeof(SkiaControl) && _overridesDefineAvailableSize.GetOrAdd(type, static t =>
+                    t.GetMethod(nameof(DefineAvailableSize), new[] { typeof(SKRect), typeof(float), typeof(float), typeof(float), typeof(bool) })
+                        ?.DeclaringType != typeof(SkiaControl)))
+            {
+                return DefineAvailableSize(destination, widthRequest, heightRequest, scale, useModifiers).Pixels;
+            }
+
+            return DefineAvailablePixels(destination, widthRequest, heightRequest, scale, useModifiers);
+        }
+
+        /// <summary>The pixel size <see cref="DefineAvailableSize"/> returns, without creating a ScaledSize.</summary>
+        SKSize DefineAvailablePixels(SKRect destination,
+            float widthRequest, float heightRequest, float scale, bool useModifiers = true)
+        {
             var rectWidth = destination.Width;
 
             if (float.IsFinite(widthRequest) && widthRequest >= 0)
@@ -4456,7 +4483,7 @@ namespace DrawnUi.Draw
                 rectHeight = (int)Math.Ceiling(rectHeight);
             }
 
-            return ScaledSize.FromPixels(rectWidth, rectHeight, scale);
+            return new SKSize(rectWidth, rectHeight);
         }
 
         /// <summary>
@@ -4528,10 +4555,10 @@ namespace DrawnUi.Draw
         /// <param name="scale"></param>
         public virtual SKRect CalculateLayout(SKRect destination, float widthRequest, float heightRequest, float scale)
         {
-            var rectAvailable = DefineAvailableSize(destination, widthRequest, heightRequest, scale);
+            var rectAvailable = AvailablePixels(destination, widthRequest, heightRequest, scale);
 
-            var useMaxWidth = rectAvailable.Pixels.Width;
-            var useMaxHeight = rectAvailable.Pixels.Height;
+            var useMaxWidth = rectAvailable.Width;
+            var useMaxHeight = rectAvailable.Height;
 
             var availableWidth = destination.Width;
             var availableHeight = destination.Height;
@@ -7470,9 +7497,9 @@ namespace DrawnUi.Draw
                 UpdateSizeRequest();
             }
 
-            var rectAvailable = DefineAvailableSize(destination, widthRequest, heightRequest, scale, false);
-            var width = rectAvailable.Pixels.Width + (float)Margins.HorizontalThickness * scale;
-            var height = rectAvailable.Pixels.Height + (float)Margins.VerticalThickness * scale;
+            var rectAvailable = AvailablePixels(destination, widthRequest, heightRequest, scale, false);
+            var width = rectAvailable.Width + (float)Margins.HorizontalThickness * scale;
+            var height = rectAvailable.Height + (float)Margins.VerticalThickness * scale;
             if (width > destination.Width)
             {
                 width = destination.Width;
