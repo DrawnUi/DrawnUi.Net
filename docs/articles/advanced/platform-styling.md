@@ -4,7 +4,7 @@ Some of the DrawnUi controls support platform-specific styling to ensure your ap
 
 ## Using Platform Styles
 
-### The ControlStyle Property
+### ControlStyle Property
 
 Some DrawnUi controls include a `ControlStyle` property that determines their visual appearance:
 

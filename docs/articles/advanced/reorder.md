@@ -2,7 +2,7 @@
 
 A templated list the user reorders by dragging a row, with the list moving in place under the pointer and the row gliding into its slot on release. Nothing in DrawnUI is a "reorderable list" control: the recipe is a `SkiaScroll` + templated `SkiaLayout`, an `ObservableCollection`, gestures on a grip, and one floating copy of the row. Full source: `src/Maui/Samples/HelloMaui/Pages/ReorderPage.cs` + `ReorderCell.cs` (the React demo has the same page).
 
-## The idea in one picture
+## Idea in one picture
 
 ```
 ┌ page (SkiaLayer) ──────────────────────────────┐
@@ -21,19 +21,19 @@ A templated list the user reorders by dragging a row, with the list moving in pl
 
 Every step of the drag is one `ObservableCollection.Move(from, to)`. The layout applies a `Move` to the cells it already has (contexts are re-bound, templates and measurements are kept), so the list reorders live without a rebuild. The row that is being dragged draws itself with `Opacity = 0`; the hole it leaves is where it will land.
 
-## The pieces
+## Pieces
 
-**The list.** A `SkiaStack` with `ItemsSource`, `ItemTemplate`, `RecyclingTemplate = Enabled` and `MeasureItemsStrategy = MeasureFirst` inside a vertical `SkiaScroll`. `MeasureFirst` (uniform rows) is what makes a `Move` a pure re-bind: no structure arithmetic at all. `MeasureVisible` takes the structure-preserving path too; `MeasureAll` rebuilds.
+**List.** A `SkiaStack` with `ItemsSource`, `ItemTemplate`, `RecyclingTemplate = Enabled` and `MeasureItemsStrategy = MeasureFirst` inside a vertical `SkiaScroll`. `MeasureFirst` (uniform rows) is what makes a `Move` a pure re-bind: no structure arithmetic at all. `MeasureVisible` takes the structure-preserving path too; `MeasureAll` rebuilds.
 
-**The cell.** A `SkiaDynamicDrawnCell` with a grip area. `SetContent(ctx)` binds the visuals and sets `Opacity` to 0 when this item is the one being dragged, 1 otherwise. The grip gets `ConsumeGestures` and owns the whole drag:
+**Cell.** A `SkiaDynamicDrawnCell` with a grip area. `SetContent(ctx)` binds the visuals and sets `Opacity` to 0 when this item is the one being dragged, 1 otherwise. The grip gets `ConsumeGestures` and owns the whole drag:
 
 - `Down`: remember the item's index, take the pan away from the scroll with `scroll.RespondsToGestures = false` (a vertical pan inside a vertical scroll belongs to the scroll otherwise), tell the page to lift the row, start a per-frame ticker.
 - `Panning`: accumulate travel in points (`Distance.Delta.Y / RenderingScale`), `e.Consumed = true`.
 - `Up` / `Tapped`: tell the page to drop, stop the ticker, give the scroll its gestures back. Released outside the viewport = cancel, move the item back to where it was picked up.
 
-**The ticker** (a looping `SkiaValueAnimator`, runs every frame while dragging): while the pointer rests within ~44 pt of the top or bottom edge, `scroll.ScrollTo(x, y ± step, 0, true)` keeps the list moving. Travel is counted in content space: the pointer's own movement plus whatever the list scrolled underneath it (`_lastOffset - ViewportOffsetY`). Every time `|travel| >= rowHeight + spacing` the host moves the item one slot and the travel is reduced by one stride.
+**Ticker** (a looping `SkiaValueAnimator`, runs every frame while dragging): while the pointer rests within ~44 pt of the top or bottom edge, `scroll.ScrollTo(x, y ± step, 0, true)` keeps the list moving. Travel is counted in content space: the pointer's own movement plus whatever the list scrolled underneath it (`_lastOffset - ViewportOffsetY`). Every time `|travel| >= rowHeight + spacing` the host moves the item one slot and the travel is reduced by one stride.
 
-**The page (host).** Owns the collection, the scroll and the ghost, and exposes a small interface to the cells (`Move`, `Lift`, `Carry`, `Drop`, `Dragging`, `Spacing`, `Scroll`):
+**Page (host).** Owns the collection, the scroll and the ghost, and exposes a small interface to the cells (`Move`, `Lift`, `Carry`, `Drop`, `Dragging`, `Spacing`, `Scroll`):
 
 - `Lift`: find the row's `DrawingRect` with `layout.ChildrenFactory.GetCellInUseOrNull(index)` (recycled cells are NOT in `Views`, the adapter holds the realized rows; `GetCellsInUse()` lists them all), size and place the ghost over it in overlay coordinates, show it, re-apply every live cell's content so the lifted row goes blank.
 - `Carry(pointerY)`: `ghost.Top = pointer - grabOffset`, `ghost.Update()`. `Left`/`Top` move a cached control without a re-layout.

@@ -62,11 +62,11 @@ private void OnSwitchToggled(object sender, bool isToggled)
 | Property | Type | Description |
 |----------|------|-------------|
 | `IsToggled` | bool | Whether the switch is toggled on or off |
-| `ColorFrameOn` | Color | The color of the track when toggled on |
-| `ColorFrameOff` | Color | The color of the track when toggled off |
-| `ColorThumbOn` | Color | The color of the thumb when toggled on |
-| `ColorThumbOff` | Color | The color of the thumb when toggled off |
-| `ControlStyle` | PrebuiltControlStyle | The platform-specific style, can be changed at runtime |
+| `ColorFrameOn` | Color | Color of the track when toggled on |
+| `ColorFrameOff` | Color | Color of the track when toggled off |
+| `ColorThumbOn` | Color | Color of the thumb when toggled on |
+| `ColorThumbOff` | Color | Color of the thumb when toggled off |
+| `ControlStyle` | PrebuiltControlStyle | Platform-specific style, can be changed at runtime |
 | `IsAnimated` | bool | Whether state changes are animated |
 | `AnimationSpeed` | static uint | Animation duration in milliseconds for every switch, `SkiaSwitch.AnimationSpeed` (default: 200) |
 | `RespondsToGestures` | bool | Default true. False: a tap or the keyboard does not toggle it, only `IsToggled` from code does; a tap on it stops there and screen readers read it as unavailable |
@@ -111,9 +111,9 @@ SkiaCheckbox shares most properties with SkiaSwitch, both inheriting from SkiaTo
 | Property | Type | Description |
 |----------|------|-------------|
 | `IsToggled` | bool | Whether the control is toggled on or off |
-| `DefaultValue` | bool | The default toggle state |
-| `ColorFrameOn/Off` | Color | The color of the frame in each state |
-| `ColorThumbOn/Off` | Color | The color of the thumb in each state |
+| `DefaultValue` | bool | Default toggle state |
+| `ColorFrameOn/Off` | Color | Color of the frame in each state |
+| `ColorThumbOn/Off` | Color | Color of the thumb in each state |
 | `IsAnimated` | bool | Whether state changes are animated |
 | `RespondsToGestures` | bool | Default true. False: user taps and the keyboard are ignored, `IsToggled` is set from code only; screen readers read it as unavailable |
 

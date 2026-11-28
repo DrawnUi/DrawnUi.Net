@@ -58,7 +58,7 @@ For bevel/emboss effect and the button base wrapper we would obviously use `Skia
 
 ## 🏗️ Custom Control Architecture
 
-### **The Foundation Pattern**
+### **Foundation Pattern**
 
 Our `GameButton` extends `SkiaLayout` and uses the `CreateDefaultContent()` method to build its visual structure:
 
@@ -371,5 +371,5 @@ DrawnUI gives you the freedom to **create exactly the controls you need**. This 
 - **Caching**: `UseCache = SkiaCacheType.Image` for complex controls, `UseCache = SkiaCacheType.Operations` for text and simple graphics.
 - **Virtual Controls**: Remember that drawn controls are virtual - they don't create native views, can be accessed on from anythread.
 
-### 🚀 **The DrawnUI Advantage**
+### 🚀 **DrawnUI Advantage**
 You can create any UI control you can imagine with complete control over appearance and behavior.  **Draw what you want!** 🎨

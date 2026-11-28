@@ -55,7 +55,7 @@ How it works:
 - The control aggregates the per-side **max** across all `VisualEffects` into `EffectsMarginPixels` (cached; recomputed only when effects, their parameters, or rendering scale change).
 - `GetEffectMargin` is invalidated automatically when an effect is **added, removed, replaced**, or when its parameters change — which also invalidates the cache so it rebuilds at the new size.
 
-### The `3 * Blur` rule
+### `3 * Blur` rule
 
 Blur in these effects is a Gaussian **sigma**. The shadow margin is `3 * Blur` per side (plus the offset for `DropShadowEffect`). `3σ` is not a guess — it matches Skia's own blur image filter, which computes its output bounds as the input inflated by `ceil(3 * sigma)`. Past 3σ the shadow alpha is <0.3% (invisible). So the expanded cache equals the actual painted extent — no clipping, no wasted texture.
 

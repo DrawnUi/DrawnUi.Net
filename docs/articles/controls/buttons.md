@@ -67,15 +67,15 @@ Set the bindable `ControlStyle` property (XAML or code) to pick a look; `UsingCo
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `Text` | string | The text displayed on the button |
-| `TextColor` | Color | The color of the button text |
-| `BackgroundColor` | Color | The background color of the button |
-| `CornerRadius` | CornerRadius | The corner radius of the button (applied via `BtnShape`, default 8) |
-| `ButtonStyle` | ButtonStyleType | The button style (Contained, Outlined, Text) |
+| `Text` | string | Text displayed on the button |
+| `TextColor` | Color | Color of the button text |
+| `BackgroundColor` | Color | Background color of the button |
+| `CornerRadius` | CornerRadius | Corner radius of the button (applied via `BtnShape`, default 8) |
+| `ButtonStyle` | ButtonStyleType | Button style (Contained, Outlined, Text) |
 | `ElevationEnabled` | bool | Whether the button has a shadow effect |
-| `TextCase` | TextTransform | The text case transformation (None, Uppercase, Lowercase) |
-| `FontSize` | double | The font size of the button text |
-| `FontFamily` | string | The font family of the button text |
+| `TextCase` | TextTransform | Text case transformation (None, Uppercase, Lowercase) |
+| `FontSize` | double | Font size of the button text |
+| `FontFamily` | string | Font family of the button text |
 | `RespondsToGestures` | bool | False switches the button off: no taps, presses or keyboard, a tap on it stops there, screen readers report it disabled (default true). On MAUI `IsEnabled = false` does the same. `IsDisabled` is its obsolete opposite |
 | `IsPressed` | bool | True while the button is pressed |
 | `IconPosition` | IconPositionType | Position of icon (icon support planned) |

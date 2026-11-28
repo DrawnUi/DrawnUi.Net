@@ -182,7 +182,7 @@ the shader contract and customization.
 | `TransitionShaderCode` | string | Raw SkSL string alternative (dynamic shaders) |
 | `TransitionTemplate` | string | Custom wrapper template replacing the built-in gl-transitions adapter |
 | `InterruptedTransitionMs` | double | Wrap-up time for a transition interrupted by a new swipe (default 50) |
-| `TransitionEffect` | ShaderTransitionEffect | The effect instance; override `CreateTransitionEffect()` to customize |
+| `TransitionEffect` | ShaderTransitionEffect | Effect instance; override `CreateTransitionEffect()` to customize |
 
 Notes: the constructor forces `RecyclingTemplate="Disabled"` (the effect needs stable
 per-slide caches); one gesture advances at most one slide regardless of velocity.

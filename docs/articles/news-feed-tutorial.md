@@ -778,5 +778,5 @@ DrawnUI gives you the freedom to **just draw what you need**. This tutorial demo
 - **Layering**: Separate UI into layers for caching
 - **Debug**: Monitor how your optimizations affect FPS in real-time to notice drastic difference with and without caching and other techniques.
 
-### 🚀 **The DrawnUI Advantage**
+### 🚀 **DrawnUI Advantage**
 A smooth, efficient news feed that handles the challenging case of uneven row heights while loading real images from the internet using **recycled cells**. **Draw what you want!** 🎨

@@ -89,9 +89,9 @@ The controls, properties and methods have the same names in every framework, in 
 | | C# | React (TSX) | Rust |
 |---|---|---|---|
 | Import | `using DrawnUi.Add3d;` | `import { SkiaModel3D, SkiaScene3D } from "drawnui-react-add3d";` | `use drawnui_add3d::prelude::*;` |
-| A property | `PinchZoom = true` | `PinchZoom={true}` | `.pinch_zoom(true)` |
-| A method | `PlayOnce("Wave")` | `PlayOnce("Wave")` | `play_once("Wave")` |
-| A tap | `.OnTapped3D((me, hit) => ...)` | `Tapped3D={(me, hit) => ...}` | `.on_tapped_3d(\|me, app, cx, hit\| ...)` |
+| Property | `PinchZoom = true` | `PinchZoom={true}` | `.pinch_zoom(true)` |
+| Method | `PlayOnce("Wave")` | `PlayOnce("Wave")` | `play_once("Wave")` |
+| Tap | `.OnTapped3D((me, hit) => ...)` | `Tapped3D={(me, hit) => ...}` | `.on_tapped_3d(\|me, app, cx, hit\| ...)` |
 
 The text below uses the C# names; every example comes in all three languages.
 
@@ -117,8 +117,8 @@ The five .NET versions share one gallery: [Add3dGallery.Shared](https://github.c
 
 ## Why it is different
 
-- **A normal control.** It takes part in layout, scrolling, caching, gestures and accessibility like any other DrawnUI control.
-- **The same API everywhere.** The same names in C#, TSX and Rust, so code moves between frameworks.
+- **Normal control.** It takes part in layout, scrolling, caching, gestures and accessibility like any other DrawnUI control.
+- **Same API everywhere.** Same names in C#, TSX and Rust, so code moves between frameworks.
 - **Skia's own GPU.** It draws through the GPU context Skia already uses: Vulkan, Metal, ANGLE, OpenGL or WebGL2.
 - **Pages keep scrolling.** Inside a scroll, an up and down drag scrolls the page and a sideways drag turns the model.
 - **Free at rest.** A model that is still asks for no frames, models off screen cost nothing, and models near the screen are rendered ahead so they appear at once.
@@ -130,13 +130,13 @@ The five .NET versions share one gallery: [Add3dGallery.Shared](https://github.c
 | You need | With SKMesh | With the 3D add-on |
 |---|---|---|
 | Shapes and models | Generate triangles by hand, write your own glTF loader | `Mesh3D` shapes in code, glTF files with materials and textures |
-| What is in front | No depth buffer on the 2D canvas: drop back faces and sort by hand | A real depth buffer on the GPU |
+| What is in front | No depth buffer on the 2D canvas: drop back faces and sort by hand | Real depth buffer on the GPU |
 | Turning and perspective | Rotate and project every point yourself | `Yaw`, `Pitch`, zoom and framing built in |
 | Look | Your own texture sampling and lighting shader | Lit, Toon and Flat looks, filtered textures, smooth edges |
 | Animation | Your own skeleton system | glTF animations by name: loop, play once, blend, layers |
 | Interaction | Your own drag, fling, pinch and hit math | Turn, fling, zoom, double tap reset, `Tapped3D` with the part hit |
 | Labels on the model | Project and hide-test points yourself | `ScreenPosition` tells where a point is and whether it is hidden |
-| Cost at rest | Redraws unless you stop it | A still model asks for no frames |
+| Cost at rest | Redraws unless you stop it | Still model asks for no frames |
 
 A globe with city pins is `Mesh3D.Sphere`, an Earth image and a few lines with the add-on. With `SKMesh` it is a small 3D engine to write and maintain.
 
@@ -145,7 +145,7 @@ Use `SKMesh` for effects. Use the 3D add-on for objects.
 ## Where it fits
 
 - Product viewers: furniture, shoes, gadgets you turn with a finger, with fabric swatches and prices.
-- A model that answers a tap, an avatar beside a form, a reward chest, a globe with pins, a card that flips.
+- Model that answers a tap, avatar beside a form, reward chest, globe with pins, card that flips.
 - Games: 3D characters and elements inside a 2D game.
 
 For a full 3D world with a free camera, physics and shadows, use a game engine. Vector illustrations and designer animations stay Lottie or SVG.
@@ -296,7 +296,7 @@ Meshes:
 
 Each part is placed with `At`, `Turned`, `Scaled` and `Inside(parent)`. `Texture3D.FromImage` takes any Skia image: a photo, or a pattern drawn in code.
 
-## A 3D layer: SkiaScene3D
+## 3D layer: SkiaScene3D
 
 # [C#](#tab/csharp)
 

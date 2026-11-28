@@ -11,7 +11,7 @@ When you tap the screen, the platform says "someone touched at (150, 300)" but h
 We need to figure out which control should receive that tap.
 For .NET MAUI we use `AppoMobi.Maui.Gestures` package to get gestures for all platforms. Blazor uses `AppoMobi.Blazor.Gestures`, the other heads (WPF, OpenTK, pure WebAssembly, .NET) use `AppoMobi.Gestures`.
 
-## The Basic Flow
+## Basic Flow
 
 ```
 Touch Event → Canvas → Find Control at Point → Deliver Gesture
@@ -118,7 +118,7 @@ Simple.
 
 # Part 2: In Deep - Challenges & Edge Cases
 
-## The Caching Problem
+## Caching Problem
 
 DrawnUI caches controls for performance. A control renders to an off-screen bitmap, then we just draw that bitmap instead of re-rendering.
 

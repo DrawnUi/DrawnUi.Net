@@ -141,7 +141,7 @@ public class CircularLayout : SkiaLayout
 
 ## Layout System Internals
 
-### The Layout Process
+### Layout Process
 
 The layout process follows these steps:
 

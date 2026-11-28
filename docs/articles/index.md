@@ -6,7 +6,7 @@
 
 [Source Code](https://github.com/DrawnUi/DrawnUi.Net) 👈
 
-**A rendering engine that works along your framework: .NET (MAUI, Blazor, WPF, OpenTK, WebAssembly and any .NET host), React and Rust, built on top of Skia**
+**Rendering engine that works along your framework: .NET (MAUI, Blazor, WPF, OpenTK, WebAssembly and any .NET host), React and Rust, built on top of Skia**
 
 **Hardware-accelerated rendering engine** with packages and hosts for **MAUI**, **Blazor**, **WPF**, **OpenTK**, pure **WebAssembly** and **DrawnUi.Net**, powered by [SkiaSharp](https://github.com/mono/SkiaSharp), and the same engine for [React](react/index.md) and [Rust](rust/index.md).
 

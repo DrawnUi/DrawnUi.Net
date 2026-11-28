@@ -36,6 +36,6 @@ When working with advanced DrawnUi features:
 ## Getting Help
 
 For advanced topics not covered here, check:
-- The source code examples in the Sandbox project
+- Source code examples in the Sandbox project
 - Community discussions and issues on GitHub
-- The API documentation for detailed method signatures
+- API documentation for detailed method signatures

@@ -35,7 +35,7 @@ This walks through a standalone pure-WebAssembly DrawnUI app (no Blazor).
 ## Prerequisites
 
 - .NET 10 SDK with the `wasm-tools` workload: `dotnet workload install wasm-tools`.
-- A browser with WebGL for the GPU path (the app auto-falls back to raster otherwise).
+- Browser with WebGL for the GPU path (the app auto-falls back to raster otherwise).
 
 ## index.html
 
