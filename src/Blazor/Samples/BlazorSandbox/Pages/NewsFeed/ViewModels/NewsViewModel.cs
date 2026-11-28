@@ -100,20 +100,18 @@ public class NewsViewModel : BaseViewModel
         try
         {
             Debug.WriteLine("Loading more items !!!");
-            var newItems = _dataProvider.GetNewsFeed(DataChunkSize/2);
-            
-            // Add new items to the end of the collection
+            var newItems = _dataProvider.GetNewsFeed(DataChunkSize);
+
+            // add to the end of the collection, then let the next page load
             MainThread.BeginInvokeOnMainThread(() =>
             {
                 NewsItems.AddRange(newItems);
+                IsBusy = false;
             });
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Error loading more: {ex.Message}");
-        }
-        finally
-        {
             IsBusy = false;
         }
     }

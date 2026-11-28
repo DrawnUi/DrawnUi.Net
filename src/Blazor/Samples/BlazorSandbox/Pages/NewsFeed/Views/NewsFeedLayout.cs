@@ -53,7 +53,7 @@ namespace BlazorSandbox.Pages.NewsFeed.Views
                 RefreshDistanceLimit = 120,
                 RefreshCommand = _viewModel.RefreshCommand,
                 LoadMoreCommand = _viewModel.LoadMoreCommand,
-                LoadMoreOffset = 500,
+                LoadMoreOffset = 1600,
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Fill,
                 RefreshIndicator = new AppActivityIndicator()
