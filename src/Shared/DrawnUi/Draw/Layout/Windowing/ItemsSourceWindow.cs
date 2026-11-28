@@ -428,7 +428,13 @@ public class ItemsSourceWindow
                     WindowEnd += take;
                 }
 
-                // other index >= WindowEnd: not materialized, forward slides pick it up
+                else
+                {
+                    // index >= WindowEnd: not materialized, a forward slide picks it up. Slides are asked by the
+                    // scroll's edge check, which runs in a drawn frame: when the list already sits at its end
+                    // nothing else would draw one (the window's content did not change), and the feed stopped.
+                    _layout.Update();
+                }
                 break;
             }
 
