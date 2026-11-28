@@ -88,8 +88,12 @@ Please star ⭐ if you like it!
 🤩 [Fiddle](https://drawfiddle.com)   
 ⛹️ [Pong in pure WASM](https://pong.appomobi.com/)
 
-## What's New 1.10.9.6
+## What's New 1.10.9.7
 
+  * Faster recycled lists: rows with an Image cache are drawn ahead of time, so scrolling stays smooth on slow phones.
+  * Endless feeds keep loading for as long as you scroll, also in very long lists.
+  * Lower memory use while scrolling.
+  * Fixed a crash on Android when a page with a CPU-rendered canvas closed right after a tap on it.
   * Fixed a crash on Windows when a tap opens another page.
   * Pages opened quickly one after another lay out correctly every time.
   * Keyboard works in Blazor apps that mix Server and WebAssembly on one page (Auto render mode).
