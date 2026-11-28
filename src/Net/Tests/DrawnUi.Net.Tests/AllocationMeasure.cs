@@ -33,10 +33,12 @@ static class AllocationMeasure
         using var effect = SKRuntimeEffect.CreateShader("uniform float4 u; half4 main(float2 p) { return half4(u); }", out var errors);
         using var holder = new SKRuntimeEffectUniforms(effect ?? throw new InvalidOperationException(errors));
         var clock = System.Diagnostics.Stopwatch.StartNew();
+        var values = new float[] { 0, 0, 0, 1 }; // made once: the loop measures the uniform write alone
         for (int i = 0; clock.ElapsedMilliseconds < 10000; i++)
         {
             long before = GC.GetAllocatedBytesForCurrentThread();
-            holder["u"] = (ReadOnlySpan<float>)stackalloc float[] { i, 0, 0, 1 };
+            values[0] = i;
+            holder["u"] = (ReadOnlySpan<float>)values;
             if (GC.GetAllocatedBytesForCurrentThread() == before)
                 return;
             if (i > 30)
